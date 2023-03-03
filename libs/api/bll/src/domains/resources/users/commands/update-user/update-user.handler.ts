@@ -22,7 +22,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
   async execute(command: UpdateUserCommand): Promise<UserModel> {
     const { id, ...updateUser } = command.updateUser;
-    const where = { id, tenant: command.tenant };
-    return await this.userFactory.updateActor(where, command.populate, updateUser, updateFullName);
+    return await this.userFactory.updateActor(command.tenant, { id }, command.populate, updateUser, updateFullName);
   }
 }

@@ -1,10 +1,13 @@
 import { TeamsService } from './teams.service';
 import { TeamsResolver } from './teams.resolver';
+
 import { CreateTeamHandler } from './commands/create-team/create-team.handler';
-import { GetTeamByIdHandler } from './queries/get-team-by-id/get-team-by-id.handler';
-import { GetTeamsHandler } from './queries/get-teams/get-teams.handler';
+import { DeactivateTeamImageHandler } from './commands/deactivate-team-image/deactivate-team-image.handler';
 import { UpdateTeamHandler } from './commands/update-team/update-team.handler';
 import { DeleteTeamHandler } from './commands/delete-team/delete-team.handler';
+
+import { GetTeamByIdHandler } from './queries/get-team-by-id/get-team-by-id.handler';
+import { GetTeamsHandler } from './queries/get-teams/get-teams.handler';
 import { GetTeamBySlugHandler } from './queries/get-team-by-slug/get-team-by-slug.handler';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -22,7 +25,7 @@ import { BASE_TENANT } from '@okampus/shared/consts';
 import type { BaseRepository } from '@okampus/api/dal';
 import type { OnModuleInit } from '@nestjs/common';
 
-const commandHandlers = [CreateTeamHandler, UpdateTeamHandler, DeleteTeamHandler];
+const commandHandlers = [CreateTeamHandler, UpdateTeamHandler, DeleteTeamHandler, DeactivateTeamImageHandler];
 const queryHandlers = [GetTeamByIdHandler, GetTeamsHandler, GetTeamBySlugHandler];
 
 @Module({

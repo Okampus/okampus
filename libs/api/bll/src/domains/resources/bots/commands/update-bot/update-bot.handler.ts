@@ -4,6 +4,7 @@ import { UpdateBotCommand } from './update-bot.command';
 import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 
 import { CommandHandler } from '@nestjs/cqrs';
+
 import type { ICommandHandler } from '@nestjs/cqrs';
 import type { BotModel } from '../../../../factories/domains/bots/bot.model';
 @CommandHandler(UpdateBotCommand)
@@ -12,6 +13,6 @@ export class UpdateBotHandler implements ICommandHandler<UpdateBotCommand> {
 
   async execute(command: UpdateBotCommand): Promise<BotModel> {
     const { id, ...updateBot } = command.updateBot;
-    return await this.botFactory.updateActor({ id, tenant: command.tenant }, command.populate, updateBot);
+    return await this.botFactory.updateActor(command.tenant, { id }, command.populate, updateBot);
   }
 }

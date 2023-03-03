@@ -5,11 +5,13 @@ import { TeamFilterOptions } from './team-filter-options.type';
 import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
 import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { ActorImageModel } from '../../factories/domains/images/actor-image.model';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { ActorImageType } from '@okampus/shared/enums';
 import { CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
 import { CreateOrgDocumentDto } from '@okampus/shared/dtos';
+
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Resolver(() => TeamModel)
@@ -58,9 +60,26 @@ export class TeamsResolver {
     return this.teamsService.teamAddDocument(teamId, createOrgDocument, documentFile);
   }
 
+  @Mutation(() => ActorImageModel)
+  deactivateTeamImage(
+    @Args('id', { type: () => String }) id: Snowflake,
+    @Args('actorImageType', { type: () => ActorImageType }) actorImageType: ActorImageType
+  ) {
+    return this.teamsService.deactivateTeamImage(id, actorImageType);
+  }
+
   @Mutation(() => TeamModel)
-  updateTeam(@Args('updateTeam', { type: () => UpdateTeamDto }) updateTeam: UpdateTeamDto) {
-    return this.teamsService.update(updateTeam);
+  updateTeam(
+    @Args('updateTeam', { type: () => UpdateTeamDto }) updateTeam: UpdateTeamDto,
+    @Args('avatar', { type: () => GraphQLUpload, nullable: true }) avatar?: MulterFileType,
+    @Args('avatarDark', { type: () => GraphQLUpload, nullable: true }) avatarDark?: MulterFileType,
+    @Args('banner', { type: () => GraphQLUpload, nullable: true }) banner?: MulterFileType
+  ) {
+    return this.teamsService.update(updateTeam, {
+      [ActorImageType.Avatar]: avatar,
+      [ActorImageType.AvatarDarkMode]: avatarDark,
+      [ActorImageType.Banner]: banner,
+    });
   }
 
   @Mutation(() => Boolean)
