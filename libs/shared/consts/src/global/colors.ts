@@ -12,8 +12,8 @@ export const LIGHT_GREEN = '#48cc48';
 
 export const DEEP_ORANGE = '#703010';
 export const DARK_ORANGE = '#bb5000';
-export const ORANGE = '#ff8000';
-export const LIGHT_ORANGE = '#ffa600';
+export const ORANGE = '#ff3c00';
+export const LIGHT_ORANGE = '#ff5600';
 
 export const DEEP_RED = '#660000';
 export const DARK_RED = '#992020';

@@ -1,17 +1,9 @@
+import { ControlType } from '@okampus/shared/enums';
 import { SelectMenu, SingleFileInput } from '@okampus/ui/molecules';
 import { Controller, useForm } from 'react-hook-form';
 
 import type { SelectItem } from '@okampus/ui/molecules';
 import type { RegisterOptions } from 'react-hook-form';
-
-export enum ControlType {
-  Text = 'text',
-  SingleFile = 'single-file',
-  Select = 'select',
-  Number = 'number',
-  Checkbox = 'checkbox',
-  DatetimeLocal = 'datetime-local',
-}
 
 export interface DynamicFieldData {
   label: string;

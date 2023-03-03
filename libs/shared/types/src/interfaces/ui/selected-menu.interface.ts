@@ -1,18 +1,20 @@
-export enum SubspaceTypes {
+export enum SubspaceType {
   Home = 'Home',
   Admin = 'Admin',
+  Org = 'Org',
   Manage = 'Manage',
+  User = 'User',
   Me = 'Me',
 }
 
 export interface SelectedMenu {
-  subSpace: SubspaceTypes;
+  subSpace: SubspaceType;
   menu: number;
   subMenu: number;
 }
 
 export const defaultSelectedMenu: SelectedMenu = {
-  subSpace: SubspaceTypes.Home,
+  subSpace: SubspaceType.Home,
   menu: 0,
   subMenu: 0,
 };

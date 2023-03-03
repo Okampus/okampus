@@ -69,4 +69,5 @@ export * from './global/align.enum';
 export * from './global/approval-state.enum';
 export * from './global/colors.enum';
 export * from './global/file-mime-category';
+export * from './ui/control-type.enum';
 // @endindex
