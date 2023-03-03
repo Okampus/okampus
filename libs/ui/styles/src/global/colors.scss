@@ -1,16 +1,46 @@
-/* .bg-app {
-//   @apply bg-gradient-to-br dark:from-[#101b2e] dark:to-[#0F0F0F] from-[#eee] to-[#FFF];
-// }
-//
-// .bg-app-gradient {
-//   @apply relative z-10 bg-gradient-to-br from-[#edf0f7] to-[#ffffff];
-// }
-//
-// .bg-app-gradient::before {
-//   @apply absolute top-0 right-0 bottom-0 left-0 content-[""]
-//     bg-gradient-to-br from-[#081120] to-[#0F0F0F] z-[-1]
-//     transition-opacity duration-[250ms] ease-in-out opacity-0;
-// } */
+:root {
+  --primary: #70c;
+  --inactive: #555;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --info: #348adb;
+  --bg-0: #fff;
+  --bg-1: #f0f0f0;
+  --bg-2: #eaeaea;
+  --bg-3: #e6e8eb;
+  --bg-4: #ddd;
+  --bg-main: #f1f1f1;
+  --bg-topbar: #fafafa;
+  --text-0: #000;
+  --text-1: #333;
+  --text-2: #666;
+  --text-3: #999;
+  --text-4: #ccc;
+  --border-1: #eaeaeacc;
+  --border-2: #dddc;
+  --border-3: #cccc;
+  --border-4: #bbbc;
+
+  &.dark {
+    --bg-0: #000;
+    --bg-1: #1c1e1f;
+    --bg-2: #2b2b2b;
+    --bg-3: #2a2c2e;
+    --bg-4: #444;
+    --bg-main: #131313;
+    --bg-topbar: #0a0a0a;
+    --text-0: #fff;
+    --text-1: #efefef;
+    --text-2: #ccc;
+    --text-3: #aaa;
+    --text-4: #999;
+    --border-1: #4b4b4bcc;
+    --border-2: #333c;
+    --border-3: #242c35cc;
+    --border-4: #1c1e1fcc;
+  }
+}
 
 .backdrop {
   @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000cc] z-[100] flex overflow-hidden;
@@ -53,40 +83,41 @@
   @apply absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-[#000000dd] to-transparent;
 }
 
-.bg-0 {
-  @apply bg-[#fff] dark:bg-[#000];
-}
-
 .bg-main {
-  @apply bg-[#f1f1f1] dark:bg-[#151515];
+  @apply bg-[var(--bg-main)];
 }
 
 .bg-topbar {
-  @apply bg-[#fafafa] dark:bg-[#0a0a0a];
+  @apply bg-[var(--bg-topbar)];
 }
 
 .bg-topbar-to-main {
-  @apply bg-gradient-to-b from-[#fafafa] to-[#f1f1f1] dark:from-[#111] dark:to-[#151515];
+  @apply bg-gradient-to-b from-[var(--bg-topbar)] to-[var(--bg-main)];
+}
+
+.bg-0,
+.bg-hover-0:hover {
+  @apply bg-[var(--bg-0)];
 }
 
 .bg-1,
 .bg-hover-1:hover {
-  @apply bg-[#f0f0f0] dark:bg-[#1C1E1F];
+  @apply bg-[var(--bg-1)];
 }
 
 .bg-2,
 .bg-hover-2:hover {
-  @apply bg-[#eaeaea] dark:bg-[#2B2B2B];
+  @apply bg-[var(--bg-2)];
 }
 
 .bg-3,
 .bg-hover-3:hover {
-  @apply bg-[#e6e8eb] dark:bg-[#2a2c2e];
+  @apply bg-[var(--bg-3)];
 }
 
 .bg-4,
 .bg-hover-4:hover {
-  @apply bg-[#ddd] dark:bg-[#444];
+  @apply bg-[var(--bg-4)];
 }
 
 .hoverable {
@@ -116,31 +147,31 @@
 }
 
 .bg-bubble {
-  @apply bg-[#555] [&.active]:bg-purple-500;
-}
-
-.text-0 {
-  @apply text-[#000] dark:text-[#fff];
+  @apply bg-[var(--inactive)] [&.active]:bg-[var(--primary)];
 }
 
 .text-hover {
   @apply hover:text-[#111] dark:hover:text-[#eee];
 }
 
+.text-0 {
+  @apply text-[var(--text-0)];
+}
+
 .text-1 {
-  @apply text-[#333] dark:text-[#ddd];
+  @apply text-[var(--text-1)];
 }
 
 .text-2 {
-  @apply text-[#666] dark:text-[#bbb];
+  @apply text-[var(--text-2)];
 }
 
 .text-3 {
-  @apply text-[#999] dark:text-[#999];
+  @apply text-[var(--text-3)];
 }
 
 .text-4 {
-  @apply text-[#ccc] dark:text-[#666];
+  @apply text-[var(--text-4)];
 }
 
 .text-opposite {
@@ -160,15 +191,31 @@
 }
 
 .border-color-1 {
-  @apply border-gray-200 dark:border-gray-600;
+  @apply border-[var(--border-1)];
 }
 
 .border-color-2 {
-  @apply border-gray-300 dark:border-gray-500;
+  @apply border-[var(--border-2)];
 }
 
 .border-color-3 {
-  @apply border-gray-200 dark:border-[#242c35];
+  @apply border-[var(--border-3)];
+}
+
+.divide-color-1 {
+  @apply divide-[var(--border-1)];
+}
+
+.divide-color-2 {
+  @apply divide-[var(--border-2)];
+}
+
+.divide-color-3 {
+  @apply divide-[var(--border-3)];
+}
+
+.divide-color-4 {
+  @apply divide-[var(--border-4)];
 }
 
 .bg-gradient {
