@@ -1,5 +1,3 @@
-
-
 export enum ReactionType {
   What = 'What',
   Interesting = 'Interesting',
@@ -11,5 +9,3 @@ export enum ReactionType {
   Partial = 'Partial',
   Perfect = 'Perfect',
 }
-
-
