@@ -47,7 +47,7 @@ export function ItemGroup<T>({
       {items.length > limit && (
         <Popover>
           <PopoverTrigger>{renderMore(items.length - limit, size)}</PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent popoverClassName="card-sm">
             {VerticalList({
               title: showNumberInTitle ? (
                 <div className="flex gap-2 items-center">

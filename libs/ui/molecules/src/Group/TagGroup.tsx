@@ -11,10 +11,11 @@ export type TagGroupProps = {
 export function TagGroup({ tags, limit = 2, size = 14 }: TagGroupProps) {
   return (
     <ItemGroup
-      className="flex gap-1 flex-wrap"
+      className="flex gap-2.5 flex-wrap"
       items={tags}
       limit={limit}
       size={size}
+      title="Tags"
       render={(item) => <Tag {...item} />}
       renderListElement={(item) => <Tag {...item} />}
       renderMore={(items) => <Tag label={`+${items}`} />}

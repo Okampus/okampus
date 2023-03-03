@@ -4,7 +4,7 @@ import clsx from 'clsx';
 export type AvatarProps = {
   src?: string;
   name?: string;
-  size?: number;
+  size?: number | 'full';
   rounded?: number;
   className?: string;
   active?: boolean;
@@ -16,10 +16,10 @@ export function Avatar({ src, name, size = 14, rounded = 50, className, active }
     <div
       className={clsx('flex items-center overflow-hidden shrink-0 font-title', className, active && 'ring-4')}
       style={{
-        width: `${size / 6}rem`,
-        height: `${size / 6}rem`,
+        width: size === 'full' ? '100%' : `${size / 6}rem`,
+        height: size === 'full' ? '100%' : `${size / 6}rem`,
         borderRadius: `${rounded}%`,
-        fontSize: `${size / 12}rem`,
+        fontSize: size === 'full' ? '150%' : `${size / 12}rem`,
       }}
     >
       {src ? (
