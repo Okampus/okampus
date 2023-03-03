@@ -3209,7 +3209,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "bigint"
         },
         "real_author_id": {
@@ -3218,7 +3218,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "bigint"
         },
         "is_anonymous": {
@@ -3378,8 +3378,8 @@
           "primary": false,
           "nullable": true,
           "enumItems": [
-            "EventRegistration",
-            "MembershipRequest",
+            "EventJoin",
+            "TeamJoin",
             "Internal",
             "Survey"
           ],
@@ -3387,6 +3387,15 @@
         },
         "is_template": {
           "name": "is_template",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "undeletable": {
+          "name": "undeletable",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -5717,8 +5726,8 @@
           "nullable": false,
           "mappedType": "smallint"
         },
-        "form_id": {
-          "name": "form_id",
+        "linked_form_id": {
+          "name": "linked_form_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -5763,10 +5772,10 @@
           "referencedTableName": "public.tenant_core",
           "updateRule": "cascade"
         },
-        "form_edit_form_id_foreign": {
-          "constraintName": "form_edit_form_id_foreign",
+        "form_edit_linked_form_id_foreign": {
+          "constraintName": "form_edit_linked_form_id_foreign",
           "columnNames": [
-            "form_id"
+            "linked_form_id"
           ],
           "localTableName": "public.form_edit",
           "referencedColumnNames": [
