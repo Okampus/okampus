@@ -1,7 +1,7 @@
 import { ReactComponent as ArrowDownRightIcon } from '@okampus/assets/svg/icons/arrow-down-right.svg';
 
-import { getFragmentData, getMe, loginMutation, meFragment, tenantFragment } from '@okampus/shared/graphql';
-import { CurrentContext, NavigationContext, useCurrentContext, useTheme } from '@okampus/ui/hooks';
+import { getFragmentData, getMe, loginMutation, tenantFragment } from '@okampus/shared/graphql';
+import { NavigationContext, useTheme } from '@okampus/ui/hooks';
 import { DarkModeToggle } from '@okampus/ui/atoms';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,16 +9,11 @@ import { z } from 'zod';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import type { LoginMutation, MeQuery } from '@okampus/shared/graphql';
 
 const OAuthSrcLink =
   'https://media.discordapp.net/attachments/965927279643488297/1060235625623732244/logo-efrei-print-efrei-web.png';
-
-// type WelcomePageProps = {
-//   onLogin: (login: { username: string; password: string }) => void;
-//   error?: ApolloError;
-// };
 
 type LoginForm = {
   username: string;
@@ -39,42 +34,33 @@ export function WelcomePage() {
     formState: { errors },
   } = useForm<LoginForm>({ resolver: zodResolver(schema) });
 
-  const { isLoading, setIsLoading } = useContext(NavigationContext);
-  const { setCurrentUserId, setCurrentTenantId } = useContext(CurrentContext);
-  const [{ user }, updateCache] = useCurrentContext();
+  const { data } = useQuery(getMe);
+  const [loggedIn, setLoggedIn] = useState(!!data);
+
+  const { isLoading, setIsLoading, setTenant } = useContext(NavigationContext);
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    user && navigate(localStorage.getItem('next') ?? '/clubs', { replace: true });
+    loggedIn && navigate(localStorage.getItem('next') || '/clubs', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [loggedIn]);
 
   const onLoggedIn = (data: LoginMutation | MeQuery) => {
+    setLoggedIn(true);
     setIsLoading(true);
     const authContext = 'login' in data ? data.login : data.me;
-
-    const user = getFragmentData(meFragment, authContext.user);
-    const tenant = getFragmentData(tenantFragment, authContext.tenant);
-
-    setCurrentUserId(user.id);
-    setCurrentTenantId(tenant.id);
-
-    updateCache();
-    setTimeout(() => setIsLoading(false), 450);
+    setTenant(getFragmentData(tenantFragment, authContext.tenant));
+    setTimeout(() => setIsLoading(false), 350);
   };
 
   const { loading: initialLoading } = useQuery(getMe, {
     onCompleted: onLoggedIn,
-    onError: () => {
-      setIsLoading(false);
-    },
+    onError: () => setIsLoading(false),
   });
 
   const [login, { loading: loginLoading }] = useMutation(loginMutation, {
     onCompleted: onLoggedIn,
-    onError: () => {
-      setIsLoading(false);
-    },
+    onError: () => setIsLoading(false),
   });
 
   const onLogin = (variables: LoginForm) => {

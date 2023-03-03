@@ -2,10 +2,14 @@
 import React from 'react';
 import { defaultSelectedMenu } from '@okampus/shared/types';
 
+import type { TenantInfoFragment } from '@okampus/shared/graphql';
 import type { FileLike, ModalProps, SelectedMenu, Route } from '@okampus/shared/types';
 import type { ToastProps } from '@okampus/shared/types';
 
 type NavigationContextProps = {
+  tenant: TenantInfoFragment | null;
+  setTenant: (tenant: TenantInfoFragment | null) => void;
+
   history: Route[];
   setHistory: (route: Route[]) => void;
   previousRoute: Route | null;
@@ -34,11 +38,15 @@ type NavigationContextProps = {
   setSelected: (selected: SelectedMenu) => void;
 
   notifications: ToastProps[];
-  setNotifications: (notifications: ToastProps[]) => void;
+  addNotification: (notifications: Omit<ToastProps, 'id'>) => void;
+  removeNotification: (id: string) => void;
   getNotifications: () => ToastProps[];
 };
 
 export const NavigationContext = React.createContext<NavigationContextProps>({
+  tenant: null,
+  setTenant: () => {},
+
   history: [],
   setHistory: () => {},
   previousRoute: null,
@@ -67,6 +75,7 @@ export const NavigationContext = React.createContext<NavigationContextProps>({
   setSelected: () => {},
 
   notifications: [],
-  setNotifications: () => {},
+  addNotification: () => {},
+  removeNotification: () => {},
   getNotifications: () => [],
 });

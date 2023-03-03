@@ -1,10 +1,10 @@
 html {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 @media (min-width: 1024px) {
   html {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 #root * {
-  @apply transition-colors duration-[125ms] ease-in-out;
+  @apply transition-[color,background-color,border-color,text-decoration-color,fill,stroke,outline] duration-[125ms] ease-in-out;
 }
 
 swiper-slide {

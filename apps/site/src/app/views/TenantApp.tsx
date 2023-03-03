@@ -6,16 +6,17 @@ import { FilePreviewer } from '../misc/FilePreviewer';
 import { selectedMenuFromPath } from '../menus';
 import { Topbar } from '../components/Layout/Topbar';
 
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useMe } from '@okampus/ui/hooks';
 import { Modal, Toast } from '@okampus/ui/atoms';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useContext, useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import type { Route } from '@okampus/shared/types';
 
 export function TenantApp() {
+  const { me } = useMe();
   const {
     previousRoute,
     setPreviousRoute,
@@ -35,7 +36,6 @@ export function TenantApp() {
   } = useContext(NavigationContext);
 
   const location = useLocation();
-  const [{ user }] = useCurrentContext();
 
   useEffect(() => {
     const selectedMenu = selectedMenuFromPath(location.pathname);
@@ -56,7 +56,7 @@ export function TenantApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  if (!user) {
+  if (!me) {
     localStorage.setItem('next', location.pathname);
     return <Navigate to="/welcome" replace={true} />;
   }
@@ -79,15 +79,22 @@ export function TenantApp() {
             <Modal title={modal.title}>{modal.content}</Modal>
           </Backdrop>
         )}
-        {isFilePreviewed && previewedFile && <FilePreviewer file={previewedFile} onClose={hideFilePreview} />}
-        {notifications.length > 0 && (
-          <ul className="absolute top-4 right-0 flex flex-col gap-2 overflow-hidden px-10 z-[101]">
-            {notifications.map((notification) => (
-              <Toast {...notification} key={notification.id} />
-            ))}
-          </ul>
-        )}
       </AnimatePresence>
+      {isFilePreviewed && previewedFile && <FilePreviewer file={previewedFile} onClose={hideFilePreview} />}
+      <ul className="absolute top-4 right-0 flex flex-col gap-2 overflow-hidden px-10 z-[101]">
+        <AnimatePresence>
+          {notifications.map((notification) => (
+            <motion.li
+              key={notification.id}
+              initial={{ x: 300, opacity: 0, scale: 0.5 }}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={{ x: 300, opacity: 0.2, scale: 0.8 }}
+            >
+              <Toast {...notification} />
+            </motion.li>
+          ))}
+        </AnimatePresence>
+      </ul>
     </div>
   );
 }

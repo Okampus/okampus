@@ -12,7 +12,7 @@ export function Bubble({ children, onClick, selected, showBg, heightClass = 'h-b
   return (
     <button
       onClick={onClick}
-      className={clsx('rounded-[35%] p-bubble active:scale-95', selected ? 'dark:bg-white bg-[#4880e9]' : '')}
+      className={clsx('rounded-[35%] p-px active:scale-95', selected ? 'dark:bg-white bg-[#4880e9]' : '')}
     >
       <div className={clsx('rounded-[35%] p-bubble', selected ? 'dark:bg-black bg-white ' : '')}>
         <div

@@ -1,14 +1,14 @@
-import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
+import { ControlType, FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 import {
   createFinanceMutation,
   documentUploadFragment,
   financeFragment,
   getFragmentData,
 } from '@okampus/shared/graphql';
-import { ControlType, Dashboard, DynamicForm } from '@okampus/ui/organisms';
+import { Dashboard, DynamicForm } from '@okampus/ui/organisms';
 
 import { FileGroup } from '@okampus/ui/molecules';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useManageOrg } from '@okampus/ui/hooks';
 
 import { isNotNull } from '@okampus/shared/utils';
 import { useMutation } from '@apollo/client';
@@ -77,8 +77,8 @@ const columns = [
 ];
 
 export function FinanceManageView() {
+  const { manageOrg } = useManageOrg();
   const { showModal, hideModal } = useContext(NavigationContext);
-  const [{ org }, update] = useCurrentContext();
 
   // const { data } = useQuery(getFinancesQuery, {
   //   variables: {
@@ -89,13 +89,6 @@ export function FinanceManageView() {
   const [createFinance] = useMutation(createFinanceMutation, {
     onCompleted: () => {
       hideModal();
-      update();
-      // refetch();
-      // addNotification({
-      //   id: nanoid(21),
-      //   message: 'La transaction a été ajoutée',
-      //   type: 'success',
-      // });
     },
   });
 
@@ -149,14 +142,14 @@ export function FinanceManageView() {
     },
   ];
 
-  const finances = org?.finances.map((finance) => getFragmentData(financeFragment, finance)) ?? [];
+  const finances = manageOrg?.finances.map((finance) => getFragmentData(financeFragment, finance)) ?? [];
   // if (data) finances = data.financesByTeam.edges?.map?.((edge) => getFragmentData(financeFragment, edge.node)) ?? [];
 
   return (
-    <div className="view flex flex-col text-2 gap-10 pb-4">
+    <div className="p-view flex flex-col text-2 gap-10 pb-4">
       <div>
         <div className="flex justify-between items-center">
-          <pre className="text-4xl font-semibold text-0 tracking-tight pt-2">{org?.currentFinance} €</pre>
+          <pre className="text-4xl font-semibold text-0 tracking-tight pt-2">{manageOrg?.currentFinance} €</pre>
           <div className="flex gap-2 font-medium">
             <button className="py-2.5   px-3.5 hover:cursor-pointer rounded-lg bg-0 text-0 font-medium border border-color-2">
               Détails du compte
@@ -177,37 +170,20 @@ export function FinanceManageView() {
               <DynamicForm
                 fields={fields}
                 onSubmit={(data) => {
-                  if (org && org.id) {
+                  if (manageOrg) {
                     createFinance({
                       variables: {
                         finance: {
                           ...data,
                           amountDue: Number.parseInt(data.amountDue, 10),
                           amountPayed: Number.parseInt(data.amountPayed, 10),
-                          teamId: org.id,
+                          teamId: manageOrg.id,
                         },
                       },
                     });
                   }
                 }}
               />
-              // <motion.div layoutId={currentId}>
-              //   <div>{currentId}</div>
-              //   {/* <CreateEventForm
-              //     onSubmit={() => {
-              //       // setNewEvents([...newEvents, { ...(event as ITenantEvent), key: currentId }]);
-              //       hideModal();
-              //       // refetch();
-              //       addNotification({
-              //         id: nanoid(21),
-              //         type: 'success',
-              //         message:
-              //           "Événement soumis ! L'équipe de gestion de la vie associative validera l'évènement sous peu.",
-              //         timeout: 6000,
-              //       });
-              //     }}
-              //   /> */}
-              // </motion.div>
             ),
           })
         }

@@ -6,7 +6,7 @@ import {
   teamMembersFragment,
 } from '@okampus/shared/graphql';
 
-import { CategorySelector, TeamCard } from '@okampus/ui/molecules';
+import { CategorySelector, TeamListCard } from '@okampus/ui/molecules';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
@@ -34,10 +34,10 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
 
   return (
     <div className="flex flex-col">
-      <div className="view bg-topbar-to-main text-8xl font-extrabold text-0 font-title pt-20">
+      <div className="p-view bg-topbar-to-main text-8xl font-extrabold text-0 font-title pt-20">
         {getFragmentData(teamCategoryFragment, categoryData?.teamCategoryBySlug)?.name}
       </div>
-      <div className="view flex flex-col gap-6">
+      <div className="p-view flex flex-col gap-6">
         <div className="flex gap-2">
           <CategorySelector
             items={teams}
@@ -47,7 +47,7 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
           {filteredTeams.map((team) => (
-            <TeamCard key={team.id} team={team} link={`/club/${team.actor?.slug}`} />
+            <TeamListCard key={team.id} team={team} link={`/org/${team.actor?.slug}`} />
           ))}
         </div>
       </div>

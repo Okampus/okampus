@@ -7,7 +7,7 @@ import '@okampus/ui/styles/components/card.scss';
 import '@okampus/ui/styles/components/container.scss';
 import '@okampus/ui/styles/components/input.scss';
 import '@okampus/ui/styles/components/status.scss';
-import '@okampus/ui/styles/components/view.scss';
+import '@okampus/ui/styles/components/text.scss';
 
 import './App.scss';
 import './styles/layout.scss';
@@ -15,18 +15,20 @@ import './styles/layout.scss';
 import { router } from './router';
 import { GridLoader } from '@okampus/ui/atoms';
 import { defaultSelectedMenu } from '@okampus/shared/types';
-import { NavigationContext, CurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext } from '@okampus/ui/hooks';
+
 import { AnimatePresence, motion } from 'framer-motion';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import type { FileLike, ModalProps, SelectedMenu, Snowflake, ToastProps, Route } from '@okampus/shared/types';
+import type { TenantInfoFragment } from '@okampus/shared/graphql';
+import type { FileLike, ModalProps, SelectedMenu, ToastProps, Route } from '@okampus/shared/types';
 
 const startRoute = { idx: 0, path: window.location.pathname, key: 'default' };
 function App() {
-  const [currentUserId, setCurrentUserId] = useState<Snowflake | null>(null);
-  const [currentTenantId, setCurrentTenantId] = useState<Snowflake | null>(null);
-  const [currentOrgId, setCurrentOrgId] = useState<Snowflake | null>(null);
+  const [tenant, setTenant] = useState<TenantInfoFragment | null>(null);
+  // TODO: tenantManage
 
   const [history, setHistory] = useState<Route[]>([startRoute]);
   const [previousRoute, setPreviousRoute] = useState<Route | null>(startRoute);
@@ -65,6 +67,9 @@ function App() {
   const hideFilePreview = () => setIsFilePreviewed(false);
 
   const provideNavigationContext = {
+    tenant,
+    setTenant,
+
     history,
     setHistory,
     previousRoute,
@@ -94,25 +99,15 @@ function App() {
     setSelected,
 
     notifications,
-    setNotifications,
+    addNotification: (notification: Omit<ToastProps, 'id'>) =>
+      setNotifications((prev) => [...prev, { ...notification, id: Date.now().toString() + nanoid(10) }]),
+    removeNotification: (id: string) => setNotifications((prev) => prev.filter((n) => n.id !== id)),
     getNotifications: () => notifications,
   };
-
-  const provideCacheContext = {
-    currentUserId,
-    setCurrentUserId,
-    currentTenantId,
-    setCurrentTenantId,
-    currentOrgId,
-    setCurrentOrgId,
-  };
-
   return (
     <>
       <NavigationContext.Provider value={provideNavigationContext}>
-        <CurrentContext.Provider value={provideCacheContext}>
-          <RouterProvider router={router} />
-        </CurrentContext.Provider>
+        <RouterProvider router={router} />
       </NavigationContext.Provider>
 
       <AnimatePresence>

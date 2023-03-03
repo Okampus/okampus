@@ -12,12 +12,14 @@ import { ReactComponent as DashboardFilledIcon } from '@okampus/assets/svg/icons
 import { ReactComponent as DashboardOutlinedIcon } from '@okampus/assets/svg/icons/outlined/dashboard.svg';
 import { ReactComponent as AddArticleFilledIcon } from '@okampus/assets/svg/icons/filled/article-add.svg';
 import { ReactComponent as AddArticleOutlinedIcon } from '@okampus/assets/svg/icons/outlined/article-add.svg';
-import { ReactComponent as CalendarMonthFilledIcon } from '@okampus/assets/svg/icons/filled/event-month.svg';
-import { ReactComponent as CalendarMonthOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-month.svg';
-import { ReactComponent as OverviewFilledIcon } from '@okampus/assets/svg/icons/filled/overview.svg';
-import { ReactComponent as OverviewOutlinedIcon } from '@okampus/assets/svg/icons/outlined/overview.svg';
+import { ReactComponent as EventValidateFilledIcon } from '@okampus/assets/svg/icons/filled/event-validate.svg';
+import { ReactComponent as EventValidateOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event-validate.svg';
+import { ReactComponent as SquareFilledIcon } from '@okampus/assets/svg/icons/filled/square.svg';
+import { ReactComponent as SquareOutlinedIcon } from '@okampus/assets/svg/icons/outlined/square.svg';
 import { ReactComponent as SettingsFilledIcon } from '@okampus/assets/svg/icons/filled/settings.svg';
 import { ReactComponent as SettingsOutlinedIcon } from '@okampus/assets/svg/icons/outlined/settings.svg';
+import { ReactComponent as HomeFilledIcon } from '@okampus/assets/svg/icons/filled/home.svg';
+import { ReactComponent as HomeOutlinedIcon } from '@okampus/assets/svg/icons/outlined/home.svg';
 import { ReactComponent as PaletteFilledIcon } from '@okampus/assets/svg/icons/filled/palette.svg';
 import { ReactComponent as PaletteOutlinedIcon } from '@okampus/assets/svg/icons/outlined/palette.svg';
 import { ReactComponent as GroupFilledIcon } from '@okampus/assets/svg/icons/filled/group.svg';
@@ -39,19 +41,21 @@ import { ReactComponent as CameraOutlinedIcon } from '@okampus/assets/svg/icons/
 
 import { ShortcutType } from '@okampus/shared/enums';
 
-import { defaultSelectedMenu, SubspaceTypes } from '@okampus/shared/types';
+import { defaultSelectedMenu, SubspaceType } from '@okampus/shared/types';
 import type { SelectedMenu } from '@okampus/shared/types';
 
 export enum ResourceRouteType {
   Org = 'Org',
+  ManageOrg = 'ManageOrg',
   User = 'User',
   Event = 'Event',
 }
 
-export const routeIdStrings = {
-  [ResourceRouteType.Org]: ':orgId',
-  [ResourceRouteType.User]: ':userId',
-};
+export enum RouteParamStrings {
+  Org = ':orgSlug',
+  ManageOrg = ':manageOrgSlug',
+  User = ':userSlug',
+}
 
 export type ResourceRoute = {
   noIdRedirect: string;
@@ -69,15 +73,11 @@ export type Menu = {
 };
 
 export type Subspace = {
-  isResourceRoute: ResourceRoute | null;
-  manageView: SubspaceTypes | null;
   menus: Menu[];
 };
 
-export const menus: { [key in SubspaceTypes]: Subspace } = {
-  [SubspaceTypes.Home]: {
-    isResourceRoute: null,
-    manageView: SubspaceTypes.Admin,
+export const menus: { [key in SubspaceType]: Subspace } = {
+  [SubspaceType.Home]: {
     menus: [
       {
         icon: ExploreOutlinedIcon,
@@ -116,10 +116,15 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
       },
     ],
   },
-  [SubspaceTypes.Admin]: {
-    isResourceRoute: null,
-    manageView: null,
+  [SubspaceType.Admin]: {
     menus: [
+      {
+        icon: SquareOutlinedIcon,
+        iconSelected: SquareFilledIcon,
+        label: "Vue d'ensemble",
+        link: '/admin',
+        tip: 'KPIs et alertes',
+      },
       {
         icon: DashboardOutlinedIcon,
         iconSelected: DashboardFilledIcon,
@@ -135,18 +140,11 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         tip: 'Guides & tutoriels',
       },
       {
-        icon: CalendarMonthOutlinedIcon,
-        iconSelected: CalendarMonthFilledIcon,
+        icon: EventValidateOutlinedIcon,
+        iconSelected: EventValidateFilledIcon,
         label: 'Événements',
         link: '/admin/events',
         tip: 'Gestion des événements',
-      },
-      {
-        icon: OverviewOutlinedIcon,
-        iconSelected: OverviewFilledIcon,
-        label: "Vue d'ensemble",
-        link: '/admin',
-        tip: 'KPIs et alertes',
       },
       {
         icon: SettingsOutlinedIcon,
@@ -180,18 +178,48 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
       },
     ],
   },
-  [SubspaceTypes.Manage]: {
-    isResourceRoute: {
-      idString: ':orgId',
-      noIdRedirect: '/home/explore/clubs',
-    },
-    manageView: null,
+  [SubspaceType.Org]: {
     menus: [
+      {
+        icon: HomeOutlinedIcon,
+        iconSelected: HomeFilledIcon,
+        label: 'Accueil',
+        link: `/org/${RouteParamStrings[ResourceRouteType.Org]}`,
+        tip: 'Informations générales',
+        shortcutKey: ShortcutType.TeamManage,
+      },
+      {
+        icon: EventOutlinedIcon,
+        iconSelected: EventFilledIcon,
+        label: 'Événéments',
+        link: `/org/${RouteParamStrings[ResourceRouteType.Org]}/events`,
+        tip: 'Informations générales',
+        shortcutKey: ShortcutType.TeamManage,
+      },
+      {
+        icon: CameraOutlinedIcon,
+        iconSelected: CameraFilledIcon,
+        label: 'Galleries',
+        link: `/org/${RouteParamStrings[ResourceRouteType.Org]}/galleries`,
+        tip: 'Informations générales',
+        shortcutKey: ShortcutType.TeamManage,
+      },
+    ],
+  },
+  [SubspaceType.Manage]: {
+    menus: [
+      {
+        icon: SquareOutlinedIcon,
+        iconSelected: SquareFilledIcon,
+        label: "Vue d'ensemble",
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}`,
+        tip: "Informations générales de l'association",
+      },
       {
         icon: PaletteOutlinedIcon,
         iconSelected: PaletteFilledIcon,
         label: 'Profil public',
-        link: '/:orgId/manage',
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/profile`,
         tip: 'Informations générales',
         shortcutKey: ShortcutType.TeamManage,
       },
@@ -199,7 +227,7 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         icon: FolderOutlinedIcon,
         iconSelected: FolderFilledIcon,
         label: 'Documents',
-        link: '/:orgId/manage/documents',
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/documents`,
         tip: 'Informations générales',
         shortcutKey: ShortcutType.TeamManage,
       },
@@ -207,7 +235,7 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         icon: WalletOutlinedIcon,
         iconSelected: WalletFilledIcon,
         label: 'Trésorerie',
-        link: '/:orgId/manage/treasury',
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/treasury`,
         tip: 'Gestion des membres et invitations',
         shortcutKey: ShortcutType.TeamManageTreasury,
       },
@@ -215,27 +243,27 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         icon: EditEventOutlinedIcon,
         iconSelected: EditEventFilledIcon,
         label: 'Événements',
-        link: '/:orgId/manage/events',
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/events`,
         sub: [
           {
             icon: CameraOutlinedIcon,
             iconSelected: CameraFilledIcon,
             label: 'Rétrospectives',
-            link: '/:orgId/manage/events',
+            link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/events`,
             tip: 'Événements passés',
           },
           {
             icon: EventPendingOutlinedIcon,
             iconSelected: EventPendingFilledIcon,
             label: 'En attente',
-            link: '/:orgId/manage/events',
+            link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/events`,
             tip: 'Événements en attente de validation',
           },
           {
             icon: EventUpcomingOutlinedIcon,
             iconSelected: EventUpcomingFilledIcon,
             label: 'À venir',
-            link: '/:orgId/manage/events',
+            link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/events`,
             tip: 'Événements à venir',
           },
         ],
@@ -245,20 +273,13 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
         icon: SettingsOutlinedIcon,
         iconSelected: SettingsFilledIcon,
         label: 'Paramètres',
-        link: '/:orgId/manage/settings',
+        link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/settings`,
         sub: [
-          {
-            icon: OverviewOutlinedIcon,
-            iconSelected: OverviewFilledIcon,
-            label: "Vue d'ensemble",
-            link: '/:orgId/manage/settings',
-            tip: "Informations générales de l'association",
-          },
           {
             icon: GroupOutlinedIcon,
             iconSelected: GroupFilledIcon,
             label: 'Rôles',
-            link: '/:orgId/manage/roles',
+            link: `/manage/${RouteParamStrings[ResourceRouteType.ManageOrg]}/roles`,
             tip: 'Gestion des rôles',
           },
         ],
@@ -266,24 +287,29 @@ export const menus: { [key in SubspaceTypes]: Subspace } = {
       },
     ],
   },
-  [SubspaceTypes.Me]: {
-    isResourceRoute: {
-      idString: ':userId',
-      noIdRedirect: '/home/explore/people',
-    },
-    manageView: null,
+  [SubspaceType.Me]: {
     menus: [
       {
         icon: PaletteOutlinedIcon,
         iconSelected: PaletteFilledIcon,
         label: 'Mon profil',
-        link: '/:userId/me',
+        link: '/me',
+      },
+    ],
+  },
+  [SubspaceType.User]: {
+    menus: [
+      {
+        icon: PaletteOutlinedIcon,
+        iconSelected: PaletteFilledIcon,
+        label: 'Mon profil',
+        link: `/user/${RouteParamStrings[ResourceRouteType.User]}`,
       },
     ],
   },
 };
 
-const findShortcutMenu = (subspace: SubspaceTypes, shortcutKey: ShortcutType): SelectedMenu => {
+const findShortcutMenu = (subspace: SubspaceType, shortcutKey: ShortcutType): SelectedMenu => {
   const menu = menus[subspace].menus.findIndex((m) => m.shortcutKey === shortcutKey);
   if (menu !== -1) return { subSpace: subspace, menu, subMenu: 0 };
 
@@ -300,19 +326,18 @@ const findShortcutMenu = (subspace: SubspaceTypes, shortcutKey: ShortcutType): S
 
 function matchPath(path: string, pattern: string) {
   const regex = new RegExp(`^${pattern.replace(/:[^/]+/g, '[a-zA-Z0-9-]+')}$`);
+  if (regex.test(path)) console.log(`Matched ${path} with ${pattern}`);
   return regex.test(path);
 }
 
 // TODO: ugly, should be refactored
 export function selectedMenuFromPath(path: string): SelectedMenu {
-  for (const subSpaceType of Object.values(SubspaceTypes)) {
+  for (const subSpaceType of Object.values(SubspaceType)) {
     const subSpace = menus[subSpaceType];
     for (const [menuIdx, menu] of subSpace.menus.entries()) {
-      if (!menu.sub && matchPath(path, menu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: 0 };
-      if (menu.sub) {
-        for (const [subMenuIdx, [, subMenu]] of Object.entries(menu.sub).entries()) {
-          if (matchPath(path, subMenu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: subMenuIdx };
-        }
+      if (matchPath(path, menu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: 0 };
+      for (const [subMenuIdx, [, subMenu]] of Object.entries(menu.sub ?? {}).entries()) {
+        if (matchPath(path, subMenu.link)) return { subSpace: subSpaceType, menu: menuIdx, subMenu: subMenuIdx };
       }
     }
   }
@@ -321,10 +346,10 @@ export function selectedMenuFromPath(path: string): SelectedMenu {
 
 // TODO: expand
 export const shortcutMenus: { [key in ShortcutType]: SelectedMenu } = {
-  [ShortcutType.General]: { subSpace: SubspaceTypes.Manage, menu: 0, subMenu: 0 },
-  [ShortcutType.Project]: { subSpace: SubspaceTypes.Manage, menu: 0, subMenu: 0 },
-  [ShortcutType.Team]: { subSpace: SubspaceTypes.Manage, menu: 0, subMenu: 0 },
-  [ShortcutType.TeamManage]: findShortcutMenu(SubspaceTypes.Manage, ShortcutType.TeamManage),
-  [ShortcutType.TeamManageTreasury]: findShortcutMenu(SubspaceTypes.Manage, ShortcutType.TeamManageTreasury),
-  [ShortcutType.User]: { subSpace: SubspaceTypes.Manage, menu: 0, subMenu: 0 },
+  [ShortcutType.General]: { subSpace: SubspaceType.Manage, menu: 0, subMenu: 0 },
+  [ShortcutType.Project]: { subSpace: SubspaceType.Manage, menu: 0, subMenu: 0 },
+  [ShortcutType.Team]: { subSpace: SubspaceType.Manage, menu: 0, subMenu: 0 },
+  [ShortcutType.TeamManage]: findShortcutMenu(SubspaceType.Manage, ShortcutType.TeamManage),
+  [ShortcutType.TeamManageTreasury]: findShortcutMenu(SubspaceType.Manage, ShortcutType.TeamManageTreasury),
+  [ShortcutType.User]: { subSpace: SubspaceType.Manage, menu: 0, subMenu: 0 },
 };

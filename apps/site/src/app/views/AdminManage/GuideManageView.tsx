@@ -1,15 +1,15 @@
 import { MultiFileInput } from '#site/app/components/Input/MultiFileInput';
 import { tenantAddDocumentMutation } from '@okampus/shared/graphql';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
-import { ControlType, DynamicForm } from '@okampus/ui/organisms';
+import { NavigationContext } from '@okampus/ui/hooks';
+import { DynamicForm } from '@okampus/ui/organisms';
+import { ControlType } from '@okampus/shared/enums';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 
 export function GuideManageView() {
-  const { previewFile, showModal, hideModal } = useContext(NavigationContext);
-  const [{ tenant }] = useCurrentContext();
+  const { previewFile, showModal, hideModal, tenant } = useContext(NavigationContext);
 
   const [tenantAddDocument] = useMutation(tenantAddDocumentMutation, {
     onCompleted: () => {
@@ -42,7 +42,7 @@ export function GuideManageView() {
   if (!tenant) return null;
 
   return (
-    <div className="view flex flex-col gap-4">
+    <div className="p-view flex flex-col gap-4">
       <MultiFileInput
         onFileClick={(renderedFile) => previewFile(renderedFile.file)}
         onFileAdd={(files) =>

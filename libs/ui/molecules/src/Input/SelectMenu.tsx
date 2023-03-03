@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import { useOutsideClick } from '@okampus/ui/hooks';
 import { mergeRefs } from 'react-merge-refs';
 
+import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
 import type { Ref } from 'react';
 import type { Variants } from 'framer-motion';
 
@@ -69,99 +70,112 @@ function SelectMenuInner<T>(
   useEffect(() => {
     if (isControlled) setIsOpen(open);
   }, [open, isControlled]);
-  const [selected, setSelected] = useState<SelectItem<T> | null>(null);
+  const [selectedItem, setSelectedItem] = useState<SelectItem<T> | null>(null);
 
-  return (
+  const trigger = (
+    <motion.button
+      whileTap={{ scale: 0.95 }}
+      onClick={() => {
+        if (isControlled) setIsOpen(true);
+        else setIsOpen(!isOpen);
+        onClick?.();
+      }}
+      className={clsx(
+        placeholderClassName,
+        placeholderBackgroundClass,
+        'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
+        fullWidth ? 'w-full justify-between' : 'w-fit'
+      )}
+    >
+      {selectedItem && showSelected ? selectedItem.element : name}
+      {dropdown === undefined ? (
+        <motion.div
+          variants={{
+            open: { rotate: 180 },
+            closed: { rotate: 0 },
+          }}
+          transition={{ duration: 0.2 }}
+          style={{ originY: 0.5 }}
+        >
+          <ArrowDropdown className="h-5" />
+        </motion.div>
+      ) : (
+        dropdown
+      )}
+    </motion.button>
+  );
+
+  const content = (
+    <motion.ul
+      className={clsx(
+        'my-1 min-w-full w-fit rounded-xl text-modest text-0 gap-1 flex-col bg-0 z-20',
+        contentClassName,
+        isOpen ? 'flex' : '!hidden',
+        isContentAbsolute && 'h-max-[20rem]'
+      )}
+      variants={{
+        open: {
+          display: 'block',
+          height: 'auto',
+          opacity: 1,
+          transformOrigin: 'top',
+          transition: {
+            type: 'spring',
+            bounce: 0,
+            duration: 0.7,
+            delayChildren: 0.1,
+            staggerChildren: 0.1,
+          },
+        },
+        closed: {
+          height: 0,
+          opacity: 0.1,
+          transformOrigin: 'bottom',
+          transition: {
+            type: 'spring',
+            bounce: 0,
+            duration: 0.4,
+          },
+        },
+      }}
+      style={{
+        pointerEvents: isOpen ? 'auto' : 'none',
+        paddingLeft: contentPadding,
+        paddingRight: contentPadding,
+      }}
+    >
+      {items &&
+        items.map((item, index) => (
+          <motion.li
+            key={index}
+            variants={itemVariants}
+            className={clsx('cursor-pointer', itemClassName)}
+            onClick={() => {
+              setSelectedItem(item);
+              if (!isControlled) setIsOpen(false);
+              if (onChange) onChange(item.value);
+            }}
+          >
+            {item.element}
+          </motion.li>
+        ))}
+    </motion.ul>
+  );
+
+  return isContentAbsolute ? (
+    <Popover>
+      <PopoverTrigger>{trigger}</PopoverTrigger>
+      <PopoverContent className="p-0">{content}</PopoverContent>
+    </Popover>
+  ) : (
     <motion.div
       ref={mergeRefs([ref, propRef])}
       initial={'closed'}
       animate={isOpen ? 'open' : 'closed'}
       className={clsx('relative', fullWidth ? 'w-full' : 'w-fit')}
     >
-      <motion.button
-        whileTap={{ scale: 0.97 }}
-        onClick={() => {
-          if (isControlled) setIsOpen(true);
-          else setIsOpen(!isOpen);
-          onClick?.();
-        }}
-        className={clsx(
-          placeholderClassName,
-          placeholderBackgroundClass,
-          'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
-          fullWidth ? 'w-full justify-between' : 'w-fit'
-        )}
-      >
-        {selected && showSelected ? selected.element : name}
-        {dropdown === undefined ? (
-          <motion.div
-            variants={{
-              open: { rotate: 180 },
-              closed: { rotate: 0 },
-            }}
-            transition={{ duration: 0.2 }}
-            style={{ originY: 0.5 }}
-          >
-            <ArrowDropdown className="h-5" />
-          </motion.div>
-        ) : (
-          dropdown
-        )}
-      </motion.button>
-      <motion.ul
-        className={clsx(
-          'min-w-full w-fit rounded-xl text-modest text-0 gap-1 flex-col bg-0 z-20',
-          contentClassName,
-          isOpen ? 'mt-1 flex' : '!hidden',
-          isContentAbsolute && 'absolute h-max-[20rem]'
-        )}
-        variants={{
-          open: {
-            display: 'block',
-            height: 'auto',
-            opacity: 1,
-            transformOrigin: 'top',
-            transition: {
-              type: 'spring',
-              bounce: 0,
-              duration: 0.7,
-              delayChildren: 0.1,
-              staggerChildren: 0.1,
-            },
-          },
-          closed: {
-            height: 0,
-            opacity: 0.1,
-            transformOrigin: 'bottom',
-            transition: {
-              type: 'spring',
-              bounce: 0,
-              duration: 0.4,
-            },
-          },
-        }}
-        style={{
-          pointerEvents: isOpen ? 'auto' : 'none',
-          paddingLeft: contentPadding,
-          paddingRight: contentPadding,
-        }}
-      >
-        {items &&
-          items.map((item, index) => (
-            <motion.li
-              key={index}
-              variants={itemVariants}
-              className={clsx('cursor-pointer', itemClassName)}
-              onClick={() => {
-                setSelected(item);
-                if (!isControlled) setIsOpen(false);
-                if (onChange) onChange(item.value);
-              }}
-            >
-              {item.element}
-            </motion.li>
-          ))}
-      </motion.ul>
+      {trigger}
+      {content}
     </motion.div>
   );
 }

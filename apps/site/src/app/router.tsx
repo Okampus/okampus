@@ -7,12 +7,13 @@ import { WelcomePage } from './views/Welcome/WelcomePage';
 import { TenantApp } from './views/TenantApp';
 import { FinanceManageView } from './views/TeamManage/FinanceManageView';
 import { WIP } from './views/WIP';
-import { GuideManageView } from './views/AdminManage/GuideManageView';
 import { GuideView } from './views/GuideView';
+import { GuideManageView } from './views/AdminManage/GuideManageView';
 import { DocumentManageView } from './views/TeamManage/DocumentManageView';
+import { ProfileManageView } from './views/TeamManage/ProfileManageView';
 import { TeamList } from './views/TeamList';
 import { TeamProfile } from './views/TeamProfile';
-
+import { UserProfile } from './views/User/UserProfile';
 import { FullCalendar } from '@okampus/ui/molecules';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -23,14 +24,6 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/events',
-        element: <FullCalendar />,
-      },
-      {
-        path: '/admin',
-        element: <WIP />,
-      },
-      {
         path: '/clubs',
         element: <TeamCategoryList />,
       },
@@ -39,8 +32,12 @@ export const router = createBrowserRouter([
         element: <TeamList />,
       },
       {
-        path: '/club/:clubSlug',
-        element: <TeamProfile />,
+        path: '/events',
+        element: <FullCalendar />,
+      },
+      {
+        path: '/admin',
+        element: <WIP />,
       },
       {
         path: '/guides',
@@ -83,36 +80,56 @@ export const router = createBrowserRouter([
         element: <AdminEventDashboard />,
       },
       {
-        path: '/:orgId/manage',
-        element: <WIP />,
+        path: '/org/:orgSlug',
+        element: <TeamProfile />,
       },
       {
-        path: '/:orgId/manage/documents',
+        path: '/org/:orgSlug/galleries',
+        element: <TeamProfile />,
+      },
+      {
+        path: '/org/:orgSlug/events',
+        element: <TeamProfile />,
+      },
+      {
+        path: '/manage/:manageOrgSlug',
+        element: <ProfileManageView />,
+      },
+      {
+        path: '/manage/:manageOrgSlug/profile',
+        element: <ProfileManageView />,
+      },
+      {
+        path: '/manage/:manageOrgSlug/documents',
         element: <DocumentManageView />,
       },
       {
-        path: '/:orgId/manage/events',
+        path: '/manage/:manageOrgSlug/events',
         element: <EventManageView />,
       },
       {
-        path: '/:orgId/manage/treasury',
+        path: '/manage/:manageOrgSlug/treasury',
         element: <FinanceManageView />,
       },
       {
-        path: '/:orgId/manage/settings',
+        path: '/manage/:manageOrgSlug/settings',
         element: <WIP />,
       },
       {
-        path: '/:orgId/manage/invite',
+        path: '/manage/:manageOrgSlug/invite',
         element: <WIP />,
       },
       {
-        path: '/:orgId/manage/org',
+        path: '/manage/:manageOrgSlug/org',
         element: <WIP />,
       },
       {
-        path: '/:orgId/manage/roles',
+        path: '/manage/:manageOrgSlug/roles',
         element: <WIP />,
+      },
+      {
+        path: '/user/:userSlug/',
+        element: <UserProfile />,
       },
     ],
   },

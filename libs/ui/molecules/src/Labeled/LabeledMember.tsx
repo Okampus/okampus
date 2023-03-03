@@ -1,12 +1,12 @@
 import { Avatar } from '@okampus/ui/atoms';
 
-export type MemberLabelPorps = {
+export type MemberLabelProps = {
   avatar?: string;
   name?: string;
   role?: string;
 };
 
-export function MemberLabel({ avatar, name, role }: MemberLabelPorps) {
+export function LabeledMember({ avatar, name, role }: MemberLabelProps) {
   return (
     <div className="flex flex-col items-center text-center">
       <Avatar src={avatar} name={name} size={24} />

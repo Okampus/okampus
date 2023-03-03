@@ -15,8 +15,8 @@ export function TeamCategoryList() {
 
   return (
     <div className="flex flex-col text-0">
-      <div className="view text-2xl font-title font-bold bg-topbar-to-main">Par catégorie</div>
-      <div className="view !pt-0 grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4">
+      <div className="p-view text-2xl font-title font-bold bg-topbar-to-main">Par catégorie</div>
+      <div className="p-view !pt-0 grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4">
         {categories.map((category) => (
           <CategoryCard
             link={`/clubs/${category.slug}`}

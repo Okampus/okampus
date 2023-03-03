@@ -1,71 +1,63 @@
-
-$scrollbar-thumb-color-light: "#888";
-$scrollbar-thumb-color-dark: "#64748b";
-$scrollbar-thumb-color-hover-light: "#6d6d6d";
-$scrollbar-thumb-color-hover-dark: "#7e90aa";
-$scrollbar-thumb-color-active-light: "#3d3d3d";
-$scrollbar-thumb-color-active-dark: "#dbf4ff";
-
 .scrollbar,
 %scrollbar {
-    --scrollbar-thumb-color: $scrollbar-thumb-color-light;
-    --scrollbar-thumb-color-hover: $scrollbar-thumb-color-hover-light;
-    --scrollbar-thumb-color-active: $scrollbar-thumb-color-active-light;
+  --scrollbar-thumb-color: #888;
+  --scrollbar-thumb-color-hover: #6d6d6d;
+  --scrollbar-thumb-color-active: #3d3d3d;
 
-    scrollbar-color: var(--scrollbar-thumb-color) rgb(0 0 0 / 0%);
-    overflow: overlay;
+  scrollbar-color: var(--scrollbar-thumb-color) rgb(0 0 0 / 0%);
+  overflow: overlay;
 
-    &::-webkit-scrollbar-corner {
-        display: none;
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: solid 3px transparent;
+    box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
+
+    &:hover {
+      border: solid 3px transparent;
+      box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
     }
 
-    &::-webkit-scrollbar {
-        width: 12px;
+    &:active {
+      box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
     }
+  }
 
-    &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        background-clip: padding-box;
-        border: solid 4px transparent;
-        border-radius: 8px;
-        box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color);
+  .dark & {
+    --scrollbar-thumb-color: #64748b;
+    --scrollbar-thumb-color-hover: #7e90aa;
+    --scrollbar-thumb-color-active: #dbf4ff;
+  }
 
-        &:hover {
-            border: solid 3px transparent;
-            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-hover);
-        }
+  &-on-hover {
+    @extend %scrollbar;
 
-        &:active {
-            box-shadow: inset 0 0 10px 10px var(--scrollbar-thumb-color-active);
-        }
+    &:not(:hover) {
+      --scrollbar-thumb-color: rgb(0 0 0 / 0%) !important;
+
+      &::-webkit-scrollbar-thumb {
+        box-shadow: none;
+      }
     }
-
-    &-on-hover {
-        @extend %scrollbar;
-
-        &:not(:hover) {
-            --scrollbar-thumb-color: rgb(0 0 0 / 0%) !important;
-
-            &::-webkit-scrollbar-thumb {
-                box-shadow: none;
-            }
-        }
-    }
-
-    .dark & {
-        --scrollbar-thumb-color: $scrollbar-thumb-color-dark;
-        --scrollbar-thumb-color-hover: $scrollbar-thumb-color-hover-dark;
-        --scrollbar-thumb-color-active: $scrollbar-thumb-color-active-dark;
-    }
+  }
 }
 
 %scrollbar-none,
 .scrollbar-none {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* Firefox */
+
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 %scrollbar-none::-webkit-scrollbar,
 .scrollbar-none::-webkit-scrollbar {
-    display: none;
+  display: none;
 }

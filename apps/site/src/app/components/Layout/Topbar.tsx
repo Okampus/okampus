@@ -5,7 +5,7 @@ import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/out
 import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/outlined/next.svg';
 
 import { Avatar, Bubble, Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
-import { CurrentContext, NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useMe } from '@okampus/ui/hooks';
 import { logoutMutation } from '@okampus/shared/graphql';
 
 import { getAvatar } from '@okampus/ui/utils';
@@ -20,26 +20,20 @@ import { clsx } from 'clsx';
 export function Topbar() {
   const navigate = useNavigate();
   const client = useApolloClient();
+  const { me } = useMe();
 
-  const { isSearching, setIsSearching, history } = useContext(NavigationContext);
-  const [{ user }, updateCache] = useCurrentContext();
-  const { setCurrentOrgId, setCurrentUserId, setCurrentTenantId } = useContext(CurrentContext);
+  const { isSearching, setIsSearching, history, setTenant } = useContext(NavigationContext);
 
   const [logout] = useMutation(logoutMutation, {
     onCompleted: () => {
-      setCurrentOrgId(null);
-      setCurrentUserId(null);
-      setCurrentTenantId(null);
-
-      updateCache();
+      setTenant(null);
       client.clearStore();
-
       navigate('/welcome', { replace: true });
     },
   });
 
-  const avatar = getAvatar(user?.actor?.actorImages);
-  const buttonClass = 'p-1.5 rounded-[50%] bg-0';
+  const avatar = getAvatar(me?.actor?.actorImages);
+  const buttonClass = 'h-10 w-10 py-2 rounded-[50%] bg-0';
 
   const last = history[history.length - 1];
   const isFirst = window.history.state?.idx === 0;
@@ -47,65 +41,64 @@ export function Topbar() {
     window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
 
   return (
-    <nav className="sticky top-0 w-full h-topbar bg-topbar p-inner z-[51] flex items-center justify-between">
-      <div className="flex gap-2 items-center">
-        {/* Search */}
-        <Bubble onClick={() => setIsSearching(true)} selected={isSearching} showBg={true}>
-          <SearchIcon height="26" />
-        </Bubble>
-
+    <header className="sticky top-0 w-full h-topbar bg-topbar p-topbar z-[51] flex items-center justify-between">
+      <div className="flex gap-6 items-center">
         {/* History navigation */}
-        <div className="flex gap-4 px-4">
+        <div className="flex gap-4">
           <div
-            className={clsx(buttonClass, isFirst ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
+            className={clsx(buttonClass, 'pl-1.5', isFirst ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
             onClick={() => !isFirst && navigate(-1)}
           >
-            <ChevronLeftIcon height="20" />
+            <ChevronLeftIcon className="h-6" />
           </div>
           <div
-            className={clsx(buttonClass, isLast ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
+            className={clsx(buttonClass, 'pl-2.5', isLast ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
             onClick={() => !isLast && navigate(1)}
           >
-            <ChevronRightIcon height="20" />
+            <ChevronRightIcon className="h-6" />
           </div>
         </div>
 
+        {/* Search */}
+        <Bubble onClick={() => setIsSearching(true)} selected={isSearching} showBg={true}>
+          <SearchIcon className="p-1" />
+        </Bubble>
         {/* Current location */}
         {/* <div className="text-0 text-[1.75rem] tracking-tighter font-semibold font-title">
         </div> */}
       </div>
 
       {/* User settings */}
-      <Popover useArrow={false} forcePlacement={true} placementOffset={6}>
+      <Popover forcePlacement={true} placement="bottom" placementOffset={12}>
         <PopoverTrigger>
-          <Avatar name={user?.actor?.name} src={avatar} size={18} />
+          <Avatar name={me?.actor?.name} src={avatar} size={18} />
         </PopoverTrigger>
         <PopoverContent popoverClassName="!p-0 bg-1 ">
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center">
             {/* TODO: add as component */}
             <div className="card-sm bg-4 m-2 flex flex-col gap-2">
               <div className="pr-24 flex items-center gap-4">
-                <Avatar src={avatar} name={user?.actor?.name} size={24} />
+                <Avatar src={avatar} name={me?.actor?.name} size={24} />
                 <div className="flex flex-col">
-                  <div className="text-0 text-xl font-heading leading-tight">{user?.actor?.name}</div>
-                  <div className="text-3 text-base font-heading">{user?.actor?.primaryEmail}</div>
+                  <div className="text-0 text-lg font-heading leading-tight">{me?.actor?.name}</div>
+                  <div className="text-3 text-sm font-heading">{me?.actor?.primaryEmail}</div>
                 </div>
               </div>
               <button className="button bg-opposite text-opposite w-full">Gérer mon profil</button>
             </div>
 
-            <div className="pb-2">
-              <button
-                className="w-full text-0 text-xl font-semibold font-title flex gap-4 items-center px-4 py-3 bg-hover-1"
-                onClick={() => logout()}
-              >
-                <LogoutIcon height={20} />
-                Se déconnecter
-              </button>
-            </div>
+            <button
+              className="w-full text-0 text-lg font-semibold font-title flex gap-4 items-center px-4 py-3 bg-hover-1"
+              onClick={() => logout()}
+            >
+              <LogoutIcon height={20} />
+              Se déconnecter
+            </button>
+            <hr className="border-color-2 w-full" />
+            <div className="text-xs py-3">RGPD • Conditions d'utilisation</div>
           </div>
         </PopoverContent>
       </Popover>
-    </nav>
+    </header>
   );
 }
