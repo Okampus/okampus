@@ -1233,12 +1233,14 @@ type Mutation {
   tenantAddDocument(tenantId: String!, createDocument: CreateDocumentDto!, documentFile: Upload!): OrgDocumentModel!
   updateTenant(updateTenant: UpdateTenantDto!): TenantModel!
   deleteTenant(id: String!): Boolean!
+  deactivateActorImage(actorId: String!, actorImageType: ActorImageType!): ActorImageModel!
   createEvent(event: CreateEventDto!): TenantEventModel!
   updateEvent(updateEvent: UpdateEventDto!): TenantEventModel!
   deleteEvent(id: String!): Boolean!
   createTeam(team: CreateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
   teamAddDocument(teamId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
-  updateTeam(updateTeam: UpdateTeamDto!): TeamModel!
+  deactivateTeamImage(id: String!, actorImageType: ActorImageType!): ActorImageModel!
+  updateTeam(updateTeam: UpdateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
   deleteTeam(id: String!): Boolean!
   createEventApproval(eventApproval: CreateEventApprovalDto!): EventApprovalModel!
   updateEventApproval(updateEventApproval: UpdateEventApprovalDto!): EventApprovalModel!

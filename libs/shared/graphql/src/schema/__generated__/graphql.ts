@@ -742,6 +742,8 @@ export type Mutation = {
   createTeamCategory: TeamCategoryModel;
   createTenant: TenantModel;
   createUser: UserModel;
+  deactivateActorImage: ActorImageModel;
+  deactivateTeamImage: ActorImageModel;
   deleteBot: Scalars['Boolean'];
   deleteEvent: Scalars['Boolean'];
   deleteEventApproval: Scalars['Boolean'];
@@ -821,6 +823,16 @@ export type MutationCreateUserArgs = {
   avatarDark?: InputMaybe<Scalars['Upload']>;
   banner?: InputMaybe<Scalars['Upload']>;
   user: CreateUserDto;
+};
+
+export type MutationDeactivateActorImageArgs = {
+  actorId: Scalars['String'];
+  actorImageType: ActorImageType;
+};
+
+export type MutationDeactivateTeamImageArgs = {
+  actorImageType: ActorImageType;
+  id: Scalars['String'];
 };
 
 export type MutationDeleteBotArgs = {
@@ -905,6 +917,9 @@ export type MutationUpdateProjectArgs = {
 };
 
 export type MutationUpdateTeamArgs = {
+  avatar?: InputMaybe<Scalars['Upload']>;
+  avatarDark?: InputMaybe<Scalars['Upload']>;
+  banner?: InputMaybe<Scalars['Upload']>;
   updateTeam: UpdateTeamDto;
 };
 
@@ -2108,6 +2123,18 @@ export type FinanceInfoFragment = {
     | null;
 } & { ' $fragmentName'?: 'FinanceInfoFragment' };
 
+export type FormInfoFragment = {
+  __typename: 'FormModel';
+  id: string;
+  createdAt: any;
+  updatedAt: any;
+  name: string;
+  description?: string | null;
+  schema: any;
+  type: FormType;
+  isTemplate: boolean;
+} & { ' $fragmentName'?: 'FormInfoFragment' };
+
 export type MyInfoFragment = {
   __typename: 'UserModel';
   id: string;
@@ -2265,6 +2292,7 @@ export type TeamInfoFragment = {
   categories: Array<
     { __typename?: 'TeamCategoryModel' } & { ' $fragmentRefs'?: { TeamCategoryInfoFragment: TeamCategoryInfoFragment } }
   >;
+  joinForm?: ({ __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } }) | null;
   documents: Array<{
     __typename: 'OrgDocumentModel';
     id: string;
@@ -2284,6 +2312,7 @@ export type TeamManageInfoFragment = {
   actor?: {
     __typename: 'ActorModel';
     id: string;
+    bio: string;
     name: string;
     slug: string;
     actorImages: Array<
@@ -2291,15 +2320,46 @@ export type TeamManageInfoFragment = {
         ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
       }
     >;
+    tags: Array<{ __typename: 'TagModel'; id: string; name: string; slug: string; color: Colors }>;
   } | null;
   categories: Array<
     { __typename?: 'TeamCategoryModel' } & { ' $fragmentRefs'?: { TeamCategoryInfoFragment: TeamCategoryInfoFragment } }
   >;
+  joinForm?: ({ __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } }) | null;
   documents: Array<{
     __typename: 'OrgDocumentModel';
     id: string;
     type: OrgDocumentType;
     document: { __typename?: 'DocumentModel' } & { ' $fragmentRefs'?: { DocumentInfoFragment: DocumentInfoFragment } };
+  }>;
+  members: Array<{
+    __typename: 'TeamMemberModel';
+    id: string;
+    user?: {
+      __typename: 'UserModel';
+      id: string;
+      firstName: string;
+      actor?: {
+        __typename: 'ActorModel';
+        id: string;
+        name: string;
+        actorImages: Array<
+          { __typename?: 'ActorImageModel' } & {
+            ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+          }
+        >;
+      } | null;
+    } | null;
+    roles: Array<{
+      __typename: 'TeamRoleModel';
+      id: string;
+      name: string;
+      color: Colors;
+      required: boolean;
+      permissions: Array<TeamPermissions>;
+      category: TeamRoleCategory;
+      key?: TeamRoleKey | null;
+    }>;
   }>;
   finances: Array<
     { __typename?: 'FinanceModel' } & { ' $fragmentRefs'?: { FinanceInfoFragment: FinanceInfoFragment } }
@@ -2414,6 +2474,48 @@ export type UserInfoFragment = {
   } | null;
 } & { ' $fragmentName'?: 'UserInfoFragment' };
 
+export type UserMembershipsInfoFragment = {
+  __typename: 'UserModel';
+  id: string;
+  createdAt: any;
+  updatedAt: any;
+  firstName: string;
+  lastName: string;
+  roles: Array<RoleType>;
+  scopeRole: ScopeRole;
+  actor?: {
+    __typename: 'ActorModel';
+    id: string;
+    slug: string;
+    name: string;
+    bio: string;
+    primaryEmail?: string | null;
+    ical: string;
+    actorImages: Array<
+      { __typename?: 'ActorImageModel' } & {
+        ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+      }
+    >;
+  } | null;
+  teamMemberships: Array<{
+    __typename: 'TeamMemberModel';
+    id: string;
+    createdAt: any;
+    updatedAt: any;
+    team?: ({ __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamInfoFragment: TeamInfoFragment } }) | null;
+    roles: Array<{
+      __typename: 'TeamRoleModel';
+      id: string;
+      createdAt: any;
+      updatedAt: any;
+      name: string;
+      permissions: Array<TeamPermissions>;
+      category: TeamRoleCategory;
+      key?: TeamRoleKey | null;
+    }>;
+  }>;
+} & { ' $fragmentName'?: 'UserMembershipsInfoFragment' };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -2521,6 +2623,29 @@ export type UpdateProjectMutation = {
   updateProject: { __typename?: 'ProjectModel' } & { ' $fragmentRefs'?: { ProjectInfoFragment: ProjectInfoFragment } };
 };
 
+export type DeactivateTeamImageMutationVariables = Exact<{
+  id: Scalars['String'];
+  actorImageType: ActorImageType;
+}>;
+
+export type DeactivateTeamImageMutation = {
+  __typename?: 'Mutation';
+  deactivateTeamImage: {
+    __typename: 'ActorImageModel';
+    actor?: {
+      __typename: 'ActorModel';
+      id: string;
+      name: string;
+      slug: string;
+      actorImages: Array<
+        { __typename?: 'ActorImageModel' } & {
+          ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+        }
+      >;
+    } | null;
+  };
+};
+
 export type TeamAddDocumentMutationVariables = Exact<{
   teamId: Scalars['String'];
   createOrgDocument: CreateOrgDocumentDto;
@@ -2560,6 +2685,16 @@ export type TeamAddDocumentMutation = {
           }>;
         };
   };
+};
+
+export type UpdateTeamMutationVariables = Exact<{
+  updateTeam: UpdateTeamDto;
+  avatar?: InputMaybe<Scalars['Upload']>;
+}>;
+
+export type UpdateTeamMutation = {
+  __typename?: 'Mutation';
+  updateTeam: { __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamManageInfoFragment: TeamManageInfoFragment } };
 };
 
 export type TenantAddDocumentMutationVariables = Exact<{
@@ -2640,15 +2775,6 @@ export type MeQuery = {
   };
 };
 
-export type GetUserByIdQueryVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-export type GetUserByIdQuery = {
-  __typename?: 'Query';
-  userById: { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { MyInfoFragment: MyInfoFragment } };
-};
-
 export type GetTeamByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -2709,6 +2835,15 @@ export type GetTeamManageQuery = {
   } & { ' $fragmentRefs'?: { TeamMembersInfoFragment: TeamMembersInfoFragment } };
 };
 
+export type GetTeamManageBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+export type GetTeamManageBySlugQuery = {
+  __typename?: 'Query';
+  teamBySlug: { __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamManageInfoFragment: TeamManageInfoFragment } };
+};
+
 export type GetTeamWithMembersQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -2716,6 +2851,17 @@ export type GetTeamWithMembersQueryVariables = Exact<{
 export type GetTeamWithMembersQuery = {
   __typename?: 'Query';
   teamById: { __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamMembersInfoFragment: TeamMembersInfoFragment } };
+};
+
+export type GetTeamWithMembersBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+export type GetTeamWithMembersBySlugQuery = {
+  __typename?: 'Query';
+  teamBySlug: { __typename?: 'TeamModel' } & {
+    ' $fragmentRefs'?: { TeamMembersInfoFragment: TeamMembersInfoFragment };
+  };
 };
 
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never }>;
@@ -2775,6 +2921,37 @@ export type GetTenantDocumentsQueryQueryVariables = Exact<{
 export type GetTenantDocumentsQueryQuery = {
   __typename?: 'Query';
   tenantById: { __typename?: 'TenantModel' } & { ' $fragmentRefs'?: { TenantInfoFragment: TenantInfoFragment } };
+};
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+export type GetUserByIdQuery = {
+  __typename?: 'Query';
+  userById: { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { MyInfoFragment: MyInfoFragment } };
+};
+
+export type GetUserBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+export type GetUserBySlugQuery = {
+  __typename?: 'Query';
+  userBySlug: { __typename?: 'UserModel' } & {
+    ' $fragmentRefs'?: { UserMembershipsInfoFragment: UserMembershipsInfoFragment };
+  };
+};
+
+export type GetUserMembershipsByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+export type GetUserMembershipsByIdQuery = {
+  __typename?: 'Query';
+  userById: { __typename?: 'UserModel' } & {
+    ' $fragmentRefs'?: { UserMembershipsInfoFragment: UserMembershipsInfoFragment };
+  };
 };
 
 export const FileInfoFragmentDoc = {
@@ -2913,6 +3090,30 @@ export const TeamCategoryInfoFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeamCategoryInfoFragment, unknown>;
+export const FormInfoFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FormInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'schema' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'isTemplate' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FormInfoFragment, unknown>;
 export const DocumentUploadInfoFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3033,6 +3234,14 @@ export const TeamInfoFragmentDoc = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamCategoryInfo' } }],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'joinForm' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'FormInfo' } }],
             },
           },
           {
@@ -3535,6 +3744,7 @@ export const TeamManageInfoFragmentDoc = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
                 {
@@ -3543,6 +3753,20 @@ export const TeamManageInfoFragmentDoc = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } }],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tags' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                    ],
                   },
                 },
               ],
@@ -3554,6 +3778,14 @@ export const TeamManageInfoFragmentDoc = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamCategoryInfo' } }],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'joinForm' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'FormInfo' } }],
             },
           },
           {
@@ -3571,6 +3803,68 @@ export const TeamManageInfoFragmentDoc = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentInfo' } }],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'members' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
                   },
                 },
               ],
@@ -3801,6 +4095,91 @@ export const TenantInfoFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TenantInfoFragment, unknown>;
+export const UserMembershipsInfoFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'UserMembershipsInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UserModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'actor' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'primaryEmail' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'ical' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'actorImages' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } }],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'roles' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'scopeRole' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'teamMemberships' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'team' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamInfo' } }],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserMembershipsInfoFragment, unknown>;
 export const LoginDocument = {
   kind: 'Document',
   definitions: [
@@ -3869,6 +4248,7 @@ export const LoginDocument = {
     ...UserInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
     ...TenantInfoFragmentDoc.definitions,
@@ -4108,6 +4488,7 @@ export const CreateFinanceDocument = {
     ...ProjectInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<CreateFinanceMutation, CreateFinanceMutationVariables>;
@@ -4154,6 +4535,7 @@ export const UpdateFinanceDocument = {
     ...ProjectInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<UpdateFinanceMutation, UpdateFinanceMutationVariables>;
@@ -4196,6 +4578,7 @@ export const CreateProjectDocument = {
     ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
     ...UserInfoFragmentDoc.definitions,
@@ -4240,11 +4623,83 @@ export const UpdateProjectDocument = {
     ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
     ...UserInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const DeactivateTeamImageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'deactivateTeamImage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'actorImageType' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'ActorImageType' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deactivateTeamImage' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'actorImageType' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'actorImageType' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'actor' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actorImages' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...ActorImageBareInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<DeactivateTeamImageMutation, DeactivateTeamImageMutationVariables>;
 export const TeamAddDocumentDocument = {
   kind: 'Document',
   definitions: [
@@ -4342,6 +4797,64 @@ export const TeamAddDocumentDocument = {
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<TeamAddDocumentMutation, TeamAddDocumentMutationVariables>;
+export const UpdateTeamDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'updateTeam' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'updateTeam' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateTeamDto' } } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'avatar' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Upload' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateTeam' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'updateTeam' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'updateTeam' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'avatar' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'avatar' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamManageInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...TeamManageInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+    ...FinanceInfoFragmentDoc.definitions,
+    ...UserInfoFragmentDoc.definitions,
+    ...EventInfoFragmentDoc.definitions,
+    ...ProjectInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<UpdateTeamMutation, UpdateTeamMutationVariables>;
 export const TenantAddDocumentDocument = {
   kind: 'Document',
   definitions: [
@@ -4546,6 +5059,7 @@ export const GetFinancesDocument = {
     ...ProjectInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetFinancesQuery, GetFinancesQueryVariables>;
@@ -4592,55 +5106,12 @@ export const MeDocument = {
     ...UserInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
     ...TenantInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
-export const GetUserByIdDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'getUserById' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
-          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'userById' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'id' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'MyInfo' } }],
-            },
-          },
-        ],
-      },
-    },
-    ...MyInfoFragmentDoc.definitions,
-    ...ActorImageBareInfoFragmentDoc.definitions,
-    ...UserInfoFragmentDoc.definitions,
-    ...TeamInfoFragmentDoc.definitions,
-    ...TeamCategoryInfoFragmentDoc.definitions,
-    ...DocumentInfoFragmentDoc.definitions,
-    ...DocumentUploadInfoFragmentDoc.definitions,
-  ],
-} as unknown as DocumentNode<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const GetTeamByIdDocument = {
   kind: 'Document',
   definitions: [
@@ -4679,6 +5150,7 @@ export const GetTeamByIdDocument = {
     ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -4859,8 +5331,57 @@ export const GetTeamManageDocument = {
     ...ProjectInfoFragmentDoc.definitions,
     ...TeamInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetTeamManageQuery, GetTeamManageQueryVariables>;
+export const GetTeamManageBySlugDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getTeamManageBySlug' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'teamBySlug' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slug' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamManageInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...TeamManageInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+    ...FinanceInfoFragmentDoc.definitions,
+    ...UserInfoFragmentDoc.definitions,
+    ...EventInfoFragmentDoc.definitions,
+    ...ProjectInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetTeamManageBySlugQuery, GetTeamManageBySlugQueryVariables>;
 export const GetTeamWithMembersDocument = {
   kind: 'Document',
   definitions: [
@@ -4902,6 +5423,47 @@ export const GetTeamWithMembersDocument = {
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetTeamWithMembersQuery, GetTeamWithMembersQueryVariables>;
+export const GetTeamWithMembersBySlugDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getTeamWithMembersBySlug' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'teamBySlug' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slug' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamMembersInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...TeamMembersInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetTeamWithMembersBySlugQuery, GetTeamWithMembersBySlugQueryVariables>;
 export const GetTeamsDocument = {
   kind: 'Document',
   definitions: [
@@ -4966,6 +5528,7 @@ export const GetTeamsDocument = {
     ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
     ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -5179,3 +5742,136 @@ export const GetTenantDocumentsQueryDocument = {
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetTenantDocumentsQueryQuery, GetTenantDocumentsQueryQueryVariables>;
+export const GetUserByIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getUserById' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'userById' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'MyInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...MyInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...UserInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export const GetUserBySlugDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getUserBySlug' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'userBySlug' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slug' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserMembershipsInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...UserMembershipsInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetUserBySlugQuery, GetUserBySlugQueryVariables>;
+export const GetUserMembershipsByIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getUserMembershipsById' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'userById' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserMembershipsInfo' } }],
+            },
+          },
+        ],
+      },
+    },
+    ...UserMembershipsInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
+    ...DocumentInfoFragmentDoc.definitions,
+    ...DocumentUploadInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetUserMembershipsByIdQuery, GetUserMembershipsByIdQueryVariables>;

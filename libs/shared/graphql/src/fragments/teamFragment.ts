@@ -21,6 +21,9 @@ export const teamFragment = gql(`
     categories {
       ...TeamCategoryInfo
     }
+    joinForm {
+      ...FormInfo
+    }
     documents {
       __typename
       id
