@@ -1,5 +1,6 @@
 import { ItemGroup } from './ItemGroup';
-import { UserLabel } from '../Labeled/LabeledUser';
+import { LabeledUser } from '../Labeled/LabeledUser';
+import { UserCard } from '../Card/UserCard';
 import { Avatar } from '@okampus/ui/atoms';
 
 import type { AvatarProps } from '@okampus/ui/atoms';
@@ -19,10 +20,12 @@ export function AvatarGroup({ users, limit = 3, size = 14 }: AvatarGroupProps) {
       items={users}
       limit={limit}
       size={size}
-      render={(avatarProps) => {
-        return <Avatar {...avatarProps} size={size} />;
-      }}
-      renderListElement={(item) => <UserLabel name={item.name} />}
+      render={(avatarProps) => (
+        <UserCard userId={avatarProps.id}>
+          <Avatar {...avatarProps} size={size} />
+        </UserCard>
+      )}
+      renderListElement={(item) => <LabeledUser name={item.name ?? '?'} avatar={item.src} id={item.id} />}
     />
   );
 }
