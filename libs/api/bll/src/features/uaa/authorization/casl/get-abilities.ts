@@ -57,15 +57,17 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
       allow(Action.Manage, 'all');
       allow(Action.Update, 'all');
       allow(Action.Create, 'all');
-    } else if (individual.roles.includes(RoleType.Moderator)) {
-      allow(Action.Manage, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
-      forbid(Action.Manage, [Tenant, EventApprovalStep]);
-      allow(Action.Update, 'all');
     } else {
-      forbid(Action.Manage, Content, { lastHiddenAt: null }).because('Content has been removed');
-      allow(Action.Update, Content, ['body', 'hidden'], isAuthor).because('Not the author');
-      allow([Action.Update, Action.Delete], [StudyDocument, InfoDocument], isAuthor).because('Not the author');
-      allow(Action.Delete, Content, isAuthor).because('Not the author');
+      forbid(Action.Manage, [Tenant, EventApprovalStep]);
+      if (individual.roles.includes(RoleType.Moderator)) {
+        allow(Action.Manage, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
+        allow(Action.Update, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
+      } else {
+        forbid(Action.Manage, Content, { lastHiddenAt: null }).because('Content has been removed');
+        allow(Action.Update, Content, ['body', 'hidden'], isAuthor).because('Not the author');
+        allow([Action.Update, Action.Delete], [StudyDocument, InfoDocument], isAuthor).because('Not the author');
+        allow(Action.Delete, Content, isAuthor).because('Not the author');
+      }
     }
   } else {
     allow(Action.Create, [DocumentUpload, Content, Favorite, Tag]);
