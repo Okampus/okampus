@@ -13,19 +13,25 @@ const fmtStandard = Intl.DateTimeFormat('fr', {
   year: 'numeric',
 });
 
+const getDate = (date?: string | Date): Date => {
+  if (!date) return new Date();
+  if (typeof date === 'string') return new Date(date);
+  return date;
+};
+
 export function formatDateDayOfWeek(date: string | Date): string {
-  date = new Date(date);
+  date = getDate(date);
   return fmtShort.format(date);
 }
 
 export function formatDateStandard(date: string | Date): string {
-  date = new Date(date);
+  date = getDate(date);
   return fmtStandard.format(date);
 }
 
 export function formatDateRange(date1: string | Date, date2: string | Date): string {
-  date1 = new Date(date1);
-  date2 = new Date(date2);
+  date1 = getDate(date1);
+  date2 = getDate(date2);
 
   return fmtShort.formatRange(date1, date2);
 }
