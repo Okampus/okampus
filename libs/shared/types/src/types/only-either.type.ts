@@ -5,3 +5,5 @@ export type Only<T, U> = {
 };
 
 export type Either<T, U> = Only<T, U> | Only<U, T>;
+
+export type EitherOrBoth<T, U> = Either<T, U> | (T & U);

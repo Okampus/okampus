@@ -1,9 +1,13 @@
-export type ToastType = 'success' | 'error' | 'info';
+export enum ToastType {
+  Success = 'success',
+  Error = 'error',
+  Info = 'info',
+}
 
 export type ToastProps = {
   id: string;
-  type: ToastType;
   message: string;
+  type?: ToastType;
   timeout?: number;
   onTimeout?: (id: string) => void;
   onClose?: (id: string) => void;

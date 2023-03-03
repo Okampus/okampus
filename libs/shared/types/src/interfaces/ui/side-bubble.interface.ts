@@ -1,6 +1,6 @@
-import type { SubspaceTypes } from './selected-menu.interface';
+import type { SubspaceType } from './selected-menu.interface';
 
 export type SideBubble = {
-  subSpace: SubspaceTypes;
+  subSpace: SubspaceType;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
 };
