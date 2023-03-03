@@ -1,3 +1,10 @@
 {
-  "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "orta.vscode-jest"]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "orta.vscode-jest",
+    "JayFong.generate-index",
+    "Gruntfuggly.todo-tree",
+    "seatonjiang.gitmoji-vscode"
+  ]
 }
