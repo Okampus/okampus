@@ -31,6 +31,8 @@ export class TenantDocument extends Ugc {
   @Property({ type: 'smallint', nullable: true })
   yearVersion: number | null = null;
 
+  // TODO: add lastEdit
+
   @OneToMany({ type: 'DocumentEdit', mappedBy: 'linkedDocument' })
   edits = new Collection<DocumentEdit>(this);
 

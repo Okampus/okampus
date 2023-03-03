@@ -16,6 +16,8 @@ export class FormSubmission extends Ugc {
   @ManyToOne({ type: 'Form' })
   forForm!: Form;
 
+  // TODO: add lastEdit
+
   constructor(options: FormSubmissionOptions) {
     super({ ...options, ugcKind: UgcKind.FormSubmission });
     this.assign({ ...options, ugcKind: UgcKind.FormSubmission });

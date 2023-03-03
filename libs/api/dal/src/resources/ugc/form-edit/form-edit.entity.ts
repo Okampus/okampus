@@ -14,7 +14,7 @@ export class FormEdit extends TenantScopedEntity {
   order!: number;
 
   @ManyToOne({ type: 'Form', onDelete: 'CASCADE' })
-  form!: Form;
+  linkedForm!: Form;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })
   editedBy!: Individual;

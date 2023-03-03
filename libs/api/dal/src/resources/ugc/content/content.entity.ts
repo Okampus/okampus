@@ -17,6 +17,8 @@ export class Content extends Ugc {
   @ManyToOne({ type: 'Ugc', nullable: true })
   parent: Ugc | null = null;
 
+  // TODO: add lastEdit
+
   constructor(options: ContentOptions) {
     super({ ...options, ugcKind: UgcKind.Content });
     this.assign({ ...options, ugcKind: UgcKind.Content });

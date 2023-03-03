@@ -23,11 +23,11 @@ export class Ugc extends TenantScopedEntity {
   @Property({ type: 'text' })
   text!: string;
 
-  @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })
-  author!: Individual;
+  @ManyToOne({ type: 'Individual', onDelete: 'CASCADE', nullable: true })
+  author!: Individual | null;
 
-  @ManyToOne({ type: 'Individual', onDelete: 'CASCADE', hidden: true })
-  realAuthor!: Individual;
+  @ManyToOne({ type: 'Individual', onDelete: 'CASCADE', nullable: true, hidden: true })
+  realAuthor!: Individual | null;
 
   @Property({ type: 'boolean' })
   isAnonymous = false;
