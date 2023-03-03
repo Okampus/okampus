@@ -197,6 +197,7 @@ specifiers:
   stylelint-config-clean-order: ^3.0.0
   stylelint-config-prettier: ^9.0.0
   stylelint-config-standard-scss: ^6.1.0
+  swiper: ^9.0.5
   tailwindcss: ^3.2.0
   ts-jest: ^29.0.0
   ts-node: ^10.9.0
@@ -300,6 +301,7 @@ dependencies:
   rimraf: 4.1.2
   rxjs: 7.8.0
   sharp: 0.31.3
+  swiper: 9.0.5
   zod: 3.20.6
 
 devDependencies:
@@ -23164,6 +23166,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /ssr-window/4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: false
+
   /ssri/6.0.2:
     resolution: {integrity: sha512-cepbSq/neFK7xB6A50KHN0xHDotYzq58wWCa5LeWqnPrHG8GzfEjO/4O8kpmcGW+oaxkvhEJCWgbgNk4/ZV93Q==}
     dependencies:
@@ -23814,6 +23820,13 @@ packages:
     dependencies:
       tslib: 2.5.0
     dev: true
+
+  /swiper/9.0.5:
+    resolution: {integrity: sha512-UiLQ5fvn8L3ZZpaPa+9oiwKwhVGQt5TVc0UuXxFKHyTQe8g2E3vbPMiMfIGb6NhNGj5ntsSDyyNgg4qVmWlJkQ==}
+    engines: {node: '>= 4.7.0'}
+    dependencies:
+      ssr-window: 4.0.2
+    dev: false
 
   /symbol-observable/1.2.0:
     resolution: {integrity: sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==}
