@@ -3,12 +3,14 @@ import { BaseFactory } from '../../base.factory';
 import { addImagesToActor } from '../../abstract.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ActorImageFactory } from '../images/actor-image.factory';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EntityManager } from '@mikro-orm/core';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
 
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -30,6 +32,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   ActorRepository,
+  ActorImageRepository,
   ShortcutRepository,
   TeamCategoryRepository,
   TeamMemberRepository,
@@ -38,8 +41,18 @@ import {
   UserRepository,
 } from '@okampus/api/dal';
 
-import { ActorKind, IndividualKind, ShortcutType, TeamType } from '@okampus/shared/enums';
+import {
+  ActorKind,
+  ControlType,
+  FormType,
+  IndividualKind,
+  OrgKind,
+  ShortcutType,
+  TeamPermissions,
+  TeamType,
+} from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
+import type { ActorImageType } from '@okampus/shared/enums';
 
 import type { OrgDocumentModel } from '../documents/org-document.model';
 import type { ActorImageUploadProps, Individual, TeamOptions, User } from '@okampus/api/dal';
@@ -50,18 +63,20 @@ import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
-    teamRepository: TeamRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
+    private readonly actorImageFactory: ActorImageFactory,
+    private readonly teamRepository: TeamRepository,
     private readonly userRepository: UserRepository,
     private readonly actorRepository: ActorRepository,
+    private readonly actorImageRepository: ActorImageRepository,
     private readonly teamMemberRepository: TeamMemberRepository,
     private readonly shortcutRepository: ShortcutRepository,
     private readonly teamRoleRepository: TeamRoleRepository,
     private readonly teamCategoryRepository: TeamCategoryRepository,
-    private readonly orgDocumentFactory: OrgDocumentFactory,
-    private readonly uploadService: UploadService
+    private readonly orgDocumentFactory: OrgDocumentFactory
   ) {
-    super(eventPublisher, teamRepository, TeamModel, Team);
+    super(eventPublisher, uploadService, teamRepository, TeamModel, Team);
   }
 
   async teamAddDocument(
@@ -81,7 +96,6 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
   }
 
   // TODO: add teamEditDocument
-
   async createTeam(
     createTeam: CreateTeamDto,
     tenant: TenantCore,
@@ -107,6 +121,25 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
 
     /* Create team */
     const team = await this.create({ ...createTeam, categories, slug, tenant }, async (team) => {
+      /* Add default team join form */
+      team.joinForm = new Form({
+        isTemplate: false,
+        name: `Formulaire d'adhésion de ${team.actor.name}`,
+        realAuthor: null,
+        schema: [
+          {
+            fieldName: 'title',
+            inputType: ControlType.Text,
+            label: "Raison de l'adhésion",
+            placeholder: "Raison de l'adhésion",
+          },
+        ],
+        text: `Formulaire d'adhésion officiel de ${team.actor.name}`,
+        type: FormType.TeamJoin,
+        undeletable: true,
+        tenant,
+      });
+
       /* Add images to team */
       if (images) team.actor = await addImagesToActor(team.actor, ActorKind.Org, images, tenant, this.uploadService);
 
@@ -119,19 +152,55 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
           ? clubDefaultRoles
           : teamDefaultRoles;
 
-      const roleEntities = roles.map((role) => new TeamRole({ ...role, team, tenant: team.tenant }));
+      const roleEntities = roles.map((role) => new TeamRole({ ...role, team, tenant }));
 
       /* Add team owner to team */
-      const membership = new TeamMember({ team, user, roles: [roleEntities[0]], tenant: team.tenant });
+      const membership = new TeamMember({ team, user, roles: [roleEntities[0]], tenant });
 
       this.shortcutRepository.persist(shortcut);
-      this.teamRoleRepository.persist(roleEntities);
-      this.teamMemberRepository.persist(membership);
+      team.roles.add(roleEntities);
+      team.members.add(membership);
 
       return team;
     });
 
     return team;
+  }
+
+  async hasTeamRole(teamId: Snowflake, individualId: Snowflake, where: FilterQuery<TeamRole>): Promise<boolean> {
+    return !!(await this.teamRepository.count({
+      id: teamId,
+      members: { user: { id: individualId }, roles: where, endDate: null },
+    }));
+  }
+
+  async canEditTeam(teamId: Snowflake, individualId: Snowflake): Promise<boolean> {
+    return this.hasTeamRole(teamId, individualId, {
+      permissions: { $overlap: [TeamPermissions.ManageTeam, TeamPermissions.Admin] },
+    });
+  }
+
+  async deactivateTeamImage(tenant: TenantCore, teamId: Snowflake, actorImageType: ActorImageType, populate: never[]) {
+    const actorImage = await this.actorImageRepository.findOneOrFail(
+      {
+        actor: { org: { id: teamId, orgKind: OrgKind.Team, tenant } },
+        type: actorImageType,
+        lastActiveDate: null,
+      },
+      { populate }
+    );
+
+    actorImage.lastActiveDate = new Date();
+    this.actorImageRepository.flush();
+    const actorImageModel = this.actorImageFactory.entityToModelOrFail(actorImage);
+
+    if (actorImageModel?.actor?.actorImages) {
+      actorImageModel.actor.actorImages = actorImageModel.actor.actorImages.filter(
+        (image) => image.id !== actorImage.id
+      );
+    }
+
+    return actorImageModel;
   }
 
   modelToEntity(model: Required<TeamModel>): Team {

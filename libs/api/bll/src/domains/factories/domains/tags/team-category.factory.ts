@@ -29,12 +29,12 @@ export class TeamCategoryFactory extends BaseFactory<
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     teamCategoryRepository: TeamCategoryRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
     private readonly teamRepository: TeamRepository,
-    private readonly tagRepository: TagRepository,
-    private readonly uploadService: UploadService
+    private readonly tagRepository: TagRepository
   ) {
-    super(eventPublisher, teamCategoryRepository, TeamCategoryModel, TeamCategory);
+    super(eventPublisher, uploadService, teamCategoryRepository, TeamCategoryModel, TeamCategory);
   }
 
   async createTeamCategory(

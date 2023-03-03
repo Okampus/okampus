@@ -2,6 +2,9 @@ import { FormSubmissionModel } from './form-submission.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -23,9 +26,10 @@ export class FormSubmissionFactory extends BaseFactory<
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     formSubmissionRepository: FormSubmissionRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, formSubmissionRepository, FormSubmissionModel, FormSubmission);
+    super(eventPublisher, uploadService, formSubmissionRepository, FormSubmissionModel, FormSubmission);
   }
 
   modelToEntity(model: Required<FormSubmissionModel>): FormSubmission {

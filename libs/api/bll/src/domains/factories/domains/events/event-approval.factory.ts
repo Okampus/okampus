@@ -2,6 +2,9 @@ import { EventApprovalModel } from './event-approval.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -30,12 +33,13 @@ export class EventApprovalFactory extends BaseFactory<
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     eventApprovalRepository: EventApprovalRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
     private readonly eventApprovalStepRepository: EventApprovalStepRepository,
     private readonly eventRepository: TenantEventRepository,
     private readonly tenantRepository: TenantRepository
   ) {
-    super(eventPublisher, eventApprovalRepository, EventApprovalModel, EventApproval);
+    super(eventPublisher, uploadService, eventApprovalRepository, EventApprovalModel, EventApproval);
   }
 
   async createEventApproval(

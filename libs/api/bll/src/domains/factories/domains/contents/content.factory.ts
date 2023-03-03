@@ -2,6 +2,9 @@ import { ContentModel } from './content.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 
 import { Inject, Injectable } from '@nestjs/common';
@@ -11,6 +14,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { ContentRepository, ContentMaster, FileUpload, Individual, Org, TenantCore, Ugc } from '@okampus/api/dal';
 
 import { Content } from '@okampus/api/dal';
+
 import type { ContentOptions } from '@okampus/api/dal';
 import type { IContent } from '@okampus/shared/dtos';
 
@@ -18,10 +22,11 @@ import type { IContent } from '@okampus/shared/dtos';
 export class ContentFactory extends BaseFactory<ContentModel, Content, IContent, ContentOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
+    uploadService: UploadService,
     contentRepository: ContentRepository,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, contentRepository, ContentModel, Content);
+    super(eventPublisher, uploadService, contentRepository, ContentModel, Content);
   }
 
   modelToEntity(model: Required<ContentModel>): Content {

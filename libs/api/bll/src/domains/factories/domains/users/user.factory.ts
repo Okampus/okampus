@@ -23,10 +23,10 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     userRepository: UserRepository,
-    private readonly em: EntityManager,
-    private readonly uploadService: UploadService
+    uploadService: UploadService,
+    private readonly em: EntityManager
   ) {
-    super(eventPublisher, userRepository, UserModel, User);
+    super(eventPublisher, uploadService, userRepository, UserModel, User);
   }
 
   async createUser(options: UserOptions, images?: ActorImageUploadProps): Promise<UserModel> {

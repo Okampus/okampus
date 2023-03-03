@@ -1,6 +1,8 @@
 import { ProjectModel } from './project.model';
 import { BaseFactory } from '../../base.factory';
-import { asyncCallIfNotNull } from '@okampus/shared/utils';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -10,6 +12,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ProjectRepository, TeamRepository, TenantEventRepository, UserRepository } from '@okampus/api/dal';
 import { Project, TenantCore, Individual, User, Team, TenantEvent } from '@okampus/api/dal';
+import { asyncCallIfNotNull } from '@okampus/shared/utils';
 
 import type { ProjectOptions } from '@okampus/api/dal';
 import type { CreateProjectDto, IProject } from '@okampus/shared/dtos';
@@ -19,12 +22,13 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     projectRepository: ProjectRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
     private readonly teamRepository: TeamRepository,
     private readonly userRepository: UserRepository,
     private readonly tenantEventRepository: TenantEventRepository
   ) {
-    super(eventPublisher, projectRepository, ProjectModel, Project);
+    super(eventPublisher, uploadService, projectRepository, ProjectModel, Project);
   }
 
   async createProject(

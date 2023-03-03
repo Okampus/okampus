@@ -2,6 +2,9 @@ import { SocialModel } from './social.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -18,9 +21,10 @@ export class SocialFactory extends BaseFactory<SocialModel, Social, ISocial, Soc
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     socialRepository: SocialRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, socialRepository, SocialModel, Social);
+    super(eventPublisher, uploadService, socialRepository, SocialModel, Social);
   }
 
   modelToEntity(model: Required<SocialModel>): Social {

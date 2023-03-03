@@ -38,7 +38,7 @@ import {
   UserProfile,
   VideoUpload,
 } from '@okampus/api/dal';
-import { ActorKind } from '@okampus/shared/enums';
+import { ActorKind, IndividualKind } from '@okampus/shared/enums';
 import { loadApply, applyModelFactory } from '@okampus/api/shards';
 import type {
   ITenant,
@@ -277,6 +277,9 @@ export function getEntityFromStackOrLoad(
   return loadedEntity;
 }
 
+const isUser = (user: TenantScopedEntity): user is User => (<Individual>user).individualKind === IndividualKind.User;
+const isBot = (bot: TenantScopedEntity): bot is Bot => (<Individual>bot).individualKind === IndividualKind.Bot;
+
 export function loadTenantScopedEntity<T extends TenantScopedEntity>(
   entity: T,
   contextStack: Record<Snowflake, AllInterfaces>,
@@ -405,7 +408,7 @@ export function loadTenantScopedEntity(
     };
   }
 
-  if (entity instanceof User && !loadBaseClass) {
+  if ((entity instanceof User || isUser(entity)) && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
     const user = loadTenantScopedEntity(entity, contextStack, true);
@@ -426,7 +429,7 @@ export function loadTenantScopedEntity(
     return user;
   }
 
-  if (entity instanceof Bot && !loadBaseClass) {
+  if ((entity instanceof Bot || isBot(entity)) && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
     const bot = loadTenantScopedEntity(entity, contextStack, true);
@@ -819,7 +822,7 @@ export function loadTenantScopedEntity(
       text: entity.text,
       isAnonymous: entity.isAnonymous,
       contentMaster: getEntityFromStackOrLoad(entity.contentMaster, contextStack, true),
-      author: getEntityFromStackOrLoad(entity.author, contextStack),
+      author: getEntityFromStackOrLoad(entity.author, contextStack, true),
       representingOrg: getEntityFromStackOrLoad(entity.representingOrg, contextStack, true),
       tenant,
     };

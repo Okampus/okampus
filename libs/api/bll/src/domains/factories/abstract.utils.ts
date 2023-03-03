@@ -36,9 +36,13 @@ export async function addImagesToActor(
   }
 
   const imageUploads = await Promise.all(uploadPromises);
-  imageUploads.map(([key, upload]) =>
-    actor.actorImages.add(new ActorImage({ actor, image: upload, type: key, tenant }))
-  );
+
+  const actorImages = await actor.actorImages.loadItems();
+  imageUploads.map(([key, upload]) => {
+    const existingImage = actorImages.find((image) => image.type === key);
+    if (existingImage) existingImage.lastActiveDate = new Date();
+    actor.actorImages.add(new ActorImage({ actor, image: upload, type: key, tenant }));
+  });
 
   return actor;
 }

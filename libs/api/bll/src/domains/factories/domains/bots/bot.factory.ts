@@ -2,6 +2,9 @@ import { BotModel } from './bot.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -17,10 +20,11 @@ import type { IBot } from '@okampus/shared/dtos';
 export class BotFactory extends BaseFactory<BotModel, Bot, IBot, BotOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
+    uploadService: UploadService,
     botRepository: BotRepository,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, botRepository, BotModel, Bot);
+    super(eventPublisher, uploadService, botRepository, BotModel, Bot);
   }
 
   modelToEntity(model: Required<BotModel>): Bot {

@@ -24,13 +24,13 @@ import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocument, IOrgDocument, OrgDocumentOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
+    uploadService: UploadService,
     OrgDocumentRepository: OrgDocumentRepository,
     private readonly em: EntityManager,
     private readonly orgDocumentRepository: OrgDocumentRepository,
-    private readonly orgRepository: OrgRepository,
-    private readonly uploadService: UploadService
+    private readonly orgRepository: OrgRepository
   ) {
-    super(eventPublisher, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
+    super(eventPublisher, uploadService, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
   }
 
   async createOrgDocument(
