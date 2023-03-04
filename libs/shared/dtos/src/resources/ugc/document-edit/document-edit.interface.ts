@@ -5,6 +5,6 @@ import type { DocumentEditProps } from './document-edit.props';
 
 export type IDocumentEdit = ITenantScoped &
   Required<DocumentEditProps> & {
-    documentUpload?: IDocumentUpload;
+    newVersion?: IDocumentUpload;
     editedBy?: IIndividual;
   };

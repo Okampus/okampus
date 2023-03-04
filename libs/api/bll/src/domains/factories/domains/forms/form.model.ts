@@ -11,9 +11,6 @@ export class FormModel extends UgcModel implements IForm {
   @Field(() => String)
   name!: string;
 
-  @Field(() => String, { nullable: true })
-  description!: string | null;
-
   @Field(() => GraphQLJSON)
   schema!: JSONObject;
 

@@ -64,25 +64,6 @@ export class UsersService extends RequestContext {
   //   // return this.userRepository.findOne({ $or: [{ slug: slugOrEmail }, { primaryEmail: slugOrEmail }] });
   // }
 
-  // async createBare(userInfo: PreRegisterSsoDto, forTenant: string) {
-  //   const tenant = await this.tenantRepository.findOne({ tenant: { domain: forTenant } });
-
-  //   if (!tenant) throw new BadRequestException('');
-
-  //   const user = new User({
-  //     tenant: tenant.tenant,
-  //     slug: userInfo.id,
-  //     name: userInfo.firstName + ' ' + userInfo.lastName,
-  //     firstName: userInfo.firstName,
-  //     lastName: userInfo.lastName,
-  //     roles: [Role.User],
-  //     scopeRole: ScopeRole.Student,
-  //   });
-
-  //   this.userRepository.flush();
-  //   return user;
-  // }
-
   // async findById(id: string) {
   //   return this.userRepository.findOne(id);
   // }

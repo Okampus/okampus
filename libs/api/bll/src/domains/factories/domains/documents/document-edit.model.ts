@@ -10,7 +10,7 @@ export class DocumentEditModel extends TenantScopedModel implements IDocumentEdi
   yearVersion!: number | null;
 
   @Field(() => DocumentUploadModel)
-  documentUpload!: IDocumentUpload;
+  newVersion!: IDocumentUpload;
 
   constructor(document: IDocumentEdit) {
     if (!document.tenant) throw new Error('DocumentEdit must have a tenant');

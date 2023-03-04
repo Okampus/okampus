@@ -10,6 +10,9 @@ export class FormEdit extends TenantScopedEntity {
   @Property({ type: 'json' })
   addedDiff!: JSONObject;
 
+  @Property({ type: 'json' })
+  newVersion!: JSONObject;
+
   @Property({ type: 'smallint' })
   order!: number;
 

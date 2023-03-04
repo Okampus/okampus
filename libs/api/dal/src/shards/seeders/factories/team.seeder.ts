@@ -37,7 +37,7 @@ export class TeamSeeder extends Factory<Team> {
           placeholder: "Raison de l'adhésion",
         },
       ],
-      text: `Formulaire d'adhésion officiel de ${name}`,
+      description: `Formulaire d'adhésion officiel de ${name}`,
       type: FormType.TeamJoin,
       undeletable: true,
       tenant: this.tenant.tenant,

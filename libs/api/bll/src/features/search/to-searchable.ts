@@ -88,7 +88,7 @@ export function eventToSearchable(event: TenantEvent | TenantEventModel): BaseSe
     slug: event.slug,
     title: event.title,
     thumbnail: event.image?.url ?? null,
-    description: event.rootContent.text,
+    description: event.rootContent.description,
     categories: [event.state, ...(event.location.city ? [event.location.city] : [])],
     createdAt: event.createdAt.getTime(),
     updatedAt: event.updatedAt.getTime(),

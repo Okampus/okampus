@@ -13,9 +13,6 @@ export class Form extends Ugc {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', nullable: true })
-  description: string | null = null;
-
   @Property({ type: 'json' })
   schema!: JSONObject;
 

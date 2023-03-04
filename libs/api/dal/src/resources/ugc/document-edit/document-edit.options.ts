@@ -5,7 +5,7 @@ import type { DocumentUpload } from '../../file-upload/document-upload/document-
 
 export type DocumentEditOptions = DocumentEditProps &
   TenantScopedOptions & {
-    documentUpload: DocumentUpload;
+    newVersion: DocumentUpload;
     editedBy: Individual;
     order: number;
   };

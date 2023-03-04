@@ -70,7 +70,8 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
     return await this.create(tenantOptions, async (tenantEntity) => {
       if (createTenant.eventValidationForm) {
         tenantEntity.eventValidationForm = new Form({
-          text: "Formulaire officiel devant être rempli à la création d'un événement pour être valider par l'administration scolaire.",
+          description:
+            "Formulaire officiel devant être rempli à la création d'un événement pour être valider par l'administration scolaire.",
           name: "Formulaire de validation d'événement",
           type: FormType.Internal,
           schema: createTenant.eventValidationForm,

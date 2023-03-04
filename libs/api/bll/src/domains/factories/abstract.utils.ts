@@ -55,14 +55,14 @@ export async function addDocumentEditToDocument(
   realAuthor: Individual,
   uploadService: UploadService
 ) {
-  const documentUpload =
+  const newVersion =
     documentFile instanceof DocumentUpload
       ? documentFile
       : await uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
 
   const edit = new DocumentEdit({
-    yearVersion: documentEdit.yearVersion,
-    documentUpload,
+    yearVersion: documentEdit.yearVersion ?? null,
+    newVersion,
     editedBy: realAuthor,
     order: document.edits.length,
     tenant,

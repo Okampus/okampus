@@ -134,7 +134,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
             placeholder: "Raison de l'adhésion",
           },
         ],
-        text: `Formulaire d'adhésion officiel de ${team.actor.name}`,
+        description: `Formulaire d'adhésion officiel de ${team.actor.name}`,
         type: FormType.TeamJoin,
         undeletable: true,
         tenant,

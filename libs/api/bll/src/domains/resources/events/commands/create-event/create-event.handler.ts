@@ -12,6 +12,6 @@ export class CreateEventHandler implements ICommandHandler<CreateEventCommand> {
   constructor(private readonly eventFactory: TenantEventFactory) {}
 
   async execute(command: CreateEventCommand): Promise<TenantEventModel> {
-    return await this.eventFactory.createEvent(command.createEvent, command.forTenant, command.forIndividual);
+    return await this.eventFactory.createEvent(command.createEvent, command.tenant, command.requester);
   }
 }

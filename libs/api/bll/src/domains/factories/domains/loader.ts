@@ -82,8 +82,9 @@ import type {
   IDocumentEdit,
   IOrgDocument,
   ITenantScoped,
+  IFormEdit,
 } from '@okampus/shared/dtos';
-import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
+import type { BaseEntity, TenantCore, TenantScopedEntity, FormEdit } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {
@@ -124,6 +125,7 @@ export type AllInterfaces =
   | IFileUpload
   | IFinance
   | IForm
+  | IFormEdit
   | IFormSubmission
   | IImageUpload
   | IIndividual
@@ -179,6 +181,8 @@ export type LoadInterface<T> = T extends Actor
   ? IFinance
   : T extends Form
   ? IForm
+  : T extends FormEdit
+  ? IFormEdit
   : T extends FormSubmission
   ? IFormSubmission
   : T extends Bot
@@ -476,6 +480,7 @@ export function loadTenantScopedEntity(
     team.memberCount = entity.memberCount;
     team.members = loadApply(entity.members, (member) => loadTenantScopedEntity(member, contextStack));
     team.roles = loadApply(entity.roles, (role) => loadTenantScopedEntity(role, contextStack));
+    team.joins = loadApply(entity.joins, (join) => loadTenantScopedEntity(join, contextStack));
     team.finances = loadApply(entity.finances, (finance) => loadTenantScopedEntity(finance, contextStack));
     team.categories = loadApply(entity.categories, (category) => loadTenantScopedEntity(category, contextStack));
     team.joinForm = entity.joinForm ? loadTenantScopedEntity(entity.joinForm, contextStack) : null;
@@ -764,7 +769,7 @@ export function loadTenantScopedEntity(
       ...baseUgc,
       name: entity.name,
       yearVersion: entity.yearVersion,
-      documentUpload: loadTenantScopedEntity(entity.documentUpload, contextStack),
+      currentVersion: loadTenantScopedEntity(entity.newVersion, contextStack),
       edits: loadApply(entity.edits, (edit) => loadTenantScopedEntity(edit, contextStack)),
     };
   }
@@ -773,7 +778,7 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       yearVersion: entity.yearVersion,
-      documentUpload: loadTenantScopedEntity(entity.documentUpload, contextStack),
+      currentVersion: loadTenantScopedEntity(entity.newVersion, contextStack),
       editedBy: getEntityFromStackOrLoad(entity.editedBy, contextStack),
       tenant,
     };
@@ -800,7 +805,7 @@ export function loadTenantScopedEntity(
     return {
       ...baseUgc,
       submission: entity.submission,
-      forForm: loadTenantScopedEntity(entity.forForm, contextStack),
+      linkedFormVersion: loadTenantScopedEntity(entity.linkedFormVersion, contextStack),
     };
   }
 
@@ -819,7 +824,7 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       ugcKind: entity.ugcKind,
-      text: entity.text,
+      description: entity.description,
       isAnonymous: entity.isAnonymous,
       contentMaster: getEntityFromStackOrLoad(entity.contentMaster, contextStack, true),
       author: getEntityFromStackOrLoad(entity.author, contextStack, true),

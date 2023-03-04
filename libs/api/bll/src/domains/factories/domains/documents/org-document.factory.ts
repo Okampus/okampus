@@ -39,7 +39,7 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     documentFile: MulterFileType,
     tenant: TenantCore
   ): Promise<OrgDocumentModel> {
-    const documentUpload = await this.uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
+    const newVersion = await this.uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
 
     const orgPopulate = (this.autoGqlPopulate()
       ?.filter((str: string) => str.startsWith(`org.`))
@@ -52,19 +52,12 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     const document = new TenantDocument({
       ...createDocument,
       documentKind: DocumentKind.InfoDocument,
-      documentUpload,
+      newVersion,
       realAuthor: this.requester(),
       tenant,
     });
 
-    await addDocumentEditToDocument(
-      document,
-      createDocument,
-      documentUpload,
-      tenant,
-      this.requester(),
-      this.uploadService
-    );
+    await addDocumentEditToDocument(document, createDocument, newVersion, tenant, this.requester(), this.uploadService);
 
     const orgDocumentOptions = { org, document, tenant, type };
     const orgDocument = await this.create(orgDocumentOptions, async (orgDocument) => {

@@ -21,7 +21,7 @@ export class Ugc extends TenantScopedEntity {
   ugcKind!: UgcKind;
 
   @Property({ type: 'text' })
-  text!: string;
+  description!: string;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE', nullable: true })
   author!: Individual | null;

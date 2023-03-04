@@ -9,16 +9,16 @@ export class DocumentProps extends UgcProps {
   @IsString()
   name!: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsOptional()
   @Length(1, 10_000)
   @IsString()
-  description?: string | null = null;
+  description = '';
 
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @Min(1970)
   @Max(2100) // TODO: Make this dynamic
   @IsInt()
-  yearVersion?: number | null = null;
+  yearVersion: number | null = null;
 }

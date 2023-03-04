@@ -76,7 +76,7 @@ interface UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -292,7 +292,7 @@ type DocumentEditModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   yearVersion: Int
-  documentUpload: DocumentUploadModel!
+  newVersion: DocumentUploadModel!
 }
 
 type DocumentEditModelEdge {
@@ -358,15 +358,14 @@ type DocumentModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   name: String!
-  description: String
   yearVersion: Int
-  documentUpload: DocumentUploadModel!
+  currentVersion: DocumentUploadModel!
   edits: [DocumentEditModel!]!
 }
 
@@ -523,7 +522,7 @@ type ContentModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -545,13 +544,12 @@ type FormModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   name: String!
-  description: String
   schema: JSON!
   type: FormType!
   isTemplate: Boolean!
@@ -669,13 +667,13 @@ type FormSubmissionModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   submission: JSON!
-  forForm: FormModel
+  linkedFormVersion: FormModel
 }
 
 type FormSubmissionModelEdge {
@@ -1323,9 +1321,8 @@ input CreateBotDto {
 
 input UpdateDocumentDto {
   isAnonymous: Boolean
-  text: String
+  description: String = ""
   name: String
-  description: String = null
   yearVersion: Int = null
   id: String!
 }
@@ -1347,9 +1344,8 @@ input TenantCoreProps {
 
 input CreateDocumentDto {
   isAnonymous: Boolean
-  text: String!
+  description: String! = ""
   name: String!
-  description: String = null
   yearVersion: Int = null
 }
 
@@ -1414,9 +1410,8 @@ input CreateTeamDto {
 
 input CreateOrgDocumentDto {
   isAnonymous: Boolean
-  text: String!
+  description: String! = ""
   name: String!
-  description: String = null
   yearVersion: Int = null
   type: OrgDocumentType!
 }

@@ -8,7 +8,7 @@ import type { TenantDocument } from '../document/document.entity';
 @Entity()
 export class DocumentEdit extends TenantScopedEntity {
   @ManyToOne({ type: 'DocumentUpload' })
-  documentUpload!: DocumentUpload;
+  newVersion!: DocumentUpload;
 
   @Property({ type: 'smallint' })
   order!: number;

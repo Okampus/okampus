@@ -5,7 +5,7 @@ import type { TenantCore } from '@okampus/api/dal';
 export class CreateEventCommand {
   constructor(
     public readonly createEvent: CreateEventDto,
-    public readonly forTenant: TenantCore,
-    public readonly forIndividual: Individual
+    public readonly tenant: TenantCore,
+    public readonly requester: Individual
   ) {}
 }

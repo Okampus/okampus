@@ -12,14 +12,11 @@ export class DocumentModel extends UgcModel implements ITenantDocument {
   @Field(() => String)
   name!: string;
 
-  @Field(() => String, { nullable: true })
-  description!: string | null;
-
   @Field(() => Int, { nullable: true })
   yearVersion!: number | null;
 
   @Field(() => DocumentUploadModel)
-  documentUpload!: IDocumentUpload;
+  currentVersion!: IDocumentUpload;
 
   @Field(() => [DocumentEditModel])
   edits!: IDocumentEdit[];
