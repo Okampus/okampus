@@ -14,12 +14,12 @@ import { ScopeRole } from '@okampus/shared/enums';
 import { defaultSelectedMenu } from '@okampus/shared/types';
 import { SubspaceType } from '@okampus/shared/types';
 
-import { ShortcutType } from '@okampus/shared/enums';
 import { enumChecker } from '@okampus/shared/utils';
 import { getLink } from '#site/app/utils/get-link';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
+import type { ShortcutType } from '@okampus/shared/enums';
 import type { Menu } from '../../../menus';
 import type { LinkContext } from '#site/app/utils/get-link';
 import type { SelectedMenu, SideBubble } from '@okampus/shared/types';
@@ -86,7 +86,7 @@ export function Sidebar() {
 
         {/* Subspace name */}
         <div className="flex gap-2 items-center p-sidebar-name">
-          <Avatar name={name} src={avatar} size={16} rounded={50} />
+          <Avatar name={name} src={avatar} size={17} rounded={50} />
           <h2 className="text-0 text-2xl tracking-tighter font-semibold font-title lg-max:hidden line-clamp-1">
             {name}
           </h2>
