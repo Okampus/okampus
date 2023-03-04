@@ -926,6 +926,31 @@ enum TeamRoleCategory {
   Members
 }
 
+type TeamJoinModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  team: TeamModel!
+  askedRole: TeamRoleModel!
+  receivedRole: TeamRoleModel
+  joinKind: JoinKind!
+  issuer: IndividualModel
+  joiner: UserModel!
+  validatedBy: IndividualModel
+  validatedAt: DateTime
+  validationMessage: String
+  formSubmission: FormSubmissionModel
+  state: JoinState!
+}
+
+type TeamJoinModelEdge {
+  cursor: String!
+  node: TeamJoinModel!
+}
+
 type TeamCategoryModel {
   id: String!
   createdAt: DateTime!
@@ -975,6 +1000,7 @@ type TeamModel implements OrgModel {
   joinForm: FormModel
   members: [TeamMemberModel!]!
   roles: [TeamRoleModel!]!
+  joins: [TeamJoinModel!]!
   categories: [TeamCategoryModel!]!
   finances: [FinanceModel!]!
 }

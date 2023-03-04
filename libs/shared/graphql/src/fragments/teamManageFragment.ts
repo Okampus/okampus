@@ -40,6 +40,48 @@ export const teamManageFragment = gql(`
         ...DocumentInfo
       }
     }
+    joins {
+      __typename
+      id
+      askedRole {
+        __typename
+        id
+        permissions
+        category
+        key
+      }
+      formSubmission {
+        __typename
+        id
+        submission
+        forForm {
+          ...FormInfo
+        }
+      }
+      receivedRole {
+        __typename
+        id
+        permissions
+        category
+        key
+      }
+      joiner {
+        ...UserInfo
+      }
+      issuer {
+        ... on UserModel {
+          ...UserInfo
+        }
+      }
+      validatedBy {
+        ... on UserModel {
+          ...UserInfo
+        }
+      }
+      validatedAt
+      validationMessage
+      state
+    }
     members {
       __typename
       id
