@@ -54,7 +54,7 @@ export const teamManageFragment = gql(`
         __typename
         id
         submission
-        forForm {
+        linkedFormVersion {
           ...FormInfo
         }
       }

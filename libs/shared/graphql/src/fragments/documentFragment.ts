@@ -6,10 +6,10 @@ export const documentFragment = gql(`
     id
     createdAt
     updatedAt
-    text
+    description
     name
     yearVersion
-    documentUpload {
+    currentVersion {
       ...DocumentUploadInfo
     }
     edits {
@@ -17,7 +17,7 @@ export const documentFragment = gql(`
       id
       createdAt
       yearVersion
-      documentUpload {
+      newVersion {
         ...DocumentUploadInfo
       }
     }
