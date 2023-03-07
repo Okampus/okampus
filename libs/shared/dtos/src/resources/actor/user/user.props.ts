@@ -1,10 +1,11 @@
+import { IndividualProps } from '../individual/individual.props';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { RoleType } from '@okampus/shared/enums';
 import { ScopeRole } from '@okampus/shared/enums';
 
 @InputType()
-export class UserProps {
+export class UserProps extends IndividualProps {
   @Field(() => String)
   @IsString()
   firstName!: string;

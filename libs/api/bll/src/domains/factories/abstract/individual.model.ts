@@ -23,6 +23,9 @@ export class IndividualModel extends TenantScopedModel implements IIndividual {
   @Field(() => IndividualKind)
   individualKind!: IndividualKind;
 
+  @Field(() => String)
+  status!: string;
+
   constructor(individual: IIndividual) {
     if (!individual.tenant) throw new Error('Individual must have a tenant');
     super(individual.tenant);
