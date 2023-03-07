@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamsService } from './teams.service';
 
-import { TeamFilterOptions } from './team-filter-options.type';
+import { TeamFilterQuery } from './team.filter-query';
 import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
 import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
@@ -31,7 +31,7 @@ export class TeamsResolver {
   @Query(() => PaginatedTeamModel)
   teams(
     @Args('options', { type: () => PaginationOptions, nullable: true }) options: PaginationOptions,
-    @Args('filter', { type: () => TeamFilterOptions, nullable: true }) filter: TeamFilterOptions
+    @Args('filter', { type: () => TeamFilterQuery, nullable: true }) filter: TeamFilterQuery
   ) {
     // eslint-disable-next-line unicorn/no-array-method-this-argument
     return this.teamsService.find(options, filter);

@@ -3,7 +3,17 @@ import { TeamType } from '@okampus/shared/enums';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class TeamFilterOptions {
+export class TeamFilterQuery {
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsString({ each: true })
+  ids?: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsString({ each: true })
+  slugs?: string[];
+
   @Field(() => [String], { nullable: true })
   @IsOptional()
   @IsString({ each: true })
