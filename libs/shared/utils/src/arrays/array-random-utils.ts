@@ -1,12 +1,6 @@
-export function shuffleArray<T>(arr: T[]): T[] {
-  return arr.sort(() => Math.random() - 0.5);
-}
+import { shuffleArray } from './shuffle';
 
-export function randomFromArrayWithRemainder<T>(
-  arr: T[],
-  min: number,
-  max = 0
-): [output: T[], remainder: T[]] {
+export function randomFromArrayWithRemainder<T>(arr: T[], min: number, max = 0): [output: T[], remainder: T[]] {
   arr = shuffleArray([...arr]);
   const size = max ? Math.floor(Math.random() * (max - min + 1)) + min : min;
 

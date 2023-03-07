@@ -1,8 +1,9 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
-export * from './arrays/array-utils';
+export * from './arrays/array-random-utils';
 export * from './arrays/get-min-max';
 export * from './arrays/group-by';
-export * from './arrays/not-empty';
+export * from './arrays/is-not-empty';
+export * from './arrays/shuffle';
 export * from './arrays/toggle-in-array';
 export * from './async/async-call-if-not-null';
 export * from './async/filter-promise-all';
