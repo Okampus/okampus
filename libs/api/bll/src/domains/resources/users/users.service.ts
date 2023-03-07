@@ -4,15 +4,20 @@ import { UpdateUserCommand } from './commands/update-user/update-user.command';
 import { GetUserByIdQuery } from './queries/get-user-by-id/get-user-by-id.query';
 import { GetUserBySlugQuery } from './queries/get-user-by-slug/get-user-by-slug.query';
 import { GetUsersQuery } from './queries/get-users/get-users.query';
+import { DeactivateUserImageCommand } from './commands/deactivate-user-image/deactivate-user-image.command';
 import { RequestContext } from '../../../shards/abstract/request-context';
-import { Injectable } from '@nestjs/common';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { ActorImageUploadProps } from '@okampus/api/dal';
-import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
-import type { Snowflake } from '@okampus/shared/types';
+import { Injectable } from '@nestjs/common';
+
+import type { UserFilterQuery } from './user.filter-query';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import type { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
+import type { ActorImageUploadProps } from '@okampus/api/dal';
+import type { CreateUserDto, UpdateUserDto } from '@okampus/shared/dtos';
+import type { ActorImageType } from '@okampus/shared/enums';
+import type { Snowflake } from '@okampus/shared/types';
 
 const defaultUserPopulate = ['actor', 'actor.images', 'actor.socials'];
 
@@ -37,8 +42,13 @@ export class UsersService extends RequestContext {
     return this.queryBus.execute(query);
   }
 
-  find(paginationOptions: PaginationOptions): Promise<PaginatedUserModel> {
-    const query = new GetUsersQuery(paginationOptions, this.tenant(), this.autoGqlPopulate(defaultUserPopulate));
+  find(paginationOptions: PaginationOptions, filterQuery: UserFilterQuery): Promise<PaginatedUserModel> {
+    const query = new GetUsersQuery(
+      filterQuery,
+      paginationOptions,
+      this.tenant(),
+      this.autoGqlPopulate(defaultUserPopulate)
+    );
     return this.queryBus.execute(query);
   }
 
@@ -48,8 +58,24 @@ export class UsersService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  update(updateUser: UpdateUserDto): Promise<UserModel> {
-    const command = new UpdateUserCommand(updateUser, this.tenant(), this.autoGqlPopulate(defaultUserPopulate));
+  deactivateUserImage(id: Snowflake, actorImageType: ActorImageType) {
+    const command = new DeactivateUserImageCommand(
+      id,
+      actorImageType,
+      this.requester(),
+      this.tenant(),
+      this.autoGqlPopulate()
+    );
+    return this.commandBus.execute(command);
+  }
+
+  update(updateUser: UpdateUserDto, actorImages?: ActorImageUploadProps): Promise<UserModel> {
+    const command = new UpdateUserCommand(
+      updateUser,
+      this.tenant(),
+      this.autoGqlPopulate(defaultUserPopulate),
+      actorImages
+    );
     return this.commandBus.execute(command);
   }
 
