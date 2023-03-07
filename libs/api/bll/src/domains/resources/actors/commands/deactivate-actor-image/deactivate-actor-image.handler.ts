@@ -11,6 +11,11 @@ export class DeactivateActorImageHandler implements ICommandHandler<DeactivateAc
   constructor(private readonly actorImageFactory: ActorImageFactory) {}
 
   async execute(command: DeactivateActorImageCommand): Promise<ActorImageModel> {
-    return await this.actorImageFactory.deactivate(command.actorId, command.actorImageType, command.populate);
+    return await this.actorImageFactory.deactivate(
+      command.actorId,
+      command.actorImageType,
+      command.tenant,
+      command.populate
+    );
   }
 }

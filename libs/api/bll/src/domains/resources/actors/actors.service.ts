@@ -13,7 +13,7 @@ export class ActorsService extends RequestContext {
   }
 
   deactivateActorImage(actorId: Snowflake, actorImageType: ActorImageType) {
-    const command = new DeactivateActorImageCommand(actorId, actorImageType, this.autoGqlPopulate());
+    const command = new DeactivateActorImageCommand(actorId, actorImageType, this.tenant(), this.autoGqlPopulate());
     return this.commandBus.execute(command);
   }
 }
