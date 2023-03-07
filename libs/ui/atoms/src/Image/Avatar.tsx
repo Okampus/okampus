@@ -1,19 +1,26 @@
 import { getColorHexFromData } from '@okampus/shared/utils';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
+
+import type { AnimationProps } from 'framer-motion';
 
 export type AvatarProps = {
   src?: string;
   name?: string;
   size?: number | 'full';
-  rounded?: number;
+  rounded: number;
   className?: string;
   active?: boolean;
+  layout?: boolean;
+  transition?: AnimationProps['transition'];
 };
 
-export function Avatar({ src, name, size = 14, rounded = 50, className, active }: AvatarProps) {
+export function Avatar({ src, name, size = 14, rounded, className, active, transition, layout = false }: AvatarProps) {
   name = name ?? '?';
   return (
-    <div
+    <motion.div
+      layout={layout}
+      transition={transition}
       className={clsx('flex items-center overflow-hidden shrink-0 font-title', className, active && 'ring-4')}
       style={{
         width: size === 'full' ? '100%' : `${size / 6}rem`,
@@ -32,6 +39,6 @@ export function Avatar({ src, name, size = 14, rounded = 50, className, active }
           <span className="font-medium text-white">{name[0]}</span>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

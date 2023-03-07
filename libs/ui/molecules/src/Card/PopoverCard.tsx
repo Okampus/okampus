@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import type { AvatarProps, BannerProps } from '@okampus/ui/atoms';
 
 export type PopoverCardProps = {
-  avatar?: AvatarProps;
+  avatar: Partial<AvatarProps> & { rounded: number };
   banner?: BannerProps;
   className?: string;
   link: string;
@@ -18,16 +18,18 @@ export type PopoverCardProps = {
 export function PopoverCard({ avatar, banner, className, link, name, children }: PopoverCardProps) {
   const navigate = useNavigate();
   return (
-    <div className={clsx(className, 'flex flex-col w-80 rounded-xl overflow-hidden')}>
+    <div className={clsx(className, 'flex flex-col w-popover-card rounded-2xl overflow-hidden')}>
       <Banner {...banner} name={name} className={banner?.src ? 'h-fit' : 'h-16'} />
       <div className="text-0 px-4 pb-2 relative bg-1">
         <div
-          className={clsx(avatar?.className, 'absolute -translate-y-[50%] border-4 border-[var(--bg-1)] rounded-full')}
+          className={clsx(avatar?.className, 'absolute -translate-y-[50%] border-4 border-[var(--bg-1)]')}
+          style={{ borderRadius: `${avatar.rounded}%` }}
         >
           <Avatar {...avatar} name={name} size={34} />
           <motion.div
             onClick={() => navigate(link)}
-            className="absolute -inset-px outline outline-black outline-1 z-20 cursor-pointer bg-black text-white rounded-full flex gap-1 items-center justify-center"
+            className="absolute -inset-px outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
+            style={{ borderRadius: `${avatar.rounded}%` }}
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 0.8 }}
             transition={{ duration: 0.1 }}

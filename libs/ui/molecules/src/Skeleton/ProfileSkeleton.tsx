@@ -13,9 +13,6 @@ export function ProfileSkeleton() {
           <Skeleton width={32} height={10} />
           <Skeleton width="full" height={32} />
           <Skeleton width="full" height={12} />
-          {/* <div className="font-semibold tracking-wider opacity-95">{type}</div>
-          <div className="text-8xl font-title leading-tight font-bold tracking-tighter line-clamp-1 pr-1">{name}</div>
-          {details} */}
         </div>
       </div>
       <div className="relative">
@@ -24,12 +21,5 @@ export function ProfileSkeleton() {
         </GradientTransparent>
       </div>
     </motion.div>
-    // <div className="flex items-center space-x-4">
-    //   <Skeleton rounded="8%" width={72} height={72} />
-    //   <div className="flex flex-col justify-center">
-    //     <Skeleton width={32} height={6} />
-    //     <Skeleton width="full" height={4} />
-    //   </div>
-    // </div>
   );
 }

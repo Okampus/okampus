@@ -14,14 +14,6 @@ export function CardSkeleton() {
         <Skeleton height={10} width={72} className="-mt-4" />
         <hr className="my-1 border-color-3" />
         <Skeleton height={6} width={32} />
-        <Skeleton height={6} width={120} />
-        <Skeleton height={6} width={120} />
-        <Skeleton height={6} width={120} />
-        <hr className="my-1 border-color-3" />
-        <Skeleton height={6} width={32} />
-        <Skeleton height={6} width={120} />
-        <Skeleton height={6} width={120} />
-        <Skeleton height={6} width={120} />
       </div>
     </div>
   );

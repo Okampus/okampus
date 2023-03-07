@@ -15,6 +15,7 @@ export function FileGroup({ files, limit = 3, size = 14 }: FileGroupProps) {
       items={files}
       limit={limit}
       size={size}
+      rounded={12}
       render={(file) => {
         return <FileTypeIcon file={file} size={size} />;
       }}

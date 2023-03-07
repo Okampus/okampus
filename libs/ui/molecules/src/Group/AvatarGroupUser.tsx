@@ -1,11 +1,13 @@
 import { ItemGroup } from './ItemGroup';
 import { LabeledUser } from '../Labeled/LabeledUser';
 import { UserCard } from '../Card/UserCard';
+
+import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { Avatar } from '@okampus/ui/atoms';
 
 import type { AvatarProps } from '@okampus/ui/atoms';
 
-export type UserItem = AvatarProps & { id: string };
+export type UserItem = Omit<AvatarProps, 'rounded'> & { id: string };
 
 export type AvatarGroupProps = {
   users: UserItem[];
@@ -13,19 +15,20 @@ export type AvatarGroupProps = {
   size?: number;
 };
 
-export function AvatarGroup({ users, limit = 3, size = 14 }: AvatarGroupProps) {
+export function AvatarGroupUser({ users, limit = 3, size = 14 }: AvatarGroupProps) {
   return (
     <ItemGroup
       className="space-x-[-0.5rem]"
       items={users}
       limit={limit}
       size={size}
+      rounded={AVATAR_USER_ROUNDED}
       render={(avatarProps) => (
         <UserCard userId={avatarProps.id}>
-          <Avatar {...avatarProps} size={size} />
+          <Avatar {...avatarProps} size={size} rounded={AVATAR_USER_ROUNDED} />
         </UserCard>
       )}
-      renderListElement={(item) => <LabeledUser name={item.name ?? '?'} avatar={item.src} id={item.id} />}
+      renderListElement={(item) => <LabeledUser name={item.name ?? '?'} avatar={{ src: item.src }} id={item.id} />}
     />
   );
 }

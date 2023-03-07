@@ -37,6 +37,8 @@ export function ActionButton({
   iconActive,
   variant = ActionType.Switch,
 }: ActionButtonProps) {
+  const onlyIcon = !children && icon;
+  const currentIcon = active ? iconActive ?? icon : icon;
   return (
     <motion.button
       disabled={!!disabled}
@@ -45,13 +47,17 @@ export function ActionButton({
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.05 }}
       onClick={onClick}
-      className={clsx(getActionClass(variant), small ? 'button-sm' : 'button')}
+      className={clsx(getActionClass(variant), small ? 'button-sm' : 'button', onlyIcon && '!p-3')}
     >
-      {icon ? (
-        <span className="flex gap-2 items-center">
-          {active ? iconActive ?? icon : icon}
-          <span className="line-clamp-1">{children}</span>
-        </span>
+      {currentIcon ? (
+        onlyIcon ? (
+          currentIcon
+        ) : (
+          <span className="flex gap-2 items-center">
+            {currentIcon}
+            <span className="line-clamp-1">{children}</span>
+          </span>
+        )
       ) : (
         <span className="line-clamp-1">{children}</span>
       )}

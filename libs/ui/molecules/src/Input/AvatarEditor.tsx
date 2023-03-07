@@ -4,6 +4,7 @@ import { NavigationContext } from '@okampus/ui/hooks';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { ReactComponent as EditIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
 
+import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 
@@ -11,10 +12,11 @@ import type { AvatarProps } from '@okampus/ui/atoms';
 
 export type AvatarEditorProps = {
   avatar: AvatarProps;
+  small?: boolean;
   onChange: (file: File | null) => void;
 };
 
-export function AvatarEditor({ avatar, onChange }: AvatarEditorProps) {
+export function AvatarEditor({ avatar, small, onChange }: AvatarEditorProps) {
   const { showModal } = useContext(NavigationContext);
   // TODO: add cropper
 
@@ -33,10 +35,10 @@ export function AvatarEditor({ avatar, onChange }: AvatarEditorProps) {
             borderRadius: `${avatar.rounded ?? 50}%`,
           }}
         >
-          <div className="flex flex-col items-center">
-            <EditIcon className="flex items-center justify-center w-20" />
-            <div className="font-semibold text-lg font-title">
-              {avatar.src ? "Changer l'avatar" : 'Ajouter un avatar'}
+          <div className="flex flex-col items-center gap-item">
+            <EditIcon className="flex items-center justify-center" style={{ width: small ? '50%' : '30%' }} />
+            <div className={clsx('font-semibold font-title', small && 'hidden')} style={{ fontSize: '120%' }}>
+              {avatar.src ? "Changer l'avatar" : 'Séléctionner un avatar'}
             </div>
           </div>
         </div>
@@ -53,10 +55,6 @@ export function AvatarEditor({ avatar, onChange }: AvatarEditorProps) {
           onChange={(event) => {
             const file = event.target.files?.[0];
             onChange(file ?? null);
-            // showModal({
-            //   title: 'Crop Image',
-            //   // content: <Cropper src={URL.createObjectURL(file)} />,
-            // });
           }}
         />
       </motion.div>

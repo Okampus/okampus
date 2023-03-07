@@ -10,7 +10,7 @@ export type BannerProps = {
 
 export function Banner({ src, name, rounded, className }: BannerProps) {
   name = name || '?';
-  className = clsx(className, 'w-full aspect-[2/1]');
+  className = clsx(className, 'w-full min-aspect-card');
   if (!src)
     return (
       <div className={className} style={{ backgroundColor: getColorHexFromData(name), borderRadius: `${rounded}%` }} />

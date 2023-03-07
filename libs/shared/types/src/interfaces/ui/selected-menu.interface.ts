@@ -7,6 +7,8 @@ export enum SubspaceType {
   Me = 'Me',
 }
 
+export const tenantSubspaces = new Set([SubspaceType.Home, SubspaceType.Admin]);
+
 export interface SelectedMenu {
   subSpace: SubspaceType;
   menu: number;

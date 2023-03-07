@@ -1,6 +1,7 @@
 import { TeamCard } from '../Card/TeamCard';
 import { Avatar } from '@okampus/ui/atoms';
 import { clsx } from 'clsx';
+import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
 
 export type TeamLabelProps = {
   name: string;
@@ -14,7 +15,7 @@ export function LabeledTeam({ name, teamType, id, avatar, ellipsis }: TeamLabelP
   return (
     <div className="flex gap-2 items-center font-heading">
       <TeamCard teamId={id}>
-        <Avatar src={avatar} name={name} size={18} />
+        <Avatar src={avatar} name={name} size={18} rounded={AVATAR_TEAM_ROUNDED} />
       </TeamCard>
 
       <TeamCard teamId={id}>

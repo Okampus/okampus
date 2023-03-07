@@ -1,23 +1,26 @@
 import { PopoverCard } from './PopoverCard';
 import { CardSkeleton } from '../Skeleton/CardSkeleton';
-import { useQuery } from '@apollo/client';
+
+import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
+import { getAvatar, getBanner } from '@okampus/ui/utils';
+import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
 import { getFragmentData, getTeamWithMembersQuery, teamMembersFragment } from '@okampus/shared/graphql';
 import { formatDateStandard } from '@okampus/shared/utils';
-import { getAvatar, getBanner } from '@okampus/ui/utils';
-import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
+
+import { useLazyQuery } from '@apollo/client';
 
 export type TeamCardProps = { teamId: string; children: React.ReactNode };
 
 export function TeamCard({ teamId, children }: TeamCardProps) {
-  const { data } = useQuery(getTeamWithMembersQuery, { variables: { id: teamId } });
+  const [getTeam, { data }] = useLazyQuery(getTeamWithMembersQuery, { variables: { id: teamId } });
 
   const team = getFragmentData(teamMembersFragment, data?.teamById);
-  const avatar = { src: getAvatar(team?.actor?.actorImages) };
+  const avatar = { src: getAvatar(team?.actor?.actorImages), rounded: AVATAR_TEAM_ROUNDED };
   const banner = { src: getBanner(team?.actor?.actorImages) };
 
   return (
-    <Popover forcePlacement={true} crossAxis={false} placementOffset={16}>
-      <PopoverTrigger>{children}</PopoverTrigger>
+    <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
+      <PopoverTrigger onClick={() => getTeam()}>{children}</PopoverTrigger>
       <PopoverContent popoverClassName="!p-0 bg-1 ">
         {team && team.actor ? (
           <PopoverCard link={`/org/${team.actor.slug}`} name={team.actor.name} avatar={avatar} banner={banner}>

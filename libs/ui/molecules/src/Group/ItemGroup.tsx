@@ -3,10 +3,15 @@ import { Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
 
 import { clsx } from 'clsx';
 
-const defaultRenderMore = (extra: number, size: number) => (
+const defaultRenderMore = (extra: number, size: number, rounded: number) => (
   <div
-    className="text-2 bg-4 h-8 w-8 rounded-[50%] flex items-center justify-center"
-    style={{ width: `${size / 6}rem`, height: `${size / 6}rem`, fontSize: `${size / 14}rem` }}
+    className="text-2 bg-4 h-8 w-8 flex items-center justify-center"
+    style={{
+      width: `${size / 6}rem`,
+      height: `${size / 6}rem`,
+      fontSize: `${size / 14}rem`,
+      borderRadius: `${rounded}%`,
+    }}
   >
     +{extra}
   </div>
@@ -17,10 +22,11 @@ export type ItemGroupProps<T> = {
   limit: number;
   title?: string;
   size?: number;
+  rounded: number;
   showNumberInTitle?: boolean;
   render: (item: T) => React.ReactNode;
   renderListElement?: (item: T) => React.ReactNode;
-  renderMore?: (extra: number, size: number) => React.ReactNode;
+  renderMore?: (extra: number, size: number, rounded: number) => React.ReactNode;
   className?: string;
   itemClassName?: string;
 };
@@ -29,6 +35,7 @@ export function ItemGroup<T>({
   items,
   limit,
   size = 14,
+  rounded,
   title,
   render,
   renderListElement = render,
@@ -46,7 +53,7 @@ export function ItemGroup<T>({
       ))}
       {items.length > limit && (
         <Popover>
-          <PopoverTrigger>{renderMore(items.length - limit, size)}</PopoverTrigger>
+          <PopoverTrigger>{renderMore(items.length - limit, size, rounded)}</PopoverTrigger>
           <PopoverContent popoverClassName="card-sm">
             {VerticalList({
               title: showNumberInTitle ? (

@@ -14,5 +14,5 @@ export type ActionButtonProps = {
   disabled?: boolean;
   variant?: ActionType;
   iconActive?: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 } & EitherOrBoth<{ icon: React.ReactNode }, { children: React.ReactNode }>;
