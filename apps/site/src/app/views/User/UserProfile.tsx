@@ -1,11 +1,13 @@
 import { ProfileBase } from '../ProfileBase';
-import { ActionButton } from '@okampus/ui/atoms';
 
-import { getAvatar, getBanner } from '@okampus/ui/utils';
+import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+import { ActionType } from '@okampus/shared/types';
 import { getColorHexFromData } from '@okampus/shared/utils';
-import { ProfileSkeleton } from '@okampus/ui/molecules';
+import { ActionButton, GridLoader } from '@okampus/ui/atoms';
 import { useMe, useUser } from '@okampus/ui/hooks';
+import { getAvatar, getBanner } from '@okampus/ui/utils';
 
+import { MyRoute } from '#site/app/menus';
 import { useNavigate } from 'react-router-dom';
 
 export function UserProfile() {
@@ -13,35 +15,43 @@ export function UserProfile() {
   const { me } = useMe();
   const { user } = useUser();
 
-  const color = getColorHexFromData(user?.actor?.name);
+  if (!user || !user.actor) return <GridLoader />;
 
-  const avatar = { src: getAvatar(user?.actor?.actorImages) };
-  const banner = { src: getBanner(user?.actor?.actorImages) };
+  const manageRoute = `/me/${MyRoute.Profile}`;
+  const isMe = me?.id === user.id;
 
-  return user && user.actor ? (
+  const color = getColorHexFromData(user.actor.name);
+  const avatar = { src: getAvatar(user.actor.actorImages), rounded: AVATAR_USER_ROUNDED };
+  const banner = { src: getBanner(user.actor.actorImages) };
+
+  const buttonList = (
+    <>
+      <ActionButton onClick={() => ({})}>S'abonner</ActionButton>
+      {isMe && (
+        <ActionButton variant={ActionType.Do} onClick={() => navigate(manageRoute)}>
+          Gérer le profil
+        </ActionButton>
+      )}
+    </>
+  );
+
+  return (
     <ProfileBase
       color={color}
       name={user.actor.name}
       avatar={avatar}
       type={user.scopeRole}
       banner={banner}
-      details={<div className="tagline">{user?.actor.bio}</div>}
+      buttonList={buttonList}
+      details={user.actor.bio && <div className="tagline">{user.actor.bio}</div>}
     >
-      {/* Action list */}
-      <div className="button-list">
-        <ActionButton onClick={() => ({})}>Follow</ActionButton>
-        {/* {isManager && (
-          <ActionButton
-            variant={ActionType.Do}
-            onClick={() => navigate(`/manage/${user?.actor?.slug}`)}
-            icon={<EditOutlinedIcon height={20} />}
-          >
-            Gérer le profil
-          </ActionButton>
-        )} */}
+      {/* <div className="flex flex-col gap-4 px-view"> */}
+      <div className="h-full w-full flex items-center justify-center px-view text-0 font-semibold text-4xl pt-20">
+        Aucune activité pour le moment.
       </div>
+      {/* <TextSection title="À propos">{user.actor.bio}</TextSection> */}
+      {/* <TagGroup limit={5} tags={user.actor.tags.map((tag) => ({ label: tag.name, slug: tag.slug }))} /> */}
+      {/* </div> */}
     </ProfileBase>
-  ) : (
-    <ProfileSkeleton />
   );
 }
