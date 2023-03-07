@@ -19,6 +19,7 @@ export const meFragment = gql(`
     }
     firstName
     lastName
+    status
     roles
     scopeRole
     shortcuts {

@@ -9,6 +9,9 @@ export const teamMembersFragment = gql(`
     tagline
     type
     currentFinance
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     actor {
       __typename
       id

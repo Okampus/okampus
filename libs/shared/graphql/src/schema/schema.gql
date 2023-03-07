@@ -11,6 +11,7 @@ interface IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
 }
 
 """
@@ -491,6 +492,7 @@ type BotModel implements IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
   botRole: BotRole!
   owner: ActorModel!
 }
@@ -1110,6 +1112,7 @@ type UserModel implements IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
   firstName: String!
   lastName: String!
   middleNames: [String!]!
@@ -1200,7 +1203,7 @@ type Query {
   me: AuthContextModel!
   userById(id: String!): UserModel!
   userBySlug(slug: String!): UserModel!
-  users(options: PaginationOptions): PaginatedUserModel!
+  users(options: PaginationOptions, filter: UserFilterQuery): PaginatedUserModel!
   botById(id: String!): BotModel!
   botBySlug(slug: String!): BotModel!
   bots(options: PaginationOptions): PaginatedBotModel!
@@ -1211,7 +1214,7 @@ type Query {
   events(options: PaginationOptions): PaginatedTenantEventModel!
   teamById(id: String!): TeamModel!
   teamBySlug(slug: String!): TeamModel!
-  teams(options: PaginationOptions, filter: TeamFilterOptions): PaginatedTeamModel!
+  teams(options: PaginationOptions, filter: TeamFilterQuery): PaginatedTeamModel!
   eventApprovalById(id: String!): EventApprovalModel!
   eventApprovals(options: PaginationOptions): PaginatedEventApprovalModel!
   eventApprovalStepById(id: String!): EventApprovalStepModel!
@@ -1238,9 +1241,28 @@ input PaginationOptions {
 """QueryOrderMap custom scalar type"""
 scalar QueryOrderMap
 
-input TeamFilterOptions {
+input UserFilterQuery {
+  ids: [String!]
+  slugs: [String!]
+  scopeRoles: [ScopeRole!]
+  teamMemberships: TeamFilterQuery
+  teamRoles: TeamRoleFilterQuery
+}
+
+input TeamFilterQuery {
+  ids: [String!]
+  slugs: [String!]
   categories: [String!]
   types: [TeamType!]
+}
+
+input TeamRoleFilterQuery {
+  ids: [String!]
+  teams: TeamFilterQuery
+  permissionsAll: [TeamPermissions!]
+  permissionsSome: [TeamPermissions!]
+  categories: [TeamRoleCategory!]
+  keys: [TeamRoleKey!]
 }
 
 type Mutation {
@@ -1248,7 +1270,8 @@ type Mutation {
   logout: Boolean!
   wsToken: Boolean!
   createUser(user: CreateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
-  updateUser(updateUser: UpdateUserDto!): UserModel!
+  deactivateUserImage(id: String!, actorImageType: ActorImageType!): ActorImageModel!
+  updateUser(updateUser: UpdateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
   deleteUser(id: String!): Boolean!
   createBot(bot: CreateBotDto!): BotModel!
   updateBot(updateBot: UpdateDocumentDto!): BotModel!
@@ -1285,6 +1308,7 @@ type Mutation {
 }
 
 input CreateUserDto {
+  status: String!
   firstName: String!
   middleNames: [String!]
   lastName: String!
@@ -1299,6 +1323,7 @@ input CreateUserDto {
 scalar Upload
 
 input UpdateUserDto {
+  status: String
   firstName: String
   middleNames: [String!]
   lastName: String
@@ -1311,6 +1336,7 @@ input UpdateUserDto {
 }
 
 input CreateBotDto {
+  status: String!
   botRole: BotRole!
   slug: String
   name: String!
