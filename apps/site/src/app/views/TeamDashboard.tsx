@@ -1,3 +1,15 @@
+import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
+import { NavigationContext } from '@okampus/ui/hooks';
+import {
+  AvatarGroupUser,
+  LabeledTeam,
+  LabeledTeamSkeleton,
+  LabeledUser,
+  LabeledUserSkeleton,
+} from '@okampus/ui/molecules';
+import { Dashboard } from '@okampus/ui/organisms';
+import { getAvatar } from '@okampus/ui/utils';
+
 import { Align, OrgDocumentType } from '@okampus/shared/enums';
 import {
   documentFragment,
@@ -7,12 +19,8 @@ import {
   teamMembersFragment,
   TeamRoleKey,
 } from '@okampus/shared/graphql';
+import { isNotNull } from '@okampus/shared/utils';
 
-import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
-import { NavigationContext } from '@okampus/ui/hooks';
-import { AvatarGroup, LabeledTeam, LabeledTeamSkeleton, LabeledUser, LabeledUserSkeleton } from '@okampus/ui/molecules';
-import { Dashboard } from '@okampus/ui/organisms';
-import { getAvatar } from '@okampus/ui/utils';
 import { useQuery } from '@apollo/client';
 import { useContext } from 'react';
 
@@ -20,20 +28,17 @@ import type { Column } from '@okampus/ui/organisms';
 import type { FileLike } from '@okampus/shared/types';
 import type { DocumentUploadInfoFragment, TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getUserLabel(
-  user?: { id: string; actor?: { actorImages: any[]; name: string } | null } | null,
-  label = 'N/A'
-) {
+function getUserLabel(team: TeamMembersInfoFragment, teamRoleKey: TeamRoleKey, label = 'N/A') {
+  const user = team.members.find((member) => member.roles.some((role) => role.key === teamRoleKey))?.user;
   if (!user || !user.actor) return <StatusLabel status="archived" label={label} />;
 
-  return <LabeledUser avatar={getAvatar(user.actor.actorImages)} name={user.actor.name} id={user.id} />;
+  return <LabeledUser avatar={{ src: getAvatar(user.actor.actorImages) }} name={user.actor.name} id={user.id} />;
 }
 
 function findDocument(team: TeamMembersInfoFragment, type: OrgDocumentType) {
   const document = team.documents.find((document) => document.type === type)?.document;
   const documentFile = document
-    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).documentUpload)
+    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).currentVersion)
     : null;
   return documentFile;
 }
@@ -73,46 +78,36 @@ export const TeamDashboard = () => {
     {
       align: Align.Left,
       label: 'Président',
-      render: (value: TeamMembersInfoFragment) => {
-        const director = value.members.find((member) =>
-          member.roles.some((role) => role.key === TeamRoleKey.Director)
-        )?.user;
-        return getUserLabel(director);
-      },
+      render: (value: TeamMembersInfoFragment) => getUserLabel(value, TeamRoleKey.Director),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       align: Align.Left,
       label: 'Trésorier',
-      render: (value: TeamMembersInfoFragment) => {
-        const treasurer = value.members.find((member) =>
-          member.roles.some((role) => role.key === TeamRoleKey.Treasurer)
-        )?.user;
-        return getUserLabel(treasurer);
-      },
+      render: (value: TeamMembersInfoFragment) => getUserLabel(value, TeamRoleKey.Treasurer),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       align: Align.Left,
       label: 'Secrétaire',
-      render: (value: TeamMembersInfoFragment) => {
-        const secretary = value.members.find((member) =>
-          member.roles.some((role) => role.key === TeamRoleKey.Secretary)
-        )?.user;
-        return getUserLabel(secretary);
-      },
+      render: (value: TeamMembersInfoFragment) => getUserLabel(value, TeamRoleKey.Secretary),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       label: 'Membres',
       render: (value: TeamMembersInfoFragment) => {
-        const members = value.members.map((member) => ({
-          id: member.user?.id ?? '',
-          name: member.user?.actor?.name,
-          avatar: getAvatar(member.user?.actor?.actorImages),
-        }));
+        const members = value.members
+          .map((member) => {
+            if (!member.user || !member.user.actor) return null;
+            return {
+              id: member.user.id,
+              name: member.user.actor.name,
+              avatar: getAvatar(member.user.actor.actorImages),
+            };
+          })
+          .filter(isNotNull);
 
-        return <AvatarGroup users={members} />;
+        return <AvatarGroupUser users={members} />;
       },
     },
     {
