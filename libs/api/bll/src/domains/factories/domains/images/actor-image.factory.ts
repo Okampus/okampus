@@ -5,7 +5,7 @@ import { BaseFactory } from '../../base.factory';
 import { UploadService } from '../../../../features/upload/upload.service';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EntityManager } from '@mikro-orm/core';
+import { EntityManager, FilterQuery } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
@@ -13,7 +13,6 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { ActorImageRepository } from '@okampus/api/dal';
 import { ActorImage, TenantCore, ImageUpload, Actor } from '@okampus/api/dal';
 
-import type { Snowflake } from '@okampus/shared/types';
 import type { ActorImageOptions } from '@okampus/api/dal';
 import type { IActorImage } from '@okampus/shared/dtos';
 import type { ActorImageType } from '@okampus/shared/enums';
@@ -29,10 +28,28 @@ export class ActorImageFactory extends BaseFactory<ActorImageModel, ActorImage, 
     super(eventPublisher, uploadService, actorImageRepository, ActorImageModel, ActorImage);
   }
 
-  async deactivate(actorId: Snowflake, actorImageType: ActorImageType, populate: never[]): Promise<ActorImageModel> {
-    return await this.update({ actor: { id: actorId }, type: actorImageType, lastActiveDate: null }, populate, {
-      lastActiveDate: new Date(),
-    });
+  async deactivate(
+    actorFilter: FilterQuery<Actor>,
+    actorImageType: ActorImageType,
+    tenant: TenantCore,
+    populate: never[],
+    force?: boolean
+  ): Promise<ActorImageModel> {
+    const where = { actor: actorFilter, type: actorImageType, lastActiveDate: null, tenant };
+    const actorImageModel = await this.update(
+      where,
+      populate,
+      { lastActiveDate: new Date() },
+      async (team) => team,
+      force
+    );
+
+    if (actorImageModel.actor?.actorImages) {
+      const notCurrentImage = (image: IActorImage) => !!image.lastActiveDate;
+      actorImageModel.actor.actorImages = actorImageModel.actor.actorImages.filter(notCurrentImage);
+    }
+
+    return actorImageModel;
   }
 
   modelToEntity(model: Required<ActorImageModel>): ActorImage {

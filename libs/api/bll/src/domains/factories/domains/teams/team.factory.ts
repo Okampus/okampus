@@ -1,6 +1,6 @@
 import { TeamModel } from './team.model';
 import { BaseFactory } from '../../base.factory';
-import { addImagesToActor } from '../../abstract.utils';
+import { addImagesToActor } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorImageFactory } from '../images/actor-image.factory';
@@ -46,13 +46,11 @@ import {
   ControlType,
   FormType,
   IndividualKind,
-  OrgKind,
   ShortcutType,
   TeamPermissions,
   TeamType,
 } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
-import type { ActorImageType } from '@okampus/shared/enums';
 
 import type { OrgDocumentModel } from '../documents/org-document.model';
 import type { ActorImageUploadProps, Individual, TeamOptions, User } from '@okampus/api/dal';
@@ -178,29 +176,6 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     return this.hasTeamRole(teamId, individualId, {
       permissions: { $overlap: [TeamPermissions.ManageTeam, TeamPermissions.Admin] },
     });
-  }
-
-  async deactivateTeamImage(tenant: TenantCore, teamId: Snowflake, actorImageType: ActorImageType, populate: never[]) {
-    const actorImage = await this.actorImageRepository.findOneOrFail(
-      {
-        actor: { org: { id: teamId, orgKind: OrgKind.Team, tenant } },
-        type: actorImageType,
-        lastActiveDate: null,
-      },
-      { populate }
-    );
-
-    actorImage.lastActiveDate = new Date();
-    this.actorImageRepository.flush();
-    const actorImageModel = this.actorImageFactory.entityToModelOrFail(actorImage);
-
-    if (actorImageModel?.actor?.actorImages) {
-      actorImageModel.actor.actorImages = actorImageModel.actor.actorImages.filter(
-        (image) => image.id !== actorImage.id
-      );
-    }
-
-    return actorImageModel;
   }
 
   modelToEntity(model: Required<TeamModel>): Team {

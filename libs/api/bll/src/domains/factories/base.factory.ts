@@ -1,5 +1,5 @@
 import { loadTenantScopedEntity } from './domains/loader';
-import { addImagesToActor } from './abstract.utils';
+import { addImagesToActor } from './factory.utils';
 import { assertPermissions, checkPermissions } from '../../features/uaa/authorization/check-permissions';
 import { RequestContext } from '../../shards/abstract/request-context';
 import { PageInfo } from '../../shards/types/page-info.type';
@@ -11,6 +11,7 @@ import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
 import { Action, QueryOrder } from '@okampus/shared/enums';
 import { isEmpty, isNotNull, keepDefined } from '@okampus/shared/utils';
 
+import type { ActorModel } from './abstract/actor.model';
 import type { UploadService } from '../../features/upload/upload.service';
 import type { BaseModel } from './abstract/base.model';
 import type { Subjects } from '../../features/uaa/authorization/casl/get-abilities';
@@ -35,8 +36,8 @@ import type {
   TenantCore,
   TenantScopedEntity,
 } from '@okampus/api/dal';
-import type { IBase } from '@okampus/shared/dtos';
-import type { Constructor, CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
+import type { IActorImage, IBase } from '@okampus/shared/dtos';
+import type { Constructor, CursorColumns, CursorColumnTypes, DeepPartial } from '@okampus/shared/types';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>,
@@ -268,10 +269,10 @@ export abstract class BaseFactory<
   public async update(
     where: FilterQuery<Entity>,
     populate: Populate<Entity>,
-    data: Partial<Entity>,
-    transform: (data: Partial<Entity>, entity: Entity) => Promise<Partial<Entity>> = async (data) => data,
+    data: DeepPartial<Entity>,
+    transform: (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>> = async (data) => data,
     force = false,
-    options?: AssignOptions
+    options: AssignOptions = {}
   ): Promise<Model> {
     const entity = await this.repository.findOneOrFail(where, { populate });
 
@@ -285,7 +286,9 @@ export abstract class BaseFactory<
       throw new BadRequestException(`Cannot update forbidden key on ${this.EntityClass.name}`);
 
     const partialEntity = await transform(data, entity);
+    if (!('mergeObjects' in options)) options = { ...options, mergeObjects: true };
     this.repository.assign(entity, partialEntity as unknown as EntityData<Entity>, options);
+
     await this.repository.persistAndFlush(entity);
 
     return this.entityToModelOrFail(entity);
@@ -297,7 +300,7 @@ export abstract class BaseFactory<
     where: FilterQuery<T>,
     populate: Populate<T>,
     data: FlatActorData<T>,
-    transformData?: (data: Partial<T>, entity: T) => Promise<Partial<T>>,
+    transformData?: (data: DeepPartial<T>, entity: T) => Promise<DeepPartial<T>>,
     images?: ActorImageUploadProps,
     force = false,
     options?: AssignOptions
@@ -306,19 +309,26 @@ export abstract class BaseFactory<
     const actor = keepDefined({ name, bio, primaryEmail, slug });
     const assignData = { ...(isEmpty(actor) ? {} : { actor }), ...entityProps };
 
-    const transform = async (data: Partial<T>, entity: T): Promise<Partial<T>> => {
+    const transform = async (data: DeepPartial<T>, entity: T): Promise<DeepPartial<T>> => {
       if (images) await addImagesToActor(entity.actor, entity.actor.actorKind(), images, tenant, this.uploadService);
       return transformData ? transformData(data, entity) : data;
     };
 
-    return this.update(
+    const model = (await this.update(
       { $and: [where, { tenant }] } as FilterQuery<Entity>,
       populate,
-      assignData as unknown as Partial<Entity>,
-      transform as unknown as (data: Partial<Entity>, entity: Entity) => Promise<Partial<Entity>>,
+      assignData as unknown as DeepPartial<Entity>,
+      transform as unknown as (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>>,
       force,
       { ...options, updateByPrimaryKey: false }
-    );
+    )) as Model & { actor: ActorModel };
+
+    if (images && model.actor.actorImages) {
+      const notCurrentImage = (image: IActorImage) => !image.lastActiveDate;
+      model.actor.actorImages = model.actor.actorImages.filter(notCurrentImage);
+    }
+
+    return model;
   }
 
   public async delete(where: FilterQuery<Entity>): Promise<boolean> {

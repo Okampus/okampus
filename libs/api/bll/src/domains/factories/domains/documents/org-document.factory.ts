@@ -1,6 +1,6 @@
 import { OrgDocumentModel } from './org-document.model';
 import { BaseFactory } from '../../base.factory';
-import { addDocumentEditToDocument } from '../../abstract.utils';
+import { addDocumentEditToDocument } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
