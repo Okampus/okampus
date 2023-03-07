@@ -38,13 +38,13 @@ function documentTypesByTeamType(teamType?: TeamType) {
 }
 
 function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits {
-  const documentUpload = getFragmentData(documentUploadFragment, document.documentUpload);
+  const documentUpload = getFragmentData(documentUploadFragment, document.currentVersion);
   return {
     current: {
       createdAt: document.createdAt,
-      text: document.text,
+      description: document.description,
       name: document.name,
-      yearVersion: document.yearVersion,
+      yearVersion: document.yearVersion ?? null,
       file: {
         name: documentUpload.name,
         src: documentUpload.url,
@@ -54,12 +54,12 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
       },
     },
     edits: document.edits.map((edit) => {
-      const documentUpload = getFragmentData(documentUploadFragment, edit.documentUpload);
+      const documentUpload = getFragmentData(documentUploadFragment, edit.newVersion);
       return {
         createdAt: edit.createdAt,
-        text: document.text,
+        description: document.description,
         name: documentUpload.name,
-        yearVersion: edit.yearVersion,
+        yearVersion: edit.yearVersion ?? null,
         file: {
           name: documentUpload.name,
           src: documentUpload.url,
@@ -118,12 +118,7 @@ export function DocumentManageView() {
                           const name = document.name ?? documentName(type, manageOrg);
                           createOrgDocument({
                             variables: {
-                              createOrgDocument: {
-                                text: name,
-                                name,
-                                description: document.description,
-                                type,
-                              },
+                              createOrgDocument: { description: document.description, name, type },
                               teamId: manageOrg.id,
                               documentFile: document.documentFile,
                             },

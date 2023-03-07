@@ -14,7 +14,7 @@ export function GuideView() {
         if (!orgDocument.document) return null;
 
         const document = getFragmentData(documentFragment, orgDocument.document);
-        const documentUpload = getFragmentData(documentUploadFragment, document.documentUpload);
+        const documentUpload = getFragmentData(documentUploadFragment, document.currentVersion);
 
         return (
           <DocumentCard
@@ -29,7 +29,7 @@ export function GuideView() {
             document={{
               createdAt: document.createdAt,
               name: document.name,
-              yearVersion: document.yearVersion,
+              yearVersion: document.yearVersion ?? null,
               url: documentUpload.url,
               type: documentUpload.mime,
               size: documentUpload.size,

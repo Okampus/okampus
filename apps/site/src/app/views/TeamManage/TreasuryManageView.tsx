@@ -76,15 +76,9 @@ const columns = [
   },
 ];
 
-export function FinanceManageView() {
+export function TreasuryManageView() {
   const { manageOrg } = useManageOrg();
   const { showModal, hideModal } = useContext(NavigationContext);
-
-  // const { data } = useQuery(getFinancesQuery, {
-  //   variables: {
-  //     teamId: org?.id ?? '',
-  //   },
-  // });
 
   const [createFinance] = useMutation(createFinanceMutation, {
     onCompleted: () => {
@@ -143,7 +137,6 @@ export function FinanceManageView() {
   ];
 
   const finances = manageOrg?.finances.map((finance) => getFragmentData(financeFragment, finance)) ?? [];
-  // if (data) finances = data.financesByTeam.edges?.map?.((edge) => getFragmentData(financeFragment, edge.node)) ?? [];
 
   return (
     <div className="p-view flex flex-col text-2 gap-10 pb-4">
@@ -190,7 +183,6 @@ export function FinanceManageView() {
       >
         Ajouter une transaction
       </button>
-      {/* {JSON.stringify(finances)} */}
       <Dashboard columns={columns} data={finances} />
     </div>
   );

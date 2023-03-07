@@ -1,15 +1,17 @@
 import {
   getFragmentData,
   getTeamCategoryBySlugQuery,
-  getTeamsByCategoryQuery,
+  getTeamsQuery,
   teamCategoryFragment,
   teamMembersFragment,
 } from '@okampus/shared/graphql';
 
 import { CategorySelector, TeamListCard } from '@okampus/ui/molecules';
+import { TeamType } from '@okampus/shared/enums';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+
 import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
 
 export function TeamList() {
@@ -22,7 +24,9 @@ export function TeamList() {
 }
 
 export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
-  const { data } = useQuery(getTeamsByCategoryQuery, { variables: { categorySlug } });
+  const teamListFilter = { categories: [categorySlug], types: [TeamType.Association, TeamType.Club] };
+
+  const { data } = useQuery(getTeamsQuery, { variables: { filter: teamListFilter } });
   const { data: categoryData } = useQuery(getTeamCategoryBySlugQuery, { variables: { slug: categorySlug } });
   const [filteredTeams, setFilteredTeams] = useState<TeamMembersInfoFragment[]>([]);
 
@@ -45,7 +49,7 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
             onChangeFilteredItems={(filteredItems) => setFilteredTeams(filteredItems)}
           />
         </div>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4">
           {filteredTeams.map((team) => (
             <TeamListCard key={team.id} team={team} link={`/org/${team.actor?.slug}`} />
           ))}

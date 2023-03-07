@@ -76,7 +76,7 @@ export function WelcomePage() {
 
   return (
     <div className="flex w-full h-full overflow-hidden">
-      <div className="relative bg-1 w-full h-full flex flex-col tall:justify-center items-center overflow-scroll scrollbar">
+      <div className="relative bg-1 w-full h-full flex flex-col tall:justify-center items-center overflow-scroll">
         <div className="w-96 flex flex-col py-10">
           {/* Logo */}
           <div className="h-14 overflow-hidden relative">
