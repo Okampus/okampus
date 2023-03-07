@@ -1,22 +1,24 @@
 :root {
-  --primary: #70c;
+  --primary: #1564bf;
   --inactive: #555;
   --success: #2ecc71;
   --warning: #f1c40f;
   --danger: #e74c3c;
   --info: #348adb;
-  --bg-0: #fff;
-  --bg-1: #f0f0f0;
-  --bg-2: #eaeaea;
+  --bg-0: #f3f3f3;
+  --bg-1: #eaeaea;
+  --bg-2: #e0e0e0;
   --bg-3: #e6e8eb;
   --bg-4: #ddd;
-  --bg-main: #f1f1f1;
-  --bg-topbar: #fafafa;
+  --bg-5: #ccc;
+  --bg-main: #fff;
+  --bg-topbar: #f3f3f3;
   --text-0: #000;
   --text-1: #333;
   --text-2: #666;
   --text-3: #999;
   --text-4: #ccc;
+  --text-5: #eee;
   --border-1: #eaeaeacc;
   --border-2: #dddc;
   --border-3: #cccc;
@@ -28,6 +30,7 @@
     --bg-2: #2b2b2b;
     --bg-3: #2a2c2e;
     --bg-4: #444;
+    --bg-5: #555;
     --bg-main: #131313;
     --bg-topbar: #0a0a0a;
     --text-0: #fff;
@@ -35,6 +38,7 @@
     --text-2: #ccc;
     --text-3: #aaa;
     --text-4: #999;
+    --text-5: #777;
     --border-1: #4b4b4bcc;
     --border-2: #333c;
     --border-3: #242c35cc;
@@ -120,6 +124,11 @@
   @apply bg-[var(--bg-4)];
 }
 
+.bg-5,
+.bg-hover-5:hover {
+  @apply bg-[var(--bg-5)];
+}
+
 .hoverable {
   &::after {
     @apply content-[""] bg-[#dbeafc] dark:bg-[#0e1f3f] scale-0 opacity-0;
@@ -146,8 +155,8 @@
   @apply bg-[#333] dark:bg-[#eee];
 }
 
-.bg-bubble {
-  @apply bg-[var(--inactive)] [&.active]:bg-[var(--primary)];
+.bg-activate {
+  @apply bg-[var(--inactive)] data-[active=true]:bg-[var(--primary)] active:bg-[var(--primary)];
 }
 
 .text-hover {
@@ -172,6 +181,10 @@
 
 .text-4 {
   @apply text-[var(--text-4)];
+}
+
+.text-5 {
+  @apply text-[var(--text-5)];
 }
 
 .text-opposite {

@@ -20,5 +20,5 @@
 }
 
 .button-list {
-  @apply flex gap-4 overflow-x-scroll py-0.5 px-1;
+  @apply flex py-0.5 px-1 gap-item;
 }

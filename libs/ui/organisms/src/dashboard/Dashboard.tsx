@@ -19,40 +19,6 @@ type DashboardProps<T extends object> = {
   nItems?: number;
 };
 
-function Row<T extends object | null>({
-  columns,
-  row,
-  rowIdx,
-}: {
-  columns: Column<T>[];
-  row: T | undefined;
-  rowIdx: number;
-}) {
-  return (
-    <tr className="border-t border-color-3 px-3 bg-0 text-0" key={rowIdx}>
-      {columns.map((column, colIdx) => (
-        <td key={colIdx}>
-          <div
-            className={clsx(
-              'py-3 px-4 flex',
-              column.classes,
-              column.align
-                ? column.align === Align.Center
-                  ? 'justify-center'
-                  : column.align === Align.Right && 'justify-end'
-                : colIdx === columns.length - 1
-                ? 'justify-end'
-                : colIdx !== 0 && 'justify-center'
-            )}
-          >
-            {row ? column.render(row) : column.skeleton}
-          </div>
-        </td>
-      ))}
-    </tr>
-  );
-}
-
 export function Dashboard<T extends object>({ columns, data, nItems = 10 }: DashboardProps<T>) {
   // eslint-disable-next-line unicorn/no-useless-undefined
   const arr = data ?? Array.from({ length: nItems }, () => undefined);

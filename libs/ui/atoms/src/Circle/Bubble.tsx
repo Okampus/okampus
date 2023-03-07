@@ -1,3 +1,4 @@
+import { AVATAR_SHORTCUT_ROUNDED } from '@okampus/shared/consts';
 import { clsx } from 'clsx';
 
 type BubbleProps = {
@@ -8,19 +9,23 @@ type BubbleProps = {
   heightClass?: string;
 };
 
-export function Bubble({ children, onClick, selected, showBg, heightClass = 'h-bubble' }: BubbleProps) {
+export function Bubble({ children, onClick, selected }: BubbleProps) {
   return (
     <button
       onClick={onClick}
-      className={clsx('rounded-[35%] p-px active:scale-95', selected ? 'dark:bg-white bg-[#4880e9]' : '')}
+      style={{ borderRadius: `${AVATAR_SHORTCUT_ROUNDED}%` }}
+      data-active={selected}
+      className={clsx('p-[2px] active:scale-95 overflow-hidden', selected && 'bg-activate')}
     >
-      <div className={clsx('rounded-[35%] p-bubble', selected ? 'dark:bg-black bg-white ' : '')}>
+      <div
+        style={{ borderRadius: `${AVATAR_SHORTCUT_ROUNDED}%` }}
+        className={clsx('p-bubble', selected ? 'dark:bg-black bg-white ' : '')}
+      >
         <div
+          data-active={selected}
+          style={{ borderRadius: `${AVATAR_SHORTCUT_ROUNDED}%` }}
           className={clsx(
-            heightClass,
-            showBg ? 'bg-bubble' : '',
-            'aspect-square cursor-pointer text-gray-300 [&.active]:text-white shrink-0 rounded-[35%] outline-offset-2 flex justify-center items-center overflow-hidden',
-            selected ? 'active' : ''
+            'bg-activate flex justify-center items-center h-bubble aspect-square cursor-pointer text-gray-300 [&.active]:text-white shrink-0 overflow-hidden'
           )}
         >
           {children}
