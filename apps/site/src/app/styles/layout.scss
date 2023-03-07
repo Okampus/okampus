@@ -1,63 +1,57 @@
+// TODO: refactor & optimize spacing
 :root {
-  --topbar-height: 4rem;
-  --sidebar-width-lg: 18rem;
-  --sidebar-width-sm: 8.5rem;
-  --padding-inner: 0.25rem;
+  --topbar-height: 5rem;
+  --sidebar-width-lg: 21rem;
+  --padding-inner: 0.5rem;
   --padding-bubble: 2px;
   --padding-view: 2rem;
 }
 
+// TODO: harmonize post-topbar height
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.h-bubble {
+  height: calc(var(--topbar-height) - (var(--padding-inner) * 2 + var(--padding-bubble) * 4));
+}
+
 .w-sidebar {
-  @apply lg:w-[var(--sidebar-width-lg)] w-[var(--sidebar-width-sm)];
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply lg:w-[var(--sidebar-width-lg)] w-[calc(var(--topbar-height)*2)];
+}
+
+.w-sidepanel {
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply lg:w-[calc(var(--sidebar-width-lg)-var(--topbar-height))] w-[calc(var(--topbar-height)*2)];
 }
 
 .w-content {
-  @apply lg:w-[calc(100%-var(--sidebar-width-lg))] w-[calc(100%-var(--sidebar-width-sm))];
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply lg:w-[calc(100%-(var(--sidebar-width-lg)*2-var(--topbar-height)))] w-[calc(100%-var(--topbar-height)*2)];
 }
 
-.h-topbar {
-  height: var(--topbar-height);
+.w-popover-card {
+  @apply w-96;
 }
 
 .h-content {
   height: calc(100% - var(--topbar-height));
 }
 
-.h-bubble {
-  height: calc(var(--topbar-height) - var(--padding-inner) * 2 - var(--padding-bubble) * 4);
-}
-
 .p-bubble {
   padding: var(--padding-bubble);
 }
 
-.p-sidebar {
-  padding-top: calc(var(--padding-inner) * 1.5);
-  padding-left: var(--padding-inner);
-}
-
-.p-sidebar-name {
-  padding-right: calc(var(--padding-inner) * 2);
-  padding-left: calc(var(--padding-inner) * 1);
-}
-
-.p-sidebar-menu-list {
-  /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply lg:pl-[calc(var(--padding-inner)*0.5)];
-  padding-top: calc(var(--padding-inner) * 2);
-  padding-right: calc(var(--padding-inner) * 3);
-}
-
-.p-topbar {
-  padding: calc(var(--padding-inner) * 1.5) var(--padding-view);
-}
-
-.gap-inner {
-  gap: calc(var(--padding-inner) * 3);
-}
-
 .p-view {
   padding: var(--padding-view);
+}
+
+.px-view {
+  padding-right: var(--padding-view);
+  padding-left: var(--padding-view);
 }
 
 .p-view-inner {

@@ -2,6 +2,7 @@ import '@okampus/ui/styles/global/colors.scss';
 import '@okampus/ui/styles/global/fonts.scss';
 import '@okampus/ui/styles/global/loader.scss';
 import '@okampus/ui/styles/global/scrollbar.scss';
+import '@okampus/ui/styles/global/utils.scss';
 import '@okampus/ui/styles/components/button.scss';
 import '@okampus/ui/styles/components/card.scss';
 import '@okampus/ui/styles/components/container.scss';

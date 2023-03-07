@@ -1,7 +1,7 @@
 import { getLink } from '#site/app/utils/get-link';
 
 import { SelectMenu } from '@okampus/ui/molecules';
-import { NavigationContext, useManageOrg, useMe, useOrg } from '@okampus/ui/hooks';
+import { NavigationContext, useManageOrg, useOrg, useUser } from '@okampus/ui/hooks';
 
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
@@ -17,7 +17,6 @@ export type SidebarLinkProps = {
   selected: boolean;
 };
 
-const iconProps = { style: { width: '2rem' } };
 const sidebarLinkClass = 'p-2 text-hover flex items-center gap-4 rounded-lg lg:justify-start justify-center';
 
 export function SidebarLink({ menu, selected, link }: SidebarLinkProps) {
@@ -26,7 +25,7 @@ export function SidebarLink({ menu, selected, link }: SidebarLinkProps) {
     // TODO: this should be refreshed quicker just after the subspace changes (to avoid error getLink calls)
     <motion.div whileTap={{ scale: 0.95 }} className="w-full">
       <Link to={link} className={clsx(selected ? 'text-0' : 'text-2', sidebarLinkClass)}>
-        {icon && icon(iconProps)}
+        {icon && icon({ className: 'icon' })}
         <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{menu.label}</div>
       </Link>
     </motion.div>
@@ -39,13 +38,13 @@ export type SidebarMenuProps = {
 };
 
 export function SidebarMenu({ menu, idx }: SidebarMenuProps) {
-  const { org } = useOrg();
-  const { me } = useMe();
   const { manageOrg } = useManageOrg();
+  const { org } = useOrg();
+  const { user } = useUser();
 
   const { selected } = useContext(NavigationContext);
 
-  const linkSlugs: LinkContext = { Org: org?.actor?.slug, ManageOrg: manageOrg?.actor?.slug, User: me?.actor?.slug };
+  const linkSlugs: LinkContext = { Org: org?.actor?.slug, ManageOrg: manageOrg?.actor?.slug, User: user?.actor?.slug };
   const menuLink = getLink(menu.link, linkSlugs);
 
   if (!menu.sub || menu.sub.length === 0)

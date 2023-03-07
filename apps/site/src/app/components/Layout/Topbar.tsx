@@ -6,9 +6,10 @@ import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/ou
 
 import { Avatar, Bubble, Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
 import { NavigationContext, useMe } from '@okampus/ui/hooks';
+import { getAvatar } from '@okampus/ui/utils';
+import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { logoutMutation } from '@okampus/shared/graphql';
 
-import { getAvatar } from '@okampus/ui/utils';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -41,7 +42,7 @@ export function Topbar() {
     window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
 
   return (
-    <header className="sticky top-0 w-full h-topbar bg-topbar p-topbar z-[51] flex items-center justify-between">
+    <header className="sticky top-0 w-full h-[var(--topbar-height)] bg-topbar pl-[var(--padding-view)] pr-[calc(var(--padding-inner)*4)] z-[51] flex items-center justify-between">
       <div className="flex gap-6 items-center">
         {/* History navigation */}
         <div className="flex gap-4">
@@ -69,22 +70,24 @@ export function Topbar() {
       </div>
 
       {/* User settings */}
-      <Popover forcePlacement={true} placement="bottom" placementOffset={12}>
+      <Popover forcePlacement={true} placement="bottom-end" placementOffset={10}>
         <PopoverTrigger>
-          <Avatar name={me?.actor?.name} src={avatar} size={18} />
+          <Avatar name={me?.actor?.name} src={avatar} size={18} rounded={AVATAR_USER_ROUNDED} />
         </PopoverTrigger>
         <PopoverContent popoverClassName="!p-0 bg-1 ">
           <div className="flex flex-col items-center">
             {/* TODO: add as component */}
             <div className="card-sm bg-4 m-2 flex flex-col gap-2">
               <div className="pr-24 flex items-center gap-4">
-                <Avatar src={avatar} name={me?.actor?.name} size={24} />
+                <Avatar src={avatar} name={me?.actor?.name} size={24} rounded={AVATAR_USER_ROUNDED} />
                 <div className="flex flex-col">
                   <div className="text-0 text-lg font-heading leading-tight">{me?.actor?.name}</div>
                   <div className="text-3 text-sm font-heading">{me?.actor?.primaryEmail}</div>
                 </div>
               </div>
-              <button className="button bg-opposite text-opposite w-full">Gérer mon profil</button>
+              <button onClick={() => navigate('/me')} className="button bg-opposite text-opposite w-full">
+                Gérer mon profil
+              </button>
             </div>
 
             <button

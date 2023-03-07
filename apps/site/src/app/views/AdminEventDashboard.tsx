@@ -3,15 +3,11 @@ import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg
 import { formatDateDayOfWeek } from '@okampus/shared/utils';
 import { NavigationContext } from '@okampus/ui/hooks';
 
+import { ToastType } from '@okampus/shared/types';
 import { createRef, useContext, useState } from 'react';
-// import { motion } from 'framer-motion';
-// import { EventState } from '@okampus/shared/enums';
-import { nanoid } from 'nanoid';
 import { useMutation, useQuery } from '@apollo/client';
 
 import type { EventInfoFragment } from '@okampus/shared/graphql';
-// import { EventCard } from '@okampus/ui/molecules';
-// import { TabsView } from '@okampus/ui/templates';
 
 const printAddress = (address: { street?: string | null; zip?: number | null; city?: string | null }) => {
   let result = '';
@@ -30,9 +26,8 @@ const printAddress = (address: { street?: string | null; zip?: number | null; ci
 };
 
 export const AdminEventDashboard = () => {
-  // const [message, setMessage] = useState('');
   const message = createRef<HTMLTextAreaElement>();
-  const { notifications, setNotifications } = useContext(NavigationContext);
+  const { addNotification } = useContext(NavigationContext);
 
   const [_selectedId, setSelectedId] = useState<string | null>(null);
   const { data: _, refetch } = useQuery(getEventsQuery);
@@ -45,25 +40,17 @@ export const AdminEventDashboard = () => {
       const event = getFragmentData(eventFragment, data.createEventApproval.event);
       if (event) {
         if (data.createEventApproval.approved) {
-          setNotifications([
-            ...notifications,
-            {
-              id: nanoid(21),
-              type: 'success',
-              message: `${data.createEventApproval.step?.name} approuvée pour l'événement ${event.title} !`,
-              timeout: 3000,
-            },
-          ]);
+          addNotification({
+            type: ToastType.Success,
+            message: `${data.createEventApproval.step?.name} approuvée pour l'événement ${event.title} !`,
+            timeout: 3000,
+          });
         } else {
-          setNotifications([
-            ...notifications,
-            {
-              id: nanoid(21),
-              type: 'error',
-              message: `${data.createEventApproval.step?.name} refusée pour l'événement ${event.title}`,
-              timeout: 3000,
-            },
-          ]);
+          addNotification({
+            type: ToastType.Error,
+            message: `${data.createEventApproval.step?.name} refusée pour l'événement ${event.title}`,
+            timeout: 3000,
+          });
         }
       }
 

@@ -6,6 +6,7 @@ import { FilePreviewer } from '../misc/FilePreviewer';
 import { selectedMenuFromPath } from '../menus';
 import { Topbar } from '../components/Layout/Topbar';
 
+import { SidePanel } from '../components/Layout/SidePanel';
 import { NavigationContext, useMe } from '@okampus/ui/hooks';
 import { Modal, Toast } from '@okampus/ui/atoms';
 
@@ -68,6 +69,7 @@ export function TenantApp() {
         <Topbar />
         <Outlet />
       </div>
+      <SidePanel />
       <AnimatePresence>
         {isSideModalShown && sideModal && (
           <Backdrop onClick={hideSideModal} classes="justify-end">
