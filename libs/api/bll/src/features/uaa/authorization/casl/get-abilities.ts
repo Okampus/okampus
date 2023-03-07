@@ -20,10 +20,11 @@ import {
   Tag,
   Team,
   Tenant,
+  User,
 } from '@okampus/api/dal';
 import { Action, IndividualKind, RoleType } from '@okampus/shared/enums';
 
-import type { allEntities, TenantScopedEntity, User } from '@okampus/api/dal';
+import type { allEntities, TenantScopedEntity } from '@okampus/api/dal';
 import type { MongoAbility as CaslAbility, AnyAbility } from '@casl/ability';
 import type { ExtractSubjectType, InferSubjects } from '@casl/ability';
 
@@ -49,7 +50,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   forbid(Action.Report, Content, isAuthor).because('Cannot report your own content');
 
   forbid(Action.Update, Individual).because('Not the individual');
-  allow(Action.Update, Individual, { id: individual.id }).because('Is the individual');
+  allow(Action.Update, [Individual, User], { id: individual.id }).because('Is the individual');
   allow(Action.Update, Bot, { owner: { id: individual.id } }).because('Is bot owner');
 
   if (isUser(individual)) {

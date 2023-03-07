@@ -1,5 +1,4 @@
 // @index(['./**/*(?<!model).{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
-export * from './domains/factories/abstract.utils';
 export * from './domains/factories/base.factory';
 export * from './domains/factories/domains/bots/bot.factory';
 export * from './domains/factories/domains/contents/content.factory';
@@ -21,6 +20,7 @@ export * from './domains/factories/domains/teams/team.factory';
 export * from './domains/factories/domains/tenants/tenant.factory';
 export * from './domains/factories/domains/users/user.factory';
 export * from './domains/factories/factory.module';
+export * from './domains/factories/factory.utils';
 export * from './domains/resources/actors/actors.module';
 export * from './domains/resources/actors/actors.resolver';
 export * from './domains/resources/actors/actors.service';
@@ -80,6 +80,7 @@ export * from './domains/resources/events/queries/get-event-by-id/get-event-by-i
 export * from './domains/resources/events/queries/get-event-by-id/get-event-by-id.query';
 export * from './domains/resources/events/queries/get-events/get-events.handler';
 export * from './domains/resources/events/queries/get-events/get-events.query';
+export * from './domains/resources/filter-query.utils';
 export * from './domains/resources/finances/commands/create-finance/create-finance.command';
 export * from './domains/resources/finances/commands/create-finance/create-finance.handler';
 export * from './domains/resources/finances/commands/delete-finance/delete-finance.command';
@@ -144,7 +145,7 @@ export * from './domains/resources/teams/queries/get-team-by-slug/get-team-by-sl
 export * from './domains/resources/teams/queries/get-team-by-slug/get-team-by-slug.query';
 export * from './domains/resources/teams/queries/get-teams/get-teams.handler';
 export * from './domains/resources/teams/queries/get-teams/get-teams.query';
-export * from './domains/resources/teams/team-filter-options.type';
+export * from './domains/resources/teams/team.filter-query';
 export * from './domains/resources/teams/teams.module';
 export * from './domains/resources/teams/teams.resolver';
 export * from './domains/resources/teams/teams.service';
@@ -165,6 +166,8 @@ export * from './domains/resources/tenants/tenants.resolver';
 export * from './domains/resources/tenants/tenants.service';
 export * from './domains/resources/users/commands/create-user/create-user.command';
 export * from './domains/resources/users/commands/create-user/create-user.handler';
+export * from './domains/resources/users/commands/deactivate-user-image/deactivate-user-image.command';
+export * from './domains/resources/users/commands/deactivate-user-image/deactivate-user-image.handler';
 export * from './domains/resources/users/commands/delete-user/delete-user.command';
 export * from './domains/resources/users/commands/delete-user/delete-user.handler';
 export * from './domains/resources/users/commands/update-user/update-user.command';
@@ -175,6 +178,8 @@ export * from './domains/resources/users/queries/get-user-by-slug/get-user-by-sl
 export * from './domains/resources/users/queries/get-user-by-slug/get-user-by-slug.query';
 export * from './domains/resources/users/queries/get-users/get-users.handler';
 export * from './domains/resources/users/queries/get-users/get-users.query';
+export * from './domains/resources/users/team-role.filter-query';
+export * from './domains/resources/users/user.filter-query';
 export * from './domains/resources/users/users.module';
 export * from './domains/resources/users/users.resolver';
 export * from './domains/resources/users/users.service';

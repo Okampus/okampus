@@ -298,7 +298,7 @@ export function loadTenantScopedEntity(
   const base = loadBase(entity);
   if (!base) return undefined;
 
-  const tenant = getTenantOrLoad(entity.tenant, contextStack);
+  const tenant = entity.tenant ? getTenantOrLoad(entity.tenant, contextStack) : undefined;
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
     const baseTag = loadTenantScopedEntity(entity, contextStack, true);
@@ -453,6 +453,7 @@ export function loadTenantScopedEntity(
     const individual: IIndividual = {
       ...base,
       individualKind: entity.individualKind,
+      status: entity.status,
       tenant,
     };
 
@@ -473,7 +474,7 @@ export function loadTenantScopedEntity(
     team.currentFinance = entity.currentFinance;
     team.type = entity.type;
     team.directorsCategoryName = entity.directorsCategoryName;
-    team.managersCategoryName = entity.membersCategoryName;
+    team.managersCategoryName = entity.managersCategoryName;
     team.membersCategoryName = entity.membersCategoryName;
     team.tagline = entity.tagline;
     team.membershipFees = entity.membershipFees;

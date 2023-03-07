@@ -7,13 +7,24 @@ import { UpdateUserHandler } from './commands/update-user/update-user.handler';
 import { DeleteUserHandler } from './commands/delete-user/delete-user.handler';
 import { GetUserBySlugHandler } from './queries/get-user-by-slug/get-user-by-slug.handler';
 
+import { DeactivateUserImageHandler } from './commands/deactivate-user-image/deactivate-user-image.handler';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { BaseRepository, TenantRepository, UserRepository, EventApprovalStepRepository } from '@okampus/api/dal';
+import {
+  TenantCore,
+  Tenant,
+  User,
+  Actor,
+  EventApprovalStep,
+  BaseRepository,
+  TenantRepository,
+  UserRepository,
+  EventApprovalStepRepository,
+} from '@okampus/api/dal';
 
 import { RoleType, ScopeRole } from '@okampus/shared/enums';
-import { TenantCore, Tenant, User, Actor, EventApprovalStep } from '@okampus/api/dal';
 import { InjectRepository, MikroOrmModule } from '@mikro-orm/nestjs';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Module } from '@nestjs/common';
@@ -31,7 +42,7 @@ import {
 import { hash } from 'argon2';
 import type { OnModuleInit } from '@nestjs/common';
 
-const commandHandlers = [CreateUserHandler, UpdateUserHandler, DeleteUserHandler];
+const commandHandlers = [CreateUserHandler, UpdateUserHandler, DeleteUserHandler, DeactivateUserImageHandler];
 const queryHandlers = [GetUserByIdHandler, GetUsersHandler, GetUserBySlugHandler];
 
 @Module({

@@ -131,6 +131,7 @@ export * from './resources/ugc/document/study-document.props';
 export * from './resources/ugc/document/update-document.dto';
 export * from './resources/ugc/form-edit/form-edit.interface';
 export * from './resources/ugc/form-edit/form-edit.props';
+export * from './resources/ugc/form-submission-edit/form-submission-edit.interface';
 export * from './resources/ugc/form-submission-edit/form-submission-edit.props';
 export * from './resources/ugc/form-submission/form-submission.interface';
 export * from './resources/ugc/form-submission/form-submission.props';
