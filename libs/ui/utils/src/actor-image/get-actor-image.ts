@@ -1,11 +1,5 @@
 import { actorImageBareFragment, ActorImageType, getFragmentData } from '@okampus/shared/graphql';
-import type { ActorImageBareInfoFragment } from '@okampus/shared/graphql';
-
-type ActorImageBase = {
-  ' $fragmentRefs'?: {
-    ActorImageBareInfoFragment: ActorImageBareInfoFragment;
-  };
-};
+import type { ActorImageBase } from './actor-image-base.type';
 
 export function getAvatar(actorImageFragments?: ActorImageBase[]) {
   if (!actorImageFragments) return;
