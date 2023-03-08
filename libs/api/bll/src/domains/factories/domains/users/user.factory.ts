@@ -2,7 +2,7 @@ import { UserModel } from './user.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
-import { addImagesToActor } from '../../abstract.utils';
+import { addImagesToActor } from '../../factory.utils';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -23,10 +23,10 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     userRepository: UserRepository,
-    private readonly em: EntityManager,
-    private readonly uploadService: UploadService
+    uploadService: UploadService,
+    private readonly em: EntityManager
   ) {
-    super(eventPublisher, userRepository, UserModel, User);
+    super(eventPublisher, uploadService, userRepository, UserModel, User);
   }
 
   async createUser(options: UserOptions, images?: ActorImageUploadProps): Promise<UserModel> {

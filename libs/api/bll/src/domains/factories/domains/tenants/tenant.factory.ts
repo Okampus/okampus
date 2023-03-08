@@ -5,6 +5,9 @@ import { BaseFactory } from '../../base.factory';
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -24,10 +27,11 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     tenantRepository: TenantRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
     private readonly orgDocumentFactory: OrgDocumentFactory
   ) {
-    super(eventPublisher, tenantRepository, TenantModel, Tenant);
+    super(eventPublisher, uploadService, tenantRepository, TenantModel, Tenant);
   }
 
   async tenantAddDocument(
@@ -66,12 +70,13 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
     return await this.create(tenantOptions, async (tenantEntity) => {
       if (createTenant.eventValidationForm) {
         tenantEntity.eventValidationForm = new Form({
-          text: "Formulaire officiel devant être rempli à la création d'un événement pour être valider par l'administration scolaire.",
+          description:
+            "Formulaire officiel devant être rempli à la création d'un événement pour être valider par l'administration scolaire.",
           name: "Formulaire de validation d'événement",
           type: FormType.Internal,
           schema: createTenant.eventValidationForm,
           isTemplate: false,
-          realAuthor: individual,
+          realAuthor: null,
           tenant: tenantCore,
         });
       }

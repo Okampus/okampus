@@ -2,6 +2,9 @@ import { TagModel } from './tag.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -18,9 +21,10 @@ export class TagFactory extends BaseFactory<TagModel, Tag, ITag, TagOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     tagRepository: TagRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, tagRepository, TagModel, Tag);
+    super(eventPublisher, uploadService, tagRepository, TagModel, Tag);
   }
 
   modelToEntity(model: Required<TagModel>): Tag {

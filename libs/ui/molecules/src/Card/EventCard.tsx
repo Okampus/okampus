@@ -1,6 +1,5 @@
 import { EventState } from '@okampus/shared/enums';
 import { formatDateRange } from '@okampus/shared/utils';
-import { Avatar } from '@okampus/ui/atoms';
 
 import { clsx } from 'clsx';
 import type { ITenantEvent } from '@okampus/shared/dtos';
@@ -12,9 +11,7 @@ type EventCardProps = {
 };
 
 export function EventCard({ event, classes, onClick }: EventCardProps) {
-  // console.log('event', event);
   const dateRange = formatDateRange(event.start, event.end);
-  // console.log('dateRange', dateRange);
   return (
     <div
       className={clsx('flex flex-col gap-2 border border-color-2 rounded-lg bg-2 py-2 px-4', classes)}
@@ -35,20 +32,6 @@ export function EventCard({ event, classes, onClick }: EventCardProps) {
           </div>
         )}
       </div>
-      <div className="flex gap-6">
-        <div className="flex gap-2 items-center text-2">
-          <Avatar
-            src="https://cdn.discordapp.com/icons/827518251608178728/3f066f2e311cac3391786c1b1872adc7.webp?size=96"
-            name={event.rootContent?.representingOrg?.actor?.name}
-          />
-          <div>{event.rootContent?.representingOrg?.actor?.name ?? '?'}</div>
-        </div>
-        <div className="flex gap-2 items-center text-2">
-          <Avatar name={'Ivan STEPANIAN'} />
-          <div>{'Ivan STEPANIAN'}</div>
-        </div>
-      </div>
-      {/* <div className="text-1">{event.rootContent.text}</div> */}
     </div>
   );
 }

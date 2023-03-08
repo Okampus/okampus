@@ -1,11 +1,11 @@
 import { gql } from '../schema/__generated__/gql';
 
 export const getTeamsQuery = gql(`
-  query getTeams {
-    teams(filter: { types: [Association, Club] }) {
+  query getTeams($options: PaginationOptions, $filter: TeamFilterQuery) {
+    teams(options: $options, filter: $filter) {
       edges {
         node {
-          ...TeamInfo
+          ...TeamMembersInfo
         }
       }
     }

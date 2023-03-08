@@ -41,7 +41,7 @@ module.exports = {
     'selector-type-no-unknown': [
       true,
       {
-        ignoreTypes: ['from'],
+        ignoreTypes: ['from', '/^swiper-/'],
       },
     ],
     'property-no-unknown': [
@@ -56,7 +56,7 @@ module.exports = {
     'rule-empty-line-before': null,
     'at-rule-empty-line-before': null,
     'at-rule-semicolon-space-before': 'never',
-    'at-rule-no-unknown': atRuleNoUnknown,
+    'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': atRuleNoUnknown,
     'block-closing-brace-newline-after': [
       'always',

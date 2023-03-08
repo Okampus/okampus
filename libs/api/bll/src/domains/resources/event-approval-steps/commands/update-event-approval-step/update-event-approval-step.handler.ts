@@ -17,8 +17,7 @@ export class UpdateEventApprovalStepHandler implements ICommandHandler<UpdateEve
     return await this.eventApprovalStepFactory.update(
       { id, tenant: command.tenant },
       command.populate,
-      updateEventApprovalStep,
-      {}
+      updateEventApprovalStep
     );
   }
 }

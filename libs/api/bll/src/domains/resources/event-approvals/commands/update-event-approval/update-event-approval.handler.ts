@@ -14,6 +14,6 @@ export class UpdateEventApprovalHandler implements ICommandHandler<UpdateEventAp
   async execute(command: UpdateEventApprovalCommand): Promise<EventApprovalModel> {
     const { id, ...updateEventApproval } = command.updateEventApproval;
     // TODO: do stuff with supervisor ID/ refactor the whole update logic with an "ensureExist" find method
-    return await this.eventFactory.update({ id, tenant: command.tenant }, command.populate, updateEventApproval, {});
+    return await this.eventFactory.update({ id, tenant: command.tenant }, command.populate, updateEventApproval);
   }
 }

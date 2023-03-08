@@ -1,3 +1,24 @@
 .button {
-  @apply hover:cursor-pointer rounded-xl py-2 px-4 font-medium;
+  @apply rounded-full px-8 py-4 font-semibold tracking-tight;
+  font-family: Lexend, sans-serif;
+  &-sm {
+    @apply rounded-full px-5 py-3 font-semibold tracking-tight;
+    font-family: Lexend, sans-serif;
+  }
+
+  &:hover {
+    @apply cursor-pointer contrast-75;
+  }
+
+  &:active {
+    @apply opacity-75;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.button-list {
+  @apply flex py-0.5 px-1 gap-item;
 }

@@ -1,61 +1,131 @@
-import './Sidebar.css';
-
-import { HOME, ADMIN, MANAGE } from './Sidebar.types';
-import { SideShortcut } from './SideShortcut';
 import { SidebarMenu } from './SidebarMenu';
 
-import { menus, shortcutMenus } from '../../../menus';
+import { menus, ResourceRouteType, shortcutMenus } from '../../../menus';
 
-import { ReactComponent as ShieldAccountIcon } from '@okampus/assets/svg/icons/shield-account.svg';
-import { ReactComponent as HomeIcon } from '@okampus/assets/svg/icons/home.svg';
-
-import { Bubble } from '@okampus/ui/atoms';
-import { CurrentContext, NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
 import { getLink } from '#site/app/utils/get-link';
-import { ScopeRole } from '@okampus/shared/enums';
 
-import { defaultSelectedMenu } from '@okampus/shared/types';
+import { ReactComponent as AdminIcon } from '@okampus/assets/svg/icons/filled/admin-settings.svg';
+import { ReactComponent as HomeIcon } from '@okampus/assets/svg/icons/filled/home.svg';
+
+import {
+  AVATAR_SHORTCUT_ROUNDED,
+  AVATAR_TEAM_ROUNDED,
+  AVATAR_TENANT_ROUNDED,
+  AVATAR_USER_ROUNDED,
+} from '@okampus/shared/consts';
+
+import { Avatar, Bubble, Skeleton } from '@okampus/ui/atoms';
+import { NavigationContext, useManageOrg, useMe, useOrg, useUser } from '@okampus/ui/hooks';
+import { getAvatar } from '@okampus/ui/utils';
+
+import { ScopeRole } from '@okampus/shared/enums';
+import { defaultSelectedMenu, tenantSubspaces } from '@okampus/shared/types';
+import { SubspaceType } from '@okampus/shared/types';
+
+import { enumChecker, isNotNull } from '@okampus/shared/utils';
+import { getFragmentData, teamFragment } from '@okampus/shared/graphql';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
-import type { SelectedMenu, SubspaceTypes } from '@okampus/shared/types';
-import type { SideBubble } from './Sidebar.types';
-import type { ShortcutType } from '@okampus/shared/enums';
 import type { Menu } from '../../../menus';
+import type { LinkContext } from '#site/app/utils/get-link';
+import type { ShortcutType } from '@okampus/shared/enums';
+import type { SelectedMenu, SideBubble } from '@okampus/shared/types';
 
-const getMenu = (selected: SelectedMenu): Menu => {
+const isSubSpace = enumChecker(SubspaceType);
+
+const subSpaceMenu = (subSpace: SubspaceType): SelectedMenu => ({
+  menu: defaultSelectedMenu.menu,
+  subMenu: defaultSelectedMenu.subMenu,
+  subSpace,
+});
+
+const getMenuLink = (selected: SelectedMenu): string => {
   const menu = menus[selected.subSpace].menus[selected.menu];
-  if (!menu.sub) return menu;
-  return menu.sub[selected.subMenu];
+  if (!menu.sub) return menu.link;
+  return menu.sub[selected.subMenu].link;
 };
 
-const baseBubbles: SideBubble[] = [{ subSpace: HOME, icon: HomeIcon }];
-const adminBubbles: SideBubble[] = [{ subSpace: ADMIN, icon: ShieldAccountIcon }];
+const baseBubble: SideBubble = { subSpace: SubspaceType.Home, icon: HomeIcon };
+const adminBubbles: SideBubble[] = [{ subSpace: SubspaceType.Admin, icon: AdminIcon }];
 
 export function Sidebar() {
   const navigate = useNavigate();
-  const { isSearching, setIsSearching, selected } = useContext(NavigationContext);
-  const { setCurrentOrgId } = useContext(CurrentContext);
+  const { isSearching, setIsSearching, selected, tenant } = useContext(NavigationContext);
 
-  const [{ org, user }] = useCurrentContext();
+  const { me } = useMe();
+  const { user } = useUser();
+  const { org } = useOrg();
+  const { manageOrg } = useManageOrg();
 
-  const switchSubspace = (subSpace: SubspaceTypes, shortcutKey?: ShortcutType, orgSlug?: string) => {
+  const switchSubspace = (shortcutType: SubspaceType | ShortcutType, context?: LinkContext) => {
     if (isSearching) setIsSearching(false);
-    if (subSpace !== MANAGE) setCurrentOrgId(null);
-
-    const selected = shortcutKey ? shortcutMenus[shortcutKey] : { ...defaultSelectedMenu, subSpace };
-    const menu = getMenu(selected);
-
-    navigate(getLink(menu.link, { orgSlug: orgSlug ?? org?.actor?.slug }));
+    const link = getMenuLink(isSubSpace(shortcutType) ? subSpaceMenu(shortcutType) : shortcutMenus[shortcutType]);
+    navigate(getLink(link, context));
   };
 
-  const showBubbles = [...baseBubbles, ...(user?.scopeRole === ScopeRole.Admin ? adminBubbles : [])];
+  const showBubbles = me?.scopeRole === ScopeRole.Admin ? adminBubbles : [];
+  const shortcuts = me?.shortcuts || [];
 
-  const shortcuts = user?.shortcuts || [];
+  const getSubspaceInfo = () => {
+    if (tenantSubspaces.has(selected.subSpace) && tenant?.actor)
+      return {
+        name: tenant.actor.name,
+        avatar: getAvatar(tenant.actor.actorImages),
+        rounded: AVATAR_TENANT_ROUNDED,
+      };
+    if (selected.subSpace === SubspaceType.Org && org?.actor)
+      return { name: org.actor.name, avatar: getAvatar(org.actor.actorImages), rounded: AVATAR_TEAM_ROUNDED };
+    if (selected.subSpace === SubspaceType.Manage && manageOrg?.actor)
+      return {
+        name: manageOrg.actor.name,
+        avatar: getAvatar(manageOrg.actor.actorImages),
+        rounded: AVATAR_TEAM_ROUNDED,
+      };
+    if (selected.subSpace === SubspaceType.User && user?.actor)
+      return { name: user.actor.name, avatar: getAvatar(user.actor.actorImages), rounded: AVATAR_USER_ROUNDED };
+    if (selected.subSpace === SubspaceType.Me && me?.actor)
+      return { name: me.actor.name, avatar: getAvatar(me.actor.actorImages), rounded: AVATAR_USER_ROUNDED };
+    return null;
+  };
+
+  const info = getSubspaceInfo();
+
   return (
-    <div className="flex bg-0 px-2 py-4">
-      <nav className="flex flex-col justify-between">
-        <div className="h-full flex flex-col shrink-0">
+    <nav className="h-full flex flex-col w-sidebar bg-0">
+      {/* Header */}
+      <div className="flex h-[calc(var(--topbar-height)-var(--padding-inner))]">
+        {/* Home shortcut */}
+        <div className="bg-1 px-[var(--padding-inner)] pt-[var(--padding-inner)]">
+          <Bubble
+            onClick={() => switchSubspace(baseBubble.subSpace)}
+            selected={selected.subSpace === baseBubble.subSpace && !isSearching}
+            showBg={true}
+          >
+            <baseBubble.icon className="p-1" />
+          </Bubble>
+        </div>
+
+        {/* Subspace name */}
+        <div className="flex gap-item items-center px-[calc(var(--padding-inner)*2)] lg:px-[calc(var(--padding-inner)*3)]">
+          {info ? (
+            <>
+              <Avatar name={info.name} src={info.avatar} size={18} rounded={info.rounded} />
+              <h2 className="text-0 text-xl tracking-tighter font-semibold font-title lg-max:hidden line-clamp-1">
+                {info.name}
+              </h2>
+            </>
+          ) : (
+            <>
+              <Skeleton rounded="16%" height={16} width={16} />
+              <Skeleton className="lg-max:hidden" width={48} />
+            </>
+          )}
+        </div>
+      </div>
+      <div className="h-full flex overflow-hidden">
+        {/* Shortcuts */}
+        <div className="h-full flex flex-col bg-1 w-[var(--topbar-height)] px-[var(--padding-inner)] pb-[var(--padding-inner)] shrink-0">
           {showBubbles.map((bubble, idx) => (
             <Bubble
               key={idx}
@@ -63,30 +133,51 @@ export function Sidebar() {
               selected={selected.subSpace === bubble.subSpace && !isSearching}
               showBg={true}
             >
-              <bubble.icon height="26" />
+              <bubble.icon className="p-1" />
             </Bubble>
           ))}
-          <hr className="m-2 border-color-2" />
-          <div className="overflow-scroll scrollbar-none flex flex-col rounded-t-2xl">
+          <hr className="m-[var(--padding-inner)] border-color-3" />
+          <div className="scrollbar flex flex-col rounded-t-2xl">
             {shortcuts
-              .map((shortcut, idx) => <SideShortcut shortcut={shortcut} switchSubspace={switchSubspace} key={idx} />)
-              .filter((shortcut) => shortcut !== null)}
+              .filter(isNotNull)
+              .map((shortcut) => {
+                const actor = shortcut.targetActor;
+                // TODO: Add support for other shortcut types
+                if (actor?.org && actor.org.__typename === 'TeamModel') {
+                  const targetOrg = getFragmentData(teamFragment, actor.org);
+                  return (
+                    <Bubble
+                      key={shortcut.id}
+                      onClick={() =>
+                        switchSubspace(shortcut.type, {
+                          [ResourceRouteType.Org]: targetOrg.actor?.slug,
+                          [ResourceRouteType.ManageOrg]: targetOrg?.actor?.slug,
+                        })
+                      }
+                      selected={(org?.id === targetOrg.id || manageOrg?.id === targetOrg.id) && !isSearching}
+                    >
+                      <Avatar
+                        src={getAvatar(actor?.actorImages)}
+                        name={actor?.name}
+                        size="full"
+                        rounded={AVATAR_SHORTCUT_ROUNDED}
+                      />
+                    </Bubble>
+                  );
+                }
+                return null;
+              })
+              .filter(isNotNull)}
           </div>
         </div>
-      </nav>
-      <nav className="lg:w-56 flex flex-col justify-between">
-        <div className="flex flex-col gap-6 px-3">
-          <div className="lg-max:-mt-0.5 flex flex-col gap-2 justify-between w-full h-full">
-            <div className="flex flex-col overflow-scroll-y scrollbar h-full pb-4 w-full gap-10">
-              <div className="flex flex-col gap-1 relative z-[1]">
-                {Object.entries(menus[selected.subSpace].menus).map(([_, menu]: [string, Menu], idx) => (
-                  <SidebarMenu idx={idx} menu={menu} key={idx} />
-                ))}
-              </div>
-            </div>
-          </div>
+
+        {/* Menus */}
+        <div className="scrollbar h-full w-full relative lg:px-[calc(var(--padding-inner)*3)] mt-[var(--padding-inner)]">
+          {Object.entries(menus[selected.subSpace].menus).map(([_, menu]: [string, Menu], idx) => (
+            <SidebarMenu idx={idx} menu={menu} key={idx} />
+          ))}
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }

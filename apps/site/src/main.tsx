@@ -6,8 +6,12 @@ import ReactDOM from 'react-dom/client';
 
 import { ApolloProvider } from '@apollo/client';
 
+import { register } from 'swiper/element/bundle';
+
 import 'dayjs/locale/fr';
 import { locale } from 'dayjs';
+
+register();
 locale('fr');
 
 const htmlRoot = window.document.documentElement;

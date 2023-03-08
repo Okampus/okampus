@@ -9,6 +9,9 @@ export const teamFragment = gql(`
     tagline
     type
     currentFinance
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     actor {
       __typename
       id
@@ -20,6 +23,9 @@ export const teamFragment = gql(`
     }
     categories {
       ...TeamCategoryInfo
+    }
+    joinForm {
+      ...FormInfo
     }
     documents {
       __typename

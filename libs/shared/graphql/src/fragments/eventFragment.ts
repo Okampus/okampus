@@ -31,6 +31,7 @@ export const eventFragment = gql(`
     }
     rootContent {
       __typename
+      description
       ugcKind
       isAnonymous
       representingOrg {
@@ -49,9 +50,6 @@ export const eventFragment = gql(`
       }
       author {
         ...UserInfo
-      }
-      ... on ContentModel {
-        text
       }
     }
   }

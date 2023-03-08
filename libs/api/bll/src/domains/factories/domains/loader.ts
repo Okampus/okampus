@@ -38,7 +38,7 @@ import {
   UserProfile,
   VideoUpload,
 } from '@okampus/api/dal';
-import { ActorKind } from '@okampus/shared/enums';
+import { ActorKind, IndividualKind } from '@okampus/shared/enums';
 import { loadApply, applyModelFactory } from '@okampus/api/shards';
 import type {
   ITenant,
@@ -82,8 +82,9 @@ import type {
   IDocumentEdit,
   IOrgDocument,
   ITenantScoped,
+  IFormEdit,
 } from '@okampus/shared/dtos';
-import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
+import type { BaseEntity, TenantCore, TenantScopedEntity, FormEdit } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {
@@ -124,6 +125,7 @@ export type AllInterfaces =
   | IFileUpload
   | IFinance
   | IForm
+  | IFormEdit
   | IFormSubmission
   | IImageUpload
   | IIndividual
@@ -179,6 +181,8 @@ export type LoadInterface<T> = T extends Actor
   ? IFinance
   : T extends Form
   ? IForm
+  : T extends FormEdit
+  ? IFormEdit
   : T extends FormSubmission
   ? IFormSubmission
   : T extends Bot
@@ -277,6 +281,9 @@ export function getEntityFromStackOrLoad(
   return loadedEntity;
 }
 
+const isUser = (user: TenantScopedEntity): user is User => (<Individual>user).individualKind === IndividualKind.User;
+const isBot = (bot: TenantScopedEntity): bot is Bot => (<Individual>bot).individualKind === IndividualKind.Bot;
+
 export function loadTenantScopedEntity<T extends TenantScopedEntity>(
   entity: T,
   contextStack: Record<Snowflake, AllInterfaces>,
@@ -291,7 +298,7 @@ export function loadTenantScopedEntity(
   const base = loadBase(entity);
   if (!base) return undefined;
 
-  const tenant = getTenantOrLoad(entity.tenant, contextStack);
+  const tenant = entity.tenant ? getTenantOrLoad(entity.tenant, contextStack) : undefined;
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
     const baseTag = loadTenantScopedEntity(entity, contextStack, true);
@@ -405,7 +412,7 @@ export function loadTenantScopedEntity(
     };
   }
 
-  if (entity instanceof User && !loadBaseClass) {
+  if ((entity instanceof User || isUser(entity)) && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
     const user = loadTenantScopedEntity(entity, contextStack, true);
@@ -426,7 +433,7 @@ export function loadTenantScopedEntity(
     return user;
   }
 
-  if (entity instanceof Bot && !loadBaseClass) {
+  if ((entity instanceof Bot || isBot(entity)) && !loadBaseClass) {
     if (entity.id in contextStack) return contextStack[entity.id];
 
     const bot = loadTenantScopedEntity(entity, contextStack, true);
@@ -446,6 +453,7 @@ export function loadTenantScopedEntity(
     const individual: IIndividual = {
       ...base,
       individualKind: entity.individualKind,
+      status: entity.status,
       tenant,
     };
 
@@ -466,13 +474,14 @@ export function loadTenantScopedEntity(
     team.currentFinance = entity.currentFinance;
     team.type = entity.type;
     team.directorsCategoryName = entity.directorsCategoryName;
-    team.managersCategoryName = entity.membersCategoryName;
+    team.managersCategoryName = entity.managersCategoryName;
     team.membersCategoryName = entity.membersCategoryName;
     team.tagline = entity.tagline;
     team.membershipFees = entity.membershipFees;
     team.memberCount = entity.memberCount;
     team.members = loadApply(entity.members, (member) => loadTenantScopedEntity(member, contextStack));
     team.roles = loadApply(entity.roles, (role) => loadTenantScopedEntity(role, contextStack));
+    team.joins = loadApply(entity.joins, (join) => loadTenantScopedEntity(join, contextStack));
     team.finances = loadApply(entity.finances, (finance) => loadTenantScopedEntity(finance, contextStack));
     team.categories = loadApply(entity.categories, (category) => loadTenantScopedEntity(category, contextStack));
     team.joinForm = entity.joinForm ? loadTenantScopedEntity(entity.joinForm, contextStack) : null;
@@ -761,7 +770,7 @@ export function loadTenantScopedEntity(
       ...baseUgc,
       name: entity.name,
       yearVersion: entity.yearVersion,
-      documentUpload: loadTenantScopedEntity(entity.documentUpload, contextStack),
+      currentVersion: loadTenantScopedEntity(entity.newVersion, contextStack),
       edits: loadApply(entity.edits, (edit) => loadTenantScopedEntity(edit, contextStack)),
     };
   }
@@ -770,7 +779,7 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       yearVersion: entity.yearVersion,
-      documentUpload: loadTenantScopedEntity(entity.documentUpload, contextStack),
+      currentVersion: loadTenantScopedEntity(entity.newVersion, contextStack),
       editedBy: getEntityFromStackOrLoad(entity.editedBy, contextStack),
       tenant,
     };
@@ -797,7 +806,7 @@ export function loadTenantScopedEntity(
     return {
       ...baseUgc,
       submission: entity.submission,
-      forForm: loadTenantScopedEntity(entity.forForm, contextStack),
+      linkedFormVersion: loadTenantScopedEntity(entity.linkedFormVersion, contextStack),
     };
   }
 
@@ -816,10 +825,10 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       ugcKind: entity.ugcKind,
-      text: entity.text,
+      description: entity.description,
       isAnonymous: entity.isAnonymous,
       contentMaster: getEntityFromStackOrLoad(entity.contentMaster, contextStack, true),
-      author: getEntityFromStackOrLoad(entity.author, contextStack),
+      author: getEntityFromStackOrLoad(entity.author, contextStack, true),
       representingOrg: getEntityFromStackOrLoad(entity.representingOrg, contextStack, true),
       tenant,
     };

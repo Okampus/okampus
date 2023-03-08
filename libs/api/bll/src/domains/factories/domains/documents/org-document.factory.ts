@@ -1,6 +1,6 @@
 import { OrgDocumentModel } from './org-document.model';
 import { BaseFactory } from '../../base.factory';
-import { addDocumentEditToDocument } from '../../abstract.utils';
+import { addDocumentEditToDocument } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
@@ -24,13 +24,13 @@ import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocument, IOrgDocument, OrgDocumentOptions> {
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
+    uploadService: UploadService,
     OrgDocumentRepository: OrgDocumentRepository,
     private readonly em: EntityManager,
     private readonly orgDocumentRepository: OrgDocumentRepository,
-    private readonly orgRepository: OrgRepository,
-    private readonly uploadService: UploadService
+    private readonly orgRepository: OrgRepository
   ) {
-    super(eventPublisher, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
+    super(eventPublisher, uploadService, OrgDocumentRepository, OrgDocumentModel, OrgDocument);
   }
 
   async createOrgDocument(
@@ -39,7 +39,7 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     documentFile: MulterFileType,
     tenant: TenantCore
   ): Promise<OrgDocumentModel> {
-    const documentUpload = await this.uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
+    const newVersion = await this.uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
 
     const orgPopulate = (this.autoGqlPopulate()
       ?.filter((str: string) => str.startsWith(`org.`))
@@ -52,19 +52,12 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     const document = new TenantDocument({
       ...createDocument,
       documentKind: DocumentKind.InfoDocument,
-      documentUpload,
+      newVersion,
       realAuthor: this.requester(),
       tenant,
     });
 
-    await addDocumentEditToDocument(
-      document,
-      createDocument,
-      documentUpload,
-      tenant,
-      this.requester(),
-      this.uploadService
-    );
+    await addDocumentEditToDocument(document, createDocument, newVersion, tenant, this.requester(), this.uploadService);
 
     const orgDocumentOptions = { org, document, tenant, type };
     const orgDocument = await this.create(orgDocumentOptions, async (orgDocument) => {

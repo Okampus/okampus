@@ -113,17 +113,8 @@
   src: local(spacemono), url('@assets/fonts/SpaceMono/SpaceMono-Regular.ttf') format('truetype');
 }
 
-.font-heading {
-  font-family: Lexend, sans-serif;
-}
-
 .font-title {
   font-family: Figtree, sans-serif;
-}
-
-html,
-body {
-  font-family: HarmonyOS, sans-serif;
 }
 
 h1,
@@ -132,11 +123,23 @@ h3,
 h4,
 h5,
 h6,
-button {
+button,
+.font-heading {
   font-family: Lexend, sans-serif;
+  @apply tracking-tighter;
+}
+
+html,
+body {
+  font-family: HarmonyOS, sans-serif;
 }
 
 code,
-pre {
+.font-code {
   font-family: FiraCode, monospace;
+}
+
+pre,
+.font-mono {
+  font-family: SpaceMono, monospace;
 }

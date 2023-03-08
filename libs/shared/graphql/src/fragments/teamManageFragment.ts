@@ -9,17 +9,31 @@ export const teamManageFragment = gql(`
     tagline
     type
     currentFinance
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     actor {
       __typename
       id
+      bio
       name
       slug
       actorImages {
         ...ActorImageBareInfo
       }
+      tags {
+        __typename
+        id
+        name
+        slug
+        color
+      }
     }
     categories {
       ...TeamCategoryInfo
+    }
+    joinForm {
+      ...FormInfo
     }
     documents {
       __typename
@@ -27,6 +41,75 @@ export const teamManageFragment = gql(`
       type
       document {
         ...DocumentInfo
+      }
+    }
+    joins {
+      __typename
+      id
+      askedRole {
+        __typename
+        id
+        permissions
+        category
+        key
+      }
+      formSubmission {
+        __typename
+        id
+        submission
+        linkedFormVersion {
+          ...FormInfo
+        }
+      }
+      receivedRole {
+        __typename
+        id
+        permissions
+        category
+        key
+      }
+      joiner {
+        ...UserInfo
+      }
+      issuer {
+        ... on UserModel {
+          ...UserInfo
+        }
+      }
+      validatedBy {
+        ... on UserModel {
+          ...UserInfo
+        }
+      }
+      validatedAt
+      validationMessage
+      state
+    }
+    members {
+      __typename
+      id
+      user {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          name
+          actorImages {
+            ...ActorImageBareInfo
+          }
+        }
+        firstName
+      }
+      roles {
+        __typename
+        id
+        name
+        color
+        required
+        permissions
+        category
+        key
       }
     }
     finances {

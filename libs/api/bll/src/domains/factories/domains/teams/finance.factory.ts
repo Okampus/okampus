@@ -25,13 +25,13 @@ export class FinanceFactory extends BaseFactory<FinanceModel, Finance, IFinance,
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     financeRepository: FinanceRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
-    private readonly uploadService: UploadService,
     private readonly teamRepository: TeamRepository,
     private readonly projectRepository: ProjectRepository,
     private readonly tenantEventRepository: TenantEventRepository
   ) {
-    super(eventPublisher, financeRepository, FinanceModel, Finance);
+    super(eventPublisher, uploadService, financeRepository, FinanceModel, Finance);
   }
 
   async createFinance(

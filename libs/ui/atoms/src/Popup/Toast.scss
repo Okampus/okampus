@@ -7,6 +7,6 @@
   }
 
   transform-origin: left center;
+  background-color: var(--progress-bar-color);
   animation: roundtime calc(var(--progress-bar-duration) * 1ms) forwards;
-  background: linear-gradient(to bottom, --progress-bar-start-color, progress-bar-end-color);
 }

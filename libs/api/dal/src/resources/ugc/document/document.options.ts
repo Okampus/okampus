@@ -4,5 +4,5 @@ import type { UgcOptions } from '../ugc.options';
 
 export type DocumentOptions = DocumentProps &
   UgcOptions & {
-    documentUpload: DocumentUpload;
+    newVersion: DocumentUpload;
   };

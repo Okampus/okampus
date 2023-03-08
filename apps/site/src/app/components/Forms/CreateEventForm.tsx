@@ -5,15 +5,16 @@ import {
   getTeamWithMembersQuery,
   teamMembersFragment,
 } from '@okampus/shared/graphql';
-import { EventState } from '@okampus/shared/enums';
-import { ControlType, DynamicForm } from '@okampus/ui/organisms';
-import { useCurrentContext } from '@okampus/ui/hooks';
+import { ControlType, EventState } from '@okampus/shared/enums';
+import { DynamicForm } from '@okampus/ui/organisms';
+import { useManageOrg } from '@okampus/ui/hooks';
 import { useMutation, useQuery } from '@apollo/client';
 import { z } from 'zod';
+
 import type { SelectItem } from '@okampus/ui/molecules';
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 import type { Address } from '@okampus/shared/dtos';
-import type { EventInfoFragment } from '@okampus/shared/graphql';
+import type { EventInfoFragment, TeamManageInfoFragment } from '@okampus/shared/graphql';
 
 type CreateEventFormData = {
   title: string;
@@ -37,7 +38,6 @@ const _schema = z
       message: "La date de début d'événement doit être dans le futur.",
       path: ['start'],
     }),
-    // price: z.number().min(0, { message: 'Le prix de l\'événement doit être positif.' }).refine;
     description: z.string().min(10, { message: "Une description d'événement est nécessaire." }),
     supervisorId: z.string(),
     // location: string,
@@ -64,9 +64,13 @@ const location: Address = {
 };
 
 export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
-  const [{ org }] = useCurrentContext();
+  const { manageOrg } = useManageOrg();
+  if (!manageOrg) return <p className="text-red-500">Aucune organisation n'est chargée.</p>;
+  return CreateEventFormWrapper({ onSubmit, manageOrg });
+}
 
-  const { loading, error: queryErrors, data } = useQuery(getTeamWithMembersQuery, { variables: org });
+function CreateEventFormWrapper({ onSubmit, manageOrg }: CreateEventFormProps & { manageOrg: TeamManageInfoFragment }) {
+  const { loading, error: queryErrors, data } = useQuery(getTeamWithMembersQuery, { variables: { id: manageOrg.id } });
 
   const [createEvent] = useMutation(createEventMutation, {
     onCompleted: (data) => {
@@ -75,11 +79,9 @@ export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
     },
   });
 
-  if (!org) return <p className="text-blue-500">Aucune organisation n'est chargée.</p>;
-
   const onCreateEvent = (event: CreateEventFormData) => {
     createEvent({
-      variables: { event: { ...event, orgId: org.id, location, state: EventState.Submitted } },
+      variables: { event: { ...event, orgId: manageOrg.id, location, state: EventState.Submitted } },
     });
   };
 

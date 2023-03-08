@@ -27,16 +27,18 @@ interface PopoverOptions {
   onOpenChange?: (open: boolean) => void;
   arrowSize?: number;
   useArrow?: boolean;
+  crossAxis?: boolean;
   forcePlacement?: boolean;
   placementOffset?: number;
 }
 
 export function usePopover({
   initialOpen = false,
-  placement = 'bottom',
+  placement = 'right',
   modal,
   arrowSize = 14,
-  useArrow = true,
+  useArrow = false,
+  crossAxis = true,
   forcePlacement = false,
   placementOffset = 0,
   open: controlledOpen,
@@ -59,7 +61,7 @@ export function usePopover({
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
-      flip({ fallbackAxisSideDirection: forcePlacement ? 'none' : 'end' }),
+      flip({ fallbackAxisSideDirection: forcePlacement ? 'none' : 'end', crossAxis }),
       shift({ padding: 10 }),
       ...(useArrow
         ? [offset(floatingOffset + placementOffset), arrow({ element: arrowRef })]
@@ -171,7 +173,7 @@ export const PopoverContent = React.forwardRef<
   React.HTMLProps<HTMLDivElement> & { backgroundClass?: string; popoverClassName?: string }
 >(function PopoverContent(
   {
-    backgroundClass = 'bg-2 border-4 border-color-2 !border-opacity-30',
+    backgroundClass = 'bg-2',
     popoverClassName = '',
     ...props
   }: React.HTMLProps<HTMLDivElement> & { backgroundClass?: string; popoverClassName?: string },
@@ -194,7 +196,7 @@ export const PopoverContent = React.forwardRef<
 
   const offsetSize = Math.sqrt(2 * context.arrowSize ** 2);
   const staticOffset =
-    staticSide === 'top' || staticSide === 'bottom' ? `-${offsetSize / 2}px` : `-${context.arrowSize}px`;
+    staticSide === 'top' || staticSide === 'bottom' ? `-${offsetSize / 2 + 1}px` : `-${context.arrowSize + 1}px`;
 
   return (
     <FloatingPortal>
@@ -202,7 +204,7 @@ export const PopoverContent = React.forwardRef<
         {context.open && (
           <FloatingFocusManager context={floatingContext} modal={context.modal}>
             <motion.div
-              initial={{ opacity: 0.5, scale: 0.9, y: -20 }}
+              initial={{ opacity: 0.5, scale: 0.9, y: -50 }}
               animate={{
                 opacity: 1,
                 scale: 1,
@@ -211,7 +213,12 @@ export const PopoverContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.7, y: -20 }}
               transition={{ type: 'spring', duration: 0.35 }}
               ref={ref}
-              className={clsx('card-sm text-1 z-10 !overflow-visible', popoverClassName, backgroundClass)}
+              className={clsx(
+                context.useArrow && 'border-4 border-color-2 !border-opacity-30',
+                'rounded-2xl text-1 z-[100] !overflow-visible',
+                popoverClassName,
+                backgroundClass
+              )}
               style={{
                 position: context.strategy,
                 top: context.y ?? 0,

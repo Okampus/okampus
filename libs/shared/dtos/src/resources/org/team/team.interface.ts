@@ -1,3 +1,4 @@
+import type { ITeamJoin } from '../../join/team-join/team-join.interface';
 import type { ITeamCategory } from '../../label/team-category/team-category.interface';
 import type { IFinance } from '../../manage-team/finance/finance.interface';
 import type { ITeamMember } from '../../membership/team-member/team-member.interface';
@@ -11,6 +12,7 @@ export interface ITeam extends IOrg, Required<TeamProps> {
   joinForm?: IForm | null;
   members: ITeamMember[];
   roles: ITeamRole[];
+  joins: ITeamJoin[];
   categories: ITeamCategory[];
   finances: IFinance[];
 }

@@ -5,7 +5,7 @@ export type DocumentCardProps = {
   document: {
     // id: string;
     name: string;
-    yearVersion: number;
+    yearVersion: number | null;
     // description: string;
     url: string;
     type: string;

@@ -1,12 +1,17 @@
 import { Interaction } from '../interaction.entity';
+import { WithActive } from '../../../shards/filters/with-active';
 import { Entity, Property } from '@mikro-orm/core';
 import { InteractionKind } from '@okampus/shared/enums';
 import type { VoteOptions } from './vote.options';
 
 @Entity()
+@WithActive()
 export class Vote extends Interaction {
   @Property({ type: 'smallint' })
   value!: -1 | 0 | 1;
+
+  @Property({ type: 'datetime', nullable: true })
+  lastActiveDate: Date | null = null;
 
   constructor(options: VoteOptions) {
     super({ ...options, interactionKind: InteractionKind.Vote });

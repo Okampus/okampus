@@ -11,5 +11,5 @@ export class UgcProps {
   @Field(() => String)
   @Length(1, 20_000)
   @IsString()
-  text!: string;
+  description!: string;
 }

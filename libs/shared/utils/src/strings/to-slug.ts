@@ -646,7 +646,10 @@ const charMap = {
 };
 
 export function toSlug(value: string): string {
-  value = value.trim().replace(/\s+/g, '-').toLowerCase();
+  value = value
+    .trim()
+    .replace(/[\s.]+/g, '-')
+    .toLowerCase();
   for (const key of value) {
     if (value.includes(key) && isIn(key, charMap)) {
       const replaceValue = charMap[key];
@@ -654,6 +657,6 @@ export function toSlug(value: string): string {
     }
   }
 
-  value = value.replace(/[^\w-.]/g, '');
+  value = value.replace(/[^\w-]/g, '');
   return value;
 }

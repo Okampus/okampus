@@ -8,10 +8,10 @@ import {
   getFragmentData,
   teamAddDocumentMutation,
 } from '@okampus/shared/graphql';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useManageOrg } from '@okampus/ui/hooks';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
-import type { DocumentInfoFragment, TeamManageInfoFragment } from '@okampus/shared/graphql';
+import type { DocumentInfoFragment } from '@okampus/shared/graphql';
 import type { DocumentWithEdits } from '#site/app/components/Input/DocumentInput';
 
 function documentTypesByTeamType(teamType?: TeamType) {
@@ -38,13 +38,13 @@ function documentTypesByTeamType(teamType?: TeamType) {
 }
 
 function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits {
-  const documentUpload = getFragmentData(documentUploadFragment, document.documentUpload);
+  const documentUpload = getFragmentData(documentUploadFragment, document.currentVersion);
   return {
     current: {
       createdAt: document.createdAt,
-      text: document.text,
+      description: document.description,
       name: document.name,
-      yearVersion: document.yearVersion,
+      yearVersion: document.yearVersion ?? null,
       file: {
         name: documentUpload.name,
         src: documentUpload.url,
@@ -54,12 +54,12 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
       },
     },
     edits: document.edits.map((edit) => {
-      const documentUpload = getFragmentData(documentUploadFragment, edit.documentUpload);
+      const documentUpload = getFragmentData(documentUploadFragment, edit.newVersion);
       return {
         createdAt: edit.createdAt,
-        text: document.text,
+        description: document.description,
         name: documentUpload.name,
-        yearVersion: edit.yearVersion,
+        yearVersion: edit.yearVersion ?? null,
         file: {
           name: documentUpload.name,
           src: documentUpload.url,
@@ -72,35 +72,34 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
   };
 }
 
-function documentName(type: OrgDocumentType, org: TeamManageInfoFragment) {
+function documentName(type: OrgDocumentType, org: { actor?: { name: string } | null }) {
   const label = orgDocumentLabel(type);
   if (org.actor) return `${label} de ${org.actor.name}`;
   return label;
 }
 
 export function DocumentManageView() {
+  const { manageOrg } = useManageOrg();
   const { showModal, hideModal } = useContext(NavigationContext);
-  const [{ org }, updateCache] = useCurrentContext();
 
   const [createOrgDocument] = useMutation(teamAddDocumentMutation, {
     onCompleted: () => {
-      updateCache();
       hideModal();
     },
   });
 
-  const currentOrgDocuments = org?.documents ?? [];
+  const currentOrgDocuments = manageOrg?.documents ?? [];
   const orgDocuments = currentOrgDocuments.map((orgDocument) => ({
     type: orgDocument.type,
     document: getDocumentWithEdits(getFragmentData(documentFragment, orgDocument.document)),
   }));
 
-  const documents: Array<[OrgDocumentType, DocumentWithEdits | null]> = documentTypesByTeamType(org?.type).map(
+  const documents: Array<[OrgDocumentType, DocumentWithEdits | null]> = documentTypesByTeamType(manageOrg?.type).map(
     (type) => [type, orgDocuments.find((orgDocument) => orgDocument.type === type)?.document ?? null]
   );
 
   return (
-    <div className="view grid gap-6 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]">
+    <div className="p-view grid gap-6 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]">
       {documents.map(([type, document]) => (
         <div className="flex flex-col gap-4" key={type}>
           <label className="block text-xl font-medium text-2">{orgDocumentLabel(type)}</label>
@@ -115,17 +114,12 @@ export function DocumentManageView() {
                       type={type}
                       file={file}
                       onSubmit={(document) => {
-                        if (org) {
-                          const name = document.name ?? documentName(type, org);
+                        if (manageOrg) {
+                          const name = document.name ?? documentName(type, manageOrg);
                           createOrgDocument({
                             variables: {
-                              createOrgDocument: {
-                                text: name,
-                                name,
-                                description: document.description,
-                                type,
-                              },
-                              teamId: org.id,
+                              createOrgDocument: { description: document.description, name, type },
+                              teamId: manageOrg.id,
                               documentFile: document.documentFile,
                             },
                           });

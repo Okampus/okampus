@@ -1,37 +1,34 @@
 import { getLink } from '#site/app/utils/get-link';
 
 import { SelectMenu } from '@okampus/ui/molecules';
-import { NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useManageOrg, useOrg, useUser } from '@okampus/ui/hooks';
 
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import type { LinkContext } from '#site/app/utils/get-link';
 import type { Menu } from '#site/app/menus';
-import type { SelectMenuProps } from '@okampus/ui/molecules';
 
-export type SidebarMenuLinkProps = {
-  icon: Menu['icon'];
-  label: Menu['label'];
+export type SidebarLinkProps = {
+  menu: Menu;
   link: Menu['link'];
-  isSubmenu: boolean;
-  onClick?: () => void;
-  orgSlug?: string;
-  className?: string;
+  selected: boolean;
 };
 
-export function SidebarMenuLink({ icon, label, link, isSubmenu, orgSlug, className }: SidebarMenuLinkProps) {
+const sidebarLinkClass = 'p-2 text-hover flex items-center gap-4 rounded-lg lg:justify-start justify-center';
+
+export function SidebarLink({ menu, selected, link }: SidebarLinkProps) {
+  const icon = selected && menu.iconSelected ? menu.iconSelected : menu.icon;
   return (
     // TODO: this should be refreshed quicker just after the subspace changes (to avoid error getLink calls)
-    <Link to={getLink(link, { orgSlug })} className={clsx('flex items-center gap-4 rounded-lg', className)}>
-      {icon && icon({ className: 'lg:w-6 w-7' })}
-      {isSubmenu ? (
-        <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{label}</div>
-      ) : (
-        <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{label}</div>
-      )}
-    </Link>
+    <motion.div whileTap={{ scale: 0.95 }} className="w-full">
+      <Link to={link} className={clsx(selected ? 'text-0' : 'text-2', sidebarLinkClass)}>
+        {icon && icon({ className: 'icon' })}
+        <div className="lg-max:hidden font-title font-semibold tracking-wide text-[0.95rem]">{menu.label}</div>
+      </Link>
+    </motion.div>
   );
 }
 
@@ -41,61 +38,39 @@ export type SidebarMenuProps = {
 };
 
 export function SidebarMenu({ menu, idx }: SidebarMenuProps) {
-  const [{ org }] = useCurrentContext();
-  const { selected, setSelected } = useContext(NavigationContext);
+  const { manageOrg } = useManageOrg();
+  const { org } = useOrg();
+  const { user } = useUser();
 
-  const items: SelectMenuProps<string>['items'] =
-    menu.sub?.map?.((subMenu, subIdx) => {
-      return {
-        element: (
-          <SidebarMenuLink
-            icon={subMenu.icon}
-            isSubmenu={true}
-            label={subMenu.label}
-            link={subMenu.link}
-            orgSlug={org?.actor?.slug}
-            key={subIdx}
-            className={clsx('lg:px-4 lg:py-2 lg-max:p-2', selected.subMenu === subIdx && 'bg-active')}
-          />
-        ),
-        value: subMenu.link,
-      };
-    }) ?? [];
+  const { selected } = useContext(NavigationContext);
 
-  return items.length > 0 ? (
+  const linkSlugs: LinkContext = { Org: org?.actor?.slug, ManageOrg: manageOrg?.actor?.slug, User: user?.actor?.slug };
+  const menuLink = getLink(menu.link, linkSlugs);
+
+  if (!menu.sub || menu.sub.length === 0)
+    return <SidebarLink link={menuLink} menu={menu} selected={selected.menu === idx} />;
+
+  const getItem = (subMenu: Menu, subIdx: number) => {
+    const link = getLink(subMenu.link, linkSlugs);
+    return {
+      element: <SidebarLink link={link} menu={subMenu} selected={selected.subMenu === subIdx} />,
+      value: link,
+    };
+  };
+
+  return (
     <SelectMenu
-      onClick={() => setSelected({ subSpace: selected.subSpace, menu: idx, subMenu: 0 })}
-      items={items}
-      placeholder={
-        <SidebarMenuLink
-          icon={menu.icon}
-          isSubmenu={false}
-          label={menu.label}
-          link={menu.link}
-          orgSlug={org?.actor?.slug}
-        />
-      }
+      items={menu.sub.map(getItem)}
+      placeholder={<SidebarLink link={menuLink} menu={menu} selected={selected.menu === idx} />}
       dropdown={null}
       fullWidth={true}
       isContentAbsolute={false}
       showSelected={false}
       isControlled={true}
       open={selected.menu === idx}
-      placeholderClassName="lg:px-4 lg:py-2 lg-max:p-2"
-      contentClassName={clsx('py-0 mt-2', selected.menu === idx ? 'text-0' : 'text-2')}
-      itemClassName="p-0"
-      placeholderBackgroundClass={selected.menu === idx ? 'text-0 bg-active' : 'text-2 hoverable'}
+      placeholderClassName={'!p-0'}
+      contentClassName={'bg-2 !p-0'}
+      itemClassName=""
     />
-  ) : (
-    <motion.div whileTap={{ scale: 0.97 }}>
-      <SidebarMenuLink
-        icon={menu.icon}
-        isSubmenu={false}
-        label={menu.label}
-        link={menu.link}
-        orgSlug={org?.actor?.slug}
-        className={clsx('lg:px-4 lg:py-2 lg-max:p-2', selected.menu === idx ? 'text-0 bg-active' : 'text-2 hoverable')}
-      />
-    </motion.div>
   );
 }

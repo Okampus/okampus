@@ -1,6 +1,6 @@
 export enum FormType {
-  EventJoin = 'EventRegistration',
-  TeamJoin = 'MembershipRequest',
+  EventJoin = 'EventJoin',
+  TeamJoin = 'TeamJoin',
   Internal = 'Internal',
   Survey = 'Survey',
 }

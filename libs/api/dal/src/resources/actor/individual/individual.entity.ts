@@ -1,7 +1,7 @@
 import { IndividualRepository } from './individual.repository';
 import { Actor } from '../actor.entity';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Entity, Enum, OneToOne } from '@mikro-orm/core';
+import { Entity, Enum, OneToOne, Property } from '@mikro-orm/core';
 import { IndividualKind } from '@okampus/shared/enums';
 import type { IndividualOptions } from './individual.options';
 
@@ -17,6 +17,9 @@ export class Individual extends TenantScopedEntity {
 
   @Enum({ items: () => IndividualKind, type: 'string' })
   individualKind!: IndividualKind;
+
+  @Property({ type: 'text' })
+  status = '';
 
   constructor(options: IndividualOptions & { individualKind: IndividualKind }) {
     super({ tenant: options.tenant });

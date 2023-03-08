@@ -1,3 +1,4 @@
+import { Tag } from '@okampus/ui/atoms';
 import { useEffect, useState } from 'react';
 
 // TODO: add swiper for overflowing categories
@@ -6,6 +7,7 @@ type Category = string;
 
 export type CategorySelectorProps<T> = {
   items: T[];
+  showCount?: boolean;
   itemToCategories?: (item: T) => Category[];
   selectedCategories?: Category[];
   onChangeCategories?: (selectedCategories: Category[]) => void;
@@ -42,41 +44,41 @@ function getCategories<T>(items: T[], itemToCategory: (item: T) => Category[], s
 
 export function CategorySelector<T extends object>({
   items,
+  showCount = false,
   itemToCategories = (item: T) => [item.toString()],
   onChangeCategories = () => ({}),
   onChangeFilteredItems = () => ({}),
 }: CategorySelectorProps<T>) {
-  const [selected, setSelected] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category[]>([]);
   const [categories, setCategories] = useState<[Category, number][]>([]);
 
   useEffect(() => {
-    onChangeCategories(selected);
-    const currentFilteredItems = selected.length === 0 ? items : getFilteredItems(items, selected, itemToCategories);
+    onChangeCategories(selectedCategory);
+    const currentFilteredItems =
+      selectedCategory.length === 0 ? items : getFilteredItems(items, selectedCategory, itemToCategories);
     onChangeFilteredItems(currentFilteredItems);
-    setCategories(getCategories(currentFilteredItems, itemToCategories, selected));
-  }, [selected]);
+    setCategories(getCategories(currentFilteredItems, itemToCategories, selectedCategory));
+  }, [selectedCategory]);
 
   const toggleCategory = (category: Category) => {
-    if (selected.includes(category)) {
-      setSelected(selected.filter((c) => c !== category));
+    if (selectedCategory.includes(category)) {
+      setSelectedCategory(selectedCategory.filter((c) => c !== category));
     } else {
-      setSelected([...selected, category]);
+      setSelectedCategory([...selectedCategory, category]);
     }
   };
 
   return (
     <div className="flex gap-2">
       {categories.map(([category, count]) => (
-        <div
+        <Tag
           key={category}
-          className={`flex items-center gap-2 px-2 py-1 rounded-md cursor-pointer ${
-            selected.includes(category) ? 'bg-gray-500' : 'hover:bg-gray-500 bg-gray-800'
-          }`}
+          label={category}
+          className={'cursor-pointer bg-hover-2'}
+          backgroundClass={selectedCategory.includes(category) ? 'bg-0 bg-3-hover' : 'bg-4'}
           onClick={() => toggleCategory(category)}
-        >
-          <div className="text-0 text-base font-heading">{category}</div>
-          <div className="text-3 text-base font-heading">{count}</div>
-        </div>
+          {...(showCount ? { count } : {})}
+        />
       ))}
     </div>
   );

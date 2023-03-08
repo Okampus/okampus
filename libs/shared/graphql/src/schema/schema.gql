@@ -11,6 +11,7 @@ interface IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
 }
 
 """
@@ -76,7 +77,7 @@ interface UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -292,7 +293,7 @@ type DocumentEditModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   yearVersion: Int
-  documentUpload: DocumentUploadModel!
+  newVersion: DocumentUploadModel!
 }
 
 type DocumentEditModelEdge {
@@ -358,15 +359,14 @@ type DocumentModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   name: String!
-  description: String
   yearVersion: Int
-  documentUpload: DocumentUploadModel!
+  currentVersion: DocumentUploadModel!
   edits: [DocumentEditModel!]!
 }
 
@@ -492,6 +492,7 @@ type BotModel implements IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
   botRole: BotRole!
   owner: ActorModel!
 }
@@ -523,7 +524,7 @@ type ContentModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
@@ -545,13 +546,12 @@ type FormModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   name: String!
-  description: String
   schema: JSON!
   type: FormType!
   isTemplate: Boolean!
@@ -669,13 +669,13 @@ type FormSubmissionModel implements UgcModel {
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
   ugcKind: UgcKind!
-  text: String!
+  description: String!
   author: IndividualModel
   isAnonymous: Boolean!
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   submission: JSON!
-  forForm: FormModel
+  linkedFormVersion: FormModel
 }
 
 type FormSubmissionModelEdge {
@@ -926,6 +926,31 @@ enum TeamRoleCategory {
   Members
 }
 
+type TeamJoinModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  team: TeamModel!
+  askedRole: TeamRoleModel!
+  receivedRole: TeamRoleModel
+  joinKind: JoinKind!
+  issuer: IndividualModel
+  joiner: UserModel!
+  validatedBy: IndividualModel
+  validatedAt: DateTime
+  validationMessage: String
+  formSubmission: FormSubmissionModel
+  state: JoinState!
+}
+
+type TeamJoinModelEdge {
+  cursor: String!
+  node: TeamJoinModel!
+}
+
 type TeamCategoryModel {
   id: String!
   createdAt: DateTime!
@@ -975,6 +1000,7 @@ type TeamModel implements OrgModel {
   joinForm: FormModel
   members: [TeamMemberModel!]!
   roles: [TeamRoleModel!]!
+  joins: [TeamJoinModel!]!
   categories: [TeamCategoryModel!]!
   finances: [FinanceModel!]!
 }
@@ -1086,6 +1112,7 @@ type UserModel implements IndividualModel {
   lastHiddenAt: DateTime
   actor: ActorModel
   individualKind: IndividualKind!
+  status: String!
   firstName: String!
   lastName: String!
   middleNames: [String!]!
@@ -1173,9 +1200,10 @@ input OidcInfoInput {
 }
 
 type Query {
+  me: AuthContextModel!
   userById(id: String!): UserModel!
   userBySlug(slug: String!): UserModel!
-  users(options: PaginationOptions): PaginatedUserModel!
+  users(options: PaginationOptions, filter: UserFilterQuery): PaginatedUserModel!
   botById(id: String!): BotModel!
   botBySlug(slug: String!): BotModel!
   bots(options: PaginationOptions): PaginatedBotModel!
@@ -1186,7 +1214,7 @@ type Query {
   events(options: PaginationOptions): PaginatedTenantEventModel!
   teamById(id: String!): TeamModel!
   teamBySlug(slug: String!): TeamModel!
-  teams(options: PaginationOptions, filter: TeamFilterOptions): PaginatedTeamModel!
+  teams(options: PaginationOptions, filter: TeamFilterQuery): PaginatedTeamModel!
   eventApprovalById(id: String!): EventApprovalModel!
   eventApprovals(options: PaginationOptions): PaginatedEventApprovalModel!
   eventApprovalStepById(id: String!): EventApprovalStepModel!
@@ -1200,7 +1228,6 @@ type Query {
   teamCategoryById(id: String!): TeamCategoryModel!
   teamCategoryBySlug(slug: String!): TeamCategoryModel!
   teamCategories(options: PaginationOptions): PaginatedTeamCategoryModel!
-  me: AuthContextModel!
 }
 
 input PaginationOptions {
@@ -1214,14 +1241,37 @@ input PaginationOptions {
 """QueryOrderMap custom scalar type"""
 scalar QueryOrderMap
 
-input TeamFilterOptions {
+input UserFilterQuery {
+  ids: [String!]
+  slugs: [String!]
+  scopeRoles: [ScopeRole!]
+  teamMemberships: TeamFilterQuery
+  teamRoles: TeamRoleFilterQuery
+}
+
+input TeamFilterQuery {
+  ids: [String!]
+  slugs: [String!]
   categories: [String!]
   types: [TeamType!]
 }
 
+input TeamRoleFilterQuery {
+  ids: [String!]
+  teams: TeamFilterQuery
+  permissionsAll: [TeamPermissions!]
+  permissionsSome: [TeamPermissions!]
+  categories: [TeamRoleCategory!]
+  keys: [TeamRoleKey!]
+}
+
 type Mutation {
+  login(username: String!, password: String!): AuthContextModel!
+  logout: Boolean!
+  wsToken: Boolean!
   createUser(user: CreateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
-  updateUser(updateUser: UpdateUserDto!): UserModel!
+  deactivateUserImage(id: String!, actorImageType: ActorImageType!): ActorImageModel!
+  updateUser(updateUser: UpdateUserDto!, avatar: Upload, avatarDark: Upload, banner: Upload): UserModel!
   deleteUser(id: String!): Boolean!
   createBot(bot: CreateBotDto!): BotModel!
   updateBot(updateBot: UpdateDocumentDto!): BotModel!
@@ -1230,12 +1280,14 @@ type Mutation {
   tenantAddDocument(tenantId: String!, createDocument: CreateDocumentDto!, documentFile: Upload!): OrgDocumentModel!
   updateTenant(updateTenant: UpdateTenantDto!): TenantModel!
   deleteTenant(id: String!): Boolean!
+  deactivateActorImage(actorId: String!, actorImageType: ActorImageType!): ActorImageModel!
   createEvent(event: CreateEventDto!): TenantEventModel!
   updateEvent(updateEvent: UpdateEventDto!): TenantEventModel!
   deleteEvent(id: String!): Boolean!
   createTeam(team: CreateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
   teamAddDocument(teamId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
-  updateTeam(updateTeam: UpdateTeamDto!): TeamModel!
+  deactivateTeamImage(id: String!, actorImageType: ActorImageType!): ActorImageModel!
+  updateTeam(updateTeam: UpdateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
   deleteTeam(id: String!): Boolean!
   createEventApproval(eventApproval: CreateEventApprovalDto!): EventApprovalModel!
   updateEventApproval(updateEventApproval: UpdateEventApprovalDto!): EventApprovalModel!
@@ -1253,12 +1305,10 @@ type Mutation {
   updateTeamCategory(updateTeamCategory: UpdateTeamCategoryDto!): TeamCategoryModel!
   deleteTeamCategory(id: String!): Boolean!
   createOrgDocument(orgId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
-  login(username: String!, password: String!): AuthContextModel!
-  logout: Boolean!
-  wsToken: Boolean!
 }
 
 input CreateUserDto {
+  status: String!
   firstName: String!
   middleNames: [String!]
   lastName: String!
@@ -1273,6 +1323,7 @@ input CreateUserDto {
 scalar Upload
 
 input UpdateUserDto {
+  status: String
   firstName: String
   middleNames: [String!]
   lastName: String
@@ -1285,6 +1336,7 @@ input UpdateUserDto {
 }
 
 input CreateBotDto {
+  status: String!
   botRole: BotRole!
   slug: String
   name: String!
@@ -1295,9 +1347,8 @@ input CreateBotDto {
 
 input UpdateDocumentDto {
   isAnonymous: Boolean
-  text: String
+  description: String = ""
   name: String
-  description: String = null
   yearVersion: Int = null
   id: String!
 }
@@ -1319,9 +1370,8 @@ input TenantCoreProps {
 
 input CreateDocumentDto {
   isAnonymous: Boolean
-  text: String!
+  description: String! = ""
   name: String!
-  description: String = null
   yearVersion: Int = null
 }
 
@@ -1386,9 +1436,8 @@ input CreateTeamDto {
 
 input CreateOrgDocumentDto {
   isAnonymous: Boolean
-  text: String!
+  description: String! = ""
   name: String!
-  description: String = null
   yearVersion: Int = null
   type: OrgDocumentType!
 }

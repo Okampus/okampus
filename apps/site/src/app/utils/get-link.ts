@@ -1,24 +1,22 @@
-interface LinkContext {
-  orgSlug?: string;
-  userSlug?: string;
-}
+import { RouteParamStrings } from '../menus';
+import { enumKeys } from '@okampus/shared/utils';
 
-export function getLink(link: string, context?: LinkContext) {
-  if (link.includes(':orgId')) {
-    if (!context?.orgSlug) {
-      console.error('AppLink: no orgId found for link', link);
-      return '/';
+export type LinkContext = {
+  [key in keyof typeof RouteParamStrings]?: string;
+};
+
+const error = (ressourceType: string, link: string) => {
+  console.error(`AppLink: no ${ressourceType} found for link ${link}`);
+  return '/';
+};
+
+export function getLink(link: string, context: LinkContext = {}) {
+  for (const routeKey of enumKeys(RouteParamStrings)) {
+    const ressourceRoute = RouteParamStrings[routeKey];
+    if (link.includes(ressourceRoute)) {
+      if (!context[routeKey]) return error(ressourceRoute, link);
+      link = link.replace(ressourceRoute, `${context[routeKey]}`);
     }
-    link = link.replace(':orgId', context?.orgSlug);
   }
-
-  if (link.includes(':userId')) {
-    if (!context?.userSlug) {
-      console.error('AppLink: no userId found for link', link);
-      return '/';
-    }
-    link = link.replace(':userId', context.userSlug);
-  }
-
   return link;
 }

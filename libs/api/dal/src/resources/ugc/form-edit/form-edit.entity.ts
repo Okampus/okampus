@@ -10,11 +10,14 @@ export class FormEdit extends TenantScopedEntity {
   @Property({ type: 'json' })
   addedDiff!: JSONObject;
 
+  @Property({ type: 'json' })
+  newVersion!: JSONObject;
+
   @Property({ type: 'smallint' })
   order!: number;
 
   @ManyToOne({ type: 'Form', onDelete: 'CASCADE' })
-  form!: Form;
+  linkedForm!: Form;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })
   editedBy!: Individual;

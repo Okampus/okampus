@@ -11,6 +11,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gap: {
+        item: '0.75rem',
+      },
       fontSize: {
         xxs: '.625rem',
         modest: '0.925rem',

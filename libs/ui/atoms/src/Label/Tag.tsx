@@ -1,15 +1,28 @@
+import { clsx } from 'clsx';
+
 export type TagItem = {
   label: string;
-  backgroundColor?: string;
+  count?: number;
+  onClick?: () => void;
+  className?: string | boolean;
+  backgroundClass?: string;
   slug?: string;
 };
 
 // TODO: add slug for linking to Tag page
-export function Tag({ label, backgroundColor }: TagItem) {
+export function Tag({ label, count, className, onClick, backgroundClass = 'bg-4' }: TagItem) {
   return (
-    <div className="py-0.5 px-2.5 rounded-full w-fit text-sm contrast-125 bg-white text-black flex gap-2 items-center">
-      {backgroundColor && <div className="w-2 h-2" style={{ backgroundColor }} />}
+    <div
+      onClick={onClick}
+      className={clsx(
+        'py-1.5 px-3 rounded-full w-fit capitalize contrast-125 text-1 flex gap-2 items-center text-sm font-semibold cursor-pointer',
+        className,
+        backgroundClass
+      )}
+    >
+      {/* {backgroundColor && <div className="w-2 h-2" style={{ backgroundColor }} />} */}
       <span>{label}</span>
+      {count ? <span className="text-2 text-3-hover">{count}</span> : null}
     </div>
   );
 }

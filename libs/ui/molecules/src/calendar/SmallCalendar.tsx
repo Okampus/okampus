@@ -4,8 +4,8 @@ import { getMonth } from './util';
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/chevron-left.svg';
-import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/chevron-right.svg';
+import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/outlined/next.svg';
+import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/outlined/back.svg';
 
 export function SmallCalendar() {
   const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());

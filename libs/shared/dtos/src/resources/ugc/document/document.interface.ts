@@ -5,6 +5,6 @@ import type { DocumentProps } from './document.props';
 
 export type ITenantDocument = IUgc &
   Required<DocumentProps> & {
-    documentUpload?: IDocumentUpload;
+    currentVersion?: IDocumentUpload;
     edits: IDocumentEdit[];
   };

@@ -16,9 +16,9 @@ export class GetTeamsHandler implements IQueryHandler<GetTeamsQuery> {
       query.paginationOptions,
       {
         tenant: { id: query.tenant.id },
-        ...(query.filterOptions?.types?.length ? { type: { $in: query.filterOptions.types } } : {}),
-        ...(query.filterOptions?.categories?.length
-          ? { categories: { slug: { $in: query.filterOptions.categories } } }
+        ...(query.filterQuery?.types?.length ? { type: { $in: query.filterQuery.types } } : {}),
+        ...(query.filterQuery?.categories?.length
+          ? { categories: { slug: { $in: query.filterQuery.categories } } }
           : {}),
       },
       { populate: query.populate }

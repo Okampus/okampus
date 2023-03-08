@@ -20,6 +20,7 @@ export const userFragment = gql(`
     }
     firstName
     lastName
+    status
     roles
     scopeRole
   }

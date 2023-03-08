@@ -6,7 +6,7 @@ import type { BaseEntity } from '@okampus/api/dal';
 import type { CursorColumnTypes } from '@okampus/shared/types';
 
 const COL_SEPARATOR = ':';
-const METADATA_SEPARATOR = '.';
+const METADATA_SEPARATOR = '-';
 
 const columnTypes = {
   string: GqlCursorTypes.String,

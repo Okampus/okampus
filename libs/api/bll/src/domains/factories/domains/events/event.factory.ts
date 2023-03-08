@@ -2,6 +2,9 @@ import { TenantEventModel } from './event.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -29,11 +32,12 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     eventRepository: TenantEventRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager,
     private readonly userRepository: UserRepository,
     private readonly orgRepository: OrgRepository
   ) {
-    super(eventPublisher, eventRepository, TenantEventModel, TenantEvent);
+    super(eventPublisher, uploadService, eventRepository, TenantEventModel, TenantEvent);
   }
 
   // TODO: refactor with similar logic as in update with a callback

@@ -16,4 +16,5 @@ export * from './global/files/spreadsheet-exts';
 export * from './global/files/tabular-exts';
 export * from './global/files/video-exts';
 export * from './global/statuses';
+export * from './ui/avatar-rounded';
 // @endindex

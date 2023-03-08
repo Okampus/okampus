@@ -1,16 +1,19 @@
-import { HOME, ADMIN, MANAGE } from './Sidebar/Sidebar.types';
-
 import { ReactComponent as SearchIcon } from '@okampus/assets/svg/icons/search.svg';
 import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
 
+import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/outlined/back.svg';
+import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/outlined/next.svg';
+
 import { Avatar, Bubble, Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
-import { CurrentContext, NavigationContext, useCurrentContext } from '@okampus/ui/hooks';
+import { NavigationContext, useMe } from '@okampus/ui/hooks';
+import { getAvatar } from '@okampus/ui/utils';
+import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { logoutMutation } from '@okampus/shared/graphql';
 
-import { getAvatar } from '@okampus/ui/utils';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { clsx } from 'clsx';
 
 // TODO: make avatar active when popper is open
 // TODO: improve popover
@@ -18,82 +21,87 @@ import { useNavigate } from 'react-router-dom';
 export function Topbar() {
   const navigate = useNavigate();
   const client = useApolloClient();
+  const { me } = useMe();
 
-  const { isSearching, setIsSearching, selected } = useContext(NavigationContext);
-  const [{ org, tenant, user }, updateCache] = useCurrentContext();
-  const { setCurrentOrgId, setCurrentUserId, setCurrentTenantId } = useContext(CurrentContext);
+  const { isSearching, setIsSearching, history, setTenant } = useContext(NavigationContext);
 
   const [logout] = useMutation(logoutMutation, {
     onCompleted: () => {
-      setCurrentOrgId(null);
-      setCurrentUserId(null);
-      setCurrentTenantId(null);
-
-      updateCache();
+      setTenant(null);
       client.clearStore();
-
-      navigate('/welcome');
+      navigate('/welcome', { replace: true });
     },
   });
 
-  const getSubspaceName = () => {
-    if (selected.subSpace === HOME) return tenant?.actor?.name;
-    if (selected.subSpace === ADMIN) return `${tenant?.actor?.name}`;
-    if (selected.subSpace === MANAGE) return `${org?.actor?.name}`;
-    return;
-  };
+  const avatar = getAvatar(me?.actor?.actorImages);
+  const buttonClass = 'h-10 w-10 py-2 rounded-[50%] bg-0';
 
-  const getSubspaceAvatar = () => {
-    if (selected.subSpace === HOME) return getAvatar(tenant?.actor?.actorImages);
-    if (selected.subSpace === ADMIN) return getAvatar(tenant?.actor?.actorImages);
-    if (selected.subSpace === MANAGE) return getAvatar(org?.actor?.actorImages);
-    return;
-  };
-
-  const avatar = getAvatar(user?.actor?.actorImages);
+  const last = history[history.length - 1];
+  const isFirst = window.history.state?.idx === 0;
+  const isLast =
+    window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
 
   return (
-    <div className="w-full h-[3.75rem] bg-topbar pl-2 pr-6">
-      <div className="w-full h-full flex items-center justify-between">
-        <div className="flex gap-2 items-center">
-          <Bubble onClick={() => setIsSearching(true)} selected={isSearching} showBg={true}>
-            <SearchIcon height="26" />
-          </Bubble>
-          <div className="flex gap-3 px-2 items-center lg:w-56">
-            <Avatar name={getSubspaceName()} src={getSubspaceAvatar()} size={14} rounded={20} />
-            <h2 className="text-0 text-2xl tracking-tight font-semibold font-title lg-max:hidden">
-              {getSubspaceName()}
-            </h2>
+    <header className="sticky top-0 w-full h-[var(--topbar-height)] bg-topbar pl-[var(--padding-view)] pr-[calc(var(--padding-inner)*4)] z-[51] flex items-center justify-between">
+      <div className="flex gap-6 items-center">
+        {/* History navigation */}
+        <div className="flex gap-4">
+          <div
+            className={clsx(buttonClass, 'pl-1.5', isFirst ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
+            onClick={() => !isFirst && navigate(-1)}
+          >
+            <ChevronLeftIcon className="h-6" />
           </div>
-          <div className="pl-12">{}</div>
+          <div
+            className={clsx(buttonClass, 'pl-2.5', isLast ? 'text-3 cursor-not-allowed' : 'text-0 cursor-pointer')}
+            onClick={() => !isLast && navigate(1)}
+          >
+            <ChevronRightIcon className="h-6" />
+          </div>
         </div>
-        <Popover useArrow={false} forcePlacement={true} placementOffset={6}>
-          <PopoverTrigger>
-            <Avatar name={user?.actor?.name} src={avatar} size={16} />
-          </PopoverTrigger>
-          <PopoverContent popoverClassName="!p-0">
-            <div className="flex flex-col gap-2">
-              {/* TODO: add as component */}
-              <div className="p-2 flex gap-4">
-                <Avatar src={avatar} name={user?.actor?.name} size={24} />
+
+        {/* Search */}
+        <Bubble onClick={() => setIsSearching(true)} selected={isSearching} showBg={true}>
+          <SearchIcon className="p-1" />
+        </Bubble>
+        {/* Current location */}
+        {/* <div className="text-0 text-[1.75rem] tracking-tighter font-semibold font-title">
+        </div> */}
+      </div>
+
+      {/* User settings */}
+      <Popover forcePlacement={true} placement="bottom-end" placementOffset={10}>
+        <PopoverTrigger>
+          <Avatar name={me?.actor?.name} src={avatar} size={18} rounded={AVATAR_USER_ROUNDED} />
+        </PopoverTrigger>
+        <PopoverContent popoverClassName="!p-0 bg-1 ">
+          <div className="flex flex-col items-center">
+            {/* TODO: add as component */}
+            <div className="card-sm bg-4 m-2 flex flex-col gap-2">
+              <div className="pr-24 flex items-center gap-4">
+                <Avatar src={avatar} name={me?.actor?.name} size={24} rounded={AVATAR_USER_ROUNDED} />
                 <div className="flex flex-col">
-                  <div className="text-0 text-lg font-heading leading-tight">{user?.actor?.name}</div>
-                  <div className="text-3 text-base font-heading">{user?.actor?.primaryEmail}</div>
-                  <div className="text-blue-400 hover:underline hover:cursor-pointer">Gérer votre profil</div>
+                  <div className="text-0 text-lg font-heading leading-tight">{me?.actor?.name}</div>
+                  <div className="text-3 text-sm font-heading">{me?.actor?.primaryEmail}</div>
                 </div>
               </div>
-
-              <button
-                className="text-0 text-1xl font-semibold font-title flex gap-2 items-center px-3 py-2 rounded-xl hover:bg-gray-500"
-                onClick={() => logout()}
-              >
-                <LogoutIcon height={20} />
-                Se déconnecter
+              <button onClick={() => navigate('/me')} className="button bg-opposite text-opposite w-full">
+                Gérer mon profil
               </button>
             </div>
-          </PopoverContent>
-        </Popover>
-      </div>
-    </div>
+
+            <button
+              className="w-full text-0 text-lg font-semibold font-title flex gap-4 items-center px-4 py-3 bg-hover-1"
+              onClick={() => logout()}
+            >
+              <LogoutIcon height={20} />
+              Se déconnecter
+            </button>
+            <hr className="border-color-2 w-full" />
+            <div className="text-xs py-3">RGPD • Conditions d'utilisation</div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </header>
   );
 }

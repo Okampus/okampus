@@ -5,6 +5,7 @@ import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 
 import {
+  ActorsModule,
   HealthModule,
   MeiliSearchModule,
   PubSubModule,
@@ -173,6 +174,7 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     // TagsModule,
     // TeamsModule,
     // TenantsCoreModule,
+    ActorsModule,
     TenantsModule,
     // ThreadsModule,
     UsersModule,

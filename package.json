@@ -93,10 +93,12 @@
     "react-is": "^18.2.0",
     "react-merge-refs": "^2.0.0",
     "react-pdf": "^6.2.0",
+    "react-use": "^17.4.0",
     "reflect-metadata": "^0.1.0",
     "rimraf": "^4.0.0",
     "rxjs": "^7.8.0",
     "sharp": "^0.31.0",
+    "swiper": "^9.0.5",
     "zod": "^3.20.0"
   },
   "devDependencies": {

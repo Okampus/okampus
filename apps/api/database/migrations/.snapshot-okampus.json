@@ -1378,6 +1378,15 @@
           ],
           "mappedType": "enum"
         },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "token_hash": {
           "name": "token_hash",
           "type": "text",
@@ -3194,8 +3203,8 @@
           ],
           "mappedType": "enum"
         },
-        "text": {
-          "name": "text",
+        "description": {
+          "name": "description",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -3209,7 +3218,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "bigint"
         },
         "real_author_id": {
@@ -3218,7 +3227,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "bigint"
         },
         "is_anonymous": {
@@ -3325,8 +3334,8 @@
           ],
           "mappedType": "enum"
         },
-        "document_upload_id": {
-          "name": "document_upload_id",
+        "new_version_id": {
+          "name": "new_version_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -3352,15 +3361,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "schema": {
           "name": "schema",
           "type": "jsonb",
@@ -3378,8 +3378,8 @@
           "primary": false,
           "nullable": true,
           "enumItems": [
-            "EventRegistration",
-            "MembershipRequest",
+            "EventJoin",
+            "TeamJoin",
             "Internal",
             "Survey"
           ],
@@ -3387,6 +3387,15 @@
         },
         "is_template": {
           "name": "is_template",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "undeletable": {
+          "name": "undeletable",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -3403,8 +3412,17 @@
           "nullable": true,
           "mappedType": "json"
         },
-        "for_form_id": {
-          "name": "for_form_id",
+        "linked_form_version_id": {
+          "name": "linked_form_version_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "bigint"
+        },
+        "last_edit_id": {
+          "name": "last_edit_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -3427,10 +3445,10 @@
         },
         {
           "columnNames": [
-            "document_upload_id"
+            "new_version_id"
           ],
           "composite": false,
-          "keyName": "ugc_document_upload_id_unique",
+          "keyName": "ugc_new_version_id_unique",
           "primary": false,
           "unique": true
         },
@@ -3523,10 +3541,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "ugc_document_upload_id_foreign": {
-          "constraintName": "ugc_document_upload_id_foreign",
+        "ugc_new_version_id_foreign": {
+          "constraintName": "ugc_new_version_id_foreign",
           "columnNames": [
-            "document_upload_id"
+            "new_version_id"
           ],
           "localTableName": "public.ugc",
           "referencedColumnNames": [
@@ -3536,16 +3554,29 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "ugc_for_form_id_foreign": {
-          "constraintName": "ugc_for_form_id_foreign",
+        "ugc_linked_form_version_id_foreign": {
+          "constraintName": "ugc_linked_form_version_id_foreign",
           "columnNames": [
-            "for_form_id"
+            "linked_form_version_id"
           ],
           "localTableName": "public.ugc",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.ugc",
+          "referencedTableName": "public.form_edit",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "ugc_last_edit_id_foreign": {
+          "constraintName": "ugc_last_edit_id_foreign",
+          "columnNames": [
+            "last_edit_id"
+          ],
+          "localTableName": "public.ugc",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.form_submission_edit",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -5565,8 +5596,8 @@
           "nullable": false,
           "mappedType": "smallint"
         },
-        "form_submission_id": {
-          "name": "form_submission_id",
+        "linked_form_submission_id": {
+          "name": "linked_form_submission_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -5611,10 +5642,10 @@
           "referencedTableName": "public.tenant_core",
           "updateRule": "cascade"
         },
-        "form_submission_edit_form_submission_id_foreign": {
-          "constraintName": "form_submission_edit_form_submission_id_foreign",
+        "form_submission_edit_linked_form_submission_id_foreign": {
+          "constraintName": "form_submission_edit_linked_form_submission_id_foreign",
           "columnNames": [
-            "form_submission_id"
+            "linked_form_submission_id"
           ],
           "localTableName": "public.form_submission_edit",
           "referencedColumnNames": [
@@ -5708,6 +5739,15 @@
           "nullable": false,
           "mappedType": "json"
         },
+        "new_version": {
+          "name": "new_version",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "order": {
           "name": "order",
           "type": "smallint",
@@ -5717,8 +5757,8 @@
           "nullable": false,
           "mappedType": "smallint"
         },
-        "form_id": {
-          "name": "form_id",
+        "linked_form_id": {
+          "name": "linked_form_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -5763,10 +5803,10 @@
           "referencedTableName": "public.tenant_core",
           "updateRule": "cascade"
         },
-        "form_edit_form_id_foreign": {
-          "constraintName": "form_edit_form_id_foreign",
+        "form_edit_linked_form_id_foreign": {
+          "constraintName": "form_edit_linked_form_id_foreign",
           "columnNames": [
-            "form_id"
+            "linked_form_id"
           ],
           "localTableName": "public.form_edit",
           "referencedColumnNames": [
@@ -5851,8 +5891,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "document_upload_id": {
-          "name": "document_upload_id",
+        "new_version_id": {
+          "name": "new_version_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -5924,10 +5964,10 @@
           "referencedTableName": "public.tenant_core",
           "updateRule": "cascade"
         },
-        "document_edit_document_upload_id_foreign": {
-          "constraintName": "document_edit_document_upload_id_foreign",
+        "document_edit_new_version_id_foreign": {
+          "constraintName": "document_edit_new_version_id_foreign",
           "columnNames": [
-            "document_upload_id"
+            "new_version_id"
           ],
           "localTableName": "public.document_edit",
           "referencedColumnNames": [
@@ -7028,16 +7068,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
         "type": {
           "name": "type",
           "type": "varchar(255)",
@@ -7055,6 +7085,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "smallint"
+        },
+        "last_active_date": {
+          "name": "last_active_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "interaction",

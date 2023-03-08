@@ -26,7 +26,7 @@ export class UserSeeder extends Factory<User> {
 
     return {
       tenant: this.tenant.tenant,
-      slug: toSlug(`${firstName}.${lastName}.${nanoid(4)}`),
+      slug: toSlug(`${firstName}-${lastName}-${nanoid(4)}`),
       name: firstName + ' ' + lastName,
       firstName,
       lastName,

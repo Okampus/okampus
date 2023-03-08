@@ -20,16 +20,15 @@ export class TenantDocument extends Ugc {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', nullable: true })
-  description: string | null = null;
-
   @OneToOne({ type: 'DocumentUpload', cascade: [Cascade.ALL] })
-  documentUpload!: DocumentUpload;
+  newVersion!: DocumentUpload;
 
   // Version as a year; e.g. year 2023 is valid for the school year 2023/2024
   // If null, the year is unknown
   @Property({ type: 'smallint', nullable: true })
   yearVersion: number | null = null;
+
+  // TODO: add lastEdit
 
   @OneToMany({ type: 'DocumentEdit', mappedBy: 'linkedDocument' })
   edits = new Collection<DocumentEdit>(this);

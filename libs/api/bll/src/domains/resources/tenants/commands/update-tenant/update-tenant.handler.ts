@@ -4,6 +4,7 @@ import { UpdateTenantCommand } from './update-tenant.command';
 import { TenantFactory } from '../../../../factories/domains/tenants/tenant.factory';
 
 import { CommandHandler } from '@nestjs/cqrs';
+
 import type { ICommandHandler } from '@nestjs/cqrs';
 import type { TenantModel } from '../../../../factories/domains/tenants/tenant.model';
 
@@ -13,6 +14,6 @@ export class UpdateTenantHandler implements ICommandHandler<UpdateTenantCommand>
 
   async execute(command: UpdateTenantCommand): Promise<TenantModel> {
     const { id, ...updateTenant } = command.updateTenant;
-    return await this.tenantFactory.updateActor({ id, tenant: command.tenant }, command.populate, updateTenant);
+    return await this.tenantFactory.updateActor(command.tenant, { id }, command.populate, updateTenant);
   }
 }

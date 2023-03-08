@@ -2,6 +2,9 @@ import { ImageUploadModel } from './image-upload.model';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UploadService } from '../../../../features/upload/upload.service';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -18,9 +21,10 @@ export class ImageUploadFactory extends BaseFactory<ImageUploadModel, ImageUploa
   constructor(
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     imageUploadRepository: ImageUploadRepository,
+    uploadService: UploadService,
     private readonly em: EntityManager
   ) {
-    super(eventPublisher, imageUploadRepository, ImageUploadModel, ImageUpload);
+    super(eventPublisher, uploadService, imageUploadRepository, ImageUploadModel, ImageUpload);
   }
 
   modelToEntity(model: Required<ImageUploadModel>): ImageUpload {

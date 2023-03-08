@@ -97,7 +97,7 @@ export class TenantEvent extends ContentMaster implements Searchable {
       representingOrg: options.org,
       realAuthor: options.createdBy,
       tenant: options.tenant,
-      text: options.description ?? '',
+      description: options.description ?? '',
       // TODO: extra props
     });
   }

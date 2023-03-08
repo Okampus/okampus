@@ -13,6 +13,7 @@ import {
 import { OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
 
+import type { TeamJoin } from '../../join/team-join/team-join.entity';
 import type { Searchable } from '../../../types/search-entity.type';
 import type { TeamOptions } from './team.options';
 import type { TeamCategory } from '../../label/team-category/team-category.entity';
@@ -22,9 +23,7 @@ import type { TeamMember } from '../../membership/team-member/team-member.entity
 import type { TeamRole } from '../../role/team-role/team-role.entity';
 import type { Finance } from '../../manage-team/finance/finance.entity';
 
-@Entity({
-  customRepository: () => TeamRepository,
-})
+@Entity({ customRepository: () => TeamRepository })
 export class Team extends Org implements Searchable {
   [EntityRepositoryType]!: TeamRepository;
 
@@ -54,6 +53,10 @@ export class Team extends Org implements Searchable {
   @OneToMany({ type: 'TeamMember', mappedBy: 'team' })
   @TransformCollection()
   members = new Collection<TeamMember>(this);
+
+  @OneToMany({ type: 'TeamJoin', mappedBy: 'team' })
+  @TransformCollection()
+  joins = new Collection<TeamJoin>(this);
 
   @OneToMany({ type: 'TeamRole', mappedBy: 'team' })
   @TransformCollection()

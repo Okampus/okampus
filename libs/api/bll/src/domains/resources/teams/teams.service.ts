@@ -4,17 +4,21 @@ import { UpdateTeamCommand } from './commands/update-team/update-team.command';
 import { GetTeamByIdQuery } from './queries/get-team-by-id/get-team-by-id.query';
 import { GetTeamBySlugQuery } from './queries/get-team-by-slug/get-team-by-slug.query';
 import { GetTeamsQuery } from './queries/get-teams/get-teams.query';
+import { DeactivateTeamImageCommand } from './commands/deactivate-team-image/deactivate-team-image.command';
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { CreateOrgDocumentCommand } from '../org-documents/commands/create-org-document/create-org-document.command';
-import { Injectable } from '@nestjs/common';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import type { TeamFilterOptions } from './team-filter-options.type';
+import { Injectable } from '@nestjs/common';
+
+import type { TeamFilterQuery } from './team.filter-query';
 import type { ActorImageUploadProps } from '@okampus/api/dal';
 import type { CreateOrgDocumentDto, CreateTeamDto, UpdateTeamDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 import type { PaginationOptions } from '../../../shards/types/pagination-options.type';
 import type { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
+import type { ActorImageType } from '@okampus/shared/enums';
 
 const defaultTeamPopulate = ['actor', 'actor.images', 'actor.socials', 'actor.tags'];
 
@@ -34,9 +38,9 @@ export class TeamsService extends RequestContext {
     return this.queryBus.execute(query);
   }
 
-  find(paginationOptions: PaginationOptions, filterOptions: TeamFilterOptions): Promise<PaginatedTeamModel> {
+  find(paginationOptions: PaginationOptions, filterQuery: TeamFilterQuery): Promise<PaginatedTeamModel> {
     const query = new GetTeamsQuery(
-      filterOptions,
+      filterQuery,
       paginationOptions,
       this.tenant(),
       this.autoGqlPopulate(defaultTeamPopulate)
@@ -54,8 +58,25 @@ export class TeamsService extends RequestContext {
     return this.commandBus.execute(command);
   }
 
-  update(updateTeam: UpdateTeamDto): Promise<TeamModel> {
-    const command = new UpdateTeamCommand(updateTeam, this.tenant(), this.autoGqlPopulate(defaultTeamPopulate));
+  deactivateTeamImage(id: Snowflake, actorImageType: ActorImageType) {
+    const command = new DeactivateTeamImageCommand(
+      id,
+      actorImageType,
+      this.requester(),
+      this.tenant(),
+      this.autoGqlPopulate()
+    );
+    return this.commandBus.execute(command);
+  }
+
+  update(updateTeam: UpdateTeamDto, actorImages?: ActorImageUploadProps): Promise<TeamModel> {
+    const command = new UpdateTeamCommand(
+      updateTeam,
+      this.requester(),
+      this.tenant(),
+      this.autoGqlPopulate(defaultTeamPopulate),
+      actorImages
+    );
     return this.commandBus.execute(command);
   }
 
