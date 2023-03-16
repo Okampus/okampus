@@ -13,6 +13,7 @@ export * from './Image/Banner';
 export * from './Image/ImageGradient';
 export * from './Image/ImageHorizontal';
 export * from './Item/FormItem';
+export * from './Label/RoleLabel';
 export * from './Label/StatusLabel';
 export * from './Label/Tag';
 export * from './Loader/GridLoader';
