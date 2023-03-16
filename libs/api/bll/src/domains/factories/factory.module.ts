@@ -16,6 +16,7 @@ import { FinanceFactory } from './domains/teams/finance.factory';
 import { ProjectFactory } from './domains/teams/project.factory';
 import { TeamCategoryFactory } from './domains/tags/team-category.factory';
 import { OrgDocumentFactory } from './domains/documents/org-document.factory';
+import { TeamJoinFactory } from './domains/teams/team-join.factory';
 import {
   Actor,
   ActorImage,
@@ -25,6 +26,7 @@ import {
   EventApprovalStep,
   Finance,
   Form,
+  FormEdit,
   FormSubmission,
   ImageUpload,
   Individual,
@@ -36,6 +38,7 @@ import {
   Tag,
   Team,
   TeamCategory,
+  TeamJoin,
   TeamMember,
   TeamRole,
   Tenant,
@@ -54,6 +57,7 @@ const factories = [
   TagFactory,
   ActorImageFactory,
   TeamFactory,
+  TeamJoinFactory,
   FormFactory,
   ContentFactory,
   TenantFactory,
@@ -78,7 +82,9 @@ const entities = [
   Tag,
   ActorImage,
   Team,
+  TeamJoin,
   Form,
+  FormEdit,
   Content,
   Tenant,
   TenantEvent,
