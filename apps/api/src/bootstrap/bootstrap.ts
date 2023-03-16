@@ -55,6 +55,7 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   await fastifyInstance.register(fastifyCors, { origin: corsValidation, credentials: true });
   await fastifyInstance.register(fastifyRequestContext, { hook: 'preValidation', defaultStoreValues });
 
+  // @ts-expect-error - @nestjs/platform-fastify is not up to date with fastify 4.13.0
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(fastifyInstance));
 
   const oidcCache = app.get<OIDCCacheService>(OIDCCacheService);
