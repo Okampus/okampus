@@ -1,20 +1,56 @@
 import { Backdrop } from '../components/Layout/Backdrop';
-import { Sidebar } from '../components/Layout/Sidebar/Sidebar';
-import { SideModal } from '../components/Layout/SideModal';
-
-import { FilePreviewer } from '../misc/FilePreviewer';
-import { selectedMenuFromPath } from '../menus';
 import { Topbar } from '../components/Layout/Topbar';
-
+import { Sidebar } from '../components/Layout/Sidebar';
 import { SidePanel } from '../components/Layout/SidePanel';
-import { NavigationContext, useMe } from '@okampus/ui/hooks';
+import { SideModal } from '../components/Layout/SideModal';
+import { FilePreviewer } from '../misc/FilePreviewer';
+
 import { Modal, Toast } from '@okampus/ui/atoms';
+import {
+  ADMIN_ROUTE,
+  EVENT_ROUTE_PREFIX,
+  TEAM_MANAGE_ROUTE_PREFIX,
+  ME_ROUTE,
+  TEAM_ROUTE_PREFIX,
+  USER_ROUTE_PREFIX,
+} from '@okampus/shared/consts';
+import { NavigationContext, useMe } from '@okampus/ui/hooks';
+import { stripSlash } from '@okampus/shared/utils';
+import { SubspaceType, ViewType } from '@okampus/shared/enums';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useScroll } from 'react-use';
 
-import type { Route } from '@okampus/shared/types';
+import type { Route, SelectedMenu } from '@okampus/shared/types';
+
+const getSubspace = (path: string) => {
+  const startRoute = '/' + path.split('/')[0];
+  switch (startRoute) {
+    case ADMIN_ROUTE: {
+      return SubspaceType.Admin;
+    }
+    case ME_ROUTE: {
+      return SubspaceType.Me;
+    }
+    case EVENT_ROUTE_PREFIX: {
+      return SubspaceType.Event;
+    }
+    case TEAM_ROUTE_PREFIX: {
+      return SubspaceType.Org;
+    }
+    case TEAM_MANAGE_ROUTE_PREFIX: {
+      return SubspaceType.Manage;
+    }
+    case USER_ROUTE_PREFIX: {
+      return SubspaceType.User;
+    }
+    default: {
+      return SubspaceType.Home;
+    }
+  }
+};
 
 export function TenantApp() {
   const { me } = useMe();
@@ -33,13 +69,23 @@ export function TenantApp() {
     previewedFile,
     hideFilePreview,
     notifications,
+    selected,
     setSelected,
   } = useContext(NavigationContext);
 
   const location = useLocation();
+  const scrollRef = useRef(null);
+  const { y } = useScroll(scrollRef);
+  const scrollFull = y / 200;
+  const topbarOpacity = scrollFull > 1 ? 1 : scrollFull;
 
   useEffect(() => {
-    const selectedMenu = selectedMenuFromPath(location.pathname);
+    const rawPath = stripSlash(location.pathname);
+    const selectedMenu: SelectedMenu = {
+      subSpace: getSubspace(rawPath),
+      viewType: selected ? selected.viewType : ViewType.Community,
+      menuId: location.pathname,
+    };
     setSelected(selectedMenu);
 
     const currentIdx = window.history.state?.idx;
@@ -65,8 +111,8 @@ export function TenantApp() {
   return (
     <div className="flex h-full">
       <Sidebar />
-      <div className="relative w-content h-full overflow-x-hidden scrollbar-none bg-main">
-        <Topbar />
+      <div className="relative w-content h-full overflow-x-hidden scrollbar-none bg-main" ref={scrollRef}>
+        <Topbar opacity={topbarOpacity} color="#000" />
         <Outlet />
       </div>
       <SidePanel />

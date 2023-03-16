@@ -12,152 +12,131 @@ import { TeamList } from './views/TeamList';
 import { TeamView } from './views/Team/TeamView';
 import { UserProfile } from './views/User/UserProfile';
 
-import { MyRoute, TeamManageRoute, TeamRoute, UserRoute } from './menus';
-
 import { MyView } from './views/Me/MyView';
 import { FullCalendar } from '@okampus/ui/molecules';
+import {
+  ADMIN_CLUBS,
+  ADMIN_EVENTS,
+  ADMIN_GUIDES,
+  ADMIN_ROUTE,
+  ADMIN_SETTINGS,
+  BLOG_ROUTE,
+  CLUBS_ROUTE,
+  CLUB_CATEGORY_ROUTE,
+  EVENTS_ROUTE,
+  HOME_ROUTE,
+  TEAM_MANAGE_TAB_ROUTE,
+  ME_ROUTES,
+  PEOPLE_ROUTE,
+  TEAM_MANAGE_ROUTE,
+  TEAM_MANAGE_ROUTES,
+  TEAM_ROUTE,
+  TEAM_ROUTES,
+  TEAM_TAB_ROUTE,
+  USER_ROUTES,
+  USER_ROUTE,
+  USER_TAB_ROUTE,
+  ME_ROUTE,
+  ME_TAB_ROUTE,
+  DISCOVER_ROUTE,
+  FAVORITES_ROUTE,
+  PROJECTS_ROUTE,
+} from '@okampus/shared/consts';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <TenantApp />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage error="404" />,
     children: [
       {
-        path: '/events',
-        element: <FullCalendar />,
-      },
-      {
-        path: '/admin',
-        element: <WIP />,
-      },
-      {
-        path: '/guides',
+        path: HOME_ROUTE,
         element: <GuideView />,
       },
       {
-        path: '/people',
+        path: BLOG_ROUTE,
+        element: <GuideView />,
+      },
+      {
+        path: PEOPLE_ROUTE,
         element: <WIP />,
       },
       {
-        path: '/staff',
+        path: DISCOVER_ROUTE,
         element: <WIP />,
       },
       {
-        path: '/admin/clubs',
-        element: <TeamDashboard />,
-      },
-      {
-        path: '/admin/guides',
-        element: <GuideManageView />,
-      },
-      {
-        path: '/admin/settings',
+        path: FAVORITES_ROUTE,
         element: <WIP />,
       },
       {
-        path: '/admin/roles',
+        path: EVENTS_ROUTE,
+        element: <FullCalendar />,
+      },
+      {
+        path: PROJECTS_ROUTE,
         element: <WIP />,
       },
       {
-        path: '/admin/staff',
-        element: <WIP />,
-      },
-      {
-        path: '/admin/validations',
-        element: <WIP />,
-      },
-      {
-        path: '/admin/events',
-        element: <AdminEventDashboard />,
-      },
-      {
-        path: '/clubs',
+        path: CLUBS_ROUTE,
         element: <TeamCategoryList />,
       },
       {
-        path: '/clubs/:categorySlug',
+        path: CLUB_CATEGORY_ROUTE(),
         element: <TeamList />,
       },
-      // {
-      //   path: '/org/:orgSlug',
-      //   element: <TeamProfile />,
-      //   id: TeamProfileRoute.Profile,
-      // },
-      // {
-      //   path: '/org/:orgSlug/events',
-      //   element: <TeamProfile />,
-      //   id: TeamProfileRoute.Events,
-      // },
-      // {
-      //   path: '/org/:orgSlug/galleries',
-      //   element: <TeamProfile />,
-      //   id: TeamProfileRoute.Galleries,
-      // },
       {
-        path: '/org/:orgSlug',
-        element: <Navigate to={TeamRoute.Profile} replace={true} />,
+        path: TEAM_ROUTE(),
+        element: <Navigate to={TEAM_ROUTES.PROFILE} replace={true} />,
       },
       {
-        path: '/org/:orgSlug/:tab',
+        path: TEAM_TAB_ROUTE(),
         element: <TeamView />,
       },
       {
-        path: '/manage/:manageOrgSlug',
-        element: <Navigate to={TeamManageRoute.Overview} replace={true} />,
+        path: TEAM_MANAGE_ROUTE(),
+        element: <Navigate to={TEAM_MANAGE_ROUTES.PROFILE} replace={true} />,
       },
       {
-        path: '/manage/:manageOrgSlug/:tab',
+        path: TEAM_MANAGE_TAB_ROUTE(),
         element: <TeamManageView />,
       },
-      // {
-      //   path: '/manage/:manageOrgSlug/documents',
-      //   element: <DocumentManageView />,
-      //   id: ManageTeamProfileRoute.Documents,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/events',
-      //   element: <EventManageView />,
-      //   id: ManageTeamProfileRoute.Events,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/treasury',
-      //   element: <FinanceManageView />,
-      //   id: ManageTeamProfileRoute.Treasury,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/settings',
-      //   element: <WIP />,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/invite',
-      //   element: <WIP />,
-      //   id: ManageTeamProfileRoute.TeamJoin,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/org',
-      //   element: <WIP />,
-      // },
-      // {
-      //   path: '/manage/:manageOrgSlug/roles',
-      //   element: <WIP />,
-      // },
       {
-        path: '/user/:userSlug',
-        element: <Navigate to={UserRoute.Profile} replace={true} />,
+        path: USER_ROUTE(),
+        element: <Navigate to={USER_ROUTES.PROFILE} replace={true} />,
       },
       {
-        path: '/user/:userSlug/:tab',
+        path: USER_TAB_ROUTE(),
         element: <UserProfile />,
       },
       {
-        path: '/me',
-        element: <Navigate to={MyRoute.Profile} replace={true} />,
+        path: ME_ROUTE,
+        element: <Navigate to={ME_ROUTES.PROFILE} replace={true} />,
       },
       {
-        path: '/me/:tab',
+        path: ME_TAB_ROUTE(),
         element: <MyView />,
+      },
+      {
+        path: ADMIN_ROUTE,
+        element: <WIP />,
+      },
+      {
+        path: ADMIN_CLUBS,
+        element: <TeamDashboard />,
+      },
+      {
+        path: ADMIN_GUIDES,
+        element: <GuideManageView />,
+      },
+      {
+        path: ADMIN_SETTINGS,
+        element: <WIP />,
+      },
+      {
+        path: ADMIN_EVENTS,
+        element: <AdminEventDashboard />,
       },
     ],
   },
