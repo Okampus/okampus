@@ -4,7 +4,6 @@ export * from './Button/TabButton';
 export * from './Calendar/Day';
 export * from './Card/FactCard';
 export * from './Circle/Badge';
-export * from './Circle/Bubble';
 export * from './Gradient/GradientDark';
 export * from './Gradient/GradientTransparent';
 export * from './Heading/HeadingSeparated';
