@@ -33,6 +33,7 @@ export * from './Input/BannerEditor';
 export * from './Input/CategorySelector';
 export * from './Input/SelectMenu';
 export * from './Input/SingleFileInput';
+export * from './Labeled/LabeledInput';
 export * from './Labeled/LabeledMember';
 export * from './Labeled/LabeledMemberHorizontal';
 export * from './Labeled/LabeledSideUser';

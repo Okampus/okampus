@@ -1,8 +1,8 @@
 import { ControlType } from '@okampus/shared/enums';
-import { SelectMenu, SingleFileInput } from '@okampus/ui/molecules';
+import { LabeledInput, SelectMenu, SingleFileInput } from '@okampus/ui/molecules';
 import { Controller, useForm } from 'react-hook-form';
 
-import type { SelectItem } from '@okampus/ui/molecules';
+import type { SelectItem } from '@okampus/shared/types';
 import type { RegisterOptions } from 'react-hook-form';
 
 export interface DynamicFieldData {
@@ -39,68 +39,77 @@ export function DynamicForm({ fields, onSubmit }: DynamicFormProps) {
             switch (dynamicField.inputType) {
               case ControlType.Select: {
                 return (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
-                      {dynamicField.label}
-                    </label>
-                    <SelectMenu
-                      {...field}
-                      items={dynamicField.options ?? []}
-                      placeholder={dynamicField.placeholder}
-                      fullWidth={dynamicField.fullWidth}
-                    />
-                  </div>
+                  <LabeledInput
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={
+                      <SelectMenu
+                        {...field}
+                        items={dynamicField.options ?? []}
+                        placeholder={dynamicField.placeholder}
+                        fullWidth={dynamicField.fullWidth}
+                      />
+                    }
+                  />
                 );
               }
               case ControlType.SingleFile: {
                 return (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
-                      {dynamicField.label}
-                    </label>
-                    <SingleFileInput {...field} />
-                  </div>
+                  <LabeledInput
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={<SingleFileInput {...field} />}
+                  />
                 );
               }
               case ControlType.Number: {
                 return (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
-                      {dynamicField.label}
-                    </label>
-                    <input type="number" placeholder={dynamicField.placeholder} className="input" {...field} />
-                  </div>
+                  <LabeledInput
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={<input type="number" placeholder={dynamicField.placeholder} className="input" {...field} />}
+                  />
                 );
               }
               case ControlType.Checkbox: {
                 return (
-                  <div className="flex gap-1.5 px-2">
-                    <input type="checkbox" {...field} id={field.name} />
-                    <label htmlFor={field.name}>
-                      {dynamicField.label}
-                      {dynamicField.required && '*'}
-                    </label>
-                  </div>
+                  <LabeledInput
+                    className="flex flex-row-reverse gap-1.5 px-2"
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={<input type="checkbox" {...field} id={field.name} />}
+                  />
                 );
               }
               case ControlType.DatetimeLocal: {
                 return (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
-                      {dynamicField.label}
-                    </label>
-                    <input type="datetime-local" placeholder={dynamicField.placeholder} className="input" {...field} />
-                  </div>
+                  <LabeledInput
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={
+                      <input
+                        type="datetime-local"
+                        placeholder={dynamicField.placeholder}
+                        className="input"
+                        {...field}
+                      />
+                    }
+                  />
                 );
               }
               default: {
                 return (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor={field.name} className="font-medium text-[#BDBDBD]">
-                      {dynamicField.label}
-                    </label>
-                    <input type="text" placeholder={dynamicField.placeholder} className="input" {...field} />
-                  </div>
+                  <LabeledInput
+                    label={dynamicField.label}
+                    name={field.name}
+                    required={dynamicField.required}
+                    input={<input type="text" placeholder={dynamicField.placeholder} className="input" {...field} />}
+                  />
                 );
               }
             }
