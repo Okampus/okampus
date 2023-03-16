@@ -4,5 +4,5 @@ import type { UgcOptions } from '../ugc.options';
 
 export type FormSubmissionOptions = FormSubmissionProps &
   UgcOptions & {
-    linkedFormVersion?: FormEdit;
+    linkedFormEdit: FormEdit;
   };

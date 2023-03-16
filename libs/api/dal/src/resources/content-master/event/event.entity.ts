@@ -1,6 +1,7 @@
 import { TenantEventRepository } from './event.repository';
 import { ContentMaster } from '../content-master.entity';
 import { Content } from '../../ugc/content/content.entity';
+import { Form } from '../../ugc/form/form.entity';
 import {
   Cascade,
   Collection,
@@ -13,7 +14,7 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
-import { EventState } from '@okampus/shared/enums';
+import { EventState, FormType } from '@okampus/shared/enums';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
 import { TransformCollection } from '@okampus/api/shards';
@@ -24,7 +25,6 @@ import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/
 import type { EventJoin } from '../../join/event-join/event-join.entity';
 import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
 import type { User } from '../../actor/user/user.entity';
-import type { Form } from '../../ugc/form/form.entity';
 import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import type { EventApproval } from '../../manage-tenant/event-approval/event-approval.entity';
 
@@ -62,8 +62,17 @@ export class TenantEvent extends ContentMaster implements Searchable {
   @Index()
   private = false;
 
-  @OneToOne({ type: 'Form', nullable: true, cascade: [Cascade.ALL] })
-  joinForm: Form | null = null;
+  @ManyToOne({ type: 'Form' })
+  joinForm = new Form({
+    isTemplate: false,
+    name: `Rejoindre ${this.title}`,
+    realAuthor: null,
+    schema: [],
+    description: `Formulaire officiel pour rejoindre ${this.title}`,
+    type: FormType.EventJoin,
+    undeletable: true,
+    tenant: this.tenant,
+  });
 
   @ManyToOne({ type: 'TenantEvent', nullable: true })
   regularEvent: TenantEvent | null = null;
@@ -93,6 +102,7 @@ export class TenantEvent extends ContentMaster implements Searchable {
 
     // Event description
     this.rootContent = new Content({
+      attachments: [],
       contentMaster: this,
       representingOrg: options.org,
       realAuthor: options.createdBy,
@@ -100,5 +110,7 @@ export class TenantEvent extends ContentMaster implements Searchable {
       description: options.description ?? '',
       // TODO: extra props
     });
+
+    this.joinForm.representingOrg = options.org ?? null;
   }
 }

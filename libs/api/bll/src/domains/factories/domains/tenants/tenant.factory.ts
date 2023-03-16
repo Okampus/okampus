@@ -1,8 +1,8 @@
 import { TenantModel } from './tenant.model';
-import { BaseFactory } from '../../base.factory';
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
+import { BaseFactory } from '../../base.factory';
+import { addImagesToActor, extractActor } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
@@ -13,13 +13,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { TenantRepository } from '@okampus/api/dal';
+import { ActorImageUploadProps, TenantRepository } from '@okampus/api/dal';
 import { Form, Tag, Tenant, TenantCore } from '@okampus/api/dal';
 import { FormType, OrgDocumentType } from '@okampus/shared/enums';
 
+import type { Populate } from '@mikro-orm/core';
 import type { OrgDocumentModel } from '../documents/org-document.model';
 import type { Individual, TenantOptions } from '@okampus/api/dal';
-import type { CreateDocumentDto, CreateTenantDto, ITenant } from '@okampus/shared/dtos';
+import type { CreateDocumentDto, CreateTenantDto, IActorImage, ITenant, UpdateTenantDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
 @Injectable()
@@ -82,6 +83,43 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
       }
       return tenantEntity;
     });
+  }
+
+  async updateTenant(
+    updateTenant: UpdateTenantDto,
+    requester: Individual,
+    tenant: TenantCore,
+    populate: Populate<Tenant>,
+    actorImages?: ActorImageUploadProps
+  ) {
+    // TODO: add Tenant roles and permissions
+    // const canEdit = await this.canEditTeam(id, requester.id);
+    // if (!canEdit) throw new ForbiddenException('You are not allowed to edit this team');
+
+    const { id, eventValidationForm, ...updateTenantProps } = updateTenant;
+
+    // TODO: add eventValidationForm edit
+
+    const transform = async (tenantOrg: Tenant) => {
+      if (actorImages)
+        await addImagesToActor(tenantOrg.actor, tenantOrg.actor.actorKind(), actorImages, tenant, this.uploadService);
+      return tenantOrg;
+    };
+
+    const transformModel = async (model: TenantModel) => {
+      if (actorImages && model.actor && model.actor.actorImages)
+        model.actor.actorImages = model.actor.actorImages.filter((image: IActorImage) => !image.lastActiveDate);
+      return model;
+    };
+
+    return await this.update(
+      { id, tenant },
+      populate,
+      extractActor(updateTenantProps),
+      false, // TODO: check permissions
+      transform,
+      transformModel
+    );
   }
 
   modelToEntity(model: Required<TenantModel>): Tenant {

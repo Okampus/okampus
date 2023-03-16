@@ -33,7 +33,6 @@ export * from './dal/interaction/reaction-type.enum';
 export * from './dal/interaction/report-reason.enum';
 export * from './dal/interaction/validation-type.enum';
 export * from './dal/join/event-registration-status.enum';
-export * from './dal/join/join-state.enum';
 export * from './dal/kind/actor-kind.enum';
 export * from './dal/kind/content-kind.enum';
 export * from './dal/kind/content-master-kind.enum';
@@ -69,5 +68,7 @@ export * from './global/align.enum';
 export * from './global/approval-state.enum';
 export * from './global/colors.enum';
 export * from './global/file-mime-category';
+export * from './site/subspace-type.enum';
+export * from './site/view-type.enum';
 export * from './ui/control-type.enum';
 // @endindex

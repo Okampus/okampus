@@ -1,9 +1,10 @@
 import { IndividualModel } from './individual.model';
 import { TenantScopedModel } from './tenant-scoped.model';
 import { FormSubmissionModel } from '../domains/forms/form-submission.model';
+// eslint-disable-next-line import/no-cycle
 import { UserModel } from '../domains/users/user.model';
 import { Field, InterfaceType } from '@nestjs/graphql';
-import { JoinKind, JoinState } from '@okampus/shared/enums';
+import { JoinKind, ApprovalState } from '@okampus/shared/enums';
 import type { IFormSubmission, IIndividual, IJoin, IUser } from '@okampus/shared/dtos';
 
 @InterfaceType()
@@ -14,23 +15,23 @@ export abstract class JoinModel extends TenantScopedModel implements IJoin {
   @Field(() => IndividualModel, { nullable: true })
   issuer?: IIndividual | null;
 
-  @Field(() => UserModel, { nullable: true })
-  joiner?: IUser;
+  @Field(() => UserModel)
+  joiner!: IUser;
 
   @Field(() => IndividualModel, { nullable: true })
-  validatedBy?: IIndividual | null;
+  settledBy?: IIndividual | null;
 
   @Field(() => Date, { nullable: true })
-  validatedAt!: Date | null;
+  settledAt!: Date | null;
 
   @Field(() => String, { nullable: true })
-  validationMessage!: string | null;
+  settledMessage!: string | null;
 
-  @Field(() => FormSubmissionModel, { nullable: true })
-  formSubmission?: IFormSubmission | null;
+  @Field(() => FormSubmissionModel)
+  formSubmission!: IFormSubmission;
 
-  @Field(() => JoinState)
-  state!: JoinState;
+  @Field(() => ApprovalState)
+  state!: ApprovalState;
 
   constructor(join: IJoin) {
     if (!join.tenant) throw new Error('Join must have a tenant');

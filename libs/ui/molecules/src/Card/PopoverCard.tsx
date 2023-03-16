@@ -39,7 +39,7 @@ export function PopoverCard({ avatar, banner, className, link, name, children }:
           </motion.div>
         </div>
         <div className="card-sm mt-14 bg-0">
-          <div className="text-xl font-medium">{name}</div>
+          <div className="text-xl font-medium font-title">{name}</div>
           <hr className="my-2 border-color-3" />
           {children}
         </div>

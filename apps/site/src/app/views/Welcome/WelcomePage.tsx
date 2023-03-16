@@ -48,9 +48,10 @@ export function WelcomePage() {
   const onLoggedIn = (data: LoginMutation | MeQuery) => {
     setLoggedIn(true);
     setIsLoading(true);
+
     const authContext = 'login' in data ? data.login : data.me;
     setTenant(getFragmentData(tenantFragment, authContext.tenant));
-    setTimeout(() => setIsLoading(false), 350);
+    setTimeout(() => setIsLoading(false), 300);
   };
 
   const { loading: initialLoading } = useQuery(getMe, {
@@ -68,11 +69,8 @@ export function WelcomePage() {
   };
 
   useEffect(() => {
-    if ((initialLoading || loginLoading) && !isLoading) {
-      setIsLoading(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoading, loginLoading]);
+    if ((initialLoading || loginLoading) && !isLoading) setIsLoading(true);
+  }, [initialLoading, loginLoading, isLoading, setIsLoading]);
 
   return (
     <div className="flex w-full h-full overflow-hidden">
@@ -161,7 +159,7 @@ export function WelcomePage() {
           </div>
         </div>{' '}
       </div>
-      <div className="lg-max:hidden bg-opposite w-full h-full"></div>
+      <div className="xl-max:hidden bg-opposite w-full h-full"></div>
     </div>
   );
 }

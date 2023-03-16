@@ -9,7 +9,7 @@ import type { TeamProps } from './team.props';
 
 export interface ITeam extends IOrg, Required<TeamProps> {
   memberCount: number;
-  joinForm?: IForm | null;
+  joinForm?: IForm;
   members: ITeamMember[];
   roles: ITeamRole[];
   joins: ITeamJoin[];

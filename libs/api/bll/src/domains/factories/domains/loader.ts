@@ -12,6 +12,7 @@ import {
   FileUpload,
   Finance,
   Form,
+  FormEdit,
   FormSubmission,
   ImageUpload,
   Individual,
@@ -84,7 +85,8 @@ import type {
   ITenantScoped,
   IFormEdit,
 } from '@okampus/shared/dtos';
-import type { BaseEntity, TenantCore, TenantScopedEntity, FormEdit } from '@okampus/api/dal';
+
+import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
 import type { Snowflake } from '@okampus/shared/types';
 
 export function loadBase(base: BaseEntity): IBase | undefined {
@@ -295,6 +297,8 @@ export function loadTenantScopedEntity(
   contextStack: Record<Snowflake, AllInterfaces>,
   loadBaseClass?: boolean
 ): AllInterfaces | undefined {
+  if (entity.id in contextStack) return contextStack[entity.id];
+
   const base = loadBase(entity);
   if (!base) return undefined;
 
@@ -413,8 +417,6 @@ export function loadTenantScopedEntity(
   }
 
   if ((entity instanceof User || isUser(entity)) && !loadBaseClass) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const user = loadTenantScopedEntity(entity, contextStack, true);
     if (!user) return undefined;
 
@@ -427,6 +429,7 @@ export function loadTenantScopedEntity(
     user.roles = entity.roles;
     user.shortcuts = loadApply(entity.shortcuts, (shortcut) => loadTenantScopedEntity(shortcut, contextStack));
     user.teamMemberships = loadApply(entity.teamMemberships, (member) => loadTenantScopedEntity(member, contextStack));
+    user.teamJoins = loadApply(entity.teamJoins, (teamJoin) => loadTenantScopedEntity(teamJoin, contextStack));
     user.profile = loadTenantScopedEntity(entity.profile, contextStack);
     user.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
@@ -434,8 +437,6 @@ export function loadTenantScopedEntity(
   }
 
   if ((entity instanceof Bot || isBot(entity)) && !loadBaseClass) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const bot = loadTenantScopedEntity(entity, contextStack, true);
     if (!bot) return undefined;
 
@@ -448,8 +449,6 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof Individual) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const individual: IIndividual = {
       ...base,
       individualKind: entity.individualKind,
@@ -458,14 +457,13 @@ export function loadTenantScopedEntity(
     };
 
     contextStack[individual.id] = individual;
+
     individual.actor = getEntityFromStackOrLoad(entity.actor, contextStack);
 
     return individual;
   }
 
   if (entity instanceof Team && !loadBaseClass) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const team = loadTenantScopedEntity(entity, contextStack, true);
     if (!team) return undefined;
 
@@ -484,14 +482,12 @@ export function loadTenantScopedEntity(
     team.joins = loadApply(entity.joins, (join) => loadTenantScopedEntity(join, contextStack));
     team.finances = loadApply(entity.finances, (finance) => loadTenantScopedEntity(finance, contextStack));
     team.categories = loadApply(entity.categories, (category) => loadTenantScopedEntity(category, contextStack));
-    team.joinForm = entity.joinForm ? loadTenantScopedEntity(entity.joinForm, contextStack) : null;
+    team.joinForm = getEntityFromStackOrLoad(entity.joinForm, contextStack);
 
     return team;
   }
 
   if (entity instanceof Tenant && !loadBaseClass) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const tenant = loadTenantScopedEntity(entity, contextStack, true);
     if (!tenant) return undefined;
 
@@ -509,8 +505,6 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof Org) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const org: IOrg = {
       ...base,
       orgKind: entity.orgKind,
@@ -528,8 +522,6 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof Actor) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const actor: IActor = {
       ...base,
       actorKind: entity.actorKind(),
@@ -672,8 +664,6 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof TenantEvent && !loadBaseClass) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const event = loadTenantScopedEntity(entity, contextStack, true);
     if (!event) return undefined;
 
@@ -702,8 +692,6 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof ContentMaster) {
-    if (entity.id in contextStack) return contextStack[entity.id];
-
     const contentMaster = loadTenantScopedEntity(entity, contextStack, true);
     if (!contentMaster) return undefined;
 
@@ -752,10 +740,10 @@ export function loadTenantScopedEntity(
       ...base,
       joinKind: entity.joinKind,
       state: entity.state,
-      validatedAt: entity.validatedAt,
-      validationMessage: entity.validationMessage,
+      settledAt: entity.settledAt,
+      settledMessage: entity.settledMessage,
       formSubmission: entity.formSubmission ? loadTenantScopedEntity(entity.formSubmission, contextStack) : null,
-      validatedBy: getEntityFromStackOrLoad(entity.validatedBy, contextStack, true),
+      settledBy: getEntityFromStackOrLoad(entity.settledBy, contextStack, true),
       issuer: getEntityFromStackOrLoad(entity.issuer, contextStack, true),
       joiner: getEntityFromStackOrLoad(entity.joiner, contextStack),
       tenant,
@@ -789,13 +777,30 @@ export function loadTenantScopedEntity(
     const baseUgc = loadTenantScopedEntity(entity, contextStack, true);
     if (!baseUgc) return undefined;
 
-    return {
+    const form: IForm = {
       ...baseUgc,
       name: entity.name,
       type: entity.type,
       schema: entity.schema,
       description: entity.description,
       isTemplate: entity.isTemplate,
+      undeletable: entity.undeletable,
+    };
+
+    contextStack[entity.id] = form;
+
+    form.edits = loadApply(entity.edits, (edit) => loadTenantScopedEntity(edit, contextStack));
+    return form;
+  }
+
+  if (entity instanceof FormEdit) {
+    return {
+      ...base,
+      addedDiff: entity.addedDiff,
+      newVersion: entity.newVersion,
+      editedBy: getEntityFromStackOrLoad(entity.editedBy, contextStack, true),
+      linkedForm: getEntityFromStackOrLoad(entity.linkedForm, contextStack),
+      order: entity.order,
     };
   }
 
@@ -806,7 +811,7 @@ export function loadTenantScopedEntity(
     return {
       ...baseUgc,
       submission: entity.submission,
-      linkedFormVersion: loadTenantScopedEntity(entity.linkedFormVersion, contextStack),
+      linkedFormEdit: loadTenantScopedEntity(entity.linkedFormEdit, contextStack),
     };
   }
 

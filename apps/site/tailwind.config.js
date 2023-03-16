@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       gap: {
-        item: '0.75rem',
+        item: '1rem',
       },
       fontSize: {
         xxs: '.625rem',
@@ -21,6 +21,8 @@ module.exports = {
       fontFamily: {
         sans: ['HarmonyOS', ...defaultTheme.fontFamily.sans],
         mono: ['SpaceMono', ...defaultTheme.fontFamily.mono],
+        heading: ['RedHatDisplay', ...defaultTheme.fontFamily.sans],
+        title: ['Figtree', ...defaultTheme.fontFamily.sans],
       },
       screens: {
         xxs: '361px',

@@ -56,7 +56,6 @@ export class EventApprovalStepFactory extends BaseFactory<
     // const event = await this.eventRepository.findById(createEventApproval.eventId);
     // if (!event) throw new BadRequestException('Invalid event id');
     // // ({ id: createEventApproval.eventId });
-    // console.log('tenantOrg', tenantOrg);
 
     return this.create({
       ...createEventApprovalStep,

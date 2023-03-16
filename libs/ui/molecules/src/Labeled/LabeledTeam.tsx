@@ -13,7 +13,7 @@ export type TeamLabelProps = {
 
 export function LabeledTeam({ name, teamType, id, avatar, ellipsis }: TeamLabelProps) {
   return (
-    <div className="flex gap-2 items-center font-heading">
+    <div className="flex gap-2 items-center font-heading font-semibold">
       <TeamCard teamId={id}>
         <Avatar src={avatar} name={name} size={18} rounded={AVATAR_TEAM_ROUNDED} />
       </TeamCard>

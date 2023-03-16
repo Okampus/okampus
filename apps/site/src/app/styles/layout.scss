@@ -1,48 +1,32 @@
-// TODO: refactor & optimize spacing
 :root {
   --topbar-height: 5rem;
-  --sidebar-width-lg: 21rem;
+  --sidebar-width-xl: 18rem;
+  --sidebar-width-sm: 6rem;
   --padding-inner: 0.5rem;
-  --padding-bubble: 2px;
-  --padding-view: 2rem;
+  --padding-view: 2.5rem;
 }
-
-// TODO: harmonize post-topbar height
 
 .icon {
   width: 2rem;
   height: 2rem;
 }
 
-.h-bubble {
-  height: calc(var(--topbar-height) - (var(--padding-inner) * 2 + var(--padding-bubble) * 4));
-}
-
 .w-sidebar {
-  /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply lg:w-[var(--sidebar-width-lg)] w-[calc(var(--topbar-height)*2)];
-}
-
-.w-sidepanel {
-  /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply lg:w-[calc(var(--sidebar-width-lg)-var(--topbar-height))] w-[calc(var(--topbar-height)*2)];
+  @apply xl:w-[var(--sidebar-width-xl)] w-[var(--topbar-height)];
 }
 
 .w-content {
   /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply lg:w-[calc(100%-(var(--sidebar-width-lg)*2-var(--topbar-height)))] w-[calc(100%-var(--topbar-height)*2)];
+  @apply xl:w-[calc(100%-var(--sidebar-width-xl)*2)] w-[calc(100%-var(--topbar-height)*2)];
 }
 
 .w-popover-card {
   @apply w-96;
 }
 
-.h-content {
-  height: calc(100% - var(--topbar-height));
-}
-
-.p-bubble {
-  padding: var(--padding-bubble);
+.p-view-topbar {
+  padding: calc(var(--topbar-height) + var(--padding-view) / 4) var(--padding-view) calc(var(--padding-view) / 2)
+    var(--padding-view);
 }
 
 .p-view {
@@ -52,8 +36,4 @@
 .px-view {
   padding-right: var(--padding-view);
   padding-left: var(--padding-view);
-}
-
-.p-view-inner {
-  padding: calc(var(--padding-view) * 0.75) var(--padding-view);
 }

@@ -42,8 +42,8 @@ export class TeamModel extends OrgModel implements ITeam {
   @Field(() => String)
   membersCategoryName!: string;
 
-  @Field(() => FormModel, { nullable: true })
-  joinForm?: IForm | null;
+  @Field(() => FormModel)
+  joinForm!: IForm;
 
   @Field(() => [TeamMemberModel])
   members!: ITeamMember[];

@@ -3,22 +3,25 @@ import {
   getTeamCategoryBySlugQuery,
   getTeamsQuery,
   teamCategoryFragment,
-  teamMembersFragment,
+  teamFragment,
 } from '@okampus/shared/graphql';
 
-import { CategorySelector, TeamListCard } from '@okampus/ui/molecules';
+import {
+  // CategorySelector,
+  TeamListCard,
+} from '@okampus/ui/molecules';
 import { TeamType } from '@okampus/shared/enums';
+import { Skeleton } from '@okampus/ui/atoms';
+import { TEAM_ROUTE } from '@okampus/shared/consts';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
-import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
+import type { TeamInfoFragment } from '@okampus/shared/graphql';
 
 export function TeamList() {
   const { categorySlug } = useParams();
-  if (!categorySlug) {
-    return null;
-  }
+  if (!categorySlug) return null;
 
   return <TeamListWrapping categorySlug={categorySlug} />;
 }
@@ -28,31 +31,35 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
 
   const { data } = useQuery(getTeamsQuery, { variables: { filter: teamListFilter } });
   const { data: categoryData } = useQuery(getTeamCategoryBySlugQuery, { variables: { slug: categorySlug } });
-  const [filteredTeams, setFilteredTeams] = useState<TeamMembersInfoFragment[]>([]);
+  const [filteredTeams, setFilteredTeams] = useState<TeamInfoFragment[]>([]);
 
   if (!data || !data.teams.edges) {
     return null;
   }
 
-  const teams = data.teams.edges.map((edge) => getFragmentData(teamMembersFragment, edge.node));
+  const teams = data.teams.edges.map((edge) => getFragmentData(teamFragment, edge.node));
 
   return (
     <div className="flex flex-col">
-      <div className="p-view bg-topbar-to-main text-8xl font-extrabold text-0 font-title pt-20">
+      <div className="p-view-topbar text-8xl font-extrabold text-0 font-title pt-20">
         {getFragmentData(teamCategoryFragment, categoryData?.teamCategoryBySlug)?.name}
       </div>
-      <div className="p-view flex flex-col gap-6">
-        <div className="flex gap-2">
+      <div className="px-view flex flex-col gap-6">
+        {/* <div className="flex gap-2">
           <CategorySelector
             items={teams}
             itemToCategories={(team) => team.actor?.tags.map((tag) => tag.name) ?? []}
             onChangeFilteredItems={(filteredItems) => setFilteredTeams(filteredItems)}
           />
-        </div>
+        </div> */}
         <div className="grid grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4">
-          {filteredTeams.map((team) => (
-            <TeamListCard key={team.id} team={team} link={`/org/${team.actor?.slug}`} />
-          ))}
+          {teams.map((team) =>
+            team.actor ? (
+              <TeamListCard key={team.id} team={team} link={TEAM_ROUTE(team.actor.slug)} />
+            ) : (
+              <Skeleton key={team.id} height={72} width={72} />
+            )
+          )}
         </div>
       </div>
     </div>

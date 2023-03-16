@@ -1,30 +1,26 @@
-import { ErrorPage } from '../ErrorPage';
 import { ProfileBase } from '../ProfileBase';
-import { MyRoute } from '#site/app/menus';
 
 import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+
+import { AVATAR_USER_ROUNDED, ME_ROUTES, ME_TAB_ROUTE } from '@okampus/shared/consts';
 import { ControlType, ActorImageType } from '@okampus/shared/enums';
 import { deactivateUserImageMutation, updateUserMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { getColorHexFromData } from '@okampus/shared/utils';
+
 import { GridLoader, ActionButton } from '@okampus/ui/atoms';
 import { useMe, NavigationContext } from '@okampus/ui/hooks';
-import { getAvatar, getBanner } from '@okampus/ui/utils';
 import { DynamicForm } from '@okampus/ui/organisms';
+import { getAvatar, getBanner } from '@okampus/ui/utils';
+
 import { useMutation } from '@apollo/client';
+
 import { useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 
 export function MyView() {
-  const { tab } = useParams<{ tab: MyRoute }>();
-  if (!tab || !Object.values(MyRoute).includes(tab)) return <ErrorPage />;
-  return <MyViewWrapping tab={tab} />;
-}
-
-export function MyViewWrapping({ tab }: { tab: MyRoute }) {
   const navigate = useNavigate();
   const { addNotification, showModal, hideModal } = useContext(NavigationContext);
 
@@ -90,14 +86,20 @@ export function MyViewWrapping({ tab }: { tab: MyRoute }) {
     </span>
   );
 
+  const menus = [
+    {
+      key: ME_ROUTES.PROFILE,
+      label: 'Profil',
+      element: (
+        <div className="h-full w-full flex items-center justify-center p-view text-0 font-semibold text-4xl pt-20">
+          Aucune activité pour le moment.
+        </div>
+      ),
+    },
+  ];
+
   return (
     <ProfileBase
-      buttonList={buttonList}
-      color={color}
-      name={me.actor.name}
-      type={me.scopeRole}
-      avatar={avatar}
-      banner={banner}
       actorImageEdit={(image, actorImageType) => {
         if (me) {
           const id = me.id;
@@ -111,11 +113,14 @@ export function MyViewWrapping({ tab }: { tab: MyRoute }) {
           else deactivateUserImage({ variables: { id, actorImageType } });
         }
       }}
+      color={color}
+      tabs={menus}
+      name={me.actor.name}
+      avatar={avatar}
+      banner={banner}
       details={details}
-    >
-      <div className="h-full w-full flex items-center justify-center px-view text-0 font-semibold text-4xl pt-20">
-        Aucune activité pour le moment.
-      </div>
-    </ProfileBase>
+      buttonList={buttonList}
+      switchTabRoute={ME_TAB_ROUTE}
+    />
   );
 }

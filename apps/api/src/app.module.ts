@@ -4,6 +4,7 @@ import { config } from '../configs/config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 
+import { TeamJoinsModule } from '@okampus/api/bll';
 import {
   ActorsModule,
   HealthModule,
@@ -179,6 +180,7 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     // ThreadsModule,
     UsersModule,
     EventsModule,
+    TeamJoinsModule,
     TeamsModule,
     EventApprovalsModule,
     EventApprovalStepsModule,

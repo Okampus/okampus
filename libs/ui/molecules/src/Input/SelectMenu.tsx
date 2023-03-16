@@ -1,13 +1,16 @@
-import { motion } from 'framer-motion';
-import { forwardRef, useEffect, useState } from 'react';
 import { ReactComponent as ArrowDropdown } from '@okampus/assets/svg/icons/arrow-dropdown.svg';
-import { clsx } from 'clsx';
-import { useOutsideClick } from '@okampus/ui/hooks';
-import { mergeRefs } from 'react-merge-refs';
 
 import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
-import type { Ref } from 'react';
+import { useOutsideClick } from '@okampus/ui/hooks';
+
+import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
+import { forwardRef, useEffect, useState } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+
+import type { SelectItem } from '@okampus/shared/types';
 import type { Variants } from 'framer-motion';
+import type { Ref } from 'react';
 
 const itemVariants: Variants = {
   open: {
@@ -18,14 +21,12 @@ const itemVariants: Variants = {
   closed: { opacity: 0, y: 20, transition: { duration: 0.2 } },
 };
 
-export type SelectItem<T> = { value: T; element: React.ReactNode };
-
 export type SelectMenuProps<T> = {
   items: SelectItem<T>[];
   placeholder: React.ReactNode;
   onChange?: (value: T) => void;
   onClick?: () => void;
-  dropdown?: React.ReactNode | null;
+  customDropdown?: React.ReactNode | null;
   contentClassName?: string;
   contentPadding?: string;
   placeholderClassName?: string;
@@ -35,26 +36,30 @@ export type SelectMenuProps<T> = {
   showSelected?: boolean;
   isContentAbsolute?: boolean;
   isControlled?: boolean;
+  value?: T;
   open?: boolean;
+  name?: string;
 };
 
 function SelectMenuInner<T>(
   {
     items,
-    placeholder: name,
+    placeholder,
     onChange,
     onClick,
-    dropdown,
+    customDropdown,
     contentClassName,
     contentPadding = '0.5rem',
     placeholderClassName,
     placeholderBackgroundClass = 'bg-0',
-    itemClassName = 'hoverable px-4 py-2.5',
+    itemClassName = 'px-4 py-2.5',
     fullWidth,
     isContentAbsolute = true,
     showSelected = true,
     isControlled = false,
     open = false,
+    value,
+    name,
   }: SelectMenuProps<T>,
   propRef: React.ForwardedRef<HTMLDivElement>
 ) {
@@ -70,25 +75,27 @@ function SelectMenuInner<T>(
   useEffect(() => {
     if (isControlled) setIsOpen(open);
   }, [open, isControlled]);
-  const [selectedItem, setSelectedItem] = useState<SelectItem<T> | null>(null);
+  const [selectedItem, setSelectedItem] = useState<SelectItem<T> | null>(
+    items.find((item) => item.value === value) ?? null
+  );
+
+  const triggerClassName = clsx(
+    placeholderClassName,
+    placeholderBackgroundClass,
+    'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
+    fullWidth ? 'w-full justify-between' : 'w-fit'
+  );
+
+  const triggerOnClick = () => {
+    if (isControlled) setIsOpen(true);
+    else setIsOpen(!isOpen);
+    onClick?.();
+  };
 
   const trigger = (
-    <motion.button
-      whileTap={{ scale: 0.95 }}
-      onClick={() => {
-        if (isControlled) setIsOpen(true);
-        else setIsOpen(!isOpen);
-        onClick?.();
-      }}
-      className={clsx(
-        placeholderClassName,
-        placeholderBackgroundClass,
-        'flex gap-4 items-center px-4 py-2.5 rounded-lg text-0 medium',
-        fullWidth ? 'w-full justify-between' : 'w-fit'
-      )}
-    >
-      {selectedItem && showSelected ? selectedItem.element : name}
-      {dropdown === undefined ? (
+    <>
+      {showSelected && (selectedItem ? selectedItem.label : placeholder)}
+      {customDropdown === undefined ? (
         <motion.div
           variants={{
             open: { rotate: 180 },
@@ -100,9 +107,9 @@ function SelectMenuInner<T>(
           <ArrowDropdown className="h-5" />
         </motion.div>
       ) : (
-        dropdown
+        customDropdown
       )}
-    </motion.button>
+    </>
   );
 
   const content = (
@@ -151,22 +158,36 @@ function SelectMenuInner<T>(
             variants={itemVariants}
             className={clsx('cursor-pointer', itemClassName)}
             onClick={() => {
+              console.log('item', item);
               setSelectedItem(item);
               if (!isControlled) setIsOpen(false);
               if (onChange) onChange(item.value);
             }}
           >
-            {item.element}
+            {item.label}
           </motion.li>
         ))}
     </motion.ul>
   );
 
   return isContentAbsolute ? (
-    <Popover>
-      <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent className="p-0">{content}</PopoverContent>
-    </Popover>
+    <motion.div
+      className={clsx(fullWidth ? 'w-full' : 'w-fit')}
+      initial={'closed'}
+      animate={isOpen ? 'open' : 'closed'}
+    >
+      <Popover open={isOpen} placement="bottom-start">
+        <PopoverTrigger
+          name={name}
+          motionConfig={{ whileTap: { scale: 0.95 } }}
+          onClick={triggerOnClick}
+          className={triggerClassName}
+        >
+          {trigger}
+        </PopoverTrigger>
+        <PopoverContent className="p-0">{content}</PopoverContent>
+      </Popover>
+    </motion.div>
   ) : (
     <motion.div
       ref={mergeRefs([ref, propRef])}
@@ -174,10 +195,17 @@ function SelectMenuInner<T>(
       animate={isOpen ? 'open' : 'closed'}
       className={clsx('relative', fullWidth ? 'w-full' : 'w-fit')}
     >
-      {trigger}
+      <motion.button name={name} whileTap={{ scale: 0.95 }} onClick={triggerOnClick} className={triggerClassName}>
+        {trigger}
+      </motion.button>
       {content}
     </motion.div>
   );
 }
 
-export const SelectMenu = forwardRef(SelectMenuInner);
+type SelectMenuWithRefProps<T> = SelectMenuProps<T> & { ref?: React.Ref<HTMLDivElement> };
+
+export function SelectMenu<T>({ ref, ...props }: SelectMenuWithRefProps<T>) {
+  const SelectMenuWithRef = forwardRef<HTMLDivElement, SelectMenuProps<T>>(SelectMenuInner);
+  return <SelectMenuWithRef ref={ref} {...props} />;
+}

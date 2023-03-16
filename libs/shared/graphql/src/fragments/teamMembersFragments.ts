@@ -2,40 +2,16 @@ import { gql } from '../schema/__generated__/gql';
 
 export const teamMembersFragment = gql(`
   fragment TeamMembersInfo on TeamModel {
-    __typename
-    id
-    createdAt
-    updatedAt
-    tagline
-    type
-    currentFinance
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    actor {
+    ...TeamInfo
+    roles {
       __typename
       id
-      bio
       name
-      slug
-      actorImages {
-        ...ActorImageBareInfo
-      }
-      tags {
-        __typename
-        id
-        name
-        slug
-        color
-      }
-    }
-    documents {
-      __typename
-      id
-      type
-      document {
-        ...DocumentInfo
-      }
+      color
+      required
+      permissions
+      category
+      key
     }
     members {
       __typename

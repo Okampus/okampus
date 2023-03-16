@@ -2,11 +2,11 @@ import { UserModel } from './user.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
-import { addImagesToActor } from '../../factory.utils';
+import { addImagesToActor, extractActor } from '../../factory.utils';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EntityManager } from '@mikro-orm/core';
+import { EntityManager, Populate } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
@@ -14,9 +14,10 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { UserRepository } from '@okampus/api/dal';
 import { TenantCore, User, UserProfile, Tag } from '@okampus/api/dal';
 import { ActorKind } from '@okampus/shared/enums';
+import { fullName } from '@okampus/shared/utils';
 
 import type { ActorImageUploadProps, UserOptions } from '@okampus/api/dal';
-import type { IUser } from '@okampus/shared/dtos';
+import type { IActorImage, IUser, UpdateUserDto } from '@okampus/shared/dtos';
 
 @Injectable()
 export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions> {
@@ -41,6 +42,30 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
         );
       return user;
     });
+  }
+
+  async updateUser(
+    updateUser: UpdateUserDto,
+    tenant: TenantCore,
+    populate: Populate<User>,
+    actorImages?: ActorImageUploadProps
+  ) {
+    const { id, ...data } = updateUser;
+
+    const transform = async (user: User) => {
+      user.actor.name = fullName(data.firstName ?? user.firstName, data.lastName ?? user.lastName);
+      if (actorImages)
+        await addImagesToActor(user.actor, user.actor.actorKind(), actorImages, tenant, this.uploadService);
+      return user;
+    };
+
+    const transformModel = async (model: UserModel) => {
+      if (actorImages && model.actor && model.actor.actorImages)
+        model.actor.actorImages = model.actor.actorImages.filter((image: IActorImage) => !image.lastActiveDate);
+      return model;
+    };
+
+    return await this.update({ id, tenant }, populate, extractActor(data), false, transform, transformModel);
   }
 
   modelToEntity(model: Required<UserModel>): User {

@@ -1,16 +1,15 @@
 import { TeamModel } from './team.model';
 import { BaseFactory } from '../../base.factory';
-import { addImagesToActor } from '../../factory.utils';
+import { addImagesToActor, extractActor } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ActorImageFactory } from '../images/actor-image.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EntityManager, FilterQuery } from '@mikro-orm/core';
+import { EntityManager, FilterQuery, Populate } from '@mikro-orm/core';
 
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
@@ -27,34 +26,24 @@ import {
   Tag,
   TeamCategory,
   TenantCore,
+  defaultTeamJoinForm,
 } from '@okampus/api/dal';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   ActorRepository,
-  ActorImageRepository,
   ShortcutRepository,
   TeamCategoryRepository,
-  TeamMemberRepository,
   TeamRepository,
-  TeamRoleRepository,
   UserRepository,
 } from '@okampus/api/dal';
 
-import {
-  ActorKind,
-  ControlType,
-  FormType,
-  IndividualKind,
-  ShortcutType,
-  TeamPermissions,
-  TeamType,
-} from '@okampus/shared/enums';
+import { ActorKind, IndividualKind, ShortcutType, TeamPermissions, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
 
 import type { OrgDocumentModel } from '../documents/org-document.model';
 import type { ActorImageUploadProps, Individual, TeamOptions, User } from '@okampus/api/dal';
-import type { CreateOrgDocumentDto, CreateTeamDto, ITeam } from '@okampus/shared/dtos';
+import type { CreateOrgDocumentDto, CreateTeamDto, IActorImage, ITeam, UpdateTeamDto } from '@okampus/shared/dtos';
 import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 
 @Injectable()
@@ -63,14 +52,10 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     @Inject(EventPublisher) eventPublisher: EventPublisher,
     uploadService: UploadService,
     private readonly em: EntityManager,
-    private readonly actorImageFactory: ActorImageFactory,
     private readonly teamRepository: TeamRepository,
     private readonly userRepository: UserRepository,
     private readonly actorRepository: ActorRepository,
-    private readonly actorImageRepository: ActorImageRepository,
-    private readonly teamMemberRepository: TeamMemberRepository,
     private readonly shortcutRepository: ShortcutRepository,
-    private readonly teamRoleRepository: TeamRoleRepository,
     private readonly teamCategoryRepository: TeamCategoryRepository,
     private readonly orgDocumentFactory: OrgDocumentFactory
   ) {
@@ -117,32 +102,14 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
 
     const categories = await this.teamCategoryRepository.findByIds(createTeam.categoriesIds);
 
+    const joinForm = defaultTeamJoinForm(createTeam.name, tenant);
     /* Create team */
-    const team = await this.create({ ...createTeam, categories, slug, tenant }, async (team) => {
-      /* Add default team join form */
-      team.joinForm = new Form({
-        isTemplate: false,
-        name: `Formulaire d'adhésion de ${team.actor.name}`,
-        realAuthor: null,
-        schema: [
-          {
-            fieldName: 'title',
-            inputType: ControlType.Text,
-            label: "Raison de l'adhésion",
-            placeholder: "Raison de l'adhésion",
-          },
-        ],
-        description: `Formulaire d'adhésion officiel de ${team.actor.name}`,
-        type: FormType.TeamJoin,
-        undeletable: true,
-        tenant,
-      });
-
+    const team = await this.create({ ...createTeam, categories, slug, tenant, joinForm }, async (team) => {
       /* Add images to team */
       if (images) team.actor = await addImagesToActor(team.actor, ActorKind.Org, images, tenant, this.uploadService);
 
       /* Add team manage shortcut to team owner */
-      const shortcut = new Shortcut({ type: ShortcutType.TeamManage, targetActor: team.actor, user });
+      const shortcut = new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user });
 
       /* Add default roles to team */
       const roles =
@@ -165,6 +132,33 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
     return team;
   }
 
+  async updateTeam(
+    updateTeam: UpdateTeamDto,
+    requester: Individual,
+    tenant: TenantCore,
+    populate: Populate<Team>,
+    actorImages?: ActorImageUploadProps
+  ) {
+    const { id, ...data } = updateTeam;
+
+    const canEdit = await this.canEditTeam(id, requester.id);
+    if (!canEdit) throw new ForbiddenException('You are not allowed to edit this team');
+
+    const transform = async (team: Team) => {
+      if (actorImages)
+        await addImagesToActor(team.actor, team.actor.actorKind(), actorImages, tenant, this.uploadService);
+      return team;
+    };
+
+    const transformModel = async (model: TeamModel) => {
+      if (actorImages && model.actor && model.actor.actorImages)
+        model.actor.actorImages = model.actor.actorImages.filter((image: IActorImage) => !image.lastActiveDate);
+      return model;
+    };
+
+    return await this.update({ id, tenant }, populate, extractActor(data), true, transform, transformModel);
+  }
+
   async hasTeamRole(teamId: Snowflake, individualId: Snowflake, where: FilterQuery<TeamRole>): Promise<boolean> {
     return !!(await this.teamRepository.count({
       id: teamId,
@@ -183,7 +177,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
       ...model,
       ...model.actor,
       parent: model.parent ? this.em.getReference(Org, model.parent.id) : null,
-      joinForm: model.joinForm ? this.em.getReference(Form, model.joinForm.id) : null,
+      joinForm: this.em.getReference(Form, model.joinForm.id),
       tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       categories: model.categories.map((category) => this.em.getReference(TeamCategory, category.id)),
       tenant: this.em.getReference(TenantCore, model.tenant.id),

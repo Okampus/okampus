@@ -74,7 +74,7 @@ export function CategorySelector<T extends object>({
         <Tag
           key={category}
           label={category}
-          className={'cursor-pointer bg-hover-2'}
+          className={'cursor-pointer bg-2-hover'}
           backgroundClass={selectedCategory.includes(category) ? 'bg-0 bg-3-hover' : 'bg-4'}
           onClick={() => toggleCategory(category)}
           {...(showCount ? { count } : {})}

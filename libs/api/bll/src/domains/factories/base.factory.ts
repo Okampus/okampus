@@ -1,5 +1,4 @@
 import { loadTenantScopedEntity } from './domains/loader';
-import { addImagesToActor } from './factory.utils';
 import { assertPermissions, checkPermissions } from '../../features/uaa/authorization/check-permissions';
 import { RequestContext } from '../../shards/abstract/request-context';
 import { PageInfo } from '../../shards/types/page-info.type';
@@ -9,9 +8,8 @@ import { BadRequestException } from '@nestjs/common';
 import { processPopulatePaginated } from '@okampus/api/shards';
 import { DEFAULT_PAGINATION_LIMIT } from '@okampus/shared/consts';
 import { Action, QueryOrder } from '@okampus/shared/enums';
-import { isEmpty, isNotNull, keepDefined } from '@okampus/shared/utils';
+import { isNotNull } from '@okampus/shared/utils';
 
-import type { ActorModel } from './abstract/actor.model';
 import type { UploadService } from '../../features/upload/upload.service';
 import type { BaseModel } from './abstract/base.model';
 import type { Subjects } from '../../features/uaa/authorization/casl/get-abilities';
@@ -27,17 +25,9 @@ import type {
   EntityData,
 } from '@mikro-orm/core';
 import type { EventPublisher } from '@nestjs/cqrs';
-import type {
-  ActorEntityType,
-  ActorImageUploadProps,
-  BaseEntity,
-  BaseRepository,
-  FlatActorData,
-  TenantCore,
-  TenantScopedEntity,
-} from '@okampus/api/dal';
-import type { IActorImage, IBase } from '@okampus/shared/dtos';
-import type { Constructor, CursorColumns, CursorColumnTypes, DeepPartial } from '@okampus/shared/types';
+import type { BaseEntity, BaseRepository, TenantScopedEntity } from '@okampus/api/dal';
+import type { IBase } from '@okampus/shared/dtos';
+import type { Constructor, CursorColumns, CursorColumnTypes } from '@okampus/shared/types';
 
 type PaginationFindOptions<T extends BaseEntity, P extends string> = Omit<
   FindOptions<T, P>,
@@ -228,7 +218,6 @@ export abstract class BaseFactory<
 
     const saveEntity = await transform(entity);
     await this.repository.persistAndFlush(saveEntity);
-
     return this.entityToModelOrFail(saveEntity);
     // return this.entityToModel(entity);
   }
@@ -269,67 +258,65 @@ export abstract class BaseFactory<
   public async update(
     where: FilterQuery<Entity>,
     populate: Populate<Entity>,
-    data: DeepPartial<Entity>,
-    transform: (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>> = async (data) => data,
+    data: EntityData<Entity>,
     force = false,
+    transform: (entity: Entity) => Promise<Entity> = async (data) => data,
+    transformModel: (entity: Model) => Promise<Model> = async (data) => data,
     options: AssignOptions = {}
   ): Promise<Model> {
     const entity = await this.repository.findOneOrFail(where, { populate });
 
     const requester = this.requester();
     if (requester && !force) assertPermissions(requester, Action.Update, entity, Object.keys(data));
-    // if (entity.deletedAt || entity.lastHiddenAt) {
-    //   throw new BadRequestException(`${this.EntityClass.name} has been deleted`);
-    // }
 
     if (forbiddenKeys.some((key) => key in data))
       throw new BadRequestException(`Cannot update forbidden key on ${this.EntityClass.name}`);
 
-    const partialEntity = await transform(data, entity);
-    if (!('mergeObjects' in options)) options = { ...options, mergeObjects: true };
-    this.repository.assign(entity, partialEntity as unknown as EntityData<Entity>, options);
+    if (!('mergeObjects' in options)) options.mergeObjects = true;
+    if (!('updateByPrimaryKey' in options)) options.updateByPrimaryKey = false;
 
-    await this.repository.persistAndFlush(entity);
-
-    return this.entityToModelOrFail(entity);
+    this.repository.assign(entity, data, options);
+    const transformedEntity = await transform(entity);
+    await this.repository.flush();
+    return transformModel(this.entityToModelOrFail(transformedEntity));
   }
 
   // TODO: refactor as separate logic
-  public async updateActor<T extends ActorEntityType>(
-    tenant: TenantCore,
-    where: FilterQuery<T>,
-    populate: Populate<T>,
-    data: FlatActorData<T>,
-    transformData?: (data: DeepPartial<T>, entity: T) => Promise<DeepPartial<T>>,
-    images?: ActorImageUploadProps,
-    force = false,
-    options?: AssignOptions
-  ): Promise<Model> {
-    const { name, bio, primaryEmail, slug, ...entityProps } = data;
-    const actor = keepDefined({ name, bio, primaryEmail, slug });
-    const assignData = { ...(isEmpty(actor) ? {} : { actor }), ...entityProps };
+  // public async updateActor<T extends ActorEntityType>(
+  //   tenant: TenantCore,
+  //   where: FilterQuery<T>,
+  //   populate: Populate<T>,
+  //   data: FlatActorData<T>,
+  //   transformData?: (data: DeepPartial<T>, entity: T) => Promise<DeepPartial<T>>,
+  //   images?: ActorImageUploadProps,
+  //   force = false,
+  //   options?: AssignOptions
+  // ): Promise<Model> {
+  //   const { name, bio, primaryEmail, slug, ...entityProps } = data;
+  //   const actor = keepDefined({ name, bio, primaryEmail, slug });
+  //   const assignData = { ...(isEmpty(actor) ? {} : { actor }), ...entityProps };
 
-    const transform = async (data: DeepPartial<T>, entity: T): Promise<DeepPartial<T>> => {
-      if (images) await addImagesToActor(entity.actor, entity.actor.actorKind(), images, tenant, this.uploadService);
-      return transformData ? transformData(data, entity) : data;
-    };
+  //   const transform = async (data: DeepPartial<T>, entity: T): Promise<DeepPartial<T>> => {
+  //     if (images) await addImagesToActor(entity.actor, entity.actor.actorKind(), images, tenant, this.uploadService);
+  //     return transformData ? transformData(data, entity) : data;
+  //   };
 
-    const model = (await this.update(
-      { $and: [where, { tenant }] } as FilterQuery<Entity>,
-      populate,
-      assignData as unknown as DeepPartial<Entity>,
-      transform as unknown as (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>>,
-      force,
-      { ...options, updateByPrimaryKey: false }
-    )) as Model & { actor: ActorModel };
+  //   const model = (await this.update(
+  //     { $and: [where, { tenant }] } as FilterQuery<Entity>,
+  //     populate,
+  //     assignData,
+  //     transform as unknown as (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>>,
+  //     force,
+  //     { ...options, updateByPrimaryKey: false }
+  //   )) as Model & { actor: ActorModel };
 
-    if (images && model.actor.actorImages) {
-      const notCurrentImage = (image: IActorImage) => !image.lastActiveDate;
-      model.actor.actorImages = model.actor.actorImages.filter(notCurrentImage);
-    }
+  //   if (images && model.actor.actorImages) {
+  //     const notCurrentImage = (image: IActorImage) => !image.lastActiveDate;
+  //     model.actor.actorImages = model.actor.actorImages.filter(notCurrentImage);
+  //   }
 
-    return model;
-  }
+  //   return model;
+  // }
 
   public async delete(where: FilterQuery<Entity>): Promise<boolean> {
     const entity = await this.repository.findOneOrFail(where);

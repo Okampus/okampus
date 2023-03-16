@@ -1,9 +1,9 @@
 :root {
   --primary: #1564bf;
   --inactive: #555;
-  --success: #2ecc71;
+  --success: #20a74f;
   --warning: #f1c40f;
-  --danger: #e74c3c;
+  --danger: #ec2711;
   --info: #348adb;
   --bg-0: #f3f3f3;
   --bg-1: #eaeaea;
@@ -12,7 +12,6 @@
   --bg-4: #ddd;
   --bg-5: #ccc;
   --bg-main: #fff;
-  --bg-topbar: #f3f3f3;
   --text-0: #000;
   --text-1: #333;
   --text-2: #666;
@@ -31,8 +30,7 @@
     --bg-3: #2a2c2e;
     --bg-4: #444;
     --bg-5: #555;
-    --bg-main: #131313;
-    --bg-topbar: #0a0a0a;
+    --bg-main: #0f0f0f;
     --text-0: #fff;
     --text-1: #efefef;
     --text-2: #ccc;
@@ -91,41 +89,33 @@
   @apply bg-[var(--bg-main)];
 }
 
-.bg-topbar {
-  @apply bg-[var(--bg-topbar)];
-}
-
-.bg-topbar-to-main {
-  @apply bg-gradient-to-b from-[var(--bg-topbar)] to-[var(--bg-main)];
-}
-
 .bg-0,
-.bg-hover-0:hover {
+.bg-0-hover:hover {
   @apply bg-[var(--bg-0)];
 }
 
 .bg-1,
-.bg-hover-1:hover {
+.bg-1-hover:hover {
   @apply bg-[var(--bg-1)];
 }
 
 .bg-2,
-.bg-hover-2:hover {
+.bg-2-hover:hover {
   @apply bg-[var(--bg-2)];
 }
 
 .bg-3,
-.bg-hover-3:hover {
+.bg-3-hover:hover {
   @apply bg-[var(--bg-3)];
 }
 
 .bg-4,
-.bg-hover-4:hover {
+.bg-4-hover:hover {
   @apply bg-[var(--bg-4)];
 }
 
 .bg-5,
-.bg-hover-5:hover {
+.bg-5-hover:hover {
   @apply bg-[var(--bg-5)];
 }
 
@@ -163,27 +153,33 @@
   @apply hover:text-[#111] dark:hover:text-[#eee];
 }
 
-.text-0 {
+.text-0,
+.text-0-hover:hover {
   @apply text-[var(--text-0)];
 }
 
-.text-1 {
+.text-1,
+.text-1-hover:hover {
   @apply text-[var(--text-1)];
 }
 
-.text-2 {
+.text-2,
+.text-2-hover:hover {
   @apply text-[var(--text-2)];
 }
 
-.text-3 {
+.text-3,
+.text-3-hover:hover {
   @apply text-[var(--text-3)];
 }
 
-.text-4 {
+.text-4,
+.text-4-hover:hover {
   @apply text-[var(--text-4)];
 }
 
-.text-5 {
+.text-5,
+.text-5-hover:hover {
   @apply text-[var(--text-5)];
 }
 

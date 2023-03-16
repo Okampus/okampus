@@ -22,11 +22,11 @@ export function Toast({ id, type = ToastType.Info, message, timeout = 2000, onTi
       type === ToastType.Success
         ? 'var(--success)'
         : type === ToastType.Error
-        ? 'var(--error)'
+        ? 'var(--danger)'
         : type === ToastType.Info
         ? 'var(--info)'
         : 'var(--bg-0)',
-    color: type === ToastType.Success ? 'black' : type === ToastType.Error ? 'red' : 'var(--text-0)',
+    color: type === ToastType.Success ? 'black' : type === ToastType.Error ? 'black' : 'var(--text-0)',
     '--progress-bar-color':
       type === ToastType.Success
         ? 'green'

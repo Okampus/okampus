@@ -103,6 +103,7 @@ export type AddressInput = {
 /** The ApprovalState enum */
 export enum ApprovalState {
   Approved = 'Approved',
+  Canceled = 'Canceled',
   Pending = 'Pending',
   Rejected = 'Rejected',
 }
@@ -326,6 +327,14 @@ export type CreateTeamDto = {
   type?: InputMaybe<TeamType>;
 };
 
+export type CreateTeamJoinDto = {
+  askedRoleId: Scalars['String'];
+  joinerId?: InputMaybe<Scalars['String']>;
+  linkedFormEditId: Scalars['String'];
+  submission: Scalars['JSON'];
+  teamId: Scalars['String'];
+};
+
 export type CreateTenantDto = {
   bio?: InputMaybe<Scalars['String']>;
   eventValidationForm?: InputMaybe<Scalars['JSON']>;
@@ -476,21 +485,21 @@ export type EventJoinModel = {
   createdAt: Scalars['DateTime'];
   deletedAt?: Maybe<Scalars['DateTime']>;
   event?: Maybe<TenantEventModel>;
-  formSubmission?: Maybe<FormSubmissionModel>;
+  formSubmission: FormSubmissionModel;
   id: Scalars['String'];
   issuer?: Maybe<IndividualModel>;
   joinKind: JoinKind;
-  joiner?: Maybe<UserModel>;
+  joiner: UserModel;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   participated?: Maybe<Scalars['Boolean']>;
   presenceStatus: RegistrationStatus;
-  state: JoinState;
+  settledAt?: Maybe<Scalars['DateTime']>;
+  settledBy?: Maybe<IndividualModel>;
+  settledMessage?: Maybe<Scalars['String']>;
+  state: ApprovalState;
   teamAction?: Maybe<TeamActionModel>;
   tenant?: Maybe<TenantCoreModel>;
   updatedAt: Scalars['DateTime'];
-  validatedAt?: Maybe<Scalars['DateTime']>;
-  validatedBy?: Maybe<IndividualModel>;
-  validationMessage?: Maybe<Scalars['String']>;
 };
 
 export type EventJoinModelEdge = {
@@ -586,6 +595,33 @@ export enum FinanceState {
   Ongoing = 'Ongoing',
 }
 
+export type FormEditModel = UgcModel & {
+  __typename?: 'FormEditModel';
+  addedDiff: Scalars['JSON'];
+  author?: Maybe<IndividualModel>;
+  contentMaster: ContentMasterModel;
+  createdAt: Scalars['DateTime'];
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  editedBy: IndividualModel;
+  id: Scalars['String'];
+  isAnonymous: Scalars['Boolean'];
+  lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  linkedForm: FormModel;
+  newVersion: Scalars['JSON'];
+  order: Scalars['Int'];
+  representingOrg?: Maybe<OrgModel>;
+  tenant?: Maybe<TenantCoreModel>;
+  ugcKind: UgcKind;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type FormEditModelEdge = {
+  __typename?: 'FormEditModelEdge';
+  cursor: Scalars['String'];
+  node: FormEditModel;
+};
+
 export type FormModel = UgcModel & {
   __typename?: 'FormModel';
   author?: Maybe<IndividualModel>;
@@ -593,6 +629,7 @@ export type FormModel = UgcModel & {
   createdAt: Scalars['DateTime'];
   deletedAt?: Maybe<Scalars['DateTime']>;
   description: Scalars['String'];
+  edits: Array<FormEditModel>;
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
   isTemplate: Scalars['Boolean'];
@@ -603,6 +640,7 @@ export type FormModel = UgcModel & {
   tenant?: Maybe<TenantCoreModel>;
   type: FormType;
   ugcKind: UgcKind;
+  undeletable: Scalars['Boolean'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -622,7 +660,7 @@ export type FormSubmissionModel = UgcModel & {
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
-  linkedFormVersion?: Maybe<FormModel>;
+  linkedFormEdit?: Maybe<FormEditModel>;
   representingOrg?: Maybe<OrgModel>;
   submission: Scalars['JSON'];
   tenant?: Maybe<TenantCoreModel>;
@@ -693,13 +731,6 @@ export enum JoinKind {
   TeamJoin = 'TeamJoin',
 }
 
-/** The JoinState enum */
-export enum JoinState {
-  Approved = 'Approved',
-  Pending = 'Pending',
-  Rejected = 'Rejected',
-}
-
 /** The MembershipKind enum */
 export enum MembershipKind {
   CanteenMember = 'CanteenMember',
@@ -740,6 +771,7 @@ export type Mutation = {
   createProject: ProjectModel;
   createTeam: TeamModel;
   createTeamCategory: TeamCategoryModel;
+  createTeamJoin: TeamJoinModel;
   createTenant: TenantModel;
   createUser: UserModel;
   deactivateActorImage: ActorImageModel;
@@ -753,6 +785,7 @@ export type Mutation = {
   deleteProject: Scalars['Boolean'];
   deleteTeam: Scalars['Boolean'];
   deleteTeamCategory: Scalars['Boolean'];
+  deleteTeamJoin: Scalars['Boolean'];
   deleteTenant: Scalars['Boolean'];
   deleteUser: Scalars['Boolean'];
   login: AuthContextModel;
@@ -767,6 +800,7 @@ export type Mutation = {
   updateProject: ProjectModel;
   updateTeam: TeamModel;
   updateTeamCategory: TeamCategoryModel;
+  updateTeamJoin: TeamJoinModel;
   updateTenant: TenantModel;
   updateUser: UserModel;
   wsToken: Scalars['Boolean'];
@@ -813,6 +847,10 @@ export type MutationCreateTeamArgs = {
 export type MutationCreateTeamCategoryArgs = {
   iconImage?: InputMaybe<Scalars['Upload']>;
   teamCategory: CreateTeamCategoryDto;
+};
+
+export type MutationCreateTeamJoinArgs = {
+  teamJoin: CreateTeamJoinDto;
 };
 
 export type MutationCreateTenantArgs = {
@@ -870,6 +908,10 @@ export type MutationDeleteTeamArgs = {
 };
 
 export type MutationDeleteTeamCategoryArgs = {
+  id: Scalars['String'];
+};
+
+export type MutationDeleteTeamJoinArgs = {
   id: Scalars['String'];
 };
 
@@ -931,6 +973,10 @@ export type MutationUpdateTeamArgs = {
 
 export type MutationUpdateTeamCategoryArgs = {
   updateTeamCategory: UpdateTeamCategoryDto;
+};
+
+export type MutationUpdateTeamJoinArgs = {
+  updateTeamJoin: UpdateTeamJoinDto;
 };
 
 export type MutationUpdateTenantArgs = {
@@ -1064,6 +1110,12 @@ export type PaginatedTeamCategoryModel = {
   pageInfo?: Maybe<PageInfo>;
 };
 
+export type PaginatedTeamJoinModel = {
+  __typename?: 'PaginatedTeamJoinModel';
+  edges?: Maybe<Array<TeamJoinModelEdge>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
 export type PaginatedTeamModel = {
   __typename?: 'PaginatedTeamModel';
   edges?: Maybe<Array<TeamModelEdge>>;
@@ -1155,6 +1207,8 @@ export type Query = {
   teamCategories: PaginatedTeamCategoryModel;
   teamCategoryById: TeamCategoryModel;
   teamCategoryBySlug: TeamCategoryModel;
+  teamJoinById: TeamJoinModel;
+  teamJoins: PaginatedTeamJoinModel;
   teams: PaginatedTeamModel;
   tenantById: TenantModel;
   tenantBySlug: TenantModel;
@@ -1246,6 +1300,14 @@ export type QueryTeamCategoryBySlugArgs = {
   slug: Scalars['String'];
 };
 
+export type QueryTeamJoinByIdArgs = {
+  id: Scalars['String'];
+};
+
+export type QueryTeamJoinsArgs = {
+  options?: InputMaybe<PaginationOptions>;
+};
+
 export type QueryTeamsArgs = {
   filter?: InputMaybe<TeamFilterQuery>;
   options?: InputMaybe<PaginationOptions>;
@@ -1320,11 +1382,9 @@ export type ShortcutModel = {
 
 /** The ShortcutType enum */
 export enum ShortcutType {
-  General = 'General',
+  Event = 'Event',
   Project = 'Project',
   Team = 'Team',
-  TeamManage = 'TeamManage',
-  TeamManageTreasury = 'TeamManageTreasury',
   User = 'User',
 }
 
@@ -1450,20 +1510,20 @@ export type TeamJoinModel = {
   askedRole: TeamRoleModel;
   createdAt: Scalars['DateTime'];
   deletedAt?: Maybe<Scalars['DateTime']>;
-  formSubmission?: Maybe<FormSubmissionModel>;
+  formSubmission: FormSubmissionModel;
   id: Scalars['String'];
   issuer?: Maybe<IndividualModel>;
   joinKind: JoinKind;
   joiner: UserModel;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   receivedRole?: Maybe<TeamRoleModel>;
-  state: JoinState;
+  settledAt?: Maybe<Scalars['DateTime']>;
+  settledBy?: Maybe<IndividualModel>;
+  settledMessage?: Maybe<Scalars['String']>;
+  state: ApprovalState;
   team: TeamModel;
   tenant?: Maybe<TenantCoreModel>;
   updatedAt: Scalars['DateTime'];
-  validatedAt?: Maybe<Scalars['DateTime']>;
-  validatedBy?: Maybe<IndividualModel>;
-  validationMessage?: Maybe<Scalars['String']>;
 };
 
 export type TeamJoinModelEdge = {
@@ -1506,7 +1566,7 @@ export type TeamModel = OrgModel & {
   documents: Array<OrgDocumentModel>;
   finances: Array<FinanceModel>;
   id: Scalars['String'];
-  joinForm?: Maybe<FormModel>;
+  joinForm: FormModel;
   joins: Array<TeamJoinModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   managersCategoryName: Scalars['String'];
@@ -1785,6 +1845,16 @@ export type UpdateTeamDto = {
   type?: InputMaybe<TeamType>;
 };
 
+export type UpdateTeamJoinDto = {
+  askedRoleId?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  linkedFormEditId?: InputMaybe<Scalars['String']>;
+  receivedRoleId?: InputMaybe<Scalars['String']>;
+  settledMessage?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<ApprovalState>;
+  submission?: InputMaybe<Scalars['JSON']>;
+};
+
 export type UpdateTenantDto = {
   bio?: InputMaybe<Scalars['String']>;
   eventValidationForm?: InputMaybe<Scalars['JSON']>;
@@ -1838,6 +1908,7 @@ export type UserModel = IndividualModel & {
   scopeRole: ScopeRole;
   shortcuts: Array<ShortcutModel>;
   status: Scalars['String'];
+  teamJoins: Array<TeamJoinModel>;
   teamMemberships: Array<TeamMemberModel>;
   tenant?: Maybe<TenantCoreModel>;
   updatedAt: Scalars['DateTime'];
@@ -1987,6 +2058,54 @@ export type EventInfoFragment = {
   rootContent?:
     | {
         __typename: 'ContentModel';
+        description: string;
+        ugcKind: UgcKind;
+        isAnonymous: boolean;
+        representingOrg?:
+          | {
+              __typename?: 'TeamModel';
+              id: string;
+              createdAt: any;
+              updatedAt: any;
+              orgKind: OrgKind;
+              actor?: {
+                __typename?: 'ActorModel';
+                id: string;
+                name: string;
+                slug: string;
+                actorImages: Array<
+                  { __typename?: 'ActorImageModel' } & {
+                    ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+                  }
+                >;
+              } | null;
+            }
+          | {
+              __typename?: 'TenantModel';
+              id: string;
+              createdAt: any;
+              updatedAt: any;
+              orgKind: OrgKind;
+              actor?: {
+                __typename?: 'ActorModel';
+                id: string;
+                name: string;
+                slug: string;
+                actorImages: Array<
+                  { __typename?: 'ActorImageModel' } & {
+                    ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+                  }
+                >;
+              } | null;
+            }
+          | null;
+        author?:
+          | { __typename?: 'BotModel' }
+          | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
+          | null;
+      }
+    | {
+        __typename: 'FormEditModel';
         description: string;
         ugcKind: UgcKind;
         isAnonymous: boolean;
@@ -2193,7 +2312,18 @@ export type FormInfoFragment = {
   schema: any;
   type: FormType;
   isTemplate: boolean;
+  edits: Array<{ __typename: 'FormEditModel'; id: string; order: number }>;
 } & { ' $fragmentName'?: 'FormInfoFragment' };
+
+export type FormSubmissionInfoFragment = {
+  __typename: 'FormSubmissionModel';
+  id: string;
+  createdAt: any;
+  updatedAt: any;
+  submission: any;
+  description: string;
+  linkedFormEdit?: { __typename: 'FormEditModel'; id: string; createdAt: any; updatedAt: any; newVersion: any } | null;
+} & { ' $fragmentName'?: 'FormSubmissionInfoFragment' };
 
 export type MyInfoFragment = {
   __typename: 'UserModel';
@@ -2244,6 +2374,9 @@ export type MyInfoFragment = {
         | null;
     } | null;
   }>;
+  teamJoins: Array<
+    { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+  >;
   teamMemberships: Array<{
     __typename: 'TeamMemberModel';
     id: string;
@@ -2342,9 +2475,11 @@ export type TeamInfoFragment = {
   directorsCategoryName: string;
   managersCategoryName: string;
   membersCategoryName: string;
+  memberCount: number;
   actor?: {
     __typename: 'ActorModel';
     id: string;
+    bio: string;
     name: string;
     slug: string;
     actorImages: Array<
@@ -2352,11 +2487,12 @@ export type TeamInfoFragment = {
         ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
       }
     >;
+    tags: Array<{ __typename: 'TagModel'; id: string; name: string; slug: string; color: Colors }>;
   } | null;
   categories: Array<
     { __typename?: 'TeamCategoryModel' } & { ' $fragmentRefs'?: { TeamCategoryInfoFragment: TeamCategoryInfoFragment } }
   >;
-  joinForm?: ({ __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } }) | null;
+  joinForm: { __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } };
   documents: Array<{
     __typename: 'OrgDocumentModel';
     id: string;
@@ -2364,6 +2500,47 @@ export type TeamInfoFragment = {
     document: { __typename?: 'DocumentModel' } & { ' $fragmentRefs'?: { DocumentInfoFragment: DocumentInfoFragment } };
   }>;
 } & { ' $fragmentName'?: 'TeamInfoFragment' };
+
+export type TeamJoinInfoFragment = {
+  __typename: 'TeamJoinModel';
+  id: string;
+  createdAt: any;
+  updatedAt: any;
+  settledAt?: any | null;
+  settledMessage?: string | null;
+  state: ApprovalState;
+  team: { __typename: 'TeamModel'; id: string };
+  askedRole: {
+    __typename: 'TeamRoleModel';
+    id: string;
+    name: string;
+    color: Colors;
+    permissions: Array<TeamPermissions>;
+    category: TeamRoleCategory;
+    key?: TeamRoleKey | null;
+  };
+  formSubmission: { __typename?: 'FormSubmissionModel' } & {
+    ' $fragmentRefs'?: { FormSubmissionInfoFragment: FormSubmissionInfoFragment };
+  };
+  receivedRole?: {
+    __typename: 'TeamRoleModel';
+    id: string;
+    name: string;
+    color: Colors;
+    permissions: Array<TeamPermissions>;
+    category: TeamRoleCategory;
+    key?: TeamRoleKey | null;
+  } | null;
+  joiner: { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } };
+  issuer?:
+    | { __typename?: 'BotModel' }
+    | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
+    | null;
+  settledBy?:
+    | { __typename?: 'BotModel' }
+    | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
+    | null;
+} & { ' $fragmentName'?: 'TeamJoinInfoFragment' };
 
 export type TeamManageInfoFragment = {
   __typename: 'TeamModel';
@@ -2392,50 +2569,25 @@ export type TeamManageInfoFragment = {
   categories: Array<
     { __typename?: 'TeamCategoryModel' } & { ' $fragmentRefs'?: { TeamCategoryInfoFragment: TeamCategoryInfoFragment } }
   >;
-  joinForm?: ({ __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } }) | null;
+  joinForm: { __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } };
   documents: Array<{
     __typename: 'OrgDocumentModel';
     id: string;
     type: OrgDocumentType;
     document: { __typename?: 'DocumentModel' } & { ' $fragmentRefs'?: { DocumentInfoFragment: DocumentInfoFragment } };
   }>;
-  joins: Array<{
-    __typename: 'TeamJoinModel';
+  joins: Array<
+    { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+  >;
+  roles: Array<{
+    __typename: 'TeamRoleModel';
     id: string;
-    validatedAt?: any | null;
-    validationMessage?: string | null;
-    state: JoinState;
-    askedRole: {
-      __typename: 'TeamRoleModel';
-      id: string;
-      permissions: Array<TeamPermissions>;
-      category: TeamRoleCategory;
-      key?: TeamRoleKey | null;
-    };
-    formSubmission?: {
-      __typename: 'FormSubmissionModel';
-      id: string;
-      submission: any;
-      linkedFormVersion?:
-        | ({ __typename?: 'FormModel' } & { ' $fragmentRefs'?: { FormInfoFragment: FormInfoFragment } })
-        | null;
-    } | null;
-    receivedRole?: {
-      __typename: 'TeamRoleModel';
-      id: string;
-      permissions: Array<TeamPermissions>;
-      category: TeamRoleCategory;
-      key?: TeamRoleKey | null;
-    } | null;
-    joiner: { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } };
-    issuer?:
-      | { __typename?: 'BotModel' }
-      | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
-      | null;
-    validatedBy?:
-      | { __typename?: 'BotModel' }
-      | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
-      | null;
+    name: string;
+    color: Colors;
+    required: boolean;
+    permissions: Array<TeamPermissions>;
+    category: TeamRoleCategory;
+    key?: TeamRoleKey | null;
   }>;
   members: Array<{
     __typename: 'TeamMemberModel';
@@ -2471,35 +2623,17 @@ export type TeamManageInfoFragment = {
   >;
 } & { ' $fragmentName'?: 'TeamManageInfoFragment' };
 
-export type TeamMembersInfoFragment = {
-  __typename: 'TeamModel';
-  id: string;
-  createdAt: any;
-  updatedAt: any;
-  tagline?: string | null;
-  type: TeamType;
-  currentFinance: number;
-  directorsCategoryName: string;
-  managersCategoryName: string;
-  membersCategoryName: string;
-  actor?: {
-    __typename: 'ActorModel';
+export type TeamMembersInfoFragment = ({
+  __typename?: 'TeamModel';
+  roles: Array<{
+    __typename: 'TeamRoleModel';
     id: string;
-    bio: string;
     name: string;
-    slug: string;
-    actorImages: Array<
-      { __typename?: 'ActorImageModel' } & {
-        ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
-      }
-    >;
-    tags: Array<{ __typename: 'TagModel'; id: string; name: string; slug: string; color: Colors }>;
-  } | null;
-  documents: Array<{
-    __typename: 'OrgDocumentModel';
-    id: string;
-    type: OrgDocumentType;
-    document: { __typename?: 'DocumentModel' } & { ' $fragmentRefs'?: { DocumentInfoFragment: DocumentInfoFragment } };
+    color: Colors;
+    required: boolean;
+    permissions: Array<TeamPermissions>;
+    category: TeamRoleCategory;
+    key?: TeamRoleKey | null;
   }>;
   members: Array<{
     __typename: 'TeamMemberModel';
@@ -2530,7 +2664,7 @@ export type TeamMembersInfoFragment = {
       key?: TeamRoleKey | null;
     }>;
   }>;
-} & { ' $fragmentName'?: 'TeamMembersInfoFragment' };
+} & { ' $fragmentRefs'?: { TeamInfoFragment: TeamInfoFragment } }) & { ' $fragmentName'?: 'TeamMembersInfoFragment' };
 
 export type TenantInfoFragment = {
   __typename: 'TenantModel';
@@ -2730,6 +2864,85 @@ export type UpdateProjectMutationVariables = Exact<{
 export type UpdateProjectMutation = {
   __typename?: 'Mutation';
   updateProject: { __typename?: 'ProjectModel' } & { ' $fragmentRefs'?: { ProjectInfoFragment: ProjectInfoFragment } };
+};
+
+export type CreateTeamJoinMutationVariables = Exact<{
+  teamJoin: CreateTeamJoinDto;
+}>;
+
+export type CreateTeamJoinMutation = {
+  __typename?: 'Mutation';
+  createTeamJoin: {
+    __typename?: 'TeamJoinModel';
+    team: {
+      __typename: 'TeamModel';
+      id: string;
+      joins: Array<
+        { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+      >;
+    };
+    joiner: {
+      __typename: 'UserModel';
+      id: string;
+      teamJoins: Array<
+        { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+      >;
+    };
+  };
+};
+
+export type UpdateTeamJoinMutationVariables = Exact<{
+  updateTeamJoin: UpdateTeamJoinDto;
+}>;
+
+export type UpdateTeamJoinMutation = {
+  __typename?: 'Mutation';
+  updateTeamJoin: {
+    __typename?: 'TeamJoinModel';
+    team: {
+      __typename: 'TeamModel';
+      id: string;
+      joins: Array<
+        { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+      >;
+      members: Array<{
+        __typename: 'TeamMemberModel';
+        id: string;
+        user?: {
+          __typename: 'UserModel';
+          id: string;
+          firstName: string;
+          actor?: {
+            __typename: 'ActorModel';
+            id: string;
+            name: string;
+            actorImages: Array<
+              { __typename?: 'ActorImageModel' } & {
+                ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+              }
+            >;
+          } | null;
+        } | null;
+        roles: Array<{
+          __typename: 'TeamRoleModel';
+          id: string;
+          name: string;
+          color: Colors;
+          required: boolean;
+          permissions: Array<TeamPermissions>;
+          category: TeamRoleCategory;
+          key?: TeamRoleKey | null;
+        }>;
+      }>;
+    };
+    joiner: {
+      __typename: 'UserModel';
+      id: string;
+      teamJoins: Array<
+        { __typename?: 'TeamJoinModel' } & { ' $fragmentRefs'?: { TeamJoinInfoFragment: TeamJoinInfoFragment } }
+      >;
+    };
+  };
 };
 
 export type DeactivateTeamImageMutationVariables = Exact<{
@@ -3019,7 +3232,7 @@ export type GetTeamsQuery = {
     __typename?: 'PaginatedTeamModel';
     edges?: Array<{
       __typename?: 'TeamModelEdge';
-      node: { __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamMembersInfoFragment: TeamMembersInfoFragment } };
+      node: { __typename?: 'TeamModel' } & { ' $fragmentRefs'?: { TeamInfoFragment: TeamInfoFragment } };
     }> | null;
   };
 };
@@ -3275,6 +3488,18 @@ export const FormInfoFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'schema' } },
           { kind: 'Field', name: { kind: 'Name', value: 'type' } },
           { kind: 'Field', name: { kind: 'Name', value: 'isTemplate' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'edits' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'order' } },
+              ],
+            },
+          },
         ],
       },
     },
@@ -3376,6 +3601,7 @@ export const TeamInfoFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'directorsCategoryName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'managersCategoryName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'membersCategoryName' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'memberCount' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'actor' },
@@ -3384,6 +3610,7 @@ export const TeamInfoFragmentDoc = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
                 {
@@ -3392,6 +3619,20 @@ export const TeamInfoFragmentDoc = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } }],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tags' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                    ],
                   },
                 },
               ],
@@ -3438,6 +3679,156 @@ export const TeamInfoFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeamInfoFragment, unknown>;
+export const FormSubmissionInfoFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'FormSubmissionInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormSubmissionModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'submission' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'linkedFormEdit' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'newVersion' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FormSubmissionInfoFragment, unknown>;
+export const TeamJoinInfoFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'TeamJoinInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'TeamJoinModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'team' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'askedRole' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'formSubmission' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'FormSubmissionInfo' } }],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'receivedRole' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'joiner' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'issuer' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UserModel' } },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'settledBy' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UserModel' } },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'settledAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'settledMessage' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeamJoinInfoFragment, unknown>;
 export const MyInfoFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3546,6 +3937,14 @@ export const MyInfoFragmentDoc = {
                   },
                 },
               ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'teamJoins' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
             },
           },
           {
@@ -3979,102 +4378,23 @@ export const TeamManageInfoFragmentDoc = {
             name: { kind: 'Name', value: 'joins' },
             selectionSet: {
               kind: 'SelectionSet',
+              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'roles' },
+            selectionSet: {
+              kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'askedRole' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'formSubmission' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'submission' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'linkedFormVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'FormInfo' } }],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'receivedRole' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'joiner' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'issuer' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'InlineFragment',
-                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UserModel' } },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'validatedBy' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'InlineFragment',
-                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UserModel' } },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
-                        },
-                      },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'validatedAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'validationMessage' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'state' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'key' } },
               ],
             },
           },
@@ -4163,69 +4483,21 @@ export const TeamMembersInfoFragmentDoc = {
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'tagline' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'currentFinance' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'directorsCategoryName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'managersCategoryName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'membersCategoryName' } },
+          { kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamInfo' } },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'actor' },
+            name: { kind: 'Name', value: 'roles' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'actorImages' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } }],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'tags' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'documents' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'document' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentInfo' } }],
-                  },
-                },
+                { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'key' } },
               ],
             },
           },
@@ -4524,6 +4796,8 @@ export const LoginDocument = {
     ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
     ...TenantInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
@@ -4902,6 +5176,237 @@ export const UpdateProjectDocument = {
     ...UserInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const CreateTeamJoinDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createTeamJoin' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'teamJoin' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CreateTeamJoinDto' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createTeamJoin' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'teamJoin' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'teamJoin' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'team' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'joins' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'joiner' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'teamJoins' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
+    ...UserInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<CreateTeamJoinMutation, CreateTeamJoinMutationVariables>;
+export const UpdateTeamJoinDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'updateTeamJoin' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'updateTeamJoin' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateTeamJoinDto' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateTeamJoin' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'updateTeamJoin' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'updateTeamJoin' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'team' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'joins' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'members' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'user' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'actor' },
+                                    selectionSet: {
+                                      kind: 'SelectionSet',
+                                      selections: [
+                                        { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                        { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                        {
+                                          kind: 'Field',
+                                          name: { kind: 'Name', value: 'actorImages' },
+                                          selectionSet: {
+                                            kind: 'SelectionSet',
+                                            selections: [
+                                              {
+                                                kind: 'FragmentSpread',
+                                                name: { kind: 'Name', value: 'ActorImageBareInfo' },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                                ],
+                              },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'roles' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'joiner' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'teamJoins' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamJoinInfo' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
+    ...UserInfoFragmentDoc.definitions,
+    ...ActorImageBareInfoFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
 export const DeactivateTeamImageDocument = {
   kind: 'Document',
   definitions: [
@@ -5131,6 +5636,8 @@ export const UpdateTeamDocument = {
     ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
     ...UserInfoFragmentDoc.definitions,
     ...FinanceInfoFragmentDoc.definitions,
     ...EventInfoFragmentDoc.definitions,
@@ -5522,6 +6029,8 @@ export const MeDocument = {
     ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
     ...TenantInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
@@ -5684,7 +6193,10 @@ export const GetTeamDetailsDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -5735,16 +6247,16 @@ export const GetTeamManageDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
     ...FinanceInfoFragmentDoc.definitions,
     ...UserInfoFragmentDoc.definitions,
     ...EventInfoFragmentDoc.definitions,
     ...ProjectInfoFragmentDoc.definitions,
-    ...TeamInfoFragmentDoc.definitions,
-    ...TeamCategoryInfoFragmentDoc.definitions,
-    ...FormInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetTeamManageQuery, GetTeamManageQueryVariables>;
 export const GetTeamManageBySlugDocument = {
@@ -5788,6 +6300,8 @@ export const GetTeamManageBySlugDocument = {
     ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
     ...UserInfoFragmentDoc.definitions,
     ...FinanceInfoFragmentDoc.definitions,
     ...EventInfoFragmentDoc.definitions,
@@ -5831,7 +6345,10 @@ export const GetTeamWithMembersDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -5872,7 +6389,10 @@ export const GetTeamWithMembersBySlugDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -5928,7 +6448,7 @@ export const GetTeamsDocument = {
                         name: { kind: 'Name', value: 'node' },
                         selectionSet: {
                           kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamMembersInfo' } }],
+                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'TeamInfo' } }],
                         },
                       },
                     ],
@@ -5940,8 +6460,10 @@ export const GetTeamsDocument = {
         ],
       },
     },
-    ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -6023,7 +6545,10 @@ export const GetTeamsByCategoryDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -6068,7 +6593,10 @@ export const GetTeamsWithMembersDocument = {
       },
     },
     ...TeamMembersInfoFragmentDoc.definitions,
+    ...TeamInfoFragmentDoc.definitions,
     ...ActorImageBareInfoFragmentDoc.definitions,
+    ...TeamCategoryInfoFragmentDoc.definitions,
+    ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
   ],
@@ -6198,6 +6726,8 @@ export const GetUserByIdDocument = {
     ...FormInfoFragmentDoc.definitions,
     ...DocumentInfoFragmentDoc.definitions,
     ...DocumentUploadInfoFragmentDoc.definitions,
+    ...TeamJoinInfoFragmentDoc.definitions,
+    ...FormSubmissionInfoFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const GetUserBySlugDocument = {

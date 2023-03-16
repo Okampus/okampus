@@ -21,7 +21,7 @@ import type { GqlWebsocketContext } from '../../../shards/types/gql-websocket-co
 
 export interface GqlContext extends GqlWebsocketContext {
   req: FastifyRequest | undefined;
-  res: FastifyReply | undefined;
+  reply: FastifyReply | undefined;
   request: FastifyRequest | undefined;
   socket: WebSocket | undefined;
   connectionParams: Record<string, string | string[] | undefined>;
@@ -39,7 +39,7 @@ type Cookies = Record<string, string | undefined> | null;
 type AuthRequestContext = {
   headers: IncomingHttpHeaders;
   cookies: Cookies;
-  res: FastifyReply | null;
+  reply: FastifyReply | null;
   req: FastifyRequest | null;
 };
 
@@ -74,26 +74,25 @@ export class AuthGuard implements CanActivate {
         // HTTP case
         const ctx = host.switchToHttp();
         const req = ctx.getRequest<FastifyRequest>();
-        const res = ctx.getResponse<FastifyReply>();
+        const reply = ctx.getResponse<FastifyReply>();
 
-        return { headers: req.headers, cookies: req.cookies, res, req };
+        return { headers: req.headers, cookies: req.cookies, reply, req };
       }
       case 'graphql': {
         // GraphQL or WebSocket case
         const gqlExecutionContext = GqlExecutionContext.create(host);
         requestContext.set('gqlInfo', gqlExecutionContext.getInfo());
 
-        const { req, connectionParams, socket } = gqlExecutionContext.getContext<GqlContext>();
+        const { req, reply, connectionParams, socket } = gqlExecutionContext.getContext<GqlContext>();
 
         // WebSocket case
         if (socket && connectionParams) {
           const headers = lowercaseKeys(connectionParams);
-          return { headers, cookies: null, res: null, req: null };
+          return { headers, cookies: null, reply: null, req: null };
         }
         // GraphQL case
-        if (req) {
-          const res = host.getArgByIndex<FastifyReply>(1);
-          return { headers: req.headers, cookies: req.cookies, res, req };
+        if (req && reply) {
+          return { headers: req.headers, cookies: req.cookies, reply, req };
         }
 
         throw new InternalServerErrorException('No request provided in GraphQL context');
@@ -105,18 +104,15 @@ export class AuthGuard implements CanActivate {
   }
 
   public getAuthInfo(headers: IncomingHttpHeaders, cookies: Cookies): AuthInfo {
-    if (cookies && cookies[this.cookiesNames.access])
-      // HTTP JWT access token case
-      return { token: cookies[this.cookiesNames.access] as string, tokenType: TokenType.Access };
-    else if (cookies && cookies[this.cookiesNames.refresh])
-      // HTTP JWT refresh token case
-      return { token: cookies[this.cookiesNames.refresh] as string, tokenType: TokenType.Refresh };
-    else if (cookies === null && headers.authorization)
-      // WebSocket bearer token case
-      return { token: getTokenFromAuthHeader(headers.authorization), tokenType: TokenType.WebSocket };
-    else if (headers.authorization)
-      // HTTP bearer token case (Bot)
-      return { token: getTokenFromAuthHeader(headers.authorization), tokenType: TokenType.Bot };
+    const accessToken = cookies?.[this.cookiesNames.access];
+    const refreshToken = cookies?.[this.cookiesNames.refresh];
+    if (accessToken) return { token: accessToken, tokenType: TokenType.Access }; // HTTP JWT access token case
+    else if (refreshToken) return { token: refreshToken, tokenType: TokenType.Refresh }; // HTTP JWT refresh token case
+    else if (headers.authorization) {
+      // WebSocket / Bot bearer token case
+      const token = getTokenFromAuthHeader(headers.authorization);
+      return cookies === null ? { token, tokenType: TokenType.WebSocket } : { token, tokenType: TokenType.Bot };
+    }
 
     throw new UnauthorizedException('No token provided');
   }
@@ -127,16 +123,14 @@ export class AuthGuard implements CanActivate {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC, targets);
     if (isPublic) return true;
 
-    const { headers, cookies, res, req } = this.getRequestContext(host);
+    const { headers, cookies, reply, req } = this.getRequestContext(host);
 
     /* Find tenant */
     const tenantDomain = headers[HEADER_TENANT_NAME] as string | undefined;
     if (!tenantDomain) throw new UnauthorizedException('No tenant name provided');
 
     // TODO: optimize with caching for tenant & individual
-
     const tenant = await this.authService.findCoreTenant(tenantDomain);
-
     if (!tenant) throw new UnauthorizedException('Tenant does not exist');
     requestContext.set('tenant', tenant);
 
@@ -152,8 +146,8 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    if (!req || !res) throw new InternalServerErrorException('No request provided in GraphQL context');
-    const user = await this.authService.validateUserToken(token, tokenType, req, res);
+    if (!req || !reply) throw new InternalServerErrorException('No request provided in GraphQL context');
+    const user = await this.authService.validateUserToken(token, tokenType, req, reply);
     requestContext.set('requester', user);
     return true;
   }

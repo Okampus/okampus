@@ -5,7 +5,7 @@ export const getTeamsQuery = gql(`
     teams(options: $options, filter: $filter) {
       edges {
         node {
-          ...TeamMembersInfo
+          ...TeamInfo
         }
       }
     }

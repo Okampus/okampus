@@ -52,7 +52,7 @@ export function ItemGroup<T>({
         </div>
       ))}
       {items.length > limit && (
-        <Popover>
+        <Popover placementOffset={10}>
           <PopoverTrigger>{renderMore(items.length - limit, size, rounded)}</PopoverTrigger>
           <PopoverContent popoverClassName="card-sm">
             {VerticalList({

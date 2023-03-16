@@ -7,7 +7,7 @@ import type { AnimationProps } from 'framer-motion';
 export type AvatarProps = {
   src?: string;
   name?: string;
-  size?: number | 'full';
+  size?: number;
   rounded: number;
   className?: string;
   active?: boolean;
@@ -21,12 +21,16 @@ export function Avatar({ src, name, size = 14, rounded, className, active, trans
     <motion.div
       layout={layout}
       transition={transition}
-      className={clsx('flex items-center overflow-hidden shrink-0 font-title', className, active && 'ring-4')}
+      className={clsx(
+        'flex items-center overflow-hidden shrink-0 font-heading leading-none',
+        className,
+        active && 'ring-4'
+      )}
       style={{
-        width: size === 'full' ? '100%' : `${size / 6}rem`,
-        height: size === 'full' ? '100%' : `${size / 6}rem`,
+        width: `${size / 6}rem`,
+        height: `${size / 6}rem`,
         borderRadius: `${rounded}%`,
-        fontSize: size === 'full' ? '150%' : `${size / 12}rem`,
+        fontSize: `${size / 10}rem`,
       }}
     >
       {src ? (

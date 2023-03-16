@@ -1,5 +1,4 @@
 import { TenantProps } from './tenant.props';
-import { IsFormKitSchema } from '../../../../validators/formkit-schema.validator';
 import { ActorProps } from '../../../actor/actor.props';
 import { TenantCoreProps } from '../tenant-core/tenant-core.props';
 import { Field, InputType, IntersectionType } from '@nestjs/graphql';
@@ -13,7 +12,6 @@ export class CreateTenantDto extends IntersectionType(TenantProps, ActorProps) {
   tenant!: TenantCoreProps;
 
   @Field(() => GraphQLJSON, { nullable: true })
-  @IsOptional()
-  @IsFormKitSchema()
+  @IsOptional() // TODO: add custom validator for dynamic form schema
   eventValidationForm?: JSONObject | null;
 }

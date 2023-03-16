@@ -36,16 +36,10 @@ export class ActorImageFactory extends BaseFactory<ActorImageModel, ActorImage, 
     force?: boolean
   ): Promise<ActorImageModel> {
     const where = { actor: actorFilter, type: actorImageType, lastActiveDate: null, tenant };
-    const actorImageModel = await this.update(
-      where,
-      populate,
-      { lastActiveDate: new Date() },
-      async (team) => team,
-      force
-    );
+    const actorImageModel = await this.update(where, populate, { lastActiveDate: new Date() }, force);
 
     if (actorImageModel.actor?.actorImages) {
-      const notCurrentImage = (image: IActorImage) => !!image.lastActiveDate;
+      const notCurrentImage = (image: IActorImage) => !image.lastActiveDate;
       actorImageModel.actor.actorImages = actorImageModel.actor.actorImages.filter(notCurrentImage);
     }
 

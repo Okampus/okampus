@@ -65,7 +65,6 @@ export class UsersResolver {
     @Args('avatarDark', { type: () => GraphQLUpload, nullable: true }) avatarDark?: MulterFileType,
     @Args('banner', { type: () => GraphQLUpload, nullable: true }) banner?: MulterFileType
   ) {
-    console.log('updateUser', updateUser, avatar, banner);
     return this.usersService.update(updateUser, {
       [ActorImageType.Avatar]: avatar,
       [ActorImageType.AvatarDarkMode]: avatarDark,

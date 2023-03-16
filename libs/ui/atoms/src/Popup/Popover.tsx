@@ -17,6 +17,7 @@ import {
   FloatingFocusManager,
   arrow,
 } from '@floating-ui/react';
+import type { MotionProps } from 'framer-motion';
 import type { Placement } from '@floating-ui/react';
 
 interface PopoverOptions {
@@ -128,11 +129,12 @@ export function Popover({
 interface PopoverTriggerProps {
   children: React.ReactNode;
   asChild?: boolean;
+  motionConfig?: MotionProps;
 }
 
 // TODO: fix types
 export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & PopoverTriggerProps>(
-  function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
+  function PopoverTrigger({ children, asChild = false, motionConfig, ...props }, propRef) {
     const context = usePopoverContext();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -155,15 +157,16 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTML
     }
 
     return (
-      <button
+      <motion.button
         ref={ref}
         type="button"
         // The user can style the trigger based on the state
         data-state={context.open ? 'open' : 'closed'}
         {...context.getReferenceProps(props)}
+        {...motionConfig}
       >
         {children}
-      </button>
+      </motion.button>
     );
   }
 );
@@ -204,18 +207,18 @@ export const PopoverContent = React.forwardRef<
         {context.open && (
           <FloatingFocusManager context={floatingContext} modal={context.modal}>
             <motion.div
-              initial={{ opacity: 0.5, scale: 0.9, y: -50 }}
+              initial={{ opacity: 0.5, y: -50 }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 y: 0,
               }}
-              exit={{ opacity: 0, scale: 0.7, y: -20 }}
+              exit={{ opacity: 0, y: 50 }}
               transition={{ type: 'spring', duration: 0.35 }}
               ref={ref}
               className={clsx(
                 context.useArrow && 'border-4 border-color-2 !border-opacity-30',
-                'rounded-2xl text-1 z-[100] !overflow-visible',
+                'rounded-2xl text-1 !overflow-visible',
                 popoverClassName,
                 backgroundClass
               )}
@@ -224,6 +227,7 @@ export const PopoverContent = React.forwardRef<
                 top: context.y ?? 0,
                 left: context.x ?? 0,
                 width: 'max-content',
+                zIndex: 1001,
                 ...props.style,
               }}
               aria-labelledby={context.labelId}

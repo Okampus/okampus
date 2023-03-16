@@ -47,6 +47,9 @@ export const meFragment = gql(`
         }
       }
     }
+    teamJoins {
+      ...TeamJoinInfo
+    }
     teamMemberships {
       __typename
       id

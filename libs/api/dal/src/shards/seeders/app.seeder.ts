@@ -1,7 +1,6 @@
 /* eslint-disable object-curly-newline */
 import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
-import { TeamSeeder } from './factories/team.seeder';
 import { UserSeeder } from './factories/user.seeder';
 import { TagSeeder } from './factories/tag.seeder';
 import { clubDefaultRoles } from '../../defaults/default-team-roles';
@@ -9,21 +8,25 @@ import { Shortcut } from '../../resources/actor/shortcut/shortcut.entity';
 import { TeamMember } from '../../resources/membership/team-member/team-member.entity';
 import { Tenant } from '../../resources/org/tenant/tenant.entity';
 import { TeamRole } from '../../resources/role/team-role/team-role.entity';
-import { TeamJoin } from '../../resources/join/team-join/team-join.entity';
-import { EventJoin } from '../../resources/join/event-join/event-join.entity';
+import { getTeamJoinDescription, TeamJoin } from '../../resources/join/team-join/team-join.entity';
+import { EventJoin, getEventJoinDescription } from '../../resources/join/event-join/event-join.entity';
 import { TeamAction } from '../../resources/manage-team/team-action/team-action.entity';
 import { TeamCategory } from '../../resources/label/team-category/team-category.entity';
 
+import { FormSubmission } from '../../resources/ugc/form-submission/form-submission.entity';
+import { defaultTeamJoinForm } from '../../resources/org/team/team.entity';
+import { Team } from '../../resources/org/team/team.entity';
 import {
-  ApprovalState,
   Colors,
+  ControlType,
   JoinKind,
-  JoinState,
+  ApprovalState,
   MembershipKind,
   OrgKind,
   RegistrationStatus,
   ScopeRole,
   ShortcutType,
+  TeamType,
 } from '@okampus/shared/enums';
 import {
   pickOneFromArray,
@@ -31,18 +34,19 @@ import {
   randomFromArray,
   randomFromArrayWithRemainder,
   randomInt,
+  toSlug,
 } from '@okampus/shared/utils';
 
+import { faker } from '@faker-js/faker';
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
-import type { Org } from '../../resources/org/org.entity';
 
 import type { EntityManager } from '@mikro-orm/core';
-import type { Individual } from '../../resources/actor/individual/individual.entity';
-import type { User } from '../../resources/actor/user/user.entity';
 import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
-import type { Team } from '../../resources/org/team/team.entity';
+import type { Individual } from '../../resources/actor/individual/individual.entity';
+import type { Org } from '../../resources/org/org.entity';
+import type { User } from '../../resources/actor/user/user.entity';
 
 const seedingConfig = {
   N_ADMINS: 10,
@@ -50,7 +54,7 @@ const seedingConfig = {
   N_TEACHERS: 10,
 
   N_APPROVAL_STEPS: 3,
-  N_TEAMS: 10,
+  N_TEAMS: 50,
 
   MIN_ADMINS_BY_STEP: 1,
   MAX_ADMINS_BY_STEP: 3,
@@ -61,26 +65,22 @@ const seedingConfig = {
   MIN_REQUESTS: 3,
   MAX_REQUESTS: 10,
 
-  MIN_EVENTS_BY_CLUB: 5,
-  MAX_EVENTS_BY_CLUB: 10,
+  MIN_EVENTS_BY_CLUB: 0,
+  MAX_EVENTS_BY_CLUB: 2,
 
   DEFAULT_CATEGORIES: [
     { name: 'Art/Savoir-faire', slug: 'arts', color: Colors.DarkPurple },
-    { name: 'Technologie', slug: 'tech', color: Colors.DeepRed },
-    { name: 'Sport', slug: 'sports', color: Colors.Green },
+    { name: 'Sport', slug: 'sports', color: Colors.DeepRed },
     { name: 'Jeux', slug: 'games', color: Colors.Black },
     { name: 'Compétition inter-école', slug: 'competition', color: Colors.LightPurple },
-    { name: 'Ouverture culturelle', slug: 'culture', color: Colors.Pink },
     { name: 'Événementiel', slug: 'events', color: Colors.Lime },
     { name: 'Projets encadrés', slug: 'projects', color: Colors.Turquoise },
     { name: 'Formation', slug: 'learning', color: Colors.DeepGreen },
     { name: 'Solidarité', slug: 'solidarity', color: Colors.LightGreen },
-    { name: 'Communauté', slug: 'community', color: Colors.Gray },
-    { name: 'Professionnel', slug: 'pro', color: Colors.Teal },
   ],
 
-  MIN_TAGS: 20,
-  MAX_TAGS: 50,
+  MIN_TAGS: 6,
+  MAX_TAGS: 20,
 
   EXAMPLE_RECEIPT_URL: 'https://bucket-team-receipts.okampus.fr/facture_exemple.pdf',
 };
@@ -182,11 +182,36 @@ export class DatabaseSeeder extends Seeder {
 
     const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
 
-    const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
+    const createTeams = [];
+    for (const _ of Array.from({ length: seedingConfig.N_TEAMS })) {
+      const name = faker.company.name();
+      const joinForm = defaultTeamJoinForm(name, tenant.tenant); // TODO: find alternative to flushing in advance
+      await em.persistAndFlush(joinForm);
 
-    const teams = await new TeamSeeder(em, tenant, categories, tags).create(seedingConfig.N_TEAMS);
+      createTeams.push(async () => {
+        // TODO: reuse TeamSeeder
+        const team = new Team({
+          name,
+          joinForm,
+          bio: faker.lorem.paragraph(randomInt(2, 12)),
+          categories: randomFromArray(categories, 1, 3),
+          currentFinance: 0,
+          primaryEmail: `${toSlug(name)}@${tenant.tenant.domain}.fr`,
+          slug: toSlug(name),
+          tagline: faker.company.catchPhrase(),
+          tags: randomFromArray(tags, 2, 10),
+          type: TeamType.Club,
+          tenant: tenant.tenant,
+        });
+        await em.persistAndFlush(team);
+        return team;
+      });
+    }
+
+    const teams = await Promise.all(createTeams.map((createTeam) => createTeam()));
     const teamPromises = [];
 
+    const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
     for (const team of teams) {
       const N_MEMBERS = randomInt(seedingConfig.MIN_MEMBERS, MAX_MEMBERS);
       const MAX_REQUESTERS = Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS);
@@ -211,11 +236,13 @@ export class DatabaseSeeder extends Seeder {
       };
 
       for (const member of Object.values(teamMembers)) {
-        const shortcut = new Shortcut({ type: ShortcutType.TeamManage, targetActor: team.actor, user: member.user });
+        const shortcut = new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user: member.user });
         member.user.shortcuts.add(shortcut);
       }
 
       const requesters = randomFromArray(others, N_REQUESTERS);
+
+      const linkedFormEdit = team.joinForm.edits.getItems()[0];
       const requesterInstances = requesters.map((user) =>
         em.create(TeamJoin, {
           createdAt,
@@ -226,7 +253,21 @@ export class DatabaseSeeder extends Seeder {
           askedRole: roles[5],
           joiner: user,
           issuer: Math.random() > 0.5 ? pickOneFromArray(managers) : undefined,
-          state: JoinState.Pending,
+          state: ApprovalState.Pending,
+          formSubmission: new FormSubmission({
+            description: getTeamJoinDescription(null, user, roles[5], team),
+            submission: [
+              {
+                label: 'Motivation',
+                fieldName: 'motivation',
+                inputType: ControlType.Text,
+                value: faker.lorem.lines(4),
+              },
+            ],
+            linkedFormEdit,
+            realAuthor: user,
+            tenant: team.tenant,
+          }),
         })
       );
 
@@ -239,7 +280,7 @@ export class DatabaseSeeder extends Seeder {
           for (const event of events) {
             // Generate Registrations
             eventJoins.push(
-              ...randomFromArray(students, 4, Math.min(students.length, 50)).map((user) => {
+              ...randomFromArray(students, 4, Math.min(students.length, 5)).map((user) => {
                 const status = randomEnum(RegistrationStatus);
                 const participated =
                   status === RegistrationStatus.Maybe || status === RegistrationStatus.Sure
@@ -265,13 +306,20 @@ export class DatabaseSeeder extends Seeder {
                   createdAt,
                   updatedAt: createdAt,
                   event,
+                  formSubmission: new FormSubmission({
+                    description: getEventJoinDescription(null, user, event),
+                    submission: [],
+                    realAuthor: user,
+                    tenant: team.tenant,
+                    linkedFormEdit: event.joinForm.edits.getItems()[0],
+                  }),
                   issuer: user,
                   joiner: user,
                   presenceStatus: status,
                   participated,
                   teamAction,
                   joinKind: JoinKind.EventJoin,
-                  state: JoinState.Approved,
+                  state: ApprovalState.Approved,
                   tenant: team.tenant,
                 });
               })

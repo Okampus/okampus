@@ -1,7 +1,7 @@
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { JoinKind } from '@okampus/shared/enums';
-import { JoinState } from '@okampus/shared/enums';
+import { ApprovalState } from '@okampus/shared/enums';
 import type { JoinOptions } from './join.options';
 import type { Individual } from '../actor/individual/individual.entity';
 import type { FormSubmission } from '../ugc/form-submission/form-submission.entity';
@@ -25,19 +25,19 @@ export abstract class Join extends TenantScopedEntity {
   joiner!: User;
 
   @ManyToOne({ type: 'Individual', nullable: true })
-  validatedBy: Individual | null = null;
+  settledBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true })
-  validatedAt: Date | null = null;
+  settledAt: Date | null = null;
 
   @Property({ type: 'text', nullable: true })
-  validationMessage: string | null = null;
+  settledMessage: string | null = null;
 
-  @ManyToOne({ type: 'FormSubmission', nullable: true })
-  formSubmission: FormSubmission | null = null;
+  @ManyToOne({ type: 'FormSubmission' })
+  formSubmission!: FormSubmission;
 
-  @Enum({ items: () => JoinState, type: 'string', default: JoinState.Pending })
-  state = JoinState.Pending;
+  @Enum({ items: () => ApprovalState, type: 'string', default: ApprovalState.Pending })
+  state = ApprovalState.Pending;
 
   constructor(options: JoinOptions & { joinKind: JoinKind }) {
     super({ tenant: options.tenant });

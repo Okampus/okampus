@@ -17,7 +17,7 @@ export function Modal({ title, children }: SideModalProps) {
       className="relative max-h-[80vh]"
     >
       <div
-        className="bg-2 rounded-lg z-[101] px-8 py-6 flex flex-col gap-6 min-w-[34rem] max-h-full scrollbar"
+        className="bg-2 rounded-2xl z-[101] px-8 py-6 flex flex-col gap-2 min-w-[34rem] max-h-full scrollbar"
         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
       >
         {HeadingSeparated({ title })}

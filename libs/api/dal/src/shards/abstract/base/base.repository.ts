@@ -6,6 +6,10 @@ import type { BaseEntity } from './base.entity';
 // TODO: fix types
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
+  public async exists(where: FilterQuery<T>): Promise<boolean> {
+    return !!(await this.count(where));
+  }
+
   public async findById(id: Snowflake, findOptions?: FindOneOptions<T>): Promise<T | null> {
     return this.findOne({ id } as FilterQuery<T>, findOptions);
   }

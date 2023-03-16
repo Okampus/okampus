@@ -20,9 +20,6 @@ export class TeamActionModel extends TenantScopedModel implements ITeamAction {
   @Field(() => String, { nullable: true })
   description!: string | null;
 
-  @Field(() => ApprovalState)
-  state!: ApprovalState;
-
   @Field(() => Int)
   score!: number;
 
@@ -43,6 +40,9 @@ export class TeamActionModel extends TenantScopedModel implements ITeamAction {
 
   @Field(() => IndividualModel, { nullable: true })
   createdBy?: IIndividual;
+
+  @Field(() => ApprovalState)
+  state!: ApprovalState;
 
   @Field(() => TeamMemberModel, { nullable: true })
   validatedBy?: ITeamMember | null;

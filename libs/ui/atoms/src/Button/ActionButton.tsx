@@ -13,13 +13,16 @@ function getActionClass(variant: ActionType): string {
       return 'bg-0 text-0';
     }
     case ActionType.Switch: {
-      return 'bg-transparent text-white border-white [data-active=true]:border-[var(--primary)] [data-active=true]:text-[var(--primary)] border';
+      return 'bg-transparent text-white border-white border-opacity-50 border';
     }
     case ActionType.Confirm: {
-      return 'bg-green-500 text-black';
+      return 'bg-[var(--success)] text-black';
+    }
+    case ActionType.Pending: {
+      return 'bg-[var(--warning)] text-black';
     }
     case ActionType.Danger: {
-      return 'bg-red-500 text-black';
+      return 'bg-[var(--danger)] text-black';
     }
     default: {
       return 'dark:bg-white bg-black dark:text-black text-white';
@@ -30,6 +33,7 @@ function getActionClass(variant: ActionType): string {
 export function ActionButton({
   children,
   active,
+  className = 'line-clamp-1',
   small,
   disabled,
   onClick,
@@ -44,10 +48,13 @@ export function ActionButton({
       disabled={!!disabled}
       data-active={!!active}
       data-variant={variant}
-      whileTap={{ scale: 0.95 }}
-      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: disabled ? 1 : 0.95 }}
+      whileHover={{ scale: disabled ? 1 : 1.05 }}
       onClick={onClick}
-      className={clsx(getActionClass(variant), small ? 'button-sm' : 'button', onlyIcon && '!p-3')}
+      className={clsx(
+        getActionClass(variant),
+        onlyIcon ? (small ? 'button-icon-sm' : 'button-icon') : small ? 'button-sm' : 'button'
+      )}
     >
       {currentIcon ? (
         onlyIcon ? (
@@ -55,11 +62,11 @@ export function ActionButton({
         ) : (
           <span className="flex gap-2 items-center">
             {currentIcon}
-            <span className="line-clamp-1">{children}</span>
+            <span className={className}>{children}</span>
           </span>
         )
       ) : (
-        <span className="line-clamp-1">{children}</span>
+        <span className={className}>{children}</span>
       )}
     </motion.button>
   );

@@ -83,9 +83,18 @@
 }
 
 @font-face {
-  font-family: Lexend;
+  font-family: RedHatDisplay;
   font-weight: 100 1000;
-  src: local(lexend), url('@assets/fonts/Lexend/Lexend-VariableFont_wght.ttf') format('truetype-variations');
+  src: local(redhatdisplay),
+    url('@assets/fonts/RedHat_Display/RedHatDisplay-VariableFont_wght.ttf') format('truetype-variations');
+}
+
+@font-face {
+  font-family: RedHatDisplay;
+  font-weight: 100 1000;
+  font-style: italic;
+  src: local(redhatdisplay-italic),
+    url('@assets/fonts/RedHat_Display/RedHatDisplay-Italic-VariableFont_wght.ttf') format('truetype-variations');
 }
 
 @font-face {
@@ -98,7 +107,8 @@
   font-family: Figtree;
   font-weight: 100 1000;
   font-style: italic;
-  src: local(figtree), url('@assets/fonts/Figtree/Figtree-Italic-VariableFont_wght.ttf') format('truetype-variations');
+  src: local(figtree-italic),
+    url('@assets/fonts/Figtree/Figtree-Italic-VariableFont_wght.ttf') format('truetype-variations');
 }
 
 @font-face {
@@ -123,10 +133,8 @@ h3,
 h4,
 h5,
 h6,
-button,
 .font-heading {
-  font-family: Lexend, sans-serif;
-  @apply tracking-tighter;
+  font-family: RedHatDisplay, sans-serif;
 }
 
 html,

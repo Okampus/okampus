@@ -21,6 +21,8 @@ import {
   Team,
   Tenant,
   User,
+  TeamJoin,
+  FormSubmission,
 } from '@okampus/api/dal';
 import { Action, IndividualKind, RoleType } from '@okampus/shared/enums';
 
@@ -54,6 +56,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   allow(Action.Update, Bot, { owner: { id: individual.id } }).because('Is bot owner');
 
   if (isUser(individual)) {
+    allow(Action.Create, [Report, TeamJoin, FormSubmission]);
     if (individual.roles.includes(RoleType.TenantAdmin)) {
       allow(Action.Manage, 'all');
       allow(Action.Update, 'all');

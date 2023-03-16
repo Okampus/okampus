@@ -6,6 +6,6 @@ import type { FormSubmission } from '../form-submission/form-submission.entity';
 export type FormSubmissionEditOptions = FormSubmissionEditProps &
   TenantScopedOptions & {
     linkedFormSubmission: FormSubmission;
-    editedBy: Individual;
+    editedBy: Individual | null;
     order: number;
   };

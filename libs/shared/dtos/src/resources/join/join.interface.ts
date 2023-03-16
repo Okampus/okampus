@@ -1,4 +1,4 @@
-import type { JoinKind, JoinState } from '@okampus/shared/enums';
+import type { JoinKind, ApprovalState } from '@okampus/shared/enums';
 import type { IIndividual } from '../actor/individual/individual.interface';
 import type { IUser } from '../actor/user/user.interface';
 import type { ITenantScoped } from '../tenant-scoped.interface';
@@ -10,9 +10,9 @@ export type IJoin = ITenantScoped &
     joinKind: JoinKind;
     issuer?: IIndividual | null;
     joiner?: IUser;
-    validatedBy?: IIndividual | null;
-    validatedAt: Date | null;
-    validationMessage: string | null;
+    settledBy?: IIndividual | null;
+    settledAt: Date | null;
+    settledMessage: string | null;
     formSubmission?: IFormSubmission | null;
-    state: JoinState;
+    state: ApprovalState;
   };

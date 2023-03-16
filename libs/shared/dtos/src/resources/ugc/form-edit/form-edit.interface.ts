@@ -5,7 +5,7 @@ import type { FormEditProps } from './form-edit.props';
 
 export type IFormEdit = ITenantScoped &
   Required<FormEditProps> & {
-    editedBy: IIndividual;
-    linkedForm: IForm;
+    editedBy?: IIndividual | null;
+    linkedForm?: IForm;
     order: number;
   };

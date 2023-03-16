@@ -28,5 +28,6 @@ export class FormProps {
 
   @Field(() => Boolean)
   @IsBoolean()
-  isTemplate!: boolean;
+  @IsOptional()
+  isTemplate?: boolean;
 }

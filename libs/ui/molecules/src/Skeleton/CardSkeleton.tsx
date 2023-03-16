@@ -1,3 +1,4 @@
+import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { Skeleton } from '@okampus/ui/atoms';
 
 export function CardSkeleton() {
@@ -7,8 +8,8 @@ export function CardSkeleton() {
       <div className="bg-1 text-0 px-4 pb-2 relative flex flex-col gap-1">
         <Skeleton
           height={34}
-          rounded="50%"
           width={34}
+          rounded={`${AVATAR_USER_ROUNDED}`}
           className="absolute -translate-y-[50%] border-4 border-[var(--bg-1)]"
         />
         <Skeleton height={10} width={72} className="-mt-4" />

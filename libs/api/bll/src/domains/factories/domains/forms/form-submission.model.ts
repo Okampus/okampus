@@ -1,4 +1,4 @@
-import { FormModel } from './form.model';
+import { FormEditModel } from './form-edit.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { UgcModel } from '../../abstract/ugc.model';
 import { Field, ObjectType } from '@nestjs/graphql';
@@ -11,8 +11,8 @@ export class FormSubmissionModel extends UgcModel implements IFormSubmission {
   @Field(() => GraphQLJSON)
   submission!: JSONObject;
 
-  @Field(() => FormModel, { nullable: true })
-  linkedFormVersion?: IFormEdit;
+  @Field(() => FormEditModel, { nullable: true })
+  linkedFormEdit?: IFormEdit;
 
   constructor(form: IFormSubmission) {
     super(form);
