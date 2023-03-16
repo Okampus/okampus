@@ -109,6 +109,7 @@
     "@expo/metro-config": "^0.5.0",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^18.0.0",
+    "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/cli": "^3.0.0",
     "@graphql-codegen/client-preset": "^2.0.0",
     "@graphql-typed-document-node/core": "^3.1.0",

@@ -11,6 +11,7 @@ specifiers:
   '@expo/metro-config': ^0.5.0
   '@expo/vector-icons': ^13.0.0
   '@expo/webpack-config': ^18.0.0
+  '@faker-js/faker': ^7.6.0
   '@fastify/cookie': ^8.3.0
   '@fastify/cors': ^8.2.0
   '@fastify/passport': ^2.2.0
@@ -314,6 +315,7 @@ devDependencies:
   '@expo/metro-config': 0.5.2
   '@expo/vector-icons': 13.0.0
   '@expo/webpack-config': 18.0.1_ozflxq2ajmvdt6u4me7po5lgtm
+  '@faker-js/faker': 7.6.0
   '@graphql-codegen/cli': 3.0.0_c7ezdi6bsvhq7tqj7ujpgtmsb4
   '@graphql-codegen/client-preset': 2.0.0_graphql@16.6.0
   '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
@@ -3029,7 +3031,6 @@ packages:
   /@faker-js/faker/7.6.0:
     resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
-    dev: false
 
   /@fastify/accept-negotiator/1.1.0:
     resolution: {integrity: sha512-OIHZrb2ImZ7XG85HXOONLcJWGosv7sIvM2ifAPQVhg9Lv7qdmMBNVaai4QTdyuaqbKM5eO6sLSQOYI7wEQeCJQ==}
