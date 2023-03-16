@@ -6,9 +6,7 @@ import { UgcKind } from '@okampus/shared/enums';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ContentOptions } from './content.options';
 
-@Entity({
-  customRepository: () => ContentRepository,
-})
+@Entity({ customRepository: () => ContentRepository })
 export class Content extends Ugc {
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()

@@ -6,7 +6,7 @@ import type { VideoUpload } from '../../file-upload/video-upload/video-upload.en
 
 export type TeamOptions = TeamProps &
   OrgOptions & {
+    joinForm: Form;
     categories?: TeamCategory[];
     video?: VideoUpload;
-    joinForm?: Form | null;
   };

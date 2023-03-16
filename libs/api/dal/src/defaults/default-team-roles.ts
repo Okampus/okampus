@@ -54,7 +54,7 @@ export const clubDefaultRoles: TeamRoleDefault[] = [
   },
   {
     name: 'Membre',
-    color: Colors.Blue,
+    color: Colors.LightBlue,
     category: TeamRoleCategory.Members,
     permissions: [TeamPermissions.ViewTreasury],
   },

@@ -36,9 +36,8 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
     requester: Individual,
     tenant: TenantCore
   ): Promise<ProjectModel> {
-    const teamId = createProject.teamId;
     const [team, supervisor, linkedEvent, participants] = await Promise.all([
-      this.teamRepository.findOneOrFail({ id: teamId }),
+      this.teamRepository.findOneOrFail({ id: createProject.teamId }),
       this.userRepository.findOneOrFail({ id: createProject.supervisorId }),
       asyncCallIfNotNull(createProject.linkedEventId, (id) => this.tenantEventRepository.findOneOrFail({ id })),
       asyncCallIfNotNull(createProject.participantsIds, (ids) => this.userRepository.findByIds(ids)),

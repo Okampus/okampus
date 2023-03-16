@@ -5,6 +5,6 @@ import type { UgcOptions } from '../ugc.options';
 
 export type ContentOptions = ContentProps &
   UgcOptions & {
-    attachments?: FileUpload[];
+    attachments: FileUpload[];
     parent?: Ugc | null;
   };

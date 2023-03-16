@@ -13,6 +13,7 @@ import type { UserOptions } from './user.options';
 import type { Session } from '../../manage-user/session/session.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
 import type { Shortcut } from '../shortcut/shortcut.entity';
+import type { TeamJoin } from '../../join/team-join/team-join.entity';
 
 @Entity({ customRepository: () => UserRepository })
 export class User extends Individual implements Searchable {
@@ -60,6 +61,10 @@ export class User extends Individual implements Searchable {
   @OneToMany({ type: 'TeamMember', mappedBy: 'user' })
   @TransformCollection()
   teamMemberships = new Collection<TeamMember>(this);
+
+  @OneToMany({ type: 'TeamJoin', mappedBy: 'joiner' })
+  @TransformCollection()
+  teamJoins = new Collection<TeamJoin>(this);
 
   // @OneToMany('Interest', 'user')
   // interests = new Collection<Interest>(this);
