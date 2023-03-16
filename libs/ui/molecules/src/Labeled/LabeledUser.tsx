@@ -14,7 +14,7 @@ export type UserLabelProps = {
 
 export function LabeledUser({ name, id, avatar, ellipsis }: UserLabelProps) {
   return (
-    <div className="flex gap-item items-center font-heading">
+    <div className="flex gap-item items-center font-heading font-semibold">
       <UserCard userId={id}>
         <Avatar src={avatar?.src} name={name} size={avatar?.size ?? 18} rounded={AVATAR_USER_ROUNDED} />
       </UserCard>

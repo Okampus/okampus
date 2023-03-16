@@ -1,5 +1,4 @@
-import { ActionType } from '@okampus/shared/types';
-import { ActionButton, Banner } from '@okampus/ui/atoms';
+import { Banner } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 
 import { useContext, useRef } from 'react';
@@ -19,7 +18,7 @@ export function BannerEditor({ banner, onChange }: BannerEditorProps) {
   const ref = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="relative">
+    <div className="h-full">
       <Banner {...banner} className="absolute inset-0" />
       <input
         ref={ref}
@@ -31,10 +30,11 @@ export function BannerEditor({ banner, onChange }: BannerEditorProps) {
           onChange(file ?? null);
         }}
       />
-      <div className="z-10 absolute top-[var(--padding-view)] right-[var(--padding-view)]">
-        <ActionButton variant={ActionType.Simple} onClick={() => ref.current?.click()}>
-          Modifier la bannière
-        </ActionButton>
+      <div
+        className="z-10 absolute top-[var(--topbar-height)] right-[var(--padding-view)] text-white cursor-pointer font-semibold hover:underline"
+        onClick={() => ref.current?.click()}
+      >
+        Modifier la bannière
       </div>
       {/* <Cropper
         src="https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg"
