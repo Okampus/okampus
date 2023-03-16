@@ -165,7 +165,7 @@ export class AuthService extends RequestContext {
   /* Creates an Meilisearch API key that must be accessed by the frontend and passed as Authorization header later */
   public async createMeilisearchToken(): Promise<Cookie> {
     // The API key is valid for the same time as the access token
-    const maxAge = this.expirations.access * 1000;
+    const maxAge = this.expirations.access;
     const meiliSearchKey = await this.meiliSearchService.client.createKey({
       indexes: [this.tenant().domain],
       actions: ['search'],
@@ -188,7 +188,7 @@ export class AuthService extends RequestContext {
     const expiresIn = +expirations[tokenType];
 
     const token = await this.jwtService.signAsync(claims, { secret, issuer, expiresIn });
-    const options = { ...cookieOptions, maxAge: expiresIn * 1000 };
+    const options = { ...cookieOptions, maxAge: expiresIn };
 
     // WebSocket token is public, must be accessed by the frontend and passed as Authorization header later
     if (tokenType === TokenType.WebSocket) options.httpOnly = false;
@@ -282,36 +282,26 @@ export class AuthService extends RequestContext {
     return session;
   }
 
-  public async validateRefreshToken(token: string, req: FastifyRequest, res: FastifyReply): Promise<void> {
-    const expectedClaims = { req: RequestType.Http, tok: TokenType.Refresh };
-    const decoded = await this.processToken(token, expectedClaims, this.signOptions.refresh);
-
-    const { fam, sub } = decoded;
-
-    const userSession = this.getUserSession(req);
-    const session = await this.sessionRepository.findActiveSession(sub, userSession);
-
-    // TODO: trigger compromised account alert event
-    if (!session) throw new UnauthorizedException('Session not found');
-    if (!(session.tokenFamily === fam)) throw new UnauthorizedException('Invalid token family');
-    if (!verify(session.refreshTokenHash, token, { secret: this.pepper })) {
-      session.revokedAt = new Date(); // Auto-revoke same family tokens
-      throw new UnauthorizedException('Session has been compromised');
-    }
-
-    await this.addTokensOnAuth(req, res, sub);
-  }
-
   public async validateUserToken(token: string, tok: TokenType, req: FastifyRequest, res: FastifyReply): Promise<User> {
     const reqType = tok === TokenType.WebSocket ? RequestType.WebSocket : RequestType.Http;
     const options = tok === TokenType.Refresh ? this.signOptions.refresh : this.signOptions.access;
     const decoded = await this.processToken(token, { req: reqType, tok }, options);
+    const { fam, sub } = decoded;
 
-    const session = await this.sessionRepository.findActiveSession(decoded.sub, this.getUserSession(req));
+    const session = await this.sessionRepository.findActiveSession(sub, this.getUserSession(req));
     if (!session) throw new UnauthorizedException('No active session found');
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
-    if (tok === TokenType.Refresh) await this.addTokensOnAuth(req, res, decoded.sub);
+    if (tok === TokenType.Refresh) {
+      // TODO: trigger compromised & auto-revoke?
+      if (!(session.tokenFamily === fam)) throw new UnauthorizedException('Invalid token family');
+      if (!verify(session.refreshTokenHash, token, { secret: this.pepper })) {
+        session.revokedAt = new Date(); // Auto-revoke same family tokens
+        throw new UnauthorizedException('Session has been compromised');
+      }
+
+      await this.addTokensOnAuth(req, res, sub);
+    }
 
     return session.user;
   }

@@ -127,6 +127,7 @@ export const config: ApiConfig = {
       httpOnly: true,
       // eslint-disable-next-line no-undefined
       domain: nodeEnv === 'production' ? `.${baseDomain}` : undefined,
+      sameSite: 'none',
     },
   },
   session: {
