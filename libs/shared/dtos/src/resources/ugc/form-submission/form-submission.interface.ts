@@ -4,5 +4,5 @@ import type { FormSubmissionProps } from './form-submission.props';
 
 export type IFormSubmission = IUgc &
   Required<FormSubmissionProps> & {
-    linkedFormVersion?: IFormEdit;
+    linkedFormEdit?: IFormEdit;
   };

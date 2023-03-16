@@ -38,7 +38,7 @@ export class FormSubmissionFactory extends BaseFactory<
       contentMaster: model.contentMaster ? this.em.getReference(ContentMaster, model.contentMaster.id) : null,
       representingOrg: model.representingOrg ? this.em.getReference(Org, model.representingOrg.id) : null,
       realAuthor: this.em.getReference(Individual, model.author.id),
-      linkedFormVersion: this.em.getReference(FormEdit, model.linkedFormVersion.id),
+      linkedFormEdit: this.em.getReference(FormEdit, model.linkedFormEdit.id),
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
 

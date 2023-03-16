@@ -5,7 +5,7 @@ import type { Form } from '../form/form.entity';
 
 export type FormEditOptions = FormEditProps &
   TenantScopedOptions & {
-    form: Form;
-    editedBy: Individual;
+    linkedForm: Form;
+    editedBy: Individual | null;
     order: number;
   };

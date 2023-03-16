@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { FormModel } from './form.model';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { UgcModel } from '../../abstract/ugc.model';
