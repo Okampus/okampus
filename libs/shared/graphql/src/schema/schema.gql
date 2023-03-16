@@ -538,6 +538,36 @@ type ContentModelEdge {
   node: ContentModel!
 }
 
+type FormEditModel implements UgcModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  lastHiddenAt: DateTime
+  ugcKind: UgcKind!
+  description: String!
+  author: IndividualModel
+  isAnonymous: Boolean!
+  representingOrg: OrgModel
+  contentMaster: ContentMasterModel!
+  addedDiff: JSON!
+  newVersion: JSON!
+  order: Int!
+  linkedForm: FormModel!
+  editedBy: IndividualModel!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type FormEditModelEdge {
+  cursor: String!
+  node: FormEditModel!
+}
+
 type FormModel implements UgcModel {
   id: String!
   createdAt: DateTime!
@@ -555,12 +585,9 @@ type FormModel implements UgcModel {
   schema: JSON!
   type: FormType!
   isTemplate: Boolean!
+  edits: [FormEditModel!]!
+  undeletable: Boolean!
 }
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 """The FormType enum"""
 enum FormType {
@@ -614,12 +641,10 @@ type ShortcutModel {
 
 """The ShortcutType enum"""
 enum ShortcutType {
-  General
   Team
-  TeamManage
-  TeamManageTreasury
   Project
   User
+  Event
 }
 
 type UserProfileModel {
@@ -675,7 +700,7 @@ type FormSubmissionModel implements UgcModel {
   representingOrg: OrgModel
   contentMaster: ContentMasterModel!
   submission: JSON!
-  linkedFormVersion: FormModel
+  linkedFormEdit: FormEditModel
 }
 
 type FormSubmissionModelEdge {
@@ -692,12 +717,12 @@ type EventJoinModel {
   lastHiddenAt: DateTime
   joinKind: JoinKind!
   issuer: IndividualModel
-  joiner: UserModel
-  validatedBy: IndividualModel
-  validatedAt: DateTime
-  validationMessage: String
-  formSubmission: FormSubmissionModel
-  state: JoinState!
+  joiner: UserModel!
+  settledBy: IndividualModel
+  settledAt: DateTime
+  settledMessage: String
+  formSubmission: FormSubmissionModel!
+  state: ApprovalState!
   event: TenantEventModel
   participated: Boolean
   teamAction: TeamActionModel
@@ -710,10 +735,11 @@ enum JoinKind {
   TeamJoin
 }
 
-"""The JoinState enum"""
-enum JoinState {
-  Pending
+"""The ApprovalState enum"""
+enum ApprovalState {
   Approved
+  Canceled
+  Pending
   Rejected
 }
 
@@ -933,22 +959,27 @@ type TeamJoinModel {
   deletedAt: DateTime
   tenant: TenantCoreModel
   lastHiddenAt: DateTime
-  team: TeamModel!
-  askedRole: TeamRoleModel!
-  receivedRole: TeamRoleModel
   joinKind: JoinKind!
   issuer: IndividualModel
   joiner: UserModel!
-  validatedBy: IndividualModel
-  validatedAt: DateTime
-  validationMessage: String
-  formSubmission: FormSubmissionModel
-  state: JoinState!
+  settledBy: IndividualModel
+  settledAt: DateTime
+  settledMessage: String
+  formSubmission: FormSubmissionModel!
+  state: ApprovalState!
+  team: TeamModel!
+  askedRole: TeamRoleModel!
+  receivedRole: TeamRoleModel
 }
 
 type TeamJoinModelEdge {
   cursor: String!
   node: TeamJoinModel!
+}
+
+type PaginatedTeamJoinModel {
+  edges: [TeamJoinModelEdge!]
+  pageInfo: PageInfo
 }
 
 type TeamCategoryModel {
@@ -997,7 +1028,7 @@ type TeamModel implements OrgModel {
   directorsCategoryName: String!
   managersCategoryName: String!
   membersCategoryName: String!
-  joinForm: FormModel
+  joinForm: FormModel!
   members: [TeamMemberModel!]!
   roles: [TeamRoleModel!]!
   joins: [TeamJoinModel!]!
@@ -1032,7 +1063,6 @@ type TeamActionModel {
   lastHiddenAt: DateTime
   name: String!
   description: String
-  state: ApprovalState!
   score: Int!
   team: TeamModel
   user: UserModel
@@ -1040,14 +1070,8 @@ type TeamActionModel {
   linkedEvent: TenantEventModel
   linkedProject: ProjectModel
   createdBy: IndividualModel
+  state: ApprovalState!
   validatedBy: TeamMemberModel
-}
-
-"""The ApprovalState enum"""
-enum ApprovalState {
-  Pending
-  Approved
-  Rejected
 }
 
 type TeamActionModelEdge {
@@ -1121,6 +1145,7 @@ type UserModel implements IndividualModel {
   profile: UserProfileModel
   shortcuts: [ShortcutModel!]!
   teamMemberships: [TeamMemberModel!]!
+  teamJoins: [TeamJoinModel!]!
 }
 
 """The ScopeRole enum"""
@@ -1212,6 +1237,8 @@ type Query {
   tenants(options: PaginationOptions): PaginatedTenantModel!
   eventById(id: String!): TenantEventModel!
   events(options: PaginationOptions): PaginatedTenantEventModel!
+  teamJoinById(id: String!): TeamJoinModel!
+  teamJoins(options: PaginationOptions): PaginatedTeamJoinModel!
   teamById(id: String!): TeamModel!
   teamBySlug(slug: String!): TeamModel!
   teams(options: PaginationOptions, filter: TeamFilterQuery): PaginatedTeamModel!
@@ -1284,6 +1311,9 @@ type Mutation {
   createEvent(event: CreateEventDto!): TenantEventModel!
   updateEvent(updateEvent: UpdateEventDto!): TenantEventModel!
   deleteEvent(id: String!): Boolean!
+  createTeamJoin(teamJoin: CreateTeamJoinDto!): TeamJoinModel!
+  updateTeamJoin(updateTeamJoin: UpdateTeamJoinDto!): TeamJoinModel!
+  deleteTeamJoin(id: String!): Boolean!
   createTeam(team: CreateTeamDto!, avatar: Upload, avatarDark: Upload, banner: Upload): TeamModel!
   teamAddDocument(teamId: String!, createOrgDocument: CreateOrgDocumentDto!, documentFile: Upload!): OrgDocumentModel!
   deactivateTeamImage(id: String!, actorImageType: ActorImageType!): ActorImageModel!
@@ -1416,6 +1446,24 @@ input UpdateEventDto {
   supervisorId: String
   orgId: String
   id: String!
+}
+
+input CreateTeamJoinDto {
+  submission: JSON!
+  joinerId: String
+  linkedFormEditId: String!
+  teamId: String!
+  askedRoleId: String!
+}
+
+input UpdateTeamJoinDto {
+  submission: JSON
+  linkedFormEditId: String
+  askedRoleId: String
+  settledMessage: String
+  state: ApprovalState
+  id: String!
+  receivedRoleId: String
 }
 
 input CreateTeamDto {

@@ -12,13 +12,22 @@ export const teamFragment = gql(`
     directorsCategoryName
     managersCategoryName
     membersCategoryName
+    memberCount
     actor {
       __typename
       id
+      bio
       name
       slug
       actorImages {
         ...ActorImageBareInfo
+      }
+      tags {
+        __typename
+        id
+        name
+        slug
+        color
       }
     }
     categories {

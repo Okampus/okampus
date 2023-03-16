@@ -11,5 +11,10 @@ export const formFragment = gql(`
     schema
     type
     isTemplate
+    edits {
+      __typename
+      id
+      order
+    }
   }
 `);
