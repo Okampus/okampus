@@ -1,5 +1,5 @@
-import type { UpdateTeamDto } from '@okampus/shared/dtos';
 import type { ActorImageUploadProps, Individual, TenantCore } from '@okampus/api/dal';
+import type { UpdateTeamDto } from '@okampus/shared/dtos';
 
 export class UpdateTeamCommand {
   constructor(

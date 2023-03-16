@@ -5,10 +5,12 @@ import { Paginated } from '../../../../shards/types/paginated.type';
 import { IndividualModel } from '../../abstract/individual.model';
 // eslint-disable-next-line import/no-cycle
 import { TeamMemberModel } from '../teams/team-member.model';
+// eslint-disable-next-line import/no-cycle
+import { TeamJoinModel } from '../teams/team-join.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
 
-import type { IShortcut, ITeamMember, IUser, IUserProfile } from '@okampus/shared/dtos';
+import type { IShortcut, ITeamJoin, ITeamMember, IUser, IUserProfile } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [IndividualModel] })
 export class UserModel extends IndividualModel implements IUser {
@@ -37,6 +39,9 @@ export class UserModel extends IndividualModel implements IUser {
 
   @Field(() => [TeamMemberModel])
   teamMemberships!: ITeamMember[];
+
+  @Field(() => [TeamJoinModel])
+  teamJoins!: ITeamJoin[];
 
   constructor(user: Omit<IUser, 'individualKind'>) {
     super({ ...user, individualKind: IndividualKind.User });

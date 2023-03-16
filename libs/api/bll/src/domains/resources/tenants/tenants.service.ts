@@ -59,7 +59,12 @@ export class TenantsService extends RequestContext {
   }
 
   update(updateTenant: UpdateTenantDto): Promise<TenantModel> {
-    const command = new UpdateTenantCommand(updateTenant, this.tenant(), this.autoGqlPopulate(defaultTenantPopulate));
+    const command = new UpdateTenantCommand(
+      updateTenant,
+      this.requester(),
+      this.tenant(),
+      this.autoGqlPopulate(defaultTenantPopulate)
+    );
     return this.commandBus.execute(command);
   }
 

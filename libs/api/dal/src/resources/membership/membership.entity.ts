@@ -17,7 +17,7 @@ export class Membership extends TenantScopedEntity {
   user!: User;
 
   @Property({ type: 'datetime' })
-  startDate: Date = new Date();
+  startDate = new Date();
 
   @Property({ type: 'datetime', nullable: true })
   endDate: Date | null = null;

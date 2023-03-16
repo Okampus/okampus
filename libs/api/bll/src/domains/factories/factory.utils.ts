@@ -1,6 +1,6 @@
 import { ActorImage, DocumentEdit, DocumentUpload } from '@okampus/api/dal';
 import { ActorKind, S3Buckets, ActorImageType } from '@okampus/shared/enums';
-import { isNotNull } from '@okampus/shared/utils';
+import { isEmpty, isNotNull, keepDefined } from '@okampus/shared/utils';
 
 import type {
   Actor,
@@ -10,7 +10,7 @@ import type {
   TenantDocument,
   Individual,
 } from '@okampus/api/dal';
-import type { CreateDocumentDto } from '@okampus/shared/dtos';
+import type { ActorProps, CreateDocumentDto } from '@okampus/shared/dtos';
 import type { MulterFileType } from '@okampus/shared/types';
 import type { UploadService } from '../../features/upload/upload.service';
 
@@ -45,6 +45,15 @@ export async function addImagesToActor(
   });
 
   return actor;
+}
+
+export function extractActor<T extends Partial<ActorProps>>(props: T) {
+  const { name, bio, primaryEmail, slug, ...otherProps } = props;
+  const actor = keepDefined({ name, bio, primaryEmail, slug });
+  return {
+    ...(isEmpty(actor) ? {} : { actor }),
+    ...otherProps,
+  };
 }
 
 export async function addDocumentEditToDocument(
