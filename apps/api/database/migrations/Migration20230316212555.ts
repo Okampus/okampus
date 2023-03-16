@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230307230054 extends Migration {
+export class Migration20230316212555 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "tenant_core" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "domain" text not null, "name" text not null, "oidc_info_oidc_enabled" boolean not null, "oidc_info_oidc_name" text null, "oidc_info_oidc_client_id" text null, "oidc_info_oidc_client_secret" text null, "oidc_info_oidc_discovery_url" text null, "oidc_info_oidc_scopes" text null, "oidc_info_oidc_callback_uri" text null);');
@@ -23,7 +23,7 @@ export class Migration20230307230054 extends Migration {
     this.addSql('create index "individual_individual_kind_index" on "individual" ("individual_kind");');
     this.addSql('alter table "individual" add constraint "individual_profile_id_unique" unique ("profile_id");');
 
-    this.addSql('create table "shortcut" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "type" text check ("type" in (\'General\', \'Team\', \'TeamManage\', \'TeamManageTreasury\', \'Project\', \'User\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null);');
+    this.addSql('create table "shortcut" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "type" text check ("type" in (\'Team\', \'Project\', \'User\', \'Event\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null);');
 
     this.addSql('create table "session" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "ip" varchar(255) not null, "country" varchar(255) not null, "client_type" text check ("client_type" in (\'WebClient\', \'MobileClient\', \'DesktopClient\')) not null, "user_agent" jsonb not null, "refresh_token_hash" varchar(255) not null, "token_family" varchar(255) not null, "user_id" bigint not null, "last_activity_at" timestamptz(0) not null, "last_issued_at" timestamptz(0) not null, "revoked_at" timestamptz(0) null, "expired_at" timestamptz(0) null);');
 
@@ -43,10 +43,9 @@ export class Migration20230307230054 extends Migration {
     this.addSql('alter table "content_master" add constraint "content_master_root_content_id_unique" unique ("root_content_id");');
     this.addSql('alter table "content_master" add constraint "content_master_image_id_unique" unique ("image_id");');
     this.addSql('create index "content_master_private_index" on "content_master" ("private");');
-    this.addSql('alter table "content_master" add constraint "content_master_join_form_id_unique" unique ("join_form_id");');
     this.addSql('alter table "content_master" add constraint "content_master_approval_submission_id_unique" unique ("approval_submission_id");');
 
-    this.addSql('create table "ugc" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "ugc_kind" text check ("ugc_kind" in (\'Content\', \'TenantDocument\', \'Form\', \'FormSubmission\')) not null, "description" text not null, "author_id" bigint null, "real_author_id" bigint null, "is_anonymous" boolean not null, "representing_org_id" bigint null, "content_master_id" bigint null, "upvote_count" int not null, "downvote_count" int not null, "total_vote_count" int not null, "report_count" int not null, "favorite_count" int not null, "comment_count" int not null, "parent_id" bigint null, "document_kind" text check ("document_kind" in (\'InfoDocument\', \'StudyDocument\', \'Document\')) null, "new_version_id" bigint null, "year_version" smallint null, "name" text null, "schema" jsonb null, "type" text check ("type" in (\'EventJoin\', \'TeamJoin\', \'Internal\', \'Survey\')) null, "is_template" boolean null, "undeletable" boolean null, "submission" jsonb null, "linked_form_version_id" bigint null, "last_edit_id" bigint null);');
+    this.addSql('create table "ugc" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "ugc_kind" text check ("ugc_kind" in (\'Content\', \'TenantDocument\', \'Form\', \'FormSubmission\')) not null, "description" text not null, "author_id" bigint null, "real_author_id" bigint null, "is_anonymous" boolean not null, "representing_org_id" bigint null, "content_master_id" bigint null, "upvote_count" int not null, "downvote_count" int not null, "total_vote_count" int not null, "report_count" int not null, "favorite_count" int not null, "comment_count" int not null, "parent_id" bigint null, "document_kind" text check ("document_kind" in (\'InfoDocument\', \'StudyDocument\', \'Document\')) null, "new_version_id" bigint null, "year_version" smallint null, "name" text null, "schema" jsonb null, "type" text check ("type" in (\'EventJoin\', \'TeamJoin\', \'Internal\', \'Survey\')) null, "is_template" boolean null, "undeletable" boolean null, "submission" jsonb null, "linked_form_edit_id" bigint null);');
     this.addSql('create index "ugc_ugc_kind_index" on "ugc" ("ugc_kind");');
     this.addSql('alter table "ugc" add constraint "ugc_new_version_id_unique" unique ("new_version_id");');
 
@@ -57,7 +56,6 @@ export class Migration20230307230054 extends Migration {
     this.addSql('alter table "org" add constraint "org_actor_id_unique" unique ("actor_id");');
     this.addSql('alter table "org" add constraint "org_logo_id_unique" unique ("logo_id");');
     this.addSql('alter table "org" add constraint "org_video_id_unique" unique ("video_id");');
-    this.addSql('alter table "org" add constraint "org_join_form_id_unique" unique ("join_form_id");');
     this.addSql('alter table "org" add constraint "org_event_validation_form_id_unique" unique ("event_validation_form_id");');
 
     this.addSql('create table "teach_class" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "user_id" bigint not null, "class_group_id" bigint not null, "start_date" timestamptz(0) not null, "end_date" timestamptz(0) null);');
@@ -90,17 +88,17 @@ export class Migration20230307230054 extends Migration {
 
     this.addSql('create table "form_submission_edit" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "added_diff" jsonb not null, "order" smallint not null, "linked_form_submission_id" bigint not null, "edited_by_id" bigint not null);');
 
-    this.addSql('create table "form_edit" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "added_diff" jsonb not null, "new_version" jsonb not null, "order" smallint not null, "linked_form_id" bigint not null, "edited_by_id" bigint not null);');
+    this.addSql('create table "form_edit" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "added_diff" jsonb not null, "new_version" jsonb not null, "order" smallint not null, "linked_form_id" bigint not null, "edited_by_id" bigint null);');
 
     this.addSql('create table "document_edit" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "new_version_id" bigint not null, "order" smallint not null, "edited_by_id" bigint not null, "linked_document_id" bigint not null, "year_version" smallint null);');
 
     this.addSql('create table "project" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "name" text not null, "description" text null, "expected_budget" int not null, "actual_budget" int null, "team_id" bigint not null, "linked_event_id" bigint null, "created_by_id" bigint not null, "supervisor_id" bigint not null);');
 
-    this.addSql('create table "team_action" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "name" text not null, "description" text null, "state" text check ("state" in (\'Pending\', \'Approved\', \'Rejected\')) not null, "score" int not null, "team_id" bigint not null, "user_id" bigint not null, "team_member_id" bigint null, "linked_event_id" bigint null, "linked_project_id" bigint null, "created_by_id" bigint not null, "validated_by_id" bigint null);');
+    this.addSql('create table "team_action" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "name" text not null, "description" text null, "state" text check ("state" in (\'Approved\', \'Canceled\', \'Pending\', \'Rejected\')) not null, "score" int not null, "team_id" bigint not null, "user_id" bigint not null, "team_member_id" bigint null, "linked_event_id" bigint null, "linked_project_id" bigint null, "created_by_id" bigint not null, "validated_by_id" bigint null);');
 
     this.addSql('create table "project_participants" ("project_id" bigint not null, "individual_id" bigint not null, constraint "project_participants_pkey" primary key ("project_id", "individual_id"));');
 
-    this.addSql('create table "join" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "join_kind" text check ("join_kind" in (\'EventJoin\', \'TeamJoin\')) not null, "issuer_id" bigint null, "joiner_id" bigint not null, "validated_by_id" bigint null, "validated_at" timestamptz(0) null, "validation_message" text null, "form_submission_id" bigint null, "state" text check ("state" in (\'Pending\', \'Approved\', \'Rejected\')) not null default \'Pending\', "event_id" bigint null, "participated" boolean null, "team_action_id" bigint null, "presence_status" text check ("presence_status" in (\'Sure\', \'Maybe\', \'Absent\')) null, "team_id" bigint null, "asked_role_id" bigint null, "received_role_id" bigint null);');
+    this.addSql('create table "join" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "join_kind" text check ("join_kind" in (\'EventJoin\', \'TeamJoin\')) not null, "issuer_id" bigint null, "joiner_id" bigint not null, "settled_by_id" bigint null, "settled_at" timestamptz(0) null, "settled_message" text null, "form_submission_id" bigint not null, "state" text check ("state" in (\'Approved\', \'Canceled\', \'Pending\', \'Rejected\')) not null default \'Pending\', "event_id" bigint null, "participated" boolean null, "team_action_id" bigint null, "presence_status" text check ("presence_status" in (\'Sure\', \'Maybe\', \'Absent\')) null, "team_id" bigint null, "asked_role_id" bigint null, "received_role_id" bigint null);');
     this.addSql('create index "join_join_kind_index" on "join" ("join_kind");');
 
     this.addSql('create table "interaction" ("id" bigserial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "deleted_at" timestamptz(0) null, "tenant_id" bigint not null, "last_hidden_at" timestamptz(0) null, "interaction_kind" text check ("interaction_kind" in (\'Favorite\', \'Reaction\', \'Report\', \'Validation\', \'Vote\')) not null, "content_id" bigint not null, "linked_content_master_id" bigint null, "actor_id" bigint not null, "reaction_type" text check ("reaction_type" in (\'What\', \'Interesting\', \'Like\', \'NotAnIssue\', \'Bump\', \'Laugh\', \'Unsure\', \'Partial\', \'Perfect\')) null, "target_id" bigint null, "reason" text null, "type" varchar(255) null, "value" smallint null, "last_active_date" timestamptz(0) null);');
@@ -160,7 +158,7 @@ export class Migration20230307230054 extends Migration {
     this.addSql('alter table "content_master" add constraint "content_master_root_content_id_foreign" foreign key ("root_content_id") references "ugc" ("id") on update cascade on delete CASCADE;');
     this.addSql('alter table "content_master" add constraint "content_master_image_id_foreign" foreign key ("image_id") references "file_upload" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "content_master" add constraint "content_master_supervisor_id_foreign" foreign key ("supervisor_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "content_master" add constraint "content_master_join_form_id_foreign" foreign key ("join_form_id") references "ugc" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "content_master" add constraint "content_master_join_form_id_foreign" foreign key ("join_form_id") references "ugc" ("id") on update cascade on delete set null;');
     this.addSql('alter table "content_master" add constraint "content_master_regular_event_id_foreign" foreign key ("regular_event_id") references "content_master" ("id") on update cascade on delete set null;');
     this.addSql('alter table "content_master" add constraint "content_master_approval_submission_id_foreign" foreign key ("approval_submission_id") references "ugc" ("id") on update cascade on delete set null;');
     this.addSql('alter table "content_master" add constraint "content_master_last_event_approval_step_id_foreign" foreign key ("last_event_approval_step_id") references "event_approval_step" ("id") on update cascade on delete set null;');
@@ -172,8 +170,7 @@ export class Migration20230307230054 extends Migration {
     this.addSql('alter table "ugc" add constraint "ugc_content_master_id_foreign" foreign key ("content_master_id") references "content_master" ("id") on update cascade on delete set null;');
     this.addSql('alter table "ugc" add constraint "ugc_parent_id_foreign" foreign key ("parent_id") references "ugc" ("id") on update cascade on delete set null;');
     this.addSql('alter table "ugc" add constraint "ugc_new_version_id_foreign" foreign key ("new_version_id") references "file_upload" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "ugc" add constraint "ugc_linked_form_version_id_foreign" foreign key ("linked_form_version_id") references "form_edit" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "ugc" add constraint "ugc_last_edit_id_foreign" foreign key ("last_edit_id") references "form_submission_edit" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "ugc" add constraint "ugc_linked_form_edit_id_foreign" foreign key ("linked_form_edit_id") references "form_edit" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "ugc_attachments" add constraint "ugc_attachments_ugc_id_foreign" foreign key ("ugc_id") references "ugc" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "ugc_attachments" add constraint "ugc_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
@@ -267,8 +264,8 @@ export class Migration20230307230054 extends Migration {
     this.addSql('alter table "join" add constraint "join_tenant_id_foreign" foreign key ("tenant_id") references "tenant_core" ("id") on update cascade;');
     this.addSql('alter table "join" add constraint "join_issuer_id_foreign" foreign key ("issuer_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "join" add constraint "join_joiner_id_foreign" foreign key ("joiner_id") references "individual" ("id") on update cascade;');
-    this.addSql('alter table "join" add constraint "join_validated_by_id_foreign" foreign key ("validated_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "join" add constraint "join_form_submission_id_foreign" foreign key ("form_submission_id") references "ugc" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "join" add constraint "join_settled_by_id_foreign" foreign key ("settled_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "join" add constraint "join_form_submission_id_foreign" foreign key ("form_submission_id") references "ugc" ("id") on update cascade;');
     this.addSql('alter table "join" add constraint "join_event_id_foreign" foreign key ("event_id") references "content_master" ("id") on update cascade on delete set null;');
     this.addSql('alter table "join" add constraint "join_team_action_id_foreign" foreign key ("team_action_id") references "team_action" ("id") on update cascade on delete set null;');
     this.addSql('alter table "join" add constraint "join_team_id_foreign" foreign key ("team_id") references "org" ("id") on update cascade on delete set null;');
@@ -432,7 +429,7 @@ export class Migration20230307230054 extends Migration {
 
     this.addSql('alter table "join" drop constraint "join_joiner_id_foreign";');
 
-    this.addSql('alter table "join" drop constraint "join_validated_by_id_foreign";');
+    this.addSql('alter table "join" drop constraint "join_settled_by_id_foreign";');
 
     this.addSql('alter table "interaction" drop constraint "interaction_target_id_foreign";');
 
@@ -582,9 +579,7 @@ export class Migration20230307230054 extends Migration {
 
     this.addSql('alter table "event_approval" drop constraint "event_approval_step_id_foreign";');
 
-    this.addSql('alter table "ugc" drop constraint "ugc_last_edit_id_foreign";');
-
-    this.addSql('alter table "ugc" drop constraint "ugc_linked_form_version_id_foreign";');
+    this.addSql('alter table "ugc" drop constraint "ugc_linked_form_edit_id_foreign";');
 
     this.addSql('alter table "team_action" drop constraint "team_action_linked_project_id_foreign";');
 
