@@ -7,12 +7,6 @@ export const customFontsToLoad = {
   harmonySansRegular: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Regular.ttf'),
   harmonySansLight: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Light.ttf'),
   harmonySansThin: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Thin.ttf'),
-  lexendBold: require('@okampus/assets/fonts/Lexend/Lexend-Bold.ttf'),
-  lexendSemibold: require('@okampus/assets/fonts/Lexend/Lexend-SemiBold.ttf'),
-  lexendMedium: require('@okampus/assets/fonts/Lexend/Lexend-Medium.ttf'),
-  lexendRegular: require('@okampus/assets/fonts/Lexend/Lexend-Regular.ttf'),
-  lexendLight: require('@okampus/assets/fonts/Lexend/Lexend-Light.ttf'),
-  lexendThin: require('@okampus/assets/fonts/Lexend/Lexend-Thin.ttf'),
   spaceMonoRegular: require('@okampus/assets/fonts/SpaceMono/SpaceMono-Regular.ttf'),
 };
 
@@ -26,6 +20,7 @@ export type FontWeights =
   | 'semiBoldItalic'
   | 'boldItalic';
 
+// TODO: add RedHat font
 const fonts = {
   harmonySans: {
     light: 'harmonySansLight',
@@ -33,14 +28,6 @@ const fonts = {
     medium: 'harmonySansMedium',
     semiBold: 'harmonySansSemibold',
     bold: 'harmonySansBold',
-  },
-  lexend: {
-    thin: 'lexendThin',
-    light: 'lexendLight',
-    normal: 'lexendRegular',
-    medium: 'lexendMedium',
-    semiBold: 'lexendSemibold',
-    bold: 'lexendBold',
   },
   spaceMono: {
     normal: 'spaceMonoRegular',
@@ -81,7 +68,7 @@ export const typography = {
   /**
    * The heading font. Used in headings.
    */
-  heading: fonts.lexend,
+  heading: fonts.harmonySans,
   secondary: Platform.select({ ios: fonts.helveticaNeue, android: fonts.sansSerif }),
   code: fonts.spaceMono,
 };

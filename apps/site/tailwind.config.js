@@ -21,6 +21,8 @@ module.exports = {
       fontFamily: {
         sans: ['HarmonyOS', ...defaultTheme.fontFamily.sans],
         mono: ['SpaceMono', ...defaultTheme.fontFamily.mono],
+        heading: ['RedHatDisplay', ...defaultTheme.fontFamily.sans],
+        title: ['Figtree', ...defaultTheme.fontFamily.sans],
       },
       screens: {
         xxs: '361px',
