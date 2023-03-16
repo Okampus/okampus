@@ -70,7 +70,9 @@ export function Dashboard<T extends object>({ columns, data, nItems = 10 }: Dash
                           : colIdx !== 0 && 'justify-center'
                       )}
                     >
-                      {row === undefined ? column.skeleton ?? <Skeleton /> : column.render(row)}
+                      {row === undefined
+                        ? column.skeleton ?? <Skeleton width="full" height={12} />
+                        : column.render(row)}
                     </div>
                   </td>
                 ))}
