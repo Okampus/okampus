@@ -1,20 +1,15 @@
-import {
-  createEventMutation,
-  eventFragment,
-  getFragmentData,
-  getTeamWithMembersQuery,
-  teamMembersFragment,
-} from '@okampus/shared/graphql';
 import { ControlType, EventState } from '@okampus/shared/enums';
+import { createEventMutation, eventFragment, getFragmentData } from '@okampus/shared/graphql';
+
 import { DynamicForm } from '@okampus/ui/organisms';
-import { useManageOrg } from '@okampus/ui/hooks';
-import { useMutation, useQuery } from '@apollo/client';
+import { useTeamManage } from '@okampus/ui/hooks';
+
+import { useMutation } from '@apollo/client';
 import { z } from 'zod';
 
-import type { SelectItem } from '@okampus/ui/molecules';
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 import type { Address } from '@okampus/shared/dtos';
-import type { EventInfoFragment, TeamManageInfoFragment } from '@okampus/shared/graphql';
+import type { EventInfoFragment } from '@okampus/shared/graphql';
 
 type CreateEventFormData = {
   title: string;
@@ -64,13 +59,7 @@ const location: Address = {
 };
 
 export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
-  const { manageOrg } = useManageOrg();
-  if (!manageOrg) return <p className="text-red-500">Aucune organisation n'est chargée.</p>;
-  return CreateEventFormWrapper({ onSubmit, manageOrg });
-}
-
-function CreateEventFormWrapper({ onSubmit, manageOrg }: CreateEventFormProps & { manageOrg: TeamManageInfoFragment }) {
-  const { loading, error: queryErrors, data } = useQuery(getTeamWithMembersQuery, { variables: { id: manageOrg.id } });
+  const { teamManage } = useTeamManage();
 
   const [createEvent] = useMutation(createEventMutation, {
     onCompleted: (data) => {
@@ -79,27 +68,17 @@ function CreateEventFormWrapper({ onSubmit, manageOrg }: CreateEventFormProps & 
     },
   });
 
+  if (!teamManage) return <p className="text-red-500">Aucune organisation n'est chargée.</p>;
   const onCreateEvent = (event: CreateEventFormData) => {
     createEvent({
-      variables: { event: { ...event, orgId: manageOrg.id, location, state: EventState.Submitted } },
+      variables: { event: { ...event, orgId: teamManage.id, location, state: EventState.Submitted } },
     });
   };
 
-  if (queryErrors) return <p className="text-blue-500">Une erreur est survenue.</p>;
-  if (loading) return <p className="text-blue-500">Chargement...</p>;
-
-  let members: SelectItem<string>[] = [];
-  if (data) {
-    members = getFragmentData(teamMembersFragment, data.teamById).members.map((member) => ({
-      value: member.id,
-      element: `${member.user?.actor?.name}`,
-    }));
-  }
-
-  // .members.map((member) => ({
-  //   value: member.id,
-  //   element: `${member.user?.actor?.name}`,
-  // }));
+  const members = teamManage.members.map((member) => ({
+    value: member.id,
+    label: `${member.user?.actor?.name}`,
+  }));
 
   const fields: DynamicFieldData[] = [
     {
@@ -142,107 +121,5 @@ function CreateEventFormWrapper({ onSubmit, manageOrg }: CreateEventFormProps & 
     },
   ];
 
-  return (
-    <DynamicForm onSubmit={onCreateEvent} fields={fields} />
-    // <form onSubmit={handleSubmit(onCreateEvent)}>
-    //   <div className="flex flex-col gap-4 mb-6">
-    //     {/* {JSON.stringify(errors)} */}
-    //     {/* {JSON.stringify(getValues())} */}
-    //     <div>
-    //       <input
-    //         type="text"
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         placeholder="Nom de l'événement"
-    //         {...register('title')}
-    //       />
-    //       {errors.title?.message && <p className="pt-1 text-red-400 text-sm">{errors.title?.message}</p>}
-    //     </div>
-
-    //     <div className="w-full rounded-lg ">
-    //       Superviseur
-    //       <Controller
-    //         {...register('supervisorId')}
-    //         control={control}
-    //         render={({ field: { onChange } }) => (
-    //           <SelectInput
-    //             onChange={onChange}
-    //             options={[]} // TODO: TeamMembers
-    //           />
-    //         )}
-    //       />
-    //       {errors.supervisorId?.message && <p className="pt-1 text-red-400 text-sm">{errors.supervisorId?.message}</p>}
-    //       {/* <input
-    //         type="text"
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         placeholder="Nom de l'événement"
-    //         {...register('name')}
-    //       />
-    //       {errors.name?.message && <p className="pt-1 text-red-400 text-sm">{errors.name?.message}</p>} */}
-    //     </div>
-
-    //     <div>
-    //       Date
-    //       <input
-    //         type="datetime-local"
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         placeholder="Date et heure de début"
-    //         {...register('start')}
-    //       />
-    //       {errors.start?.message && <p className="pt-1 text-red-400 text-sm">{errors.start?.message}</p>}
-    //     </div>
-
-    //     <div>
-    //       <input
-    //         type="datetime-local"
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         placeholder="Date et heure de fin"
-    //         {...register('end')}
-    //       />
-    //       {errors.end?.message && <p className="pt-1 text-red-400 text-sm">{errors.end?.message}</p>}
-    //     </div>
-
-    //     <div>
-    //       Addresse
-    //       <input
-    //         type="text"
-    //         disabled
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         value="Efrei République, 30-32 Avenue de la République, 94800 VILLEJUIF"
-    //       />
-    //       {/* {errors.end?.message && <p className="pt-1 text-red-400 text-sm">{errors.end?.message}</p>} */}
-    //     </div>
-
-    //     <div>
-    //       <div className="flex gap-2">
-    //         <input type="checkbox" placeholder="Événement privé ?" {...register('private')} />
-    //         <label htmlFor="private">Événement privé ?</label>
-    //       </div>
-    //       {errors.private?.message && <p className="pt-1 text-red-400 text-sm">{errors.private?.message}</p>}
-    //     </div>
-
-    //     <div>
-    //       <textarea
-    //         rows={4}
-    //         className="w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-black"
-    //         placeholder="Description de l'événement"
-    //         {...register('description')}
-    //       />
-    //       {(error || errors.description?.message) && (
-    //         <p className="pt-1 text-red-400 text-sm">{error?.toString?.() ?? errors.description?.message}</p>
-    //       )}
-    //     </div>
-    //   </div>
-    //   <div className="flex items-center">
-    //     <input
-    //       type="submit"
-    //       value="Créer l'événement"
-    //       className={
-    //         'hover:cursor-pointer rounded-lg bg-opposite text-opposite py-2 px-3 text-sm font-semibold text-white'
-    //       }
-    //     />
-    //   </div>
-    //   {/* <div className="break-all">{JSON.stringify(getValues())}</div> */}
-    //   {/* <div>{JSON.stringify(errors.description)}</div> */}
-    // </form>
-  );
+  return <DynamicForm onSubmit={onCreateEvent} fields={fields} />;
 }
