@@ -89,6 +89,7 @@ export type ApiConfig = {
       readonly path: string;
       readonly httpOnly: boolean;
       readonly domain: string | undefined;
+      readonly sameSite: boolean | 'lax' | 'strict' | 'none';
     };
   };
   readonly session: {

@@ -1,22 +1,14 @@
-export enum SubspaceType {
-  Home = 'Home',
-  Admin = 'Admin',
-  Org = 'Org',
-  Manage = 'Manage',
-  User = 'User',
-  Me = 'Me',
-}
-
-export const tenantSubspaces = new Set([SubspaceType.Home, SubspaceType.Admin]);
+import { HOME_ROUTE } from '@okampus/shared/consts';
+import { SubspaceType, ViewType } from '@okampus/shared/enums';
 
 export interface SelectedMenu {
   subSpace: SubspaceType;
-  menu: number;
-  subMenu: number;
+  viewType: ViewType;
+  menuId: string;
 }
 
 export const defaultSelectedMenu: SelectedMenu = {
   subSpace: SubspaceType.Home,
-  menu: 0,
-  subMenu: 0,
+  viewType: ViewType.Community,
+  menuId: HOME_ROUTE,
 };
