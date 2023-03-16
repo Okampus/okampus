@@ -53,18 +53,6 @@ export const AdminEventDashboard = () => {
           });
         }
       }
-
-      // onSubmit(data);
-      // setIsLoading(true);
-      // setTimeout(() => setIsLoading(false), 1000);
-      // console.log(data);
-      // if (user !== data.login.id) {
-      //   setUser(data.login.id);
-      // }
-      // navigate('/');
-    },
-    onError: () => {
-      // setIsLoading(false);
     },
   });
 
@@ -80,7 +68,7 @@ export const AdminEventDashboard = () => {
   //               <EventCard
   //                 key={idx}
   //                 event={event}
-  //                 classes="bg-hover-1 cursor-pointer"
+  //                 classes="bg-1-hover cursor-pointer"
   //                 onClick={() => setSelectedId(event.id ?? idx.toString())}
   //               />
   //             </motion.div>
@@ -99,7 +87,7 @@ export const AdminEventDashboard = () => {
   //               <EventCard
   //                 key={idx}
   //                 event={event}
-  //                 classes="bg-hover-1 cursor-pointer"
+  //                 classes="bg-1-hover cursor-pointer"
   //                 onClick={() => setSelectedId(event.id ?? idx.toString())}
   //               />
   //             </motion.div>
@@ -118,7 +106,7 @@ export const AdminEventDashboard = () => {
   //               <EventCard
   //                 key={idx}
   //                 event={event}
-  //                 classes="bg-hover-1 cursor-pointer"
+  //                 classes="bg-1-hover cursor-pointer"
   //                 onClick={() => setSelectedId(event.id ?? idx.toString())}
   //               />
   //             </motion.div>
@@ -137,7 +125,7 @@ export const AdminEventDashboard = () => {
   //               <EventCard
   //                 key={idx}
   //                 event={event}
-  //                 classes="bg-hover-1 cursor-pointer"
+  //                 classes="bg-1-hover cursor-pointer"
   //                 onClick={() => setSelectedId(event.id ?? idx.toString())}
   //               />
   //             </motion.div>

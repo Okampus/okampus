@@ -6,35 +6,15 @@ import { ReactComponent as GoOutlinedIcon } from '@okampus/assets/svg/icons/outl
 import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
 import { Avatar, Banner } from '@okampus/ui/atoms';
 import { getAvatar, getBanner } from '@okampus/ui/utils';
-import { isNotNull } from '@okampus/shared/utils';
 
-import { actorImageBareFragment, ActorImageType, getFragmentData } from '@okampus/shared/graphql';
-
-import type { UserItem } from '../Group/AvatarGroupUser';
-import type { TeamMembersInfoFragment } from '@okampus/shared/graphql';
+import type { TeamInfoFragment } from '@okampus/shared/graphql';
 
 type TeamCardProps = {
-  team: TeamMembersInfoFragment;
+  team: TeamInfoFragment;
   link: string;
 };
 
 export function TeamListCard({ team, link }: TeamCardProps) {
-  const users: UserItem[] = team.members
-    .map((member) => {
-      const user = member.user;
-      if (!user || !user.actor) return null;
-
-      return {
-        id: user.id,
-        rounded: AVATAR_TEAM_ROUNDED,
-        name: user.actor.name,
-        src: user.actor.actorImages
-          .map((actorImage) => getFragmentData(actorImageBareFragment, actorImage))
-          .find((image) => image.type === ActorImageType.Avatar)?.image?.url,
-      };
-    })
-    .filter(isNotNull);
-
   const tags = team.actor?.tags;
   return (
     <motion.div initial="rest" whileHover="hover" className="relative cursor-pointer rounded-2xl overflow-hidden">
@@ -51,7 +31,7 @@ export function TeamListCard({ team, link }: TeamCardProps) {
           />
           <div>
             <div className="text-xl line-clamp-1 font-title text-white font-bold">{team.actor?.name}</div>
-            <div className="text-sm text-gray-300 font-medium font-heading">{team.members.length} membres</div>
+            <div className="text-sm text-gray-300 font-medium font-heading">{team.memberCount} membres</div>
           </div>
         </div>
         <motion.i
