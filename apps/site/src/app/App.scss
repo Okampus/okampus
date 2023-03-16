@@ -1,11 +1,5 @@
 html {
-  font-size: 12px;
-}
-
-@media (min-width: 1024px) {
-  html {
-    font-size: 14px;
-  }
+  @apply text-[12px] xl:text-[14px];
 }
 
 html,

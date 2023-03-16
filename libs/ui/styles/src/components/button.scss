@@ -1,10 +1,11 @@
-.button {
-  @apply rounded-full px-8 py-4 font-semibold tracking-tight;
-  font-family: Lexend, sans-serif;
-  &-sm {
-    @apply rounded-full px-5 py-3 font-semibold tracking-tight;
-    font-family: Lexend, sans-serif;
-  }
+%button-rounded,
+.button-rounded {
+  @apply rounded-full;
+}
+
+%button {
+  @extend %button-rounded;
+  @apply font-bold tracking-tight font-title flex justify-center items-center;
 
   &:hover {
     @apply cursor-pointer contrast-75;
@@ -19,6 +20,26 @@
   }
 }
 
+.button {
+  @extend %button;
+  @apply px-8 text-lg h-14;
+
+  &-sm {
+    @extend %button;
+    @apply px-5 h-12;
+  }
+
+  &-icon {
+    @extend %button;
+    @apply h-14 w-14 p-3;
+  }
+
+  &-icon-sm {
+    @extend %button;
+    @apply h-12 w-12 p-2;
+  }
+}
+
 .button-list {
-  @apply flex py-0.5 px-1 gap-item;
+  @apply flex py-0.5 gap-item;
 }
