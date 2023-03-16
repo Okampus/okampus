@@ -8,7 +8,7 @@ import {
   getFragmentData,
   teamAddDocumentMutation,
 } from '@okampus/shared/graphql';
-import { NavigationContext, useManageOrg } from '@okampus/ui/hooks';
+import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 import type { DocumentInfoFragment } from '@okampus/shared/graphql';
@@ -79,7 +79,7 @@ function documentName(type: OrgDocumentType, org: { actor?: { name: string } | n
 }
 
 export function DocumentManageView() {
-  const { manageOrg } = useManageOrg();
+  const { teamManage } = useTeamManage();
   const { showModal, hideModal } = useContext(NavigationContext);
 
   const [createOrgDocument] = useMutation(teamAddDocumentMutation, {
@@ -88,13 +88,13 @@ export function DocumentManageView() {
     },
   });
 
-  const currentOrgDocuments = manageOrg?.documents ?? [];
+  const currentOrgDocuments = teamManage?.documents ?? [];
   const orgDocuments = currentOrgDocuments.map((orgDocument) => ({
     type: orgDocument.type,
     document: getDocumentWithEdits(getFragmentData(documentFragment, orgDocument.document)),
   }));
 
-  const documents: Array<[OrgDocumentType, DocumentWithEdits | null]> = documentTypesByTeamType(manageOrg?.type).map(
+  const documents: Array<[OrgDocumentType, DocumentWithEdits | null]> = documentTypesByTeamType(teamManage?.type).map(
     (type) => [type, orgDocuments.find((orgDocument) => orgDocument.type === type)?.document ?? null]
   );
 
@@ -102,7 +102,7 @@ export function DocumentManageView() {
     <div className="p-view grid gap-6 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]">
       {documents.map(([type, document]) => (
         <div className="flex flex-col gap-4" key={type}>
-          <label className="block text-xl font-medium text-2">{orgDocumentLabel(type)}</label>
+          <label className="block text-xl font-semibold text-0">{orgDocumentLabel(type)}</label>
           <DocumentInput
             document={document}
             onUpload={(file) =>
@@ -114,12 +114,12 @@ export function DocumentManageView() {
                       type={type}
                       file={file}
                       onSubmit={(document) => {
-                        if (manageOrg) {
-                          const name = document.name ?? documentName(type, manageOrg);
+                        if (teamManage) {
+                          const name = document.name ?? documentName(type, teamManage);
                           createOrgDocument({
                             variables: {
                               createOrgDocument: { description: document.description, name, type },
-                              teamId: manageOrg.id,
+                              teamId: teamManage.id,
                               documentFile: document.documentFile,
                             },
                           });
