@@ -22,6 +22,7 @@
     "@fastify/secure-session": "^6.0.0",
     "@floating-ui/react": "^0.21.0",
     "@hookform/resolvers": "^2.9.0",
+    "@mercuriusjs/gateway": "^1.2.0",
     "@mikro-orm/core": "^5.6.14",
     "@mikro-orm/migrations": "^5.6.14",
     "@mikro-orm/nestjs": "^5.1.0",
