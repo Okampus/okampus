@@ -23,6 +23,7 @@ specifiers:
   '@graphql-typed-document-node/core': ^3.1.0
   '@hookform/resolvers': ^2.9.0
   '@jest/globals': ^29.5.0
+  '@mercuriusjs/gateway': ^1.2.0
   '@mikro-orm/core': ^5.6.14
   '@mikro-orm/migrations': ^5.6.14
   '@mikro-orm/nestjs': ^5.1.0
@@ -228,6 +229,7 @@ dependencies:
   '@fastify/secure-session': 6.0.0
   '@floating-ui/react': 0.21.1_zula6vjvt3wdocc4mwcxqa6nzi
   '@hookform/resolvers': 2.9.11_react-hook-form@7.43.1
+  '@mercuriusjs/gateway': 1.2.0
   '@mikro-orm/core': 5.6.14_7cierhul3jvthwllirydjtianq
   '@mikro-orm/migrations': 5.6.14_@mikro-orm+core@5.6.14
   '@mikro-orm/nestjs': 5.1.7_kojnjysvt5ah3j4hu2bzkkcypi
@@ -241,7 +243,7 @@ dependencies:
   '@nestjs/graphql': 11.0.0_mx67tdfoah2i42xit4xgrngpmm
   '@nestjs/jwt': 10.0.2_@nestjs+common@9.3.9
   '@nestjs/mapped-types': 1.2.2_sm5si6oczf3vcbfl6qa276t67m
-  '@nestjs/mercurius': 11.0.3_iwaynck2phxyh4j2fpuy3dzijm
+  '@nestjs/mercurius': 11.0.3_36uqg5jx2v5ze22yiprrlif2ae
   '@nestjs/passport': 9.0.3_v3ijvyhfbmibt6kvwmic262qla
   '@nestjs/platform-fastify': 9.3.9_77foi4w27ghy47yutmnzv7krjy
   '@nestjs/schedule': 2.2.0_shbtxdxgogsm4p64bg2toeylku
@@ -4456,6 +4458,51 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
 
+  /@mercuriusjs/federation/1.0.1:
+    resolution: {integrity: sha512-aski6H8SRfjK73Bruzh5kQ20OS0s0pkbFvcOex46Qm17bYWoJ3daMrbTw4caOSkru7R8pIA/bvAjSq97xkDJkQ==}
+    dependencies:
+      '@fastify/error': 3.2.0
+      graphql: 16.6.0
+      mercurius: 12.2.0_graphql@16.6.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@mercuriusjs/gateway/1.2.0:
+    resolution: {integrity: sha512-kwSTeY53NpO2VUaDKKl3PBUwcqQBLHzHAq2FDxCr4N2u2ELu9/yJVAcv7okkmwg7ImjsTOdgbvU2+VrG2foLHQ==}
+    dependencies:
+      '@mercuriusjs/federation': 1.0.1
+      '@mercuriusjs/subscription-client': 1.0.0_graphql@16.6.0
+      fastify-plugin: 4.5.0
+      graphql: 16.6.0
+      graphql-ws: 5.12.0_graphql@16.6.0
+      mercurius: 12.2.0_graphql@16.6.0
+      p-map: 4.0.0
+      single-user-cache: 0.6.0
+      tiny-lru: 10.0.1
+      use-strict: 1.0.1
+      ws: 8.12.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@mercuriusjs/subscription-client/1.0.0_graphql@16.6.0:
+    resolution: {integrity: sha512-hIGqNp6FBdcy7ZkrWNk4mHl/Qodtwvbu9/iRl3zQdNRl4UtlVI7xW/FPU+2AJy0qTB567yrpvtQPwtmQLuYHYg==}
+    engines: {node: '>=14.19.3'}
+    peerDependencies:
+      graphql: ^16.0.0
+    dependencies:
+      '@fastify/error': 3.2.0
+      graphql: 16.6.0
+      secure-json-parse: 2.7.0
+      ws: 8.12.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /@microsoft/api-extractor-model/7.26.4_@types+node@18.15.3:
     resolution: {integrity: sha512-PDCgCzXDo+SLY5bsfl4bS7hxaeEtnXj7XtuzEE+BtALp7B5mK/NrS2kHWU69pohgsRmEALycQdaQPXoyT2i5MQ==}
     dependencies:
@@ -4898,7 +4945,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/mercurius/11.0.3_iwaynck2phxyh4j2fpuy3dzijm:
+  /@nestjs/mercurius/11.0.3_36uqg5jx2v5ze22yiprrlif2ae:
     resolution: {integrity: sha512-VuVcs2oFefvGsEi5lQBxT/vNbTPv0v6NZaVnvFaxP9IQFg07lNSONWWfTBI5ptvphftIqjAgPrMm2yYai/Af6g==}
     peerDependencies:
       '@apollo/subgraph': ^2.0.0
@@ -4917,6 +4964,7 @@ packages:
       '@mercuriusjs/gateway':
         optional: true
     dependencies:
+      '@mercuriusjs/gateway': 1.2.0
       '@nestjs/common': 9.3.9_dvrujxroetdtfe56hbaridt2dy
       '@nestjs/graphql': 11.0.0_mx67tdfoah2i42xit4xgrngpmm
       fastify: 4.14.1
@@ -25388,6 +25436,10 @@ packages:
   /use-latest-callback/0.1.5:
     resolution: {integrity: sha512-HtHatS2U4/h32NlkhupDsPlrbiD27gSH5swBdtXbCAlc6pfOFzaj0FehW/FO12rx8j2Vy4/lJScCiJyM01E+bQ==}
     dev: true
+
+  /use-strict/1.0.1:
+    resolution: {integrity: sha512-IeiWvvEXfW5ltKVMkxq6FvNf2LojMKvB2OCeja6+ct24S1XOmQw2dGr2JyndwACWAGJva9B7yPHwAmeA9QCqAQ==}
+    dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
