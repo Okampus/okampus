@@ -31,7 +31,7 @@ export class FormFactory extends BaseFactory<FormModel, Form, IForm, FormOptions
     return new Form({
       ...model,
       contentMaster: model.contentMaster ? this.em.getReference(ContentMaster, model.contentMaster.id) : null,
-      representingOrg: model.representingOrg ? this.em.getReference(Org, model.representingOrg.id) : null,
+      representingOrgs: model.representingOrgs.map((org) => this.em.getReference(Org, org.id)),
       realAuthor: this.em.getReference(Individual, model.author.id),
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });

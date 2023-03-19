@@ -11,6 +11,20 @@ export const eventFragment = gql(`
     start
     end
     state
+    orgs {
+      id
+      createdAt
+      updatedAt
+      orgKind
+      actor {
+        id
+        name
+        slug
+        actorImages {
+          ...ActorImageBareInfo
+        }
+      }
+    }
     supervisor {
       __typename
       id
@@ -34,20 +48,6 @@ export const eventFragment = gql(`
       description
       ugcKind
       isAnonymous
-      representingOrg {
-        id
-        createdAt
-        updatedAt
-        orgKind
-        actor {
-          id
-          name
-          slug
-          actorImages {
-            ...ActorImageBareInfo
-          }
-        }
-      }
       author {
         ...UserInfo
       }

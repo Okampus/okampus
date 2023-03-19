@@ -9,7 +9,7 @@ export type IUgc = ITenantScoped &
   Required<UgcProps> & {
     ugcKind: UgcKind;
     isAnonymous: boolean;
+    representingOrgs?: IOrg[];
     author?: IIndividual | null;
-    representingOrg?: IOrg | null;
     contentMaster?: IContentMaster | null;
   };

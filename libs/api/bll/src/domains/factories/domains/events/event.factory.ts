@@ -10,7 +10,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { TenantEventRepository, OrgRepository, UserRepository } from '@okampus/api/dal';
+import { TenantEventRepository, OrgRepository, UserRepository, Org } from '@okampus/api/dal';
 import {
   EventApprovalStep,
   Form,
@@ -42,23 +42,18 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
 
   // TODO: refactor with similar logic as in update with a callback
   async createEvent(createEvent: CreateEventDto, tenant: TenantCore, requester: Individual): Promise<TenantEventModel> {
+    const orgs = await this.orgRepository.findByIds(createEvent.orgIds);
+
     const supervisor = await this.userRepository.findById(createEvent.supervisorId);
     // TODO: check if user is allowed to add this supervisor
     if (!supervisor) throw new BadRequestException(`Supervisor with id ${createEvent.supervisorId} not found`);
-
-    let org = null;
-    if (createEvent.orgId) {
-      org = await this.orgRepository.findOrgById(createEvent.orgId);
-      // TODO: check if user is allowed to add this supervisor
-      if (!org) throw new BadRequestException(`Org with id ${createEvent.orgId} not found`);
-    }
 
     return this.create({
       ...createEvent,
       createdBy: requester,
       tenant: tenant,
       supervisor,
-      org,
+      orgs,
     });
   }
 
@@ -70,6 +65,7 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
       lastEventApprovalStep: model.lastEventApprovalStep
         ? this.em.getReference(EventApprovalStep, model.lastEventApprovalStep.id)
         : null,
+      orgs: model.orgs.map((org) => this.em.getReference(Org, org.id)),
       tags: model.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       joinForm: model.joinForm ? this.em.getReference(Form, model.joinForm.id) : null,
       regularEvent: model.regularEvent ? this.em.getReference(TenantEvent, model.regularEvent.id) : null,

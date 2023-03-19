@@ -110,8 +110,6 @@ export function loadTenantCore(tenant: TenantCore): ITenantCore | undefined {
   };
 }
 
-// REFACTOR ALL THE ABOVE CODE INTO ONE FUNCTION
-
 export type AllInterfaces =
   | ITenantCore
   | IActor
@@ -680,6 +678,7 @@ export function loadTenantScopedEntity(
     event.regularEventInterval = entity.regularEventInterval;
     event.regularEvent = entity.regularEvent ? loadTenantScopedEntity(entity.regularEvent, contextStack) : null;
     event.supervisor = getEntityFromStackOrLoad(entity.supervisor, contextStack);
+    event.orgs = loadApply(entity.orgs, (org) => getEntityFromStackOrLoad(org, contextStack));
     event.eventApprovals = loadApply(entity.eventApprovals, (approval) =>
       loadTenantScopedEntity(approval, contextStack)
     );
@@ -834,7 +833,7 @@ export function loadTenantScopedEntity(
       isAnonymous: entity.isAnonymous,
       contentMaster: getEntityFromStackOrLoad(entity.contentMaster, contextStack, true),
       author: getEntityFromStackOrLoad(entity.author, contextStack, true),
-      representingOrg: getEntityFromStackOrLoad(entity.representingOrg, contextStack, true),
+      representingOrgs: loadApply(entity.representingOrgs, (org) => getEntityFromStackOrLoad(org, contextStack)),
       tenant,
     };
   }

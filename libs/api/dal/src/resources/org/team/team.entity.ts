@@ -88,7 +88,7 @@ export class Team extends Org implements Searchable {
     super({ ...options, orgKind: OrgKind.Team });
     this.assign({ ...options, orgKind: OrgKind.Team });
 
-    if (this.joinForm) this.joinForm.representingOrg = this;
+    if (this.joinForm) this.joinForm.representingOrgs.add(this);
   }
 }
 

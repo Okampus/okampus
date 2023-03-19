@@ -36,7 +36,7 @@ export class FormSubmissionFactory extends BaseFactory<
     const entity = new FormSubmission({
       ...model,
       contentMaster: model.contentMaster ? this.em.getReference(ContentMaster, model.contentMaster.id) : null,
-      representingOrg: model.representingOrg ? this.em.getReference(Org, model.representingOrg.id) : null,
+      representingOrgs: model.representingOrgs.map((org) => this.em.getReference(Org, org.id)),
       realAuthor: this.em.getReference(Individual, model.author.id),
       linkedFormEdit: this.em.getReference(FormEdit, model.linkedFormEdit.id),
       tenant: this.em.getReference(TenantCore, model.tenant.id),

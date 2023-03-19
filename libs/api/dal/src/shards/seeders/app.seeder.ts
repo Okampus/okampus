@@ -22,7 +22,6 @@ import {
   JoinKind,
   ApprovalState,
   MembershipKind,
-  OrgKind,
   RegistrationStatus,
   ScopeRole,
   ShortcutType,
@@ -45,7 +44,6 @@ import { hash } from 'argon2';
 import type { EntityManager } from '@mikro-orm/core';
 import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Individual } from '../../resources/actor/individual/individual.entity';
-import type { Org } from '../../resources/org/org.entity';
 import type { User } from '../../resources/actor/user/user.entity';
 
 const seedingConfig = {
@@ -143,7 +141,6 @@ function createTeamMember(createdAt: Date, em: EntityManager, team: Team, user: 
 }
 
 // TODO: refactor awaits out of loops
-const isTeam = (team: Org): team is Team => team.orgKind === OrgKind.Team;
 export class DatabaseSeeder extends Seeder {
   public static pepper: Buffer;
   public static targetTenant: string;
@@ -288,12 +285,12 @@ export class DatabaseSeeder extends Seeder {
                     : false;
 
                 const teamAction =
-                  participated && event.rootContent.representingOrg && isTeam(event.rootContent.representingOrg)
+                  participated && event.rootContent.representingOrgs
                     ? new TeamAction({
                         createdBy: event.supervisor,
                         name: `Participation à l'événement ${event.title}`,
                         score: randomInt(1, 10),
-                        team: event.rootContent.representingOrg,
+                        team,
                         tenant: team.tenant,
                         user,
                         teamMember: teamMembers[user.id] ?? null,

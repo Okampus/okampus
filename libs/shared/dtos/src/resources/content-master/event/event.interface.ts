@@ -7,6 +7,7 @@ import type { IFormSubmission } from '../../ugc/form-submission/form-submission.
 import type { IEventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.interface';
 import type { IEventApproval } from '../../manage-tenant/event-approval/event-approval.interface';
 import type { IEventJoin } from '../../join/event-join/event-join.interface';
+import type { IOrg } from '../../org/org.interface';
 
 export type ITenantEvent = IContentMaster &
   Required<TenantEventProps> & {
@@ -17,5 +18,6 @@ export type ITenantEvent = IContentMaster &
     approvalSubmission?: IFormSubmission | null;
     lastEventApprovalStep?: IEventApprovalStep | null;
     eventApprovals: IEventApproval[];
+    orgs: IOrg[];
     registrations: IEventJoin[];
   };

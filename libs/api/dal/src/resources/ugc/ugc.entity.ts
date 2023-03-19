@@ -1,5 +1,5 @@
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Cascade, Collection, Entity, Enum, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { UgcKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
 import type { UgcOptions } from './ugc.options';
@@ -32,8 +32,9 @@ export class Ugc extends TenantScopedEntity {
   @Property({ type: 'boolean' })
   isAnonymous = false;
 
-  @ManyToOne({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
-  representingOrg: Org | null = null;
+  @ManyToMany({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
+  @TransformCollection()
+  representingOrgs = new Collection<Org>(this);
 
   @ManyToOne({ type: 'ContentMaster', nullable: true })
   contentMaster: ContentMaster | null = null;

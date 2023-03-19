@@ -6,6 +6,7 @@ export class CreateEventCommand {
   constructor(
     public readonly createEvent: CreateEventDto,
     public readonly tenant: TenantCore,
-    public readonly requester: Individual
+    public readonly requester: Individual,
+    public readonly populate: string[]
   ) {}
 }

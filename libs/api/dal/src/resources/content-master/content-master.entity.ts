@@ -11,13 +11,8 @@ import type { Favorite } from '../interaction/favorite/favorite.entity';
 import type { Ugc } from '../ugc/ugc.entity';
 import type { Individual } from '../actor/individual/individual.entity';
 import type { Tag } from '../label/tag/tag.entity';
-// import { TaggableEntity } from '../../shards/abstract/taggable/taggable.entity';
 
-@Entity({
-  discriminatorColumn: 'contentMasterKind',
-  discriminatorMap: ContentMasterKind,
-  abstract: true,
-})
+@Entity({ discriminatorColumn: 'contentMasterKind', discriminatorMap: ContentMasterKind, abstract: true })
 export abstract class ContentMaster extends TenantScopedEntity {
   @Enum({ items: () => ContentMasterKind, type: 'string' })
   contentMasterKind!: ContentMasterKind;

@@ -9,6 +9,7 @@ import {
   Entity,
   Enum,
   Index,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -18,15 +19,17 @@ import { EventState, FormType } from '@okampus/shared/enums';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
 import { TransformCollection } from '@okampus/api/shards';
+
+import type { TenantEventOptions } from './event.options';
+import type { User } from '../../actor/user/user.entity';
+import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
+import type { EventJoin } from '../../join/event-join/event-join.entity';
+import type { EventApproval } from '../../manage-tenant/event-approval/event-approval.entity';
+import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
+import type { Org } from '../../org/org.entity';
+import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import type { Searchable } from '../../../types/search-entity.type';
 import type { JSONObject } from '@okampus/shared/types';
-import type { TenantEventOptions } from './event.options';
-import type { EventApprovalStep } from '../../manage-tenant/event-approval-step/event-approval-step.entity';
-import type { EventJoin } from '../../join/event-join/event-join.entity';
-import type { ImageUpload } from '../../file-upload/image-upload/image-upload.entity';
-import type { User } from '../../actor/user/user.entity';
-import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
-import type { EventApproval } from '../../manage-tenant/event-approval/event-approval.entity';
 
 @Entity({
   customRepository: () => TenantEventRepository,
@@ -57,6 +60,10 @@ export class TenantEvent extends ContentMaster implements Searchable {
 
   @ManyToOne({ type: 'User' })
   supervisor!: User;
+
+  @ManyToMany({ type: 'Org' })
+  @TransformCollection()
+  orgs = new Collection<Org>(this);
 
   @Property({ type: 'boolean' })
   @Index()
@@ -104,13 +111,13 @@ export class TenantEvent extends ContentMaster implements Searchable {
     this.rootContent = new Content({
       attachments: [],
       contentMaster: this,
-      representingOrg: options.org,
+      representingOrgs: options.orgs,
       realAuthor: options.createdBy,
       tenant: options.tenant,
       description: options.description ?? '',
       // TODO: extra props
     });
 
-    this.joinForm.representingOrg = options.org ?? null;
+    if (options.orgs) this.joinForm.representingOrgs.add(options.orgs);
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { EventApprovalStepModel } from '../../index';
+import { EventApprovalStepModel, OrgModel } from '../../index';
 import { EventApprovalModel } from '../../index';
 import { EventJoinModel } from '../../index';
 import { ContentMasterModel } from '../../index';
@@ -25,9 +25,8 @@ import type {
   IImageUpload,
   ITenantEvent,
   IUser,
+  IOrg,
 } from '@okampus/shared/dtos';
-// eslint-disable-next-line import/no-cycle
-// eslint-disable-next-line import/no-cycle
 
 @ObjectType({ implements: () => [ContentMasterModel] })
 export class TenantEventModel extends ContentMasterModel implements ITenantEvent {
@@ -48,6 +47,9 @@ export class TenantEventModel extends ContentMasterModel implements ITenantEvent
 
   @Field(() => ImageUploadModel, { nullable: true })
   image?: IImageUpload | null;
+
+  @Field(() => [OrgModel])
+  orgs!: IOrg[];
 
   @Field(() => UserModel, { nullable: true })
   supervisor?: IUser;
@@ -89,3 +91,18 @@ export class TenantEventModel extends ContentMasterModel implements ITenantEvent
 
 @ObjectType()
 export class PaginatedTenantEventModel extends Paginated(TenantEventModel) {}
+
+// const rootContentField = 'rootContent';
+// const teamField = 'team';
+
+// export function getEventPopulate(populate: string[]): { team: never[]; joiner: never[] } {
+//   const teamPopulate = (populate
+//     ?.filter((str: string) => str.startsWith(`${rootContentField}.${teamField}.`))
+//     ?.map((str: string) => str.replace(`${rootContentField}.${teamField}.`, '')) ?? ['events']) as never[];
+
+//   const joinerPopulate = (populate
+//     ?.filter((str: string) => str.startsWith(`${joinerField}.`))
+//     ?.map((str: string) => str.replace(`${joinerField}.`, '')) ?? ['teamJoins']) as never[];
+
+//   return { team: teamPopulate, joiner: joinerPopulate };
+// }

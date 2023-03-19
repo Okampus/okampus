@@ -14,7 +14,7 @@ export type TenantEventOptions = TenantEventProps &
     description?: string;
     createdBy: Individual;
     image?: ImageUpload | null;
-    org?: Org | null;
+    orgs?: Org[];
     supervisor: User;
     joinForm?: Form | null;
     regularEvent?: TenantEvent | null;

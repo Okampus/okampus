@@ -7,6 +7,6 @@ import type { Org } from '../org/org.entity';
 export type UgcOptions = UgcProps &
   TenantScopedOptions & {
     realAuthor: Individual | null;
-    representingOrg?: Org | null;
     contentMaster?: ContentMaster | null;
+    representingOrgs?: Org[];
   };
