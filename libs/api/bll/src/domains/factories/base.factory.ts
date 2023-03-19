@@ -219,7 +219,6 @@ export abstract class BaseFactory<
     const saveEntity = await transform(entity);
     await this.repository.persistAndFlush(saveEntity);
     return this.entityToModelOrFail(saveEntity);
-    // return this.entityToModel(entity);
   }
 
   // TODO: error handling
@@ -251,10 +250,6 @@ export abstract class BaseFactory<
     return this.eventPublisher.mergeObjectContext(new this.ModelClass(raw));
   }
 
-  // public createEntity(options: Options): Entity {
-  //   return new this.EntityClass(options);
-  // }
-
   public async update(
     where: FilterQuery<Entity>,
     populate: Populate<Entity>,
@@ -280,43 +275,6 @@ export abstract class BaseFactory<
     await this.repository.flush();
     return transformModel(this.entityToModelOrFail(transformedEntity));
   }
-
-  // TODO: refactor as separate logic
-  // public async updateActor<T extends ActorEntityType>(
-  //   tenant: TenantCore,
-  //   where: FilterQuery<T>,
-  //   populate: Populate<T>,
-  //   data: FlatActorData<T>,
-  //   transformData?: (data: DeepPartial<T>, entity: T) => Promise<DeepPartial<T>>,
-  //   images?: ActorImageUploadProps,
-  //   force = false,
-  //   options?: AssignOptions
-  // ): Promise<Model> {
-  //   const { name, bio, primaryEmail, slug, ...entityProps } = data;
-  //   const actor = keepDefined({ name, bio, primaryEmail, slug });
-  //   const assignData = { ...(isEmpty(actor) ? {} : { actor }), ...entityProps };
-
-  //   const transform = async (data: DeepPartial<T>, entity: T): Promise<DeepPartial<T>> => {
-  //     if (images) await addImagesToActor(entity.actor, entity.actor.actorKind(), images, tenant, this.uploadService);
-  //     return transformData ? transformData(data, entity) : data;
-  //   };
-
-  //   const model = (await this.update(
-  //     { $and: [where, { tenant }] } as FilterQuery<Entity>,
-  //     populate,
-  //     assignData,
-  //     transform as unknown as (data: DeepPartial<Entity>, entity: Entity) => Promise<DeepPartial<Entity>>,
-  //     force,
-  //     { ...options, updateByPrimaryKey: false }
-  //   )) as Model & { actor: ActorModel };
-
-  //   if (images && model.actor.actorImages) {
-  //     const notCurrentImage = (image: IActorImage) => !image.lastActiveDate;
-  //     model.actor.actorImages = model.actor.actorImages.filter(notCurrentImage);
-  //   }
-
-  //   return model;
-  // }
 
   public async delete(where: FilterQuery<Entity>): Promise<boolean> {
     const entity = await this.repository.findOneOrFail(where);

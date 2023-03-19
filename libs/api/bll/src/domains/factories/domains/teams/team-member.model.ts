@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-cycle
-import { TeamActionModel } from './team-action.model';
+import { TeamActionModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamModel } from './team.model';
+import { TeamModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
-import { MembershipModel } from '../../abstract/membership.model';
-import { TeamRoleModel } from '../roles/team-role.model';
+import { MembershipModel } from '../../index';
+import { TeamRoleModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { ITeam, ITeamMember, ITeamRole, ITeamAction } from '@okampus/shared/dtos';
 

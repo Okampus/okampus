@@ -31,7 +31,12 @@ export class EventsService extends RequestContext {
   }
 
   create(createEvent: CreateEventDto): Promise<TenantEventModel> {
-    const command = new CreateEventCommand(createEvent, this.tenant(), this.requester());
+    const command = new CreateEventCommand(
+      createEvent,
+      this.tenant(),
+      this.requester(),
+      this.autoGqlPopulate(defaultEventPopulate)
+    );
     return this.commandBus.execute(command);
   }
 

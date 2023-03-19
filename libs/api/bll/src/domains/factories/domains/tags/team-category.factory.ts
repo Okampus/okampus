@@ -1,4 +1,4 @@
-import { TeamCategoryModel } from './team-category.model';
+import { TeamCategoryModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

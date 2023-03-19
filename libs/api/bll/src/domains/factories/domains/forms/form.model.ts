@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-cycle
-import { FormEditModel } from './form-edit.model';
+import { FormEditModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { UgcModel } from '../../abstract/ugc.model';
+import { UgcModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { FormType } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';

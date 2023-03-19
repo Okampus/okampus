@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from './event.model';
+import { TenantEventModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { JoinModel } from '../../abstract/join.model';
-import { TeamActionModel } from '../teams/team-action.model';
+import { JoinModel } from '../../index';
+import { TeamActionModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { RegistrationStatus } from '@okampus/shared/enums';
 import type { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos';

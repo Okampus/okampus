@@ -1,8 +1,10 @@
-import { FormEditModel } from './form-edit.model';
+/* eslint-disable import/no-cycle */
+import { FormEditModel } from '../../index';
+import { UgcModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { UgcModel } from '../../abstract/ugc.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
+
 import type { IFormEdit, IFormSubmission } from '@okampus/shared/dtos';
 import type { JSONObject } from '@okampus/shared/types';
 

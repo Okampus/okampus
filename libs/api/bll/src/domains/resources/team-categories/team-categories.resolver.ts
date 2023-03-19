@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamCategoriesService } from './team-categories.service';
 
-import { PaginatedTeamCategoryModel, TeamCategoryModel } from '../../factories/domains/tags/team-category.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { TeamCategoryModel, PaginatedTeamCategoryModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { CreateTeamCategoryDto, UpdateTeamCategoryDto } from '@okampus/shared/dtos';

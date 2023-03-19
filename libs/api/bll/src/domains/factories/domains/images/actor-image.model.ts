@@ -1,8 +1,8 @@
-import { ImageUploadModel } from './image-upload.model';
+/* eslint-disable import/no-cycle */
+import { ImageUploadModel } from '../../index';
+import { ActorModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-// eslint-disable-next-line import/no-cycle
-import { ActorModel } from '../../abstract/actor.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ActorImageType } from '@okampus/shared/enums';
 import type { IActor, IActorImage, IImageUpload } from '@okampus/shared/dtos';

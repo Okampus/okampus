@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FinancesService } from './finances.service';
 
-import { FinanceModel, PaginatedFinanceModel } from '../../factories/domains/teams/finance.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { FinanceModel, PaginatedFinanceModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { CreateFinanceDto, UpdateFinanceDto } from '@okampus/shared/dtos';

@@ -1,4 +1,4 @@
-import { ProjectModel } from './project.model';
+import { ProjectModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

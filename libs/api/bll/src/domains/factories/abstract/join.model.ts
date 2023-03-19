@@ -1,8 +1,8 @@
-import { IndividualModel } from './individual.model';
-import { TenantScopedModel } from './tenant-scoped.model';
-import { FormSubmissionModel } from '../domains/forms/form-submission.model';
-// eslint-disable-next-line import/no-cycle
-import { UserModel } from '../domains/users/user.model';
+/* eslint-disable import/no-cycle */
+import { IndividualModel } from '../index';
+import { TenantScopedModel } from '../index';
+import { FormSubmissionModel } from '../index';
+import { UserModel } from '../index';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { JoinKind, ApprovalState } from '@okampus/shared/enums';
 import type { IFormSubmission, IIndividual, IJoin, IUser } from '@okampus/shared/dtos';

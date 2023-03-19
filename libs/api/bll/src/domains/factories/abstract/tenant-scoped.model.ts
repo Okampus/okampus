@@ -1,5 +1,6 @@
+/* eslint-disable import/no-cycle */
 import { BaseModel } from './base.model';
-import { TenantCoreModel } from './tenant-core.model';
+import { TenantCoreModel } from '../index';
 import { Field, InterfaceType, ObjectType } from '@nestjs/graphql';
 
 import type { ITenantCore, ITenantScoped } from '@okampus/shared/dtos';

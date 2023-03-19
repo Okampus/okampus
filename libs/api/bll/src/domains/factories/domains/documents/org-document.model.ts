@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { DocumentModel } from './document.model';
+import { DocumentModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { OrgModel } from '../../abstract/org.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { OrgModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { OrgDocumentType } from '@okampus/shared/enums';
 import type { IOrg, IOrgDocument, ITenantDocument } from '@okampus/shared/dtos';

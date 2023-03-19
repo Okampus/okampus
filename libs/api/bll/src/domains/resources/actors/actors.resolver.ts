@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorsService } from './actors.service';
-import { ActorModel } from '../../factories/abstract/actor.model';
-import { ActorImageModel } from '../../factories/domains/images/actor-image.model';
+import { ActorModel, ActorImageModel } from '../../factories';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { ActorImageType } from '@okampus/shared/enums';
 

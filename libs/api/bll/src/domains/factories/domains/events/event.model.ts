@@ -1,18 +1,20 @@
-import { EventApprovalStepModel } from './event-approval-step.model';
-// eslint-disable-next-line import/no-cycle
-import { EventApprovalModel } from './event-approval.model';
-// eslint-disable-next-line import/no-cycle
-import { EventJoinModel } from './event-join.model';
+/* eslint-disable import/no-cycle */
+import { EventApprovalStepModel } from '../../index';
+import { EventApprovalModel } from '../../index';
+import { EventJoinModel } from '../../index';
+import { ContentMasterModel } from '../../index';
+import { FormSubmissionModel } from '../../index';
+import { FormModel } from '../../index';
+import { ImageUploadModel } from '../../index';
+import { UserModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { ContentMasterModel } from '../../abstract/content-master.model';
-import { FormSubmissionModel } from '../forms/form-submission.model';
-import { FormModel } from '../forms/form.model';
-import { ImageUploadModel } from '../images/image-upload.model';
-import { UserModel } from '../users/user.model';
-import { GraphQLJSON } from 'graphql-scalars';
-import { ContentMasterKind, EventState } from '@okampus/shared/enums';
-import { Address } from '@okampus/shared/dtos';
+
 import { Field, Float, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-scalars';
+
+import { Address } from '@okampus/shared/dtos';
+import { ContentMasterKind, EventState } from '@okampus/shared/enums';
+
 import type { JSONObject } from '@okampus/shared/types';
 import type {
   IEventApproval,

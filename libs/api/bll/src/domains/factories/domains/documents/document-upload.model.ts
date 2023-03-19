@@ -1,9 +1,9 @@
+/* eslint-disable import/no-cycle */
+import { FileUploadModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { FileUploadModel } from '../../abstract/file-upload.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
 import type { IDocumentUpload } from '@okampus/shared/dtos';
-// eslint-disable-next-line import/no-cycle
 
 @ObjectType({ implements: () => [FileUploadModel] })
 export class DocumentUploadModel extends FileUploadModel implements IDocumentUpload {

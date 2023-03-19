@@ -1,4 +1,4 @@
-import { ImageUploadModel } from './image-upload.model';
+import { ImageUploadModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

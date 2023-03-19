@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-cycle
-import { TeamModel } from './team.model';
+import { TeamModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from '../events/event.model';
+import { TenantEventModel } from '../../index';
 
-import { UserModel } from '../users/user.model';
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { UserModel } from '../../index';
+import { IndividualModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { ObjectType, Field, Float } from '@nestjs/graphql';

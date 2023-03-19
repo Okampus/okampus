@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-cycle
-import { UserModel } from './user.model';
-import { ActorModel } from '../../abstract/actor.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { UserModel } from '../../index';
+import { ActorModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ShortcutType } from '@okampus/shared/enums';

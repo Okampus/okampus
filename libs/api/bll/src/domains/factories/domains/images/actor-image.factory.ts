@@ -1,4 +1,4 @@
-import { ActorImageModel } from './actor-image.model';
+import { ActorImageModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

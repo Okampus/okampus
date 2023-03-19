@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ProjectsService } from './projects.service';
 
-import { ProjectModel, PaginatedProjectModel } from '../../factories/domains/teams/project.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { ProjectModel, PaginatedProjectModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CreateProjectDto, UpdateProjectDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';

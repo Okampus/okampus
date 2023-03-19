@@ -1,8 +1,8 @@
 import { Paginated } from '../../../../shards/types/paginated.type';
 // eslint-disable-next-line import/no-cycle
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { ImageUploadModel } from '../images/image-upload.model';
+import { IndividualModel } from '../../index';
+import { TenantScopedModel } from '../../index';
+import { ImageUploadModel } from '../../index';
 import { Colors, TagKind } from '@okampus/shared/enums';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { IImageUpload, IIndividual, ITag } from '@okampus/shared/dtos';

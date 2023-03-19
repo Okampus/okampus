@@ -2,10 +2,8 @@
 import { TeamsService } from './teams.service';
 
 import { TeamFilterQuery } from './team.filter-query';
-import { TeamModel, PaginatedTeamModel } from '../../factories/domains/teams/team.model';
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { ActorImageModel } from '../../factories/domains/images/actor-image.model';
+import { TeamModel, PaginatedTeamModel, OrgDocumentModel, ActorImageModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { ActorImageType } from '@okampus/shared/enums';

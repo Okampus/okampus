@@ -1,9 +1,9 @@
-import { EventApprovalStepModel } from './event-approval-step.model';
-// eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from './event.model';
+/* eslint-disable import/no-cycle */
+import { EventApprovalStepModel } from '../../index';
+import { TenantEventModel } from '../../index';
+import { IndividualModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { IEventApproval, IEventApprovalStep, IIndividual, ITenantEvent } from '@okampus/shared/dtos';
 

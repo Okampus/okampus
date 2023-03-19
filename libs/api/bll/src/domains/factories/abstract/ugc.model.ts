@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { ContentMasterModel } from './content-master.model';
-import { IndividualModel } from './individual.model';
-import { OrgModel } from './org.model';
-import { TenantScopedModel } from './tenant-scoped.model';
+import { ContentMasterModel } from '../index';
+import { IndividualModel } from '../index';
+import { OrgModel } from '../index';
+import { TenantScopedModel } from '../index';
 import { UgcKind } from '@okampus/shared/enums';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import type { IContentMaster, IIndividual, IOrg, IUgc } from '@okampus/shared/dtos';
@@ -21,8 +21,8 @@ export class UgcModel extends TenantScopedModel implements IUgc {
   @Field(() => Boolean)
   isAnonymous!: boolean;
 
-  @Field(() => OrgModel, { nullable: true })
-  representingOrg?: IOrg | null;
+  @Field(() => [OrgModel])
+  representingOrgs?: IOrg[];
 
   @Field(() => ContentMasterModel)
   contentMaster?: IContentMaster;

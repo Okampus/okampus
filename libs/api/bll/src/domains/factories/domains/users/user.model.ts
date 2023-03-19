@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-cycle
-import { ShortcutModel } from './shortcut.model';
-import { UserProfileModel } from './user-profile.model';
+import { ShortcutModel } from '../../index';
+import { UserProfileModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { IndividualModel } from '../../abstract/individual.model';
+import { IndividualModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamMemberModel } from '../teams/team-member.model';
+import { TeamMemberModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamJoinModel } from '../teams/team-join.model';
+import { TeamJoinModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
 

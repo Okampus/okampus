@@ -1,4 +1,4 @@
-import { TeamModel } from './team.model';
+import { TeamModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 import { addImagesToActor, extractActor } from '../../factory.utils';
 

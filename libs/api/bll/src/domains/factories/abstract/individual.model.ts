@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import { ActorModel } from './actor.model';
-import { TenantScopedModel } from './tenant-scoped.model';
+import { ActorModel } from '../index';
+import { TenantScopedModel } from '../index';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { IndividualKind } from '@okampus/shared/enums';
 import type { IActor, IIndividual } from '@okampus/shared/dtos';

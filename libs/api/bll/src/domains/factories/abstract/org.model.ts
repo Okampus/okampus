@@ -1,35 +1,37 @@
 // eslint-disable-next-line import/no-cycle
-import { ActorModel } from './actor.model';
-import { TenantScopedModel } from './tenant-scoped.model';
+import { ActorModel } from '../index';
+import { TenantScopedModel } from '../index';
 // eslint-disable-next-line import/no-cycle
-import { OrgDocumentModel } from '../domains/documents/org-document.model';
+import { OrgDocumentModel } from '../index';
+// eslint-disable-next-line import/no-cycle
+import { TenantEventModel } from '../index';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { OrgKind } from '@okampus/shared/enums';
-import type { IActor, IOrg, IOrgDocument } from '@okampus/shared/dtos';
+
+import type { IActor, IOrg, IOrgDocument, ITenantEvent } from '@okampus/shared/dtos';
 
 @InterfaceType({
   resolveType: (value) => {
-    if (value.orgKind === OrgKind.Tenant) {
-      return 'TenantModel';
-    }
-    if (value.orgKind === OrgKind.Team) {
-      return 'TeamModel';
-    }
+    if (value.orgKind === OrgKind.Tenant) return 'TenantModel';
+    if (value.orgKind === OrgKind.Team) return 'TeamModel';
     return 'OrgModel';
   },
 })
 export abstract class OrgModel extends TenantScopedModel implements IOrg {
-  @Field(() => ActorModel, { nullable: true })
-  actor?: IActor;
-
   @Field(() => OrgKind)
   orgKind!: OrgKind;
+
+  @Field(() => ActorModel, { nullable: true })
+  actor?: IActor;
 
   @Field(() => OrgModel, { nullable: true })
   parent?: IOrg | null;
 
   @Field(() => [OrgDocumentModel])
   documents!: IOrgDocument[];
+
+  @Field(() => [TenantEventModel])
+  events!: ITenantEvent[];
 
   constructor(org: IOrg) {
     if (!org.tenant) throw new Error('Org must have a tenant');

@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { TenantModel } from '../tenants/tenant.model';
-import { UserModel } from '../users/user.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { IndividualModel } from '../../abstract/individual.model';
+import { TenantModel } from '../../index';
+import { UserModel } from '../../index';
+import { TenantScopedModel } from '../../index';
+import { IndividualModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { Field, Int, ObjectType } from '@nestjs/graphql';

@@ -1,4 +1,5 @@
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+/* eslint-disable import/no-cycle */
+import { TenantScopedModel } from '../../index';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UserCustomization, UserNotificationSettings, UserSettings, UserStats } from '@okampus/shared/dtos';
 import type { IUserProfile } from '@okampus/shared/dtos';

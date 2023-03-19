@@ -1,6 +1,7 @@
+/* eslint-disable import/no-cycle */
+import { FileUploadModel } from '../../index';
+import { UgcModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { FileUploadModel } from '../../abstract/file-upload.model';
-import { UgcModel } from '../../abstract/ugc.model';
 import { ObjectType, Field } from '@nestjs/graphql';
 import type { IContent, IFileUpload, IUgc } from '@okampus/shared/dtos';
 

@@ -1,8 +1,8 @@
-import { IndividualModel } from './individual.model';
-import { TenantScopedModel } from './tenant-scoped.model';
-// eslint-disable-next-line import/no-cycle
-import { UgcModel } from './ugc.model';
-import { TagModel } from '../domains/tags/tag.model';
+/* eslint-disable import/no-cycle */
+import { IndividualModel } from '../index';
+import { TenantScopedModel } from '../index';
+import { UgcModel } from '../index';
+import { TagModel } from '../index';
 import { ContentMasterKind } from '@okampus/shared/enums';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import type { IContentMaster, IIndividual, ITag, IUgc } from '@okampus/shared/dtos';

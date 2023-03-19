@@ -1,7 +1,8 @@
-import { TagModel } from './tag.model';
+/* eslint-disable import/no-cycle */
+import { TagModel } from '../../index';
+import { TeamModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-// eslint-disable-next-line import/no-cycle
-import { TeamModel } from '../teams/team.model';
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { TagKind } from '@okampus/shared/enums';
 import type { ITeam, ITeamCategory } from '@okampus/shared/dtos';

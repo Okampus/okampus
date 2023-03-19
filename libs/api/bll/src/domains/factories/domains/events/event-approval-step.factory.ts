@@ -1,4 +1,4 @@
-import { EventApprovalStepModel } from './event-approval-step.model';
+import { EventApprovalStepModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

@@ -1,10 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UsersService } from './users.service';
 import { UserFilterQuery } from './user.filter-query';
-import { PaginatedUserModel, UserModel } from '../../factories/domains/users/user.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { ActorImageModel } from '../../factories/domains/images/actor-image.model';
 
+import { UserModel, PaginatedUserModel, ActorImageModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { ActorImageType } from '@okampus/shared/enums';

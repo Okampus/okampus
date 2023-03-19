@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-cycle
-import { ProjectModel } from './project.model';
+import { ProjectModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { FileUploadModel } from '../../abstract/file-upload.model';
-import { IndividualModel } from '../../abstract/individual.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { TenantEventModel } from '../events/event.model';
-import { TeamModel } from '../teams/team.model';
+import { FileUploadModel } from '../../index';
+import { IndividualModel } from '../../index';
+import { TenantScopedModel } from '../../index';
+import { TenantEventModel } from '../../index';
+import { TeamModel } from '../../index';
 
 import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';

@@ -1,9 +1,9 @@
-import { IndividualModel } from './individual.model';
-import { TenantScopedModel } from './tenant-scoped.model';
+/* eslint-disable import/no-cycle */
+import { IndividualModel } from '../index';
+import { TenantScopedModel } from '../index';
 import { Field, GraphQLISODateTime, Int, InterfaceType } from '@nestjs/graphql';
 import { FileUploadKind } from '@okampus/shared/enums';
 import type { IFileUpload, IIndividual } from '@okampus/shared/dtos';
-// eslint-disable-next-line import/no-cycle
 
 @InterfaceType({
   resolveType: (value) => {

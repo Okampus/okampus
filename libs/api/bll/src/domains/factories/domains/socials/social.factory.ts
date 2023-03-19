@@ -1,4 +1,4 @@
-import { SocialModel } from './social.model';
+import { SocialModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

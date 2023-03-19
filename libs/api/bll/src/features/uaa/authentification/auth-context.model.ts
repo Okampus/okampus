@@ -1,5 +1,4 @@
-import { TenantModel } from '../../../domains/factories/domains/tenants/tenant.model';
-import { UserModel } from '../../../domains/factories/domains/users/user.model';
+import { UserModel, TenantModel } from '../../../domains/factories';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Field, ObjectType } from '@nestjs/graphql';
 import type { ITenant, IUser } from '@okampus/shared/dtos';

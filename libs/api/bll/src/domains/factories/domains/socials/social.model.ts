@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import { ActorModel } from '../../abstract/actor.model';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
+import { ActorModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { Field, ObjectType } from '@nestjs/graphql';

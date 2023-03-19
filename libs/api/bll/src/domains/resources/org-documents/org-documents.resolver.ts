@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentsService } from './org-documents.service';
 
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
+import { OrgDocumentModel } from '../../factories';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { CreateOrgDocumentDto } from '@okampus/shared/dtos';

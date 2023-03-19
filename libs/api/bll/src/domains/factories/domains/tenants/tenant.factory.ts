@@ -1,4 +1,5 @@
-import { TenantModel } from './tenant.model';
+/* eslint-disable import/no-cycle */
+import { TenantModel } from '../../index';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 import { BaseFactory } from '../../base.factory';

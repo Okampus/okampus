@@ -1,4 +1,4 @@
-import { UserModel } from './user.model';
+import { UserModel } from '../../index';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';

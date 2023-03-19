@@ -1,4 +1,4 @@
-import { FinanceModel } from './finance.model';
+import { FinanceModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

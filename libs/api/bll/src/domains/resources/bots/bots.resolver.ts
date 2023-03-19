@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { BotsService } from './bots.service';
 
-import { PaginatedBotModel, BotModel } from '../../factories/domains/bots/bot.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { BotModel, PaginatedBotModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 
 import { CreateBotDto, UpdateDocumentDto } from '@okampus/shared/dtos';

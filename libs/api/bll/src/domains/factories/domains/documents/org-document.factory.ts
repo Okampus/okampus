@@ -1,4 +1,4 @@
-import { OrgDocumentModel } from './org-document.model';
+import { OrgDocumentModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 import { addDocumentEditToDocument } from '../../factory.utils';
 

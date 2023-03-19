@@ -4,9 +4,10 @@ import { AuthContextModel } from './auth-context.model';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '../../../global/config.module';
-import { UserModel } from '../../../domains/factories/domains/users/user.model';
+
 import { Requester } from '../../../shards/decorators/requester.decorator';
 
+import { UserModel } from '../../../domains/factories';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TenantPublic } from '@okampus/api/shards';
 import { User } from '@okampus/api/dal';

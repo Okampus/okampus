@@ -1,4 +1,4 @@
-import { BotModel } from './bot.model';
+import { BotModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';

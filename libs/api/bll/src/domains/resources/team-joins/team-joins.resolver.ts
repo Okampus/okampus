@@ -2,7 +2,7 @@
 import { TeamJoinsService } from './team-joins.service';
 
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
-import { TeamJoinModel, PaginatedTeamJoinModel } from '../../factories/domains/teams/team-join.model';
+import { TeamJoinModel, PaginatedTeamJoinModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CreateTeamJoinDto, UpdateTeamJoinDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';

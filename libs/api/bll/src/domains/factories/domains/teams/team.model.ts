@@ -1,16 +1,16 @@
 // eslint-disable-next-line import/no-cycle
-import { FinanceModel } from './finance.model';
+import { FinanceModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamMemberModel } from './team-member.model';
+import { TeamMemberModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamJoinModel } from './team-join.model';
+import { TeamJoinModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamRoleModel } from '../roles/team-role.model';
+import { TeamRoleModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { TeamCategoryModel } from '../tags/team-category.model';
+import { TeamCategoryModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { OrgModel } from '../../abstract/org.model';
-import { FormModel } from '../forms/form.model';
+import { OrgModel } from '../../index';
+import { FormModel } from '../../index';
 import { OrgKind, TeamType } from '@okampus/shared/enums';
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 

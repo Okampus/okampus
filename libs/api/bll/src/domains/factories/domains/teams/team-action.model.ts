@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-cycle
-import { TeamMemberModel } from './team-member.model';
-import { TeamModel } from './team.model';
-import { ProjectModel } from './project.model';
+import { TeamMemberModel } from '../../index';
+import { TeamModel } from '../../index';
+import { ProjectModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
-import { TenantEventModel } from '../events/event.model';
-import { UserModel } from '../users/user.model';
-import { IndividualModel } from '../../abstract/individual.model';
+import { TenantScopedModel } from '../../index';
+import { TenantEventModel } from '../../index';
+import { UserModel } from '../../index';
+import { IndividualModel } from '../../index';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ApprovalState } from '@okampus/shared/enums';
 

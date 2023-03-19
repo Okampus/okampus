@@ -1,6 +1,7 @@
-import { DocumentUploadModel } from './document-upload.model';
+/* eslint-disable import/no-cycle */
+import { DocumentUploadModel } from '../../index';
+import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { TenantScopedModel } from '../../abstract/tenant-scoped.model';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import type { IDocumentEdit, IDocumentUpload } from '@okampus/shared/dtos';
 

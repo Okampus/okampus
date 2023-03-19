@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventsService } from './events.service';
 
-import { PaginatedTenantEventModel, TenantEventModel } from '../../factories/domains/events/event.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { TenantEventModel, PaginatedTenantEventModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CreateEventDto, UpdateEventDto } from '@okampus/shared/dtos';
 import type { Snowflake } from '@okampus/shared/types';

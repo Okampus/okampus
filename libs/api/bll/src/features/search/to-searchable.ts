@@ -1,6 +1,4 @@
-import { UserModel } from '../../domains/factories/domains/users/user.model';
-import { TeamModel } from '../../domains/factories/domains/teams/team.model';
-import { TenantEventModel } from '../../domains/factories/domains/events/event.model';
+import { UserModel, TeamModel, TenantEventModel } from '../../domains/factories';
 import { load } from '@okampus/api/shards';
 import { ActorImageType } from '@okampus/shared/enums';
 
@@ -71,17 +69,23 @@ export function teamToSearchable(team: Team | TeamModel): BaseSearchable {
 }
 
 export function eventToSearchable(event: TenantEvent | TenantEventModel): BaseSearchable {
-  if (!event.rootContent || !event.rootContent.representingOrg?.actor) throw new Error('Event is not fully loaded.');
+  if (!event.rootContent || !event.rootContent.representingOrgs) throw new Error('Event is not fully loaded.');
 
   let tags: string[];
+  let orgs: string[];
   // eslint-disable-next-line unicorn/prefer-ternary
   if (event instanceof TenantEventModel) {
     tags = event.tags.map((tag) => {
       if (!tag.name) throw new Error('Tag is not defined.');
       return tag.name;
     });
+    orgs = event.orgs.map((org) => {
+      if (!org.actor?.name) throw new Error('Org is not defined.');
+      return org.actor.name;
+    });
   } else {
     tags = load(event.tags).map((tag) => tag.name);
+    orgs = load(event.orgs).map((org) => org.actor.name);
   }
 
   return {
@@ -94,7 +98,7 @@ export function eventToSearchable(event: TenantEvent | TenantEventModel): BaseSe
     updatedAt: event.updatedAt.getTime(),
     linkedUsers: [],
     linkedEvents: [],
-    linkedTeams: event.rootContent.representingOrg ? [event.rootContent.representingOrg?.actor.name] : [],
+    linkedTeams: orgs,
     tags,
   };
 }

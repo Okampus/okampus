@@ -1,4 +1,4 @@
-import { FormSubmissionModel } from './form-submission.model';
+import { FormSubmissionModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

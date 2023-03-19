@@ -1,9 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantsService } from './tenants.service';
 
-import { PaginatedTenantModel, TenantModel } from '../../factories/domains/tenants/tenant.model';
-import { OrgDocumentModel } from '../../factories/domains/documents/org-document.model';
 import { PaginationOptions } from '../../../shards/types/pagination-options.type';
+import { TenantModel, PaginatedTenantModel, OrgDocumentModel } from '../../factories';
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { CreateDocumentDto, CreateTenantDto, UpdateTenantDto } from '@okampus/shared/dtos';

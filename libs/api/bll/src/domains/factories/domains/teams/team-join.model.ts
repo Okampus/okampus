@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-cycle
-import { TeamModel } from './team.model';
+import { TeamModel } from '../../index';
 // eslint-disable-next-line import/no-cycle
-import { JoinModel } from '../../abstract/join.model';
+import { JoinModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { TeamRoleModel } from '../roles/team-role.model';
+import { TeamRoleModel } from '../../index';
 
 import { Field, ObjectType } from '@nestjs/graphql';
 
