@@ -1,12 +1,13 @@
 import { OrgRepository } from './org.repository';
 import { Actor } from '../actor/actor.entity';
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, OneToOne } from '@mikro-orm/core';
+import { Cascade, Collection, Entity, Enum, ManyToMany, ManyToOne, OneToMany, OneToOne } from '@mikro-orm/core';
 import { OrgKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
-import type { OrgOptions } from './org.options';
 
+import type { OrgOptions } from './org.options';
 import type { OrgDocument } from '../manage-org/org-document/org-document.entity';
+import type { TenantEvent } from '../content-master/event/event.entity';
 
 @Entity({
   customRepository: () => OrgRepository,
@@ -23,6 +24,10 @@ export class Org extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
   parent: Org | null = null;
+
+  @ManyToMany({ type: 'TenantEvent', mappedBy: 'orgs' })
+  @TransformCollection()
+  events = new Collection<TenantEvent>(this);
 
   @OneToMany({ type: 'Org', mappedBy: 'parent' })
   @TransformCollection()

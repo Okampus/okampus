@@ -513,6 +513,7 @@ export function loadTenantScopedEntity(
     contextStack[org.id] = org;
 
     org.documents = loadApply(entity.documents, (document) => loadTenantScopedEntity(document, contextStack));
+    org.events = loadApply(entity.events, (event) => getEntityFromStackOrLoad(event, contextStack));
     org.parent = entity.parent ? loadTenantScopedEntity(entity.parent, contextStack) : null;
     org.actor = loadTenantScopedEntity(entity.actor, contextStack);
 
