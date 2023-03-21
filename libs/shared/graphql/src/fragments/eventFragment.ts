@@ -41,10 +41,11 @@ export const eventFragment = gql(`
       __typename
       id
       name
-      order
+      stepOrder
     }
     rootContent {
       __typename
+      createdAt
       description
       ugcKind
       isAnonymous

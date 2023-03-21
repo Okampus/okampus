@@ -9,16 +9,18 @@ export const documentFragment = gql(`
     description
     name
     yearVersion
-    currentVersion {
+    current {
       ...DocumentUploadInfo
     }
     edits {
       __typename
       id
       createdAt
-      yearVersion
-      newVersion {
-        ...DocumentUploadInfo
+      ... on DocumentEditModel {
+        yearVersion
+        newVersion {
+          ...DocumentUploadInfo
+        }
       }
     }
   }

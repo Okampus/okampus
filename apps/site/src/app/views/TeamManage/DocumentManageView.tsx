@@ -38,7 +38,7 @@ function documentTypesByTeamType(teamType?: TeamType) {
 }
 
 function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits {
-  const documentUpload = getFragmentData(documentUploadFragment, document.currentVersion);
+  const documentUpload = getFragmentData(documentUploadFragment, document.current);
   return {
     current: {
       createdAt: document.createdAt,

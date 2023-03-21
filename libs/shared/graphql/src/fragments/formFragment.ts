@@ -14,7 +14,13 @@ export const formFragment = gql(`
     edits {
       __typename
       id
-      order
+      createdAt
+      ... on DocumentEditModel {
+        yearVersion
+        newVersion {
+          ...DocumentUploadInfo
+        }
+      }
     }
   }
 `);

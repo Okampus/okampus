@@ -34,7 +34,7 @@ export const teamJoinFragment = gql(`
       joiner {
         ...UserInfo
       }
-      issuer {
+      createdBy {
         ... on UserModel {
           ...UserInfo
         }

@@ -39,7 +39,7 @@ function getUserLabel(team: LoadedTeamMembersFragment, teamRoleKey: TeamRoleKey,
 function findDocument(team: LoadedTeamMembersFragment, type: OrgDocumentType) {
   const document = team.documents.find((document) => document.type === type)?.document;
   const documentFile = document
-    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).currentVersion)
+    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).current)
     : null;
   return documentFile;
 }
