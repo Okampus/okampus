@@ -215,7 +215,6 @@ export type ContentModel = UgcModel & {
   edits: Array<EditModel>;
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
-  lastEdit?: Maybe<EditModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   parent?: Maybe<UgcModel>;
   representingOrgs: Array<OrgModel>;
@@ -398,7 +397,6 @@ export type DocumentModel = {
   edits: Array<EditModel>;
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
-  lastEdit?: Maybe<EditModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   name: Scalars['String'];
   representingOrgs: Array<OrgModel>;
@@ -670,7 +668,6 @@ export type FormModel = UgcModel & {
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
   isTemplate: Scalars['Boolean'];
-  lastEdit?: Maybe<EditModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   name: Scalars['String'];
   representingOrgs: Array<OrgModel>;
@@ -699,7 +696,6 @@ export type FormSubmissionModel = UgcModel & {
   edits: Array<EditModel>;
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
-  lastEdit?: Maybe<EditModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   linkedFormEdit?: Maybe<FormEditModel>;
   representingOrgs: Array<OrgModel>;
@@ -1803,7 +1799,6 @@ export type UgcModel = {
   edits: Array<EditModel>;
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
-  lastEdit?: Maybe<EditModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
   representingOrgs: Array<OrgModel>;
   tenant?: Maybe<TenantCoreModel>;

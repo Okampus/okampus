@@ -26,8 +26,8 @@ export class UgcModel extends TenantScopedModel implements IUgc {
   @Field(() => [OrgModel])
   representingOrgs?: IOrg[];
 
-  @Field(() => EditModel, { nullable: true })
-  lastEdit?: IEdit | null;
+  // @Field(() => EditModel, { nullable: true })
+  // lastEdit?: IEdit | null;
 
   @Field(() => IndividualModel, { nullable: true })
   author?: IIndividual | null;

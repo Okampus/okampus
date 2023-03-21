@@ -10,8 +10,9 @@ export type IUgc = ITenantScoped &
   Required<UgcProps> & {
     ugcKind: UgcKind;
     isAnonymous: boolean;
-    edits?: IEdit[];
     representingOrgs?: IOrg[];
     author?: IIndividual | null;
     contentMaster?: IContentMaster | null;
+    edits?: IEdit[];
+    // lastEdit?: IEdit | null;
   };

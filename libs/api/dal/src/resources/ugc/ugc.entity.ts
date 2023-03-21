@@ -1,15 +1,5 @@
 import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import {
-  Cascade,
-  Collection,
-  Entity,
-  Enum,
-  Formula,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  Property,
-} from '@mikro-orm/core';
+import { Cascade, Collection, Entity, Enum, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { UgcKind } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
 import type { UgcOptions } from './ugc.options';
@@ -74,9 +64,6 @@ export class Ugc extends TenantScopedEntity {
   @ManyToMany({ type: 'Org', nullable: true, cascade: [Cascade.ALL] })
   @TransformCollection()
   representingOrgs = new Collection<Org>(this);
-
-  @Formula((alias: string) => `${alias}.created_at`)
-  lastEdit: Edit | null = null;
 
   @ManyToOne({ type: 'Individual', onDelete: 'CASCADE', nullable: true })
   author!: Individual | null;

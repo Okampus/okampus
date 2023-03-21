@@ -70,7 +70,6 @@ interface UgcModel {
   description: String!
   edits: [EditModel!]!
   representingOrgs: [OrgModel!]!
-  lastEdit: EditModel
   author: IndividualModel
   contentMaster: ContentMasterModel
 }
@@ -390,7 +389,6 @@ type ContentModel implements UgcModel {
   description: String!
   edits: [EditModel!]!
   representingOrgs: [OrgModel!]!
-  lastEdit: EditModel
   author: IndividualModel
   contentMaster: ContentMasterModel
   attachments: [FileUploadModel!]!
@@ -415,7 +413,6 @@ type DocumentModel {
   description: String!
   edits: [EditModel!]!
   representingOrgs: [OrgModel!]!
-  lastEdit: EditModel
   author: IndividualModel
   contentMaster: ContentMasterModel
   name: String!
@@ -674,7 +671,6 @@ type FormModel implements UgcModel {
   description: String!
   edits: [EditModel!]!
   representingOrgs: [OrgModel!]!
-  lastEdit: EditModel
   author: IndividualModel
   contentMaster: ContentMasterModel
   name: String!
@@ -730,7 +726,6 @@ type FormSubmissionModel implements UgcModel {
   description: String!
   edits: [EditModel!]!
   representingOrgs: [OrgModel!]!
-  lastEdit: EditModel
   author: IndividualModel
   contentMaster: ContentMasterModel
   submission: JSON!
