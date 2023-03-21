@@ -1,11 +1,11 @@
-import { IsDiff } from '../../../validators/diff.validator';
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
+import { IsJSON } from 'class-validator';
 import type { JSONObject } from '@okampus/shared/types';
 
 @InputType()
-export class FormSubmissionEditProps {
+export class FormEditProps {
   @Field(() => GraphQLJSON)
-  @IsDiff()
-  addedDiff!: JSONObject;
+  @IsJSON() // TODO: form schema validation
+  newVersion!: JSONObject;
 }

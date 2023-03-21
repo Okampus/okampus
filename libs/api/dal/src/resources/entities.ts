@@ -6,6 +6,11 @@ import { UserProfile } from './actor/user-profile/user-profile.entity';
 import { User } from './actor/user/user.entity';
 import { ContentMaster } from './content-master/content-master.entity';
 import { TenantEvent } from './content-master/event/event.entity';
+import { ContentEdit } from './edit/content-edit/content-edit.entity';
+import { DocumentEdit } from './edit/document-edit/document-edit.entity';
+import { Edit } from './edit/edit.entity';
+import { FormEdit } from './edit/form-edit/form-edit.entity';
+import { FormSubmissionEdit } from './edit/form-submission-edit/form-submission-edit.entity';
 import { DocumentUpload } from './file-upload/document-upload/document-upload.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
 import { ImageUpload } from './file-upload/image-upload/image-upload.entity';
@@ -49,12 +54,8 @@ import { Tenant } from './org/tenant/tenant.entity';
 import { CanteenRole } from './role/canteen-role/canteen-role.entity';
 import { Role } from './role/role.entity';
 import { TeamRole } from './role/team-role/team-role.entity';
-import { ContentEdit } from './ugc/content-edit/content-edit.entity';
 import { Content } from './ugc/content/content.entity';
-import { DocumentEdit } from './ugc/document-edit/document-edit.entity';
 import { TenantDocument } from './ugc/document/document.entity';
-import { FormEdit } from './ugc/form-edit/form-edit.entity';
-import { FormSubmissionEdit } from './ugc/form-submission-edit/form-submission-edit.entity';
 import { FormSubmission } from './ugc/form-submission/form-submission.entity';
 import { Form } from './ugc/form/form.entity';
 import { Ugc } from './ugc/ugc.entity';
@@ -130,6 +131,8 @@ export const allEntities = [
   Content,
   ContentEdit,
   TenantDocument,
+
+  Edit,
   DocumentEdit,
   Form,
   FormEdit,

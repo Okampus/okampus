@@ -1,21 +1,20 @@
 /* eslint-disable import/no-cycle */
-import { DocumentUploadModel } from '../../index';
-import { TenantScopedModel } from '../../index';
+import { DocumentUploadModel, EditModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import type { IDocumentEdit, IDocumentUpload } from '@okampus/shared/dtos';
 
 @ObjectType()
-export class DocumentEditModel extends TenantScopedModel implements IDocumentEdit {
+export class DocumentEditModel extends EditModel implements IDocumentEdit {
   @Field(() => Int, { nullable: true })
   yearVersion!: number | null;
 
   @Field(() => DocumentUploadModel)
   newVersion!: IDocumentUpload;
 
-  constructor(document: IDocumentEdit) {
-    if (!document.tenant) throw new Error('DocumentEdit must have a tenant');
-    super(document.tenant);
+  constructor(documentEdit: IDocumentEdit) {
+    super(documentEdit);
+    this.assign(documentEdit);
   }
 }
 

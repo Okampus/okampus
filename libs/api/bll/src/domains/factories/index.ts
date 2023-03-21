@@ -2,6 +2,7 @@
 export * from './abstract/tenant-scoped.model';
 export * from './abstract/tenant-core.model';
 export * from './abstract/actor.model';
+export * from './abstract/edit.model';
 export * from './abstract/org.model';
 export * from './abstract/ugc.model';
 export * from './abstract/content-master.model';

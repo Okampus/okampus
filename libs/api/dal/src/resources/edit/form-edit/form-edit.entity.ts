@@ -1,30 +1,22 @@
 import { FormEditRepository } from './form-edit.repository';
-import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { Edit } from '../edit.entity';
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { EditKind } from '@okampus/shared/enums';
+
 import type { JSONObject } from '@okampus/shared/types';
 import type { FormEditOptions } from './form-edit.options';
-import type { Form } from '../form/form.entity';
 import type { Individual } from '../../actor/individual/individual.entity';
 
 @Entity({ customRepository: () => FormEditRepository })
-export class FormEdit extends TenantScopedEntity {
-  @Property({ type: 'json' })
-  addedDiff!: JSONObject;
-
+export class FormEdit extends Edit {
   @Property({ type: 'json' })
   newVersion!: JSONObject;
-
-  @Property({ type: 'smallint' })
-  order!: number;
-
-  @ManyToOne({ type: 'Form', onDelete: 'CASCADE' })
-  linkedForm!: Form;
 
   @ManyToOne({ type: 'Individual', nullable: true, onDelete: 'CASCADE' })
   editedBy!: Individual | null;
 
   constructor(options: FormEditOptions) {
-    super({ tenant: options.tenant });
-    this.assign(options);
+    super({ ...options, editKind: EditKind.FormEdit });
+    this.assign({ ...options, editKind: EditKind.FormEdit });
   }
 }

@@ -37,6 +37,7 @@ export * from './dal/kind/actor-kind.enum';
 export * from './dal/kind/content-kind.enum';
 export * from './dal/kind/content-master-kind.enum';
 export * from './dal/kind/document-kind.enum';
+export * from './dal/kind/edit-kind.enum';
 export * from './dal/kind/file-upload-kind.enum';
 export * from './dal/kind/individual-kind.enum';
 export * from './dal/kind/interaction-kind.enum';

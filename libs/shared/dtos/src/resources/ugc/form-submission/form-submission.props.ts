@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { IsArray, IsObject } from 'class-validator';
+
 import type { JSONObject } from '@okampus/shared/types';
 
 @InputType()

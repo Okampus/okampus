@@ -1,34 +1,28 @@
-// eslint-disable-next-line import/no-cycle
-import { FormModel } from '../../index';
-import { Paginated } from '../../../../shards/types/paginated.type';
+/* eslint-disable import/no-cycle */
+import { EditModel, FormModel } from '../../index';
 import { UgcModel } from '../../index';
-import { IndividualModel } from '../../index';
-import { TenantScopedModel } from '../../index';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Paginated } from '../../../../shards/types/paginated.type';
+
+import { Field, ObjectType } from '@nestjs/graphql';
+import { EditKind } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
-import type { IForm, IFormEdit, IIndividual } from '@okampus/shared/dtos';
+
+import type { IForm, IFormEdit } from '@okampus/shared/dtos';
 import type { JSONObject } from '@okampus/shared/types';
 
 @ObjectType({ implements: () => [UgcModel] })
-export class FormEditModel extends TenantScopedModel implements IFormEdit {
-  @Field(() => GraphQLJSON)
-  addedDiff!: JSONObject;
-
+export class FormEditModel extends EditModel implements IFormEdit {
   @Field(() => GraphQLJSON)
   newVersion!: JSONObject;
-
-  @Field(() => Int)
-  order!: number;
 
   @Field(() => FormModel)
   linkedForm!: IForm;
 
-  @Field(() => IndividualModel)
-  editedBy!: IIndividual;
-
   constructor(formEdit: IFormEdit) {
-    if (!formEdit.tenant) throw new Error('DocumentEdit must have a tenant');
-    super(formEdit.tenant);
+    super(formEdit);
+    this.assign(formEdit);
+
+    this.editKind = EditKind.FormEdit;
   }
 }
 
