@@ -1,16 +1,12 @@
 // eslint-disable-next-line import/no-cycle
-import { ShortcutModel } from '../../index';
-import { UserProfileModel } from '../../index';
+import { IndividualModel, ShortcutModel, TeamJoinModel, TeamMemberModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { IndividualModel } from '../../index';
-// eslint-disable-next-line import/no-cycle
-import { TeamMemberModel } from '../../index';
-// eslint-disable-next-line import/no-cycle
-import { TeamJoinModel } from '../../index';
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
 
-import type { IShortcut, ITeamJoin, ITeamMember, IUser, IUserProfile } from '@okampus/shared/dtos';
+import { UserCustomization, UserNotificationSettings, UserSettings, UserStats } from '@okampus/shared/dtos';
+import type { IShortcut, ITeamJoin, ITeamMember, IUser } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [IndividualModel] })
 export class UserModel extends IndividualModel implements IUser {
@@ -30,10 +26,6 @@ export class UserModel extends IndividualModel implements IUser {
   @Field(() => [RoleType])
   roles!: RoleType[];
 
-  // UserProfile
-  @Field(() => UserProfileModel, { nullable: true })
-  profile?: IUserProfile;
-
   @Field(() => [ShortcutModel])
   shortcuts!: IShortcut[];
 
@@ -42,6 +34,25 @@ export class UserModel extends IndividualModel implements IUser {
 
   @Field(() => [TeamJoinModel])
   teamJoins!: ITeamJoin[];
+
+  // UserProfile
+  @Field(() => UserCustomization)
+  customization!: UserCustomization;
+
+  @Field(() => UserStats)
+  stats!: UserStats;
+
+  @Field(() => UserSettings)
+  settings!: UserSettings;
+
+  @Field(() => UserNotificationSettings)
+  notificationSettings!: UserNotificationSettings;
+
+  @Field(() => Boolean)
+  finishedIntroduction = false;
+
+  @Field(() => Boolean)
+  finishedOnboarding = false;
 
   constructor(user: Omit<IUser, 'individualKind'>) {
     super({ ...user, individualKind: IndividualKind.User });

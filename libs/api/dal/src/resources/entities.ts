@@ -2,7 +2,6 @@ import { Actor } from './actor/actor.entity';
 import { Bot } from './actor/bot/bot.entity';
 import { Individual } from './actor/individual/individual.entity';
 import { Shortcut } from './actor/shortcut/shortcut.entity';
-import { UserProfile } from './actor/user-profile/user-profile.entity';
 import { User } from './actor/user/user.entity';
 import { ContentMaster } from './content-master/content-master.entity';
 import { TenantEvent } from './content-master/event/event.entity';
@@ -66,7 +65,6 @@ export const allEntities = [
   Individual,
   Bot,
   User,
-  UserProfile,
   Shortcut,
 
   Org,

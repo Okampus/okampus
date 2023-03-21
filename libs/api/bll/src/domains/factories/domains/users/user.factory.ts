@@ -12,7 +12,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UserRepository } from '@okampus/api/dal';
-import { TenantCore, User, UserProfile, Tag } from '@okampus/api/dal';
+import { Shortcut, TenantCore, User, Tag } from '@okampus/api/dal';
 import { ActorKind } from '@okampus/shared/enums';
 import { fullName } from '@okampus/shared/utils';
 
@@ -70,27 +70,11 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
 
   modelToEntity(model: Required<UserModel>): User {
     const user = new User({
-      bio: model.actor.bio,
-      firstName: model.firstName,
-      lastName: model.lastName,
-      middleNames: model.middleNames,
-      name: model.actor.name,
-      primaryEmail: model.actor.primaryEmail,
-      roles: model.roles,
-      scopeRole: model.scopeRole,
-      slug: model.actor.slug,
+      ...model,
+      ...model.actor,
+      shortcuts: model.shortcuts.map((shortcut) => this.em.getReference(Shortcut, shortcut.id)),
       tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       tenant: this.em.getReference(TenantCore, model.tenant.id),
-    });
-
-    user.profile = new UserProfile({
-      user,
-      customization: model.profile.customization,
-      stats: model.profile.stats,
-      settings: model.profile.settings,
-      notificationSettings: model.profile.notificationSettings,
-      finishedIntroduction: model.profile.finishedIntroduction,
-      finishedOnboarding: model.profile.finishedOnboarding,
     });
 
     return user;

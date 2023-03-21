@@ -1,12 +1,12 @@
 import { UserRepository } from './user.repository';
 import { Individual } from '../individual/individual.entity';
-import { UserProfile } from '../user-profile/user-profile.entity';
-import { Collection, Entity, EntityRepositoryType, Enum, OneToMany, OneToOne, Property } from '@mikro-orm/core';
-import { RoleType } from '@okampus/shared/enums';
-import { ScopeRole } from '@okampus/shared/enums';
-import { IndividualKind } from '@okampus/shared/enums';
-import { fullName } from '@okampus/shared/utils';
+
 import { TransformCollection } from '@okampus/api/shards';
+import { UserCustomization, UserStats, UserSettings, UserNotificationSettings } from '@okampus/shared/dtos';
+import { IndividualKind, RoleType, ScopeRole } from '@okampus/shared/enums';
+import { fullName } from '@okampus/shared/utils';
+
+import { Collection, Embedded, Entity, EntityRepositoryType, Enum, OneToMany, Property } from '@mikro-orm/core';
 
 import type { Searchable } from '../../../types/search-entity.type';
 import type { UserOptions } from './user.options';
@@ -38,9 +38,6 @@ export class User extends Individual implements Searchable {
   @Enum({ items: () => ScopeRole, type: 'string' })
   scopeRole!: ScopeRole;
 
-  @OneToOne({ type: 'UserProfile', inversedBy: 'user' })
-  profile = new UserProfile({ user: this });
-
   @OneToMany({ type: 'Shortcut', mappedBy: 'user' })
   @TransformCollection()
   shortcuts = new Collection<Shortcut>(this);
@@ -68,6 +65,24 @@ export class User extends Individual implements Searchable {
 
   // @OneToMany('Interest', 'user')
   // interests = new Collection<Interest>(this);
+
+  @Embedded(() => UserCustomization)
+  customization = new UserCustomization({});
+
+  @Embedded(() => UserStats)
+  stats = new UserStats({});
+
+  @Embedded(() => UserSettings)
+  settings = new UserSettings({});
+
+  @Embedded(() => UserNotificationSettings)
+  notificationSettings = new UserNotificationSettings({});
+
+  @Property({ type: 'boolean' })
+  finishedIntroduction = false;
+
+  @Property({ type: 'boolean' })
+  finishedOnboarding = false;
 
   constructor(options: UserOptions) {
     const name = fullName(options.firstName, options.lastName);

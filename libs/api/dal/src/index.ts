@@ -12,8 +12,6 @@ export * from './resources/actor/individual/individual.repository';
 export * from './resources/actor/shortcut/shortcut.entity';
 export * from './resources/actor/shortcut/shortcut.options';
 export * from './resources/actor/shortcut/shortcut.repository';
-export * from './resources/actor/user-profile/user-profile.entity';
-export * from './resources/actor/user-profile/user-profile.options';
 export * from './resources/actor/user/user.entity';
 export * from './resources/actor/user/user.options';
 export * from './resources/actor/user/user.repository';
