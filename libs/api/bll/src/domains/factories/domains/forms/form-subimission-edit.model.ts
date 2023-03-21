@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { EditModel, FormEditModel, FormSubmissionModel, UgcModel } from '../../index';
+import { EditModel, FormEditModel, FormSubmissionModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { Field, ObjectType } from '@nestjs/graphql';
 
@@ -8,7 +8,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import type { JSONObject } from '@okampus/shared/types';
 import type { IFormSubmissionEdit } from '@okampus/shared/dtos';
 
-@ObjectType({ implements: () => [UgcModel] })
+@ObjectType({ implements: () => [EditModel] })
 export class FormSubmissionEditModel extends EditModel implements IFormSubmissionEdit {
   @Field(() => GraphQLJSON)
   newVersion!: JSONObject;

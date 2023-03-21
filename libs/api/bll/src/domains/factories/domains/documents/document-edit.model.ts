@@ -4,7 +4,7 @@ import { Paginated } from '../../../../shards/types/paginated.type';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import type { IDocumentEdit, IDocumentUpload } from '@okampus/shared/dtos';
 
-@ObjectType()
+@ObjectType({ implements: () => [EditModel] })
 export class DocumentEditModel extends EditModel implements IDocumentEdit {
   @Field(() => Int, { nullable: true })
   yearVersion!: number | null;

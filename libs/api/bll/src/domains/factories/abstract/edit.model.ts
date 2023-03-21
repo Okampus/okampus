@@ -2,7 +2,7 @@
 import { TenantScopedModel, UgcModel } from '../index';
 import { Paginated } from '../../../shards/types/paginated.type';
 
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InterfaceType, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 
 import { EditKind } from '@okampus/shared/enums';
@@ -10,7 +10,15 @@ import { EditKind } from '@okampus/shared/enums';
 import type { IEdit, IUgc } from '@okampus/shared/dtos';
 import type { JSONObject } from '@okampus/shared/types';
 
-@ObjectType()
+@InterfaceType({
+  resolveType: (value) => {
+    if (value.editKind === EditKind.FormEdit) return 'FormEdit';
+    if (value.editKind === EditKind.ContentEdit) return 'ContentEdit';
+    if (value.editKind === EditKind.DocumentEdit) return 'DocumentEdit';
+    if (value.editKind === EditKind.FormSubmissionEdit) return 'DocumentEdit';
+    return 'EditModel';
+  },
+})
 export class EditModel extends TenantScopedModel implements IEdit {
   @Field(() => EditKind)
   editKind!: EditKind;
