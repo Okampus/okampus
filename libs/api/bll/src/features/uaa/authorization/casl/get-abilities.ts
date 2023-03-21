@@ -14,7 +14,6 @@ import {
   InfoDocument,
   OrgDocument,
   OrgMetric,
-  Report,
   StudyDocument,
   Subject,
   Tag,
@@ -43,7 +42,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   // TODO: rules for modifying UserImage, TeamImage, App
   // TODO: rules for modifying specific fields of User, Team, etc.
 
-  const isAuthor = { realAuthor: { id: individual.id } } as const;
+  const isAuthor = { createdBy: { id: individual.id } } as const;
   const isUser = (user: Individual): user is User => user.individualKind === IndividualKind.User;
 
   allow(Action.Read, 'all');
@@ -56,7 +55,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
   allow(Action.Update, Bot, { owner: { id: individual.id } }).because('Is bot owner');
 
   if (isUser(individual)) {
-    allow(Action.Create, [Report, TeamJoin, FormSubmission]);
+    allow(Action.Create, [TeamJoin, FormSubmission]);
     if (individual.roles.includes(RoleType.TenantAdmin)) {
       allow(Action.Manage, 'all');
       allow(Action.Update, 'all');
@@ -64,8 +63,8 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
     } else {
       forbid(Action.Manage, [Tenant, EventApprovalStep]);
       if (individual.roles.includes(RoleType.Moderator)) {
-        allow(Action.Manage, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
-        allow(Action.Update, [Content, InfoDocument, StudyDocument, Report, Subject, Tag]);
+        allow(Action.Manage, [Content, InfoDocument, StudyDocument, Subject, Tag]);
+        allow(Action.Update, [Content, InfoDocument, StudyDocument, Subject, Tag]);
       } else {
         forbid(Action.Manage, Content, { lastHiddenAt: null }).because('Content has been removed');
         allow(Action.Update, Content, ['body', 'hidden'], isAuthor).because('Not the author');
@@ -75,8 +74,7 @@ export function createAbilitiesForIndividual(individual: Individual): AppAbility
     }
   } else {
     allow(Action.Create, [DocumentUpload, Content, Favorite, Tag]);
-    forbid(Action.Read, [Tenant, Report, OrgMetric]);
-    allow([Action.Read, Action.Update], Report, { actor: { id: individual.id } });
+    forbid(Action.Read, [Tenant, OrgMetric]);
     forbid(Action.Manage, [EventApprovalStep, EventApproval, Team, TenantEvent, OrgDocument, Finance, Form]);
   }
 

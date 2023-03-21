@@ -1,8 +1,9 @@
+// eslint-disable-next-line import/no-cycle
 import { UserModel } from '../../index';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
-import { addImagesToActor, extractActor } from '../../factory.utils';
+import { addImagesToActor, separateActorProps } from '../../factory.utils';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -30,16 +31,13 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
     super(eventPublisher, uploadService, userRepository, UserModel, User);
   }
 
-  async createUser(options: UserOptions, images?: ActorImageUploadProps): Promise<UserModel> {
-    return await this.create(options, async (user) => {
-      if (images)
-        user.actor = await addImagesToActor(
-          user.actor,
-          ActorKind.Individual,
-          images,
-          options.tenant,
-          this.uploadService
-        );
+  async createUser(options: Omit<UserOptions, 'createdBy'>, images?: ActorImageUploadProps): Promise<UserModel> {
+    const createdBy = this.requester();
+    return await this.create({ ...options, createdBy }, async (user) => {
+      if (images) {
+        const kind = ActorKind.Individual;
+        user.actor = await addImagesToActor(user.actor, kind, images, createdBy, options.tenant, this.uploadService);
+      }
       return user;
     });
   }
@@ -54,8 +52,10 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
 
     const transform = async (user: User) => {
       user.actor.name = fullName(data.firstName ?? user.firstName, data.lastName ?? user.lastName);
-      if (actorImages)
-        await addImagesToActor(user.actor, user.actor.actorKind(), actorImages, tenant, this.uploadService);
+      if (actorImages) {
+        const actorKind = user.actor.actorKind();
+        await addImagesToActor(user.actor, actorKind, actorImages, this.requester(), tenant, this.uploadService);
+      }
       return user;
     };
 
@@ -65,7 +65,7 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
       return model;
     };
 
-    return await this.update({ id, tenant }, populate, extractActor(data), false, transform, transformModel);
+    return await this.update({ id, tenant }, populate, separateActorProps(data), false, transform, transformModel);
   }
 
   modelToEntity(model: Required<UserModel>): User {
@@ -74,6 +74,7 @@ export class UserFactory extends BaseFactory<UserModel, User, IUser, UserOptions
       ...model.actor,
       shortcuts: model.shortcuts.map((shortcut) => this.em.getReference(Shortcut, shortcut.id)),
       tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
+      createdBy: model.createdBy ? this.em.getReference(User, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
 

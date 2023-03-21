@@ -4,9 +4,7 @@ import { Entity, Enum, Property } from '@mikro-orm/core';
 import { DocumentUploadType, FileUploadKind } from '@okampus/shared/enums';
 import type { DocumentUploadOptions } from './document-upload.options';
 
-@Entity({
-  customRepository: () => DocumentUploadRepository,
-})
+@Entity({ customRepository: () => DocumentUploadRepository })
 export class DocumentUpload extends FileUpload {
   @Property({ type: 'smallint', nullable: true })
   numberOfPages: number | null = null;
@@ -19,6 +17,6 @@ export class DocumentUpload extends FileUpload {
 
   constructor(options: DocumentUploadOptions) {
     super({ ...options, fileUploadKind: FileUploadKind.DocumentUpload });
-    this.assign(options);
+    this.assign({ ...options, fileUploadKind: FileUploadKind.DocumentUpload });
   }
 }

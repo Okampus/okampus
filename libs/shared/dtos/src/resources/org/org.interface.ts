@@ -10,6 +10,6 @@ export type IOrg = ITenantScoped &
     orgKind: OrgKind;
     actor?: IActor;
     parent?: IOrg | null;
-    events?: ITenantEvent[];
     documents: IOrgDocument[];
+    events?: ITenantEvent[];
   };

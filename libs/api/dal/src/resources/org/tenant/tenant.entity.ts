@@ -13,7 +13,7 @@ import type { Form } from '../../ugc/form/form.entity';
 export class Tenant extends Org {
   [EntityRepositoryType]!: TenantRepository;
 
-  @OneToMany({ type: 'EventApprovalStep', mappedBy: 'tenantOrg' })
+  @OneToMany({ type: 'EventApprovalStep', mappedBy: 'linkedTenant' })
   @TransformCollection()
   eventApprovalSteps = new Collection<EventApprovalStep>(this);
 

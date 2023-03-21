@@ -8,9 +8,6 @@ import type { ValidationOptions } from './validation.options';
 @Entity()
 @WithActive()
 export class Validation extends Interaction {
-  @Property({ type: 'datetime', nullable: true })
-  lastActiveDate: Date | null = null;
-
   @Property()
   type!: ValidationType;
 

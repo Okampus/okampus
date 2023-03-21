@@ -7,8 +7,8 @@ import type { IUser } from '../../actor/user/user.interface';
 export type IEventApprovalStep = ITenantScoped &
   EventApprovalStepProps & {
     createdBy?: IIndividual | null;
-    tenantOrg?: ITenant;
-    order: number;
+    linkedTenant?: ITenant;
+    stepOrder: number;
     validators: IIndividual[];
     notifiees: IUser[];
   };

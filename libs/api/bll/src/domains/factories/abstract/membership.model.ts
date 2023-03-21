@@ -11,7 +11,7 @@ export class MembershipModel extends TenantScopedModel implements IMembership {
   @Field(() => MembershipKind)
   membershipKind!: MembershipKind;
 
-  @Field(() => UserModel, { nullable: true })
+  @Field(() => UserModel)
   user?: IUser;
 
   @Field(() => GraphQLISODateTime)

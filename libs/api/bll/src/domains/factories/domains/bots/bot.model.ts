@@ -1,10 +1,10 @@
+// eslint-disable-next-line import/no-cycle
+import { ActorModel, IndividualModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-// eslint-disable-next-line import/no-cycle
-import { ActorModel } from '../../index';
-// eslint-disable-next-line import/no-cycle
-import { IndividualModel } from '../../index';
+
 import { BotRole, IndividualKind } from '@okampus/shared/enums';
 import { Field, ObjectType } from '@nestjs/graphql';
+
 import type { IActor, IBot } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [IndividualModel] })

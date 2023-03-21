@@ -1,11 +1,10 @@
-// eslint-disable-next-line import/no-cycle
-import { FormEditModel } from '../../index';
-import { Paginated } from '../../../../shards/types/paginated.type';
+/* eslint-disable import/no-cycle */
 import { UgcModel } from '../../index';
+import { Paginated } from '../../../../shards/types/paginated.type';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { FormType } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
-import type { IForm, IFormEdit } from '@okampus/shared/dtos';
+import type { IForm } from '@okampus/shared/dtos';
 import type { JSONObject } from '@okampus/shared/types';
 
 @ObjectType({ implements: () => [UgcModel] })
@@ -21,9 +20,6 @@ export class FormModel extends UgcModel implements IForm {
 
   @Field(() => Boolean)
   isTemplate!: boolean;
-
-  @Field(() => [FormEditModel])
-  edits!: IFormEdit[];
 
   @Field(() => Boolean)
   undeletable!: boolean;

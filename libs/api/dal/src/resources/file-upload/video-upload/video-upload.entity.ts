@@ -5,10 +5,7 @@ import { Entity, Property } from '@mikro-orm/core';
 import { FileUploadKind } from '@okampus/shared/enums';
 import type { VideoUploadOptions } from './video-upload.options';
 
-
-@Entity({
-  customRepository: () => VideoUploadRepository,
-})
+@Entity({ customRepository: () => VideoUploadRepository })
 export class VideoUpload extends FileUpload {
   @Property({ type: 'int', nullable: true })
   duration: number | null = null;

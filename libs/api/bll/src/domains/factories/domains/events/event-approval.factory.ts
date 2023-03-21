@@ -53,12 +53,12 @@ export class EventApprovalFactory extends BaseFactory<
     const event = await this.eventRepository.findById(createEventApproval.eventId);
     if (!event) throw new BadRequestException('Invalid event id');
 
-    const tenantOrg = await this.tenantRepository.findOneOrFail({ tenant }, { populate: ['eventApprovalSteps'] });
+    const linkedTenant = await this.tenantRepository.findOneOrFail({ tenant }, { populate: ['eventApprovalSteps'] });
     event.lastEventApprovalStep = step;
 
     if (!createEventApproval.approved) {
       event.state = EventState.Rejected;
-    } else if (event.lastEventApprovalStep?.order === tenantOrg.eventApprovalSteps.length) {
+    } else if (event.lastEventApprovalStep?.stepOrder === linkedTenant.eventApprovalSteps.length - 1) {
       event.state = EventState.Approved;
     }
 

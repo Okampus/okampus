@@ -7,8 +7,16 @@ import { ContentMasterKind } from '@okampus/shared/enums';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import type { IContentMaster, IIndividual, ITag, IUgc } from '@okampus/shared/dtos';
 
-@InterfaceType()
+@InterfaceType({
+  resolveType: (value) => {
+    if (value.contentMasterKind === ContentMasterKind.TenantEvent) return 'TenantEvent';
+    return 'ContentMasterModel';
+  },
+})
 export class ContentMasterModel extends TenantScopedModel implements IContentMaster {
+  @Field(() => ContentMasterKind)
+  contentMasterKind!: ContentMasterKind;
+
   @Field(() => [TagModel])
   tags!: ITag[];
 
@@ -17,9 +25,6 @@ export class ContentMasterModel extends TenantScopedModel implements IContentMas
 
   @Field(() => String)
   title!: string;
-
-  @Field(() => ContentMasterKind)
-  contentMasterKind!: ContentMasterKind;
 
   @Field(() => [IndividualModel])
   contributors!: IIndividual[];

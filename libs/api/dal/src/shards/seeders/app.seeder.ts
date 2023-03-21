@@ -41,6 +41,7 @@ import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
 
+import type { FormEdit } from '../../resources/edit/form-edit/form-edit.entity';
 import type { EntityManager } from '@mikro-orm/core';
 import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Individual } from '../../resources/actor/individual/individual.entity';
@@ -88,7 +89,7 @@ async function createEventApprovalStep(
   validators: User[],
   tenant: Tenant,
   order: number,
-  createdBy: Individual
+  createdBy: Individual | null
 ): Promise<EventApprovalStep> {
   const step = await new EventApprovalStepSeeder(em, tenant, order, createdBy).createOne();
   step.validators.add(validators);
@@ -151,15 +152,19 @@ export class DatabaseSeeder extends Seeder {
     const createdAt = new Date();
     const passwordHash = await hash('root', { secret: DatabaseSeeder.pepper });
 
-    const tenant = await em.findOneOrFail(
+    const tenantOrg = await em.findOneOrFail(
       Tenant,
       { tenant: { domain: DatabaseSeeder.targetTenant } },
       { populate: ['actor', 'tenant'] }
     );
-    this.logger.log(`Seeding tenant ${tenant.actor.name}`);
+    const tenant = tenantOrg.tenant;
 
-    const admins = await new UserSeeder(em, tenant, ScopeRole.Admin, passwordHash).create(seedingConfig.N_ADMINS);
-    const students = await new UserSeeder(em, tenant, ScopeRole.Student, passwordHash).create(seedingConfig.N_STUDENTS);
+    this.logger.log(`Seeding tenant ${tenant.name}`);
+
+    const admins = await new UserSeeder(em, tenantOrg, ScopeRole.Admin, passwordHash).create(seedingConfig.N_ADMINS);
+    const students = await new UserSeeder(em, tenantOrg, ScopeRole.Student, passwordHash).create(
+      seedingConfig.N_STUDENTS
+    );
 
     let restAdmins = admins;
     let stepAdmins: User[];
@@ -168,21 +173,21 @@ export class DatabaseSeeder extends Seeder {
     for (let i = 0; i < seedingConfig.N_APPROVAL_STEPS; i++) {
       const nStepAdmins = randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP);
       [stepAdmins, restAdmins] = randomFromArrayWithRemainder(restAdmins, nStepAdmins);
-      approvalStepsPromises.push(createEventApprovalStep(em, stepAdmins, tenant, i + 1, stepAdmins[0]));
+      approvalStepsPromises.push(createEventApprovalStep(em, stepAdmins, tenantOrg, i + 1, stepAdmins[0]));
     }
 
     const approvalSteps = await Promise.all(approvalStepsPromises);
 
     const categories = seedingConfig.DEFAULT_CATEGORIES.map(
-      (category) => new TeamCategory({ ...category, tenant: tenant.tenant })
+      (category) => new TeamCategory({ ...category, tenant, createdBy: null })
     );
 
-    const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
+    const tags = await new TagSeeder(em, tenantOrg).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
 
     const createTeams = [];
     for (const _ of Array.from({ length: seedingConfig.N_TEAMS })) {
       const name = faker.company.name();
-      const joinForm = defaultTeamJoinForm(name, tenant.tenant); // TODO: find alternative to flushing in advance
+      const joinForm = defaultTeamJoinForm(name, tenant, null); // TODO: find alternative to flushing in advance
       await em.persistAndFlush(joinForm);
 
       createTeams.push(async () => {
@@ -193,12 +198,13 @@ export class DatabaseSeeder extends Seeder {
           bio: faker.lorem.paragraph(randomInt(2, 12)),
           categories: randomFromArray(categories, 1, 3),
           currentFinance: 0,
-          primaryEmail: `${toSlug(name)}@${tenant.tenant.domain}.fr`,
+          primaryEmail: `${toSlug(name)}@${tenant.domain}.fr`,
           slug: toSlug(name),
           tagline: faker.company.catchPhrase(),
           tags: randomFromArray(tags, 2, 10),
           type: TeamType.Club,
-          tenant: tenant.tenant,
+          createdBy: null,
+          tenant,
         });
         await em.persistAndFlush(team);
         return team;
@@ -214,7 +220,9 @@ export class DatabaseSeeder extends Seeder {
       const MAX_REQUESTERS = Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS);
       const N_REQUESTERS = randomInt(seedingConfig.MIN_REQUESTS, MAX_REQUESTERS);
 
-      const roles = clubDefaultRoles.map((role) => new TeamRole({ ...role, team, tenant: team.tenant }));
+      const roles = clubDefaultRoles.map(
+        (role) => new TeamRole({ ...role, team, tenant: team.tenant, createdBy: null })
+      );
 
       const [managers, rest] = randomFromArrayWithRemainder(students, 5);
       const [president, treasurer, secretary, eventManager, staffManager] = managers;
@@ -233,23 +241,27 @@ export class DatabaseSeeder extends Seeder {
       };
 
       for (const member of Object.values(teamMembers)) {
-        const shortcut = new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user: member.user });
+        const shortcut = new Shortcut({
+          type: ShortcutType.Team,
+          targetActor: team.actor,
+          user: member.user,
+          createdBy: null,
+          tenant,
+        });
         member.user.shortcuts.add(shortcut);
       }
 
       const requesters = randomFromArray(others, N_REQUESTERS);
 
-      const linkedFormEdit = team.joinForm.edits.getItems()[0];
+      const linkedFormEdit = team.joinForm.edits.getItems()[0] as FormEdit;
       const requesterInstances = requesters.map((user) =>
         em.create(TeamJoin, {
           createdAt,
           updatedAt: createdAt,
-          tenant: team.tenant,
           team,
           joinKind: JoinKind.TeamJoin,
           askedRole: roles[5],
           joiner: user,
-          issuer: Math.random() > 0.5 ? pickOneFromArray(managers) : undefined,
           state: ApprovalState.Pending,
           formSubmission: new FormSubmission({
             description: getTeamJoinDescription(null, user, roles[5], team),
@@ -262,9 +274,11 @@ export class DatabaseSeeder extends Seeder {
               },
             ],
             linkedFormEdit,
-            realAuthor: user,
+            createdBy: user,
             tenant: team.tenant,
           }),
+          createdBy: Math.random() > 0.5 ? pickOneFromArray(managers) : user,
+          tenant: team.tenant,
         })
       );
 
@@ -299,24 +313,32 @@ export class DatabaseSeeder extends Seeder {
                       })
                     : null;
 
+                const linkedFormEdit = event.joinForm.edits.getItems()[0] as FormEdit;
                 return em.create(EventJoin, {
                   createdAt,
                   updatedAt: createdAt,
                   event,
                   formSubmission: new FormSubmission({
                     description: getEventJoinDescription(null, user, event),
-                    submission: [],
-                    realAuthor: user,
+                    submission: [
+                      {
+                        label: 'Motivation',
+                        fieldName: 'motivation',
+                        inputType: ControlType.Text,
+                        value: faker.lorem.lines(4),
+                      },
+                    ],
+                    linkedFormEdit,
+                    createdBy: user,
                     tenant: team.tenant,
-                    linkedFormEdit: event.joinForm.edits.getItems()[0],
                   }),
-                  issuer: user,
                   joiner: user,
                   presenceStatus: status,
                   participated,
                   teamAction,
                   joinKind: JoinKind.EventJoin,
                   state: ApprovalState.Approved,
+                  createdBy: user,
                   tenant: team.tenant,
                 });
               })

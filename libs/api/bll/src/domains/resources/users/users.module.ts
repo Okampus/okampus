@@ -66,14 +66,14 @@ export class UsersModule implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const { baseTenant, adminAccountPassword } = this.configService.config;
 
-    let coreTenant: TenantCore | null = null;
-    let tenant = await this.tenantRepository.findOne({ tenant: { domain: BASE_TENANT } });
-    if (tenant) {
-      coreTenant = tenant.tenant;
+    let tenant: TenantCore | null = null;
+    let tenantOrg = await this.tenantRepository.findOne({ tenant: { domain: BASE_TENANT } });
+    if (tenantOrg) {
+      tenant = tenantOrg.tenant;
     } else {
-      coreTenant = await this.tenantCoreRepository.findOne({ domain: BASE_TENANT });
-      if (!coreTenant) {
-        coreTenant = new TenantCore({
+      tenant = await this.tenantCoreRepository.findOne({ domain: BASE_TENANT });
+      if (!tenant) {
+        tenant = new TenantCore({
           name: baseTenant.name,
           domain: BASE_TENANT,
           oidcInfo: {
@@ -88,20 +88,20 @@ export class UsersModule implements OnModuleInit {
         });
       }
 
-      tenant = new Tenant({
-        tenant: coreTenant,
+      tenantOrg = new Tenant({
         name: baseTenant.name,
         slug: BASE_TENANT,
+        createdBy: null,
+        tenant,
       });
 
-      await this.tenantRepository.persistAndFlush(tenant);
-      await this.tenantCoreRepository.persistAndFlush(coreTenant);
+      await this.tenantRepository.persistAndFlush(tenantOrg);
+      await this.tenantCoreRepository.persistAndFlush(tenant);
     }
 
     let admin = await this.userRepository.findOne({ actor: { slug: ADMIN_ACCOUNT_SLUG } });
     if (!admin) {
       admin = new User({
-        tenant: coreTenant,
         slug: ADMIN_ACCOUNT_SLUG,
         firstName: ADMIN_ACCOUNT_FIRST_NAME,
         lastName: ADMIN_ACCOUNT_LAST_NAME,
@@ -109,6 +109,7 @@ export class UsersModule implements OnModuleInit {
         scopeRole: ScopeRole.Admin,
         roles: [RoleType.Moderator, RoleType.TenantAdmin],
         createdBy: null,
+        tenant,
       });
 
       admin.passwordHash = await hash(adminAccountPassword, { secret: this.pepper });
@@ -116,24 +117,24 @@ export class UsersModule implements OnModuleInit {
 
       const step1 = new EventApprovalStep({
         createdBy: admin,
-        tenantOrg: tenant,
-        tenant: coreTenant,
+        linkedTenant: tenantOrg,
+        tenant,
         name: 'Validation de principe',
-        order: 1,
+        stepOrder: 1,
       });
       const step2 = new EventApprovalStep({
         createdBy: admin,
-        tenantOrg: tenant,
-        tenant: coreTenant,
+        linkedTenant: tenantOrg,
+        tenant,
         name: 'Validation campus',
-        order: 2,
+        stepOrder: 2,
       });
       const step3 = new EventApprovalStep({
         createdBy: admin,
-        tenantOrg: tenant,
-        tenant: coreTenant,
+        linkedTenant: tenantOrg,
+        tenant,
         name: 'Validation du directeur',
-        order: 3,
+        stepOrder: 3,
       });
 
       this.eventApprovalStepRepository.persistAndFlush([step1, step2, step3]);
@@ -143,13 +144,13 @@ export class UsersModule implements OnModuleInit {
     const anon = await this.userRepository.count({ actor: { slug: ANON_ACCOUNT_SLUG } });
     if (!anon) {
       const anonUser = new User({
-        tenant: coreTenant,
         slug: ANON_ACCOUNT_SLUG,
         firstName: ANON_ACCOUNT_FIRST_NAME,
         lastName: ANON_ACCOUNT_LAST_NAME,
         primaryEmail: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         createdBy: null,
+        tenant,
       });
 
       await this.userRepository.persistAndFlush(anonUser);

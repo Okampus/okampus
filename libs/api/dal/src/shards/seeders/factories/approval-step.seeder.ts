@@ -12,18 +12,18 @@ export class EventApprovalStepSeeder extends Factory<EventApprovalStep> {
     em: EntityManager,
     private readonly tenant: Tenant,
     private readonly order: number,
-    private readonly createdBy: Individual
+    private readonly createdBy: Individual | null
   ) {
     super(em);
   }
 
   public definition(): EventApprovalStepOptions {
     return {
-      order: this.order,
+      stepOrder: this.order,
       name: `Validation step #${this.order}`,
       validators: [],
       notifiees: [],
-      tenantOrg: this.tenant,
+      linkedTenant: this.tenant,
       createdBy: this.createdBy,
       tenant: this.tenant.tenant,
     };

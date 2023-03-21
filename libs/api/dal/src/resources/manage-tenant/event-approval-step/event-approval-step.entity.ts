@@ -7,22 +7,16 @@ import type { Individual } from '../../actor/individual/individual.entity';
 import type { User } from '../../actor/user/user.entity';
 import type { Tenant } from '../../org/tenant/tenant.entity';
 
-
-@Entity({
-  customRepository: () => EventApprovalStepRepository,
-})
+@Entity({ customRepository: () => EventApprovalStepRepository })
 export class EventApprovalStep extends TenantScopedEntity {
-  @ManyToOne({ type: 'Tenant' })
-  tenantOrg!: Tenant;
-
-  @ManyToOne({ type: 'Individual', nullable: true })
-  createdBy: Individual | null = null; // add null as system
-
-  @Property()
-  order!: number;
-
-  @Property()
+  @Property({ type: 'string' })
   name!: string;
+
+  @Property({ type: 'number' })
+  stepOrder!: number;
+
+  @ManyToOne({ type: 'Tenant' })
+  linkedTenant!: Tenant;
 
   @ManyToMany({ type: 'Individual', cascade: [Cascade.ALL] })
   @TransformCollection()

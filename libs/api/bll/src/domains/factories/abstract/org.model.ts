@@ -1,10 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { ActorModel } from '../index';
-import { TenantScopedModel } from '../index';
-// eslint-disable-next-line import/no-cycle
-import { OrgDocumentModel } from '../index';
-// eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from '../index';
+import { ActorModel, TenantEventModel, TenantScopedModel, OrgDocumentModel } from '../index';
 import { Field, InterfaceType } from '@nestjs/graphql';
 import { OrgKind } from '@okampus/shared/enums';
 
@@ -21,7 +16,7 @@ export abstract class OrgModel extends TenantScopedModel implements IOrg {
   @Field(() => OrgKind)
   orgKind!: OrgKind;
 
-  @Field(() => ActorModel, { nullable: true })
+  @Field(() => ActorModel)
   actor?: IActor;
 
   @Field(() => OrgModel, { nullable: true })

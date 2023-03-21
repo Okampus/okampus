@@ -12,13 +12,10 @@ import type { IEventApprovalStep, IIndividual, ITenant, IUser } from '@okampus/s
 @ObjectType()
 export class EventApprovalStepModel extends TenantScopedModel implements IEventApprovalStep {
   @Field(() => TenantModel, { nullable: true })
-  tenantOrg?: ITenant;
-
-  @Field(() => IndividualModel, { nullable: true })
-  createdBy: IIndividual | null = null;
+  linkedTenant?: ITenant;
 
   @Field(() => Int)
-  order!: number;
+  stepOrder!: number;
 
   @Field(() => String)
   name!: string;

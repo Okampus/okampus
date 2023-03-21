@@ -46,8 +46,8 @@ export class EventApprovalStepFactory extends BaseFactory<
     tenant: TenantCore,
     requester: Individual
   ): Promise<EventApprovalStepModel> {
-    const tenantOrg = await this.tenantRepository.findById(tenant.id, { populate: ['actor'] as never[] });
-    if (!tenantOrg) throw new BadRequestException('Invalid tenant id');
+    const linkedTenant = await this.tenantRepository.findById(tenant.id, { populate: ['actor'] as never[] });
+    if (!linkedTenant) throw new BadRequestException('Invalid tenant id');
 
     const validators = await this.individualRepository.findByIds(createEventApprovalStep.validatorsIds);
     const notifiees = await this.userRepository.findByIds(createEventApprovalStep.notifieesIds);
@@ -59,7 +59,7 @@ export class EventApprovalStepFactory extends BaseFactory<
 
     return this.create({
       ...createEventApprovalStep,
-      tenantOrg,
+      linkedTenant,
       notifiees,
       validators,
       tenant,
@@ -70,7 +70,7 @@ export class EventApprovalStepFactory extends BaseFactory<
   modelToEntity(model: Required<EventApprovalStepModel>): EventApprovalStep {
     return new EventApprovalStep({
       ...model,
-      tenantOrg: this.em.getReference(Tenant, model.tenantOrg.id),
+      linkedTenant: this.em.getReference(Tenant, model.linkedTenant.id),
       notifiees: model.notifiees.map((notifiee) => this.em.getReference(User, notifiee.id)),
       validators: model.validators.map((validator) => this.em.getReference(Individual, validator.id)),
       createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
