@@ -19,9 +19,10 @@ export class TagSeeder extends Factory<Tag> {
     const name = faker.word.noun();
 
     return {
-      tenant: this.tenant.tenant,
       name,
       slug: toSlug(`${name}.${nanoid(4)}`),
+      createdBy: null,
+      tenant: this.tenant.tenant,
     };
   }
 }

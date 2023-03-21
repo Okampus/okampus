@@ -23,7 +23,7 @@ export class Membership extends TenantScopedEntity {
   endDate: Date | null = null;
 
   constructor(options: MembershipOptions & { membershipKind: MembershipKind }) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

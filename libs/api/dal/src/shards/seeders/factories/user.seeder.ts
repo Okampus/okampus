@@ -25,7 +25,6 @@ export class UserSeeder extends Factory<User> {
     const lastName = faker.name.lastName();
 
     return {
-      tenant: this.tenant.tenant,
       slug: toSlug(`${firstName}-${lastName}-${nanoid(4)}`),
       name: firstName + ' ' + lastName,
       firstName,
@@ -33,6 +32,8 @@ export class UserSeeder extends Factory<User> {
       primaryEmail: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.actor.slug)}.fr`,
       passwordHash: this.passwordHash,
       scopeRole: this.scopeRole,
+      createdBy: null,
+      tenant: this.tenant.tenant,
     };
   }
 }

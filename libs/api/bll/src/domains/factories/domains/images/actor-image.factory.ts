@@ -10,7 +10,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ActorImageRepository } from '@okampus/api/dal';
+import { ActorImageRepository, Individual } from '@okampus/api/dal';
 import { ActorImage, TenantCore, ImageUpload, Actor } from '@okampus/api/dal';
 
 import type { ActorImageOptions } from '@okampus/api/dal';
@@ -51,6 +51,7 @@ export class ActorImageFactory extends BaseFactory<ActorImageModel, ActorImage, 
       ...model,
       actor: this.em.getReference(Actor, model.actor.id),
       image: this.em.getReference(ImageUpload, model.image.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

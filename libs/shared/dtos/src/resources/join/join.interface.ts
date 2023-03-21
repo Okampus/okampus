@@ -8,11 +8,10 @@ import type { JoinProps } from './join.props';
 export type IJoin = ITenantScoped &
   JoinProps & {
     joinKind: JoinKind;
-    issuer?: IIndividual | null;
+    state: ApprovalState;
     joiner?: IUser;
     settledBy?: IIndividual | null;
     settledAt: Date | null;
     settledMessage: string | null;
     formSubmission?: IFormSubmission | null;
-    state: ApprovalState;
   };

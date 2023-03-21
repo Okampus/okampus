@@ -73,7 +73,7 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
       approvalSubmission: model.approvalSubmission
         ? this.em.getReference(FormSubmission, model.approvalSubmission.id)
         : null,
-      createdBy: this.em.getReference(Individual, model.rootContent.author.id), // TODO: check if this is correct in every case
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null, // TODO: check if this is correct in every case
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

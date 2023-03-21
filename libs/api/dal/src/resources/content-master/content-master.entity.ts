@@ -54,16 +54,8 @@ export abstract class ContentMaster extends TenantScopedEntity {
   @TransformCollection()
   favorites = new Collection<Favorite>(this);
 
-  createdBy(): Individual | null {
-    return this.rootContent.author;
-  }
-
-  realCreatedBy(): Individual | null {
-    return this.rootContent.realAuthor;
-  }
-
   constructor(options: ContentMasterOptions & { contentMasterKind: ContentMasterKind }) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

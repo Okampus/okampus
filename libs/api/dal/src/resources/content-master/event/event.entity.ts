@@ -31,9 +31,7 @@ import type { FormSubmission } from '../../ugc/form-submission/form-submission.e
 import type { Searchable } from '../../../types/search-entity.type';
 import type { JSONObject } from '@okampus/shared/types';
 
-@Entity({
-  customRepository: () => TenantEventRepository,
-}) // Called "TenantEvent" to avoid name collision with native JS "Event"
+@Entity({ customRepository: () => TenantEventRepository }) // Called "TenantEvent" to avoid name collision with native JS "Event"
 export class TenantEvent extends ContentMaster implements Searchable {
   // TODO: add co-organisers as prop
 
@@ -73,11 +71,11 @@ export class TenantEvent extends ContentMaster implements Searchable {
   joinForm = new Form({
     isTemplate: false,
     name: `Rejoindre ${this.title}`,
-    realAuthor: null,
     schema: [],
     description: `Formulaire officiel pour rejoindre ${this.title}`,
     type: FormType.EventJoin,
     undeletable: true,
+    createdBy: this.createdBy,
     tenant: this.tenant,
   });
 
@@ -112,9 +110,9 @@ export class TenantEvent extends ContentMaster implements Searchable {
       attachments: [],
       contentMaster: this,
       representingOrgs: options.orgs,
-      realAuthor: options.createdBy,
-      tenant: options.tenant,
       description: options.description ?? '',
+      createdBy: options.createdBy,
+      tenant: options.tenant,
       // TODO: extra props
     });
 

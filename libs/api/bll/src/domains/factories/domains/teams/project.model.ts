@@ -4,12 +4,11 @@ import { TeamModel } from '../../index';
 import { TenantEventModel } from '../../index';
 
 import { UserModel } from '../../index';
-import { IndividualModel } from '../../index';
 import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { ObjectType, Field, Float } from '@nestjs/graphql';
-import type { IIndividual, IProject, ITeam, ITenantEvent, IUser } from '@okampus/shared/dtos';
+import type { IProject, ITeam, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ProjectModel extends TenantScopedModel implements IProject {
@@ -30,9 +29,6 @@ export class ProjectModel extends TenantScopedModel implements IProject {
 
   @Field(() => TenantEventModel, { nullable: true })
   linkedEvent: ITenantEvent | null = null;
-
-  @Field(() => IndividualModel)
-  createdBy!: IIndividual;
 
   @Field(() => UserModel)
   supervisor!: IUser;

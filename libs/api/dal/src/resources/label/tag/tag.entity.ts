@@ -38,7 +38,7 @@ export class Tag extends TenantScopedEntity {
   iconImage: ImageUpload | null = null;
 
   constructor(options: TagOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
 
     this.color = getColorFromData(this.name);

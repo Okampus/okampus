@@ -3,7 +3,6 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { ApprovalState } from '@okampus/shared/enums';
 import type { Team } from '../../org/team/team.entity';
 import type { TeamMember } from '../../membership/team-member/team-member.entity';
-import type { Individual } from '../../actor/individual/individual.entity';
 import type { User } from '../../actor/user/user.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
 import type { TeamActionOptions } from './team-action.options';
@@ -39,14 +38,11 @@ export class TeamAction extends TenantScopedEntity {
   @ManyToOne({ type: 'Project', nullable: true })
   linkedProject: Project | null = null;
 
-  @ManyToOne({ type: 'Individual' })
-  createdBy!: Individual;
-
   @ManyToOne({ type: 'TeamMember', nullable: true })
   validatedBy!: TeamMember | null;
 
   constructor(options: TeamActionOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

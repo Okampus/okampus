@@ -14,16 +14,17 @@ import {
 } from '@mikro-orm/core';
 import { ControlType, FormType, OrgKind, TeamRoleCategory, TeamType } from '@okampus/shared/enums';
 import { TransformCollection } from '@okampus/api/shards';
-import type { TenantCore } from '../tenant/tenant-core.entity';
 
-import type { TeamJoin } from '../../join/team-join/team-join.entity';
-import type { Searchable } from '../../../types/search-entity.type';
-import type { TeamOptions } from './team.options';
-import type { TeamCategory } from '../../label/team-category/team-category.entity';
-import type { VideoUpload } from '../../file-upload/video-upload/video-upload.entity';
-import type { TeamMember } from '../../membership/team-member/team-member.entity';
-import type { TeamRole } from '../../role/team-role/team-role.entity';
 import type { Finance } from '../../manage-team/finance/finance.entity';
+import type { Individual } from '../../actor/individual/individual.entity';
+import type { Searchable } from '../../../types/search-entity.type';
+import type { TeamCategory } from '../../label/team-category/team-category.entity';
+import type { TeamJoin } from '../../join/team-join/team-join.entity';
+import type { TeamMember } from '../../membership/team-member/team-member.entity';
+import type { TeamOptions } from './team.options';
+import type { TeamRole } from '../../role/team-role/team-role.entity';
+import type { TenantCore } from '../tenant/tenant-core.entity';
+import type { VideoUpload } from '../../file-upload/video-upload/video-upload.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends Org implements Searchable {
@@ -92,11 +93,10 @@ export class Team extends Org implements Searchable {
   }
 }
 
-export const defaultTeamJoinForm = (name: string, tenant: TenantCore) =>
+export const defaultTeamJoinForm = (name: string, tenant: TenantCore, createdBy: Individual | null) =>
   new Form({
     isTemplate: false,
     name: `Formulaire d'adhésion de ${name}`,
-    realAuthor: null,
     schema: [
       {
         fieldName: 'motivation',
@@ -109,5 +109,6 @@ export const defaultTeamJoinForm = (name: string, tenant: TenantCore) =>
     description: `Formulaire d'adhésion officiel de ${name}`,
     type: FormType.TeamJoin,
     undeletable: true,
+    createdBy,
     tenant,
   });

@@ -30,8 +30,8 @@ export class ImageUploadFactory extends BaseFactory<ImageUploadModel, ImageUploa
   modelToEntity(model: Required<ImageUploadModel>): ImageUpload {
     return new ImageUpload({
       ...model,
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
-      uploadedBy: this.em.getReference(Individual, model.uploadedBy.id),
     });
   }
 }

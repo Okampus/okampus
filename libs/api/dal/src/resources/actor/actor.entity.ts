@@ -17,7 +17,6 @@ import type { Report } from '../interaction/report/report.entity';
 import type { Vote } from '../interaction/vote/vote.entity';
 import type { Favorite } from '../interaction/favorite/favorite.entity';
 
-
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
   @OneToOne({ type: 'Individual', mappedBy: 'actor', nullable: true })
@@ -80,7 +79,7 @@ export class Actor extends TenantScopedEntity {
 
   constructor(options: ActorOptions) {
     options.slug = toSlug(options.slug ?? options.name);
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

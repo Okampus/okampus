@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { FormSubmissionModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
@@ -37,12 +38,11 @@ export class FormSubmissionFactory extends BaseFactory<
       ...model,
       contentMaster: model.contentMaster ? this.em.getReference(ContentMaster, model.contentMaster.id) : null,
       representingOrgs: model.representingOrgs.map((org) => this.em.getReference(Org, org.id)),
-      realAuthor: this.em.getReference(Individual, model.author.id),
       linkedFormEdit: this.em.getReference(FormEdit, model.linkedFormEdit.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
 
-    entity.author = this.em.getReference(Individual, model.author.id);
     return entity;
   }
 }

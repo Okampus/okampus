@@ -25,7 +25,7 @@ export class TeachClass extends TenantScopedEntity {
   endDate: Date | null = null;
 
   constructor(options: TeachClassOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

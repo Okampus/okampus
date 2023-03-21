@@ -43,7 +43,7 @@ export class Role extends TenantScopedEntity {
   required = false; // TODO: create required roles programmatically on team creation (e.g. owner, treasurer, secretary)
 
   constructor(options: RoleOptions & { roleKind: RoleKind }) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

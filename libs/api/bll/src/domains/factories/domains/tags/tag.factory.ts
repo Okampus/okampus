@@ -10,7 +10,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { TagRepository } from '@okampus/api/dal';
+import { Individual, TagRepository } from '@okampus/api/dal';
 import { ImageUpload, Tag, TenantCore } from '@okampus/api/dal';
 
 import type { TagOptions } from '@okampus/api/dal';
@@ -34,6 +34,7 @@ export class TagFactory extends BaseFactory<TagModel, Tag, ITag, TagOptions> {
       slug: model.slug,
       description: model.description,
       iconImage: model.iconImage ? this.em.getReference(ImageUpload, model.iconImage.id) : null,
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

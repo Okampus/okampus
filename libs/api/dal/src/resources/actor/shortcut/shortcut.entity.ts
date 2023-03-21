@@ -18,7 +18,7 @@ export class Shortcut extends TenantScopedEntity {
   targetActor!: Actor;
 
   constructor(options: ShortcutOptions) {
-    super({ tenant: options.user.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

@@ -1,19 +1,15 @@
 /* eslint-disable import/no-cycle */
 import { EventApprovalStepModel } from '../../index';
 import { TenantEventModel } from '../../index';
-import { IndividualModel } from '../../index';
 import { TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { Field, ObjectType } from '@nestjs/graphql';
-import type { IEventApproval, IEventApprovalStep, IIndividual, ITenantEvent } from '@okampus/shared/dtos';
+import type { IEventApproval, IEventApprovalStep, ITenantEvent } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class EventApprovalModel extends TenantScopedModel implements IEventApproval {
   @Field(() => TenantEventModel, { nullable: true })
   event?: ITenantEvent;
-
-  @Field(() => IndividualModel, { nullable: true })
-  createdBy?: IIndividual;
 
   @Field(() => String, { nullable: true })
   message!: string | null;

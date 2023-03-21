@@ -58,10 +58,10 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
     return new Project({
       ...model,
       team: this.em.getReference(Team, model.team.id),
-      createdBy: this.em.getReference(Individual, model.createdBy.id),
       linkedEvent: model.linkedEvent ? this.em.getReference(TenantEvent, model.linkedEvent.id) : null,
       participants: model.participants.map((user) => this.em.getReference(User, user.id)),
       supervisor: this.em.getReference(User, model.supervisor.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

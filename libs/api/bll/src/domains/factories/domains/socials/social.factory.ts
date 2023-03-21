@@ -10,7 +10,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { SocialRepository } from '@okampus/api/dal';
+import { Individual, SocialRepository } from '@okampus/api/dal';
 import { Social, TenantCore, Actor } from '@okampus/api/dal';
 
 import type { SocialOptions } from '@okampus/api/dal';
@@ -31,6 +31,7 @@ export class SocialFactory extends BaseFactory<SocialModel, Social, ISocial, Soc
     return new Social({
       ...model,
       actor: this.em.getReference(Actor, model.actor.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

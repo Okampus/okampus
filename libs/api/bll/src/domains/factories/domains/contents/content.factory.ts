@@ -33,10 +33,10 @@ export class ContentFactory extends BaseFactory<ContentModel, Content, IContent,
     return new Content({
       ...model,
       attachments: model.attachments.map((file) => this.em.getReference(FileUpload, file.id)),
-      realAuthor: this.em.getReference(Individual, model.author.id),
       representingOrgs: model.representingOrgs.map((org) => this.em.getReference(Org, org.id)),
       contentMaster: model.contentMaster ? this.em.getReference(ContentMaster, model.contentMaster.id) : null,
       parent: model.parent ? this.em.getReference(Ugc, model.parent.id) : null,
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

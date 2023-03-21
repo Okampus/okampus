@@ -53,11 +53,11 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
 
   async createTeamJoin(
     createTeamJoin: CreateTeamJoinDto,
-    requester: Individual,
+    createdBy: Individual,
     tenant: TenantCore,
     populate: string[]
   ): Promise<TeamJoinModel> {
-    if (requester.individualKind === IndividualKind.Bot && !createTeamJoin.joinerId)
+    if (createdBy.individualKind === IndividualKind.Bot && !createTeamJoin.joinerId)
       throw new BadRequestException('Bot cannot create a TeamJoin without a joiner');
 
     const teamJoinPopulate = getTeamJoinPopulate(populate);
@@ -69,7 +69,7 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
     const getJoiner = async () =>
       id
         ? await this.userRepository.findOneOrFail({ id }, { populate: teamJoinPopulate.joiner })
-        : (await this.userRepository.populate(requester as User, teamJoinPopulate.joiner)) && (requester as User);
+        : (await this.userRepository.populate(createdBy as User, teamJoinPopulate.joiner)) && (createdBy as User);
 
     const [joiner, team, linkedFormEdit, askedRole] = await Promise.all([
       getJoiner(),
@@ -81,12 +81,12 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
       this.teamRoleRepository.findOneOrFail({ id: createTeamJoin.askedRoleId }),
     ]);
 
-    const issuer = id ? requester : null;
+    const issuer = id ? createdBy : null;
     const formSubmission = new FormSubmission({
+      submission: createTeamJoin.submission,
       description: getTeamJoinDescription(issuer, joiner, askedRole, team),
       linkedFormEdit,
-      realAuthor: requester,
-      submission: createTeamJoin.submission,
+      createdBy,
       tenant,
     });
 
@@ -94,9 +94,9 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
       ...createTeamJoin,
       askedRole,
       formSubmission,
-      issuer,
       joiner,
       team,
+      createdBy,
       tenant,
     });
   }
@@ -118,8 +118,10 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
       if (state === ApprovalState.Approved && !receivedRoleId)
         throw new BadRequestException('Cannot approve a TeamJoin without a received role');
 
-      const { issuer, joiner } = teamJoin;
-      const ownsTeamJoin = (!issuer && joiner.id === requester.id) || (issuer && issuer.id === requester.id);
+      const { createdBy, joiner } = teamJoin;
+      const ownsTeamJoin =
+        ((!createdBy || createdBy.id !== requester.id) && joiner.id === requester.id) ||
+        (createdBy && joiner.id === createdBy.id);
       if (state !== ApprovalState.Canceled && ownsTeamJoin)
         throw new BadRequestException('Cannot change state of your own TeamJoin');
     }
@@ -148,15 +150,15 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
       ...(submission && {
         formSubmission: new FormSubmission({
           // TODO: FormSubmissionEdit instead of FormSubmission
+          submission,
           description: getTeamJoinDescription(
-            teamJoin.issuer,
+            teamJoin.createdBy,
             teamJoin.joiner,
             askedRole ?? teamJoin.askedRole,
             teamJoin.team
           ),
           linkedFormEdit: linkedFormEdit ?? teamJoin.formSubmission.linkedFormEdit,
-          realAuthor: requester,
-          submission,
+          createdBy: requester,
           tenant,
         }),
       }),
@@ -169,6 +171,7 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
             team: teamJoin.team,
             user: teamJoin.joiner,
             roles: [receivedRole],
+            createdBy: requester,
             tenant,
           })
         );
@@ -177,6 +180,8 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
           type: ShortcutType.Team,
           targetActor: teamJoin.team.actor,
           user: teamJoin.joiner,
+          createdBy: requester,
+          tenant,
         });
         teamJoin.joiner.shortcuts.add(shortcut);
       }
@@ -193,8 +198,8 @@ export class TeamJoinFactory extends BaseFactory<TeamJoinModel, TeamJoin, ITeamJ
       team: this.em.getReference(Team, model.team.id),
       askedRole: this.em.getReference(TeamRole, model.askedRole.id),
       formSubmission: this.em.getReference(FormSubmission, model.formSubmission.id),
-      issuer: model.issuer ? this.em.getReference(Individual, model.issuer.id) : null,
       joiner: this.em.getReference(User, model.joiner.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

@@ -1,17 +1,12 @@
 // eslint-disable-next-line import/no-cycle
-import { ProjectModel } from '../../index';
+import { FileUploadModel, ProjectModel, TeamModel, TenantEventModel, TenantScopedModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
-import { FileUploadModel } from '../../index';
-import { IndividualModel } from '../../index';
-import { TenantScopedModel } from '../../index';
-import { TenantEventModel } from '../../index';
-import { TeamModel } from '../../index';
 
 import { FinanceCategory, FinanceState, PaymentMethod } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 
-import type { IFileUpload, IFinance, IIndividual, IProject, ITeam, ITenantEvent } from '@okampus/shared/dtos';
+import type { IFileUpload, IFinance, IProject, ITeam, ITenantEvent } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class FinanceModel extends TenantScopedModel implements IFinance {
@@ -44,9 +39,6 @@ export class FinanceModel extends TenantScopedModel implements IFinance {
 
   @Field(() => TeamModel)
   team!: ITeam;
-
-  @Field(() => IndividualModel)
-  createdBy!: IIndividual;
 
   @Field(() => TenantEventModel, { nullable: true })
   linkedEvent: ITenantEvent | null = null;

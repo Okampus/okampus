@@ -25,7 +25,7 @@ export class Interaction extends TenantScopedEntity {
   actor!: Actor;
 
   constructor(options: InteractionOptions & { interactionKind: InteractionKind }) {
-    super(options);
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

@@ -9,12 +9,8 @@ import type { OrgOptions } from './org.options';
 import type { OrgDocument } from '../manage-org/org-document/org-document.entity';
 import type { TenantEvent } from '../content-master/event/event.entity';
 
-@Entity({
-  customRepository: () => OrgRepository,
-  discriminatorColumn: 'orgKind',
-  discriminatorMap: OrgKind,
-  abstract: true,
-})
+const customRepository = () => OrgRepository;
+@Entity({ customRepository, discriminatorColumn: 'orgKind', discriminatorMap: OrgKind, abstract: true })
 export class Org extends TenantScopedEntity {
   @Enum({ items: () => OrgKind, type: 'string' })
   orgKind!: OrgKind;
@@ -38,17 +34,9 @@ export class Org extends TenantScopedEntity {
   documents = new Collection<OrgDocument>(this);
 
   constructor(options: OrgOptions & { orgKind: OrgKind }) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
 
-    this.actor = new Actor({
-      org: this,
-      name: options.name,
-      bio: options.bio,
-      tenant: options.tenant,
-      primaryEmail: options.primaryEmail,
-      slug: options.slug,
-      tags: options.tags,
-    });
+    this.actor = new Actor({ ...options, org: this });
   }
 }

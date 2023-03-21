@@ -12,9 +12,6 @@ export abstract class JoinModel extends TenantScopedModel implements IJoin {
   @Field(() => JoinKind)
   joinKind!: JoinKind;
 
-  @Field(() => IndividualModel, { nullable: true })
-  issuer?: IIndividual | null;
-
   @Field(() => UserModel)
   joiner!: IUser;
 

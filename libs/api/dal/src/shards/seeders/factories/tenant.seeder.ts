@@ -13,6 +13,7 @@ export class TenantSeeder extends Factory<Tenant> {
     return {
       slug: toSlug(name),
       name,
+      createdBy: null,
       tenant: new TenantCore({ name, domain: `${toSlug(name)}.fr` }),
     };
   }

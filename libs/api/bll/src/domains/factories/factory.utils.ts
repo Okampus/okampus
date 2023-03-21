@@ -18,6 +18,7 @@ export async function addImagesToActor(
   actor: Actor,
   actorKind: ActorKind,
   images: ActorImageUploadProps,
+  createdBy: Individual | null,
   tenant: TenantCore,
   uploadService: UploadService
 ): Promise<Actor> {
@@ -41,13 +42,18 @@ export async function addImagesToActor(
   imageUploads.map(([key, upload]) => {
     const existingImage = actorImages.find((image) => image.type === key);
     if (existingImage) existingImage.lastActiveDate = new Date();
-    actor.actorImages.add(new ActorImage({ actor, image: upload, type: key, tenant }));
+    actor.actorImages.add(new ActorImage({ actor, image: upload, type: key, createdBy, tenant }));
   });
 
   return actor;
 }
 
-export function extractActor<T extends Partial<ActorProps>>(props: T) {
+export function extractActor(props: ActorProps) {
+  const { name, bio, primaryEmail, slug } = props;
+  return keepDefined({ name, bio, primaryEmail, slug });
+}
+
+export function separateActorProps<T extends Partial<ActorProps>>(props: T) {
   const { name, bio, primaryEmail, slug, ...otherProps } = props;
   const actor = keepDefined({ name, bio, primaryEmail, slug });
   return {
@@ -61,7 +67,7 @@ export async function addDocumentEditToDocument(
   documentEdit: Partial<CreateDocumentDto>,
   documentFile: MulterFileType | DocumentUpload,
   tenant: TenantCore,
-  realAuthor: Individual,
+  createdBy: Individual | null,
   uploadService: UploadService
 ) {
   const newVersion =
@@ -71,9 +77,9 @@ export async function addDocumentEditToDocument(
 
   const edit = new DocumentEdit({
     yearVersion: documentEdit.yearVersion ?? null,
+    linkedUgc: document,
     newVersion,
-    editedBy: realAuthor,
-    order: document.edits.length,
+    createdBy,
     tenant,
   });
 

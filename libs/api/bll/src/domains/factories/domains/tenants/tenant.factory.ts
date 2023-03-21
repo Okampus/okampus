@@ -3,7 +3,7 @@ import { TenantModel } from '../../index';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 import { BaseFactory } from '../../base.factory';
-import { addImagesToActor, extractActor } from '../../factory.utils';
+import { addImagesToActor, separateActorProps } from '../../factory.utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
@@ -15,12 +15,12 @@ import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorImageUploadProps, TenantRepository } from '@okampus/api/dal';
-import { Form, Tag, Tenant, TenantCore } from '@okampus/api/dal';
+import { Form, Individual, Tag, Tenant, TenantCore } from '@okampus/api/dal';
 import { FormType, OrgDocumentType } from '@okampus/shared/enums';
 
+import type { TenantOptions } from '@okampus/api/dal';
 import type { Populate } from '@mikro-orm/core';
 import type { OrgDocumentModel } from '../documents/org-document.model';
-import type { Individual, TenantOptions } from '@okampus/api/dal';
 import type { CreateDocumentDto, CreateTenantDto, IActorImage, ITenant, UpdateTenantDto } from '@okampus/shared/dtos';
 import type { MulterFileType, Snowflake } from '@okampus/shared/types';
 
@@ -66,6 +66,7 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
       primaryEmail: createTenant.primaryEmail,
       parent: null,
       tags: [],
+      createdBy: individual,
       tenant: tenantCore,
     };
 
@@ -78,7 +79,7 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
           type: FormType.Internal,
           schema: createTenant.eventValidationForm,
           isTemplate: false,
-          realAuthor: null,
+          createdBy: null,
           tenant: tenantCore,
         });
       }
@@ -101,10 +102,17 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
 
     // TODO: add eventValidationForm edit
 
-    const transform = async (tenantOrg: Tenant) => {
+    const transform = async (linkedTenant: Tenant) => {
       if (actorImages)
-        await addImagesToActor(tenantOrg.actor, tenantOrg.actor.actorKind(), actorImages, tenant, this.uploadService);
-      return tenantOrg;
+        await addImagesToActor(
+          linkedTenant.actor,
+          linkedTenant.actor.actorKind(),
+          actorImages,
+          requester,
+          tenant,
+          this.uploadService
+        );
+      return linkedTenant;
     };
 
     const transformModel = async (model: TenantModel) => {
@@ -116,7 +124,7 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
     return await this.update(
       { id, tenant },
       populate,
-      extractActor(updateTenantProps),
+      separateActorProps(updateTenantProps),
       false, // TODO: check permissions
       transform,
       transformModel
@@ -130,6 +138,7 @@ export class TenantFactory extends BaseFactory<TenantModel, Tenant, ITenant, Ten
       parent: null,
       tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       eventValidationForm: this.em.getReference(Form, model.eventValidationForm.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

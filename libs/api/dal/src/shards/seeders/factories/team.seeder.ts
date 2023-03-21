@@ -35,6 +35,7 @@ export class TeamSeeder extends Factory<Team> {
       tagline: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),
       type: TeamType.Club,
+      createdBy: null,
       tenant: this.tenant.tenant,
     };
   }

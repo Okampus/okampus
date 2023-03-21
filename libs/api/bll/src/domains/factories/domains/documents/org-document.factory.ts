@@ -12,7 +12,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { S3Buckets, DocumentKind } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { OrgDocumentRepository, OrgRepository } from '@okampus/api/dal';
+import { Individual, OrgDocumentRepository, OrgRepository } from '@okampus/api/dal';
 import { Org, OrgDocument, TenantDocument, TenantCore } from '@okampus/api/dal';
 
 import type { OrgDocumentOptions } from '@okampus/api/dal';
@@ -39,6 +39,8 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     documentFile: MulterFileType,
     tenant: TenantCore
   ): Promise<OrgDocumentModel> {
+    const createdBy = this.requester();
+
     const newVersion = await this.uploadService.createDocumentUpload(tenant, documentFile, S3Buckets.OrgDocuments);
 
     const orgPopulate = (this.autoGqlPopulate()
@@ -53,18 +55,18 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
       ...createDocument,
       documentKind: DocumentKind.InfoDocument,
       newVersion,
-      realAuthor: this.requester(),
+      createdBy,
       tenant,
     });
 
-    await addDocumentEditToDocument(document, createDocument, newVersion, tenant, this.requester(), this.uploadService);
+    await addDocumentEditToDocument(document, createDocument, newVersion, tenant, createdBy, this.uploadService);
 
-    const orgDocumentOptions = { org, document, tenant, type };
+    const orgDocumentOptions = { org, document, type, createdBy, tenant };
     const orgDocument = await this.create(orgDocumentOptions, async (orgDocument) => {
       org.documents.add(orgDocument);
       return orgDocument;
     });
-    this.orgRepository.flush();
+    await this.orgRepository.flush();
 
     return orgDocument;
   }
@@ -103,6 +105,7 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
       type: model.type,
       org: this.em.getReference(Org, model.org.id),
       document: this.em.getReference(TenantDocument, model.document.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

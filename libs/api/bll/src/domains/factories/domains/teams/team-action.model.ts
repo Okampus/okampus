@@ -6,11 +6,10 @@ import { Paginated } from '../../../../shards/types/paginated.type';
 import { TenantScopedModel } from '../../index';
 import { TenantEventModel } from '../../index';
 import { UserModel } from '../../index';
-import { IndividualModel } from '../../index';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { IIndividual, IProject, ITeam, ITeamAction, ITeamMember, ITenantEvent, IUser } from '@okampus/shared/dtos';
+import type { IProject, ITeam, ITeamAction, ITeamMember, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class TeamActionModel extends TenantScopedModel implements ITeamAction {
@@ -37,9 +36,6 @@ export class TeamActionModel extends TenantScopedModel implements ITeamAction {
 
   @Field(() => ProjectModel, { nullable: true })
   linkedProject?: IProject | null;
-
-  @Field(() => IndividualModel, { nullable: true })
-  createdBy?: IIndividual;
 
   @Field(() => ApprovalState)
   state!: ApprovalState;

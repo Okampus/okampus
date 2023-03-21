@@ -108,6 +108,7 @@ export class UsersModule implements OnModuleInit {
         primaryEmail: ADMIN_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         roles: [RoleType.Moderator, RoleType.TenantAdmin],
+        createdBy: null,
       });
 
       admin.passwordHash = await hash(adminAccountPassword, { secret: this.pepper });
@@ -148,6 +149,7 @@ export class UsersModule implements OnModuleInit {
         lastName: ANON_ACCOUNT_LAST_NAME,
         primaryEmail: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
+        createdBy: null,
       });
 
       await this.userRepository.persistAndFlush(anonUser);

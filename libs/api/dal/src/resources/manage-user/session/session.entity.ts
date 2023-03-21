@@ -6,9 +6,7 @@ import type { JSONObject } from '@okampus/shared/types';
 import type { User } from '../../actor/user/user.entity';
 import type { SessionOptions } from './session.options';
 
-@Entity({
-  customRepository: () => SessionRepository,
-})
+@Entity({ customRepository: () => SessionRepository })
 export class Session extends TenantScopedEntity {
   @Property({ type: 'string' })
   ip!: string;
@@ -44,7 +42,7 @@ export class Session extends TenantScopedEntity {
   expiredAt: Date | null = null;
 
   constructor(options: SessionOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

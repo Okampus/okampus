@@ -1,21 +1,19 @@
 import { FinanceRepository } from './finance.repository';
 import { TenantScopedEntity } from '../../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+
 import { Collection, Embedded, Entity, Enum, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { PaymentMethod, FinanceCategory, FinanceState } from '@okampus/shared/enums';
 import { Address } from '@okampus/shared/dtos';
 import { TransformCollection } from '@okampus/api/shards';
-import type { Team } from '../../org/team/team.entity';
-import type { TenantEvent } from '../../content-master/event/event.entity';
+
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { FinanceOptions } from './finance.options';
 import type { Project } from '../project/project.entity';
-
-import type { Individual } from '../../actor/individual/individual.entity';
+import type { Team } from '../../org/team/team.entity';
+import type { TenantEvent } from '../../content-master/event/event.entity';
 import type { User } from '../../actor/user/user.entity';
-import type { FileUpload } from '../../file-upload/file-upload.entity';
 
-@Entity({
-  customRepository: () => FinanceRepository,
-})
+@Entity({ customRepository: () => FinanceRepository })
 export class Finance extends TenantScopedEntity {
   @Property({ type: 'text' })
   transaction!: string;
@@ -47,9 +45,6 @@ export class Finance extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'Individual' })
-  createdBy!: Individual;
-
   // If payedBy is null, then the payment was automatic / TODO: distinguish more cases, such as unknown or outside the system
   @ManyToOne({ type: 'User', nullable: true })
   payedBy: User | null = null;
@@ -69,7 +64,7 @@ export class Finance extends TenantScopedEntity {
   constructor(options: FinanceOptions) {
     if (!options.amountPayed) options.amountPayed = options.amountDue;
 
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

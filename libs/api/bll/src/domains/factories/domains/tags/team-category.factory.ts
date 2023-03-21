@@ -1,21 +1,22 @@
+// eslint-disable-next-line import/no-cycle
 import { TeamCategoryModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadService } from '../../../../features/upload/upload.service';
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamCategoryRepository, TeamRepository, TagRepository } from '@okampus/api/dal';
-import { Team, TeamCategory, TenantCore } from '@okampus/api/dal';
+import { Individual, Team, TeamCategory, TenantCore } from '@okampus/api/dal';
 import { S3Buckets } from '@okampus/shared/enums';
 import { asyncCallIfNotNull, toSlug } from '@okampus/shared/utils';
 
-import type { TeamCategoryOptions, Individual } from '@okampus/api/dal';
+import type { TeamCategoryOptions } from '@okampus/api/dal';
 import type { CreateTeamCategoryDto, ITeamCategory } from '@okampus/shared/dtos';
 import type { MulterFileType } from '@okampus/shared/types';
 
@@ -58,8 +59,9 @@ export class TeamCategoryFactory extends BaseFactory<
       ...createTeamCategory,
       slug,
       teams,
-      tenant,
       iconImage,
+      createdBy: requester,
+      tenant,
     });
   }
 
@@ -70,6 +72,7 @@ export class TeamCategoryFactory extends BaseFactory<
       slug: model.slug,
       description: model.description,
       teams: model.teams.map((team) => this.em.getReference(Team, team.id)),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

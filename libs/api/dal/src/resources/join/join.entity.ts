@@ -7,19 +7,13 @@ import type { Individual } from '../actor/individual/individual.entity';
 import type { FormSubmission } from '../ugc/form-submission/form-submission.entity';
 import type { User } from '../actor/user/user.entity';
 
-@Entity({
-  discriminatorColumn: 'joinKind',
-  discriminatorMap: JoinKind,
-  abstract: true,
-})
+@Entity({ discriminatorColumn: 'joinKind', discriminatorMap: JoinKind, abstract: true })
 export abstract class Join extends TenantScopedEntity {
   @Enum({ items: () => JoinKind, type: 'string' })
   joinKind!: JoinKind;
 
-  // If issuer is null, the joiner is the issuer and the Join is a request
-  // If issuer is not null, the Join is an invitation
-  @ManyToOne({ type: 'Individual', nullable: true })
-  issuer: Individual | null = null;
+  @Enum({ items: () => ApprovalState, type: 'string', default: ApprovalState.Pending })
+  state = ApprovalState.Pending;
 
   @ManyToOne({ type: 'User' })
   joiner!: User;
@@ -36,11 +30,8 @@ export abstract class Join extends TenantScopedEntity {
   @ManyToOne({ type: 'FormSubmission' })
   formSubmission!: FormSubmission;
 
-  @Enum({ items: () => ApprovalState, type: 'string', default: ApprovalState.Pending })
-  state = ApprovalState.Pending;
-
   constructor(options: JoinOptions & { joinKind: JoinKind }) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

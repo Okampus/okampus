@@ -157,13 +157,13 @@ export class UploadService extends RequestContext {
     const resource = await this.upload(stream, mime, id, bucket);
     return {
       id,
-      tenant,
-      uploadedBy: this.requester(),
+      mime,
       name: file.originalname ?? file.filename ?? id,
       size: resource.size ?? file.size ?? 0,
-      mime,
       lastModifiedAt: file.fileLastModifiedAt,
       url: resource.url,
+      createdBy: this.requester(),
+      tenant,
     };
 
     // if (fileUploadKind === FileUploadKind.VideoUpload) {

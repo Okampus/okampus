@@ -1,9 +1,8 @@
 /* eslint-disable import/no-cycle */
-import { IndividualModel } from '../index';
 import { TenantScopedModel } from '../index';
 import { Field, GraphQLISODateTime, Int, InterfaceType } from '@nestjs/graphql';
 import { FileUploadKind } from '@okampus/shared/enums';
-import type { IFileUpload, IIndividual } from '@okampus/shared/dtos';
+import type { IFileUpload } from '@okampus/shared/dtos';
 
 @InterfaceType({
   resolveType: (value) => {
@@ -22,9 +21,6 @@ import type { IFileUpload, IIndividual } from '@okampus/shared/dtos';
 export abstract class FileUploadModel extends TenantScopedModel implements IFileUpload {
   @Field(() => FileUploadKind)
   fileUploadKind!: FileUploadKind;
-
-  @Field(() => IndividualModel, { nullable: true })
-  uploadedBy?: IIndividual;
 
   @Field(() => GraphQLISODateTime)
   lastModifiedAt!: Date;

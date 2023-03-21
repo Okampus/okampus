@@ -12,7 +12,7 @@ export class OrgMetric extends TenantScopedEntity {
   type!: OrgMetricType;
 
   constructor(options: OrgMetricOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

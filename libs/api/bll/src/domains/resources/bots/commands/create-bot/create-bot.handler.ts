@@ -4,7 +4,6 @@ import { CreateBotCommand } from './create-bot.command';
 import { BotFactory } from '../../../../factories/domains/bots/bot.factory';
 
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { ForbiddenException } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';
 import { Actor } from '@okampus/api/dal';
 
@@ -20,14 +19,6 @@ export class CreateBotHandler implements ICommandHandler<CreateBotCommand> {
   ) {}
 
   async execute(command: CreateBotCommand): Promise<BotModel> {
-    // Ensure that slug is unique within the tenant
-    const tenant = command.tenant;
-
-    const existingActor = await this.actorRepository.findOne({ slug: command.createBot.slug, tenant });
-    if (existingActor) throw new ForbiddenException(`Bot with slug '${command.createBot.slug}'`);
-
-    const owner = await this.actorRepository.findOneOrFail({ slug: command.createBot.ownerSlug, tenant });
-
-    return await this.botFactory.create({ ...command.createBot, owner, tenant });
+    return await this.botFactory.createBot({ ...command.createBot, tenant: command.tenant });
   }
 }

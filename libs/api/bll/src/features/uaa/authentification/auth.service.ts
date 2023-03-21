@@ -276,7 +276,7 @@ export class AuthService extends RequestContext {
   ): Promise<Session> {
     const user = this.em.getReference(User, sub);
     const refreshTokenHash = await hash(token, { secret: this.pepper });
-    const session = new Session({ ...userSession, user, tenant, refreshTokenHash, tokenFamily });
+    const session = new Session({ ...userSession, user, refreshTokenHash, tokenFamily, createdBy: user, tenant });
 
     await this.sessionRepository.persistAndFlush(session);
     return session;

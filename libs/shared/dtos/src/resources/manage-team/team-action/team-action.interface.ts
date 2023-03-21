@@ -1,4 +1,3 @@
-import type { IIndividual } from '../../actor/individual/individual.interface';
 import type { IUser } from '../../actor/user/user.interface';
 import type { ITenantEvent } from '../../content-master/event/event.interface';
 import type { ITeamMember } from '../../membership/team-member/team-member.interface';
@@ -14,6 +13,5 @@ export type ITeamAction = ITenantScoped &
     teamMember?: ITeamMember | null;
     linkedEvent?: ITenantEvent | null;
     linkedProject?: IProject | null;
-    createdBy?: IIndividual;
     validatedBy?: ITeamMember | null;
   };

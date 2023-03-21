@@ -4,7 +4,6 @@ import type { User } from '../../actor/user/user.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
 import type { Team } from '../../org/team/team.entity';
 import type { TenantScopedOptions } from '../../../shards/abstract/tenant-scoped/tenant-scoped.options';
-import type { Individual } from '../../actor/individual/individual.entity';
 import type { Project } from '../project/project.entity';
 
 export type TeamActionOptions = TeamActionProps &
@@ -14,6 +13,5 @@ export type TeamActionOptions = TeamActionProps &
     teamMember?: TeamMember | null;
     linkedEvent?: TenantEvent | null;
     linkedProject?: Project | null;
-    createdBy: Individual;
     validatedBy?: TeamMember | null;
   };

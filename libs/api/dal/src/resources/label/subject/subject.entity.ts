@@ -31,7 +31,7 @@ export class Subject extends TenantScopedEntity {
   lastActiveDate: Date | null = null;
 
   constructor(options: SubjectOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

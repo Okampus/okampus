@@ -27,7 +27,7 @@ export class ActorImage extends TenantScopedEntity {
   lastActiveDate: Date | null = null;
 
   constructor(options: ActorImageOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

@@ -22,7 +22,7 @@ export class Social extends TenantScopedEntity {
   pseudo!: string;
 
   constructor(options: SocialOptions) {
-    super({ tenant: options.tenant });
+    super({ tenant: options.tenant, createdBy: options.createdBy });
     this.assign(options);
   }
 }

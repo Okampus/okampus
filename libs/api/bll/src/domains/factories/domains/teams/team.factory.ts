@@ -1,8 +1,7 @@
 import { TeamModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
-import { addImagesToActor, extractActor } from '../../factory.utils';
+import { addImagesToActor, separateActorProps } from '../../factory.utils';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { OrgDocumentFactory } from '../documents/org-document.factory';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -14,8 +13,18 @@ import { EntityManager, FilterQuery, Populate } from '@mikro-orm/core';
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
+  ActorRepository,
+  ShortcutRepository,
+  TeamCategoryRepository,
+  TeamRepository,
+  UserRepository,
+} from '@okampus/api/dal';
+
 import {
   clubDefaultRoles,
+  Individual,
   Shortcut,
   Team,
   teamDefaultRoles,
@@ -29,20 +38,10 @@ import {
   defaultTeamJoinForm,
 } from '@okampus/api/dal';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import {
-  ActorRepository,
-  ShortcutRepository,
-  TeamCategoryRepository,
-  TeamRepository,
-  UserRepository,
-} from '@okampus/api/dal';
-
 import { ActorKind, IndividualKind, ShortcutType, TeamPermissions, TeamType } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
-
+import type { ActorImageUploadProps, TeamOptions, User } from '@okampus/api/dal';
 import type { OrgDocumentModel } from '../documents/org-document.model';
-import type { ActorImageUploadProps, Individual, TeamOptions, User } from '@okampus/api/dal';
 import type { CreateOrgDocumentDto, CreateTeamDto, IActorImage, ITeam, UpdateTeamDto } from '@okampus/shared/dtos';
 import type { Snowflake, MulterFileType } from '@okampus/shared/types';
 
@@ -102,32 +101,37 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
 
     const categories = await this.teamCategoryRepository.findByIds(createTeam.categoriesIds);
 
-    const joinForm = defaultTeamJoinForm(createTeam.name, tenant);
+    const joinForm = defaultTeamJoinForm(createTeam.name, tenant, user);
     /* Create team */
-    const team = await this.create({ ...createTeam, categories, slug, tenant, joinForm }, async (team) => {
-      /* Add images to team */
-      if (images) team.actor = await addImagesToActor(team.actor, ActorKind.Org, images, tenant, this.uploadService);
+    const team = await this.create(
+      { ...createTeam, categories, slug, joinForm, createdBy: user, tenant },
+      async (team) => {
+        /* Add images to team */
+        if (images)
+          team.actor = await addImagesToActor(team.actor, ActorKind.Org, images, user, tenant, this.uploadService);
 
-      /* Add team manage shortcut to team owner */
-      const shortcut = new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user });
+        /* Add team manage shortcut to team owner */
+        const type = ShortcutType.Team;
+        const shortcut = new Shortcut({ type, targetActor: team.actor, user, createdBy: null, tenant });
 
-      /* Add default roles to team */
-      const roles =
-        createTeam.type === TeamType.Club || createTeam.type === TeamType.Association
-          ? clubDefaultRoles
-          : teamDefaultRoles;
+        /* Add default roles to team */
+        const roles =
+          createTeam.type === TeamType.Club || createTeam.type === TeamType.Association
+            ? clubDefaultRoles
+            : teamDefaultRoles;
 
-      const roleEntities = roles.map((role) => new TeamRole({ ...role, team, tenant }));
+        const roleEntities = roles.map((role) => new TeamRole({ ...role, team, createdBy: null, tenant }));
 
-      /* Add team owner to team */
-      const membership = new TeamMember({ team, user, roles: [roleEntities[0]], tenant });
+        /* Add team owner to team */
+        const membership = new TeamMember({ team, user, roles: [roleEntities[0]], createdBy: user, tenant });
 
-      this.shortcutRepository.persist(shortcut);
-      team.roles.add(roleEntities);
-      team.members.add(membership);
+        this.shortcutRepository.persist(shortcut);
+        team.roles.add(roleEntities);
+        team.members.add(membership);
 
-      return team;
-    });
+        return team;
+      }
+    );
 
     return team;
   }
@@ -146,7 +150,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
 
     const transform = async (team: Team) => {
       if (actorImages)
-        await addImagesToActor(team.actor, team.actor.actorKind(), actorImages, tenant, this.uploadService);
+        await addImagesToActor(team.actor, team.actor.actorKind(), actorImages, requester, tenant, this.uploadService);
       return team;
     };
 
@@ -156,7 +160,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
       return model;
     };
 
-    return await this.update({ id, tenant }, populate, extractActor(data), true, transform, transformModel);
+    return await this.update({ id, tenant }, populate, separateActorProps(data), true, transform, transformModel);
   }
 
   async hasTeamRole(teamId: Snowflake, individualId: Snowflake, where: FilterQuery<TeamRole>): Promise<boolean> {
@@ -180,6 +184,7 @@ export class TeamFactory extends BaseFactory<TeamModel, Team, ITeam, TeamOptions
       joinForm: this.em.getReference(Form, model.joinForm.id),
       tags: model.actor.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       categories: model.categories.map((category) => this.em.getReference(TeamCategory, category.id)),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

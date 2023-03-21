@@ -76,11 +76,11 @@ export class FinanceFactory extends BaseFactory<FinanceModel, Finance, IFinance,
   modelToEntity(model: Required<FinanceModel>): Finance {
     return new Finance({
       ...model,
-      createdBy: this.em.getReference(Individual, model.createdBy.id),
       team: this.em.getReference(Team, model.team.id),
       linkedProject: model.linkedProject ? this.em.getReference(Project, model.linkedProject.id) : null,
       linkedEvent: model.linkedEvent ? this.em.getReference(TenantEvent, model.linkedEvent.id) : null,
       receipts: model.receipts.map((file) => this.em.getReference(FileUpload, file.id)),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }

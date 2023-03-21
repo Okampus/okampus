@@ -75,8 +75,8 @@ export class EventApprovalFactory extends BaseFactory<
     return new EventApproval({
       ...model,
       event: this.em.getReference(TenantEvent, model.event.id),
-      createdBy: this.em.getReference(Individual, model.createdBy.id),
       step: this.em.getReference(EventApprovalStep, model.step.id),
+      createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });
   }
