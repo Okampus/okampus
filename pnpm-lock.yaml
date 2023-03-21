@@ -84,6 +84,7 @@ specifiers:
   '@testing-library/react': ^13.4.0
   '@testing-library/react-native': ^12.0.0
   '@types/apollo-upload-client': ^17.0.0
+  '@types/diff': ^5.0.0
   '@types/jest': ^29.5.0
   '@types/jsonwebtoken': ^9.0.0
   '@types/mime-types': ^2.1.0
@@ -117,6 +118,7 @@ specifiers:
   dayjs: ^1.11.0
   detox: ^20.5.0
   device-detector-js: ^3.0.0
+  diff: ^5.1.0
   dotenv: ^16.0.0
   eas-cli: ^3.8.0
   eslint: ^8.36.0
@@ -269,6 +271,7 @@ dependencies:
   cross-env: 7.0.3
   dayjs: 1.11.7
   device-detector-js: 3.0.3
+  diff: 5.1.0
   dotenv: 16.0.3
   fastify: 4.14.1
   fastify-multer: 2.0.3
@@ -354,6 +357,7 @@ devDependencies:
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/react-native': 12.0.0_enn7b6m45c7p5iyv6luw4eqwdi
   '@types/apollo-upload-client': 17.0.2_4u7wxyhqcphrmxyprbl6orwvzu
+  '@types/diff': 5.0.2
   '@types/jest': 29.5.0
   '@types/jsonwebtoken': 9.0.1
   '@types/mime-types': 2.1.1
@@ -7884,6 +7888,10 @@ packages:
     dependencies:
       '@types/node': 18.15.3
 
+  /@types/diff/5.0.2:
+    resolution: {integrity: sha512-uw8eYMIReOwstQ0QKF0sICefSy8cNO/v7gOTiIy9SbwuHyEecJUm7qlgueOO5S1udZ5I/irVydHVwMchgzbKTg==}
+    dev: true
+
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
@@ -12109,7 +12117,6 @@ packages:
   /diff/5.1.0:
     resolution: {integrity: sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==}
     engines: {node: '>=0.3.1'}
-    dev: true
 
   /diffable-html/4.1.0:
     resolution: {integrity: sha512-++kyNek+YBLH8cLXS+iTj/Hiy2s5qkRJEJ8kgu/WHbFrVY2vz9xPFUT+fii2zGF0m1CaojDlQJjkfrCt7YWM1g==}
