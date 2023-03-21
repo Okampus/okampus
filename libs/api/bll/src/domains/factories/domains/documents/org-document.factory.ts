@@ -93,7 +93,7 @@ export class OrgDocumentFactory extends BaseFactory<OrgDocumentModel, OrgDocumen
     if (orgDocument.type !== type) orgDocument.type = type;
     await this.orgDocumentRepository.flush();
 
-    const orgDocumentModel = this.entityToModel(orgDocument);
+    const orgDocumentModel = await this.entityToModel(orgDocument);
     if (!orgDocumentModel)
       throw new InternalServerErrorException(`Error converting org document ${orgDocumentId} to model`);
 

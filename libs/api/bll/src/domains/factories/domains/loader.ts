@@ -41,7 +41,7 @@ import {
   VideoUpload,
 } from '@okampus/api/dal';
 import { ActorKind, IndividualKind } from '@okampus/shared/enums';
-import { loadApply, applyModelFactory } from '@okampus/api/shards';
+import { loadApplyAsync, applyModelFactory } from '@okampus/api/shards';
 import type {
   ITenant,
   ITeam,
@@ -255,18 +255,18 @@ const getTenantOrLoad = (tenant: TenantCore, context: Record<Snowflake, AllInter
   return tenantCore;
 };
 
-export function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
+export async function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
   entity: T,
   context: Record<Snowflake, AllInterfaces>
-): LoadInterface<T> | undefined;
+): Promise<LoadInterface<T> | undefined>;
 
-export function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
+export async function getEntityFromStackOrLoad<T extends TenantScopedEntity>(
   entity: T | null,
   context: Record<Snowflake, AllInterfaces>,
   nullable: true
-): LoadInterface<T> | null | undefined;
+): Promise<LoadInterface<T> | null | undefined>;
 
-export function getEntityFromStackOrLoad(
+export async function getEntityFromStackOrLoad(
   entity: TenantScopedEntity,
   context: Record<Snowflake, AllInterfaces>,
   nullable = false
@@ -276,7 +276,7 @@ export function getEntityFromStackOrLoad(
   const entityFromStack = context[entity.id];
   if (entityFromStack) return entityFromStack;
 
-  const loadedEntity = loadTenantScopedEntity(entity, context);
+  const loadedEntity = await loadTenantScopedEntity(entity, context);
   if (!loadedEntity) return;
 
   context[loadedEntity.id] = loadedEntity;
@@ -286,17 +286,17 @@ export function getEntityFromStackOrLoad(
 const isUser = (user: TenantScopedEntity): user is User => (<Individual>user).individualKind === IndividualKind.User;
 const isBot = (bot: TenantScopedEntity): bot is Bot => (<Individual>bot).individualKind === IndividualKind.Bot;
 
-export function loadTenantScopedEntity<T extends TenantScopedEntity>(
+export async function loadTenantScopedEntity<T extends TenantScopedEntity>(
   entity: T,
   context: Record<Snowflake, AllInterfaces>,
   loadBaseClass?: boolean
-): LoadInterface<T> | undefined;
+): Promise<LoadInterface<T> | undefined>;
 
-export function loadTenantScopedEntity(
+export async function loadTenantScopedEntity(
   entity: TenantScopedEntity,
   context: Record<Snowflake, AllInterfaces>,
   loadBaseClass?: boolean
-): AllInterfaces | undefined {
+): Promise<AllInterfaces | undefined> {
   if (entity.id in context) return context[entity.id];
 
   const baseProps = loadBase(entity);
@@ -305,15 +305,15 @@ export function loadTenantScopedEntity(
   const base: ITenantScoped = {
     ...baseProps,
     tenant: entity.tenant ? getTenantOrLoad(entity.tenant, context) : undefined,
-    createdBy: entity.createdBy ? getEntityFromStackOrLoad(entity.createdBy, context) : undefined,
+    createdBy: entity.createdBy ? await getEntityFromStackOrLoad(entity.createdBy, context) : undefined,
   };
 
   if (entity instanceof TeamCategory && !loadBaseClass) {
-    const baseTag = loadTenantScopedEntity(entity, context, true);
+    const baseTag = await loadTenantScopedEntity(entity, context, true);
     if (!baseTag) return undefined;
     return {
       ...baseTag,
-      teams: loadApply(entity.teams, (team) => getEntityFromStackOrLoad(team, context)),
+      teams: await loadApplyAsync(entity.teams, (team) => getEntityFromStackOrLoad(team, context)),
     };
   }
 
@@ -322,7 +322,7 @@ export function loadTenantScopedEntity(
       ...base,
       tagKind: entity.tagKind,
       slug: entity.slug,
-      iconImage: entity.iconImage ? loadTenantScopedEntity(entity.iconImage, context) : null,
+      iconImage: entity.iconImage ? await loadTenantScopedEntity(entity.iconImage, context) : null,
       color: entity.color,
       name: entity.name,
       description: entity.description,
@@ -335,12 +335,12 @@ export function loadTenantScopedEntity(
       type: entity.type,
       url: entity.url,
       pseudo: entity.pseudo,
-      actor: getEntityFromStackOrLoad(entity.actor, context),
+      actor: await getEntityFromStackOrLoad(entity.actor, context),
     };
   }
 
   if (entity instanceof ImageUpload && !loadBaseClass) {
-    const baseFileUpload = loadTenantScopedEntity(entity, context, true);
+    const baseFileUpload = await loadTenantScopedEntity(entity, context, true);
     if (!baseFileUpload) return undefined;
     return {
       ...baseFileUpload,
@@ -350,7 +350,7 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof VideoUpload && !loadBaseClass) {
-    const baseFileUpload = loadTenantScopedEntity(entity, context, true);
+    const baseFileUpload = await loadTenantScopedEntity(entity, context, true);
     if (!baseFileUpload) return undefined;
     return {
       ...baseFileUpload,
@@ -361,7 +361,7 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof DocumentUpload && !loadBaseClass) {
-    const baseFileUpload = loadTenantScopedEntity(entity, context, true);
+    const baseFileUpload = await loadTenantScopedEntity(entity, context, true);
     if (!baseFileUpload) return undefined;
     return {
       ...baseFileUpload,
@@ -388,8 +388,8 @@ export function loadTenantScopedEntity(
       ...base,
       lastActiveDate: entity.lastActiveDate,
       type: entity.type,
-      image: loadTenantScopedEntity(entity.image, context),
-      actor: getEntityFromStackOrLoad(entity.actor, context),
+      image: await loadTenantScopedEntity(entity.image, context),
+      actor: await getEntityFromStackOrLoad(entity.actor, context),
     };
   }
 
@@ -397,13 +397,13 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       type: entity.type,
-      targetActor: getEntityFromStackOrLoad(entity.targetActor, context),
-      user: getEntityFromStackOrLoad(entity.user, context),
+      targetActor: await getEntityFromStackOrLoad(entity.targetActor, context),
+      user: await getEntityFromStackOrLoad(entity.user, context),
     };
   }
 
   if ((entity instanceof User || isUser(entity)) && !loadBaseClass) {
-    const user = loadTenantScopedEntity(entity, context, true);
+    const user = await loadTenantScopedEntity(entity, context, true);
     if (!user) return undefined;
 
     context[user.id] = user;
@@ -418,22 +418,24 @@ export function loadTenantScopedEntity(
     user.settings = entity.settings;
     user.finishedIntroduction = entity.finishedIntroduction;
     user.finishedOnboarding = entity.finishedOnboarding;
-    user.shortcuts = loadApply(entity.shortcuts, (shortcut) => loadTenantScopedEntity(shortcut, context));
-    user.teamMemberships = loadApply(entity.teamMemberships, (member) => loadTenantScopedEntity(member, context));
-    user.teamJoins = loadApply(entity.teamJoins, (teamJoin) => loadTenantScopedEntity(teamJoin, context));
-    user.actor = getEntityFromStackOrLoad(entity.actor, context);
+    user.shortcuts = await loadApplyAsync(entity.shortcuts, (shortcut) => loadTenantScopedEntity(shortcut, context));
+    user.teamMemberships = await loadApplyAsync(entity.teamMemberships, (member) =>
+      loadTenantScopedEntity(member, context)
+    );
+    user.teamJoins = await loadApplyAsync(entity.teamJoins, (teamJoin) => loadTenantScopedEntity(teamJoin, context));
+    user.actor = await getEntityFromStackOrLoad(entity.actor, context);
 
     return user;
   }
 
   if ((entity instanceof Bot || isBot(entity)) && !loadBaseClass) {
-    const bot = loadTenantScopedEntity(entity, context, true);
+    const bot = await loadTenantScopedEntity(entity, context, true);
     if (!bot) return undefined;
 
     context[bot.id] = bot;
 
     bot.botRole = entity.botRole;
-    bot.owner = loadTenantScopedEntity(entity.owner, context);
+    bot.owner = await loadTenantScopedEntity(entity.owner, context);
 
     return bot;
   }
@@ -447,13 +449,13 @@ export function loadTenantScopedEntity(
 
     context[individual.id] = individual;
 
-    individual.actor = getEntityFromStackOrLoad(entity.actor, context);
+    individual.actor = await getEntityFromStackOrLoad(entity.actor, context);
 
     return individual;
   }
 
   if (entity instanceof Team && !loadBaseClass) {
-    const team = loadTenantScopedEntity(entity, context, true);
+    const team = await loadTenantScopedEntity(entity, context, true);
     if (!team) return undefined;
 
     context[team.id] = team;
@@ -466,28 +468,28 @@ export function loadTenantScopedEntity(
     team.tagline = entity.tagline;
     team.membershipFees = entity.membershipFees;
     team.memberCount = entity.memberCount;
-    team.members = loadApply(entity.members, (member) => loadTenantScopedEntity(member, context));
-    team.roles = loadApply(entity.roles, (role) => loadTenantScopedEntity(role, context));
-    team.joins = loadApply(entity.joins, (join) => loadTenantScopedEntity(join, context));
-    team.finances = loadApply(entity.finances, (finance) => loadTenantScopedEntity(finance, context));
-    team.categories = loadApply(entity.categories, (category) => loadTenantScopedEntity(category, context));
-    team.joinForm = getEntityFromStackOrLoad(entity.joinForm, context);
+    team.members = await loadApplyAsync(entity.members, (member) => loadTenantScopedEntity(member, context));
+    team.roles = await loadApplyAsync(entity.roles, (role) => loadTenantScopedEntity(role, context));
+    team.joins = await loadApplyAsync(entity.joins, (join) => loadTenantScopedEntity(join, context));
+    team.finances = await loadApplyAsync(entity.finances, (finance) => loadTenantScopedEntity(finance, context));
+    team.categories = await loadApplyAsync(entity.categories, (category) => loadTenantScopedEntity(category, context));
+    team.joinForm = await getEntityFromStackOrLoad(entity.joinForm, context);
 
     return team;
   }
 
   if (entity instanceof Tenant && !loadBaseClass) {
-    const tenant = loadTenantScopedEntity(entity, context, true);
+    const tenant = await loadTenantScopedEntity(entity, context, true);
     if (!tenant) return undefined;
 
     context[tenant.id] = tenant;
 
-    tenant.eventApprovalSteps = loadApply(entity.eventApprovalSteps, (approvalStep) =>
+    tenant.eventApprovalSteps = await loadApplyAsync(entity.eventApprovalSteps, (approvalStep) =>
       loadTenantScopedEntity(approvalStep, context)
     );
 
     tenant.eventValidationForm = entity.eventValidationForm
-      ? loadTenantScopedEntity(entity.eventValidationForm, context)
+      ? await loadTenantScopedEntity(entity.eventValidationForm, context)
       : null;
 
     return tenant;
@@ -502,10 +504,10 @@ export function loadTenantScopedEntity(
 
     context[org.id] = org;
 
-    org.documents = loadApply(entity.documents, (document) => loadTenantScopedEntity(document, context));
-    org.events = loadApply(entity.events, (event) => getEntityFromStackOrLoad(event, context));
-    org.parent = entity.parent ? loadTenantScopedEntity(entity.parent, context) : null;
-    org.actor = loadTenantScopedEntity(entity.actor, context);
+    org.documents = await loadApplyAsync(entity.documents, (document) => loadTenantScopedEntity(document, context));
+    org.events = await loadApplyAsync(entity.events, (event) => getEntityFromStackOrLoad(event, context));
+    org.parent = entity.parent ? await loadTenantScopedEntity(entity.parent, context) : null;
+    org.actor = await loadTenantScopedEntity(entity.actor, context);
 
     return org;
   }
@@ -526,15 +528,17 @@ export function loadTenantScopedEntity(
 
     context[actor.id] = actor;
 
-    actor.actorImages = loadApply(entity.actorImages, (actorImage) => loadTenantScopedEntity(actorImage, context));
-    actor.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, context));
-    actor.socials = loadApply(entity.socials, (social) => loadTenantScopedEntity(social, context));
+    actor.actorImages = await loadApplyAsync(entity.actorImages, (actorImage) =>
+      loadTenantScopedEntity(actorImage, context)
+    );
+    actor.tags = await loadApplyAsync(entity.tags, (tag) => loadTenantScopedEntity(tag, context));
+    actor.socials = await loadApplyAsync(entity.socials, (social) => loadTenantScopedEntity(social, context));
 
     if (actor.actorKind === ActorKind.Individual && entity.individual) {
-      actor.individual = getEntityFromStackOrLoad(entity.individual, context);
+      actor.individual = await getEntityFromStackOrLoad(entity.individual, context);
       actor.org = null;
     } else if (actor.actorKind === ActorKind.Org && entity.org) {
-      actor.org = getEntityFromStackOrLoad(entity.org, context);
+      actor.org = await getEntityFromStackOrLoad(entity.org, context);
       actor.individual = null;
     }
 
@@ -545,13 +549,13 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       type: entity.type,
-      document: loadTenantScopedEntity(entity.document, context),
-      org: getEntityFromStackOrLoad(entity.org, context),
+      document: await loadTenantScopedEntity(entity.document, context),
+      org: await getEntityFromStackOrLoad(entity.org, context),
     };
   }
 
   if (entity instanceof TeamRole && !loadBaseClass) {
-    const baseRole = loadTenantScopedEntity(entity, context, true);
+    const baseRole = await loadTenantScopedEntity(entity, context, true);
     if (!baseRole) return undefined;
 
     return {
@@ -559,7 +563,7 @@ export function loadTenantScopedEntity(
       permissions: entity.permissions,
       category: entity.category,
       key: entity.key,
-      team: getEntityFromStackOrLoad(entity.team, context),
+      team: await getEntityFromStackOrLoad(entity.team, context),
     };
   }
 
@@ -574,14 +578,14 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof TeamMember && !loadBaseClass) {
-    const baseMember = loadTenantScopedEntity(entity, context, true);
+    const baseMember = await loadTenantScopedEntity(entity, context, true);
     if (!baseMember) return undefined;
 
     return {
       ...baseMember,
-      team: getEntityFromStackOrLoad(entity.team, context),
-      roles: loadApply(entity.roles, (role) => loadTenantScopedEntity(role, context)),
-      activities: loadApply(entity.activities, (activity) => loadTenantScopedEntity(activity, context)),
+      team: await getEntityFromStackOrLoad(entity.team, context),
+      roles: await loadApplyAsync(entity.roles, (role) => loadTenantScopedEntity(role, context)),
+      activities: await loadApplyAsync(entity.activities, (activity) => loadTenantScopedEntity(activity, context)),
     };
   }
 
@@ -591,7 +595,7 @@ export function loadTenantScopedEntity(
       membershipKind: entity.membershipKind,
       startDate: entity.startDate,
       endDate: entity.endDate,
-      user: getEntityFromStackOrLoad(entity.user, context),
+      user: await getEntityFromStackOrLoad(entity.user, context),
     };
   }
 
@@ -601,9 +605,9 @@ export function loadTenantScopedEntity(
       name: entity.name,
       score: entity.score,
       description: entity.description,
-      team: getEntityFromStackOrLoad(entity.team, context),
-      user: getEntityFromStackOrLoad(entity.user, context),
-      teamMember: getEntityFromStackOrLoad(entity.teamMember, context, true),
+      team: await getEntityFromStackOrLoad(entity.team, context),
+      user: await getEntityFromStackOrLoad(entity.user, context),
+      teamMember: await getEntityFromStackOrLoad(entity.teamMember, context, true),
       state: entity.state,
     };
   }
@@ -615,9 +619,11 @@ export function loadTenantScopedEntity(
       description: entity.description,
       expectedBudget: entity.expectedBudget,
       actualBudget: entity.actualBudget,
-      team: getEntityFromStackOrLoad(entity.team, context),
-      linkedEvent: entity.linkedEvent ? loadTenantScopedEntity(entity.linkedEvent, context) : null,
-      participants: loadApply(entity.participants, (participant) => getEntityFromStackOrLoad(participant, context)),
+      team: await getEntityFromStackOrLoad(entity.team, context),
+      linkedEvent: entity.linkedEvent ? await loadTenantScopedEntity(entity.linkedEvent, context) : null,
+      participants: await loadApplyAsync(entity.participants, (participant) =>
+        getEntityFromStackOrLoad(participant, context)
+      ),
     };
   }
 
@@ -633,15 +639,15 @@ export function loadTenantScopedEntity(
       paymentDate: entity.paymentDate,
       paymentMethod: entity.paymentMethod,
       state: entity.state,
-      linkedEvent: entity.linkedEvent ? loadTenantScopedEntity(entity.linkedEvent, context) : null,
-      linkedProject: entity.linkedProject ? loadTenantScopedEntity(entity.linkedProject, context) : null,
-      receipts: loadApply(entity.receipts, (receipt) => loadTenantScopedEntity(receipt, context)),
-      team: getEntityFromStackOrLoad(entity.team, context),
+      linkedEvent: entity.linkedEvent ? await loadTenantScopedEntity(entity.linkedEvent, context) : null,
+      linkedProject: entity.linkedProject ? await loadTenantScopedEntity(entity.linkedProject, context) : null,
+      receipts: await loadApplyAsync(entity.receipts, (receipt) => loadTenantScopedEntity(receipt, context)),
+      team: await getEntityFromStackOrLoad(entity.team, context),
     };
   }
 
   if (entity instanceof TenantEvent && !loadBaseClass) {
-    const event = loadTenantScopedEntity(entity, context, true);
+    const event = await loadTenantScopedEntity(entity, context, true);
     if (!event) return undefined;
 
     context[entity.id] = event;
@@ -655,11 +661,13 @@ export function loadTenantScopedEntity(
     event.price = entity.price;
     event.private = entity.private;
     event.regularEventInterval = entity.regularEventInterval;
-    event.regularEvent = entity.regularEvent ? loadTenantScopedEntity(entity.regularEvent, context) : null;
-    event.supervisor = getEntityFromStackOrLoad(entity.supervisor, context);
-    event.orgs = loadApply(entity.orgs, (org) => getEntityFromStackOrLoad(org, context));
-    event.eventApprovals = loadApply(entity.eventApprovals, (approval) => loadTenantScopedEntity(approval, context));
-    event.registrations = loadApply(entity.registrations, (registration) =>
+    event.regularEvent = entity.regularEvent ? await loadTenantScopedEntity(entity.regularEvent, context) : null;
+    event.supervisor = await getEntityFromStackOrLoad(entity.supervisor, context);
+    event.orgs = await loadApplyAsync(entity.orgs, (org) => getEntityFromStackOrLoad(org, context));
+    event.eventApprovals = await loadApplyAsync(entity.eventApprovals, (approval) =>
+      loadTenantScopedEntity(approval, context)
+    );
+    event.registrations = await loadApplyAsync(entity.registrations, (registration) =>
       loadTenantScopedEntity(registration, context)
     );
 
@@ -667,7 +675,7 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof ContentMaster) {
-    const contentMaster = loadTenantScopedEntity(entity, context, true);
+    const contentMaster = await loadTenantScopedEntity(entity, context, true);
     if (!contentMaster) return undefined;
 
     context[entity.id] = contentMaster;
@@ -675,62 +683,62 @@ export function loadTenantScopedEntity(
     contentMaster.contentMasterKind = entity.contentMasterKind;
     contentMaster.slug = entity.slug;
     contentMaster.title = entity.title;
-    contentMaster.tags = loadApply(entity.tags, (tag) => loadTenantScopedEntity(tag, context));
-    contentMaster.contributors = loadApply(entity.contributors, (contributor) =>
+    contentMaster.tags = await loadApplyAsync(entity.tags, (tag) => loadTenantScopedEntity(tag, context));
+    contentMaster.contributors = await loadApplyAsync(entity.contributors, (contributor) =>
       getEntityFromStackOrLoad(contributor, context)
     );
-    contentMaster.rootContent = getEntityFromStackOrLoad(entity.rootContent, context);
+    contentMaster.rootContent = await getEntityFromStackOrLoad(entity.rootContent, context);
 
     return contentMaster;
   }
 
   if (entity instanceof TeamJoin && !loadBaseClass) {
-    const baseJoin = loadTenantScopedEntity(entity, context, true);
+    const baseJoin = await loadTenantScopedEntity(entity, context, true);
     if (!baseJoin) return undefined;
 
     return {
       ...baseJoin,
-      askedRole: loadTenantScopedEntity(entity.askedRole, context),
-      team: getEntityFromStackOrLoad(entity.team, context),
-      receivedRole: entity.receivedRole ? loadTenantScopedEntity(entity.receivedRole, context) : null,
+      askedRole: await loadTenantScopedEntity(entity.askedRole, context),
+      team: await getEntityFromStackOrLoad(entity.team, context),
+      receivedRole: entity.receivedRole ? await loadTenantScopedEntity(entity.receivedRole, context) : null,
     };
   }
 
   if (entity instanceof EventJoin && !loadBaseClass) {
-    const baseJoin = loadTenantScopedEntity(entity, context, true);
+    const baseJoin = await loadTenantScopedEntity(entity, context, true);
     if (!baseJoin) return undefined;
 
     return {
       ...baseJoin,
-      linkedEvent: loadTenantScopedEntity(entity.event, context),
+      linkedEvent: await loadTenantScopedEntity(entity.event, context),
       presenceStatus: entity.presenceStatus,
       participated: entity.participated,
-      teamAction: entity.teamAction ? loadTenantScopedEntity(entity.teamAction, context) : null,
+      teamAction: entity.teamAction ? await loadTenantScopedEntity(entity.teamAction, context) : null,
     };
   }
 
   if (entity instanceof Join) {
     return {
       ...base,
-      formSubmission: entity.formSubmission ? loadTenantScopedEntity(entity.formSubmission, context) : null,
+      formSubmission: entity.formSubmission ? await loadTenantScopedEntity(entity.formSubmission, context) : null,
       joinKind: entity.joinKind,
-      joiner: getEntityFromStackOrLoad(entity.joiner, context),
+      joiner: await getEntityFromStackOrLoad(entity.joiner, context),
       state: entity.state,
       settledAt: entity.settledAt,
       settledMessage: entity.settledMessage,
-      settledBy: getEntityFromStackOrLoad(entity.settledBy, context, true),
+      settledBy: await getEntityFromStackOrLoad(entity.settledBy, context, true),
     };
   }
 
   if (entity instanceof TenantDocument && !loadBaseClass) {
-    const baseUgc = loadTenantScopedEntity(entity, context, true);
+    const baseUgc = await loadTenantScopedEntity(entity, context, true);
     if (!baseUgc) return undefined;
 
     return {
       ...baseUgc,
       name: entity.name,
       yearVersion: entity.yearVersion,
-      current: loadTenantScopedEntity(entity.newVersion, context),
+      current: await loadTenantScopedEntity(entity.newVersion, context),
     };
   }
 
@@ -738,12 +746,12 @@ export function loadTenantScopedEntity(
     return {
       ...base,
       yearVersion: entity.yearVersion,
-      current: loadTenantScopedEntity(entity.newVersion, context),
+      current: await loadTenantScopedEntity(entity.newVersion, context),
     };
   }
 
   if (entity instanceof Form && !loadBaseClass) {
-    const baseUgc = loadTenantScopedEntity(entity, context, true);
+    const baseUgc = await loadTenantScopedEntity(entity, context, true);
     if (!baseUgc) return undefined;
 
     const form: IForm = {
@@ -770,7 +778,7 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof FormSubmission && !loadBaseClass) {
-    const baseUgc = loadTenantScopedEntity(entity, context, true);
+    const baseUgc = await loadTenantScopedEntity(entity, context, true);
     if (!baseUgc) return undefined;
 
     return {
@@ -787,13 +795,15 @@ export function loadTenantScopedEntity(
   }
 
   if (entity instanceof Content && !loadBaseClass) {
-    const baseUgc = loadTenantScopedEntity(entity, context, true);
+    const baseUgc = await loadTenantScopedEntity(entity, context, true);
     if (!baseUgc) return undefined;
 
     return {
       ...baseUgc,
-      parent: entity.parent ? loadTenantScopedEntity(entity, context) : null,
-      attachments: loadApply(entity.attachments, (attachment) => loadTenantScopedEntity(attachment, context)),
+      parent: entity.parent ? await loadTenantScopedEntity(entity, context) : null,
+      attachments: await loadApplyAsync(entity.attachments, (attachment) =>
+        loadTenantScopedEntity(attachment, context)
+      ),
     };
   }
 
@@ -802,20 +812,22 @@ export function loadTenantScopedEntity(
       ...base,
       editKind: entity.editKind,
       addedDiff: entity.addedDiff,
-      linkedUgc: loadTenantScopedEntity(entity.linkedUgc, context),
+      linkedUgc: await loadTenantScopedEntity(entity.linkedUgc, context),
     };
   }
 
   if (entity instanceof Ugc) {
+    // const [lastEditEntity] = await entity.edits.matching({ limit: 1, orderBy: { createdAt: 'desc' } });
     return {
       ...base,
       ugcKind: entity.ugcKind,
       description: entity.description,
       isAnonymous: entity.isAnonymous,
-      contentMaster: getEntityFromStackOrLoad(entity.contentMaster, context, true),
-      author: getEntityFromStackOrLoad(entity.author, context, true),
-      representingOrgs: loadApply(entity.representingOrgs, (org) => getEntityFromStackOrLoad(org, context)),
-      edits: loadApply(entity.edits, (edit) => loadTenantScopedEntity(edit, context)),
+      contentMaster: await getEntityFromStackOrLoad(entity.contentMaster, context, true),
+      author: await getEntityFromStackOrLoad(entity.author, context, true),
+      representingOrgs: await loadApplyAsync(entity.representingOrgs, (org) => getEntityFromStackOrLoad(org, context)),
+      edits: await loadApplyAsync(entity.edits, (edit) => loadTenantScopedEntity(edit, context)),
+      // lastEdit: lastEditEntity ? await loadTenantScopedEntity(lastEditEntity, context) : null,
     };
   }
 
@@ -824,8 +836,8 @@ export function loadTenantScopedEntity(
       ...base,
       approved: entity.approved,
       message: entity.message,
-      step: loadTenantScopedEntity(entity.step, context),
-      linkedEvent: loadTenantScopedEntity(entity.event, context),
+      step: await loadTenantScopedEntity(entity.step, context),
+      linkedEvent: await loadTenantScopedEntity(entity.event, context),
     };
   }
 
@@ -834,9 +846,9 @@ export function loadTenantScopedEntity(
       ...base,
       stepOrder: entity.stepOrder,
       name: entity.name,
-      notifiees: loadApply(entity.notifiees, (notifiee) => getEntityFromStackOrLoad(notifiee, context)),
-      validators: loadApply(entity.validators, (validator) => getEntityFromStackOrLoad(validator, context)),
-      linkedTenant: getEntityFromStackOrLoad(entity.linkedTenant, context),
+      notifiees: await loadApplyAsync(entity.notifiees, (notifiee) => getEntityFromStackOrLoad(notifiee, context)),
+      validators: await loadApplyAsync(entity.validators, (validator) => getEntityFromStackOrLoad(validator, context)),
+      linkedTenant: await getEntityFromStackOrLoad(entity.linkedTenant, context),
     };
   }
 

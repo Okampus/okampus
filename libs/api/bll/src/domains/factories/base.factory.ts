@@ -55,21 +55,21 @@ export abstract class BaseFactory<
 
   public abstract modelToEntity(model: Required<Model>): Entity;
 
-  public entityToModel(entity: Entity): Model | undefined {
-    const raw = loadTenantScopedEntity(entity, {});
+  public async entityToModel(entity: Entity): Promise<Model | undefined> {
+    const raw = await loadTenantScopedEntity(entity, {});
     if (!raw) return undefined;
     return this.createModel(raw as unknown as Interface);
   }
 
-  public entityToModelOrFail(entity: Entity): Model {
-    const model = this.entityToModel(entity);
+  public async entityToModelOrFail(entity: Entity): Promise<Model> {
+    const model = await this.entityToModel(entity);
     if (!model) throw new BadRequestException('Entity could not be loaded');
     return model;
   }
 
   public async findOne(where: FilterQuery<Entity>, findOptions?: FindOneOptions<Entity>): Promise<Model | null> {
     const entity = await this.repository.findOne(where, findOptions);
-    return entity ? this.entityToModel(entity) ?? null : null;
+    return entity ? (await this.entityToModel(entity)) ?? null : null;
   }
 
   public async findOneOrFail(where: FilterQuery<Entity>, findOptions?: FindOneOrFailOptions<Entity>): Promise<Model> {
@@ -169,11 +169,14 @@ export abstract class BaseFactory<
 
     const requester = this.requester();
 
-    const edges = items
-      .map((value) => {
-        const node = this.entityToModel(value);
+    const edgesRaw = await Promise.all(
+      items.map(async (value) => {
+        const node = await this.entityToModel(value);
         return node ? { entity: value, node } : null;
       })
+    );
+
+    const edges = edgesRaw
       .filter(isNotNull)
       .filter((value) => requester || checkPermissions(requester, Action.Read, value.entity))
       .map((value) => ({ node: value.node, cursor: getCursor ? makeCursor(value.entity, orderBy) : null }));
@@ -273,7 +276,7 @@ export abstract class BaseFactory<
     this.repository.assign(entity, data, options);
     const transformedEntity = await transform(entity);
     await this.repository.flush();
-    return transformModel(this.entityToModelOrFail(transformedEntity));
+    return transformModel(await this.entityToModelOrFail(transformedEntity));
   }
 
   public async delete(where: FilterQuery<Entity>): Promise<boolean> {
