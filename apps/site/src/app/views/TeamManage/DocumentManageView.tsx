@@ -53,22 +53,23 @@ function getDocumentWithEdits(document: DocumentInfoFragment): DocumentWithEdits
         lastModified: new Date(documentUpload.createdAt).getTime(),
       },
     },
-    edits: document.edits.map((edit) => {
-      const documentUpload = getFragmentData(documentUploadFragment, edit.newVersion);
-      return {
-        createdAt: edit.createdAt,
-        description: document.description,
-        name: documentUpload.name,
-        yearVersion: edit.yearVersion ?? null,
-        file: {
-          name: documentUpload.name,
-          src: documentUpload.url,
-          size: documentUpload.size,
-          type: documentUpload.mime,
-          lastModified: new Date(documentUpload.createdAt).getTime(),
-        },
-      };
-    }),
+    edits: [],
+    // edits: document.edits.map((edit) => {
+    //   // const documentUpload = getFragmentData(documentUploadFragment, edit.newVersion);
+    //   return {
+    //     createdAt: edit.createdAt,
+    //     description: document.description,
+    //     name: documentUpload.name,
+    //     // yearVersion: edit.yearVersion ?? null,
+    //     file: {
+    //       name: documentUpload.name,
+    //       src: documentUpload.url,
+    //       size: documentUpload.size,
+    //       type: documentUpload.mime,
+    //       lastModified: new Date(documentUpload.createdAt).getTime(),
+    //     },
+    //   };
+    // }),
   };
 }
 

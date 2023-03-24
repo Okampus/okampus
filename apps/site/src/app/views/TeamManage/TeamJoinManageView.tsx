@@ -38,7 +38,7 @@ const TeamJoinView = ({ column, panel }: TeamJoinViewProps) => (
 export type TeamJoinUser = {
   join: TeamJoinInfoFragment;
   joiner: UserInfoFragment;
-  issuer: UserInfoFragment | null;
+  createdBy: UserInfoFragment | null;
   formSubmission: FormSubmissionInfoFragment | null;
 };
 
@@ -137,10 +137,10 @@ export function TeamJoinManageView() {
     const loadedJoin = getFragmentData(teamJoinFragment, join);
     return {
       ...loadedJoin,
-      issuer:
-        loadedJoin.issuer && loadedJoin.issuer.__typename === 'UserModel'
-          ? getFragmentData(userFragment, loadedJoin.issuer)
-          : null,
+      createdBy: getFragmentData(
+        userFragment,
+        loadedJoin.createdBy?.__typename === 'UserModel' ? loadedJoin.createdBy : null
+      ),
       joiner: getFragmentData(userFragment, loadedJoin.joiner),
       formSubmission: getFragmentData(formSubmissionFragment, loadedJoin.formSubmission) ?? null,
     };
@@ -181,13 +181,13 @@ export function TeamJoinManageView() {
                 <LabeledTeamJoin
                   teamJoin={join}
                   joiner={join.joiner}
-                  issuer={join.issuer}
+                  createdBy={join.createdBy ?? null}
                   formSubmission={join.formSubmission}
                   onClick={() =>
                     setSelectedUser({
                       join,
                       joiner: join.joiner,
-                      issuer: join.issuer,
+                      createdBy: join.createdBy ?? null,
                       formSubmission: join.formSubmission,
                     })
                   }
