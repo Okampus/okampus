@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { TenantScopedModel } from '../../index';
+import { TenantScopedModel } from '../index';
 
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Colors, RoleKind, TeamRoleKey } from '@okampus/shared/enums';

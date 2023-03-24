@@ -11,6 +11,7 @@ export * from './abstract/individual.model';
 export * from './abstract/join.model';
 export * from './abstract/membership.model';
 export * from './abstract/org.model';
+export * from './abstract/role.model';
 
 export * from './domains/bots/bot.model';
 export * from './domains/contents/content.model';
@@ -27,7 +28,8 @@ export * from './domains/forms/form-edit.model';
 export * from './domains/forms/form-submission.model';
 export * from './domains/images/image-upload.model';
 export * from './domains/images/actor-image.model';
-export * from './domains/roles/role.model';
+export * from './domains/roles/project-role.model';
+export * from './domains/roles/event-role.model';
 export * from './domains/roles/team-role.model';
 export * from './domains/socials/social.model';
 export * from './domains/tags/tag.model';
