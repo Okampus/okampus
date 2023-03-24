@@ -1,14 +1,10 @@
 // eslint-disable-next-line import/no-cycle
-import { TeamModel } from '../../index';
-// eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from '../../index';
-
-import { UserModel } from '../../index';
-import { TenantScopedModel } from '../../index';
+import { TeamMemberModel, TeamModel, TenantEventModel, TenantScopedModel, UserModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { ObjectType, Field, Float } from '@nestjs/graphql';
-import type { IProject, ITeam, ITenantEvent, IUser } from '@okampus/shared/dtos';
+
+import type { IProject, ITeam, ITeamMember, ITenantEvent, IUser } from '@okampus/shared/dtos';
 
 @ObjectType()
 export class ProjectModel extends TenantScopedModel implements IProject {
@@ -24,14 +20,17 @@ export class ProjectModel extends TenantScopedModel implements IProject {
   @Field(() => Float)
   actualBudget!: number;
 
+  @Field(() => Boolean)
+  isPrivate!: boolean;
+
   @Field(() => TeamModel)
   team!: ITeam;
 
-  @Field(() => TenantEventModel, { nullable: true })
-  linkedEvent: ITenantEvent | null = null;
+  @Field(() => [TenantEventModel])
+  linkedEvents!: ITenantEvent[];
 
-  @Field(() => UserModel)
-  supervisor!: IUser;
+  @Field(() => [TeamMemberModel])
+  supervisors!: ITeamMember[];
 
   @Field(() => [UserModel], { nullable: true })
   participants!: IUser[];

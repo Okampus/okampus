@@ -4,16 +4,20 @@ import { RegistrationStatus } from '@okampus/shared/enums';
 import { JoinKind } from '@okampus/shared/enums';
 import { formatDateDayOfWeek } from '@okampus/shared/utils';
 
-import type { Individual } from '../../actor/individual/individual.entity';
 import type { EventJoinOptions } from './event-join.options';
+import type { User } from '../../actor/user/user.entity';
+import type { Individual } from '../../actor/individual/individual.entity';
 import type { TeamAction } from '../../manage-team/team-action/team-action.entity';
 import type { TenantEvent } from '../../content-master/event/event.entity';
-import type { User } from '@sentry/node';
+import type { EventRole } from '../../role/event-role/event-role.entity';
 
 @Entity()
 export class EventJoin extends Join {
   @ManyToOne({ type: 'TenantEvent' })
-  event!: TenantEvent;
+  linkedEvent!: TenantEvent;
+
+  @ManyToOne({ type: 'EventRole', nullable: true })
+  eventRole: EventRole | null = null;
 
   @Property({ type: 'boolean', nullable: true })
   participated: boolean | null = null;

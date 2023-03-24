@@ -9,16 +9,16 @@ export class CreateProjectDto extends ProjectProps {
   @IsString() // TODO: create custom validator for UUID
   teamId!: Snowflake;
 
-  @Field(() => String, { nullable: true })
-  @IsString()
+  @Field(() => [String])
+  @IsString({ each: true })
   @IsOptional()
-  linkedEventId: Snowflake | null = null;
+  linkedEventIds: Snowflake[] = [];
 
-  @Field(() => String)
-  @IsString()
-  supervisorId!: Snowflake;
+  @Field(() => [String])
+  @IsString({ each: true })
+  supervisorIds: Snowflake[] = [];
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String])
   @IsString({ each: true })
   participantsIds: Snowflake[] = [];
 }

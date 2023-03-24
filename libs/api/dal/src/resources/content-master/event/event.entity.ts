@@ -30,6 +30,8 @@ import type { Org } from '../../org/org.entity';
 import type { FormSubmission } from '../../ugc/form-submission/form-submission.entity';
 import type { Searchable } from '../../../types/search-entity.type';
 import type { JSONObject } from '@okampus/shared/types';
+import type { EventRole } from '../../role/event-role/event-role.entity';
+import type { Project } from '../../manage-team/project/project.entity';
 
 @Entity({ customRepository: () => TenantEventRepository }) // Called "TenantEvent" to avoid name collision with native JS "Event"
 export class TenantEvent extends ContentMaster implements Searchable {
@@ -67,6 +69,9 @@ export class TenantEvent extends ContentMaster implements Searchable {
   @Index()
   private = false;
 
+  @Property({ type: 'boolean' })
+  autoAcceptJoins = true;
+
   @ManyToOne({ type: 'Form' })
   joinForm = new Form({
     isTemplate: false,
@@ -78,6 +83,9 @@ export class TenantEvent extends ContentMaster implements Searchable {
     createdBy: this.createdBy,
     tenant: this.tenant,
   });
+
+  @ManyToOne({ type: 'Project' })
+  linkedProject!: Project;
 
   @ManyToOne({ type: 'TenantEvent', nullable: true })
   regularEvent: TenantEvent | null = null;
@@ -91,11 +99,15 @@ export class TenantEvent extends ContentMaster implements Searchable {
   @ManyToOne({ type: 'EventApprovalStep', nullable: true })
   lastEventApprovalStep: EventApprovalStep | null = null;
 
+  @OneToMany({ type: 'EventRole', mappedBy: 'event' })
+  @TransformCollection()
+  roles = new Collection<EventRole>(this);
+
   @OneToMany({ type: 'EventApproval', mappedBy: 'event' })
   @TransformCollection()
   eventApprovals = new Collection<EventApproval>(this);
 
-  @OneToMany({ type: 'EventJoin', mappedBy: 'event' })
+  @OneToMany({ type: 'EventJoin', mappedBy: 'linkedEvent' })
   @TransformCollection()
   registrations = new Collection<EventJoin>(this);
 

@@ -45,4 +45,9 @@ export class TenantEventProps {
   @IsOptional()
   @IsBoolean()
   private?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  autoAcceptJoins?: boolean;
 }

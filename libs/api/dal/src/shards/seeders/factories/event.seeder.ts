@@ -10,6 +10,7 @@ import type { TenantEventOptions } from '../../../resources/content-master/event
 import type { EventApprovalStep } from '../../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
 import type { TeamMember } from '../../../resources/membership/team-member/team-member.entity';
 import type { Team } from '../../../resources/org/team/team.entity';
+import type { Project } from '../../../resources/manage-team/project/project.entity';
 
 export class EventSeeder extends Factory<TenantEvent> {
   model = TenantEvent;
@@ -17,6 +18,7 @@ export class EventSeeder extends Factory<TenantEvent> {
   constructor(
     em: EntityManager,
     private readonly team: Team,
+    private readonly linkedProject: Project,
     private readonly steps: EventApprovalStep[],
     private readonly teamMembers: TeamMember[]
   ) {
@@ -52,6 +54,7 @@ export class EventSeeder extends Factory<TenantEvent> {
       start,
       end,
       price: randomInt(0, 100),
+      linkedProject: this.linkedProject,
       location: new Address({
         name: faker.lorem.words(randomInt(3, 10)),
         street: faker.address.streetAddress(),

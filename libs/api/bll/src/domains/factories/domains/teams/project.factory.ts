@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { ProjectModel } from '../../index';
 import { BaseFactory } from '../../base.factory';
 
@@ -10,7 +11,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ProjectRepository, TeamRepository, TenantEventRepository, UserRepository } from '@okampus/api/dal';
+import {
+  ProjectRepository,
+  TeamMember,
+  TeamMemberRepository,
+  TeamRepository,
+  TenantEventRepository,
+  UserRepository,
+} from '@okampus/api/dal';
 import { Project, TenantCore, Individual, User, Team, TenantEvent } from '@okampus/api/dal';
 import { asyncCallIfNotNull } from '@okampus/shared/utils';
 
@@ -26,6 +34,7 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
     private readonly em: EntityManager,
     private readonly teamRepository: TeamRepository,
     private readonly userRepository: UserRepository,
+    private readonly teamMemberRepository: TeamMemberRepository,
     private readonly tenantEventRepository: TenantEventRepository
   ) {
     super(eventPublisher, uploadService, projectRepository, ProjectModel, Project);
@@ -36,10 +45,10 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
     requester: Individual,
     tenant: TenantCore
   ): Promise<ProjectModel> {
-    const [team, supervisor, linkedEvent, participants] = await Promise.all([
+    const [team, linkedEvents, supervisors, participants] = await Promise.all([
       this.teamRepository.findOneOrFail({ id: createProject.teamId }),
-      this.userRepository.findOneOrFail({ id: createProject.supervisorId }),
-      asyncCallIfNotNull(createProject.linkedEventId, (id) => this.tenantEventRepository.findOneOrFail({ id })),
+      asyncCallIfNotNull(createProject.linkedEventIds, (ids) => this.tenantEventRepository.findByIds(ids)),
+      asyncCallIfNotNull(createProject.supervisorIds, (ids) => this.teamMemberRepository.findByIds(ids)),
       asyncCallIfNotNull(createProject.participantsIds, (ids) => this.userRepository.findByIds(ids)),
     ]);
 
@@ -47,8 +56,8 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
       ...createProject,
       createdBy: requester,
       team,
-      supervisor,
-      linkedEvent,
+      supervisors: supervisors ?? [],
+      linkedEvents: linkedEvents ?? [],
       participants: participants ?? [],
       tenant,
     });
@@ -58,9 +67,9 @@ export class ProjectFactory extends BaseFactory<ProjectModel, Project, IProject,
     return new Project({
       ...model,
       team: this.em.getReference(Team, model.team.id),
-      linkedEvent: model.linkedEvent ? this.em.getReference(TenantEvent, model.linkedEvent.id) : null,
+      linkedEvents: model.linkedEvents.map((event) => this.em.getReference(TenantEvent, event.id)),
       participants: model.participants.map((user) => this.em.getReference(User, user.id)),
-      supervisor: this.em.getReference(User, model.supervisor.id),
+      supervisors: model.supervisors.map((supervisor) => this.em.getReference(TeamMember, supervisor.id)),
       createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null,
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });

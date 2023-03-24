@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { TenantEventModel } from '../../index';
+import { EventRoleModel, TenantEventModel } from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 import { JoinModel } from '../../index';
 import { TeamActionModel } from '../../index';
@@ -10,7 +10,10 @@ import type { IEventJoin, ITeamAction, ITenantEvent } from '@okampus/shared/dtos
 @ObjectType()
 export class EventJoinModel extends JoinModel implements IEventJoin {
   @Field(() => TenantEventModel, { nullable: true })
-  event?: ITenantEvent;
+  linkedEvent?: ITenantEvent;
+
+  @Field(() => EventRoleModel, { nullable: true })
+  eventRole?: EventRoleModel | null;
 
   @Field(() => Boolean, { nullable: true })
   participated!: boolean | null;

@@ -1,12 +1,17 @@
 /* eslint-disable import/no-cycle */
-import { EventApprovalStepModel, OrgModel } from '../../index';
-import { EventApprovalModel } from '../../index';
-import { EventJoinModel } from '../../index';
-import { ContentMasterModel } from '../../index';
-import { FormSubmissionModel } from '../../index';
-import { FormModel } from '../../index';
-import { ImageUploadModel } from '../../index';
-import { UserModel } from '../../index';
+import {
+  ContentMasterModel,
+  EventApprovalModel,
+  EventApprovalStepModel,
+  EventJoinModel,
+  EventRoleModel,
+  FormModel,
+  FormSubmissionModel,
+  ImageUploadModel,
+  OrgModel,
+  ProjectModel,
+  UserModel,
+} from '../../index';
 import { Paginated } from '../../../../shards/types/paginated.type';
 
 import { Field, Float, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
@@ -26,6 +31,8 @@ import type {
   ITenantEvent,
   IUser,
   IOrg,
+  IEventRole,
+  IProject,
 } from '@okampus/shared/dtos';
 
 @ObjectType({ implements: () => [ContentMasterModel] })
@@ -66,6 +73,9 @@ export class TenantEventModel extends ContentMasterModel implements ITenantEvent
   @Field(() => EventApprovalStepModel, { nullable: true })
   lastEventApprovalStep?: IEventApprovalStep | null;
 
+  @Field(() => ProjectModel, { nullable: true })
+  linkedProject?: IProject | null;
+
   @Field(() => [EventApprovalModel])
   eventApprovals!: IEventApproval[];
 
@@ -80,6 +90,12 @@ export class TenantEventModel extends ContentMasterModel implements ITenantEvent
 
   @Field(() => Boolean)
   private!: boolean;
+
+  @Field(() => Boolean)
+  autoAcceptJoins!: boolean;
+
+  @Field(() => [EventRoleModel])
+  roles!: IEventRole[];
 
   constructor(event: ITenantEvent) {
     super(event);

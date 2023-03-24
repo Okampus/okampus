@@ -10,7 +10,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { TenantEventRepository, OrgRepository, UserRepository, Org } from '@okampus/api/dal';
+import { TenantEventRepository, OrgRepository, UserRepository, Org, Project, EventRole } from '@okampus/api/dal';
 import {
   EventApprovalStep,
   Form,
@@ -65,6 +65,7 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
       lastEventApprovalStep: model.lastEventApprovalStep
         ? this.em.getReference(EventApprovalStep, model.lastEventApprovalStep.id)
         : null,
+      linkedProject: model.linkedProject ? this.em.getReference(Project, model.linkedProject.id) : null,
       orgs: model.orgs.map((org) => this.em.getReference(Org, org.id)),
       tags: model.tags.map((tag) => this.em.getReference(Tag, tag.id)),
       joinForm: model.joinForm ? this.em.getReference(Form, model.joinForm.id) : null,
@@ -73,6 +74,7 @@ export class TenantEventFactory extends BaseFactory<TenantEventModel, TenantEven
       approvalSubmission: model.approvalSubmission
         ? this.em.getReference(FormSubmission, model.approvalSubmission.id)
         : null,
+      roles: model.roles.map((role) => this.em.getReference(EventRole, role.id)),
       createdBy: model.createdBy ? this.em.getReference(Individual, model.createdBy.id) : null, // TODO: check if this is correct in every case
       tenant: this.em.getReference(TenantCore, model.tenant.id),
     });

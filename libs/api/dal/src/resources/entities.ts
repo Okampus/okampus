@@ -51,6 +51,8 @@ import { Team } from './org/team/team.entity';
 import { TenantCore } from './org/tenant/tenant-core.entity';
 import { Tenant } from './org/tenant/tenant.entity';
 import { CanteenRole } from './role/canteen-role/canteen-role.entity';
+import { EventRole } from './role/event-role/event-role.entity';
+import { ProjectRole } from './role/project-role/project-role.entity';
 import { Role } from './role/role.entity';
 import { TeamRole } from './role/team-role/team-role.entity';
 import { Content } from './ugc/content/content.entity';
@@ -123,6 +125,8 @@ export const allEntities = [
 
   Role,
   CanteenRole,
+  EventRole,
+  ProjectRole,
   TeamRole,
 
   Ugc,

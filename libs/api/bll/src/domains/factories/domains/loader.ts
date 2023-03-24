@@ -42,6 +42,8 @@ import {
 } from '@okampus/api/dal';
 import { ActorKind, IndividualKind } from '@okampus/shared/enums';
 import { loadApplyAsync, applyModelFactory } from '@okampus/api/shards';
+import { ProjectRole } from '@okampus/api/dal';
+import { EventRole } from '@okampus/api/dal';
 import type {
   ITenant,
   ITeam,
@@ -86,6 +88,8 @@ import type {
   IFormEdit,
   IEdit,
   IFormSubmissionEdit,
+  IEventRole,
+  IProjectRole,
 } from '@okampus/shared/dtos';
 
 import type { BaseEntity, TenantCore, TenantScopedEntity } from '@okampus/api/dal';
@@ -147,6 +151,8 @@ export type AllInterfaces =
   | ITeamCategory
   | ITeamJoin
   | ITeamMember
+  | IProjectRole
+  | IEventRole
   | ITeamRole
   | ITenant
   | ITenantDocument
@@ -170,6 +176,10 @@ export type LoadInterface<T> = T extends Actor
   ? IDocumentEdit
   : T extends DocumentUpload
   ? IDocumentUpload
+  : T extends FormEdit
+  ? IFormEdit
+  : T extends FormSubmissionEdit
+  ? IFormSubmissionEdit
   : T extends Edit
   ? IEdit
   : T extends EventApproval
@@ -186,12 +196,8 @@ export type LoadInterface<T> = T extends Actor
   ? IFinance
   : T extends Form
   ? IForm
-  : T extends FormEdit
-  ? IFormEdit
   : T extends FormSubmission
   ? IFormSubmission
-  : T extends FormSubmissionEdit
-  ? IFormSubmissionEdit
   : T extends Bot
   ? IBot
   : T extends User
@@ -216,6 +222,10 @@ export type LoadInterface<T> = T extends Actor
   ? IOrgDocument
   : T extends Project
   ? IProject
+  : T extends EventRole
+  ? IEventRole
+  : T extends ProjectRole
+  ? IProjectRole
   : T extends TeamRole
   ? ITeamRole
   : T extends Role
@@ -554,6 +564,36 @@ export async function loadTenantScopedEntity(
     };
   }
 
+  if (entity instanceof ProjectRole && !loadBaseClass) {
+    const baseRole = await loadTenantScopedEntity(entity, context, true);
+    if (!baseRole) return undefined;
+
+    return {
+      ...baseRole,
+      project: await getEntityFromStackOrLoad(entity.project, context),
+      description: entity.description,
+      autoAccept: entity.autoAccept,
+      rewardMaximum: entity.rewardMaximum,
+      rewardMinimum: entity.rewardMinimum,
+    };
+  }
+
+  if (entity instanceof EventRole && !loadBaseClass) {
+    const baseRole = await loadTenantScopedEntity(entity, context, true);
+    if (!baseRole) return undefined;
+
+    return {
+      ...baseRole,
+      linkedProjectRole: await getEntityFromStackOrLoad(entity.linkedProjectRole, context),
+      event: await getEntityFromStackOrLoad(entity.event, context),
+      user: await getEntityFromStackOrLoad(entity.user, context, true),
+      description: entity.description,
+      autoAccept: entity.autoAccept,
+      rewardMaximum: entity.rewardMaximum,
+      rewardMinimum: entity.rewardMinimum,
+    };
+  }
+
   if (entity instanceof TeamRole && !loadBaseClass) {
     const baseRole = await loadTenantScopedEntity(entity, context, true);
     if (!baseRole) return undefined;
@@ -620,7 +660,11 @@ export async function loadTenantScopedEntity(
       expectedBudget: entity.expectedBudget,
       actualBudget: entity.actualBudget,
       team: await getEntityFromStackOrLoad(entity.team, context),
-      linkedEvent: entity.linkedEvent ? await loadTenantScopedEntity(entity.linkedEvent, context) : null,
+      linkedEvents: await loadApplyAsync(entity.linkedEvents, (event) => getEntityFromStackOrLoad(event, context)),
+      supervisors: await loadApplyAsync(entity.supervisors, (supervisor) =>
+        getEntityFromStackOrLoad(supervisor, context)
+      ),
+      roles: await loadApplyAsync(entity.roles, (role) => loadTenantScopedEntity(role, context)),
       participants: await loadApplyAsync(entity.participants, (participant) =>
         getEntityFromStackOrLoad(participant, context)
       ),
@@ -660,10 +704,13 @@ export async function loadTenantScopedEntity(
     event.meta = entity.meta;
     event.price = entity.price;
     event.private = entity.private;
+    event.autoAcceptJoins = entity.autoAcceptJoins;
     event.regularEventInterval = entity.regularEventInterval;
     event.regularEvent = entity.regularEvent ? await loadTenantScopedEntity(entity.regularEvent, context) : null;
     event.supervisor = await getEntityFromStackOrLoad(entity.supervisor, context);
     event.orgs = await loadApplyAsync(entity.orgs, (org) => getEntityFromStackOrLoad(org, context));
+    event.roles = await loadApplyAsync(entity.roles, (role) => loadTenantScopedEntity(role, context));
+    event.linkedProject = entity.linkedProject ? await loadTenantScopedEntity(entity.linkedProject, context) : null;
     event.eventApprovals = await loadApplyAsync(entity.eventApprovals, (approval) =>
       loadTenantScopedEntity(approval, context)
     );
@@ -710,7 +757,8 @@ export async function loadTenantScopedEntity(
 
     return {
       ...baseJoin,
-      linkedEvent: await loadTenantScopedEntity(entity.event, context),
+      linkedEvent: await loadTenantScopedEntity(entity.linkedEvent, context),
+      eventRole: entity.eventRole ? await loadTenantScopedEntity(entity.eventRole, context) : null,
       presenceStatus: entity.presenceStatus,
       participated: entity.participated,
       teamAction: entity.teamAction ? await loadTenantScopedEntity(entity.teamAction, context) : null,
@@ -783,6 +831,8 @@ export async function loadTenantScopedEntity(
 
     return {
       ...baseUgc,
+      submission: entity.submission,
+      linkedFormEdit: await loadTenantScopedEntity(entity.linkedFormEdit, context),
       newVersion: entity.submission,
     };
   }

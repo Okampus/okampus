@@ -16,6 +16,9 @@ import { TeamCategory } from '../../resources/label/team-category/team-category.
 import { FormSubmission } from '../../resources/ugc/form-submission/form-submission.entity';
 import { defaultTeamJoinForm } from '../../resources/org/team/team.entity';
 import { Team } from '../../resources/org/team/team.entity';
+import { Project } from '../../resources/manage-team/project/project.entity';
+import { ProjectRole } from '../../resources/role/project-role/project-role.entity';
+import { EventRole } from '../../resources/role/event-role/event-role.entity';
 import {
   Colors,
   ControlType,
@@ -46,15 +49,16 @@ import type { EntityManager } from '@mikro-orm/core';
 import type { EventApprovalStep } from '../../resources/manage-tenant/event-approval-step/event-approval-step.entity';
 import type { Individual } from '../../resources/actor/individual/individual.entity';
 import type { User } from '../../resources/actor/user/user.entity';
+import type { TenantCore } from '../../resources/org/tenant/tenant-core.entity';
 
 const seedingConfig = {
   N_ADMINS: 10,
   N_STUDENTS: 100,
   N_TEACHERS: 10,
 
-  N_APPROVAL_STEPS: 3,
-  N_TEAMS: 50,
+  N_TEAMS: 30,
 
+  N_APPROVAL_STEPS: 3,
   MIN_ADMINS_BY_STEP: 1,
   MAX_ADMINS_BY_STEP: 3,
 
@@ -64,8 +68,11 @@ const seedingConfig = {
   MIN_REQUESTS: 3,
   MAX_REQUESTS: 10,
 
-  MIN_EVENTS_BY_CLUB: 0,
-  MAX_EVENTS_BY_CLUB: 2,
+  MIN_PROJECTS_BY_TEAM: 1,
+  MAX_PROJECTS_BY_TEAM: 3,
+
+  MIN_EVENTS_BY_PROJECT: 1,
+  MAX_EVENTS_BY_PROJECT: 4,
 
   DEFAULT_CATEGORIES: [
     { name: 'Art/Savoir-faire', slug: 'arts', color: Colors.DarkPurple },
@@ -138,6 +145,19 @@ function createTeamMember(createdAt: Date, em: EntityManager, team: Team, user: 
     membershipKind: MembershipKind.TeamMember,
     startDate: new Date(),
     user,
+  });
+}
+
+function randomProjectRole(project: Project, tenant: TenantCore): ProjectRole {
+  return new ProjectRole({
+    name: faker.name.jobTitle(),
+    color: randomEnum(Colors),
+    description: faker.lorem.paragraph(),
+    rewardMinimum: 1,
+    rewardMaximum: 10,
+    project,
+    createdBy: project.createdBy,
+    tenant,
   });
 }
 
@@ -229,7 +249,7 @@ export class DatabaseSeeder extends Seeder {
 
       const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
 
-      const teamMembers = {
+      const teamMembersMap = {
         [president.id]: createTeamMember(createdAt, em, team, president, [roles[0]]),
         [treasurer.id]: createTeamMember(createdAt, em, team, treasurer, [roles[1]]),
         [secretary.id]: createTeamMember(createdAt, em, team, secretary, [roles[2]]),
@@ -240,7 +260,9 @@ export class DatabaseSeeder extends Seeder {
         ),
       };
 
-      for (const member of Object.values(teamMembers)) {
+      const teamMembers = Object.values(teamMembersMap);
+
+      for (const member of teamMembers) {
         const shortcut = new Shortcut({
           type: ShortcutType.Team,
           targetActor: team.actor,
@@ -254,7 +276,7 @@ export class DatabaseSeeder extends Seeder {
       const requesters = randomFromArray(others, N_REQUESTERS);
 
       const linkedFormEdit = team.joinForm.edits.getItems()[0] as FormEdit;
-      const requesterInstances = requesters.map((user) =>
+      const teamJoins = requesters.map((user) =>
         em.create(TeamJoin, {
           createdAt,
           updatedAt: createdAt,
@@ -275,84 +297,125 @@ export class DatabaseSeeder extends Seeder {
             ],
             linkedFormEdit,
             createdBy: user,
-            tenant: team.tenant,
+            tenant,
           }),
           createdBy: Math.random() > 0.5 ? pickOneFromArray(managers) : user,
-          tenant: team.tenant,
+          tenant,
         })
       );
 
-      // eslint-disable-next-line no-await-in-loop
-      const N_EVENTS = randomInt(seedingConfig.MIN_EVENTS_BY_CLUB, seedingConfig.MAX_EVENTS_BY_CLUB);
-      const events = new EventSeeder(em, team, approvalSteps, Object.values(teamMembers))
-        .create(N_EVENTS)
-        .then((events) => {
-          const eventJoins: EventJoin[] = [];
-          for (const event of events) {
-            // Generate Registrations
-            eventJoins.push(
-              ...randomFromArray(students, 4, Math.min(students.length, 5)).map((user) => {
-                const status = randomEnum(RegistrationStatus);
-                const participated =
-                  status === RegistrationStatus.Maybe || status === RegistrationStatus.Sure
-                    ? Math.random() > 0.5
-                    : false;
+      teamPromises.push(em.persistAndFlush([...roles, ...teamMembers]), em.persistAndFlush(teamJoins));
 
-                const teamAction =
-                  participated && event.rootContent.representingOrgs
-                    ? new TeamAction({
-                        createdBy: event.supervisor,
-                        name: `Participation à l'événement ${event.title}`,
-                        score: randomInt(1, 10),
-                        team,
-                        tenant: team.tenant,
-                        user,
-                        teamMember: teamMembers[user.id] ?? null,
-                        validatedBy: teamMembers[event.supervisor.id],
-                        state: ApprovalState.Approved,
-                      })
-                    : null;
-
-                const linkedFormEdit = event.joinForm.edits.getItems()[0] as FormEdit;
-                return em.create(EventJoin, {
-                  createdAt,
-                  updatedAt: createdAt,
-                  event,
-                  formSubmission: new FormSubmission({
-                    description: getEventJoinDescription(null, user, event),
-                    submission: [
-                      {
-                        label: 'Motivation',
-                        fieldName: 'motivation',
-                        inputType: ControlType.Text,
-                        value: faker.lorem.lines(4),
-                      },
-                    ],
-                    linkedFormEdit,
-                    createdBy: user,
-                    tenant: team.tenant,
-                  }),
-                  joiner: user,
-                  presenceStatus: status,
-                  participated,
-                  teamAction,
-                  joinKind: JoinKind.EventJoin,
-                  state: ApprovalState.Approved,
-                  createdBy: user,
-                  tenant: team.tenant,
-                });
-              })
-            );
-          }
-
-          return em.persistAndFlush([...events, ...eventJoins]);
+      const N_PROJECTS = randomInt(seedingConfig.MIN_PROJECTS_BY_TEAM, seedingConfig.MAX_PROJECTS_BY_TEAM);
+      for (const _ of Array.from({ length: N_PROJECTS })) {
+        const project = new Project({
+          name: faker.company.catchPhrase(),
+          description: faker.lorem.paragraph(randomInt(2, 12)),
+          supervisors: randomFromArray(teamMembers, 1, 3),
+          expectedBudget: randomInt(100, 1000),
+          isPrivate: Math.random() > 0.5,
+          team,
+          createdBy: pickOneFromArray(managers),
+          tenant,
         });
 
-      teamPromises.push(
-        em.persistAndFlush([...roles, ...Object.values(teamMembers)]),
-        em.persistAndFlush(requesterInstances),
-        events
-      );
+        project.roles.add(Array.from({ length: randomInt(0, 3) }).map(() => randomProjectRole(project, tenant)));
+
+        const N_EVENTS = randomInt(seedingConfig.MIN_EVENTS_BY_PROJECT, seedingConfig.MAX_EVENTS_BY_PROJECT);
+        const events = new EventSeeder(em, team, project, approvalSteps, teamMembers)
+          .create(N_EVENTS)
+          .then((events) => {
+            const eventJoins: EventJoin[] = [];
+            for (const event of events) {
+              event.roles.add(
+                project.roles.getItems().map(
+                  (projectRole) =>
+                    new EventRole({
+                      name: projectRole.name,
+                      description: projectRole.description,
+                      color: projectRole.color,
+                      createdBy: projectRole.createdBy,
+                      event,
+                      linkedProjectRole: projectRole,
+                      rewardMinimum: projectRole.rewardMinimum,
+                      rewardMaximum: projectRole.rewardMaximum,
+                      autoAccept: projectRole.autoAccept,
+                      tenant,
+                    })
+                )
+              );
+
+              // Generate event registrations
+              eventJoins.push(
+                ...randomFromArray(students, 4, Math.min(students.length, 5)).map((user) => {
+                  const status = randomEnum(RegistrationStatus);
+                  const participated =
+                    status === RegistrationStatus.Maybe || status === RegistrationStatus.Sure
+                      ? Math.random() > 0.5
+                      : false;
+
+                  const teamAction =
+                    participated && event.rootContent.representingOrgs
+                      ? new TeamAction({
+                          createdBy: event.supervisor,
+                          name: `Participation à l'événement ${event.title}`,
+                          score: randomInt(1, 10),
+                          team,
+                          tenant: team.tenant,
+                          user,
+                          teamMember: teamMembersMap[user.id] ?? null,
+                          validatedBy: teamMembersMap[event.supervisor.id],
+                          state: ApprovalState.Approved,
+                        })
+                      : null;
+
+                  const linkedFormEdit = event.joinForm.edits.getItems()[0] as FormEdit;
+                  return em.create(EventJoin, {
+                    createdAt,
+                    updatedAt: createdAt,
+                    linkedEvent: event,
+                    formSubmission: new FormSubmission({
+                      description: getEventJoinDescription(null, user, event),
+                      submission: [
+                        {
+                          label: 'Motivation',
+                          fieldName: 'motivation',
+                          inputType: ControlType.Text,
+                          value: faker.lorem.lines(4),
+                        },
+                      ],
+                      linkedFormEdit,
+                      createdBy: user,
+                      tenant: team.tenant,
+                    }),
+                    joiner: user,
+                    presenceStatus: status,
+                    participated,
+                    teamAction,
+                    joinKind: JoinKind.EventJoin,
+                    state: ApprovalState.Approved,
+                    createdBy: user,
+                    tenant: team.tenant,
+                  });
+                })
+              );
+
+              for (const eventRole of event.roles.getItems()) {
+                if (Math.random() > 0.5) {
+                  const eventJoin = pickOneFromArray(eventJoins);
+                  if (!eventJoin.eventRole) {
+                    eventRole.user = eventJoin.joiner;
+                    eventJoin.eventRole = eventRole;
+                  }
+                }
+              }
+            }
+
+            return em.persistAndFlush([...events, ...eventJoins]);
+          });
+
+        teamPromises.push(events);
+      }
 
       // TODO: add transactions w/ receipts
       // // eslint-disable-next-line no-await-in-loop

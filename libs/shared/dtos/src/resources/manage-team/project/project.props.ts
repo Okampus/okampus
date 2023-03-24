@@ -1,5 +1,5 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { Field, Float, InputType } from '@nestjs/graphql';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class ProjectProps {
@@ -12,12 +12,17 @@ export class ProjectProps {
   @IsString()
   description: string | null = null;
 
-  @Field(() => Int)
-  @IsInt()
+  @Field(() => Float)
+  @IsNumber()
   expectedBudget!: number;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Float, { nullable: true })
   @IsOptional()
-  @IsInt()
-  actualBudget: number | null = null;
+  @IsNumber()
+  actualBudget?: number | null = null;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isPrivate = false;
 }
