@@ -17,8 +17,32 @@ export const projectFragment = gql(`
         ...UserInfo
       }
     }
-    supervisor {
-      ...UserInfo
+    supervisors {
+      __typename
+      id
+      user {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          name
+          actorImages {
+            ...ActorImageBareInfo
+          }
+        }
+        firstName
+      }
+      roles {
+        __typename
+        id
+        name
+        color
+        required
+        permissions
+        category
+        key
+      }
     }
     participants {
       ...UserInfo

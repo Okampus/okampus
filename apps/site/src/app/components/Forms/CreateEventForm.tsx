@@ -71,7 +71,7 @@ export function CreateEventForm({ onSubmit }: CreateEventFormProps) {
   if (!teamManage) return <p className="text-red-500">Aucune organisation n'est chargée.</p>;
   const onCreateEvent = (event: CreateEventFormData) => {
     createEvent({
-      variables: { event: { ...event, orgId: teamManage.id, location, state: EventState.Submitted } },
+      variables: { event: { ...event, orgIds: [teamManage.id], location, state: EventState.Submitted } },
     });
   };
 

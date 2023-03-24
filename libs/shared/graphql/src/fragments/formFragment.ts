@@ -15,11 +15,8 @@ export const formFragment = gql(`
       __typename
       id
       createdAt
-      ... on DocumentEditModel {
-        yearVersion
-        newVersion {
-          ...DocumentUploadInfo
-        }
+      ... on FormEditModel {
+        newVersion
       }
     }
   }

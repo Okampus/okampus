@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  fragment ActorImageBareInfo on ActorImageModel {\n    __typename\n    id\n    type\n    image {\n      __typename\n      id\n      url\n    }\n  }\n':
     types.ActorImageBareInfoFragmentDoc,
-  '\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n':
+  '\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n      }\n    }\n  }\n':
     types.DocumentInfoFragmentDoc,
   '\n  fragment DocumentUploadInfo on DocumentUploadModel {\n    __typename\n    id\n    createdAt\n    url\n    name\n    mime\n    size\n    numberOfPages\n    numberOfWords\n    documentType\n  }\n':
     types.DocumentUploadInfoFragmentDoc,
@@ -25,7 +25,7 @@ const documents = {
     types.FileInfoFragmentDoc,
   '\n  fragment FinanceInfo on FinanceModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    # description\n    # address {\n    #   name\n    #   street\n    #   city\n    #   state\n    #   zip\n    # }\n    transaction\n    paymentDate\n    paymentMethod\n    amountDue\n    amountPayed\n    state\n    category\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    receipts {\n      ...DocumentUploadInfo\n    }\n    linkedEvent {\n      ...EventInfo\n    }\n    linkedProject {\n      ...ProjectInfo\n    }\n  }\n':
     types.FinanceInfoFragmentDoc,
-  '\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n':
+  '\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on FormEditModel {\n        newVersion\n      }\n    }\n  }\n':
     types.FormInfoFragmentDoc,
   '\n  fragment FormSubmissionInfo on FormSubmissionModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    submission\n    description\n    linkedFormEdit {\n      __typename\n      id\n      createdAt\n      updatedAt\n      newVersion\n    }\n  }\n':
     types.FormSubmissionInfoFragmentDoc,
@@ -33,7 +33,7 @@ const documents = {
     types.MyInfoFragmentDoc,
   '\n  fragment OrgInfo on OrgModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    orgKind\n    actor {\n      __typename\n      id\n      name\n      slug\n      actorImages {\n        ...ActorImageBareInfo\n      }\n    }\n  }\n':
     types.OrgInfoFragmentDoc,
-  '\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisor {\n      ...UserInfo\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n':
+  '\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisors {\n      __typename\n      id\n      user {\n        __typename\n        id\n        actor {\n          __typename\n          id\n          name\n          actorImages {\n            ...ActorImageBareInfo\n          }\n        }\n        firstName\n      }\n      roles {\n        __typename\n        id\n        name\n        color\n        required\n        permissions\n        category\n        key\n      }\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n':
     types.ProjectInfoFragmentDoc,
   '\n  fragment TeamCategoryInfo on TeamCategoryModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    color\n    slug\n    iconImage {\n      __typename\n      id\n      createdAt\n      updatedAt\n      url\n    }\n  }\n':
     types.TeamCategoryInfoFragmentDoc,
@@ -150,8 +150,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n'
-): (typeof documents)['\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n'];
+  source: '\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment DocumentInfo on DocumentModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    description\n    name\n    yearVersion\n    current {\n      ...DocumentUploadInfo\n    }\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n      }\n    }\n  }\n'];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -180,8 +180,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n'
-): (typeof documents)['\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on DocumentEditModel {\n        yearVersion\n        newVersion {\n          ...DocumentUploadInfo\n        }\n      }\n    }\n  }\n'];
+  source: '\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on FormEditModel {\n        newVersion\n      }\n    }\n  }\n'
+): (typeof documents)['\n  fragment FormInfo on FormModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    description\n    schema\n    type\n    isTemplate\n    edits {\n      __typename\n      id\n      createdAt\n      ... on FormEditModel {\n        newVersion\n      }\n    }\n  }\n'];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -204,8 +204,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisor {\n      ...UserInfo\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n'
-): (typeof documents)['\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisor {\n      ...UserInfo\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n'];
+  source: '\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisors {\n      __typename\n      id\n      user {\n        __typename\n        id\n        actor {\n          __typename\n          id\n          name\n          actorImages {\n            ...ActorImageBareInfo\n          }\n        }\n        firstName\n      }\n      roles {\n        __typename\n        id\n        name\n        color\n        required\n        permissions\n        category\n        key\n      }\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n'
+): (typeof documents)['\n  fragment ProjectInfo on ProjectModel {\n    __typename\n    id\n    createdAt\n    updatedAt\n    name\n    expectedBudget\n    actualBudget\n    team {\n      ...TeamInfo\n    }\n    createdBy {\n      ...on UserModel {\n        ...UserInfo\n      }\n    }\n    supervisors {\n      __typename\n      id\n      user {\n        __typename\n        id\n        actor {\n          __typename\n          id\n          name\n          actorImages {\n            ...ActorImageBareInfo\n          }\n        }\n        firstName\n      }\n      roles {\n        __typename\n        id\n        name\n        color\n        required\n        permissions\n        category\n        key\n      }\n    }\n    participants {\n      ...UserInfo\n    }\n  }\n'];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

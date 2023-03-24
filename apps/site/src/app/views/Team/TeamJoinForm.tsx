@@ -1,7 +1,6 @@
 import { ControlType } from '@okampus/shared/enums';
 import { createTeamJoinMutation, formFragment, getFragmentData } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
-import { max } from '@okampus/shared/utils';
 
 import { NavigationContext, useTeam } from '@okampus/ui/hooks';
 import { LabeledInput, SelectMenu } from '@okampus/ui/molecules';
@@ -56,7 +55,7 @@ export function TeamJoinForm() {
                 teamJoin: {
                   teamId: team.id,
                   askedRoleId: selectedRole,
-                  linkedFormEditId: max(joinForm.edits, (edit) => edit.order).id,
+                  linkedFormEditId: joinForm.edits[joinForm.edits.length - 1].id,
                   submission: Object.entries(data).map(([key, value]) => ({
                     label: fields.find((field) => field.fieldName === key)?.label ?? key,
                     inputType: fields.find((field) => field.fieldName === key)?.inputType ?? ControlType.Text,

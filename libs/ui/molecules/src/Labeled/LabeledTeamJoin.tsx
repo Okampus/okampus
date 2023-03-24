@@ -13,12 +13,12 @@ import type { FormSubmissionInfoFragment, TeamJoinInfoFragment, UserInfoFragment
 export type LabeledTeamJoinProps = {
   teamJoin: TeamJoinInfoFragment;
   joiner: UserInfoFragment;
-  issuer: UserInfoFragment | null;
+  createdBy: UserInfoFragment | null;
   formSubmission: FormSubmissionInfoFragment | null;
   onClick: () => void;
 };
 
-export function LabeledTeamJoin({ teamJoin, joiner, issuer, formSubmission, onClick }: LabeledTeamJoinProps) {
+export function LabeledTeamJoin({ teamJoin, joiner, createdBy, formSubmission, onClick }: LabeledTeamJoinProps) {
   return (
     <div className="flex justify-between text-0 p-3 rounded-xl bg-1-hover cursor-pointer " onClick={onClick}>
       <div className="flex gap-item">

@@ -261,6 +261,7 @@ export type CreateEventApprovalStepDto = {
 };
 
 export type CreateEventDto = {
+  autoAcceptJoins?: InputMaybe<Scalars['Boolean']>;
   description: Scalars['String'];
   end: Scalars['DateTime'];
   location: AddressInput;
@@ -300,13 +301,14 @@ export type CreateOrgDocumentDto = {
 };
 
 export type CreateProjectDto = {
-  actualBudget?: InputMaybe<Scalars['String']>;
+  actualBudget?: InputMaybe<Scalars['Float']>;
   description?: InputMaybe<Scalars['String']>;
-  expectedBudget: Scalars['Int'];
-  linkedEventId?: InputMaybe<Scalars['String']>;
+  expectedBudget: Scalars['Float'];
+  isPrivate?: InputMaybe<Scalars['Boolean']>;
+  linkedEventIds?: Array<Scalars['String']>;
   name: Scalars['String'];
-  participantsIds?: InputMaybe<Array<Scalars['String']>>;
-  supervisorId: Scalars['String'];
+  participantsIds?: Array<Scalars['String']>;
+  supervisorIds?: Array<Scalars['String']>;
   teamId: Scalars['String'];
 };
 
@@ -524,12 +526,13 @@ export type EventJoinModel = {
   createdAt: Scalars['DateTime'];
   createdBy?: Maybe<IndividualModel>;
   deletedAt?: Maybe<Scalars['DateTime']>;
-  event?: Maybe<TenantEventModel>;
+  eventRole?: Maybe<EventRoleModel>;
   formSubmission: FormSubmissionModel;
   id: Scalars['String'];
   joinKind: JoinKind;
   joiner: UserModel;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  linkedEvent?: Maybe<TenantEventModel>;
   participated?: Maybe<Scalars['Boolean']>;
   presenceStatus: RegistrationStatus;
   settledAt?: Maybe<Scalars['DateTime']>;
@@ -545,6 +548,29 @@ export type EventJoinModelEdge = {
   __typename?: 'EventJoinModelEdge';
   cursor: Scalars['String'];
   node: EventJoinModel;
+};
+
+export type EventRoleModel = {
+  __typename?: 'EventRoleModel';
+  autoAccept: Scalars['Boolean'];
+  color: Colors;
+  createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<IndividualModel>;
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  event: TenantEventModel;
+  id: Scalars['String'];
+  key?: Maybe<TeamRoleKey>;
+  lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  linkedProjectRole: ProjectRoleModel;
+  name: Scalars['String'];
+  required: Scalars['Boolean'];
+  rewardMaximum?: Maybe<Scalars['Int']>;
+  rewardMinimum?: Maybe<Scalars['Int']>;
+  roleKind: RoleKind;
+  tenant?: Maybe<TenantCoreModel>;
+  updatedAt: Scalars['DateTime'];
+  user?: Maybe<UserModel>;
 };
 
 /** The EventState enum */
@@ -697,7 +723,7 @@ export type FormSubmissionModel = UgcModel & {
   id: Scalars['String'];
   isAnonymous: Scalars['Boolean'];
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
-  linkedFormEdit?: Maybe<FormEditModel>;
+  linkedFormEdit: FormEditModel;
   representingOrgs: Array<OrgModel>;
   submission: Scalars['JSON'];
   tenant?: Maybe<TenantCoreModel>;
@@ -1210,11 +1236,12 @@ export type ProjectModel = {
   description?: Maybe<Scalars['String']>;
   expectedBudget: Scalars['Float'];
   id: Scalars['String'];
+  isPrivate: Scalars['Boolean'];
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
-  linkedEvent?: Maybe<TenantEventModel>;
+  linkedEvents: Array<TenantEventModel>;
   name: Scalars['String'];
   participants?: Maybe<Array<UserModel>>;
-  supervisor: UserModel;
+  supervisors: Array<TeamMemberModel>;
   team: TeamModel;
   tenant?: Maybe<TenantCoreModel>;
   updatedAt: Scalars['DateTime'];
@@ -1224,6 +1251,27 @@ export type ProjectModelEdge = {
   __typename?: 'ProjectModelEdge';
   cursor: Scalars['String'];
   node: ProjectModel;
+};
+
+export type ProjectRoleModel = {
+  __typename?: 'ProjectRoleModel';
+  autoAccept: Scalars['Boolean'];
+  color: Colors;
+  createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<IndividualModel>;
+  deletedAt?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  key?: Maybe<TeamRoleKey>;
+  lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  name: Scalars['String'];
+  project: ProjectModel;
+  required: Scalars['Boolean'];
+  rewardMaximum?: Maybe<Scalars['Int']>;
+  rewardMinimum?: Maybe<Scalars['Int']>;
+  roleKind: RoleKind;
+  tenant?: Maybe<TenantCoreModel>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Query = {
@@ -1390,6 +1438,8 @@ export enum RegistrationStatus {
 /** The RoleKind enum */
 export enum RoleKind {
   CanteenRole = 'CanteenRole',
+  EventRole = 'EventRole',
+  ProjectRole = 'ProjectRole',
   TeamRole = 'TeamRole',
 }
 
@@ -1720,6 +1770,7 @@ export type TenantCoreProps = {
 export type TenantEventModel = ContentMasterModel & {
   __typename?: 'TenantEventModel';
   approvalSubmission?: Maybe<FormSubmissionModel>;
+  autoAcceptJoins: Scalars['Boolean'];
   contentMasterKind: ContentMasterKind;
   contributors: Array<IndividualModel>;
   createdAt: Scalars['DateTime'];
@@ -1732,6 +1783,7 @@ export type TenantEventModel = ContentMasterModel & {
   joinForm?: Maybe<FormModel>;
   lastEventApprovalStep?: Maybe<EventApprovalStepModel>;
   lastHiddenAt?: Maybe<Scalars['DateTime']>;
+  linkedProject?: Maybe<ProjectModel>;
   location: Address;
   meta: Scalars['JSON'];
   orgs: Array<OrgModel>;
@@ -1740,6 +1792,7 @@ export type TenantEventModel = ContentMasterModel & {
   registrations: Array<EventJoinModel>;
   regularEvent?: Maybe<TenantEventModel>;
   regularEventInterval?: Maybe<Scalars['String']>;
+  roles: Array<EventRoleModel>;
   rootContent?: Maybe<UgcModel>;
   slug: Scalars['String'];
   start: Scalars['DateTime'];
@@ -1830,6 +1883,7 @@ export type UpdateEventApprovalStepDto = {
 };
 
 export type UpdateEventDto = {
+  autoAcceptJoins?: InputMaybe<Scalars['Boolean']>;
   description?: InputMaybe<Scalars['String']>;
   end?: InputMaybe<Scalars['DateTime']>;
   id: Scalars['String'];
@@ -1863,14 +1917,15 @@ export type UpdateFinanceDto = {
 };
 
 export type UpdateProjectDto = {
-  actualBudget?: InputMaybe<Scalars['String']>;
+  actualBudget?: InputMaybe<Scalars['Float']>;
   description?: InputMaybe<Scalars['String']>;
-  expectedBudget?: InputMaybe<Scalars['Int']>;
+  expectedBudget?: InputMaybe<Scalars['Float']>;
   id: Scalars['String'];
-  linkedEventId?: InputMaybe<Scalars['String']>;
+  isPrivate?: InputMaybe<Scalars['Boolean']>;
+  linkedEventIds?: InputMaybe<Array<Scalars['String']>>;
   name?: InputMaybe<Scalars['String']>;
   participantsIds?: InputMaybe<Array<Scalars['String']>>;
-  supervisorId?: InputMaybe<Scalars['String']>;
+  supervisorIds?: InputMaybe<Array<Scalars['String']>>;
   teamId?: InputMaybe<Scalars['String']>;
 };
 
@@ -2057,15 +2112,7 @@ export type DocumentInfoFragment = {
     ' $fragmentRefs'?: { DocumentUploadInfoFragment: DocumentUploadInfoFragment };
   };
   edits: Array<
-    | {
-        __typename: 'DocumentEditModel';
-        yearVersion?: number | null;
-        id: string;
-        createdAt: any;
-        newVersion: { __typename?: 'DocumentUploadModel' } & {
-          ' $fragmentRefs'?: { DocumentUploadInfoFragment: DocumentUploadInfoFragment };
-        };
-      }
+    | { __typename: 'DocumentEditModel'; yearVersion?: number | null; id: string; createdAt: any }
     | { __typename: 'FormEditModel'; id: string; createdAt: any }
   >;
 } & { ' $fragmentName'?: 'DocumentInfoFragment' };
@@ -2241,16 +2288,8 @@ export type FormInfoFragment = {
   type: FormType;
   isTemplate: boolean;
   edits: Array<
-    | {
-        __typename: 'DocumentEditModel';
-        yearVersion?: number | null;
-        id: string;
-        createdAt: any;
-        newVersion: { __typename?: 'DocumentUploadModel' } & {
-          ' $fragmentRefs'?: { DocumentUploadInfoFragment: DocumentUploadInfoFragment };
-        };
-      }
-    | { __typename: 'FormEditModel'; id: string; createdAt: any }
+    | { __typename: 'DocumentEditModel'; id: string; createdAt: any }
+    | { __typename: 'FormEditModel'; newVersion: any; id: string; createdAt: any }
   >;
 } & { ' $fragmentName'?: 'FormInfoFragment' };
 
@@ -2261,7 +2300,7 @@ export type FormSubmissionInfoFragment = {
   updatedAt: any;
   submission: any;
   description: string;
-  linkedFormEdit?: { __typename: 'FormEditModel'; id: string; createdAt: any; updatedAt: any; newVersion: any } | null;
+  linkedFormEdit: { __typename: 'FormEditModel'; id: string; createdAt: any; updatedAt: any; newVersion: any };
 } & { ' $fragmentName'?: 'FormSubmissionInfoFragment' };
 
 export type MyInfoFragment = {
@@ -2386,7 +2425,35 @@ export type ProjectInfoFragment = {
     | { __typename?: 'BotModel' }
     | ({ __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } })
     | null;
-  supervisor: { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } };
+  supervisors: Array<{
+    __typename: 'TeamMemberModel';
+    id: string;
+    user: {
+      __typename: 'UserModel';
+      id: string;
+      firstName: string;
+      actor?: {
+        __typename: 'ActorModel';
+        id: string;
+        name: string;
+        actorImages: Array<
+          { __typename?: 'ActorImageModel' } & {
+            ' $fragmentRefs'?: { ActorImageBareInfoFragment: ActorImageBareInfoFragment };
+          }
+        >;
+      } | null;
+    };
+    roles: Array<{
+      __typename: 'TeamRoleModel';
+      id: string;
+      name: string;
+      color: Colors;
+      required: boolean;
+      permissions: Array<TeamPermissions>;
+      category: TeamRoleCategory;
+      key?: TeamRoleKey | null;
+    }>;
+  }>;
   participants?: Array<
     { __typename?: 'UserModel' } & { ' $fragmentRefs'?: { UserInfoFragment: UserInfoFragment } }
   > | null;
@@ -3434,31 +3501,6 @@ export const TeamCategoryInfoFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeamCategoryInfoFragment, unknown>;
-export const DocumentUploadInfoFragmentDoc = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<DocumentUploadInfoFragment, unknown>;
 export const FormInfoFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3489,20 +3531,10 @@ export const FormInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -3511,6 +3543,11 @@ export const FormInfoFragmentDoc = {
         ],
       },
     },
+  ],
+} as unknown as DocumentNode<FormInfoFragment, unknown>;
+export const DocumentUploadInfoFragmentDoc = {
+  kind: 'Document',
+  definitions: [
     {
       kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'DocumentUploadInfo' },
@@ -3532,7 +3569,7 @@ export const FormInfoFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<FormInfoFragment, unknown>;
+} as unknown as DocumentNode<DocumentUploadInfoFragment, unknown>;
 export const DocumentInfoFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -3572,17 +3609,7 @@ export const DocumentInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -3813,20 +3840,10 @@ export const TeamInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -3871,17 +3888,7 @@ export const TeamInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -4359,26 +4366,6 @@ export const MyInfoFragmentDoc = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -4404,25 +4391,35 @@ export const MyInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -4462,17 +4459,7 @@ export const MyInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -5055,10 +5042,64 @@ export const ProjectInfoFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -5131,26 +5172,6 @@ export const ProjectInfoFragmentDoc = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -5176,25 +5197,35 @@ export const ProjectInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -5234,17 +5265,7 @@ export const ProjectInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -5558,26 +5579,6 @@ export const FinanceInfoFragmentDoc = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -5603,25 +5604,35 @@ export const FinanceInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -5661,17 +5672,7 @@ export const FinanceInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -5927,10 +5928,64 @@ export const FinanceInfoFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -6426,20 +6481,10 @@ export const TeamManageInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -6484,17 +6529,7 @@ export const TeamManageInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -6637,10 +6672,64 @@ export const TeamManageInfoFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -6980,26 +7069,6 @@ export const TeamMembersInfoFragmentDoc = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -7025,25 +7094,35 @@ export const TeamMembersInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -7083,17 +7162,7 @@ export const TeamMembersInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -7348,17 +7417,7 @@ export const TenantInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -7511,26 +7570,6 @@ export const UserMembershipsInfoFragmentDoc = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -7556,25 +7595,35 @@ export const UserMembershipsInfoFragmentDoc = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -7614,17 +7663,7 @@ export const UserMembershipsInfoFragmentDoc = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -7893,26 +7932,6 @@ export const LoginDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -7938,25 +7957,35 @@ export const LoginDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -7996,17 +8025,7 @@ export const LoginDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -9494,20 +9513,10 @@ export const CreateFinanceDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -9552,17 +9561,7 @@ export const CreateFinanceDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -9705,10 +9704,64 @@ export const CreateFinanceDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -10081,20 +10134,10 @@ export const UpdateFinanceDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -10139,17 +10182,7 @@ export const UpdateFinanceDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -10292,10 +10325,64 @@ export const UpdateFinanceDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -10467,26 +10554,6 @@ export const CreateProjectDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -10512,25 +10579,35 @@ export const CreateProjectDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -10570,17 +10647,7 @@ export const CreateProjectDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -10766,10 +10833,64 @@ export const CreateProjectDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -10879,26 +11000,6 @@ export const UpdateProjectDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -10924,25 +11025,35 @@ export const UpdateProjectDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -10982,17 +11093,7 @@ export const UpdateProjectDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -11178,10 +11279,64 @@ export const UpdateProjectDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -12080,17 +12235,7 @@ export const TeamAddDocumentDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -12215,26 +12360,6 @@ export const UpdateTeamDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -12260,25 +12385,35 @@ export const UpdateTeamDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -12318,17 +12453,7 @@ export const UpdateTeamDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -12767,10 +12892,64 @@ export const UpdateTeamDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -13181,17 +13360,7 @@ export const TenantAddDocumentDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -13962,20 +14131,10 @@ export const GetFinancesDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
@@ -14020,17 +14179,7 @@ export const GetFinancesDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -14173,10 +14322,64 @@ export const GetFinancesDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -14394,26 +14597,6 @@ export const MeDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -14439,25 +14622,35 @@ export const MeDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -14497,17 +14690,7 @@ export const MeDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -15069,26 +15252,6 @@ export const GetTeamByIdDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -15114,25 +15277,35 @@ export const GetTeamByIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -15172,17 +15345,7 @@ export const GetTeamByIdDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -15522,26 +15685,6 @@ export const GetTeamDetailsDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -15567,25 +15710,35 @@ export const GetTeamDetailsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -15625,17 +15778,7 @@ export const GetTeamDetailsDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -15933,26 +16076,6 @@ export const GetTeamManageDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -15978,25 +16101,35 @@ export const GetTeamManageDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -16036,17 +16169,7 @@ export const GetTeamManageDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -16345,10 +16468,64 @@ export const GetTeamManageDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -16610,26 +16787,6 @@ export const GetTeamManageBySlugDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -16655,25 +16812,35 @@ export const GetTeamManageBySlugDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -16713,17 +16880,7 @@ export const GetTeamManageBySlugDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -17162,10 +17319,64 @@ export const GetTeamManageBySlugDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'supervisor' },
+            name: { kind: 'Name', value: 'supervisors' },
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'UserInfo' } }],
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'actor' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actorImages' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'FragmentSpread', name: { kind: 'Name', value: 'ActorImageBareInfo' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'roles' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'required' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'category' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'key' } },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {
@@ -17524,26 +17735,6 @@ export const GetTeamWithMembersDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -17569,25 +17760,35 @@ export const GetTeamWithMembersDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -17627,17 +17828,7 @@ export const GetTeamWithMembersDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -17925,26 +18116,6 @@ export const GetTeamWithMembersBySlugDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -17970,25 +18141,35 @@ export const GetTeamWithMembersBySlugDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -18028,17 +18209,7 @@ export const GetTeamWithMembersBySlugDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -18354,26 +18525,6 @@ export const GetTeamsDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -18399,25 +18550,35 @@ export const GetTeamsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -18457,17 +18618,7 @@ export const GetTeamsDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -18706,26 +18857,6 @@ export const GetTeamsByCategoryDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -18751,25 +18882,35 @@ export const GetTeamsByCategoryDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -18809,17 +18950,7 @@ export const GetTeamsByCategoryDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -19111,26 +19242,6 @@ export const GetTeamsWithMembersDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -19156,25 +19267,35 @@ export const GetTeamsWithMembersDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -19214,17 +19335,7 @@ export const GetTeamsWithMembersDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -19534,17 +19645,7 @@ export const GetTenantByIdDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -19738,17 +19839,7 @@ export const GetTenantDocumentsQueryDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -19963,26 +20054,6 @@ export const GetUserByIdDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -20008,25 +20079,35 @@ export const GetUserByIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -20066,17 +20147,7 @@ export const GetUserByIdDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -20571,26 +20642,6 @@ export const GetUserBySlugDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -20616,25 +20667,35 @@ export const GetUserBySlugDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -20674,17 +20735,7 @@ export const GetUserBySlugDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -20962,26 +21013,6 @@ export const GetUserMembershipsByIdDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -21007,25 +21038,35 @@ export const GetUserMembershipsByIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -21065,17 +21106,7 @@ export const GetUserMembershipsByIdDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],
@@ -21383,26 +21414,6 @@ export const GetUsersDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'DocumentUploadInfo' },
-      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'FormInfo' },
       typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormModel' } },
       selectionSet: {
@@ -21428,25 +21439,35 @@ export const GetUsersDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
                 {
                   kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FormEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'newVersion' } }],
                   },
                 },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'DocumentUploadInfo' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentUploadModel' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'mime' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfPages' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'numberOfWords' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'documentType' } },
         ],
       },
     },
@@ -21486,17 +21507,7 @@ export const GetUsersDocument = {
                   typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'DocumentEditModel' } },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'newVersion' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'DocumentUploadInfo' } }],
-                        },
-                      },
-                    ],
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'yearVersion' } }],
                   },
                 },
               ],

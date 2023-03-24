@@ -15,9 +15,9 @@ import { Skeleton } from '@okampus/ui/atoms';
 import { TEAM_ROUTE } from '@okampus/shared/consts';
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+// import { useState } from 'react';
 
-import type { TeamInfoFragment } from '@okampus/shared/graphql';
+// import type { TeamInfoFragment } from '@okampus/shared/graphql';
 
 export function TeamList() {
   const { categorySlug } = useParams();
@@ -31,7 +31,7 @@ export function TeamListWrapping({ categorySlug }: { categorySlug: string }) {
 
   const { data } = useQuery(getTeamsQuery, { variables: { filter: teamListFilter } });
   const { data: categoryData } = useQuery(getTeamCategoryBySlugQuery, { variables: { slug: categorySlug } });
-  const [filteredTeams, setFilteredTeams] = useState<TeamInfoFragment[]>([]);
+  // const [filteredTeams, setFilteredTeams] = useState<TeamInfoFragment[]>([]);
 
   if (!data || !data.teams.edges) {
     return null;

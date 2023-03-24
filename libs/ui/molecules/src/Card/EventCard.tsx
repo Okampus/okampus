@@ -28,7 +28,7 @@ export function EventCard({ event, classes, onClick }: EventCardProps) {
           <div className="rounded-lg bg-red-400 text-white py-0.5 px-2">Refusé</div>
         ) : (
           <div className="rounded-lg bg-opposite text-opposite py-0.5 px-2">
-            En attente de validation {event.lastEventApprovalStep?.order ?? 0}/3
+            En attente de validation {event.lastEventApprovalStep?.stepOrder ?? 0}/3
           </div>
         )}
       </div>

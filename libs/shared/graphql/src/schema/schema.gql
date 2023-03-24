@@ -535,11 +535,14 @@ type TenantEventModel implements ContentMasterModel {
   regularEvent: TenantEventModel
   approvalSubmission: FormSubmissionModel
   lastEventApprovalStep: EventApprovalStepModel
+  linkedProject: ProjectModel
   eventApprovals: [EventApprovalModel!]!
   registrations: [EventJoinModel!]!
   state: EventState!
   meta: JSON!
   private: Boolean!
+  autoAcceptJoins: Boolean!
+  roles: [EventRoleModel!]!
 }
 
 """The EventState enum"""
@@ -577,7 +580,8 @@ type EventJoinModel {
   settledMessage: String
   formSubmission: FormSubmissionModel!
   state: ApprovalState!
-  event: TenantEventModel
+  linkedEvent: TenantEventModel
+  eventRole: EventRoleModel
   participated: Boolean
   teamAction: TeamActionModel
   presenceStatus: RegistrationStatus!
@@ -729,7 +733,7 @@ type FormSubmissionModel implements UgcModel {
   author: IndividualModel
   contentMaster: ContentMasterModel
   submission: JSON!
-  linkedFormEdit: FormEditModel
+  linkedFormEdit: FormEditModel!
 }
 
 type FormSubmissionModelEdge {
@@ -787,6 +791,63 @@ type ActorImageModelEdge {
   node: ActorImageModel!
 }
 
+type ProjectRoleModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  createdBy: IndividualModel
+  lastHiddenAt: DateTime
+  roleKind: RoleKind!
+  name: String!
+  color: Colors!
+  key: TeamRoleKey
+  required: Boolean!
+  project: ProjectModel!
+  description: String!
+  autoAccept: Boolean!
+  rewardMinimum: Int
+  rewardMaximum: Int
+}
+
+"""The RoleKind enum"""
+enum RoleKind {
+  TeamRole
+  CanteenRole
+  EventRole
+  ProjectRole
+}
+
+"""The TeamRoleKey enum"""
+enum TeamRoleKey {
+  Director
+  Treasurer
+  Secretary
+}
+
+type EventRoleModel {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  tenant: TenantCoreModel
+  createdBy: IndividualModel
+  lastHiddenAt: DateTime
+  roleKind: RoleKind!
+  name: String!
+  color: Colors!
+  key: TeamRoleKey
+  required: Boolean!
+  linkedProjectRole: ProjectRoleModel!
+  event: TenantEventModel!
+  user: UserModel
+  description: String
+  autoAccept: Boolean!
+  rewardMinimum: Int
+  rewardMaximum: Int
+}
+
 type TeamRoleModel {
   id: String!
   createdAt: DateTime!
@@ -803,19 +864,6 @@ type TeamRoleModel {
   team: TeamModel!
   permissions: [TeamPermissions!]!
   category: TeamRoleCategory!
-}
-
-"""The RoleKind enum"""
-enum RoleKind {
-  TeamRole
-  CanteenRole
-}
-
-"""The TeamRoleKey enum"""
-enum TeamRoleKey {
-  Director
-  Treasurer
-  Secretary
 }
 
 """The TeamPermissions enum"""
@@ -1001,9 +1049,10 @@ type ProjectModel {
   description: String
   expectedBudget: Float!
   actualBudget: Float!
+  isPrivate: Boolean!
   team: TeamModel!
-  linkedEvent: TenantEventModel
-  supervisor: UserModel!
+  linkedEvents: [TenantEventModel!]!
+  supervisors: [TeamMemberModel!]!
   participants: [UserModel!]
 }
 
@@ -1467,6 +1516,7 @@ input CreateEventDto {
   state: EventState!
   meta: JSON
   private: Boolean
+  autoAcceptJoins: Boolean
   slug: String
   title: String!
   description: String!
@@ -1483,6 +1533,7 @@ input UpdateEventDto {
   state: EventState
   meta: JSON
   private: Boolean
+  autoAcceptJoins: Boolean
   slug: String
   title: String
   description: String
@@ -1613,22 +1664,24 @@ input UpdateFinanceDto {
 input CreateProjectDto {
   name: String!
   description: String = null
-  expectedBudget: Int!
-  actualBudget: String = null
+  expectedBudget: Float!
+  actualBudget: Float = null
+  isPrivate: Boolean = false
   teamId: String!
-  linkedEventId: String = null
-  supervisorId: String!
-  participantsIds: [String!] = []
+  linkedEventIds: [String!]! = []
+  supervisorIds: [String!]! = []
+  participantsIds: [String!]! = []
 }
 
 input UpdateProjectDto {
   name: String
   description: String = null
-  expectedBudget: Int
-  actualBudget: String = null
+  expectedBudget: Float
+  actualBudget: Float = null
+  isPrivate: Boolean = false
   teamId: String
-  linkedEventId: String = null
-  supervisorId: String
+  linkedEventIds: [String!] = []
+  supervisorIds: [String!] = []
   participantsIds: [String!] = []
   id: String!
 }

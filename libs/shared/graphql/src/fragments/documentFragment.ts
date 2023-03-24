@@ -18,9 +18,6 @@ export const documentFragment = gql(`
       createdAt
       ... on DocumentEditModel {
         yearVersion
-        newVersion {
-          ...DocumentUploadInfo
-        }
       }
     }
   }
