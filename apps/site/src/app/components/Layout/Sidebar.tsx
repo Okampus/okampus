@@ -48,7 +48,7 @@ import type { Menu } from '../../menus';
 export const smallHideClassName = 'xl-max:hidden';
 
 const menusClassName = 'xl-max:gap-6 flex flex-col h-full p-3 overflow-y-scroll scrollbar';
-const iconClassName = 'xl-max:w-full w-9 aspect-square shrink-0';
+const iconClassName = 'xl-max:w-full w-8 aspect-square shrink-0';
 const linkClassName = 'xl-max:hidden font-heading line-clamp-1';
 const hrClassName = 'xl-max:hidden border-color-3 m-3';
 const sectionClassName = 'xl-max:gap-2 flex flex-col';
