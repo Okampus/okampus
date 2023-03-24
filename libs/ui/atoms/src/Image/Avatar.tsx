@@ -1,13 +1,16 @@
 import { getColorHexFromData } from '@okampus/shared/utils';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
+import { useMeasure } from 'react-use';
 
 import type { AnimationProps } from 'framer-motion';
+import type { CSSLengthUnit } from '@okampus/shared/types';
 
 export type AvatarProps = {
   src?: string;
   name?: string;
-  size?: number;
+  size?: number | 'inherit';
+  sizeUnit?: CSSLengthUnit;
   rounded: number;
   className?: string;
   active?: boolean;
@@ -15,7 +18,19 @@ export type AvatarProps = {
   transition?: AnimationProps['transition'];
 };
 
-export function Avatar({ src, name, size = 14, rounded, className, active, transition, layout = false }: AvatarProps) {
+export function Avatar({
+  src,
+  name,
+  size = 14,
+  sizeUnit = 'rem',
+  rounded,
+  className,
+  active,
+  transition,
+  layout = false,
+}: AvatarProps) {
+  const [ref, { height }] = useMeasure<HTMLDivElement>();
+
   name = name ?? '?';
   return (
     <motion.div
@@ -23,20 +38,25 @@ export function Avatar({ src, name, size = 14, rounded, className, active, trans
       transition={transition}
       className={clsx(
         'flex items-center overflow-hidden shrink-0 font-heading leading-none',
-        className,
-        active && 'ring-4'
+        active && 'ring-4',
+        className
       )}
       style={{
-        width: `${size / 6}rem`,
-        height: `${size / 6}rem`,
+        ...(size === 'inherit'
+          ? { fontSize: `${height / 1.6}px`, width: `${height}px` }
+          : {
+              height: `${size / 6}${sizeUnit}`,
+              width: `${height}px`,
+              fontSize: sizeUnit === '%' ? `${height / 1.6}px` : `${size / 10}${sizeUnit}`,
+            }),
         borderRadius: `${rounded}%`,
-        fontSize: `${size / 10}rem`,
       }}
     >
       {src ? (
         <img src={src} alt={`${name}`} />
       ) : (
         <div
+          ref={ref}
           className="flex items-center justify-center w-full h-full"
           style={{ backgroundColor: getColorHexFromData(name) }}
         >

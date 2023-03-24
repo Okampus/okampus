@@ -11,6 +11,7 @@ export * from './interfaces/global/file-like.interface';
 export * from './interfaces/global/file-mime-check-payload.interface';
 export * from './interfaces/snowflake';
 export * from './interfaces/ui/button.props';
+export * from './interfaces/ui/css-unit.interface';
 export * from './interfaces/ui/modal.props';
 export * from './interfaces/ui/route.props';
 export * from './interfaces/ui/selected-item.interface';

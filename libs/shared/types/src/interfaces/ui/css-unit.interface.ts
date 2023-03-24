@@ -1,0 +1,17 @@
+export type CSSLengthUnit =
+  | 'px'
+  | 'em'
+  | 'rem'
+  | 'vh'
+  | 'vw'
+  | '%'
+  | 'vmin'
+  | 'vmax'
+  | 'ch'
+  | 'ex'
+  | 'cm'
+  | 'mm'
+  | 'in'
+  | 'pt'
+  | 'pc'
+  | 'Q';
