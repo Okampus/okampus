@@ -9,7 +9,7 @@ import { DocumentInput } from '#site/app/components/Input/DocumentInput';
 import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
 
 import { ActionButton, FormItem, GridLoader } from '@okampus/ui/atoms';
-import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
+import { NavigationContext, useMe, useTeamManage } from '@okampus/ui/hooks';
 
 import { AVATAR_TEAM_ROUNDED, TEAM_MANAGE_ROUTES, TEAM_MANAGE_TAB_ROUTE, TEAM_ROUTE } from '@okampus/shared/consts';
 import { ControlType } from '@okampus/shared/enums';
@@ -29,19 +29,27 @@ import { getAvatar, getBanner } from '@okampus/ui/utils';
 
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import type { DynamicFieldData } from '@okampus/ui/organisms';
 
 export function TeamManageView() {
   const navigate = useNavigate();
+  const { me } = useMe();
   const { teamManage } = useTeamManage();
   const { addNotification, showModal, hideModal } = useContext(NavigationContext);
 
   const [updateTeam] = useMutation(updateTeamMutation);
   const [deactivateTeamImage] = useMutation(deactivateTeamImageMutation);
 
-  if (!teamManage || !teamManage.actor) return <GridLoader />;
+  if (!teamManage || !teamManage.actor || !me) return <GridLoader />;
+  if (!teamManage.members.some((member) => member.user.id === me.id)) {
+    addNotification({
+      message: `Vous n'avez pas les permissions de gérer l'équipe ${teamManage.actor.name}`,
+      type: ToastType.Error,
+    });
+    return <Navigate to={TEAM_ROUTE(teamManage.actor.slug)} />;
+  }
 
   const publicRoute = TEAM_ROUTE(teamManage.actor.slug);
   const buttonList = (
