@@ -1,16 +1,16 @@
 import { menus } from '../../menus';
 
 import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
-import { ReactComponent as SortArrowsFilledIcon } from '@okampus/assets/svg/icons/filled/sort-arrows.svg';
-import { ReactComponent as AdminFilledIcon } from '@okampus/assets/svg/icons/filled/admin-settings.svg';
-import { ReactComponent as PublicFilledIcon } from '@okampus/assets/svg/icons/filled/public.svg';
+import { ReactComponent as SortArrowsFilledIcon } from '@okampus/assets/svg/icons/material/filled/sort-arrows.svg';
+import { ReactComponent as AdminFilledIcon } from '@okampus/assets/svg/icons/material/filled/admin-settings.svg';
+import { ReactComponent as PublicFilledIcon } from '@okampus/assets/svg/icons/material/filled/public.svg';
 
-import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/filled/event.svg';
-import { ReactComponent as EventOutlinedIcon } from '@okampus/assets/svg/icons/outlined/event.svg';
-import { ReactComponent as WorkFilledIcon } from '@okampus/assets/svg/icons/filled/work.svg';
-import { ReactComponent as WorkOutlinedIcon } from '@okampus/assets/svg/icons/outlined/work.svg';
-import { ReactComponent as AddBoxFilledIcon } from '@okampus/assets/svg/icons/filled/add-box.svg';
-import { ReactComponent as AddBoxOutlinedIcon } from '@okampus/assets/svg/icons/outlined/add-box.svg';
+import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/material/filled/event.svg';
+import { ReactComponent as EventOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/event.svg';
+import { ReactComponent as WorkFilledIcon } from '@okampus/assets/svg/icons/material/filled/work.svg';
+import { ReactComponent as WorkOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/work.svg';
+import { ReactComponent as AddBoxFilledIcon } from '@okampus/assets/svg/icons/material/filled/add-box.svg';
+import { ReactComponent as AddBoxOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/add-box.svg';
 
 import {
   AVATAR_TENANT_ROUNDED,
@@ -47,7 +47,7 @@ import type { Menu } from '../../menus';
 
 export const smallHideClassName = 'xl-max:hidden';
 
-const menusClassName = 'xl-max:gap-6 flex flex-col h-full p-3 overflow-y-scroll scrollbar';
+const menusClassName = 'xl-max:gap-6 flex flex-col h-full xl-max:p-2.5 p-3.5 overflow-y-scroll scrollbar';
 const iconClassName = 'xl-max:w-full w-8 aspect-square shrink-0';
 const linkClassName = 'xl-max:hidden font-heading line-clamp-1';
 const hrClassName = 'xl-max:hidden border-color-3 m-3';
@@ -177,14 +177,14 @@ export function Sidebar() {
       {/* Subspace name */}
       <Popover forcePlacement={true} placement="bottom-start" placementOffset={10}>
         <PopoverTrigger>
-          <div className="bg-1-hover cursor-pointer shrink-0 flex justify-between items-center h-[var(--topbar-height)] px-4">
+          <div className="bg-1-hover cursor-pointer shrink-0 flex justify-between items-center h-[var(--topbar-height)] xl:px-5 px-3.5">
             <div className="flex gap-item items-center">
               {tenant && tenant.actor ? (
                 <>
                   <Avatar
                     name={tenant.actor.name}
                     src={getAvatar(tenant.actor.actorImages)}
-                    size={18}
+                    size={19}
                     rounded={AVATAR_TENANT_ROUNDED}
                   />
                   <div className={clsx('flex flex-col items-start', smallHideClassName)}>

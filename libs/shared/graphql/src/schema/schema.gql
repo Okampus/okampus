@@ -733,7 +733,7 @@ type FormSubmissionModel implements UgcModel {
   author: IndividualModel
   contentMaster: ContentMasterModel
   submission: JSON!
-  linkedFormEdit: FormEditModel!
+  linkedFormEdit: FormEditModel
 }
 
 type FormSubmissionModelEdge {

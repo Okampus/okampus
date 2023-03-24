@@ -1,6 +1,6 @@
 import { Avatar, Banner } from '@okampus/ui/atoms';
 import { clsx } from 'clsx';
-import { ReactComponent as GoIcon } from '@okampus/assets/svg/icons/filled/go.svg';
+import { ReactComponent as GoIcon } from '@okampus/assets/svg/icons/material/filled/go.svg';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 

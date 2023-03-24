@@ -3,8 +3,8 @@ import GlobalContext from './GlobalContext';
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 
-import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/outlined/back.svg';
-import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/outlined/next.svg';
+import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/material/outlined/back.svg';
+import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/material/outlined/next.svg';
 
 export default function CalendarHeader() {
   const { monthIndex, setMonthIndex } = useContext(GlobalContext);

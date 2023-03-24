@@ -1,5 +1,5 @@
-import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/outlined/back.svg';
-import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/outlined/next.svg';
+import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/material/outlined/back.svg';
+import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/material/outlined/next.svg';
 import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
 
 import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';

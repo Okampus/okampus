@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { ReactComponent as GoOutlinedIcon } from '@okampus/assets/svg/icons/outlined/go.svg';
+import { ReactComponent as GoOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/go.svg';
 
 import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
 import { Avatar, Banner } from '@okampus/ui/atoms';

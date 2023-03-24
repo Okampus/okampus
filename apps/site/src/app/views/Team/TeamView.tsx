@@ -2,8 +2,8 @@ import { TeamJoinForm } from './TeamJoinForm';
 import { TeamJoinView } from './TeamJoinView';
 import { ProfileBase } from '../ProfileBase';
 
-import { ReactComponent as FavoriteFilledIcon } from '@okampus/assets/svg/icons/filled/favorite.svg';
-import { ReactComponent as FavoriteOutlinedIcon } from '@okampus/assets/svg/icons/outlined/favorite.svg';
+import { ReactComponent as FavoriteFilledIcon } from '@okampus/assets/svg/icons/material/filled/favorite.svg';
+import { ReactComponent as FavoriteOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/favorite.svg';
 
 import { AVATAR_TEAM_ROUNDED, TEAM_MANAGE_ROUTE, TEAM_ROUTES, TEAM_TAB_ROUTE } from '@okampus/shared/consts';
 import { ScopeRole, TeamPermissions } from '@okampus/shared/enums';

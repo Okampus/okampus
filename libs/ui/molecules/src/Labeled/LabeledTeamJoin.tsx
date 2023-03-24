@@ -3,10 +3,10 @@ import { ApprovalState } from '@okampus/shared/enums';
 import { Avatar, RoleLabel } from '@okampus/ui/atoms';
 import { getAvatar } from '@okampus/ui/utils';
 
-import { ReactComponent as PendingFilledIcon } from '@okampus/assets/svg/icons/filled/pending.svg';
-import { ReactComponent as ValidateFilledIcon } from '@okampus/assets/svg/icons/filled/validate.svg';
-import { ReactComponent as RefuseFilledIcon } from '@okampus/assets/svg/icons/filled/refuse.svg';
-import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/filled/cancel.svg';
+import { ReactComponent as PendingFilledIcon } from '@okampus/assets/svg/icons/material/filled/pending.svg';
+import { ReactComponent as ValidateFilledIcon } from '@okampus/assets/svg/icons/material/filled/validate.svg';
+import { ReactComponent as RefuseFilledIcon } from '@okampus/assets/svg/icons/material/filled/refuse.svg';
+import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
 
 import type { FormSubmissionInfoFragment, TeamJoinInfoFragment, UserInfoFragment } from '@okampus/shared/graphql';
 

@@ -2,7 +2,7 @@ import { Avatar } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
-import { ReactComponent as EditIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
+import { ReactComponent as EditIcon } from '@okampus/assets/svg/icons/material/outlined/edit.svg';
 
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';

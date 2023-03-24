@@ -6,7 +6,7 @@ import { ProfileBase } from '../ProfileBase';
 
 import { DocumentInput } from '#site/app/components/Input/DocumentInput';
 
-import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
+import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/material/outlined/edit.svg';
 
 import { ActionButton, FormItem, GridLoader } from '@okampus/ui/atoms';
 import { NavigationContext, useMe, useTeamManage } from '@okampus/ui/hooks';

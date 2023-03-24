@@ -1,5 +1,5 @@
 // TODO: improve available actions based on permissions
-import { ReactComponent as FormOutlinedIcon } from '@okampus/assets/svg/icons/outlined/form.svg';
+import { ReactComponent as FormOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/form.svg';
 import { formatDateDayOfWeek } from '@okampus/shared/utils';
 
 export type FormItemProps = {

@@ -1,6 +1,6 @@
 import { ProfileBase } from '../ProfileBase';
 
-import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/outlined/edit.svg';
+import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/material/outlined/edit.svg';
 
 import { AVATAR_USER_ROUNDED, ME_ROUTES, ME_TAB_ROUTE } from '@okampus/shared/consts';
 import { ControlType, ActorImageType } from '@okampus/shared/enums';

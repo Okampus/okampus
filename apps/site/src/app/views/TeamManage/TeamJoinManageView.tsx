@@ -1,7 +1,7 @@
 import { ValidateTeamJoinForm } from './ValidateTeamJoinForm';
-import { ReactComponent as ValidateFilledIcon } from '@okampus/assets/svg/icons/filled/validate.svg';
-import { ReactComponent as RefuseFilledIcon } from '@okampus/assets/svg/icons/filled/refuse.svg';
-import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/filled/cancel.svg';
+import { ReactComponent as ValidateFilledIcon } from '@okampus/assets/svg/icons/material/filled/validate.svg';
+import { ReactComponent as RefuseFilledIcon } from '@okampus/assets/svg/icons/material/filled/refuse.svg';
+import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
 
 import { ApprovalState } from '@okampus/shared/enums';
 import {
