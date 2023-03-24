@@ -10,10 +10,10 @@ import { Requester } from '../../../shards/decorators/requester.decorator';
 import { UserModel } from '../../../domains/factories';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TenantPublic } from '@okampus/api/shards';
-import { User } from '@okampus/api/dal';
 import { UnauthorizedException } from '@nestjs/common';
-import { TokenType } from '@okampus/shared/enums';
+import { IndividualKind, TokenType } from '@okampus/shared/enums';
 
+import type { User } from '@okampus/api/dal';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Individual } from '@okampus/api/dal';
 
@@ -66,7 +66,9 @@ export class AuthResolver {
 
   @Query(() => AuthContextModel)
   public async me(@Requester() requester: Individual, @Context() ctx: GraphQLContext): Promise<AuthContextModel> {
-    if (!(requester instanceof User)) throw new UnauthorizedException('Only users can query their auth context');
-    return await this.authService.getAuthContext(requester, ctx.req, ctx.reply);
+    if (!(requester.individualKind === IndividualKind.User))
+      throw new UnauthorizedException('Only users can query their auth context');
+
+    return await this.authService.getAuthContext(requester as User, ctx.req, ctx.reply);
   }
 }
