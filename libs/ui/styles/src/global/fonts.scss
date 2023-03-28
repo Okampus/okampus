@@ -1,114 +1,121 @@
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
+  font-weight: 900;
+  src: local(metropolis-black), url('@assets/fonts/Metropolis/Metropolis-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Metropolis;
   font-weight: 800;
-  src: local(harmonyos-black), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Black.ttf') format('truetype');
+  src: local(metropolis-extrabold), url('@assets/fonts/Metropolis/Metropolis-ExtraBold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 700;
-  src: local(harmonyos-bold), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Bold.ttf') format('truetype');
+  src: local(metropolis-bold), url('@assets/fonts/Metropolis/Metropolis-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
+  font-weight: 600;
+  src: local(metropolis-semibold), url('@assets/fonts/Metropolis/Metropolis-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Metropolis;
   font-weight: 500;
-  src: local(harmonyos-medium), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Medium.ttf') format('truetype');
+  src: local(metropolis-medium), url('@assets/fonts/Metropolis/Metropolis-Medium.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 400;
-  src: local(harmonyos-regular), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Regular.ttf') format('truetype');
+  src: local(metropolis-regular), url('@assets/fonts/Metropolis/Metropolis-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 300;
-  src: local(harmonyos-light), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Light.ttf') format('truetype');
+  src: local(metropolis-light), url('@assets/fonts/Metropolis/Metropolis-Light.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 200;
-  src: local(harmonyos-thin), url('@assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Thin.ttf') format('truetype');
+  src: local(metropolis-extralight), url('@assets/fonts/Metropolis/Metropolis-ExtraLight.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
+  font-weight: 100;
+  src: local(metropolis-thin), url('@assets/fonts/Metropolis/Metropolis-Thin.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Metropolis;
+  font-weight: 900;
+  font-style: italic;
+  src: local(metropolis-black-italic), url('@assets/fonts/Metropolis/Metropolis-BlackItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Metropolis;
   font-weight: 800;
   font-style: italic;
-  src: local(harmonyos-black-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Black_Italic.ttf') format('truetype');
+  src: local(metropolis-extrabold-italic),
+    url('@assets/fonts/Metropolis/Metropolis-ExtraBoldItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 700;
   font-style: italic;
-  src: local(harmonyos-bold-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Bold_Italic.ttf') format('truetype');
+  src: local(metropolis-bold-italic), url('@assets/fonts/Metropolis/Metropolis-BoldItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
+  font-weight: 600;
+  font-style: italic;
+  src: local(metropolis-semibold-italic),
+    url('@assets/fonts/Metropolis/Metropolis-SemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Metropolis;
   font-weight: 500;
   font-style: italic;
-  src: local(harmonyos-medium-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Medium_Italic.ttf') format('truetype');
+  src: local(metropolis-medium-italic), url('@assets/fonts/Metropolis/Metropolis-MediumItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 400;
   font-style: italic;
-  src: local(harmonyos-regular-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Regular_Italic.ttf') format('truetype');
+  src: local(metropolis-regular-italic), url('@assets/fonts/Metropolis/Metropolis-RegularItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 300;
   font-style: italic;
-  src: local(harmonyos-light-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Light_Italic.ttf') format('truetype');
+  src: local(metropolis-light-italic), url('@assets/fonts/Metropolis/Metropolis-LightItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: HarmonyOS;
+  font-family: Metropolis;
   font-weight: 200;
   font-style: italic;
-  src: local(harmonyos-thin-italic),
-    url('@assets/fonts/HarmonyOS_Sans_Italic/HarmonyOS_Sans_Thin_Italic.ttf') format('truetype');
+  src: local(metropolis-extralight-italic),
+    url('@assets/fonts/Metropolis/Metropolis-ExtraLightItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: RedHatDisplay;
-  font-weight: 100 1000;
-  src: local(redhatdisplay),
-    url('@assets/fonts/RedHat_Display/RedHatDisplay-VariableFont_wght.ttf') format('truetype-variations');
-}
-
-@font-face {
-  font-family: RedHatDisplay;
-  font-weight: 100 1000;
+  font-family: Metropolis;
+  font-weight: 100;
   font-style: italic;
-  src: local(redhatdisplay-italic),
-    url('@assets/fonts/RedHat_Display/RedHatDisplay-Italic-VariableFont_wght.ttf') format('truetype-variations');
-}
-
-@font-face {
-  font-family: Figtree;
-  font-weight: 100 1000;
-  src: local(figtree), url('@assets/fonts/Figtree/Figtree-VariableFont_wght.ttf') format('truetype-variations');
-}
-
-@font-face {
-  font-family: Figtree;
-  font-weight: 100 1000;
-  font-style: italic;
-  src: local(figtree-italic),
-    url('@assets/fonts/Figtree/Figtree-Italic-VariableFont_wght.ttf') format('truetype-variations');
+  src: local(metropolis-thin-italic), url('@assets/fonts/Metropolis/Metropolis-ThinItalic.ttf') format('truetype');
 }
 
 @font-face {
@@ -123,23 +130,9 @@
   src: local(spacemono), url('@assets/fonts/SpaceMono/SpaceMono-Regular.ttf') format('truetype');
 }
 
-.font-title {
-  font-family: Figtree, sans-serif;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-heading {
-  font-family: RedHatDisplay, sans-serif;
-}
-
 html,
 body {
-  font-family: HarmonyOS, sans-serif;
+  font-family: Metropolis, sans-serif;
 }
 
 code,
