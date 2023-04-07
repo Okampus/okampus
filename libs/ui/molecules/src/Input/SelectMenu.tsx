@@ -115,7 +115,7 @@ function SelectMenuInner<T>(
   const content = (
     <motion.ul
       className={clsx(
-        'my-1 min-w-full w-fit rounded-xl text-modest text-0 gap-1 flex-col bg-0 z-20',
+        'my-1 min-w-full w-fit rounded-lg text-modest text-0 gap-1 flex-col bg-0 z-20',
         contentClassName,
         isOpen ? 'flex' : '!hidden',
         isContentAbsolute && 'h-max-[20rem]'
@@ -176,7 +176,7 @@ function SelectMenuInner<T>(
       initial={'closed'}
       animate={isOpen ? 'open' : 'closed'}
     >
-      <Popover open={isOpen} placement="bottom-start">
+      <Popover controlledOpen={isOpen} placement="bottom-start">
         <PopoverTrigger
           name={name}
           motionConfig={{ whileTap: { scale: 0.95 } }}
@@ -185,7 +185,7 @@ function SelectMenuInner<T>(
         >
           {trigger}
         </PopoverTrigger>
-        <PopoverContent className="p-0">{content}</PopoverContent>
+        <PopoverContent className="p-0 z-100">{content}</PopoverContent>
       </Popover>
     </motion.div>
   ) : (
