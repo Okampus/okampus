@@ -1,0 +1,88 @@
+table:
+  name: user_info
+  schema: public
+object_relationships:
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: individualById
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: individual
+          schema: public
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: action
+          schema: public
+  - name: changeRoles
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: change_role
+          schema: public
+  - name: classGroupTeachers
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: class_group_teacher
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: joiner_id
+        table:
+          name: event_join
+          schema: public
+  - name: eventRoles
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: event_role
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: supervisor_id
+        table:
+          name: event
+          schema: public
+  - name: sessions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: session
+          schema: public
+  - name: shortcuts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: shortcut
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: joiner_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: team_member
+          schema: public

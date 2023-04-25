@@ -1,0 +1,24 @@
+table:
+  name: actor_bank_info
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actor_id
+  - name: actorAddress
+    using:
+      foreign_key_constraint_on: bank_location_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: bank_info_id
+        table:
+          name: expense
+          schema: public

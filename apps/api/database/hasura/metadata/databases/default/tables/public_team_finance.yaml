@@ -1,0 +1,25 @@
+table:
+  name: team_finance
+  schema: public
+object_relationships:
+  - name: actorFinance
+    using:
+      foreign_key_constraint_on: actor_finance_id
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: expense
+    using:
+      foreign_key_constraint_on: expense_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

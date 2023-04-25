@@ -1,0 +1,36 @@
+table:
+  name: action
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: eventJoin
+    using:
+      foreign_key_constraint_on: event_join_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: teamMember
+    using:
+      foreign_key_constraint_on: validated_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: user_id
+array_relationships:
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: action_id
+        table:
+          name: event_join
+          schema: public

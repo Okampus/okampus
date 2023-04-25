@@ -1,0 +1,36 @@
+table:
+  name: event_join
+  schema: public
+object_relationships:
+  - name: action
+    using:
+      foreign_key_constraint_on: action_id
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: eventChangeRole
+    using:
+      foreign_key_constraint_on: event_change_role_id
+  - name: eventRole
+    using:
+      foreign_key_constraint_on: event_role_id
+  - name: formSubmission
+    using:
+      foreign_key_constraint_on: form_submission_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: joiner_id
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: event_join_id
+        table:
+          name: action
+          schema: public

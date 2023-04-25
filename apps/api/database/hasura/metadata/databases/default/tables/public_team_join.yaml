@@ -1,0 +1,25 @@
+table:
+  name: team_join
+  schema: public
+object_relationships:
+  - name: changeRole
+    using:
+      foreign_key_constraint_on: change_role_id
+  - name: formSubmission
+    using:
+      foreign_key_constraint_on: form_submission_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: role
+    using:
+      foreign_key_constraint_on: asked_role_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: joiner_id

@@ -1,0 +1,41 @@
+import type { ValueTypes } from '@okampus/shared/graphql';
+
+export type InsertArgsType = {
+  objects: Array<ValueTypes['<%= className %>InsertInput']>;
+  onConflict?: ValueTypes['<%= className %>OnConflict'];
+};
+
+export type InsertOneArgsType = {
+  object: ValueTypes['<%= className %>InsertInput'];
+  onConflict?: ValueTypes['<%= className %>OnConflict'];
+};
+
+export type UpdateArgsType = {
+  where: ValueTypes['<%= className %>BoolExp'];
+  _set: ValueTypes['<%= className %>SetInput'];
+};
+
+export type UpdateByPkArgsType = {
+  pkColumns: ValueTypes['<%= className %>PkColumnsInput'];
+  _set: ValueTypes['<%= className %>SetInput'];
+};
+
+export type FindArgsType = {
+  where: ValueTypes['<%= className %>BoolExp'];
+  orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
+  distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;
+  limit?: number;
+  offset?: number;
+};
+
+export type FindByPkArgsType = {
+  <% for(const pk of pkColumns) { %> <%= pk %>: string; <% } %>
+};
+
+export type AggregateArgsType = {
+  where: ValueTypes['<%= className %>BoolExp'];
+  orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
+  distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;
+  limit?: number;
+  offset?: number;
+};

@@ -1,0 +1,95 @@
+table:
+  name: upload
+  schema: public
+object_relationships:
+  - name: actorAddress
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: actor_address
+          schema: public
+  - name: actorImage
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: actor_image
+          schema: public
+  - name: document
+    using:
+      foreign_key_constraint_on:
+        column: file_id
+        table:
+          name: document
+          schema: public
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: actorFinanceReceipts
+    using:
+      foreign_key_constraint_on:
+        column: upload_id
+        table:
+          name: actor_finance_receipts
+          schema: public
+  - name: contentAttachments
+    using:
+      foreign_key_constraint_on:
+        column: upload_id
+        table:
+          name: content_attachments
+          schema: public
+  - name: documentEdits
+    using:
+      foreign_key_constraint_on:
+        column: new_version_id
+        table:
+          name: document_edit
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: event
+          schema: public
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: expense_report_id
+        table:
+          name: expense
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: project
+          schema: public
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: tag
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: video_id
+        table:
+          name: team
+          schema: public
+  - name: tenants
+    using:
+      foreign_key_constraint_on:
+        column: logo_id
+        table:
+          name: tenant
+          schema: public

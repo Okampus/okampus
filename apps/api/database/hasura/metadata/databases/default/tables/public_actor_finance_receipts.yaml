@@ -1,0 +1,10 @@
+table:
+  name: actor_finance_receipts
+  schema: public
+object_relationships:
+  - name: actorFinance
+    using:
+      foreign_key_constraint_on: actor_finance_id
+  - name: upload
+    using:
+      foreign_key_constraint_on: upload_id

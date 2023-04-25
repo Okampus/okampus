@@ -1,0 +1,423 @@
+table:
+  name: individual
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: actor
+          schema: public
+  - name: botInfo
+    using:
+      foreign_key_constraint_on: bot_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: user_id
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: action
+          schema: public
+  - name: actorAddresses
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: actor_address
+          schema: public
+  - name: actorBankInfos
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: actor_bank_info
+          schema: public
+  - name: actorFinances
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: actor_finance
+          schema: public
+  - name: actorImages
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: actor_image
+          schema: public
+  - name: actors
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: actor
+          schema: public
+  - name: botInfos
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: bot_info
+          schema: public
+  - name: canteenFoods
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: canteen_food
+          schema: public
+  - name: canteenMenus
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: canteen_menu
+          schema: public
+  - name: canteens
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: canteen
+          schema: public
+  - name: changeRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: change_role
+          schema: public
+  - name: classGroupTeachers
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: class_group_teacher
+          schema: public
+  - name: classGroups
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: class_group
+          schema: public
+  - name: cohorts
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: cohort
+          schema: public
+  - name: contentEdits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: content_edit
+          schema: public
+  - name: contentMasterContributors
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: content_master_contributors
+          schema: public
+  - name: contentMasters
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: content_master
+          schema: public
+  - name: contents
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: content
+          schema: public
+  - name: documentEdits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: document_edit
+          schema: public
+  - name: documents
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: document
+          schema: public
+  - name: eventApprovalStepNotifiees
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: event_approval_step_notifiees
+          schema: public
+  - name: eventApprovalStepValidators
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: event_approval_step_validators
+          schema: public
+  - name: eventApprovalSteps
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_approval_step
+          schema: public
+  - name: eventApprovals
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_approval
+          schema: public
+  - name: eventChangeRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_change_role
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: eventRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_role
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event
+          schema: public
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: expense
+          schema: public
+  - name: favorites
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: favorite
+          schema: public
+  - name: formEdits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: form_edit
+          schema: public
+  - name: formSubmissionEdits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: form_submission_edit
+          schema: public
+  - name: formSubmissions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: form_submission
+          schema: public
+  - name: forms
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: form
+          schema: public
+  - name: individuals
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: individual
+          schema: public
+  - name: issues
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: issue
+          schema: public
+  - name: poles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: pole
+          schema: public
+  - name: projectRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: project_role
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: project
+          schema: public
+  - name: reactions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: reaction
+          schema: public
+  - name: reports
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: report
+          schema: public
+  - name: roles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: role
+          schema: public
+  - name: sessions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: session
+          schema: public
+  - name: shortcuts
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: shortcut
+          schema: public
+  - name: socials
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: social
+          schema: public
+  - name: subjects
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: subject
+          schema: public
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: tag
+          schema: public
+  - name: teamFinances
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_finance
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_member
+          schema: public
+  - name: teamMetrics
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_metric
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team
+          schema: public
+  - name: tenants
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: tenant
+          schema: public
+  - name: uploads
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: upload
+          schema: public
+  - name: userInfos
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: user_info
+          schema: public
+  - name: validations
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: validation
+          schema: public
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: vote
+          schema: public

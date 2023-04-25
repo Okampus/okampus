@@ -1,0 +1,32 @@
+table:
+  name: subject
+  schema: public
+object_relationships:
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: classGroupTeacherSubjects
+    using:
+      foreign_key_constraint_on:
+        column: subject_id
+        table:
+          name: class_group_teacher_subject
+          schema: public
+  - name: documents
+    using:
+      foreign_key_constraint_on:
+        column: subject_id
+        table:
+          name: document
+          schema: public
+  - name: subjectClasses
+    using:
+      foreign_key_constraint_on:
+        column: subject_id
+        table:
+          name: subject_classes
+          schema: public

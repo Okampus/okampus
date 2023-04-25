@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "hasura-feature",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Feature name (same as the entity name, case-insensitive)",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "subfolder": {
+      "type": "string",
+      "description": "Subfolder to place the feature in"
+    },
+    "plural": {
+      "type": "string",
+      "description": "Plural name of the feature"
+    },
+    "pkColumns": {
+      "type": "array",
+      "description": "Primary key columns",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["name"]
+}

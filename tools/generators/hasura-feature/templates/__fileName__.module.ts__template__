@@ -1,0 +1,22 @@
+import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
+import { 
+  <%= pluralClassName %>MutationResolver, 
+  <%= pluralClassName %>QueryAggregateResolver, 
+  <%= pluralClassName %>QueryResolver
+} from './<%= fileName %>.resolver';
+import { HasuraModule } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/hasura/hasura.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Module } from '@nestjs/common';
+import { <%= className %> } from '@okampus/api/dal';
+
+@Module({
+  imports: [HasuraModule, MikroOrmModule.forFeature([<%= className %>])],
+  providers: [
+    <%= pluralClassName %>MutationResolver, 
+    <%= pluralClassName %>QueryResolver, 
+    <%= pluralClassName %>QueryAggregateResolver, 
+    <%= pluralClassName %>Service
+  ],
+  exports: [<%= pluralClassName %>Service],
+})
+export class <%= pluralClassName %>Module {}

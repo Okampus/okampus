@@ -34,13 +34,6 @@
         "jestConfig": "libs/shared/graphql/jest.config.ts",
         "passWithNoTests": true
       }
-    },
-    "codegen": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "graphql-codegen",
-        "cwd": "libs/shared/graphql"
-      }
     }
   },
   "tags": ["scope:shared", "type:const", "layer:*"]

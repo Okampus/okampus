@@ -1,0 +1,10 @@
+table:
+  name: event_approval_step_validators
+  schema: public
+object_relationships:
+  - name: eventApprovalStep
+    using:
+      foreign_key_constraint_on: event_approval_step_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: individual_id

@@ -1,0 +1,108 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
+import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
+
+import type {
+  InsertArgsType,
+  InsertOneArgsType,
+  UpdateArgsType,
+  UpdateByPkArgsType,
+  FindArgsType,
+  FindByPkArgsType,
+  AggregateArgsType
+} from './<%= fileName %>.types';
+
+import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('<%= className %>MutationResponse')
+export class <%= pluralClassName %>MutationResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Mutation()
+  async insert<%= className %>(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async update<%= className %>(@Info() info: GraphQLResolveInfo) {
+    const { where, _set } = getGraphQLArgs<UpdateArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.update<%= className %>(getSelectionSet(info), where, _set);
+  }  
+}
+
+@Resolver('<%= className %>')
+export class <%= pluralClassName %>QueryResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Query()
+  async <%= propertyName %>(@Info() info: GraphQLResolveInfo) {
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.find<%= className %>(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+  }
+
+  @Mutation()
+  async insert<%= className %>One(@Info() info: GraphQLResolveInfo) {
+    const { object, onConflict } = getGraphQLArgs<InsertOneArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), [object], onConflict);
+  }
+
+  @Query()
+  async <%= propertyName %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { <% for(const pk of pkColumns) { %> <%= pk %>, <% } %> } = getGraphQLArgs<FindByPkArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.find<%= className %>ByPk(getSelectionSet(info), <% for(const pk of pkColumns) { %> <%= pk %>, <% } %>);
+  }
+
+  @Mutation()
+  async update<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns, _set } = getGraphQLArgs<UpdateByPkArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.update<%= className %>ByPk(getSelectionSet(info), pkColumns, _set);
+  }
+}
+
+@Resolver('<%= className %>Aggregate')
+export class <%= pluralClassName %>QueryAggregateResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Query()
+  async <%= propertyName %>Aggregate(@Info() info: GraphQLResolveInfo) {
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.aggregate<%= className %>(
+      getSelectionSet(info), 
+      where, 
+      orderBy, 
+      distinctOn, 
+      limit, 
+      offset
+    );
+  }
+}

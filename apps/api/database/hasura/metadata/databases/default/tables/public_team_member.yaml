@@ -1,0 +1,38 @@
+table:
+  name: team_member
+  schema: public
+object_relationships:
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: user_id
+array_relationships:
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: validated_by_id
+        table:
+          name: action
+          schema: public
+  - name: projectSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: team_member_id
+        table:
+          name: project_supervisors
+          schema: public
+  - name: teamMemberRoles
+    using:
+      foreign_key_constraint_on:
+        column: team_member_id
+        table:
+          name: team_member_roles
+          schema: public

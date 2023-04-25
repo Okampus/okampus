@@ -1,0 +1,29 @@
+table:
+  name: change_role
+  schema: public
+object_relationships:
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: pole
+    using:
+      foreign_key_constraint_on: received_pole_id
+  - name: role
+    using:
+      foreign_key_constraint_on: received_role_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: teamJoin
+    using:
+      foreign_key_constraint_on:
+        column: change_role_id
+        table:
+          name: team_join
+          schema: public
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: userInfo
+    using:
+      foreign_key_constraint_on: user_id

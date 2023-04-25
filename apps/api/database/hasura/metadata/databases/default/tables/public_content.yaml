@@ -1,0 +1,87 @@
+table:
+  name: content
+  schema: public
+object_relationships:
+  - name: content
+    using:
+      foreign_key_constraint_on: parent_id
+  - name: contentMaster
+    using:
+      foreign_key_constraint_on:
+        column: root_content_id
+        table:
+          name: content_master
+          schema: public
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: contentAttachments
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: content_attachments
+          schema: public
+  - name: contentEdits
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: content_edit
+          schema: public
+  - name: contentRepresentingTeams
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: content_representing_teams
+          schema: public
+  - name: contents
+    using:
+      foreign_key_constraint_on:
+        column: parent_id
+        table:
+          name: content
+          schema: public
+  - name: favorites
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: favorite
+          schema: public
+  - name: reactions
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: reaction
+          schema: public
+  - name: reports
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: report
+          schema: public
+  - name: validations
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: validation
+          schema: public
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: vote
+          schema: public

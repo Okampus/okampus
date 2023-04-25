@@ -1,0 +1,10 @@
+table:
+  name: event_teams
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
