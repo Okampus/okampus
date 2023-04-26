@@ -1929,38 +1929,38 @@ type ActorBankInfo {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  """An array relationship"""
+  expenses(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """An aggregate relationship"""
+  expensesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
   fullAcount: String!
   hiddenAt: timestamptz
   holderName: String!
   id: bigint!
   """An object relationship"""
   individual: Individual
-  """An array relationship"""
-  teamExpenses(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """An aggregate relationship"""
-  teamExpensesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
   """An object relationship"""
   tenant: Tenant!
   tenantId: bigint!
@@ -2069,13 +2069,13 @@ input ActorBankInfoBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  expenses: ExpenseBoolExp
+  expensesAggregate: ExpenseAggregateBoolExp
   fullAcount: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   holderName: StringComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
-  teamExpenses: TeamExpenseBoolExp
-  teamExpensesAggregate: TeamExpenseAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -2119,12 +2119,12 @@ input ActorBankInfoInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  expenses: ExpenseArrRelInsertInput
   fullAcount: String
   hiddenAt: timestamptz
   holderName: String
   id: bigint
   individual: IndividualObjRelInsertInput
-  teamExpenses: TeamExpenseArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -2261,12 +2261,12 @@ input ActorBankInfoOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  expensesAggregate: ExpenseAggregateOrderBy
   fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
-  teamExpensesAggregate: TeamExpenseAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -2667,6 +2667,9 @@ type ActorFinance {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  """An object relationship"""
+  expense: Expense
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint!
   """An object relationship"""
@@ -2675,9 +2678,6 @@ type ActorFinance {
   name: String!
   payedAt: timestamptz!
   payedById: bigint
-  """An object relationship"""
-  teamExpense: TeamExpense
-  teamExpenseId: bigint
   """An object relationship"""
   teamFinance: TeamFinance
   """An object relationship"""
@@ -2751,10 +2751,10 @@ input ActorFinanceArrRelInsertInput {
 type ActorFinanceAvgFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -2764,10 +2764,10 @@ order by avg() on columns of table "actor_finance"
 input ActorFinanceAvgOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -2788,6 +2788,8 @@ input ActorFinanceBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  expense: ExpenseBoolExp
+  expenseId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -2795,8 +2797,6 @@ input ActorFinanceBoolExp {
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
   payedById: BigintComparisonExp
-  teamExpense: TeamExpenseBoolExp
-  teamExpenseId: BigintComparisonExp
   teamFinance: TeamFinanceBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -2818,10 +2818,10 @@ input type for incrementing numeric columns in table "actor_finance"
 input ActorFinanceIncInput {
   amount: Float
   createdById: bigint
+  expenseId: bigint
   id: bigint
   locationId: bigint
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -2838,6 +2838,8 @@ input ActorFinanceInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expense: ExpenseObjRelInsertInput
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
@@ -2845,8 +2847,6 @@ input ActorFinanceInsertInput {
   name: String
   payedAt: timestamptz
   payedById: bigint
-  teamExpense: TeamExpenseObjRelInsertInput
-  teamExpenseId: bigint
   teamFinance: TeamFinanceObjRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -2860,13 +2860,13 @@ type ActorFinanceMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   locationId: bigint
   name: String
   payedAt: timestamptz
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -2880,13 +2880,13 @@ input ActorFinanceMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   locationId: OrderBy
   name: OrderBy
   payedAt: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -2898,13 +2898,13 @@ type ActorFinanceMinFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   locationId: bigint
   name: String
   payedAt: timestamptz
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -2918,13 +2918,13 @@ input ActorFinanceMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   locationId: OrderBy
   name: OrderBy
   payedAt: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -2967,6 +2967,8 @@ input ActorFinanceOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  expense: ExpenseOrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
@@ -2974,8 +2976,6 @@ input ActorFinanceOrderBy {
   name: OrderBy
   payedAt: OrderBy
   payedById: OrderBy
-  teamExpense: TeamExpenseOrderBy
-  teamExpenseId: OrderBy
   teamFinance: TeamFinanceOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -3344,6 +3344,8 @@ enum ActorFinanceSelectColumn {
   """column name"""
   description
   """column name"""
+  expenseId
+  """column name"""
   hiddenAt
   """column name"""
   id
@@ -3355,8 +3357,6 @@ enum ActorFinanceSelectColumn {
   payedAt
   """column name"""
   payedById
-  """column name"""
-  teamExpenseId
   """column name"""
   tenantId
 }
@@ -3371,13 +3371,13 @@ input ActorFinanceSetInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   locationId: bigint
   name: String
   payedAt: timestamptz
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -3385,10 +3385,10 @@ input ActorFinanceSetInput {
 type ActorFinanceStddevFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3398,10 +3398,10 @@ order by stddev() on columns of table "actor_finance"
 input ActorFinanceStddevOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3409,10 +3409,10 @@ input ActorFinanceStddevOrderBy {
 type ActorFinanceStddevPopFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3422,10 +3422,10 @@ order by stddevPop() on columns of table "actor_finance"
 input ActorFinanceStddevPopOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3433,10 +3433,10 @@ input ActorFinanceStddevPopOrderBy {
 type ActorFinanceStddevSampFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3446,10 +3446,10 @@ order by stddevSamp() on columns of table "actor_finance"
 input ActorFinanceStddevSampOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3471,13 +3471,13 @@ input ActorFinanceStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   locationId: bigint
   name: String
   payedAt: timestamptz
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -3485,10 +3485,10 @@ input ActorFinanceStreamCursorValueInput {
 type ActorFinanceSumFields {
   amount: Float
   createdById: bigint
+  expenseId: bigint
   id: bigint
   locationId: bigint
   payedById: bigint
-  teamExpenseId: bigint
   tenantId: bigint
 }
 
@@ -3498,10 +3498,10 @@ order by sum() on columns of table "actor_finance"
 input ActorFinanceSumOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3522,6 +3522,8 @@ enum ActorFinanceUpdateColumn {
   """column name"""
   description
   """column name"""
+  expenseId
+  """column name"""
   hiddenAt
   """column name"""
   id
@@ -3533,8 +3535,6 @@ enum ActorFinanceUpdateColumn {
   payedAt
   """column name"""
   payedById
-  """column name"""
-  teamExpenseId
   """column name"""
   tenantId
 }
@@ -3552,10 +3552,10 @@ input ActorFinanceUpdates {
 type ActorFinanceVarianceFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3565,10 +3565,10 @@ order by variance() on columns of table "actor_finance"
 input ActorFinanceVarianceOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3576,10 +3576,10 @@ input ActorFinanceVarianceOrderBy {
 type ActorFinanceVarPopFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3589,10 +3589,10 @@ order by varPop() on columns of table "actor_finance"
 input ActorFinanceVarPopOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -3600,10 +3600,10 @@ input ActorFinanceVarPopOrderBy {
 type ActorFinanceVarSampFields {
   amount: Float
   createdById: Float
+  expenseId: Float
   id: Float
   locationId: Float
   payedById: Float
-  teamExpenseId: Float
   tenantId: Float
 }
 
@@ -3613,10 +3613,10 @@ order by varSamp() on columns of table "actor_finance"
 input ActorFinanceVarSampOrderBy {
   amount: OrderBy
   createdById: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   locationId: OrderBy
   payedById: OrderBy
-  teamExpenseId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6818,6 +6818,591 @@ input CanteenVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
+}
+
+"""
+columns and relationships of "change_role"
+"""
+type ChangeRole {
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+  """An object relationship"""
+  individual: Individual
+  note: String!
+  """An object relationship"""
+  pole: Pole
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  """An object relationship"""
+  role: Role
+  """An object relationship"""
+  team: Team!
+  teamId: bigint!
+  """An object relationship"""
+  teamJoin: TeamJoin
+  """An object relationship"""
+  tenant: Tenant!
+  tenantId: bigint!
+  userId: bigint!
+  """An object relationship"""
+  userInfo: UserInfo!
+}
+
+"""
+aggregated selection of "change_role"
+"""
+type ChangeRoleAggregate {
+  aggregate: ChangeRoleAggregateFields
+  nodes: [ChangeRole!]!
+}
+
+input ChangeRoleAggregateBoolExp {
+  count: changeRoleAggregateBoolExpCount
+}
+
+input changeRoleAggregateBoolExpCount {
+  arguments: [ChangeRoleSelectColumn!]
+  distinct: Boolean
+  filter: ChangeRoleBoolExp
+  predicate: IntComparisonExp!
+}
+
+"""
+aggregate fields of "change_role"
+"""
+type ChangeRoleAggregateFields {
+  avg: ChangeRoleAvgFields
+  count(columns: [ChangeRoleSelectColumn!], distinct: Boolean): Int!
+  max: ChangeRoleMaxFields
+  min: ChangeRoleMinFields
+  stddev: ChangeRoleStddevFields
+  stddevPop: ChangeRoleStddevPopFields
+  stddevSamp: ChangeRoleStddevSampFields
+  sum: ChangeRoleSumFields
+  varPop: ChangeRoleVarPopFields
+  varSamp: ChangeRoleVarSampFields
+  variance: ChangeRoleVarianceFields
+}
+
+"""
+order by aggregate values of table "change_role"
+"""
+input ChangeRoleAggregateOrderBy {
+  avg: ChangeRoleAvgOrderBy
+  count: OrderBy
+  max: ChangeRoleMaxOrderBy
+  min: ChangeRoleMinOrderBy
+  stddev: ChangeRoleStddevOrderBy
+  stddevPop: ChangeRoleStddevPopOrderBy
+  stddevSamp: ChangeRoleStddevSampOrderBy
+  sum: ChangeRoleSumOrderBy
+  varPop: ChangeRoleVarPopOrderBy
+  varSamp: ChangeRoleVarSampOrderBy
+  variance: ChangeRoleVarianceOrderBy
+}
+
+"""
+input type for inserting array relation for remote table "change_role"
+"""
+input ChangeRoleArrRelInsertInput {
+  data: [ChangeRoleInsertInput!]!
+  """upsert condition"""
+  onConflict: ChangeRoleOnConflict
+}
+
+"""aggregate avg on columns"""
+type ChangeRoleAvgFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by avg() on columns of table "change_role"
+"""
+input ChangeRoleAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "change_role". All fields are combined with a logical 'AND'.
+"""
+input ChangeRoleBoolExp {
+  _and: [ChangeRoleBoolExp!]
+  _not: ChangeRoleBoolExp
+  _or: [ChangeRoleBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  note: StringComparisonExp
+  pole: PoleBoolExp
+  receivedPoleId: BigintComparisonExp
+  receivedRoleId: BigintComparisonExp
+  role: RoleBoolExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  teamJoin: TeamJoinBoolExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  userId: BigintComparisonExp
+  userInfo: UserInfoBoolExp
+}
+
+"""
+unique or primary key constraints on table "change_role"
+"""
+enum ChangeRoleConstraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  change_role_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "change_role"
+"""
+input ChangeRoleIncInput {
+  createdById: bigint
+  id: bigint
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""
+input type for inserting data into table "change_role"
+"""
+input ChangeRoleInsertInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  note: String
+  pole: PoleObjRelInsertInput
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  role: RoleObjRelInsertInput
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  teamJoin: TeamJoinObjRelInsertInput
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  userId: bigint
+  userInfo: UserInfoObjRelInsertInput
+}
+
+"""aggregate max on columns"""
+type ChangeRoleMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  note: String
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""
+order by max() on columns of table "change_role"
+"""
+input ChangeRoleMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  note: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""aggregate min on columns"""
+type ChangeRoleMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  note: String
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""
+order by min() on columns of table "change_role"
+"""
+input ChangeRoleMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  note: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""
+response of any mutation on the table "change_role"
+"""
+type ChangeRoleMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+  """data from the rows affected by the mutation"""
+  returning: [ChangeRole!]!
+}
+
+"""
+input type for inserting object relation for remote table "change_role"
+"""
+input ChangeRoleObjRelInsertInput {
+  data: ChangeRoleInsertInput!
+  """upsert condition"""
+  onConflict: ChangeRoleOnConflict
+}
+
+"""
+on_conflict condition type for table "change_role"
+"""
+input ChangeRoleOnConflict {
+  constraint: ChangeRoleConstraint!
+  updateColumns: [ChangeRoleUpdateColumn!]! = []
+  where: ChangeRoleBoolExp
+}
+
+"""Ordering options when selecting data from "change_role"."""
+input ChangeRoleOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  note: OrderBy
+  pole: PoleOrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  role: RoleOrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  teamJoin: TeamJoinOrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+  userInfo: UserInfoOrderBy
+}
+
+"""primary key columns input for table: change_role"""
+input ChangeRolePkColumnsInput {
+  id: bigint!
+}
+
+"""
+select columns of table "change_role"
+"""
+enum ChangeRoleSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  createdById
+  """column name"""
+  deletedAt
+  """column name"""
+  hiddenAt
+  """column name"""
+  id
+  """column name"""
+  note
+  """column name"""
+  receivedPoleId
+  """column name"""
+  receivedRoleId
+  """column name"""
+  teamId
+  """column name"""
+  tenantId
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "change_role"
+"""
+input ChangeRoleSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  note: String
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""aggregate stddev on columns"""
+type ChangeRoleStddevFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by stddev() on columns of table "change_role"
+"""
+input ChangeRoleStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""aggregate stddevPop on columns"""
+type ChangeRoleStddevPopFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by stddevPop() on columns of table "change_role"
+"""
+input ChangeRoleStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""aggregate stddevSamp on columns"""
+type ChangeRoleStddevSampFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by stddevSamp() on columns of table "change_role"
+"""
+input ChangeRoleStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""
+Streaming cursor of the table "change_role"
+"""
+input ChangeRoleStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ChangeRoleStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ChangeRoleStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  note: String
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""aggregate sum on columns"""
+type ChangeRoleSumFields {
+  createdById: bigint
+  id: bigint
+  receivedPoleId: bigint
+  receivedRoleId: bigint
+  teamId: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+"""
+order by sum() on columns of table "change_role"
+"""
+input ChangeRoleSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""
+update columns of table "change_role"
+"""
+enum ChangeRoleUpdateColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  createdById
+  """column name"""
+  deletedAt
+  """column name"""
+  hiddenAt
+  """column name"""
+  id
+  """column name"""
+  note
+  """column name"""
+  receivedPoleId
+  """column name"""
+  receivedRoleId
+  """column name"""
+  teamId
+  """column name"""
+  tenantId
+  """column name"""
+  userId
+}
+
+input ChangeRoleUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: ChangeRoleIncInput
+  """sets the columns of the filtered rows to the given values"""
+  _set: ChangeRoleSetInput
+  """filter the rows which have to be updated"""
+  where: ChangeRoleBoolExp!
+}
+
+"""aggregate variance on columns"""
+type ChangeRoleVarianceFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by variance() on columns of table "change_role"
+"""
+input ChangeRoleVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""aggregate varPop on columns"""
+type ChangeRoleVarPopFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by varPop() on columns of table "change_role"
+"""
+input ChangeRoleVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+"""aggregate varSamp on columns"""
+type ChangeRoleVarSampFields {
+  createdById: Float
+  id: Float
+  receivedPoleId: Float
+  receivedRoleId: Float
+  teamId: Float
+  tenantId: Float
+  userId: Float
+}
+
+"""
+order by varSamp() on columns of table "change_role"
+"""
+input ChangeRoleVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  receivedPoleId: OrderBy
+  receivedRoleId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
 }
 
 """
@@ -19297,6 +19882,599 @@ input EventVarSampOrderBy {
 }
 
 """
+columns and relationships of "expense"
+"""
+type Expense {
+  """An object relationship"""
+  actorBankInfo: ActorBankInfo!
+  """An array relationship"""
+  actorFinances(
+    """distinct select on columns"""
+    distinctOn: [ActorFinanceSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ActorFinanceOrderBy!]
+    """filter the rows returned"""
+    where: ActorFinanceBoolExp
+  ): [ActorFinance!]!
+  """An aggregate relationship"""
+  actorFinancesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ActorFinanceSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ActorFinanceOrderBy!]
+    """filter the rows returned"""
+    where: ActorFinanceBoolExp
+  ): ActorFinanceAggregate!
+  bankInfoId: bigint!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String!
+  expenseReportId: bigint!
+  hiddenAt: timestamptz
+  id: bigint!
+  """An object relationship"""
+  individual: Individual
+  """An object relationship"""
+  issue: Issue
+  issueId: bigint
+  state: String!
+  """An object relationship"""
+  teamFinance: TeamFinance
+  """An object relationship"""
+  tenant: Tenant!
+  tenantId: bigint!
+  """An object relationship"""
+  upload: Upload!
+}
+
+"""
+aggregated selection of "expense"
+"""
+type ExpenseAggregate {
+  aggregate: ExpenseAggregateFields
+  nodes: [Expense!]!
+}
+
+input ExpenseAggregateBoolExp {
+  count: expenseAggregateBoolExpCount
+}
+
+input expenseAggregateBoolExpCount {
+  arguments: [ExpenseSelectColumn!]
+  distinct: Boolean
+  filter: ExpenseBoolExp
+  predicate: IntComparisonExp!
+}
+
+"""
+aggregate fields of "expense"
+"""
+type ExpenseAggregateFields {
+  avg: ExpenseAvgFields
+  count(columns: [ExpenseSelectColumn!], distinct: Boolean): Int!
+  max: ExpenseMaxFields
+  min: ExpenseMinFields
+  stddev: ExpenseStddevFields
+  stddevPop: ExpenseStddevPopFields
+  stddevSamp: ExpenseStddevSampFields
+  sum: ExpenseSumFields
+  varPop: ExpenseVarPopFields
+  varSamp: ExpenseVarSampFields
+  variance: ExpenseVarianceFields
+}
+
+"""
+order by aggregate values of table "expense"
+"""
+input ExpenseAggregateOrderBy {
+  avg: ExpenseAvgOrderBy
+  count: OrderBy
+  max: ExpenseMaxOrderBy
+  min: ExpenseMinOrderBy
+  stddev: ExpenseStddevOrderBy
+  stddevPop: ExpenseStddevPopOrderBy
+  stddevSamp: ExpenseStddevSampOrderBy
+  sum: ExpenseSumOrderBy
+  varPop: ExpenseVarPopOrderBy
+  varSamp: ExpenseVarSampOrderBy
+  variance: ExpenseVarianceOrderBy
+}
+
+"""
+input type for inserting array relation for remote table "expense"
+"""
+input ExpenseArrRelInsertInput {
+  data: [ExpenseInsertInput!]!
+  """upsert condition"""
+  onConflict: ExpenseOnConflict
+}
+
+"""aggregate avg on columns"""
+type ExpenseAvgFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by avg() on columns of table "expense"
+"""
+input ExpenseAvgOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "expense". All fields are combined with a logical 'AND'.
+"""
+input ExpenseBoolExp {
+  _and: [ExpenseBoolExp!]
+  _not: ExpenseBoolExp
+  _or: [ExpenseBoolExp!]
+  actorBankInfo: ActorBankInfoBoolExp
+  actorFinances: ActorFinanceBoolExp
+  actorFinancesAggregate: ActorFinanceAggregateBoolExp
+  bankInfoId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  expenseReportId: BigintComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  issue: IssueBoolExp
+  issueId: BigintComparisonExp
+  state: StringComparisonExp
+  teamFinance: TeamFinanceBoolExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  upload: UploadBoolExp
+}
+
+"""
+unique or primary key constraints on table "expense"
+"""
+enum ExpenseConstraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  expense_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "expense"
+"""
+input ExpenseIncInput {
+  bankInfoId: bigint
+  createdById: bigint
+  expenseReportId: bigint
+  id: bigint
+  issueId: bigint
+  tenantId: bigint
+}
+
+"""
+input type for inserting data into table "expense"
+"""
+input ExpenseInsertInput {
+  actorBankInfo: ActorBankInfoObjRelInsertInput
+  actorFinances: ActorFinanceArrRelInsertInput
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  expenseReportId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  issue: IssueObjRelInsertInput
+  issueId: bigint
+  state: String
+  teamFinance: TeamFinanceObjRelInsertInput
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  upload: UploadObjRelInsertInput
+}
+
+"""aggregate max on columns"""
+type ExpenseMaxFields {
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  expenseReportId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  issueId: bigint
+  state: String
+  tenantId: bigint
+}
+
+"""
+order by max() on columns of table "expense"
+"""
+input ExpenseMaxOrderBy {
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  expenseReportId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+}
+
+"""aggregate min on columns"""
+type ExpenseMinFields {
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  expenseReportId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  issueId: bigint
+  state: String
+  tenantId: bigint
+}
+
+"""
+order by min() on columns of table "expense"
+"""
+input ExpenseMinOrderBy {
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  expenseReportId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+}
+
+"""
+response of any mutation on the table "expense"
+"""
+type ExpenseMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+  """data from the rows affected by the mutation"""
+  returning: [Expense!]!
+}
+
+"""
+input type for inserting object relation for remote table "expense"
+"""
+input ExpenseObjRelInsertInput {
+  data: ExpenseInsertInput!
+  """upsert condition"""
+  onConflict: ExpenseOnConflict
+}
+
+"""
+on_conflict condition type for table "expense"
+"""
+input ExpenseOnConflict {
+  constraint: ExpenseConstraint!
+  updateColumns: [ExpenseUpdateColumn!]! = []
+  where: ExpenseBoolExp
+}
+
+"""Ordering options when selecting data from "expense"."""
+input ExpenseOrderBy {
+  actorBankInfo: ActorBankInfoOrderBy
+  actorFinancesAggregate: ActorFinanceAggregateOrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  expenseReportId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  issue: IssueOrderBy
+  issueId: OrderBy
+  state: OrderBy
+  teamFinance: TeamFinanceOrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  upload: UploadOrderBy
+}
+
+"""primary key columns input for table: expense"""
+input ExpensePkColumnsInput {
+  id: bigint!
+}
+
+"""
+select columns of table "expense"
+"""
+enum ExpenseSelectColumn {
+  """column name"""
+  bankInfoId
+  """column name"""
+  createdAt
+  """column name"""
+  createdById
+  """column name"""
+  deletedAt
+  """column name"""
+  description
+  """column name"""
+  expenseReportId
+  """column name"""
+  hiddenAt
+  """column name"""
+  id
+  """column name"""
+  issueId
+  """column name"""
+  state
+  """column name"""
+  tenantId
+}
+
+"""
+input type for updating data in table "expense"
+"""
+input ExpenseSetInput {
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  expenseReportId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  issueId: bigint
+  state: String
+  tenantId: bigint
+}
+
+"""aggregate stddev on columns"""
+type ExpenseStddevFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by stddev() on columns of table "expense"
+"""
+input ExpenseStddevOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""aggregate stddevPop on columns"""
+type ExpenseStddevPopFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by stddevPop() on columns of table "expense"
+"""
+input ExpenseStddevPopOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""aggregate stddevSamp on columns"""
+type ExpenseStddevSampFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by stddevSamp() on columns of table "expense"
+"""
+input ExpenseStddevSampOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""
+Streaming cursor of the table "expense"
+"""
+input ExpenseStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ExpenseStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ExpenseStreamCursorValueInput {
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  expenseReportId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  issueId: bigint
+  state: String
+  tenantId: bigint
+}
+
+"""aggregate sum on columns"""
+type ExpenseSumFields {
+  bankInfoId: bigint
+  createdById: bigint
+  expenseReportId: bigint
+  id: bigint
+  issueId: bigint
+  tenantId: bigint
+}
+
+"""
+order by sum() on columns of table "expense"
+"""
+input ExpenseSumOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""
+update columns of table "expense"
+"""
+enum ExpenseUpdateColumn {
+  """column name"""
+  bankInfoId
+  """column name"""
+  createdAt
+  """column name"""
+  createdById
+  """column name"""
+  deletedAt
+  """column name"""
+  description
+  """column name"""
+  expenseReportId
+  """column name"""
+  hiddenAt
+  """column name"""
+  id
+  """column name"""
+  issueId
+  """column name"""
+  state
+  """column name"""
+  tenantId
+}
+
+input ExpenseUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: ExpenseIncInput
+  """sets the columns of the filtered rows to the given values"""
+  _set: ExpenseSetInput
+  """filter the rows which have to be updated"""
+  where: ExpenseBoolExp!
+}
+
+"""aggregate variance on columns"""
+type ExpenseVarianceFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by variance() on columns of table "expense"
+"""
+input ExpenseVarianceOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""aggregate varPop on columns"""
+type ExpenseVarPopFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by varPop() on columns of table "expense"
+"""
+input ExpenseVarPopOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""aggregate varSamp on columns"""
+type ExpenseVarSampFields {
+  bankInfoId: Float
+  createdById: Float
+  expenseReportId: Float
+  id: Float
+  issueId: Float
+  tenantId: Float
+}
+
+"""
+order by varSamp() on columns of table "expense"
+"""
+input ExpenseVarSampOrderBy {
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  expenseReportId: OrderBy
+  id: OrderBy
+  issueId: OrderBy
+  tenantId: OrderBy
+}
+
+"""
 columns and relationships of "favorite"
 """
 type Favorite {
@@ -22472,6 +23650,32 @@ type Individual {
     where: CanteenBoolExp
   ): CanteenAggregate!
   """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
+  """An array relationship"""
   classGroupTeachers(
     """distinct select on columns"""
     distinctOn: [ClassGroupTeacherSelectColumn!]
@@ -22916,6 +24120,32 @@ type Individual {
     """filter the rows returned"""
     where: EventBoolExp
   ): EventAggregate!
+  """An array relationship"""
+  expenses(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """An aggregate relationship"""
+  expensesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
   """An array relationship"""
   favorites(
     """distinct select on columns"""
@@ -23392,58 +24622,6 @@ type Individual {
     where: TagBoolExp
   ): TagAggregate!
   """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
-  """An array relationship"""
-  teamExpenses(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """An aggregate relationship"""
-  teamExpensesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
-  """An array relationship"""
   teamFinances(
     """distinct select on columns"""
     distinctOn: [TeamFinanceSelectColumn!]
@@ -23823,6 +25001,8 @@ input IndividualBoolExp {
   canteenMenusAggregate: CanteenMenuAggregateBoolExp
   canteens: CanteenBoolExp
   canteensAggregate: CanteenAggregateBoolExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   classGroupTeachers: ClassGroupTeacherBoolExp
   classGroupTeachersAggregate: ClassGroupTeacherAggregateBoolExp
   classGroups: ClassGroupBoolExp
@@ -23860,6 +25040,8 @@ input IndividualBoolExp {
   eventRolesAggregate: EventRoleAggregateBoolExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenses: ExpenseBoolExp
+  expensesAggregate: ExpenseAggregateBoolExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   formEdits: FormEditBoolExp
@@ -23902,10 +25084,6 @@ input IndividualBoolExp {
   subjectsAggregate: SubjectAggregateBoolExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
-  teamExpenses: TeamExpenseBoolExp
-  teamExpensesAggregate: TeamExpenseAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -23978,6 +25156,7 @@ input IndividualInsertInput {
   canteenFoods: CanteenFoodArrRelInsertInput
   canteenMenus: CanteenMenuArrRelInsertInput
   canteens: CanteenArrRelInsertInput
+  changeRoles: ChangeRoleArrRelInsertInput
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   classGroups: ClassGroupArrRelInsertInput
   cohorts: CohortArrRelInsertInput
@@ -23998,6 +25177,7 @@ input IndividualInsertInput {
   eventJoins: EventJoinArrRelInsertInput
   eventRoles: EventRoleArrRelInsertInput
   events: EventArrRelInsertInput
+  expenses: ExpenseArrRelInsertInput
   favorites: FavoriteArrRelInsertInput
   formEdits: FormEditArrRelInsertInput
   formSubmissionEdits: FormSubmissionEditArrRelInsertInput
@@ -24022,8 +25202,6 @@ input IndividualInsertInput {
   status: String
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
-  teamExpenses: TeamExpenseArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -24147,6 +25325,7 @@ input IndividualOrderBy {
   canteenFoodsAggregate: CanteenFoodAggregateOrderBy
   canteenMenusAggregate: CanteenMenuAggregateOrderBy
   canteensAggregate: CanteenAggregateOrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   classGroupsAggregate: ClassGroupAggregateOrderBy
   cohortsAggregate: CohortAggregateOrderBy
@@ -24167,6 +25346,7 @@ input IndividualOrderBy {
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventRolesAggregate: EventRoleAggregateOrderBy
   eventsAggregate: EventAggregateOrderBy
+  expensesAggregate: ExpenseAggregateOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   formEditsAggregate: FormEditAggregateOrderBy
   formSubmissionEditsAggregate: FormSubmissionEditAggregateOrderBy
@@ -24191,8 +25371,6 @@ input IndividualOrderBy {
   status: OrderBy
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
-  teamExpensesAggregate: TeamExpenseAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
@@ -24486,36 +25664,36 @@ type Issue {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  """An array relationship"""
+  expenses(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """An aggregate relationship"""
+  expensesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
   hiddenAt: timestamptz
   id: bigint!
   """An object relationship"""
   individual: Individual
-  """An array relationship"""
-  teamExpenses(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """An aggregate relationship"""
-  teamExpensesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
   """An object relationship"""
   tenant: Tenant!
   tenantId: bigint!
@@ -24613,11 +25791,11 @@ input IssueBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  expenses: ExpenseBoolExp
+  expensesAggregate: ExpenseAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
-  teamExpenses: TeamExpenseBoolExp
-  teamExpensesAggregate: TeamExpenseAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -24655,10 +25833,10 @@ input IssueInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  expenses: ExpenseArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
-  teamExpenses: TeamExpenseArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -24746,10 +25924,10 @@ input IssueOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  expensesAggregate: ExpenseAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
-  teamExpensesAggregate: TeamExpenseAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -25351,6 +26529,17 @@ type Mutation {
   """
   deleteCanteenMenuByPk(id: bigint!): CanteenMenu
   """
+  delete data from the table: "change_role"
+  """
+  deleteChangeRole(
+    """filter the rows which have to be deleted"""
+    where: ChangeRoleBoolExp!
+  ): ChangeRoleMutationResponse
+  """
+  delete single row from the table: "change_role"
+  """
+  deleteChangeRoleByPk(id: bigint!): ChangeRole
+  """
   delete data from the table: "class_group"
   """
   deleteClassGroup(
@@ -25614,6 +26803,17 @@ type Mutation {
   delete single row from the table: "event_teams"
   """
   deleteEventTeamsByPk(eventId: bigint!, teamId: bigint!): EventTeams
+  """
+  delete data from the table: "expense"
+  """
+  deleteExpense(
+    """filter the rows which have to be deleted"""
+    where: ExpenseBoolExp!
+  ): ExpenseMutationResponse
+  """
+  delete single row from the table: "expense"
+  """
+  deleteExpenseByPk(id: bigint!): Expense
   """
   delete data from the table: "favorite"
   """
@@ -25879,17 +27079,6 @@ type Mutation {
   """
   deleteTeamCategoriesByPk(tagId: bigint!, teamId: bigint!): TeamCategories
   """
-  delete data from the table: "team_change_role"
-  """
-  deleteTeamChangeRole(
-    """filter the rows which have to be deleted"""
-    where: TeamChangeRoleBoolExp!
-  ): TeamChangeRoleMutationResponse
-  """
-  delete single row from the table: "team_change_role"
-  """
-  deleteTeamChangeRoleByPk(id: bigint!): TeamChangeRole
-  """
   delete data from the table: "team_events"
   """
   deleteTeamEvents(
@@ -25900,17 +27089,6 @@ type Mutation {
   delete single row from the table: "team_events"
   """
   deleteTeamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
-  """
-  delete data from the table: "team_expense"
-  """
-  deleteTeamExpense(
-    """filter the rows which have to be deleted"""
-    where: TeamExpenseBoolExp!
-  ): TeamExpenseMutationResponse
-  """
-  delete single row from the table: "team_expense"
-  """
-  deleteTeamExpenseByPk(id: bigint!): TeamExpense
   """
   delete data from the table: "team_finance"
   """
@@ -26237,6 +27415,24 @@ type Mutation {
     """upsert condition"""
     onConflict: CanteenOnConflict
   ): Canteen
+  """
+  insert data into the table: "change_role"
+  """
+  insertChangeRole(
+    """the rows to be inserted"""
+    objects: [ChangeRoleInsertInput!]!
+    """upsert condition"""
+    onConflict: ChangeRoleOnConflict
+  ): ChangeRoleMutationResponse
+  """
+  insert a single row into the table: "change_role"
+  """
+  insertChangeRoleOne(
+    """the row to be inserted"""
+    object: ChangeRoleInsertInput!
+    """upsert condition"""
+    onConflict: ChangeRoleOnConflict
+  ): ChangeRole
   """
   insert data into the table: "class_group"
   """
@@ -26670,6 +27866,24 @@ type Mutation {
     onConflict: EventTeamsOnConflict
   ): EventTeams
   """
+  insert data into the table: "expense"
+  """
+  insertExpense(
+    """the rows to be inserted"""
+    objects: [ExpenseInsertInput!]!
+    """upsert condition"""
+    onConflict: ExpenseOnConflict
+  ): ExpenseMutationResponse
+  """
+  insert a single row into the table: "expense"
+  """
+  insertExpenseOne(
+    """the row to be inserted"""
+    object: ExpenseInsertInput!
+    """upsert condition"""
+    onConflict: ExpenseOnConflict
+  ): Expense
+  """
   insert data into the table: "favorite"
   """
   insertFavorite(
@@ -27093,24 +28307,6 @@ type Mutation {
     onConflict: TeamCategoriesOnConflict
   ): TeamCategories
   """
-  insert data into the table: "team_change_role"
-  """
-  insertTeamChangeRole(
-    """the rows to be inserted"""
-    objects: [TeamChangeRoleInsertInput!]!
-    """upsert condition"""
-    onConflict: TeamChangeRoleOnConflict
-  ): TeamChangeRoleMutationResponse
-  """
-  insert a single row into the table: "team_change_role"
-  """
-  insertTeamChangeRoleOne(
-    """the row to be inserted"""
-    object: TeamChangeRoleInsertInput!
-    """upsert condition"""
-    onConflict: TeamChangeRoleOnConflict
-  ): TeamChangeRole
-  """
   insert data into the table: "team_events"
   """
   insertTeamEvents(
@@ -27128,24 +28324,6 @@ type Mutation {
     """upsert condition"""
     onConflict: TeamEventsOnConflict
   ): TeamEvents
-  """
-  insert data into the table: "team_expense"
-  """
-  insertTeamExpense(
-    """the rows to be inserted"""
-    objects: [TeamExpenseInsertInput!]!
-    """upsert condition"""
-    onConflict: TeamExpenseOnConflict
-  ): TeamExpenseMutationResponse
-  """
-  insert a single row into the table: "team_expense"
-  """
-  insertTeamExpenseOne(
-    """the row to be inserted"""
-    object: TeamExpenseInsertInput!
-    """upsert condition"""
-    onConflict: TeamExpenseOnConflict
-  ): TeamExpense
   """
   insert data into the table: "team_finance"
   """
@@ -27671,6 +28849,34 @@ type Mutation {
     """updates to execute, in order"""
     updates: [CanteenMenuUpdates!]!
   ): [CanteenMenuMutationResponse]
+  """
+  update data of the table: "change_role"
+  """
+  updateChangeRole(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ChangeRoleIncInput
+    """sets the columns of the filtered rows to the given values"""
+    _set: ChangeRoleSetInput
+    """filter the rows which have to be updated"""
+    where: ChangeRoleBoolExp!
+  ): ChangeRoleMutationResponse
+  """
+  update single row of the table: "change_role"
+  """
+  updateChangeRoleByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ChangeRoleIncInput
+    """sets the columns of the filtered rows to the given values"""
+    _set: ChangeRoleSetInput
+    pkColumns: ChangeRolePkColumnsInput!
+  ): ChangeRole
+  """
+  update multiples rows of table: "change_role"
+  """
+  updateChangeRoleMany(
+    """updates to execute, in order"""
+    updates: [ChangeRoleUpdates!]!
+  ): [ChangeRoleMutationResponse]
   """
   update data of the table: "class_group"
   """
@@ -28411,6 +29617,34 @@ type Mutation {
     """updates to execute, in order"""
     updates: [EventTeamsUpdates!]!
   ): [EventTeamsMutationResponse]
+  """
+  update data of the table: "expense"
+  """
+  updateExpense(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ExpenseIncInput
+    """sets the columns of the filtered rows to the given values"""
+    _set: ExpenseSetInput
+    """filter the rows which have to be updated"""
+    where: ExpenseBoolExp!
+  ): ExpenseMutationResponse
+  """
+  update single row of the table: "expense"
+  """
+  updateExpenseByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ExpenseIncInput
+    """sets the columns of the filtered rows to the given values"""
+    _set: ExpenseSetInput
+    pkColumns: ExpensePkColumnsInput!
+  ): Expense
+  """
+  update multiples rows of table: "expense"
+  """
+  updateExpenseMany(
+    """updates to execute, in order"""
+    updates: [ExpenseUpdates!]!
+  ): [ExpenseMutationResponse]
   """
   update data of the table: "favorite"
   """
@@ -29247,34 +30481,6 @@ type Mutation {
     updates: [TeamCategoriesUpdates!]!
   ): [TeamCategoriesMutationResponse]
   """
-  update data of the table: "team_change_role"
-  """
-  updateTeamChangeRole(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: TeamChangeRoleIncInput
-    """sets the columns of the filtered rows to the given values"""
-    _set: TeamChangeRoleSetInput
-    """filter the rows which have to be updated"""
-    where: TeamChangeRoleBoolExp!
-  ): TeamChangeRoleMutationResponse
-  """
-  update single row of the table: "team_change_role"
-  """
-  updateTeamChangeRoleByPk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: TeamChangeRoleIncInput
-    """sets the columns of the filtered rows to the given values"""
-    _set: TeamChangeRoleSetInput
-    pkColumns: TeamChangeRolePkColumnsInput!
-  ): TeamChangeRole
-  """
-  update multiples rows of table: "team_change_role"
-  """
-  updateTeamChangeRoleMany(
-    """updates to execute, in order"""
-    updates: [TeamChangeRoleUpdates!]!
-  ): [TeamChangeRoleMutationResponse]
-  """
   update data of the table: "team_events"
   """
   updateTeamEvents(
@@ -29302,34 +30508,6 @@ type Mutation {
     """updates to execute, in order"""
     updates: [TeamEventsUpdates!]!
   ): [TeamEventsMutationResponse]
-  """
-  update data of the table: "team_expense"
-  """
-  updateTeamExpense(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: TeamExpenseIncInput
-    """sets the columns of the filtered rows to the given values"""
-    _set: TeamExpenseSetInput
-    """filter the rows which have to be updated"""
-    where: TeamExpenseBoolExp!
-  ): TeamExpenseMutationResponse
-  """
-  update single row of the table: "team_expense"
-  """
-  updateTeamExpenseByPk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: TeamExpenseIncInput
-    """sets the columns of the filtered rows to the given values"""
-    _set: TeamExpenseSetInput
-    pkColumns: TeamExpensePkColumnsInput!
-  ): TeamExpense
-  """
-  update multiples rows of table: "team_expense"
-  """
-  updateTeamExpenseMany(
-    """updates to execute, in order"""
-    updates: [TeamExpenseUpdates!]!
-  ): [TeamExpenseMutationResponse]
   """
   update data of the table: "team_finance"
   """
@@ -29641,6 +30819,32 @@ columns and relationships of "pole"
 """
 type Pole {
   category: String!
+  """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -29653,32 +30857,6 @@ type Pole {
   required: Boolean!
   """An object relationship"""
   team: Team!
-  """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
   teamId: bigint!
   """An object relationship"""
   tenant: Tenant!
@@ -29789,6 +30967,8 @@ input PoleBoolExp {
   _not: PoleBoolExp
   _or: [PoleBoolExp!]
   category: StringComparisonExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -29799,8 +30979,6 @@ input PoleBoolExp {
   name: StringComparisonExp
   required: BooleanComparisonExp
   team: TeamBoolExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -29831,6 +31009,7 @@ input type for inserting data into table "pole"
 """
 input PoleInsertInput {
   category: String
+  changeRoles: ChangeRoleArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -29841,7 +31020,6 @@ input PoleInsertInput {
   name: String
   required: Boolean
   team: TeamObjRelInsertInput
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -29938,6 +31116,7 @@ input PoleOnConflict {
 """Ordering options when selecting data from "pole"."""
 input PoleOrderBy {
   category: OrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -29948,7 +31127,6 @@ input PoleOrderBy {
   name: OrderBy
   required: OrderBy
   team: TeamOrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -32738,6 +33916,38 @@ type Query {
   """fetch data from the table: "canteen_menu" using primary key columns"""
   canteenMenuByPk(id: bigint!): CanteenMenu
   """
+  fetch data from the table: "change_role"
+  """
+  changeRole(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """
+  fetch aggregated fields from the table: "change_role"
+  """
+  changeRoleAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
+  """fetch data from the table: "change_role" using primary key columns"""
+  changeRoleByPk(id: bigint!): ChangeRole
+  """
   fetch data from the table: "class_group"
   """
   classGroup(
@@ -33491,6 +34701,38 @@ type Query {
   ): EventTeamsAggregate!
   """fetch data from the table: "event_teams" using primary key columns"""
   eventTeamsByPk(eventId: bigint!, teamId: bigint!): EventTeams
+  """
+  fetch data from the table: "expense"
+  """
+  expense(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """
+  fetch aggregated fields from the table: "expense"
+  """
+  expenseAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
+  """fetch data from the table: "expense" using primary key columns"""
+  expenseByPk(id: bigint!): Expense
   """
   fetch data from the table: "favorite"
   """
@@ -34249,40 +35491,6 @@ type Query {
   ): TeamCategoriesAggregate!
   """fetch data from the table: "team_categories" using primary key columns"""
   teamCategoriesByPk(tagId: bigint!, teamId: bigint!): TeamCategories
-  """
-  fetch data from the table: "team_change_role"
-  """
-  teamChangeRole(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """
-  fetch aggregated fields from the table: "team_change_role"
-  """
-  teamChangeRoleAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
-  """
-  fetch data from the table: "team_change_role" using primary key columns
-  """
-  teamChangeRoleByPk(id: bigint!): TeamChangeRole
   """An array relationship"""
   teamEvents(
     """distinct select on columns"""
@@ -34311,38 +35519,6 @@ type Query {
   ): TeamEventsAggregate!
   """fetch data from the table: "team_events" using primary key columns"""
   teamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
-  """
-  fetch data from the table: "team_expense"
-  """
-  teamExpense(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """
-  fetch aggregated fields from the table: "team_expense"
-  """
-  teamExpenseAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
-  """fetch data from the table: "team_expense" using primary key columns"""
-  teamExpenseByPk(id: bigint!): TeamExpense
   """
   fetch data from the table: "team_finance"
   """
@@ -35673,6 +36849,32 @@ columns and relationships of "role"
 """
 type Role {
   category: String!
+  """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -35685,32 +36887,6 @@ type Role {
   permissions: Int!
   """An object relationship"""
   team: Team!
-  """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
   teamId: bigint!
   """An array relationship"""
   teamJoins(
@@ -35876,6 +37052,8 @@ input RoleBoolExp {
   _not: RoleBoolExp
   _or: [RoleBoolExp!]
   category: StringComparisonExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -35886,8 +37064,6 @@ input RoleBoolExp {
   name: StringComparisonExp
   permissions: IntComparisonExp
   team: TeamBoolExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
@@ -35924,6 +37100,7 @@ input type for inserting data into table "role"
 """
 input RoleInsertInput {
   category: String
+  changeRoles: ChangeRoleArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -35934,7 +37111,6 @@ input RoleInsertInput {
   name: String
   permissions: Int
   team: TeamObjRelInsertInput
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
   teamMemberRoles: TeamMemberRolesArrRelInsertInput
@@ -36038,6 +37214,7 @@ input RoleOnConflict {
 """Ordering options when selecting data from "role"."""
 input RoleOrderBy {
   category: OrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -36048,7 +37225,6 @@ input RoleOrderBy {
   name: OrderBy
   permissions: OrderBy
   team: TeamOrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy
@@ -39467,6 +40643,49 @@ type Subscription {
     where: CanteenBoolExp
   ): [Canteen!]!
   """
+  fetch data from the table: "change_role"
+  """
+  changeRole(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """
+  fetch aggregated fields from the table: "change_role"
+  """
+  changeRoleAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
+  """fetch data from the table: "change_role" using primary key columns"""
+  changeRoleByPk(id: bigint!): ChangeRole
+  """
+  fetch data from the table in a streaming manner: "change_role"
+  """
+  changeRoleStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ChangeRoleStreamCursorInput]!
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """
   fetch data from the table: "class_group"
   """
   classGroup(
@@ -40485,6 +41704,49 @@ type Subscription {
     where: EventTeamsBoolExp
   ): [EventTeams!]!
   """
+  fetch data from the table: "expense"
+  """
+  expense(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """
+  fetch aggregated fields from the table: "expense"
+  """
+  expenseAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
+  """fetch data from the table: "expense" using primary key columns"""
+  expenseByPk(id: bigint!): Expense
+  """
+  fetch data from the table in a streaming manner: "expense"
+  """
+  expenseStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ExpenseStreamCursorInput]!
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """
   fetch data from the table: "favorite"
   """
   favorite(
@@ -41495,51 +42757,6 @@ type Subscription {
     """filter the rows returned"""
     where: TeamCategoriesBoolExp
   ): [TeamCategories!]!
-  """
-  fetch data from the table: "team_change_role"
-  """
-  teamChangeRole(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """
-  fetch aggregated fields from the table: "team_change_role"
-  """
-  teamChangeRoleAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
-  """
-  fetch data from the table: "team_change_role" using primary key columns
-  """
-  teamChangeRoleByPk(id: bigint!): TeamChangeRole
-  """
-  fetch data from the table in a streaming manner: "team_change_role"
-  """
-  teamChangeRoleStream(
-    """maximum number of rows returned in a single batch"""
-    batchSize: Int!
-    """cursor to stream the results returned by the query"""
-    cursor: [TeamChangeRoleStreamCursorInput]!
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
   """An array relationship"""
   teamEvents(
     """distinct select on columns"""
@@ -41579,49 +42796,6 @@ type Subscription {
     """filter the rows returned"""
     where: TeamEventsBoolExp
   ): [TeamEvents!]!
-  """
-  fetch data from the table: "team_expense"
-  """
-  teamExpense(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """
-  fetch aggregated fields from the table: "team_expense"
-  """
-  teamExpenseAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
-  """fetch data from the table: "team_expense" using primary key columns"""
-  teamExpenseByPk(id: bigint!): TeamExpense
-  """
-  fetch data from the table in a streaming manner: "team_expense"
-  """
-  teamExpenseStream(
-    """maximum number of rows returned in a single batch"""
-    batchSize: Int!
-    """cursor to stream the results returned by the query"""
-    cursor: [TeamExpenseStreamCursorInput]!
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
   """
   fetch data from the table: "team_finance"
   """
@@ -42776,6 +43950,32 @@ type Team {
   """An object relationship"""
   canteen: Canteen
   canteenId: bigint
+  """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
   """An object relationship"""
   classGroup: ClassGroup
   classGroupId: bigint
@@ -43009,32 +44209,6 @@ type Team {
     """filter the rows returned"""
     where: TeamCategoriesBoolExp
   ): TeamCategoriesAggregate!
-  """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
   """An array relationship"""
   teamEvents(
     """distinct select on columns"""
@@ -43282,6 +44456,8 @@ input TeamBoolExp {
   actor: ActorBoolExp
   canteen: CanteenBoolExp
   canteenId: BigintComparisonExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   classGroup: ClassGroupBoolExp
   classGroupId: BigintComparisonExp
   cohort: CohortBoolExp
@@ -43318,8 +44494,6 @@ input TeamBoolExp {
   team: TeamBoolExp
   teamCategories: TeamCategoriesBoolExp
   teamCategoriesAggregate: TeamCategoriesAggregateBoolExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
   teamEvents: TeamEventsBoolExp
   teamEventsAggregate: TeamEventsAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
@@ -43677,591 +44851,6 @@ order by varSamp() on columns of table "team_categories"
 input TeamCategoriesVarSampOrderBy {
   tagId: OrderBy
   teamId: OrderBy
-}
-
-"""
-columns and relationships of "team_change_role"
-"""
-type TeamChangeRole {
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  """An object relationship"""
-  individual: Individual
-  note: String!
-  """An object relationship"""
-  pole: Pole
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  """An object relationship"""
-  role: Role
-  """An object relationship"""
-  team: Team!
-  teamId: bigint!
-  """An object relationship"""
-  teamJoin: TeamJoin
-  """An object relationship"""
-  tenant: Tenant!
-  tenantId: bigint!
-  userId: bigint!
-  """An object relationship"""
-  userInfo: UserInfo!
-}
-
-"""
-aggregated selection of "team_change_role"
-"""
-type TeamChangeRoleAggregate {
-  aggregate: TeamChangeRoleAggregateFields
-  nodes: [TeamChangeRole!]!
-}
-
-input TeamChangeRoleAggregateBoolExp {
-  count: teamChangeRoleAggregateBoolExpCount
-}
-
-input teamChangeRoleAggregateBoolExpCount {
-  arguments: [TeamChangeRoleSelectColumn!]
-  distinct: Boolean
-  filter: TeamChangeRoleBoolExp
-  predicate: IntComparisonExp!
-}
-
-"""
-aggregate fields of "team_change_role"
-"""
-type TeamChangeRoleAggregateFields {
-  avg: TeamChangeRoleAvgFields
-  count(columns: [TeamChangeRoleSelectColumn!], distinct: Boolean): Int!
-  max: TeamChangeRoleMaxFields
-  min: TeamChangeRoleMinFields
-  stddev: TeamChangeRoleStddevFields
-  stddevPop: TeamChangeRoleStddevPopFields
-  stddevSamp: TeamChangeRoleStddevSampFields
-  sum: TeamChangeRoleSumFields
-  varPop: TeamChangeRoleVarPopFields
-  varSamp: TeamChangeRoleVarSampFields
-  variance: TeamChangeRoleVarianceFields
-}
-
-"""
-order by aggregate values of table "team_change_role"
-"""
-input TeamChangeRoleAggregateOrderBy {
-  avg: TeamChangeRoleAvgOrderBy
-  count: OrderBy
-  max: TeamChangeRoleMaxOrderBy
-  min: TeamChangeRoleMinOrderBy
-  stddev: TeamChangeRoleStddevOrderBy
-  stddevPop: TeamChangeRoleStddevPopOrderBy
-  stddevSamp: TeamChangeRoleStddevSampOrderBy
-  sum: TeamChangeRoleSumOrderBy
-  varPop: TeamChangeRoleVarPopOrderBy
-  varSamp: TeamChangeRoleVarSampOrderBy
-  variance: TeamChangeRoleVarianceOrderBy
-}
-
-"""
-input type for inserting array relation for remote table "team_change_role"
-"""
-input TeamChangeRoleArrRelInsertInput {
-  data: [TeamChangeRoleInsertInput!]!
-  """upsert condition"""
-  onConflict: TeamChangeRoleOnConflict
-}
-
-"""aggregate avg on columns"""
-type TeamChangeRoleAvgFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by avg() on columns of table "team_change_role"
-"""
-input TeamChangeRoleAvgOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""
-Boolean expression to filter rows from the table "team_change_role". All fields are combined with a logical 'AND'.
-"""
-input TeamChangeRoleBoolExp {
-  _and: [TeamChangeRoleBoolExp!]
-  _not: TeamChangeRoleBoolExp
-  _or: [TeamChangeRoleBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  individual: IndividualBoolExp
-  note: StringComparisonExp
-  pole: PoleBoolExp
-  receivedPoleId: BigintComparisonExp
-  receivedRoleId: BigintComparisonExp
-  role: RoleBoolExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  teamJoin: TeamJoinBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  userId: BigintComparisonExp
-  userInfo: UserInfoBoolExp
-}
-
-"""
-unique or primary key constraints on table "team_change_role"
-"""
-enum TeamChangeRoleConstraint {
-  """
-  unique or primary key constraint on columns "id"
-  """
-  team_change_role_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "team_change_role"
-"""
-input TeamChangeRoleIncInput {
-  createdById: bigint
-  id: bigint
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""
-input type for inserting data into table "team_change_role"
-"""
-input TeamChangeRoleInsertInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  individual: IndividualObjRelInsertInput
-  note: String
-  pole: PoleObjRelInsertInput
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  role: RoleObjRelInsertInput
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  teamJoin: TeamJoinObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  userId: bigint
-  userInfo: UserInfoObjRelInsertInput
-}
-
-"""aggregate max on columns"""
-type TeamChangeRoleMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  note: String
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""
-order by max() on columns of table "team_change_role"
-"""
-input TeamChangeRoleMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  note: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""aggregate min on columns"""
-type TeamChangeRoleMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  note: String
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""
-order by min() on columns of table "team_change_role"
-"""
-input TeamChangeRoleMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  note: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""
-response of any mutation on the table "team_change_role"
-"""
-type TeamChangeRoleMutationResponse {
-  """number of rows affected by the mutation"""
-  affectedRows: Int!
-  """data from the rows affected by the mutation"""
-  returning: [TeamChangeRole!]!
-}
-
-"""
-input type for inserting object relation for remote table "team_change_role"
-"""
-input TeamChangeRoleObjRelInsertInput {
-  data: TeamChangeRoleInsertInput!
-  """upsert condition"""
-  onConflict: TeamChangeRoleOnConflict
-}
-
-"""
-on_conflict condition type for table "team_change_role"
-"""
-input TeamChangeRoleOnConflict {
-  constraint: TeamChangeRoleConstraint!
-  updateColumns: [TeamChangeRoleUpdateColumn!]! = []
-  where: TeamChangeRoleBoolExp
-}
-
-"""Ordering options when selecting data from "team_change_role"."""
-input TeamChangeRoleOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  individual: IndividualOrderBy
-  note: OrderBy
-  pole: PoleOrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  role: RoleOrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  teamJoin: TeamJoinOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-  userInfo: UserInfoOrderBy
-}
-
-"""primary key columns input for table: team_change_role"""
-input TeamChangeRolePkColumnsInput {
-  id: bigint!
-}
-
-"""
-select columns of table "team_change_role"
-"""
-enum TeamChangeRoleSelectColumn {
-  """column name"""
-  createdAt
-  """column name"""
-  createdById
-  """column name"""
-  deletedAt
-  """column name"""
-  hiddenAt
-  """column name"""
-  id
-  """column name"""
-  note
-  """column name"""
-  receivedPoleId
-  """column name"""
-  receivedRoleId
-  """column name"""
-  teamId
-  """column name"""
-  tenantId
-  """column name"""
-  userId
-}
-
-"""
-input type for updating data in table "team_change_role"
-"""
-input TeamChangeRoleSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  note: String
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""aggregate stddev on columns"""
-type TeamChangeRoleStddevFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by stddev() on columns of table "team_change_role"
-"""
-input TeamChangeRoleStddevOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""aggregate stddevPop on columns"""
-type TeamChangeRoleStddevPopFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by stddevPop() on columns of table "team_change_role"
-"""
-input TeamChangeRoleStddevPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""aggregate stddevSamp on columns"""
-type TeamChangeRoleStddevSampFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by stddevSamp() on columns of table "team_change_role"
-"""
-input TeamChangeRoleStddevSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""
-Streaming cursor of the table "team_change_role"
-"""
-input TeamChangeRoleStreamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: TeamChangeRoleStreamCursorValueInput!
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input TeamChangeRoleStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  note: String
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""aggregate sum on columns"""
-type TeamChangeRoleSumFields {
-  createdById: bigint
-  id: bigint
-  receivedPoleId: bigint
-  receivedRoleId: bigint
-  teamId: bigint
-  tenantId: bigint
-  userId: bigint
-}
-
-"""
-order by sum() on columns of table "team_change_role"
-"""
-input TeamChangeRoleSumOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""
-update columns of table "team_change_role"
-"""
-enum TeamChangeRoleUpdateColumn {
-  """column name"""
-  createdAt
-  """column name"""
-  createdById
-  """column name"""
-  deletedAt
-  """column name"""
-  hiddenAt
-  """column name"""
-  id
-  """column name"""
-  note
-  """column name"""
-  receivedPoleId
-  """column name"""
-  receivedRoleId
-  """column name"""
-  teamId
-  """column name"""
-  tenantId
-  """column name"""
-  userId
-}
-
-input TeamChangeRoleUpdates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: TeamChangeRoleIncInput
-  """sets the columns of the filtered rows to the given values"""
-  _set: TeamChangeRoleSetInput
-  """filter the rows which have to be updated"""
-  where: TeamChangeRoleBoolExp!
-}
-
-"""aggregate variance on columns"""
-type TeamChangeRoleVarianceFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by variance() on columns of table "team_change_role"
-"""
-input TeamChangeRoleVarianceOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""aggregate varPop on columns"""
-type TeamChangeRoleVarPopFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by varPop() on columns of table "team_change_role"
-"""
-input TeamChangeRoleVarPopOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
-}
-
-"""aggregate varSamp on columns"""
-type TeamChangeRoleVarSampFields {
-  createdById: Float
-  id: Float
-  receivedPoleId: Float
-  receivedRoleId: Float
-  teamId: Float
-  tenantId: Float
-  userId: Float
-}
-
-"""
-order by varSamp() on columns of table "team_change_role"
-"""
-input TeamChangeRoleVarSampOrderBy {
-  createdById: OrderBy
-  id: OrderBy
-  receivedPoleId: OrderBy
-  receivedRoleId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  userId: OrderBy
 }
 
 """
@@ -44632,599 +45221,6 @@ input TeamEventsVarSampOrderBy {
 }
 
 """
-columns and relationships of "team_expense"
-"""
-type TeamExpense {
-  """An object relationship"""
-  actorBankInfo: ActorBankInfo!
-  """An array relationship"""
-  actorFinances(
-    """distinct select on columns"""
-    distinctOn: [ActorFinanceSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [ActorFinanceOrderBy!]
-    """filter the rows returned"""
-    where: ActorFinanceBoolExp
-  ): [ActorFinance!]!
-  """An aggregate relationship"""
-  actorFinancesAggregate(
-    """distinct select on columns"""
-    distinctOn: [ActorFinanceSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [ActorFinanceOrderBy!]
-    """filter the rows returned"""
-    where: ActorFinanceBoolExp
-  ): ActorFinanceAggregate!
-  bankInfoId: bigint!
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-  expenseReportId: bigint!
-  hiddenAt: timestamptz
-  id: bigint!
-  """An object relationship"""
-  individual: Individual
-  """An object relationship"""
-  issue: Issue
-  issueId: bigint
-  state: String!
-  """An object relationship"""
-  teamFinance: TeamFinance
-  """An object relationship"""
-  tenant: Tenant!
-  tenantId: bigint!
-  """An object relationship"""
-  upload: Upload!
-}
-
-"""
-aggregated selection of "team_expense"
-"""
-type TeamExpenseAggregate {
-  aggregate: TeamExpenseAggregateFields
-  nodes: [TeamExpense!]!
-}
-
-input TeamExpenseAggregateBoolExp {
-  count: teamExpenseAggregateBoolExpCount
-}
-
-input teamExpenseAggregateBoolExpCount {
-  arguments: [TeamExpenseSelectColumn!]
-  distinct: Boolean
-  filter: TeamExpenseBoolExp
-  predicate: IntComparisonExp!
-}
-
-"""
-aggregate fields of "team_expense"
-"""
-type TeamExpenseAggregateFields {
-  avg: TeamExpenseAvgFields
-  count(columns: [TeamExpenseSelectColumn!], distinct: Boolean): Int!
-  max: TeamExpenseMaxFields
-  min: TeamExpenseMinFields
-  stddev: TeamExpenseStddevFields
-  stddevPop: TeamExpenseStddevPopFields
-  stddevSamp: TeamExpenseStddevSampFields
-  sum: TeamExpenseSumFields
-  varPop: TeamExpenseVarPopFields
-  varSamp: TeamExpenseVarSampFields
-  variance: TeamExpenseVarianceFields
-}
-
-"""
-order by aggregate values of table "team_expense"
-"""
-input TeamExpenseAggregateOrderBy {
-  avg: TeamExpenseAvgOrderBy
-  count: OrderBy
-  max: TeamExpenseMaxOrderBy
-  min: TeamExpenseMinOrderBy
-  stddev: TeamExpenseStddevOrderBy
-  stddevPop: TeamExpenseStddevPopOrderBy
-  stddevSamp: TeamExpenseStddevSampOrderBy
-  sum: TeamExpenseSumOrderBy
-  varPop: TeamExpenseVarPopOrderBy
-  varSamp: TeamExpenseVarSampOrderBy
-  variance: TeamExpenseVarianceOrderBy
-}
-
-"""
-input type for inserting array relation for remote table "team_expense"
-"""
-input TeamExpenseArrRelInsertInput {
-  data: [TeamExpenseInsertInput!]!
-  """upsert condition"""
-  onConflict: TeamExpenseOnConflict
-}
-
-"""aggregate avg on columns"""
-type TeamExpenseAvgFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by avg() on columns of table "team_expense"
-"""
-input TeamExpenseAvgOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""
-Boolean expression to filter rows from the table "team_expense". All fields are combined with a logical 'AND'.
-"""
-input TeamExpenseBoolExp {
-  _and: [TeamExpenseBoolExp!]
-  _not: TeamExpenseBoolExp
-  _or: [TeamExpenseBoolExp!]
-  actorBankInfo: ActorBankInfoBoolExp
-  actorFinances: ActorFinanceBoolExp
-  actorFinancesAggregate: ActorFinanceAggregateBoolExp
-  bankInfoId: BigintComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  expenseReportId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  individual: IndividualBoolExp
-  issue: IssueBoolExp
-  issueId: BigintComparisonExp
-  state: StringComparisonExp
-  teamFinance: TeamFinanceBoolExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  upload: UploadBoolExp
-}
-
-"""
-unique or primary key constraints on table "team_expense"
-"""
-enum TeamExpenseConstraint {
-  """
-  unique or primary key constraint on columns "id"
-  """
-  team_expense_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "team_expense"
-"""
-input TeamExpenseIncInput {
-  bankInfoId: bigint
-  createdById: bigint
-  expenseReportId: bigint
-  id: bigint
-  issueId: bigint
-  tenantId: bigint
-}
-
-"""
-input type for inserting data into table "team_expense"
-"""
-input TeamExpenseInsertInput {
-  actorBankInfo: ActorBankInfoObjRelInsertInput
-  actorFinances: ActorFinanceArrRelInsertInput
-  bankInfoId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  expenseReportId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  individual: IndividualObjRelInsertInput
-  issue: IssueObjRelInsertInput
-  issueId: bigint
-  state: String
-  teamFinance: TeamFinanceObjRelInsertInput
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  upload: UploadObjRelInsertInput
-}
-
-"""aggregate max on columns"""
-type TeamExpenseMaxFields {
-  bankInfoId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  expenseReportId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  issueId: bigint
-  state: String
-  tenantId: bigint
-}
-
-"""
-order by max() on columns of table "team_expense"
-"""
-input TeamExpenseMaxOrderBy {
-  bankInfoId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  expenseReportId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  state: OrderBy
-  tenantId: OrderBy
-}
-
-"""aggregate min on columns"""
-type TeamExpenseMinFields {
-  bankInfoId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  expenseReportId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  issueId: bigint
-  state: String
-  tenantId: bigint
-}
-
-"""
-order by min() on columns of table "team_expense"
-"""
-input TeamExpenseMinOrderBy {
-  bankInfoId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  expenseReportId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  state: OrderBy
-  tenantId: OrderBy
-}
-
-"""
-response of any mutation on the table "team_expense"
-"""
-type TeamExpenseMutationResponse {
-  """number of rows affected by the mutation"""
-  affectedRows: Int!
-  """data from the rows affected by the mutation"""
-  returning: [TeamExpense!]!
-}
-
-"""
-input type for inserting object relation for remote table "team_expense"
-"""
-input TeamExpenseObjRelInsertInput {
-  data: TeamExpenseInsertInput!
-  """upsert condition"""
-  onConflict: TeamExpenseOnConflict
-}
-
-"""
-on_conflict condition type for table "team_expense"
-"""
-input TeamExpenseOnConflict {
-  constraint: TeamExpenseConstraint!
-  updateColumns: [TeamExpenseUpdateColumn!]! = []
-  where: TeamExpenseBoolExp
-}
-
-"""Ordering options when selecting data from "team_expense"."""
-input TeamExpenseOrderBy {
-  actorBankInfo: ActorBankInfoOrderBy
-  actorFinancesAggregate: ActorFinanceAggregateOrderBy
-  bankInfoId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  expenseReportId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  individual: IndividualOrderBy
-  issue: IssueOrderBy
-  issueId: OrderBy
-  state: OrderBy
-  teamFinance: TeamFinanceOrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  upload: UploadOrderBy
-}
-
-"""primary key columns input for table: team_expense"""
-input TeamExpensePkColumnsInput {
-  id: bigint!
-}
-
-"""
-select columns of table "team_expense"
-"""
-enum TeamExpenseSelectColumn {
-  """column name"""
-  bankInfoId
-  """column name"""
-  createdAt
-  """column name"""
-  createdById
-  """column name"""
-  deletedAt
-  """column name"""
-  description
-  """column name"""
-  expenseReportId
-  """column name"""
-  hiddenAt
-  """column name"""
-  id
-  """column name"""
-  issueId
-  """column name"""
-  state
-  """column name"""
-  tenantId
-}
-
-"""
-input type for updating data in table "team_expense"
-"""
-input TeamExpenseSetInput {
-  bankInfoId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  expenseReportId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  issueId: bigint
-  state: String
-  tenantId: bigint
-}
-
-"""aggregate stddev on columns"""
-type TeamExpenseStddevFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by stddev() on columns of table "team_expense"
-"""
-input TeamExpenseStddevOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""aggregate stddevPop on columns"""
-type TeamExpenseStddevPopFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by stddevPop() on columns of table "team_expense"
-"""
-input TeamExpenseStddevPopOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""aggregate stddevSamp on columns"""
-type TeamExpenseStddevSampFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by stddevSamp() on columns of table "team_expense"
-"""
-input TeamExpenseStddevSampOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""
-Streaming cursor of the table "team_expense"
-"""
-input TeamExpenseStreamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: TeamExpenseStreamCursorValueInput!
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input TeamExpenseStreamCursorValueInput {
-  bankInfoId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  expenseReportId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  issueId: bigint
-  state: String
-  tenantId: bigint
-}
-
-"""aggregate sum on columns"""
-type TeamExpenseSumFields {
-  bankInfoId: bigint
-  createdById: bigint
-  expenseReportId: bigint
-  id: bigint
-  issueId: bigint
-  tenantId: bigint
-}
-
-"""
-order by sum() on columns of table "team_expense"
-"""
-input TeamExpenseSumOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""
-update columns of table "team_expense"
-"""
-enum TeamExpenseUpdateColumn {
-  """column name"""
-  bankInfoId
-  """column name"""
-  createdAt
-  """column name"""
-  createdById
-  """column name"""
-  deletedAt
-  """column name"""
-  description
-  """column name"""
-  expenseReportId
-  """column name"""
-  hiddenAt
-  """column name"""
-  id
-  """column name"""
-  issueId
-  """column name"""
-  state
-  """column name"""
-  tenantId
-}
-
-input TeamExpenseUpdates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: TeamExpenseIncInput
-  """sets the columns of the filtered rows to the given values"""
-  _set: TeamExpenseSetInput
-  """filter the rows which have to be updated"""
-  where: TeamExpenseBoolExp!
-}
-
-"""aggregate variance on columns"""
-type TeamExpenseVarianceFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by variance() on columns of table "team_expense"
-"""
-input TeamExpenseVarianceOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""aggregate varPop on columns"""
-type TeamExpenseVarPopFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by varPop() on columns of table "team_expense"
-"""
-input TeamExpenseVarPopOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""aggregate varSamp on columns"""
-type TeamExpenseVarSampFields {
-  bankInfoId: Float
-  createdById: Float
-  expenseReportId: Float
-  id: Float
-  issueId: Float
-  tenantId: Float
-}
-
-"""
-order by varSamp() on columns of table "team_expense"
-"""
-input TeamExpenseVarSampOrderBy {
-  bankInfoId: OrderBy
-  createdById: OrderBy
-  expenseReportId: OrderBy
-  id: OrderBy
-  issueId: OrderBy
-  tenantId: OrderBy
-}
-
-"""
 columns and relationships of "team_finance"
 """
 type TeamFinance {
@@ -45237,6 +45233,9 @@ type TeamFinance {
   """An object relationship"""
   event: Event
   eventId: bigint
+  """An object relationship"""
+  expense: Expense
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint!
   """An object relationship"""
@@ -45249,9 +45248,6 @@ type TeamFinance {
   state: String!
   """An object relationship"""
   team: Team!
-  """An object relationship"""
-  teamExpense: TeamExpense
-  teamExpenseId: bigint
   teamId: bigint!
   """An object relationship"""
   tenant: Tenant!
@@ -45325,9 +45321,9 @@ type TeamFinanceAvgFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45339,9 +45335,9 @@ input TeamFinanceAvgOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45360,6 +45356,8 @@ input TeamFinanceBoolExp {
   deletedAt: TimestamptzComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
+  expense: ExpenseBoolExp
+  expenseId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -45369,8 +45367,6 @@ input TeamFinanceBoolExp {
   projectId: BigintComparisonExp
   state: StringComparisonExp
   team: TeamBoolExp
-  teamExpense: TeamExpenseBoolExp
-  teamExpenseId: BigintComparisonExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -45385,13 +45381,13 @@ enum TeamFinanceConstraint {
   """
   team_finance_actor_finance_id_unique
   """
+  unique or primary key constraint on columns "expense_id"
+  """
+  team_finance_expense_id_unique
+  """
   unique or primary key constraint on columns "id"
   """
   team_finance_pkey
-  """
-  unique or primary key constraint on columns "team_expense_id"
-  """
-  team_finance_team_expense_id_unique
 }
 
 """
@@ -45401,9 +45397,9 @@ input TeamFinanceIncInput {
   actorFinanceId: bigint
   createdById: bigint
   eventId: bigint
+  expenseId: bigint
   id: bigint
   projectId: bigint
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45419,6 +45415,8 @@ input TeamFinanceInsertInput {
   deletedAt: timestamptz
   event: EventObjRelInsertInput
   eventId: bigint
+  expense: ExpenseObjRelInsertInput
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
@@ -45428,8 +45426,6 @@ input TeamFinanceInsertInput {
   projectId: bigint
   state: String
   team: TeamObjRelInsertInput
-  teamExpense: TeamExpenseObjRelInsertInput
-  teamExpenseId: bigint
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -45442,13 +45438,13 @@ type TeamFinanceMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   method: String
   payedByType: String
   projectId: bigint
   state: String
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45462,13 +45458,13 @@ input TeamFinanceMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   method: OrderBy
   payedByType: OrderBy
   projectId: OrderBy
   state: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45480,13 +45476,13 @@ type TeamFinanceMinFields {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   method: String
   payedByType: String
   projectId: bigint
   state: String
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45500,13 +45496,13 @@ input TeamFinanceMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   method: OrderBy
   payedByType: OrderBy
   projectId: OrderBy
   state: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45548,6 +45544,8 @@ input TeamFinanceOrderBy {
   deletedAt: OrderBy
   event: EventOrderBy
   eventId: OrderBy
+  expense: ExpenseOrderBy
+  expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
@@ -45557,8 +45555,6 @@ input TeamFinanceOrderBy {
   projectId: OrderBy
   state: OrderBy
   team: TeamOrderBy
-  teamExpense: TeamExpenseOrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -45584,6 +45580,8 @@ enum TeamFinanceSelectColumn {
   """column name"""
   eventId
   """column name"""
+  expenseId
+  """column name"""
   hiddenAt
   """column name"""
   id
@@ -45595,8 +45593,6 @@ enum TeamFinanceSelectColumn {
   projectId
   """column name"""
   state
-  """column name"""
-  teamExpenseId
   """column name"""
   teamId
   """column name"""
@@ -45612,13 +45608,13 @@ input TeamFinanceSetInput {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   method: String
   payedByType: String
   projectId: bigint
   state: String
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45628,9 +45624,9 @@ type TeamFinanceStddevFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45642,9 +45638,9 @@ input TeamFinanceStddevOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45654,9 +45650,9 @@ type TeamFinanceStddevPopFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45668,9 +45664,9 @@ input TeamFinanceStddevPopOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45680,9 +45676,9 @@ type TeamFinanceStddevSampFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45694,9 +45690,9 @@ input TeamFinanceStddevSampOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45718,13 +45714,13 @@ input TeamFinanceStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
+  expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
   method: String
   payedByType: String
   projectId: bigint
   state: String
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45734,9 +45730,9 @@ type TeamFinanceSumFields {
   actorFinanceId: bigint
   createdById: bigint
   eventId: bigint
+  expenseId: bigint
   id: bigint
   projectId: bigint
-  teamExpenseId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -45748,9 +45744,9 @@ input TeamFinanceSumOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45770,6 +45766,8 @@ enum TeamFinanceUpdateColumn {
   """column name"""
   eventId
   """column name"""
+  expenseId
+  """column name"""
   hiddenAt
   """column name"""
   id
@@ -45781,8 +45779,6 @@ enum TeamFinanceUpdateColumn {
   projectId
   """column name"""
   state
-  """column name"""
-  teamExpenseId
   """column name"""
   teamId
   """column name"""
@@ -45803,9 +45799,9 @@ type TeamFinanceVarianceFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45817,9 +45813,9 @@ input TeamFinanceVarianceOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45829,9 +45825,9 @@ type TeamFinanceVarPopFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45843,9 +45839,9 @@ input TeamFinanceVarPopOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45855,9 +45851,9 @@ type TeamFinanceVarSampFields {
   actorFinanceId: Float
   createdById: Float
   eventId: Float
+  expenseId: Float
   id: Float
   projectId: Float
-  teamExpenseId: Float
   teamId: Float
   tenantId: Float
 }
@@ -45869,9 +45865,9 @@ input TeamFinanceVarSampOrderBy {
   actorFinanceId: OrderBy
   createdById: OrderBy
   eventId: OrderBy
+  expenseId: OrderBy
   id: OrderBy
   projectId: OrderBy
-  teamExpenseId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -45901,6 +45897,7 @@ input TeamInsertInput {
   actor: ActorObjRelInsertInput
   canteen: CanteenObjRelInsertInput
   canteenId: bigint
+  changeRoles: ChangeRoleArrRelInsertInput
   classGroup: ClassGroupObjRelInsertInput
   classGroupId: bigint
   cohort: CohortObjRelInsertInput
@@ -45929,7 +45926,6 @@ input TeamInsertInput {
   tagline: String
   team: TeamObjRelInsertInput
   teamCategories: TeamCategoriesArrRelInsertInput
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
   teamEvents: TeamEventsArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
@@ -45948,6 +45944,9 @@ columns and relationships of "team_join"
 """
 type TeamJoin {
   askedRoleId: bigint!
+  """An object relationship"""
+  changeRole: ChangeRole
+  changeRoleId: bigint
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -45964,9 +45963,6 @@ type TeamJoin {
   state: String!
   """An object relationship"""
   team: Team!
-  """An object relationship"""
-  teamChangeRole: TeamChangeRole
-  teamChangeRoleId: bigint
   teamId: bigint!
   """An object relationship"""
   tenant: Tenant!
@@ -46040,11 +46036,11 @@ input TeamJoinArrRelInsertInput {
 """aggregate avg on columns"""
 type TeamJoinAvgFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46054,11 +46050,11 @@ order by avg() on columns of table "team_join"
 """
 input TeamJoinAvgOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46071,6 +46067,8 @@ input TeamJoinBoolExp {
   _not: TeamJoinBoolExp
   _or: [TeamJoinBoolExp!]
   askedRoleId: BigintComparisonExp
+  changeRole: ChangeRoleBoolExp
+  changeRoleId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -46083,8 +46081,6 @@ input TeamJoinBoolExp {
   role: RoleBoolExp
   state: StringComparisonExp
   team: TeamBoolExp
-  teamChangeRole: TeamChangeRoleBoolExp
-  teamChangeRoleId: BigintComparisonExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -46096,13 +46092,13 @@ unique or primary key constraints on table "team_join"
 """
 enum TeamJoinConstraint {
   """
+  unique or primary key constraint on columns "change_role_id"
+  """
+  team_join_change_role_id_unique
+  """
   unique or primary key constraint on columns "id"
   """
   team_join_pkey
-  """
-  unique or primary key constraint on columns "team_change_role_id"
-  """
-  team_join_team_change_role_id_unique
 }
 
 """
@@ -46110,11 +46106,11 @@ input type for incrementing numeric columns in table "team_join"
 """
 input TeamJoinIncInput {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
   joinerId: bigint
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46124,6 +46120,8 @@ input type for inserting data into table "team_join"
 """
 input TeamJoinInsertInput {
   askedRoleId: bigint
+  changeRole: ChangeRoleObjRelInsertInput
+  changeRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46136,8 +46134,6 @@ input TeamJoinInsertInput {
   role: RoleObjRelInsertInput
   state: String
   team: TeamObjRelInsertInput
-  teamChangeRole: TeamChangeRoleObjRelInsertInput
-  teamChangeRoleId: bigint
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -46147,6 +46143,7 @@ input TeamJoinInsertInput {
 """aggregate max on columns"""
 type TeamJoinMaxFields {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46155,7 +46152,6 @@ type TeamJoinMaxFields {
   id: bigint
   joinerId: bigint
   state: String
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46165,6 +46161,7 @@ order by max() on columns of table "team_join"
 """
 input TeamJoinMaxOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -46173,7 +46170,6 @@ input TeamJoinMaxOrderBy {
   id: OrderBy
   joinerId: OrderBy
   state: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46181,6 +46177,7 @@ input TeamJoinMaxOrderBy {
 """aggregate min on columns"""
 type TeamJoinMinFields {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46189,7 +46186,6 @@ type TeamJoinMinFields {
   id: bigint
   joinerId: bigint
   state: String
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46199,6 +46195,7 @@ order by min() on columns of table "team_join"
 """
 input TeamJoinMinOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -46207,7 +46204,6 @@ input TeamJoinMinOrderBy {
   id: OrderBy
   joinerId: OrderBy
   state: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46243,6 +46239,8 @@ input TeamJoinOnConflict {
 """Ordering options when selecting data from "team_join"."""
 input TeamJoinOrderBy {
   askedRoleId: OrderBy
+  changeRole: ChangeRoleOrderBy
+  changeRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -46255,8 +46253,6 @@ input TeamJoinOrderBy {
   role: RoleOrderBy
   state: OrderBy
   team: TeamOrderBy
-  teamChangeRole: TeamChangeRoleOrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -46275,6 +46271,8 @@ enum TeamJoinSelectColumn {
   """column name"""
   askedRoleId
   """column name"""
+  changeRoleId
+  """column name"""
   createdAt
   """column name"""
   createdById
@@ -46291,8 +46289,6 @@ enum TeamJoinSelectColumn {
   """column name"""
   state
   """column name"""
-  teamChangeRoleId
-  """column name"""
   teamId
   """column name"""
   tenantId
@@ -46303,6 +46299,7 @@ input type for updating data in table "team_join"
 """
 input TeamJoinSetInput {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46311,7 +46308,6 @@ input TeamJoinSetInput {
   id: bigint
   joinerId: bigint
   state: String
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46319,11 +46315,11 @@ input TeamJoinSetInput {
 """aggregate stddev on columns"""
 type TeamJoinStddevFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46333,11 +46329,11 @@ order by stddev() on columns of table "team_join"
 """
 input TeamJoinStddevOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46345,11 +46341,11 @@ input TeamJoinStddevOrderBy {
 """aggregate stddevPop on columns"""
 type TeamJoinStddevPopFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46359,11 +46355,11 @@ order by stddevPop() on columns of table "team_join"
 """
 input TeamJoinStddevPopOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46371,11 +46367,11 @@ input TeamJoinStddevPopOrderBy {
 """aggregate stddevSamp on columns"""
 type TeamJoinStddevSampFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46385,11 +46381,11 @@ order by stddevSamp() on columns of table "team_join"
 """
 input TeamJoinStddevSampOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46407,6 +46403,7 @@ input TeamJoinStreamCursorInput {
 """Initial value of the column from where the streaming should start"""
 input TeamJoinStreamCursorValueInput {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46415,7 +46412,6 @@ input TeamJoinStreamCursorValueInput {
   id: bigint
   joinerId: bigint
   state: String
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46423,11 +46419,11 @@ input TeamJoinStreamCursorValueInput {
 """aggregate sum on columns"""
 type TeamJoinSumFields {
   askedRoleId: bigint
+  changeRoleId: bigint
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
   joinerId: bigint
-  teamChangeRoleId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -46437,11 +46433,11 @@ order by sum() on columns of table "team_join"
 """
 input TeamJoinSumOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46452,6 +46448,8 @@ update columns of table "team_join"
 enum TeamJoinUpdateColumn {
   """column name"""
   askedRoleId
+  """column name"""
+  changeRoleId
   """column name"""
   createdAt
   """column name"""
@@ -46468,8 +46466,6 @@ enum TeamJoinUpdateColumn {
   joinerId
   """column name"""
   state
-  """column name"""
-  teamChangeRoleId
   """column name"""
   teamId
   """column name"""
@@ -46488,11 +46484,11 @@ input TeamJoinUpdates {
 """aggregate variance on columns"""
 type TeamJoinVarianceFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46502,11 +46498,11 @@ order by variance() on columns of table "team_join"
 """
 input TeamJoinVarianceOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46514,11 +46510,11 @@ input TeamJoinVarianceOrderBy {
 """aggregate varPop on columns"""
 type TeamJoinVarPopFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46528,11 +46524,11 @@ order by varPop() on columns of table "team_join"
 """
 input TeamJoinVarPopOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -46540,11 +46536,11 @@ input TeamJoinVarPopOrderBy {
 """aggregate varSamp on columns"""
 type TeamJoinVarSampFields {
   askedRoleId: Float
+  changeRoleId: Float
   createdById: Float
   formSubmissionId: Float
   id: Float
   joinerId: Float
-  teamChangeRoleId: Float
   teamId: Float
   tenantId: Float
 }
@@ -46554,11 +46550,11 @@ order by varSamp() on columns of table "team_join"
 """
 input TeamJoinVarSampOrderBy {
   askedRoleId: OrderBy
+  changeRoleId: OrderBy
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
   joinerId: OrderBy
-  teamChangeRoleId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -48118,6 +48114,7 @@ input TeamOrderBy {
   actor: ActorOrderBy
   canteen: CanteenOrderBy
   canteenId: OrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   classGroup: ClassGroupOrderBy
   classGroupId: OrderBy
   cohort: CohortOrderBy
@@ -48146,7 +48143,6 @@ input TeamOrderBy {
   tagline: OrderBy
   team: TeamOrderBy
   teamCategoriesAggregate: TeamCategoriesAggregateOrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
   teamEventsAggregate: TeamEventsAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -48809,6 +48805,32 @@ type Tenant {
     where: CanteenBoolExp
   ): CanteenAggregate!
   """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
+  """An array relationship"""
   classGroupTeachers(
     """distinct select on columns"""
     distinctOn: [ClassGroupTeacherSelectColumn!]
@@ -49177,6 +49199,32 @@ type Tenant {
     """filter the rows returned"""
     where: EventBoolExp
   ): EventAggregate!
+  """An array relationship"""
+  expenses(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """An aggregate relationship"""
+  expensesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
   """An array relationship"""
   favorites(
     """distinct select on columns"""
@@ -49662,58 +49710,6 @@ type Tenant {
   """An object relationship"""
   team: Team
   """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
-  """An array relationship"""
-  teamExpenses(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """An aggregate relationship"""
-  teamExpensesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
-  """An array relationship"""
   teamFinances(
     """distinct select on columns"""
     distinctOn: [TeamFinanceSelectColumn!]
@@ -50077,6 +50073,8 @@ input TenantBoolExp {
   canteenMenusAggregate: CanteenMenuAggregateBoolExp
   canteens: CanteenBoolExp
   canteensAggregate: CanteenAggregateBoolExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   classGroupTeachers: ClassGroupTeacherBoolExp
   classGroupTeachersAggregate: ClassGroupTeacherAggregateBoolExp
   classGroups: ClassGroupBoolExp
@@ -50110,6 +50108,8 @@ input TenantBoolExp {
   eventValidationFormId: BigintComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenses: ExpenseBoolExp
+  expensesAggregate: ExpenseAggregateBoolExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   form: FormBoolExp
@@ -50159,10 +50159,6 @@ input TenantBoolExp {
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
   team: TeamBoolExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
-  teamExpenses: TeamExpenseBoolExp
-  teamExpensesAggregate: TeamExpenseAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamId: BigintComparisonExp
@@ -50232,6 +50228,7 @@ input TenantInsertInput {
   canteenFoods: CanteenFoodArrRelInsertInput
   canteenMenus: CanteenMenuArrRelInsertInput
   canteens: CanteenArrRelInsertInput
+  changeRoles: ChangeRoleArrRelInsertInput
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   classGroups: ClassGroupArrRelInsertInput
   cohorts: CohortArrRelInsertInput
@@ -50251,6 +50248,7 @@ input TenantInsertInput {
   eventRoles: EventRoleArrRelInsertInput
   eventValidationFormId: bigint
   events: EventArrRelInsertInput
+  expenses: ExpenseArrRelInsertInput
   favorites: FavoriteArrRelInsertInput
   form: FormObjRelInsertInput
   formEdits: FormEditArrRelInsertInput
@@ -50282,8 +50280,6 @@ input TenantInsertInput {
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
   team: TeamObjRelInsertInput
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
-  teamExpenses: TeamExpenseArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -50417,6 +50413,7 @@ input TenantOrderBy {
   canteenFoodsAggregate: CanteenFoodAggregateOrderBy
   canteenMenusAggregate: CanteenMenuAggregateOrderBy
   canteensAggregate: CanteenAggregateOrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   classGroupsAggregate: ClassGroupAggregateOrderBy
   cohortsAggregate: CohortAggregateOrderBy
@@ -50436,6 +50433,7 @@ input TenantOrderBy {
   eventRolesAggregate: EventRoleAggregateOrderBy
   eventValidationFormId: OrderBy
   eventsAggregate: EventAggregateOrderBy
+  expensesAggregate: ExpenseAggregateOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   form: FormOrderBy
   formEditsAggregate: FormEditAggregateOrderBy
@@ -50467,8 +50465,6 @@ input TenantOrderBy {
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
   team: TeamOrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
-  teamExpensesAggregate: TeamExpenseAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -50914,6 +50910,32 @@ type Upload {
     """filter the rows returned"""
     where: EventBoolExp
   ): EventAggregate!
+  """An array relationship"""
+  expenses(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): [Expense!]!
+  """An aggregate relationship"""
+  expensesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ExpenseSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ExpenseOrderBy!]
+    """filter the rows returned"""
+    where: ExpenseBoolExp
+  ): ExpenseAggregate!
   fileLastModifiedAt: timestamptz!
   hiddenAt: timestamptz
   id: bigint!
@@ -50974,32 +50996,6 @@ type Upload {
     """filter the rows returned"""
     where: TagBoolExp
   ): TagAggregate!
-  """An array relationship"""
-  teamExpenses(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): [TeamExpense!]!
-  """An aggregate relationship"""
-  teamExpensesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamExpenseSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamExpenseOrderBy!]
-    """filter the rows returned"""
-    where: TeamExpenseBoolExp
-  ): TeamExpenseAggregate!
   """An array relationship"""
   teams(
     """distinct select on columns"""
@@ -51159,6 +51155,8 @@ input UploadBoolExp {
   documentEditsAggregate: DocumentEditAggregateBoolExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenses: ExpenseBoolExp
+  expensesAggregate: ExpenseAggregateBoolExp
   fileLastModifiedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
@@ -51170,8 +51168,6 @@ input UploadBoolExp {
   size: IntComparisonExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
-  teamExpenses: TeamExpenseBoolExp
-  teamExpensesAggregate: TeamExpenseAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
   tenant: TenantBoolExp
@@ -51215,6 +51211,7 @@ input UploadInsertInput {
   document: DocumentObjRelInsertInput
   documentEdits: DocumentEditArrRelInsertInput
   events: EventArrRelInsertInput
+  expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
@@ -51224,7 +51221,6 @@ input UploadInsertInput {
   projects: ProjectArrRelInsertInput
   size: Int
   tags: TagArrRelInsertInput
-  teamExpenses: TeamExpenseArrRelInsertInput
   teams: TeamArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -51336,6 +51332,7 @@ input UploadOrderBy {
   document: DocumentOrderBy
   documentEditsAggregate: DocumentEditAggregateOrderBy
   eventsAggregate: EventAggregateOrderBy
+  expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -51345,7 +51342,6 @@ input UploadOrderBy {
   projectsAggregate: ProjectAggregateOrderBy
   size: OrderBy
   tagsAggregate: TagAggregateOrderBy
-  teamExpensesAggregate: TeamExpenseAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -51622,6 +51618,32 @@ type UserInfo {
     where: ActionBoolExp
   ): ActionAggregate!
   """An array relationship"""
+  changeRoles(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): [ChangeRole!]!
+  """An aggregate relationship"""
+  changeRolesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ChangeRoleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ChangeRoleOrderBy!]
+    """filter the rows returned"""
+    where: ChangeRoleBoolExp
+  ): ChangeRoleAggregate!
+  """An array relationship"""
   classGroupTeachers(
     """distinct select on columns"""
     distinctOn: [ClassGroupTeacherSelectColumn!]
@@ -51838,32 +51860,6 @@ type UserInfo {
   statsReplyCount: smallint!
   statsReplyStreak: smallint!
   statsUploadCount: smallint!
-  """An array relationship"""
-  teamChangeRoles(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): [TeamChangeRole!]!
-  """An aggregate relationship"""
-  teamChangeRolesAggregate(
-    """distinct select on columns"""
-    distinctOn: [TeamChangeRoleSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [TeamChangeRoleOrderBy!]
-    """filter the rows returned"""
-    where: TeamChangeRoleBoolExp
-  ): TeamChangeRoleAggregate!
   """An array relationship"""
   teamJoins(
     """distinct select on columns"""
@@ -52100,6 +52096,8 @@ input UserInfoBoolExp {
   _or: [UserInfoBoolExp!]
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
+  changeRoles: ChangeRoleBoolExp
+  changeRolesAggregate: ChangeRoleAggregateBoolExp
   classGroupTeachers: ClassGroupTeacherBoolExp
   classGroupTeachersAggregate: ClassGroupTeacherAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -52171,8 +52169,6 @@ input UserInfoBoolExp {
   statsReplyCount: SmallintComparisonExp
   statsReplyStreak: SmallintComparisonExp
   statsUploadCount: SmallintComparisonExp
-  teamChangeRoles: TeamChangeRoleBoolExp
-  teamChangeRolesAggregate: TeamChangeRoleAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -52243,6 +52239,7 @@ input type for inserting data into table "user_info"
 """
 input UserInfoInsertInput {
   actions: ActionArrRelInsertInput
+  changeRoles: ChangeRoleArrRelInsertInput
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
@@ -52308,7 +52305,6 @@ input UserInfoInsertInput {
   statsReplyCount: smallint
   statsReplyStreak: smallint
   statsUploadCount: smallint
-  teamChangeRoles: TeamChangeRoleArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   tenant: TenantObjRelInsertInput
@@ -52574,6 +52570,7 @@ input UserInfoOnConflict {
 """Ordering options when selecting data from "user_info"."""
 input UserInfoOrderBy {
   actionsAggregate: ActionAggregateOrderBy
+  changeRolesAggregate: ChangeRoleAggregateOrderBy
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -52639,7 +52636,6 @@ input UserInfoOrderBy {
   statsReplyCount: OrderBy
   statsReplyStreak: OrderBy
   statsUploadCount: OrderBy
-  teamChangeRolesAggregate: TeamChangeRoleAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   tenant: TenantOrderBy

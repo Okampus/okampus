@@ -1,6 +1,6 @@
-import { teamJoinBaseInfo } from '../../selectors/team/teamJoin/teamJoinBase';
-import { $ } from '../../zeus';
-import { typedGql } from '../../zeus/typedDocumentNode';
+import { teamJoinBaseInfo } from '../../../selectors/team/teamJoin/teamJoinBase';
+import { $ } from '../../../zeus';
+import { typedGql } from '../../../zeus/typedDocumentNode';
 
 export const updateTeamJoin = typedGql('mutation')({
   updateTeamJoinByPk: [

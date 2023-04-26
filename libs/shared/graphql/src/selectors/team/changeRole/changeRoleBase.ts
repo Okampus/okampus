@@ -6,11 +6,11 @@ import { entityBase } from '../../entityBase';
 import { userBaseInfo } from '../../individual/userBase';
 import type { GraphQLTypes, InputType } from '../../../zeus';
 
-export const teamChangeRoleBaseInfo = Selector('TeamChangeRole')({
+export const changeRoleBaseInfo = Selector('ChangeRole')({
   ...entityBase,
   role: roleBaseInfo,
   pole: poleBaseInfo,
   userInfo: userBaseInfo,
   individual: individualBaseInfo, // <=> createdBy = settledBy
 });
-export type TeamChangeRoleBaseInfo = InputType<GraphQLTypes['TeamChangeRole'], typeof teamChangeRoleBaseInfo>;
+export type ChangeRoleBaseInfo = InputType<GraphQLTypes['ChangeRole'], typeof changeRoleBaseInfo>;
