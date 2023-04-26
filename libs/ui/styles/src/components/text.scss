@@ -1,3 +1,19 @@
-.tagline {
-  @apply text-xl font-semibold line-clamp-1;
+.title {
+  @apply text-8xl font-extrabold leading-tight tracking-tighter;
+}
+
+.section-title {
+  @apply text-4xl font-bold;
+}
+
+.card-title {
+  @apply text-2xl font-semibold;
+}
+
+.label {
+  @apply text-[var(--text-3)] font-bold py-1;
+}
+
+.separator {
+  @apply border-[var(--border-3)] my-2.5;
 }

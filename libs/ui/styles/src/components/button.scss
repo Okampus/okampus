@@ -3,9 +3,14 @@
   @apply rounded-full;
 }
 
+%button-disabled,
+.button-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
 %button {
   @extend %button-rounded;
-  @apply font-bold tracking-tight font-title flex justify-center items-center;
+  @apply font-bold tracking-tight flex justify-center items-center gap-2 shrink-0;
 
   &:hover {
     @apply cursor-pointer contrast-75;
@@ -16,27 +21,17 @@
   }
 
   &:disabled {
-    @apply opacity-50 cursor-not-allowed;
+    @extend %button-disabled;
   }
 }
 
 .button {
   @extend %button;
-  @apply px-8 text-lg h-14;
+  @apply px-8 text-xl h-14;
 
   &-sm {
     @extend %button;
-    @apply px-5 h-12;
-  }
-
-  &-icon {
-    @extend %button;
-    @apply h-14 w-14 p-3;
-  }
-
-  &-icon-sm {
-    @extend %button;
-    @apply h-12 w-12 p-2;
+    @apply px-6 h-10 text-base;
   }
 }
 

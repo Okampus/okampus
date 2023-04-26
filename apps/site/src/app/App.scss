@@ -1,5 +1,5 @@
 html {
-  @apply text-[12px] xl:text-[14px];
+  @apply text-[12px] xl:text-[13.5px];
 }
 
 html,
@@ -24,7 +24,7 @@ body {
 }
 
 #root * {
-  @apply transition-[color,background-color,border-color,text-decoration-color,fill,stroke,outline] duration-[125ms] ease-in-out;
+  @apply transition-[color,background-color,border-color,text-decoration-color,fill,stroke,outline] duration-[200ms] ease-in-out;
 }
 
 swiper-slide {

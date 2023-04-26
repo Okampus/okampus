@@ -1,6 +1,9 @@
 :root {
-  --topbar-height: 5rem;
-  --sidebar-width-xl: 16.5rem;
+  --topbar-height: 5.5rem;
+  --sidebar-width-xl: 18rem;
+  --sidebar-width: 5rem;
+  --sidepanel-width-xl: 21rem;
+  --sidepanel-width: 5.5rem;
   --padding-inner: 0.5rem;
   --padding-view: 2.5rem;
 }
@@ -11,12 +14,21 @@
 }
 
 .w-sidebar {
-  @apply xl:w-[var(--sidebar-width-xl)] w-[var(--topbar-height)];
+  @apply xl:w-[var(--sidebar-width-xl)] w-[var(--sidebar-width)];
+}
+
+.w-sidepanel {
+  @apply xl:w-[var(--sidepanel-width-xl)] w-[var(--sidepanel-width)];
 }
 
 .w-content {
   /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply xl:w-[calc(100%-var(--sidebar-width-xl)*2)] w-[calc(100%-var(--topbar-height)*2)];
+  @apply xl:w-[calc(100%-var(--sidebar-width-xl))] w-[calc(100%-var(--sidebar-width))];
+}
+
+.w-content-between {
+  /* stylelint-disable-next-line scss/operator-no-unspaced */
+  @apply xl:w-[calc(100%-var(--sidepanel-width-xl))] w-[calc(100%-var(--sidepanel-width))];
 }
 
 .w-popover-card {
@@ -35,4 +47,9 @@
 .px-view {
   padding-right: var(--padding-view);
   padding-left: var(--padding-view);
+}
+
+.mx-view {
+  margin-right: var(--padding-view);
+  margin-left: var(--padding-view);
 }

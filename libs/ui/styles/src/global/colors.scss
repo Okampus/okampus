@@ -1,11 +1,12 @@
 :root {
-  --primary: #1564bf;
+  --primary: #dd5f69;
   --inactive: #555;
-  --success: #20a74f;
-  --warning: #f1c40f;
-  --danger: #ec2711;
+  --success: #009614;
+  --warning: #f1a90f;
+  --danger: #d12c1a;
   --info: #348adb;
   --bg-0: #f3f3f3;
+  --bg-label: #f3f3f3cc;
   --bg-1: #eaeaea;
   --bg-2: #e0e0e0;
   --bg-3: #e6e8eb;
@@ -25,12 +26,13 @@
 
   &.dark {
     --bg-0: #000;
-    --bg-1: #1c1e1f;
-    --bg-2: #2b2b2b;
+    --bg-label: #000a;
+    --bg-1: #171717;
+    --bg-2: #1e1e1e;
     --bg-3: #2a2c2e;
-    --bg-4: #444;
-    --bg-5: #555;
-    --bg-main: #0f0f0f;
+    --bg-4: #333;
+    --bg-5: #444;
+    --bg-main: #111;
     --text-0: #fff;
     --text-1: #efefef;
     --text-2: #ccc;
@@ -45,7 +47,7 @@
 }
 
 .backdrop {
-  @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000cc] z-[100] flex overflow-hidden;
+  @apply absolute top-0 left-0 bottom-0 right-0 bg-black bg-[#000000dd] z-[100] flex overflow-hidden;
 }
 
 .checkered {
@@ -141,6 +143,10 @@
   @apply bg-[#e7e7ff] dark:bg-[#15171f];
 }
 
+.bg-primary {
+  @apply bg-[var(--primary)];
+}
+
 .bg-opposite {
   @apply bg-[#333] dark:bg-[#eee];
 }
@@ -183,8 +189,16 @@
   @apply text-[var(--text-5)];
 }
 
+.text-primary {
+  @apply text-[var(--primary)];
+}
+
+.shadow-primary {
+  @apply shadow-[0_0_1.5px_3px_var(--primary)];
+}
+
 .text-opposite {
-  @apply text-[#fff] dark:text-[#4e5169];
+  @apply text-[#fff] dark:text-[#000];
 }
 
 .text-icon {
