@@ -29,5 +29,4 @@ export enum Colors {
   Indigo = 'Indigo',
   Lime = 'Lime',
   Teal = 'Teal',
-  Black = 'Black',
 }

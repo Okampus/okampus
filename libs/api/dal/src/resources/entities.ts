@@ -1,143 +1,127 @@
+import { ActorImage } from './actor/actor-image/actor-image.entity';
 import { Actor } from './actor/actor.entity';
-import { Bot } from './actor/bot/bot.entity';
-import { Individual } from './actor/individual/individual.entity';
-import { Shortcut } from './actor/shortcut/shortcut.entity';
-import { User } from './actor/user/user.entity';
+import { Social } from './actor/social/social.entity';
+import { Tag } from './actor/tag/tag.entity';
+import { CanteenFood } from './canteen/canteen-food/canteen-food.entity';
+import { CanteenMenu } from './canteen/canteen-menu/canteen-menu.entity';
+import { Canteen } from './canteen/canteen.entity';
+import { ClassGroupTeacher } from './class-group/class-group-teacher/class-group-teacher.entity';
+import { ClassGroup } from './class-group/class-group.entity';
+import { Cohort } from './cohort/cohort.entity';
+import { ContentEdit } from './content/content-edit/content-edit.entity';
 import { ContentMaster } from './content-master/content-master.entity';
-import { TenantEvent } from './content-master/event/event.entity';
-import { ContentEdit } from './edit/content-edit/content-edit.entity';
-import { DocumentEdit } from './edit/document-edit/document-edit.entity';
-import { Edit } from './edit/edit.entity';
-import { FormEdit } from './edit/form-edit/form-edit.entity';
-import { FormSubmissionEdit } from './edit/form-submission-edit/form-submission-edit.entity';
-import { DocumentUpload } from './file-upload/document-upload/document-upload.entity';
-import { FileUpload } from './file-upload/file-upload.entity';
-import { ImageUpload } from './file-upload/image-upload/image-upload.entity';
-import { VideoUpload } from './file-upload/video-upload/video-upload.entity';
-import { Favorite } from './interaction/favorite/favorite.entity';
-import { Interaction } from './interaction/interaction.entity';
-import { Reaction } from './interaction/reaction/reaction.entity';
-import { Report } from './interaction/report/report.entity';
-import { Validation } from './interaction/validation/validation.entity';
-import { Vote } from './interaction/vote/vote.entity';
-import { EventJoin } from './join/event-join/event-join.entity';
-import { Join } from './join/join.entity';
-import { TeamJoin } from './join/team-join/team-join.entity';
-import { Subject } from './label/subject/subject.entity';
-import { Tag } from './label/tag/tag.entity';
-import { TeamCategory } from './label/team-category/team-category.entity';
-import { ActorImage } from './manage-actor/actor-image/actor-image.entity';
-import { Social } from './manage-actor/social/social.entity';
-import { OrgDocument } from './manage-org/org-document/org-document.entity';
-import { OrgMetric } from './manage-org/org-metric/org-metric.entity';
-import { Finance } from './manage-team/finance/finance.entity';
-import { Project } from './manage-team/project/project.entity';
-import { TeamAction } from './manage-team/team-action/team-action.entity';
-import { EventApprovalStep } from './manage-tenant/event-approval-step/event-approval-step.entity';
-import { EventApproval } from './manage-tenant/event-approval/event-approval.entity';
-import { Session } from './manage-user/session/session.entity';
-import { TeachClass } from './manage-user/teach-class/teach-class.entity';
-import { CanteenMember } from './membership/canteen-member/canteen-member.entity';
-import { ClassGroupMember } from './membership/class-group-member/class-group-member.entity';
-import { CohortMember } from './membership/cohort-member/cohort-member.entity';
-import { Membership } from './membership/membership.entity';
-import { TeamMember } from './membership/team-member/team-member.entity';
-import { TenantMember } from './membership/tenant-member/tenant-member.entity';
-import { Canteen } from './org/canteen/canteen.entity';
-import { ClassGroup } from './org/class-group/class-group.entity';
-import { Cohort } from './org/cohort/cohort.entity';
-import { Org } from './org/org.entity';
-import { Team } from './org/team/team.entity';
-import { TenantCore } from './org/tenant/tenant-core.entity';
-import { Tenant } from './org/tenant/tenant.entity';
-import { CanteenRole } from './role/canteen-role/canteen-role.entity';
-import { EventRole } from './role/event-role/event-role.entity';
-import { ProjectRole } from './role/project-role/project-role.entity';
-import { Role } from './role/role.entity';
-import { TeamRole } from './role/team-role/team-role.entity';
-import { Content } from './ugc/content/content.entity';
-import { TenantDocument } from './ugc/document/document.entity';
-import { FormSubmission } from './ugc/form-submission/form-submission.entity';
-import { Form } from './ugc/form/form.entity';
-import { Ugc } from './ugc/ugc.entity';
+import { Content } from './content/content.entity';
+import { Favorite } from './content/favorite/favorite.entity';
+import { Reaction } from './content/reaction/reaction.entity';
+import { Report } from './content/report/report.entity';
+import { Validation } from './content/validation/validation.entity';
+import { Vote } from './content/vote/vote.entity';
+import { DocumentEdit } from './document/document-edit/document-edit.entity';
+import { Document } from './document/document.entity';
+import { Subject } from './class-group/subject/subject.entity';
+import { EventJoin } from './event/event-join/event-join.entity';
+import { EventRole } from './event/event-role/event-role.entity';
+import { Event } from './event/event.entity';
+import { FormSubmissionEdit } from './form-submission/form-submission-edit/form-submission-edit.entity';
+import { FormSubmission } from './form-submission/form-submission.entity';
+import { FormEdit } from './form/form-edit/form-edit.entity';
+import { Form } from './form/form.entity';
+import { Individual } from './individual/individual.entity';
+import { Session } from './individual/session/session.entity';
+import { Shortcut } from './individual/shortcut/shortcut.entity';
+import { UserInfo } from './individual/user-info/user-info.entity';
+import { ProjectRole } from './project/project-role/project-role.entity';
+import { Project } from './project/project.entity';
+import { Action } from './team/action/action.entity';
+import { TeamFinance } from './team/team-finance/team-finance.entity';
+import { TeamJoin } from './team/team-join/team-join.entity';
+import { TeamMember } from './team/team-member/team-member.entity';
+import { TeamMetric } from './team/team-metric/team-metric.entity';
+import { Role } from './team/role/role.entity';
+import { Team } from './team/team.entity';
+import { EventApprovalStep } from './tenant/event-approval-step/event-approval-step.entity';
+import { EventApproval } from './tenant/event-approval/event-approval.entity';
+import { Tenant } from './tenant/tenant.entity';
+import { Upload } from './upload/upload';
+import { BotInfo } from './individual/bot-info/bot-info.entity';
+import { ChangeRole } from './team/change-role/change-role.entity';
+import { EventChangeRole } from './event/event-change-role/event-change-role.entity';
+import { Pole } from './team/pole/pole.entity';
+import { ActorAddress } from './actor/actor-address/actor-address.entity';
+import { ActorBankInfo } from './actor/actor-bank-info/actor-bank-info.entity';
+import { Expense } from './team/expense/expense.entity';
+import { ActorFinance } from './actor/actor-finance/actor-finance.entity';
+import { Issue } from './content-master/issue/issue.entity';
 
 export const allEntities = [
-  Actor,
-
   Individual,
-  Bot,
-  User,
+  BotInfo,
+  UserInfo,
+
+  Tenant,
+
+  Actor,
+  ActorBankInfo,
+  ActorAddress,
+  ActorFinance,
+  ActorImage,
+  Social,
+  Tag,
+
+  Session,
   Shortcut,
 
-  Org,
-  Canteen,
-  ClassGroup,
-  Cohort,
   Team,
-  Tenant,
-  TenantCore,
+  Action,
+  Pole,
+  Role,
+  ChangeRole,
+  Expense,
+  TeamFinance,
+  TeamJoin,
+  TeamMember,
+  TeamMetric,
 
-  ContentMaster,
-  TenantEvent,
+  Canteen,
+  CanteenFood,
+  CanteenMenu,
 
-  FileUpload,
-  DocumentUpload,
-  ImageUpload,
-  VideoUpload,
+  ClassGroup,
+  ClassGroupTeacher,
 
-  Interaction,
+  Cohort,
+
+  Project,
+  ProjectRole,
+
+  Event,
+  EventJoin,
+  EventRole,
+  EventChangeRole,
+
+  Upload,
+
   Favorite,
   Reaction,
   Report,
   Validation,
   Vote,
 
-  Join,
-  EventJoin,
-  TeamJoin,
-
-  Subject,
-  Tag,
-  TeamCategory,
-
-  ActorImage,
-  Social,
-
-  OrgDocument,
-  OrgMetric,
-
-  Finance,
-  Project,
-  TeamAction,
-
   EventApproval,
   EventApprovalStep,
 
-  Session,
-  TeachClass,
-
-  Membership,
-  CanteenMember,
-  ClassGroupMember,
-  CohortMember,
-  TeamMember,
-  TenantMember,
-
-  Role,
-  CanteenRole,
-  EventRole,
-  ProjectRole,
-  TeamRole,
-
-  Ugc,
   Content,
   ContentEdit,
-  TenantDocument,
+  ContentMaster,
+  Issue,
 
-  Edit,
+  Document,
   DocumentEdit,
+  Subject,
+
   Form,
   FormEdit,
+
   FormSubmission,
   FormSubmissionEdit,
 ];

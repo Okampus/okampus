@@ -2,17 +2,16 @@ import type { MEILISEARCH_TYPE_FIELD } from '@okampus/shared/consts';
 import type { Snowflake } from '@okampus/shared/types';
 
 export interface BaseSearchable {
+  name: string;
   slug: string;
-  title: string;
+  tags: string[];
+  categories: string[];
   thumbnail: string | null;
   description: string | null;
-  categories: string[];
   createdAt: number;
-  updatedAt: number;
-  linkedUsers: string[];
-  linkedEvents: string[];
-  linkedTeams: string[];
-  tags: string[];
+  events: string[];
+  teams: string[];
+  individuals: string[];
   [key: string]: unknown;
 }
 

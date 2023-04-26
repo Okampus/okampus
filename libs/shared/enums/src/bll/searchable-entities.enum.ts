@@ -1,5 +1,5 @@
 export enum SearchableEntities {
-  TenantEvent = 'TenantEvent',
+  Event = 'Event',
   Team = 'Team',
   User = 'User',
 }

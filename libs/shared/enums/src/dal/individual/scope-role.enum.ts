@@ -1,5 +1,6 @@
 export enum ScopeRole {
-  Student = 'Student',
-  Teacher = 'Teacher',
-  Admin = 'Admin',
+  TenantUser = 'tenant_user',
+  TenantTeacher = 'tenant_teacher',
+  TenantAdmin = 'tenant_admin',
+  Admin = 'admin',
 }

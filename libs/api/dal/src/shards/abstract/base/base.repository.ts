@@ -1,7 +1,7 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 import type { FilterQuery, FindOneOptions, FindOneOrFailOptions } from '@mikro-orm/core';
 import type { Snowflake } from '@okampus/shared/types';
-import type { BaseEntity } from './base.entity';
+import type { BaseEntity } from '../../../resources/base.entity';
 
 // TODO: fix types
 

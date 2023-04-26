@@ -10,26 +10,26 @@ export class OidcInfo {
   oidcEnabled = false;
 
   @Field(() => String, { nullable: true })
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   oidcName: string | null = null;
 
   @Field(() => String, { nullable: true })
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   oidcClientId: string | null = null;
 
-  @Property({ type: 'text', nullable: true, hidden: true })
+  @Property({ type: 'text', nullable: true, default: null, hidden: true })
   oidcClientSecret: string | null = null;
 
   @Field(() => String, { nullable: true })
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   oidcDiscoveryUrl: string | null = null;
 
   @Field(() => String, { nullable: true })
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   oidcScopes: string | null = null;
 
   @Field(() => String, { nullable: true })
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   oidcCallbackUri: string | null = null;
 
   constructor(partial: Partial<OidcInfo>) {

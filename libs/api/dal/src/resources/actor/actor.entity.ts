@@ -1,29 +1,28 @@
-import { ActorRepository } from './actor.repository';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
+import { TenantScopedEntity } from '..';
 import { Collection, Entity, ManyToMany, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
-import { toSlug } from '@okampus/shared/utils';
-import { ActorKind } from '@okampus/shared/enums';
-import { nanoid } from 'nanoid';
+
 import { TransformCollection } from '@okampus/api/shards';
+import { toSlug } from '@okampus/shared/utils';
+
+import { nanoid } from 'nanoid';
+import type { ActorBankInfo } from './actor-bank-info/actor-bank-info.entity';
+
+import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
-import type { Social } from '../manage-actor/social/social.entity';
-import type { ActorImage } from '../manage-actor/actor-image/actor-image.entity';
-import type { Tag } from '../label/tag/tag.entity';
-import type { Individual } from './individual/individual.entity';
-import type { Org } from '../org/org.entity';
-import type { Validation } from '../interaction/validation/validation.entity';
-import type { Reaction } from '../interaction/reaction/reaction.entity';
-import type { Report } from '../interaction/report/report.entity';
-import type { Vote } from '../interaction/vote/vote.entity';
-import type { Favorite } from '../interaction/favorite/favorite.entity';
+import type { Report } from '../content/report/report.entity';
+import type { Favorite } from '../content/favorite/favorite.entity';
+import type { Individual } from '../individual/individual.entity';
+import type { Team } from '../team/team.entity';
+import type { ActorImage } from './actor-image/actor-image.entity';
+import type { Social } from './social/social.entity';
 
-@Entity({ customRepository: () => ActorRepository })
+@Entity()
 export class Actor extends TenantScopedEntity {
-  @OneToOne({ type: 'Individual', mappedBy: 'actor', nullable: true })
-  individual: Individual | null = null;
+  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true })
+  individual!: Individual | null;
 
-  @OneToOne({ type: 'Org', mappedBy: 'actor', nullable: true })
-  org: Org | null = null;
+  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true })
+  team!: Team | null;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()
@@ -35,15 +34,19 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', default: '' })
   bio = '';
 
-  @Property({ type: 'text', nullable: true })
+  @Property({ type: 'text', nullable: true, default: null })
   primaryEmail: string | null = null;
 
   @Property({ type: 'text' })
   @Unique()
-  ical = nanoid(23);
+  ical = nanoid(26);
+
+  @OneToMany({ type: 'ActorBankInfo', mappedBy: 'actor' })
+  @TransformCollection()
+  actorBankInfos = new Collection<ActorBankInfo>(this);
 
   @OneToMany({ type: 'ActorImage', mappedBy: 'actor' })
   @TransformCollection()
@@ -53,33 +56,18 @@ export class Actor extends TenantScopedEntity {
   @TransformCollection()
   socials = new Collection<Social>(this);
 
-  @OneToMany({ type: 'Validation', mappedBy: 'actor' })
-  @TransformCollection()
-  validations = new Collection<Validation>(this);
-
-  @OneToMany({ type: 'Reaction', mappedBy: 'actor' })
-  @TransformCollection()
-  reactions = new Collection<Reaction>(this);
-
   @OneToMany({ type: 'Report', mappedBy: 'actor' })
   @TransformCollection()
   reports = new Collection<Report>(this);
-
-  @OneToMany({ type: 'Vote', mappedBy: 'actor' })
-  @TransformCollection()
-  votes = new Collection<Vote>(this);
 
   @OneToMany({ type: 'Favorite', mappedBy: 'actor' })
   @TransformCollection()
   favorites = new Collection<Favorite>(this);
 
-  public actorKind() {
-    return this.individual ? ActorKind.Individual : ActorKind.Org;
-  }
-
   constructor(options: ActorOptions) {
-    options.slug = toSlug(options.slug ?? options.name);
-    super({ tenant: options.tenant, createdBy: options.createdBy });
+    super(options);
     this.assign(options);
+
+    this.slug = toSlug(options.slug ?? options.name);
   }
 }

@@ -13,7 +13,7 @@ export class UserStats {
   postCount = 0;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  @Property({ type: 'datetime', nullable: true })
+  @Property({ type: 'datetime', nullable: true, default: null })
   lastPostAt: Date | null = null;
 
   @Field(() => Int)
@@ -25,7 +25,7 @@ export class UserStats {
   replyCount = 0;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  @Property({ type: 'datetime', nullable: true })
+  @Property({ type: 'datetime', nullable: true, default: null })
   lastReplyAt: Date | null = null;
 
   @Field(() => Int)
@@ -37,7 +37,7 @@ export class UserStats {
   commentCount = 0;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  @Property({ type: 'datetime', nullable: true })
+  @Property({ type: 'datetime', nullable: true, default: null })
   lastComment: Date | null = null;
 
   @Field(() => Int)
@@ -45,7 +45,7 @@ export class UserStats {
   uploadCount = 0;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
-  @Property({ type: 'datetime', nullable: true })
+  @Property({ type: 'datetime', nullable: true, default: null })
   lastActionAt: Date | null = null;
 
   @Field(() => Int)

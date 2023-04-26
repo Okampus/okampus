@@ -1,0 +1,38 @@
+import { IsFormKitSchema } from '../../validators/formkit-schema.validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-scalars';
+import { FormType } from '@okampus/shared/enums';
+import { IsBoolean, IsEnum, IsOptional, IsString, Length } from 'class-validator';
+
+import type { FormField } from '@okampus/shared/types';
+
+@InputType()
+export class FormProps {
+  @Field(() => String)
+  @Length(1, 100)
+  @IsString()
+  name!: string;
+
+  @Field(() => GraphQLJSON)
+  @IsFormKitSchema()
+  schema!: FormField[];
+
+  @Field(() => FormType)
+  @IsEnum(FormType)
+  type!: FormType;
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  @IsOptional()
+  isTemplate?: boolean;
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  @IsOptional()
+  allowMultipleAnswers?: boolean;
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  @IsOptional()
+  allowEditingAnswers?: boolean;
+}

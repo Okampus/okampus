@@ -1,3 +1,3 @@
 export enum ApprovalStepType {
-  Event = 'TenantEvent',
+  Event = 'Event',
 }

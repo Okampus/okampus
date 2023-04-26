@@ -1,9 +1,13 @@
-export enum DocumentUploadType {
-  Slideshow = 'Slideshow',
-  CSVLike = 'CSVLike',
-  Spreadsheet = 'Spreadsheet',
-  Code = 'Code',
-  Markdown = 'Markdown',
-  Text = 'Text',
-  Document = 'Document',
+export enum DocumentType {
+  TenantGuide = 'TenantGuide',
+
+  AssociationConstitution = 'AssociationConstitution', // "Récépissé de préfecture"
+  AssociationDeclaration = 'AssociationDeclaration', // "Statuts"
+  ClubHandover = 'ClubHandover', // "Courrier de passation"
+  ClubCharter = 'ClubCharter', // "Réglement intérieur"
+
+  OrgMeetingTranscript = 'OrgMeetingTranscript',
+  OrgGraphicCharter = 'OrgGraphicCharter',
+
+  Other = 'Other',
 }

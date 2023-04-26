@@ -1,61 +1,48 @@
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Collection, Entity, Enum, ManyToMany, OneToMany, OneToOne, Property } from '@mikro-orm/core';
-import { ContentMasterKind } from '@okampus/shared/enums';
+import { TenantScopedEntity } from '../tenant-scoped.entity';
+import { Collection, Entity, Enum, EnumType, ManyToMany, OneToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
-import type { ContentMasterOptions } from './content-master.options';
-import type { Validation } from '../interaction/validation/validation.entity';
-import type { Reaction } from '../interaction/reaction/reaction.entity';
-import type { Report } from '../interaction/report/report.entity';
-import type { Vote } from '../interaction/vote/vote.entity';
-import type { Favorite } from '../interaction/favorite/favorite.entity';
-import type { Ugc } from '../ugc/ugc.entity';
-import type { Individual } from '../actor/individual/individual.entity';
-import type { Tag } from '../label/tag/tag.entity';
+import { ContentMasterType } from '@okampus/shared/enums';
 
-@Entity({ discriminatorColumn: 'contentMasterKind', discriminatorMap: ContentMasterKind, abstract: true })
-export abstract class ContentMaster extends TenantScopedEntity {
-  @Enum({ items: () => ContentMasterKind, type: 'string' })
-  contentMasterKind!: ContentMasterKind;
+import { toSlug } from '@okampus/shared/utils';
+import type { Issue } from './issue/issue.entity';
+import type { Tag } from '../actor/tag/tag.entity';
+import type { Individual } from '../individual/individual.entity';
+import type { Content } from '../content/content.entity';
+import type { ContentMasterOptions } from './content-master.options';
+import type { Event } from '../event/event.entity';
+
+@Entity()
+export class ContentMaster extends TenantScopedEntity {
+  @Enum({ items: () => ContentMasterType, type: EnumType })
+  type!: ContentMasterType;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
   @Property({ type: 'text' })
-  slug!: string;
+  name!: string;
 
   @Property({ type: 'text' })
-  title!: string;
+  slug!: string;
 
-  @OneToOne({ type: 'Ugc', onDelete: 'CASCADE' })
-  rootContent!: Ugc; // TODO: rename to description? switch to Content? ...
+  @OneToOne({ type: 'Content', onDelete: 'CASCADE' })
+  rootContent!: Content;
+
+  @OneToOne({ type: 'Issue', mappedBy: 'content', nullable: true })
+  issue: Issue | null = null;
+
+  @OneToOne({ type: 'Event', mappedBy: 'content', nullable: true })
+  event: Event | null = null;
 
   @ManyToMany({ type: 'Individual' })
   @TransformCollection()
   contributors = new Collection<Individual>(this);
 
-  @OneToMany({ type: 'Validation', mappedBy: 'linkedContentMaster' })
-  @TransformCollection()
-  validations = new Collection<Validation>(this);
-
-  @OneToMany({ type: 'Reaction', mappedBy: 'linkedContentMaster' })
-  @TransformCollection()
-  reactions = new Collection<Reaction>(this);
-
-  @OneToMany({ type: 'Report', mappedBy: 'linkedContentMaster' })
-  @TransformCollection()
-  reports = new Collection<Report>(this);
-
-  @OneToMany({ type: 'Vote', mappedBy: 'linkedContentMaster' })
-  @TransformCollection()
-  votes = new Collection<Vote>(this);
-
-  @OneToMany({ type: 'Favorite', mappedBy: 'linkedContentMaster' })
-  @TransformCollection()
-  favorites = new Collection<Favorite>(this);
-
-  constructor(options: ContentMasterOptions & { contentMasterKind: ContentMasterKind }) {
-    super({ tenant: options.tenant, createdBy: options.createdBy });
+  constructor(options: ContentMasterOptions) {
+    super(options);
     this.assign(options);
+
+    if (!options.slug) this.slug = toSlug(this.name);
   }
 }

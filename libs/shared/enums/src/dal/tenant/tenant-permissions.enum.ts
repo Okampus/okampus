@@ -1,5 +1,5 @@
 export enum TenantPermissions {
-  ManageTenantEvents = 'ManageTenantEvents',
+  ManageEvents = 'ManageEvents',
   ViewTeamEvents = 'ViewEvents',
   ViewTeamDetails = 'ViewTeamDetails',
   ViewTeamTreasuries = 'ViewTeamTreasuries',

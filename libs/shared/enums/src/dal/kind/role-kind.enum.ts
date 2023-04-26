@@ -1,5 +1,5 @@
 export enum RoleKind {
-  TeamRole = 'TeamRole',
+  Role = 'Role',
   CanteenRole = 'CanteenRole',
   EventRole = 'EventRole',
   ProjectRole = 'ProjectRole',
