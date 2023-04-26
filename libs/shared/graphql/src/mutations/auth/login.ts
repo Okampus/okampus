@@ -1,15 +1,7 @@
-import { gql } from '../../schema/__generated__/gql';
+import { userMeInfo } from '../../selectors/individual/userMe';
+import { $ } from '../../zeus';
+import { typedGql } from '../../zeus/typedDocumentNode';
 
-export const loginMutation = gql(`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      __typename
-      user {
-        ...MyInfo
-      }
-      tenant {
-        ...TenantInfo
-      }
-    }
-  }
-`);
+export const login = typedGql('mutation')({
+  login: [{ dto: $('dto', 'LoginInput!') }, userMeInfo],
+});
