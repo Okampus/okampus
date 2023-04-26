@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { Day } from '@okampus/ui/atoms';
-
-import type { ITenantEvent } from '@okampus/shared/dtos';
+import type { GraphQLTypes } from '@okampus/shared/graphql';
 
 type MonthProps = {
   month: dayjs.Dayjs[][];
-  events: ITenantEvent[];
+  events: GraphQLTypes['Event'][];
 };
 
 export default function Month({ month, events }: MonthProps) {
