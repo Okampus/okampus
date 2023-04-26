@@ -2,4 +2,4 @@
 
 `dal`: Data access layer - includes NestJS entities & repositories
 
-`lib`: Shared libraries - includes NestJS guards, decorators, filters, middlewares, pipes & consts
+`shards`: Shared libraries - includes NestJS guards, decorators, filters, middlewares, pipes & consts

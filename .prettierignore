@@ -1,8 +1,13 @@
 # Add files here to ignore them from prettier formatting
 
 /dist
+**/dist
 /coverage
+**/coverage
 /node_modules
+**/node_modules
 /tmp
-**/migrations
-pnpm-lock.yaml
+**/tmp
+**/database
+*.yaml
+*.yml

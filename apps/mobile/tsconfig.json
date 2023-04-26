@@ -7,7 +7,6 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "declaration": true,
     "skipLibCheck": true
   },
   "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],

@@ -1,6 +1,10 @@
 {
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs",
+      "esModuleInterop": true
+    }
   },
   "compileOnSave": false,
   "compilerOptions": {
@@ -11,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

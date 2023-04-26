@@ -12,30 +12,28 @@ module.exports = {
   theme: {
     extend: {
       gap: {
-        item: '1rem',
+        item: '.85rem',
       },
       fontSize: {
         xxs: '.625rem',
         modest: '0.925rem',
       },
       fontFamily: {
-        sans: ['HarmonyOS', ...defaultTheme.fontFamily.sans],
+        sans: ['Metropolis', ...defaultTheme.fontFamily.sans],
         mono: ['SpaceMono', ...defaultTheme.fontFamily.mono],
-        heading: ['RedHatDisplay', ...defaultTheme.fontFamily.sans],
-        title: ['Figtree', ...defaultTheme.fontFamily.sans],
       },
       screens: {
         xxs: '361px',
         xs: '408px',
         ...defaultTheme.screens,
-        xl: '1320px',
+        xl: '1440px',
         '3xl': '1800px',
         'xxs-max': { max: '360px' },
         'xs-max': { max: '407px' },
         'sm-max': { max: '639px' },
         'md-max': { max: '767px' },
         'lg-max': { max: '1023px' },
-        'xl-max': { max: '1319px' },
+        'xl-max': { max: '1439px' },
         '2xl-max': { max: '1535px' },
         '3xl-max': { max: '1799px' },
         short: { raw: '(max-height: 500px)' },
@@ -43,5 +41,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
 };
