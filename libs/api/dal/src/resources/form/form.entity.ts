@@ -1,6 +1,16 @@
 import { FormEdit } from './form-edit/form-edit.entity';
+import { FormRepository } from './form.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
-import { Collection, Entity, Enum, EnumType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  Enum,
+  EnumType,
+  OneToMany,
+  OneToOne,
+  Property,
+} from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 import { FormType } from '@okampus/shared/enums';
 
@@ -10,12 +20,14 @@ import type { JSONObject } from '@okampus/shared/types';
 import type { FormOptions } from './form.options';
 import type { Team } from '../team/team.entity';
 
-@Entity()
+@Entity({ customRepository: () => FormRepository })
 export class Form extends TenantScopedEntity {
+  [EntityRepositoryType]!: FormRepository;
+
   @Property({ type: 'text' })
   name!: string;
 
-  @OneToOne({ type: 'Team', mappedBy: 'joinForm', nullable: true })
+  @OneToOne({ type: 'Team', inversedBy: 'joinForm', nullable: true })
   team: Team | null = null;
 
   @Property({ type: 'json' })

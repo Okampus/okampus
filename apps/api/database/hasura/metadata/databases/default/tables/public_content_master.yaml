@@ -8,7 +8,7 @@ object_relationships:
   - name: event
     using:
       foreign_key_constraint_on:
-        column: content_id
+        column: content_master_id
         table:
           name: event
           schema: public
@@ -18,7 +18,7 @@ object_relationships:
   - name: issue
     using:
       foreign_key_constraint_on:
-        column: content_id
+        column: content_master_id
         table:
           name: issue
           schema: public

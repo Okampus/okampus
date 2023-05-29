@@ -29,6 +29,13 @@ array_relationships:
         table:
           name: action
           schema: public
+  - name: actionsByValidatedById
+    using:
+      foreign_key_constraint_on:
+        column: validated_by_id
+        table:
+          name: action
+          schema: public
   - name: actorAddresses
     using:
       foreign_key_constraint_on:
@@ -70,6 +77,13 @@ array_relationships:
         column: created_by_id
         table:
           name: bot_info
+          schema: public
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: campus
           schema: public
   - name: canteenFoods
     using:
@@ -190,6 +204,13 @@ array_relationships:
         table:
           name: event_approval
           schema: public
+  - name: eventAttendances
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_attendance
+          schema: public
   - name: eventChangeRoles
     using:
       foreign_key_constraint_on:
@@ -231,6 +252,20 @@ array_relationships:
         column: created_by_id
         table:
           name: favorite
+          schema: public
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: file_upload
+          schema: public
+  - name: follows
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: follow
           schema: public
   - name: formEdits
     using:
@@ -351,6 +386,13 @@ array_relationships:
         table:
           name: tag
           schema: public
+  - name: teamFinanceEdits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_finance_edit
+          schema: public
   - name: teamFinances
     using:
       foreign_key_constraint_on:
@@ -392,13 +434,6 @@ array_relationships:
         column: created_by_id
         table:
           name: tenant
-          schema: public
-  - name: uploads
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: upload
           schema: public
   - name: userInfos
     using:

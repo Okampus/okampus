@@ -6,4 +6,4 @@ import { writeFileSync } from 'fs';
 const loadedFiles = loadFilesSync(`./**/*.gql`);
 const typeDefs = mergeTypeDefs(loadedFiles);
 const printedTypeDefs = print(typeDefs);
-writeFileSync('./libs/shared/graphql/src/merged.graphql', printedTypeDefs);
+writeFileSync('./libs/shared/graphql/src/schema.merged.graphql', printedTypeDefs);

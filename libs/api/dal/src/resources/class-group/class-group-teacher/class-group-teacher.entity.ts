@@ -14,7 +14,7 @@ export class ClassGroupTeacher extends TenantScopedEntity {
 
   @ManyToMany({ type: 'Subject' })
   @TransformCollection()
-  subject = new Collection<Subject>(this);
+  subjects = new Collection<Subject>(this);
 
   @ManyToOne({ type: 'ClassGroup' })
   classGroup!: ClassGroup;

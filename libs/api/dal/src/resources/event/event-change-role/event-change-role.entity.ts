@@ -13,7 +13,7 @@ export class EventChangeRole extends TenantScopedEntity {
   @ManyToOne({ type: 'EventRole', nullable: true, default: null })
   receivedRole: EventRole | null = null;
 
-  @Property({ type: 'bpolean' })
+  @Property({ type: 'boolean' })
   accepted!: boolean;
 
   @Property({ type: 'text' })

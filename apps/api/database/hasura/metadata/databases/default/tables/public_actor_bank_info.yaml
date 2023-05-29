@@ -7,7 +7,7 @@ object_relationships:
       foreign_key_constraint_on: actor_id
   - name: actorAddress
     using:
-      foreign_key_constraint_on: bank_location_id
+      foreign_key_constraint_on: address_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id

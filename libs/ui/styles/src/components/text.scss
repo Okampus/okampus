@@ -1,13 +1,20 @@
-.title {
+.large-heading {
   @apply text-8xl font-extrabold leading-tight tracking-tighter;
 }
 
-.section-title {
-  @apply text-4xl font-bold;
+.title {
+  @apply text-[1.8rem] leading-10 font-bold text-[var(--text-0)];
 }
 
-.card-title {
+.title-sm {
+  @apply font-semibold text-2xl text-[var(--text-0)];
+}
+
+.subtitle {
   @apply text-2xl font-semibold;
+}
+.subtitle-sm {
+  @apply text-base text-[var(--text-2)];
 }
 
 .label {
@@ -15,5 +22,5 @@
 }
 
 .separator {
-  @apply border-[var(--border-3)] my-2.5;
+  @apply border-[var(--border-2)] my-2.5;
 }

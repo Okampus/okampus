@@ -1,4 +1,4 @@
-import type { Upload } from '../../upload/upload';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { ActorImageProps } from '@okampus/shared/dtos';
 import type { Actor } from '../../actor/actor.entity';
@@ -6,6 +6,6 @@ import type { Actor } from '../../actor/actor.entity';
 export type ActorImageOptions = ActorImageProps &
   TenantScopedOptions & {
     actor: Actor;
-    image: Upload;
+    image: FileUpload;
     lastActiveDate?: Date | null;
   };

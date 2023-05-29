@@ -2,6 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "module": "es2022",
+    "target": "es2022",
     "types": []
   },
   "include": ["src/**/*.ts", "request-context-data.d.ts"],

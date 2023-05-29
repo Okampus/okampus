@@ -1,5 +1,5 @@
 import { Selector } from '../../zeus';
-import { uploadBaseInfo } from '../upload/uploadBase';
+import { fileUploadBaseInfo } from '../file-upload/fileUploadBase';
 import { entityBase } from '../entityBase';
 import type { InputType, GraphQLTypes } from '../../zeus';
 
@@ -9,6 +9,6 @@ export const documentBaseInfo = Selector('Document')({
   name: true,
   type: true,
   yearVersion: true,
-  upload: uploadBaseInfo,
+  fileUpload: fileUploadBaseInfo,
 });
 export type DocumentBaseInfo = InputType<GraphQLTypes['Document'], typeof documentBaseInfo>;

@@ -1,7 +1,7 @@
-import type { Upload } from '../../../resources/upload/upload';
+import type { FileUpload } from '../../../resources/file-upload/file-upload.entity';
 
 export type ActorImageUploadOptions = {
-  avatar?: Upload;
-  avatarDark?: Upload;
-  banner?: Upload;
+  avatar?: FileUpload;
+  avatarDark?: FileUpload;
+  banner?: FileUpload;
 };

@@ -1,26 +1,26 @@
 import type { ValueTypes } from '@okampus/shared/graphql';
 
-export type InsertArgsType = {
+export type Insert<%= className %>ArgsType = {
   objects: Array<ValueTypes['<%= className %>InsertInput']>;
   onConflict?: ValueTypes['<%= className %>OnConflict'];
 };
 
-export type InsertOneArgsType = {
+export type InsertOne<%= className %>ArgsType = {
   object: ValueTypes['<%= className %>InsertInput'];
   onConflict?: ValueTypes['<%= className %>OnConflict'];
 };
 
-export type UpdateArgsType = {
+export type Update<%= className %>ArgsType = {
   where: ValueTypes['<%= className %>BoolExp'];
   _set: ValueTypes['<%= className %>SetInput'];
 };
 
-export type UpdateByPkArgsType = {
+export type UpdateByPk<%= className %>ArgsType = {
   pkColumns: ValueTypes['<%= className %>PkColumnsInput'];
   _set: ValueTypes['<%= className %>SetInput'];
 };
 
-export type FindArgsType = {
+export type Find<%= className %>ArgsType = {
   where: ValueTypes['<%= className %>BoolExp'];
   orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
   distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;
@@ -28,11 +28,11 @@ export type FindArgsType = {
   offset?: number;
 };
 
-export type FindByPkArgsType = {
+export type FindByPk<%= className %>ArgsType = {
   <% for(const pk of pkColumns) { %> <%= pk %>: string; <% } %>
 };
 
-export type AggregateArgsType = {
+export type Aggregate<%= className %>ArgsType = {
   where: ValueTypes['<%= className %>BoolExp'];
   orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
   distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;

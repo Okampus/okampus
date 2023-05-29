@@ -5,5 +5,5 @@ import type { TenantScopedOptions } from '../../tenant-scoped.options';
 export type SubjectOptions = SubjectProps &
   TenantScopedOptions & {
     lastActiveDate?: Date | null;
-    classes?: ClassGroup[];
+    classGroups?: ClassGroup[];
   };

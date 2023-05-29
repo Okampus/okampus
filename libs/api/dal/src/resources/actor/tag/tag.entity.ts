@@ -4,7 +4,7 @@ import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } fro
 import { Colors, TagType } from '@okampus/shared/enums';
 import { getColorFromData, toSlug } from '@okampus/shared/utils';
 
-import type { Upload } from '../../upload/upload';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { TagOptions } from './tag.options';
 
 @Entity({ customRepository: () => TagRepository })
@@ -23,8 +23,8 @@ export class Tag extends TenantScopedEntity {
   @Property({ type: 'text', nullable: true, default: null })
   description: string | null = null; // TODO: switch to Content?
 
-  @ManyToOne({ type: 'Upload', nullable: true, default: null })
-  image: Upload | null = null;
+  @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
+  image: FileUpload | null = null;
 
   @Enum({ items: () => Colors, type: EnumType })
   color!: Colors;
@@ -34,6 +34,6 @@ export class Tag extends TenantScopedEntity {
     this.assign(options);
 
     this.slug = toSlug(options.slug ?? options.name);
-    this.color = getColorFromData(this.name);
+    if (!options.color) this.color = getColorFromData(this.name);
   }
 }

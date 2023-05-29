@@ -11,15 +11,15 @@ object_relationships:
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
+  - name: individualByValidatedById
+    using:
+      foreign_key_constraint_on: validated_by_id
   - name: project
     using:
       foreign_key_constraint_on: project_id
   - name: team
     using:
       foreign_key_constraint_on: team_id
-  - name: teamMember
-    using:
-      foreign_key_constraint_on: validated_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
@@ -34,3 +34,65 @@ array_relationships:
         table:
           name: event_join
           schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: false
+      set:
+        id: ""
+      columns:
+        - description
+        - hidden_at
+        - name
+        - score
+        - state
+      backend_only: true
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - created_by_id
+        - event_id
+        - event_join_id
+        - id
+        - project_id
+        - team_id
+        - tenant_id
+        - user_id
+        - validated_by_id
+        - score
+        - description
+        - name
+        - state
+        - created_at
+        - deleted_at
+        - hidden_at
+      filter:
+        _and:
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: false
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - description
+        - hidden_at
+        - name
+        - score
+        - state
+        - validated_by_id
+      filter:
+        _and:
+          - deleted_at:
+              _is_null: true
+          - hidden_at:
+              _is_null: false
+      check: null

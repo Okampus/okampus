@@ -1,21 +1,18 @@
-import { useLazyQuery } from '@apollo/client';
 import { TEAM_SLUG_PARAM } from '@okampus/shared/consts';
-import { getFragmentData, getTeamWithMembersBySlugQuery, teamMembersFragment } from '@okampus/shared/graphql';
-import { loadTeamMembersFragment } from '@okampus/ui/utils';
+import { teamWithMembersInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 export function useTeam() {
-  const [getTeam, { data, error }] = useLazyQuery(getTeamWithMembersBySlugQuery);
   const teamSlug = useParams()[TEAM_SLUG_PARAM];
+  const [getTeam, { data, error }] = useTypedLazyQuery({
+    team: [{ where: { actor: { slug: { _eq: teamSlug } } }, limit: 1 }, teamWithMembersInfo],
+  });
 
   useEffect(() => {
-    teamSlug && getTeam({ variables: { slug: teamSlug } });
+    teamSlug && getTeam();
   }, [teamSlug, useParams]);
 
-  if (!teamSlug) return { team: undefined, error: 404 }; // TODO: standardize error codes
-  if (!data?.teamBySlug) return { team: undefined, error: error?.message || 404 }; // TODO: standardize error codes
-
-  const teamData = getFragmentData(teamMembersFragment, data.teamBySlug);
-  return { team: loadTeamMembersFragment(teamData), error: undefined };
+  if (!teamSlug || error) return { team: undefined, error: 404 }; // TODO: standardize error codes
+  return { team: data?.team?.[0], error: undefined };
 }

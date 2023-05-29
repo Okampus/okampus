@@ -19,8 +19,8 @@ module.exports = {
         modest: '0.925rem',
       },
       fontFamily: {
-        sans: ['Metropolis', ...defaultTheme.fontFamily.sans],
-        mono: ['SpaceMono', ...defaultTheme.fontFamily.mono],
+        sans: ['ClarityCity', ...defaultTheme.fontFamily.sans],
+        mono: ['ChivoMono', ...defaultTheme.fontFamily.mono],
       },
       screens: {
         xxs: '361px',

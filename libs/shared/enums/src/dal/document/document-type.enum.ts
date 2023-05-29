@@ -6,8 +6,8 @@ export enum DocumentType {
   ClubHandover = 'ClubHandover', // "Courrier de passation"
   ClubCharter = 'ClubCharter', // "Réglement intérieur"
 
-  OrgMeetingTranscript = 'OrgMeetingTranscript',
-  OrgGraphicCharter = 'OrgGraphicCharter',
+  TeamMeetingTranscript = 'TeamMeetingTranscript',
+  TeamGraphicCharter = 'TeamGraphicCharter',
 
   Other = 'Other',
 }

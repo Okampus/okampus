@@ -10,14 +10,14 @@
   }
 }
 
-.card-sm {
-  @apply rounded p-1.5 shadow-md overflow-hidden;
-}
-
 .card-md {
-  @apply rounded-xl px-6 py-5 shadow-lg overflow-hidden;
+  @apply rounded-lg px-6 py-5 overflow-hidden;
 }
 
 .card-label {
   @apply rounded-lg bg-opacity-70 bg-[var(--bg-label)] w-fit px-4 py-2 font-bold uppercase;
+}
+
+.item-card {
+  @apply flex px-5 py-3 gap-6 text-[var(--text-0)] rounded-2xl cursor-pointer border border-[var(--border-2)] bg-[var(--bg-main)] hover:bg-[var(--bg-3)];
 }

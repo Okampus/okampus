@@ -1,7 +1,6 @@
 import { EventProps } from './event.props';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsString } from 'class-validator';
-import type { Snowflake } from '@okampus/shared/types';
 
 @InputType()
 export class CreateEventDto extends EventProps {
@@ -11,10 +10,10 @@ export class CreateEventDto extends EventProps {
 
   @Field(() => String)
   @IsString()
-  supervisorId!: Snowflake;
+  supervisorId!: string;
 
   @Field(() => [String])
   @IsArray()
   @IsString({ each: true })
-  orgIds!: Snowflake[];
+  orgIds!: string[];
 }

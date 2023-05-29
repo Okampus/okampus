@@ -2,6 +2,9 @@ table:
   name: event_approval_step
   schema: public
 object_relationships:
+  - name: eventApprovalStep
+    using:
+      foreign_key_constraint_on: previous_step_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -22,6 +25,13 @@ array_relationships:
         column: event_approval_step_id
         table:
           name: event_approval_step_validators
+          schema: public
+  - name: eventApprovalSteps
+    using:
+      foreign_key_constraint_on:
+        column: previous_step_id
+        table:
+          name: event_approval_step
           schema: public
   - name: eventApprovals
     using:

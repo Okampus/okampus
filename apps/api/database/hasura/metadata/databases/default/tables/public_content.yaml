@@ -36,12 +36,12 @@ array_relationships:
         table:
           name: content_edit
           schema: public
-  - name: contentRepresentingTeams
+  - name: contentTeams
     using:
       foreign_key_constraint_on:
         column: content_id
         table:
-          name: content_representing_teams
+          name: content_teams
           schema: public
   - name: contents
     using:

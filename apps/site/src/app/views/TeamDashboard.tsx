@@ -1,4 +1,7 @@
-import { FileTypeIcon, StatusLabel } from '@okampus/ui/atoms';
+import { Align, DocumentType, TeamRoleType, TeamType } from '@okampus/shared/enums';
+import { isNotNull } from '@okampus/shared/utils';
+
+import { FileIcon, Skeleton, TextBadge, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 import {
   AvatarGroupUser,
@@ -8,55 +11,40 @@ import {
   LabeledUserSkeleton,
 } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
-import { getAvatar, loadTeamMembersFragment } from '@okampus/ui/utils';
+import { getAvatar } from '@okampus/ui/utils';
 
-import { Align, OrgDocumentType } from '@okampus/shared/enums';
-import {
-  documentFragment,
-  documentUploadFragment,
-  getFragmentData,
-  getTeamsWithMembersQuery,
-  teamMembersFragment,
-  TeamRoleKey,
-} from '@okampus/shared/graphql';
-import { isNotNull } from '@okampus/shared/utils';
-
-import { useQuery } from '@apollo/client';
+import { teamDashboardInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { useContext } from 'react';
-import type { LoadedTeamMembersFragment } from '@okampus/ui/utils';
 
 import type { Column } from '@okampus/ui/organisms';
+import type { DocumentBaseInfo, TeamDashboardInfo } from '@okampus/shared/graphql';
 import type { FileLike } from '@okampus/shared/types';
-import type { DocumentUploadInfoFragment } from '@okampus/shared/graphql';
 
-function getUserLabel(team: LoadedTeamMembersFragment, teamRoleKey: TeamRoleKey, label = 'N/A') {
-  const user = team.members.find((member) => member.roles.some((role) => role.key === teamRoleKey))?.user;
-  if (!user || !user.actor) return <StatusLabel status="archived" label={label} />;
+function getUserLabel(team: TeamDashboardInfo, roleType: TeamRoleType, label = 'N/A') {
+  const user = team.teamMembersAggregate.nodes.find((member) =>
+    member.teamMemberRoles.some(({ role }) => role.type === roleType)
+  )?.userInfo;
 
-  return <LabeledUser avatar={{ src: getAvatar(user.actor.actorImages) }} name={user.actor.name} id={user.id} />;
+  const actor = user?.individualById?.actor;
+  if (!user || !actor) return <TextBadge color="grey" label={label} />;
+
+  return <LabeledUser id={user.id as string} avatar={{ src: getAvatar(actor.actorImages) }} name={actor.name} />;
 }
 
-function findDocument(team: LoadedTeamMembersFragment, type: OrgDocumentType) {
-  const document = team.documents.find((document) => document.type === type)?.document;
-  const documentFile = document
-    ? getFragmentData(documentUploadFragment, getFragmentData(documentFragment, document).current)
-    : null;
-  return documentFile;
-}
-
-function renderDocument(file: DocumentUploadInfoFragment | null, showFile: (file: FileLike) => void) {
-  if (!file) return <StatusLabel status="archived" label="Manquant" />;
+function renderDocument(showFile: (file: FileLike) => void, document?: DocumentBaseInfo) {
+  if (!document) return <TextBadge color="grey" label="Manquant" />;
+  if (!document.name || !document.fileUpload) return <Skeleton height={32} width={32} />;
 
   const fileLike: FileLike = {
-    name: file.name,
-    src: file.url,
-    type: file.mime,
-    size: file.size,
+    name: document.name,
+    src: document.fileUpload.url,
+    type: document.fileUpload.mime,
+    size: document.fileUpload.size,
   };
 
   return (
     <div onClick={() => showFile(fileLike)} className="cursor-pointer">
-      <FileTypeIcon file={fileLike} />
+      <FileIcon className="h-12 aspect-square" file={fileLike} />
     </div>
   );
 }
@@ -64,98 +52,100 @@ function renderDocument(file: DocumentUploadInfoFragment | null, showFile: (file
 export const TeamDashboard = () => {
   const { previewFile } = useContext(NavigationContext);
 
-  const columns: Column<LoadedTeamMembersFragment>[] = [
+  const columns: Column<TeamDashboardInfo>[] = [
     {
       label: 'Association',
-      render: (value: LoadedTeamMembersFragment) =>
+      render: (value: TeamDashboardInfo) =>
         LabeledTeam({
-          id: value.id,
-          name: value.actor?.name ?? '?',
+          id: value.id as string,
+          name: value.actor?.name,
           avatar: getAvatar(value.actor?.actorImages),
-          teamType: value.type,
+          teamType: value.type ?? (TeamType.Association as string),
         }),
       skeleton: <LabeledTeamSkeleton />,
     },
     {
       align: Align.Left,
       label: 'Président',
-      render: (value: LoadedTeamMembersFragment) => getUserLabel(value, TeamRoleKey.Director),
+      render: (value: TeamDashboardInfo) => getUserLabel(value, TeamRoleType.Director),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       align: Align.Left,
       label: 'Trésorier',
-      render: (value: LoadedTeamMembersFragment) => getUserLabel(value, TeamRoleKey.Treasurer),
+      render: (value: TeamDashboardInfo) => getUserLabel(value, TeamRoleType.Treasurer),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       align: Align.Left,
       label: 'Secrétaire',
-      render: (value: LoadedTeamMembersFragment) => getUserLabel(value, TeamRoleKey.Secretary),
+      render: (value: TeamDashboardInfo) => getUserLabel(value, TeamRoleType.Secretary),
       skeleton: <LabeledUserSkeleton />,
     },
     {
       label: 'Membres',
-      render: (value: LoadedTeamMembersFragment) => {
-        const members = value.members
+      render: (value: TeamDashboardInfo) => {
+        const members = value.teamMembersAggregate.nodes
           .map((member) => {
-            if (!member.user || !member.user.actor) return null;
+            if (!member.userInfo || !member.userInfo.individualById?.actor) return null;
             return {
-              id: member.user.id,
-              name: member.user.actor.name,
-              avatar: getAvatar(member.user.actor.actorImages),
+              id: member.userInfo.id as string,
+              name: member.userInfo.individualById.actor.name,
+              avatar: getAvatar(member.userInfo.individualById.actor.actorImages),
             };
           })
           .filter(isNotNull);
 
-        return <AvatarGroupUser users={members} />;
+        return <AvatarGroupUser users={members} itemsCount={value.teamMembersAggregate.aggregate?.count} />;
       },
     },
     {
       label: 'Trésorerie',
-      render: (value: LoadedTeamMembersFragment) => {
-        return <div>{value.currentFinance}</div>;
+      render: (value: TeamDashboardInfo) => {
+        return <TextFinance amount={value.currentFinance} showRed={true} />;
       },
     },
     {
       label: 'Statuts',
-      render: (value: LoadedTeamMembersFragment) => {
-        const file = findDocument(value, OrgDocumentType.AssociationConstitution);
-        return renderDocument(file, previewFile);
+      render: (value: TeamDashboardInfo) => {
+        const file = value.documents.find((document) => document.type === DocumentType.AssociationConstitution);
+        return renderDocument(previewFile, file);
       },
     },
     {
       label: 'Récépissé de déclaration',
-      render: (value: LoadedTeamMembersFragment) => {
-        const file = findDocument(value, OrgDocumentType.AssociationDeclaration);
-        return renderDocument(file, previewFile);
+      render: (value: TeamDashboardInfo) => {
+        const file = value.documents.find((document) => document.type === DocumentType.AssociationDeclaration);
+        return renderDocument(previewFile, file);
       },
     },
     {
       label: 'Courrier de passation',
-      render: (value: LoadedTeamMembersFragment) => {
-        const file = findDocument(value, OrgDocumentType.ClubHandover);
-        return renderDocument(file, previewFile);
+      render: (value: TeamDashboardInfo) => {
+        const file = value.documents.find((document) => document.type === DocumentType.ClubHandover);
+        return renderDocument(previewFile, file);
       },
     },
     {
       align: Align.Center,
       label: 'Règlement intérieur',
-      render: (value: LoadedTeamMembersFragment) => {
-        const file = findDocument(value, OrgDocumentType.ClubCharter);
-        return renderDocument(file, previewFile);
+      render: (value: TeamDashboardInfo) => {
+        const file = value.documents.find((document) => document.type === DocumentType.ClubCharter);
+        return renderDocument(previewFile, file);
       },
     },
   ];
 
-  const { data } = useQuery(getTeamsWithMembersQuery);
-  const teams = data?.teams.edges
-    ?.map((edge) => loadTeamMembersFragment(getFragmentData(teamMembersFragment, edge.node)))
-    .filter(isNotNull);
+  const { data } = useTypedQuery({
+    team: [
+      { where: { _or: [{ type: { _eq: TeamType.Association } }, { type: { _eq: TeamType.Club } }] } },
+      teamDashboardInfo,
+    ],
+  });
 
   return (
-    <div className="p-view-topbar">
-      <Dashboard columns={columns} data={teams} />
+    <div className="h-full">
+      <Dashboard columns={columns} data={data?.team} />
     </div>
   );
 };

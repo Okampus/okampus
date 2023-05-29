@@ -18,6 +18,7 @@ import {
   FloatingFocusManager,
   arrow,
   safePolygon,
+  size,
 } from '@floating-ui/react';
 import type { MotionProps } from 'framer-motion';
 import type { Placement } from '@floating-ui/react';
@@ -31,6 +32,7 @@ interface PopoverOptions {
   onOpenChange?: (open: boolean) => void;
   arrowSize?: number;
   useArrow?: boolean;
+  sameWidthAsTarget?: boolean;
   crossAxis?: boolean;
   forcePlacement?: boolean;
   placementOffset?: number;
@@ -44,6 +46,7 @@ export function usePopover({
   triggerOn = 'click',
   arrowSize = 14,
   useArrow = false,
+  sameWidthAsTarget = false,
   crossAxis = true,
   forcePlacement = false,
   placementOffset = 0,
@@ -70,6 +73,15 @@ export function usePopover({
     middleware: [
       flip({ fallbackAxisSideDirection: forcePlacement ? 'none' : 'end', crossAxis }),
       shift({ padding: shiftOffset }),
+      ...(sameWidthAsTarget
+        ? [
+            size({
+              apply({ rects, elements }) {
+                elements.floating.style.minWidth = `${rects.reference.width}px`;
+              },
+            }),
+          ]
+        : []),
       ...(useArrow
         ? [offset(floatingOffset + placementOffset), arrow({ element: arrowRef })]
         : [offset(placementOffset)]),
@@ -187,11 +199,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<H
             <FloatingFocusManager context={floatingContext} modal={context.modal}>
               <motion.div
                 initial={{ opacity: 0.5, y: -50 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: 0,
-                }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, y: 50 }}
                 transition={{ type: 'spring', duration: 0.35 }}
                 ref={ref}

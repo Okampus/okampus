@@ -29,7 +29,7 @@ export class Subject extends TenantScopedEntity {
 
   @ManyToMany({ type: 'ClassGroup' })
   @TransformCollection()
-  classes = new Collection<ClassGroup>(this);
+  classGroups = new Collection<ClassGroup>(this);
 
   constructor(options: SubjectOptions) {
     super(options);

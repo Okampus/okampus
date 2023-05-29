@@ -4,50 +4,85 @@ import { config } from '../configs/config';
 import graphqlConfig from '../configs/graphql.config';
 import mikroOrmConfig from '../configs/mikro-orm.config';
 
-import { TeamJoinsModule } from '@okampus/api/bll';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
-  ActorsModule,
+  AuthGuard,
+  AuthModule,
+  DatabaseSeeder,
+  OIDCCacheModule,
+  UploadsModule,
   HealthModule,
   MeiliSearchModule,
   PubSubModule,
   RedisModule,
-  RestLoggerMiddleware,
   SentryInterceptor,
   SentryModule,
   TraceMiddleware,
-} from '@okampus/api/bll';
-import { ExceptionsFilter } from '@okampus/api/shards';
-import {
-  AuthGuard,
-  AuthModule,
-  ConfigModule,
-  EventApprovalsModule,
-  EventApprovalStepsModule,
-  EventsModule,
-  FactoryModule,
-  FinancesModule,
-  OIDCCacheModule,
-  OrgDocumentsModule,
-  PolicyGuard,
-  ProjectsModule,
-  TeamCategoriesModule,
+  RestLoggerMiddleware,
   TeamsModule,
+  UploadsService,
+  EventsModule,
+  loadConfig,
+  TagsModule,
+  TeamFinancesModule,
+  ProjectsModule,
+  IndividualsModule,
+  UserInfosModule,
+  EventJoinsModule,
+  EventAttendancesModule,
+  FormsModule,
+  ActionsModule,
+  TeamJoinsModule,
+  EventApprovalStepsModule,
   TenantsModule,
-  UploadModule,
-  UsersModule,
+  NotificationsModule,
+  NotificationsService,
+  FollowsModule,
+  GeocodeModule,
+  TextractModule,
+  NationalIdentificationModule,
+  // EventsModule,
 } from '@okampus/api/bll';
+import { Individual, Team, Tenant } from '@okampus/api/dal';
+import { ExceptionsFilter } from '@okampus/api/shards';
 
-import { ScheduleModule } from '@nestjs/schedule';
-import { GraphQLModule } from '@nestjs/graphql';
+import {
+  ADMIN_ACCOUNT_EMAIL,
+  ADMIN_ACCOUNT_FIRST_NAME,
+  ADMIN_ACCOUNT_LAST_NAME,
+  ADMIN_ACCOUNT_SLUG,
+  ADMIN_DEPARTMENT_SLUG,
+  ANON_ACCOUNT_EMAIL,
+  ANON_ACCOUNT_FIRST_NAME,
+  ANON_ACCOUNT_LAST_NAME,
+  ANON_ACCOUNT_SLUG,
+  BASE_TENANT,
+} from '@okampus/shared/consts';
+import { ScopeRole, TeamType } from '@okampus/shared/enums';
+import { capitalize } from '@okampus/shared/utils';
+
+import { CacheModule } from '@nestjs/cache-manager';
+import { Module } from '@nestjs/common';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheModule, Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ScheduleModule } from '@nestjs/schedule';
+
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import Sentry from '@sentry/node';
 import { redisStore } from 'cache-manager-redis-yet';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager, MikroORM } from '@mikro-orm/core';
+import { hash } from 'argon2';
+
+import type { ISubscribersDefine } from '@novu/node';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
-import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
 // import { CafeteriaModule } from '@api/canteens/canteens.module';
 // import { SubjectsModule } from '@api/modules/label/subjects/subjects.module';
@@ -101,9 +136,12 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 @Module({
   imports: [
     // Configs
-    // CaslModule,
-    ConfigModule.forRoot(config),
+    ConfigModule.forRoot({ ignoreEnvFile: true, load: [() => config] }),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
+    // GraphQLModule.forRoot({
+    //   typePaths: ["./schema.graphql","./schema2.graphql"],
+    //   include: [OtherModule,HelloModule],
+    // }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     ScheduleModule.forRoot(),
 
@@ -112,7 +150,7 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     MeiliSearchModule,
 
     // Cache
-    ...(config.redis.enabled
+    ...(config.redis.isEnabled
       ? [
           PubSubModule.forRoot({
             host: config.redis.host,
@@ -145,15 +183,20 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
         ]),
 
     OIDCCacheModule,
-    UploadModule,
+    NotificationsModule,
+    GeocodeModule,
+    NationalIdentificationModule,
+    TextractModule,
+    AuthModule,
+    UploadsModule,
 
     // // Subscribers module
     // SubscribersModule,
 
     // // Custom modules
     // AnnouncementsModule,
-    AuthModule,
-    FactoryModule,
+    IndividualsModule,
+    UserInfosModule,
     // BadgesModule,
     // BlogsModule,
     // CafeteriaModule,
@@ -163,6 +206,19 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     // FavoritesModule,
     // FilesModule,
     HealthModule,
+    EventAttendancesModule,
+    EventApprovalStepsModule,
+    TenantsModule,
+    EventJoinsModule,
+    EventsModule,
+    FormsModule,
+    ProjectsModule,
+    TagsModule,
+    TeamFinancesModule,
+    TeamJoinsModule,
+    TeamsModule,
+    ActionsModule,
+    FollowsModule,
     // InterestsModule,
     // MetricsModule,
     // ReactionsModule,
@@ -175,38 +231,128 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
     // TagsModule,
     // TeamsModule,
     // TenantsCoreModule,
-    ActorsModule,
-    TenantsModule,
-    // ThreadsModule,
-    UsersModule,
-    EventsModule,
-    TeamJoinsModule,
-    TeamsModule,
-    EventApprovalsModule,
-    EventApprovalStepsModule,
-    FinancesModule,
-    ProjectsModule,
-    TeamCategoriesModule,
-    OrgDocumentsModule,
     // ValidationsModule,
     // VotesModule,
     // WikisModule,
   ],
   providers: [
-    // { provide: APP_OIDC_CACHE, useValue: new OIDCStrategyCache() },
     { provide: APP_GUARD, useClass: AuthGuard },
-    { provide: APP_GUARD, useClass: PolicyGuard },
+    // { provide: APP_GUARD, useClass: PolicyGuard },
     { provide: APP_FILTER, useClass: ExceptionsFilter },
     { provide: APP_INTERCEPTOR, useClass: SentryInterceptor },
   ],
   controllers: [AppController],
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule, OnModuleInit {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly uploadsService: UploadsService,
+    private readonly notificationsService: NotificationsService,
+    private readonly orm: MikroORM,
+    private readonly em: EntityManager
+  ) {}
+
   public configure(consumer: MiddlewareConsumer): void {
     // Setup sentry
-    if (config.sentry.enabled) consumer.apply(Sentry.Handlers.requestHandler(), TraceMiddleware).forRoutes('*');
+    if (config.sentry.isEnabled) consumer.apply(Sentry.Handlers.requestHandler(), TraceMiddleware).forRoutes('*');
 
     // Setup loggers
     consumer.apply(RestLoggerMiddleware).exclude('/graphql').forRoutes('*');
+  }
+
+  public async onModuleInit() {
+    const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
+    const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
+
+    const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
+
+    let admin: Individual;
+    const tenant = await this.em.findOne(Tenant, { domain: BASE_TENANT });
+    if (tenant) {
+      admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+    } else {
+      // Init base tenant
+      const tenant = new Tenant({ name: capitalize(BASE_TENANT), domain: BASE_TENANT, pointName: 'LXP' });
+
+      const administrationTeam = new Team({
+        name: "Équipe d'administration",
+        slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
+        type: TeamType.Tenant,
+        createdBy: null,
+        tenant,
+      });
+
+      tenant.team = administrationTeam;
+
+      const anon = new Individual({
+        slug: ANON_ACCOUNT_SLUG,
+        name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
+        userInfo: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
+        primaryEmail: ANON_ACCOUNT_EMAIL,
+        scopeRole: ScopeRole.Admin,
+        createdBy: null,
+        tenant,
+      });
+
+      admin = new Individual({
+        slug: ADMIN_ACCOUNT_SLUG,
+        name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
+        userInfo: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
+        scopeRole: ScopeRole.Admin,
+        primaryEmail: ADMIN_ACCOUNT_EMAIL,
+        createdBy: null,
+        tenant,
+      });
+      admin.passwordHash = await hash(adminAccountPassword, { secret: secret });
+      await this.em.persistAndFlush([tenant, admin, anon]); // Tenant cascade persisted
+
+      const novu = this.notificationsService.novu;
+      if (novu) {
+        let subscribers;
+        do {
+          console.log('Deleting previous seeded subscribers...');
+          try {
+            subscribers = await novu.subscribers.list(0);
+          } catch {
+            throw new Error('Novu request failed! Be sure to have a valid API key and to have Internet access.');
+          }
+
+          const subscribersResult = subscribers.data;
+          if (!('data' in subscribersResult))
+            throw new Error('Novu request failed! Be sure to have a valid API key and to have Internet access.');
+
+          // Delete all subscribers
+          if (subscribersResult.data.length === 0) break;
+
+          const deletePromise = async ({ subscriberId: id }: ISubscribersDefine) => await novu.subscribers.delete(id);
+          await Promise.all(subscribersResult.data.map(deletePromise));
+        } while (subscribers.data.length > 0);
+
+        const admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+        console.log(`Adding admin (${admin.id}) subscriber to Novu...)`);
+        await novu.subscribers.identify(admin.id, {
+          email: ADMIN_ACCOUNT_EMAIL,
+          firstName: ADMIN_ACCOUNT_FIRST_NAME,
+          lastName: ADMIN_ACCOUNT_LAST_NAME,
+          locale: 'fr',
+        });
+      } else {
+        console.log('Novu is not configured, skipping subscribers seeding...');
+      }
+    }
+
+    // Seed base tenant
+
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const anyTeam = await this.em.find(Team, { tenant: { domain: BASE_TENANT } });
+    if (anyTeam.length === 1 && isSeeding) {
+      DatabaseSeeder.pepper = secret;
+      DatabaseSeeder.targetTenant = BASE_TENANT;
+      DatabaseSeeder.upload = this.uploadsService;
+      DatabaseSeeder.admin = admin;
+
+      const seeder = this.orm.getSeeder();
+      await seeder.seed(DatabaseSeeder);
+    }
   }
 }

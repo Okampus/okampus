@@ -19,6 +19,7 @@ const defaultRenderMore = (extra: number, size: number, rounded: number) => (
 
 export type ItemGroupProps<T> = {
   items: T[];
+  itemsCount?: number;
   limit: number;
   title?: string;
   size?: number;
@@ -33,6 +34,7 @@ export type ItemGroupProps<T> = {
 
 export function ItemGroup<T>({
   items,
+  itemsCount,
   limit,
   size = 14,
   rounded,
@@ -51,14 +53,15 @@ export function ItemGroup<T>({
           {render(item)}
         </div>
       ))}
-      {items.length > limit && (
+      {(itemsCount ?? items.length) > limit && (
         <Popover placementOffset={10}>
-          <PopoverTrigger>{renderMore(items.length - limit, size, rounded)}</PopoverTrigger>
-          <PopoverContent popoverClassName="card-sm">
+          <PopoverTrigger>{renderMore((itemsCount ?? items.length) - limit, size, rounded)}</PopoverTrigger>
+          <PopoverContent popoverClassName="card-md p-3 bg-2 rounded-2xl">
             {VerticalList({
               title: showNumberInTitle ? (
                 <div className="flex gap-2 items-center">
-                  {`${title ?? 'Tous les éléments'}`} <div className="text-sm text-3 pt-px">({items.length})</div>
+                  {`${title ?? 'Tous les éléments'}`}{' '}
+                  <div className="text-sm text-3 pt-px">({itemsCount ?? items.length})</div>
                 </div>
               ) : (
                 title

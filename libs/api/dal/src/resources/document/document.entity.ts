@@ -4,7 +4,7 @@ import { DocumentType } from '@okampus/shared/enums';
 
 import type { Team } from '../team/team.entity';
 import type { Subject } from '../class-group/subject/subject.entity';
-import type { Upload } from '../upload/upload';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { DocumentOptions } from './document.options';
 
 @Entity()
@@ -23,8 +23,8 @@ export class Document extends TenantScopedEntity {
   @Enum({ items: () => DocumentType, type: EnumType })
   type: DocumentType = DocumentType.Other;
 
-  @OneToOne({ type: 'Upload', cascade: [Cascade.ALL] })
-  file!: Upload;
+  @OneToOne({ type: 'FileUpload', cascade: [Cascade.ALL] })
+  file!: FileUpload;
 
   @ManyToOne({ type: 'Subject', nullable: true, default: null })
   subject: Subject | null = null;

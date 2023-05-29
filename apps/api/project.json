@@ -62,10 +62,11 @@
       "command": "bash apps/api/database/hasura/run.sh"
     },
     "graphql:codegen": {
-      "dependsOn": ["hasura:schema", "graphql:merge"],
-      "command": "zeus libs/shared/graphql/src/merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts"
+      "dependsOn": ["graphql:merge"],
+      "command": "zeus libs/shared/graphql/src/schema.merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts && sed -i 's_ | Variable<any, string>__g' libs/shared/graphql/src/zeus/index.ts"
     },
     "graphql:merge": {
+      "dependsOn": ["hasura:schema"],
       "command": "node tools/scripts/graphql-merge.mjs"
     },
     "test": {

@@ -5,6 +5,10 @@ import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import path from 'node:path';
 
+import dns from 'node:dns';
+
+dns.setDefaultResultOrder('verbatim');
+
 const _ = (dir: string) => path.resolve(path.resolve(__dirname, '../../'), dir);
 
 const allow = [_('libs/assets/src'), _('apps/site/src')];

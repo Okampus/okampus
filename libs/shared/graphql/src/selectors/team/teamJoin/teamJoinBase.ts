@@ -10,11 +10,11 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 export const teamJoinBaseInfo = Selector('TeamJoin')({
   ...entityBase,
   state: true,
+  team: entityBase,
   role: roleBaseInfo,
   changeRole: changeRoleBaseInfo,
   formSubmission: formSubmissionBaseInfo,
-  userInfo: userBaseInfo,
-  team: entityBase,
   individual: individualBaseInfo,
+  userInfo: userBaseInfo,
 });
 export type TeamJoinBaseInfo = InputType<GraphQLTypes['TeamJoin'], typeof teamJoinBaseInfo>;

@@ -4,12 +4,12 @@ import { DocumentType } from '@okampus/shared/enums';
 
 import type { DocumentEditOptions } from './document-edit.options';
 import type { Document } from '../document.entity';
-import type { Upload } from '../../upload/upload';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity()
 export class DocumentEdit extends TenantScopedEntity {
-  @ManyToOne({ type: 'Upload' })
-  newVersion!: Upload;
+  @ManyToOne({ type: 'FileUpload' })
+  newVersion!: FileUpload;
 
   @ManyToOne({ type: 'Document', onDelete: 'CASCADE' })
   document!: Document;

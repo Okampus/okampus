@@ -23,10 +23,10 @@ array_relationships:
         table:
           name: class_group_teacher
           schema: public
-  - name: subjectClasses
+  - name: subjectClassGroups
     using:
       foreign_key_constraint_on:
         column: class_group_id
         table:
-          name: subject_classes
+          name: subject_class_groups
           schema: public

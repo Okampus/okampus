@@ -2,6 +2,9 @@ table:
   name: document
   schema: public
 object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: file_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -14,9 +17,6 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: file_id
 array_relationships:
   - name: documentEdits
     using:

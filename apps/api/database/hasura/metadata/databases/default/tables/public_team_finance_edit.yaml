@@ -1,0 +1,25 @@
+table:
+  name: team_finance_edit
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: added_payed_by_id
+  - name: actorAddress
+    using:
+      foreign_key_constraint_on: added_address_id
+  - name: event
+    using:
+      foreign_key_constraint_on: added_event_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: added_receipt_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: project
+    using:
+      foreign_key_constraint_on: added_project_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

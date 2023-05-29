@@ -5,34 +5,51 @@ object_relationships:
   - name: actor
     using:
       foreign_key_constraint_on: actor_id
+  - name: campus
+    using:
+      foreign_key_constraint_on: campus_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: image_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: image_id
 array_relationships:
   - name: actorBankInfos
     using:
       foreign_key_constraint_on:
-        column: bank_location_id
+        column: address_id
         table:
           name: actor_bank_info
           schema: public
   - name: actorFinances
     using:
       foreign_key_constraint_on:
-        column: location_id
+        column: address_id
         table:
           name: actor_finance
           schema: public
   - name: events
     using:
       foreign_key_constraint_on:
-        column: location_id
+        column: address_id
         table:
           name: event
+          schema: public
+  - name: teamFinanceEdits
+    using:
+      foreign_key_constraint_on:
+        column: added_address_id
+        table:
+          name: team_finance_edit
+          schema: public
+  - name: teamFinances
+    using:
+      foreign_key_constraint_on:
+        column: address_id
+        table:
+          name: team_finance
           schema: public

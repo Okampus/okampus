@@ -1,6 +1,6 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
-import type { FilterQuery, FindOneOptions, FindOneOrFailOptions } from '@mikro-orm/core';
-import type { Snowflake } from '@okampus/shared/types';
+import type { FilterQuery, FindOneOptions, FindOneOrFailOptions, FindOptions } from '@mikro-orm/core';
+
 import type { BaseEntity } from '../../../resources/base.entity';
 
 // TODO: fix types
@@ -10,16 +10,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     return !!(await this.count(where));
   }
 
-  public async findById(id: Snowflake, findOptions?: FindOneOptions<T>): Promise<T | null> {
+  public async findById<P extends string>(id: string, findOptions?: FindOneOptions<T, P>): Promise<T | null> {
     return this.findOne({ id } as FilterQuery<T>, findOptions);
   }
 
-  public async findByIdOrFail(id: Snowflake, findOptions?: FindOneOrFailOptions<T>): Promise<T> {
+  public async findByIdOrFail<P extends string>(id: string, findOptions?: FindOneOrFailOptions<T, P>): Promise<T> {
     return this.findOneOrFail({ id } as FilterQuery<T>, findOptions);
   }
 
-  public async findByIds(ids: Snowflake[]): Promise<T[]> {
-    return this.find({ id: { $in: ids } } as FilterQuery<T>);
+  public async findByIds<P extends string>(ids: string[], findOptions?: FindOptions<T, P>): Promise<T[]> {
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    return this.find({ id: { $in: ids } } as FilterQuery<T>, findOptions);
   }
 
   // TODO: findOneOrCreate — find the document, or create it

@@ -5,12 +5,12 @@ object_relationships:
   - name: document
     using:
       foreign_key_constraint_on: document_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: new_version_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: new_version_id

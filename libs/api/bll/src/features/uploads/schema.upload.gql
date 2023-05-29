@@ -1,0 +1,5 @@
+scalar Upload
+
+type Mutation {
+  singleUpload(file: Upload!, bucket: String): FileUpload
+}

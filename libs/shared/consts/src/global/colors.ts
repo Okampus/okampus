@@ -20,9 +20,9 @@ export const DARK_RED = '#992020';
 export const RED = '#ff0000';
 export const LIGHT_RED = '#a04040';
 
-export const DEEP_PURPLE = '#201070';
-export const DARK_PURPLE = '#500080';
-export const PURPLE = '#8800ff';
+export const DEEP_PURPLE = '#412ea0';
+export const DARK_PURPLE = '#7814b3';
+export const PURPLE = '#9a36f1';
 export const LIGHT_PURPLE = '#aa33bb';
 
 export const DEEP_GRAY = '#302c2c';

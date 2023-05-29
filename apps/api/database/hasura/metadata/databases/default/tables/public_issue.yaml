@@ -4,7 +4,7 @@ table:
 object_relationships:
   - name: contentMaster
     using:
-      foreign_key_constraint_on: content_id
+      foreign_key_constraint_on: content_master_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id

@@ -22,7 +22,6 @@ import type { ClassGroup } from '../class-group/class-group.entity';
 import type { Cohort } from '../cohort/cohort.entity';
 import type { Canteen } from '../canteen/canteen.entity';
 import type { Pole } from './pole/pole.entity';
-import type { Tag } from '../actor/tag/tag.entity';
 import type { Document } from '../document/document.entity';
 import type { Event } from '../event/event.entity';
 import type { Searchable } from '../../types/search-entity.type';
@@ -32,7 +31,7 @@ import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { TeamOptions } from './team.options';
-import type { Upload } from '../upload/upload';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -50,15 +49,18 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'ClassGroup', inversedBy: 'team', nullable: true, default: null })
   classGroup: ClassGroup | null = null;
 
-  @OneToOne({ type: 'Form', inversedBy: 'team', nullable: true, default: null })
-  joinForm: Form | null = null;
+  @OneToOne({ type: 'Form', mappedBy: 'team' })
+  joinForm: Form;
 
-  @ManyToMany({ type: 'Event', inversedBy: 'teams' })
+  @ManyToMany({ type: 'Event', inversedBy: 'teams', owner: true })
   @TransformCollection()
   events = new Collection<Event>(this);
 
   @ManyToOne({ type: 'Team', nullable: true, default: null, cascade: [Cascade.ALL] })
   parent: Team | null = null;
+
+  @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
+  video: FileUpload | null = null;
 
   @OneToMany({ type: 'Team', mappedBy: 'parent' })
   @TransformCollection()
@@ -67,29 +69,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Document', mappedBy: 'team', cascade: [Cascade.ALL] })
   @TransformCollection()
   documents = new Collection<Document>(this);
-
-  @Property({ type: 'text', nullable: true, default: null })
-  tagline: string | null = null;
-
-  @ManyToMany({ type: 'Tag' })
-  @TransformCollection()
-  categories = new Collection<Tag>(this);
-
-  @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
-  type = TeamType.Club;
-
-  // @OneToMany('TeamHistory', 'team')
-  // histories = new Collection<TeamHistory>(this);
-
-  @ManyToOne({ type: 'Upload', nullable: true, default: null })
-  video: Upload | null = null;
-
-  // TODO: long-term, convert to currency + amount + manage payments
-  @Property({ type: 'int' })
-  membershipFees = 0;
-
-  @Property({ type: 'int' })
-  currentFinance = 0;
 
   @OneToMany({ type: 'Action', mappedBy: 'team' })
   @TransformCollection()
@@ -114,6 +93,31 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Pole', mappedBy: 'team' })
   @TransformCollection()
   poles = new Collection<Pole>(this);
+
+  @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
+  type = TeamType.Club;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  tagline: string | null = null;
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationDay: number | null = null;
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationMonth: number | null = null;
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationYear: number | null = null;
+
+  // @OneToMany('TeamHistory', 'team')
+  // histories = new Collection<TeamHistory>(this);
+
+  // TODO: long-term, convert to currency + amount + manage payments
+  @Property({ type: 'int' })
+  membershipFees = 0;
+
+  @Property({ type: 'float' })
+  currentFinance = 0;
 
   @Property({ type: 'text' })
   directorsCategoryName: string = RoleCategory.Directors;
@@ -143,14 +147,14 @@ export class Team extends TenantScopedEntity implements Searchable {
       name: `Formulaire d'adhésion de ${options.name}`,
       schema: [
         {
-          slug: 'motivation',
+          name: 'motivation',
           type: ControlType.Text,
-          label: "Quelle est ta motivation pour rejoindre l'équipe ?",
+          label: "Quelle est votre motivation pour rejoindre l'équipe ?",
           isRequired: true,
         },
       ],
       team: this,
-      type: FormType.TeamJoin,
+      type: FormType.Team,
       allowEditingAnswers: true,
       allowMultipleAnswers: false,
       undeletable: true,

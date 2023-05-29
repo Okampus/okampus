@@ -4,13 +4,13 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertArgsType,
-  InsertOneArgsType,
-  UpdateArgsType,
-  UpdateByPkArgsType,
-  FindArgsType,
-  FindByPkArgsType,
-  AggregateArgsType
+  Insert<%= className %>ArgsType,
+  InsertOne<%= className %>ArgsType,
+  Update<%= className %>ArgsType,
+  UpdateByPk<%= className %>ArgsType,
+  Find<%= className %>ArgsType,
+  FindByPk<%= className %>ArgsType,
+  Aggregate<%= className %>ArgsType
 } from './<%= fileName %>.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
@@ -21,7 +21,7 @@ export class <%= pluralClassName %>MutationResolver {
 
   @Mutation()
   async insert<%= className %>(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertArgsType>(
+    const { objects, onConflict } = getGraphQLArgs<Insert<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
@@ -31,7 +31,7 @@ export class <%= pluralClassName %>MutationResolver {
 
   @Mutation()
   async update<%= className %>(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateArgsType>(
+    const { where, _set } = getGraphQLArgs<Update<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
@@ -46,7 +46,7 @@ export class <%= pluralClassName %>QueryResolver {
 
   @Query()
   async <%= propertyName %>(@Info() info: GraphQLResolveInfo) {
-    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindArgsType>(
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<Find<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
@@ -56,17 +56,18 @@ export class <%= pluralClassName %>QueryResolver {
 
   @Mutation()
   async insert<%= className %>One(@Info() info: GraphQLResolveInfo) {
-    const { object, onConflict } = getGraphQLArgs<InsertOneArgsType>(
+    const { object, onConflict } = getGraphQLArgs<InsertOne<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), [object], onConflict);
+    const data = await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), [object], onConflict, true);
+    return data.returning[0];
   }
 
   @Query()
   async <%= propertyName %>ByPk(@Info() info: GraphQLResolveInfo) {
-    const { <% for(const pk of pkColumns) { %> <%= pk %>, <% } %> } = getGraphQLArgs<FindByPkArgsType>(
+    const { <% for(const pk of pkColumns) { %> <%= pk %>, <% } %> } = getGraphQLArgs<FindByPk<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
@@ -76,7 +77,7 @@ export class <%= pluralClassName %>QueryResolver {
 
   @Mutation()
   async update<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns, _set } = getGraphQLArgs<UpdateByPkArgsType>(
+    const { pkColumns, _set } = getGraphQLArgs<UpdateByPk<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
@@ -91,7 +92,7 @@ export class <%= pluralClassName %>QueryAggregateResolver {
 
   @Query()
   async <%= propertyName %>Aggregate(@Info() info: GraphQLResolveInfo) {
-    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateArgsType>(
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<Aggregate<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues

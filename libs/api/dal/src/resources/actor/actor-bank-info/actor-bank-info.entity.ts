@@ -11,11 +11,11 @@ export class ActorBankInfo extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
 
+  @ManyToOne({ type: 'ActorAddress' })
+  address!: ActorAddress;
+
   @Property({ type: 'text' })
   holderName!: string;
-
-  @ManyToOne({ type: 'ActorAddress' })
-  bankLocation!: ActorAddress;
 
   @Property({ type: 'text' })
   bankCodeBic!: string;

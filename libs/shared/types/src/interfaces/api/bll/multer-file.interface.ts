@@ -1,15 +1,15 @@
 import type { Readable } from 'node:stream';
 
-export interface MulterFileType {
+export interface MulterFile {
   fieldname: string;
-  originalname: string;
-  encoding: string;
+  originalname?: string;
+  encoding?: string;
   mimetype: string;
   size: number;
-  destination: string;
-  filename: string;
-  path: string;
+  filename?: string;
   buffer: Buffer;
-  createReadStream: () => Readable;
-  fileLastModifiedAt: Date;
+  fileLastModifiedAt?: Date;
+  createReadStream?: () => Readable;
+  path?: string;
+  destination?: string;
 }

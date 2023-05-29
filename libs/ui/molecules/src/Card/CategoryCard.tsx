@@ -16,22 +16,22 @@ export function CategoryCard({ link, name, color, image, className }: CategoryCa
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className={clsx(
-        'card-sm min-w-[12rem] aspect-square p-3 relative overflow-hidden cursor-pointer contrast-125',
-        className
-      )}
+      className={clsx('rounded-xl p-5 aspect-square relative cursor-pointer hover:contrast-150', className)}
+      variants={{
+        rest: { scale: 0.97 },
+        hover: { scale: 1 },
+      }}
       style={{ backgroundColor: color }}
     >
-      <div className="font-semibold text-white text-2xl">{name}</div>
+      <div className="absolute bottom-[0.75rem] subtitle text-white pr-2">{name}</div>
       {image && (
         <motion.img
           src={image}
           alt=""
-          className="rounded-lg absolute right-0 bottom-0 shadow w-24 h-24"
-          initial={{ translateX: '18%', translateY: '20%', rotate: 25, scale: 0.7 }}
+          className="rounded-full absolute top-[-1rem] right-[-1rem] w-20 h-20 shadow-lg"
           variants={{
-            rest: { translateX: '18%', right: 0, translateY: '20%', rotate: 25, scale: 0.7 },
-            hover: { translateX: '50%', right: '50%', translateY: '-20%', rotate: 0, scale: 1 },
+            rest: { rotate: 10, scale: 0.8 },
+            hover: { rotate: 0, scale: 1 },
           }}
         />
       )}

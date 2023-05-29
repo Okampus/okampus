@@ -5,6 +5,9 @@ object_relationships:
   - name: actorBankInfo
     using:
       foreign_key_constraint_on: bank_info_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: expense_report_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -21,9 +24,6 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: expense_report_id
 array_relationships:
   - name: actorFinances
     using:

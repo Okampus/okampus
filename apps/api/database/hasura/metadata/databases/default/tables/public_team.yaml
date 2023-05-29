@@ -18,9 +18,16 @@ object_relationships:
   - name: cohort
     using:
       foreign_key_constraint_on: cohort_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: video_id
   - name: form
     using:
-      foreign_key_constraint_on: join_form_id
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: form
+          schema: public
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -37,9 +44,6 @@ object_relationships:
         table:
           name: tenant
           schema: public
-  - name: upload
-    using:
-      foreign_key_constraint_on: video_id
 array_relationships:
   - name: actions
     using:
@@ -55,12 +59,12 @@ array_relationships:
         table:
           name: change_role
           schema: public
-  - name: contentRepresentingTeams
+  - name: contentTeams
     using:
       foreign_key_constraint_on:
         column: team_id
         table:
-          name: content_representing_teams
+          name: content_teams
           schema: public
   - name: documents
     using:
@@ -68,20 +72,6 @@ array_relationships:
         column: team_id
         table:
           name: document
-          schema: public
-  - name: eventOrganisingTeams
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: event_organising_teams
-          schema: public
-  - name: eventTeams
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: event_teams
           schema: public
   - name: poles
     using:
@@ -103,13 +93,6 @@ array_relationships:
         column: team_id
         table:
           name: role
-          schema: public
-  - name: teamCategories
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: team_categories
           schema: public
   - name: teamEvents
     using:

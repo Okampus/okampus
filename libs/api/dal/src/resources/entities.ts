@@ -42,7 +42,7 @@ import { Team } from './team/team.entity';
 import { EventApprovalStep } from './tenant/event-approval-step/event-approval-step.entity';
 import { EventApproval } from './tenant/event-approval/event-approval.entity';
 import { Tenant } from './tenant/tenant.entity';
-import { Upload } from './upload/upload';
+import { FileUpload } from './file-upload/file-upload.entity';
 import { BotInfo } from './individual/bot-info/bot-info.entity';
 import { ChangeRole } from './team/change-role/change-role.entity';
 import { EventChangeRole } from './event/event-change-role/event-change-role.entity';
@@ -52,6 +52,10 @@ import { ActorBankInfo } from './actor/actor-bank-info/actor-bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
 import { ActorFinance } from './actor/actor-finance/actor-finance.entity';
 import { Issue } from './content-master/issue/issue.entity';
+import { Campus } from './tenant/campus/campus.entity';
+import { EventAttendance } from './event/event-attendance/event-attendance.entity';
+import { Follow } from './actor/follow/follow.entity';
+import { TeamFinanceEdit } from './team/team-finance-edit/team-finance-edit.entity';
 
 export const allEntities = [
   Individual,
@@ -59,6 +63,7 @@ export const allEntities = [
   UserInfo,
 
   Tenant,
+  Campus,
 
   Actor,
   ActorBankInfo,
@@ -67,6 +72,7 @@ export const allEntities = [
   ActorImage,
   Social,
   Tag,
+  Follow,
 
   Session,
   Shortcut,
@@ -78,6 +84,7 @@ export const allEntities = [
   ChangeRole,
   Expense,
   TeamFinance,
+  TeamFinanceEdit,
   TeamJoin,
   TeamMember,
   TeamMetric,
@@ -95,11 +102,12 @@ export const allEntities = [
   ProjectRole,
 
   Event,
+  EventAttendance,
   EventJoin,
   EventRole,
   EventChangeRole,
 
-  Upload,
+  FileUpload,
 
   Favorite,
   Reaction,

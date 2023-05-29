@@ -5,6 +5,6 @@ object_relationships:
   - name: actorFinance
     using:
       foreign_key_constraint_on: actor_finance_id
-  - name: upload
+  - name: fileUpload
     using:
-      foreign_key_constraint_on: upload_id
+      foreign_key_constraint_on: file_upload_id

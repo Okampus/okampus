@@ -1,6 +1,7 @@
 import { eventBaseInfo } from './eventBase';
 import { eventRoleBaseInfo } from './eventRole/eventRoleBase';
 import { Selector } from '../../zeus';
+import { userBaseInfo } from '../individual/userBase';
 import { ApprovalState } from '@okampus/shared/enums';
 import type { GraphQLTypes, InputType } from '../../zeus';
 
@@ -10,9 +11,8 @@ export const eventDetailsInfo = Selector('Event')({
   eventJoinsAggregate: [
     { where: { state: { _eq: ApprovalState.Approved } } },
     {
-      aggregate: {
-        count: [{}, true],
-      },
+      aggregate: { count: [{}, true] },
+      nodes: { __typename: true, id: true, userInfo: userBaseInfo },
     },
   ],
 });

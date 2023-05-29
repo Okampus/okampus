@@ -1,11 +1,9 @@
-import type { Individual, TenantCore } from '@okampus/api/dal';
-import type { GraphQLResolveInfo } from 'graphql';
+import type { Individual, Tenant } from '@okampus/api/dal';
 
 declare module '@fastify/request-context' {
   interface RequestContextData {
-    alreadyPopulated?: boolean;
     requester?: Individual;
-    tenant?: TenantCore;
-    gqlInfo?: GraphQLResolveInfo;
+    tenant?: Tenant;
+    token?: string;
   }
 }

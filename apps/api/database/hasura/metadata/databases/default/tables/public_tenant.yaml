@@ -2,6 +2,9 @@ table:
   name: tenant
   schema: public
 object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: logo_id
   - name: form
     using:
       foreign_key_constraint_on: event_validation_form_id
@@ -11,9 +14,6 @@ object_relationships:
   - name: team
     using:
       foreign_key_constraint_on: team_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: logo_id
 array_relationships:
   - name: actions
     using:
@@ -63,6 +63,13 @@ array_relationships:
         column: tenant_id
         table:
           name: bot_info
+          schema: public
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: campus
           schema: public
   - name: canteenFoods
     using:
@@ -162,6 +169,13 @@ array_relationships:
         table:
           name: event_approval
           schema: public
+  - name: eventAttendances
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_attendance
+          schema: public
   - name: eventChangeRoles
     using:
       foreign_key_constraint_on:
@@ -203,6 +217,20 @@ array_relationships:
         column: tenant_id
         table:
           name: favorite
+          schema: public
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: file_upload
+          schema: public
+  - name: follows
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: follow
           schema: public
   - name: formEdits
     using:
@@ -323,6 +351,13 @@ array_relationships:
         table:
           name: tag
           schema: public
+  - name: teamFinanceEdits
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_finance_edit
+          schema: public
   - name: teamFinances
     using:
       foreign_key_constraint_on:
@@ -357,13 +392,6 @@ array_relationships:
         column: tenant_id
         table:
           name: team
-          schema: public
-  - name: uploads
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: upload
           schema: public
   - name: userInfos
     using:

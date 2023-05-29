@@ -36,6 +36,16 @@ export class EventProps {
   @IsNumber({ maxDecimalPlaces: 2 })
   price?: number;
 
+  @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  presenceReward?: number;
+
+  @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  budget: number | null = null;
+
   @Field(() => EventState)
   @IsEnum(EventState)
   state!: EventState;

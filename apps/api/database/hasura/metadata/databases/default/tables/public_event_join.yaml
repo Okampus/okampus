@@ -14,6 +14,9 @@ object_relationships:
   - name: eventRole
     using:
       foreign_key_constraint_on: event_role_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: qr_code_id
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id
@@ -33,4 +36,11 @@ array_relationships:
         column: event_join_id
         table:
           name: action
+          schema: public
+  - name: eventAttendances
+    using:
+      foreign_key_constraint_on:
+        column: event_join_id
+        table:
+          name: event_attendance
           schema: public

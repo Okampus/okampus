@@ -1,5 +1,5 @@
 import { Selector } from '../../zeus';
-import { uploadBaseInfo } from '../upload/uploadBase';
+import { fileUploadBaseInfo } from '../file-upload/fileUploadBase';
 
 import { teamMemberWithUserInfo } from '../team/teamMember/teamMemberWithUser';
 import { tagBaseInfo } from '../actor/tag/tagBase';
@@ -27,7 +27,7 @@ export const projectBaseInfo = Selector('Project')({
       },
     },
   ],
-  upload: uploadBaseInfo,
+  fileUpload: fileUploadBaseInfo,
   projectSupervisors: [{}, { teamMember: teamMemberWithUserInfo }],
   projectTags: [{}, { tag: tagBaseInfo }],
   isPrivate: true,

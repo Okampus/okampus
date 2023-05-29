@@ -15,7 +15,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     super(); 
   }
 
-  validateProps(props: ValueTypes['<%= className %>IncInput']) {
+  validateProps(props: ValueTypes['<%= className %>InsertInput']) {
     // Custom logic
     return true;
   }
@@ -23,12 +23,16 @@ export class <%= pluralClassName %>Service extends RequestContext {
   async insert<%= className %>(
     selectionSet: string[],
     objects: Array<ValueTypes['<%= className %>InsertInput']>,
-    onConflict?: ValueTypes['<%= className %>OnConflict']
+    onConflict?: ValueTypes['<%= className %>OnConflict'],
+    insertOne?: boolean,
   ) {
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
+    
     const arePropsValid = await objects.every((object) => this.validateProps(object));
     if (!arePropsValid) throw new BadRequestException('Cannot insert <%= className %> with invalid props.');
 
-    const data = await this.hasuraService.insert('insert<%= className %>', selectionSet, objects, onConflict);
+    const data = await this.hasuraService.insert('insert<%= className %>', selectionSet, objects, onConflict, insertOne);
     // Custom logic
     return data.insert<%= className %>;
   }

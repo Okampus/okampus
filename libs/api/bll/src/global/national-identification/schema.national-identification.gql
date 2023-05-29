@@ -1,0 +1,32 @@
+type AddressInfo {
+  streetNumber: Int
+  streetType: String!
+  streetName: String!
+  city: String!
+  cityCode: String!
+}
+
+type CompanyInfo {
+  nationalId: String!
+  type: String
+  activity: String
+  name: String!
+  address: AddressInfo!
+}
+
+input AddressInfoInput {
+  streetNumber: Int!
+  streetType: String!
+  streetName: String!
+  city: String!
+  cityCode: String!
+}
+
+input SearchCompanyQuery {
+  name: String!
+  address: AddressInfoInput
+}
+
+type Query {
+  searchFrenchCompany(query: SearchCompanyQuery): [CompanyInfo!]!
+}

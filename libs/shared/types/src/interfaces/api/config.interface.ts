@@ -1,4 +1,4 @@
-import type { TokenType } from '@okampus/shared/enums';
+import type { Buckets, TokenType } from '@okampus/shared/enums';
 
 export type ApiConfig = {
   readonly nodeEnv: string;
@@ -13,6 +13,7 @@ export type ApiConfig = {
     readonly frontendOriginUrl: string;
     readonly baseDomain: string;
     readonly apiUrl: string;
+    readonly hasuraUrl: string;
     readonly frontendUrl: string;
   };
   readonly upload: {
@@ -20,42 +21,48 @@ export type ApiConfig = {
     readonly localPrefix: string;
   };
   readonly meilisearch: {
-    readonly enabled: boolean;
+    readonly isEnabled: boolean;
     readonly host: string;
     readonly apiKey: string;
   };
+  readonly textract: {
+    readonly accessKey: string;
+    readonly secretKey: string;
+    readonly region: string;
+  };
+  readonly mapbox: {
+    readonly apiKey: string;
+  };
+  readonly insee: {
+    readonly apiToken: string;
+  };
   readonly database: {
-    readonly seed: boolean;
+    readonly isSeeding: boolean;
+    readonly host: string;
     readonly name: string;
     readonly user: string;
     readonly password: string;
   };
   readonly s3: {
-    readonly enabled: boolean;
-    readonly accessKeyId: string;
-    readonly secretAccessKey: string;
-    readonly endpoint: string;
+    readonly isEnabled: boolean;
+    readonly accessKey: string;
+    readonly secretKey: string;
+    readonly endPoint: string;
     readonly region: string;
-    readonly buckets: {
-      readonly Attachments: string;
-      readonly OrgDocuments: string;
-      readonly OrgImages: string;
-      readonly OrgVideos: string;
-      readonly UserImages: string;
-    };
+    readonly buckets: Record<Buckets, string>;
   };
   readonly redis: {
-    readonly enabled: boolean;
+    readonly isEnabled: boolean;
     readonly host: string;
     readonly port: number;
     readonly password: string;
   };
   readonly sentry: {
-    readonly enabled: boolean;
+    readonly isEnabled: boolean;
     readonly dsn: string;
   };
   readonly novu: {
-    readonly enabled: boolean;
+    readonly isEnabled: boolean;
     readonly apiKey: string;
     readonly appId: string;
   };
@@ -74,14 +81,6 @@ export type ApiConfig = {
     };
   };
   readonly cookies: {
-    readonly names: {
-      readonly [TokenType.MeiliSearch]: string;
-      readonly [TokenType.Access]: string;
-      readonly [TokenType.Refresh]: string;
-      readonly [TokenType.WebSocket]: string;
-      readonly AccessExpiration: string;
-      readonly RefreshExpiration: string;
-    };
     readonly signature: string;
     readonly options: {
       readonly signed: boolean;
@@ -95,10 +94,15 @@ export type ApiConfig = {
   readonly session: {
     readonly secret: string;
   };
-  readonly cryptoSecret: string;
-  readonly adminAccountPassword: string;
+  readonly jwt: {
+    readonly algorithm: string;
+    readonly hasuraSecret: string;
+  };
+  readonly pepperSecret: string;
+  readonly hasuraAdminSecret: string;
   readonly baseTenant: {
     readonly name: string;
+    readonly adminPassword: string;
     readonly oidc: {
       readonly enabled: boolean;
       readonly name: string;

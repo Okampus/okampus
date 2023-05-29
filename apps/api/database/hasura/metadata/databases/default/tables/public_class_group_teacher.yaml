@@ -20,5 +20,5 @@ array_relationships:
       foreign_key_constraint_on:
         column: class_group_teacher_id
         table:
-          name: class_group_teacher_subject
+          name: class_group_teacher_subjects
           schema: public

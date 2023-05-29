@@ -5,7 +5,7 @@ import { ExpenseState } from '@okampus/shared/enums';
 import type { Issue } from '../../content-master/issue/issue.entity';
 import type { ActorBankInfo } from '../../actor/actor-bank-info/actor-bank-info.entity';
 import type { ActorFinance } from '../../actor/actor-finance/actor-finance.entity';
-import type { Upload } from '../../upload/upload';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { TeamFinance } from '../team-finance/team-finance.entity';
 import type { ExpenseOptions } from './expense.options';
 
@@ -17,8 +17,8 @@ export class Expense extends TenantScopedEntity {
   @ManyToOne({ type: 'Issue', nullable: true, default: null })
   issue!: Issue;
 
-  @ManyToOne({ type: 'Upload' })
-  expenseReport!: Upload;
+  @ManyToOne({ type: 'FileUpload' })
+  expenseReport!: FileUpload;
 
   @ManyToOne({ type: 'ActorBankInfo' })
   bankInfo!: ActorBankInfo;

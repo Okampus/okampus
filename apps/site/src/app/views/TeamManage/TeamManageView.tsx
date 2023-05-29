@@ -1,204 +1,153 @@
-import { DocumentManageView } from './DocumentManageView';
+// import { DocumentManageView } from './DocumentManageView';
 import { TreasuryManageView } from './TreasuryManageView';
-import { EventManageView } from './EventManageView';
+import { TeamEventManageView } from './TeamEventManageView';
 import { TeamJoinManageView } from './TeamJoinManageView';
-import { ProfileBase } from '../ProfileBase';
+import { TeamProjectManageView } from './TeamProjectManageView';
+import { TabsTopbarView } from '@okampus/ui/templates';
 
-import { DocumentInput } from '#site/app/components/Input/DocumentInput';
+import { AVATAR_TEAM_ROUNDED, TEAM_MANAGE_ROUTE, TEAM_MANAGE_ROUTES, TEAM_ROUTE } from '@okampus/shared/consts';
+import { ToastType } from '@okampus/shared/types';
 
-import { ReactComponent as EditOutlineIcon } from '@okampus/assets/svg/icons/material/outlined/edit.svg';
+import { AvatarImage } from '@okampus/ui/atoms';
+import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
+import { FormItem } from '@okampus/ui/molecules';
+import { getAvatar } from '@okampus/ui/utils';
 
-import { ActionButton, FormItem, GridLoader } from '@okampus/ui/atoms';
-import { NavigationContext, useMe, useTeamManage } from '@okampus/ui/hooks';
-
-import { AVATAR_TEAM_ROUNDED, TEAM_MANAGE_ROUTES, TEAM_MANAGE_TAB_ROUTE, TEAM_ROUTE } from '@okampus/shared/consts';
-import { ControlType } from '@okampus/shared/enums';
-import {
-  ActorImageType,
-  deactivateTeamImageMutation,
-  formFragment,
-  getFragmentData,
-  updateTeamMutation,
-} from '@okampus/shared/graphql';
-import { ActionType, ToastType } from '@okampus/shared/types';
-import { getColorHexFromData } from '@okampus/shared/utils';
-
-import { MultiSection } from '@okampus/ui/molecules';
-import { DynamicForm } from '@okampus/ui/organisms';
-import { getAvatar, getBanner } from '@okampus/ui/utils';
-
-import { useMutation } from '@apollo/client';
+import { FormEditView } from '#site/app/components/Form/FormEdit/FormEditView';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import type { DynamicFieldData } from '@okampus/ui/organisms';
+import type { FormBaseInfo } from '@okampus/shared/graphql';
 
 export function TeamManageView() {
-  const navigate = useNavigate();
-  const { me } = useMe();
   const { teamManage } = useTeamManage();
-  const { addNotification, showModal, hideModal } = useContext(NavigationContext);
+  const { setNotification, showOverlay } = useContext(NavigationContext);
+  const { currentUser } = useCurrentUser();
 
-  const [updateTeam] = useMutation(updateTeamMutation);
-  const [deactivateTeamImage] = useMutation(deactivateTeamImageMutation);
-
-  if (!teamManage || !teamManage.actor || !me) return <GridLoader />;
-  if (!teamManage.members.some((member) => member.user.id === me.id)) {
-    addNotification({
+  if (!teamManage || !teamManage.actor || !currentUser) return null;
+  if (!teamManage.teamMembers.some((member) => member.userInfo?.id === currentUser.id)) {
+    setNotification({
       message: `Vous n'avez pas les permissions de gérer l'équipe ${teamManage.actor.name}`,
       type: ToastType.Error,
     });
     return <Navigate to={TEAM_ROUTE(teamManage.actor.slug)} />;
   }
 
-  const publicRoute = TEAM_ROUTE(teamManage.actor.slug);
-  const buttonList = (
-    <div className="flex gap-4 items-center">
-      <ActionButton variant={ActionType.Simple} onClick={() => navigate(publicRoute)}>
-        Voir le profil public
-      </ActionButton>
-      <ActionButton
-        icon={<EditOutlineIcon className="h-8 w-8" />}
-        onClick={() =>
-          showModal({
-            title: "Modification des détails de l'équipe",
-            content: (
-              <DynamicForm
-                fields={fields}
-                onSubmit={(data) => {
-                  if (teamManage) {
-                    updateTeam({
-                      variables: { updateTeam: { id: teamManage.id, ...data } },
-                      onCompleted: () => {
-                        hideModal();
-                        addNotification({
-                          message: 'Les détails de l’équipe ont été mis à jour',
-                          type: ToastType.Success,
-                        });
-                      },
-                    });
-                  }
-                }}
-              />
-            ),
-          })
-        }
-      />
-    </div>
-  );
+  const avatar = {
+    src: getAvatar(teamManage.actor?.actorImages),
+    rounded: AVATAR_TEAM_ROUNDED,
+    size: 16,
+    name: teamManage.actor.name,
+  };
+  // const banner = { src: getBanner(teamManage.actor?.actorImages) };
+  // const color = getColorHexFromData(teamManage.actor.name);
 
-  const form = getFragmentData(formFragment, teamManage.joinForm);
+  const editForm = (form: FormBaseInfo) => {
+    showOverlay(<FormEditView id={form.id as string} />);
+  };
 
-  const fields: DynamicFieldData[] = [
-    {
-      fieldName: 'name',
-      inputType: ControlType.Text,
-      label: "Nom de l'équipe",
-      defaultValue: teamManage.actor.name,
-      placeholder: 'Nom',
-    },
-    {
-      fieldName: 'tagline',
-      inputType: ControlType.Text,
-      label: 'Slogan',
-      defaultValue: teamManage.tagline,
-      placeholder: 'Slogan  ',
-    },
-    {
-      fieldName: 'bio',
-      inputType: ControlType.Text,
-      label: 'À propos',
-      defaultValue: teamManage?.actor?.bio,
-      placeholder: 'Ajouter une description à votre équipe',
-    },
-  ];
-
-  const avatar = { src: getAvatar(teamManage.actor.actorImages), rounded: AVATAR_TEAM_ROUNDED };
-  const banner = { src: getBanner(teamManage.actor.actorImages) };
-  const color = getColorHexFromData(teamManage.actor.name);
-  const details = (
-    <span className="flex items-center gap-1">
-      <span className="font-semibold text-lg text-0">10 abonnés</span>•
-      <span className="font-semibold text-lg text-0">15 abonnements</span>
-    </span>
-  );
-
-  const manageSections = [
-    {
-      title: "Formulaire d'adhésion",
-      children: form ? (
-        <FormItem formId={form.id} name={form.name} createdAt={form.createdAt} updatedAt={form.updatedAt} />
-      ) : (
-        <div>Aucun formulaire d'adhésion</div>
-      ),
-    },
-    // TODO: add TagInput
-    // {
-    //   title: 'Tags',
-    //   children: <div>Tags</div>,
-    // },
-    {
-      title: 'Brochure de présentation',
-      children: <DocumentInput />,
-    },
-  ];
+  const form = teamManage.form;
+  // const manageSections = [
+  //   {
+  //     title: "Formulaire d'adhésion",
+  //     children: form ? <FormItem onClick={editForm} form={form} /> : <div>Aucun formulaire d'adhésion</div>,
+  //   },
+  //   // TODO: add TagInput
+  //   // {
+  //   //   title: 'Tags',
+  //   //   children: <div>Tags</div>,
+  //   // },
+  //   // {
+  //   //   title: 'Brochure de présentation',
+  //   //   children: <DocumentInput />,
+  //   // },
+  // ];
 
   const menus = [
     {
       key: TEAM_MANAGE_ROUTES.PROFILE,
       label: 'Profil',
-      element: <MultiSection sections={manageSections} className="p-view" />,
+      element: () => (
+        <div className="px-content py-content flex flex-col gap-4">
+          <div className="title">Formulaire d'adhésion</div>
+          {form ? <FormItem onClick={editForm} form={form} /> : <div>Aucun formulaire d'adhésion</div>}
+        </div>
+      ),
     },
     {
       key: TEAM_MANAGE_ROUTES.TEAM_JOIN,
       label: 'Adhésions',
-      element: <TeamJoinManageView />,
+      element: () => <TeamJoinManageView />,
     },
-    {
-      key: TEAM_MANAGE_ROUTES.DOCUMENTS,
-      label: 'Documents',
-      element: <DocumentManageView />,
-    },
+    // {
+    //   key: TEAM_MANAGE_ROUTES.DOCUMENTS,
+    //   label: 'Documents',
+    //   element: () => <DocumentManageView />,
+    // },
     {
       key: TEAM_MANAGE_ROUTES.TREASURY,
       label: 'Trésorerie',
-      element: <TreasuryManageView />,
+      element: () => <TreasuryManageView />,
+    },
+    {
+      key: TEAM_MANAGE_ROUTES.PROJECTS,
+      label: 'Projets',
+      element: () => <TeamProjectManageView />,
     },
     {
       key: TEAM_MANAGE_ROUTES.EVENTS,
       label: 'Événements',
-      element: <EventManageView />,
+      element: () => <TeamEventManageView />,
     },
     {
       key: TEAM_MANAGE_ROUTES.ROLES,
       label: 'Rôles',
-      element: <div></div>,
+      element: () => <div></div>,
     },
   ];
 
   return (
-    <ProfileBase
-      actorImageEdit={(image, actorImageType) => {
-        if (teamManage) {
-          const id = teamManage.id;
-          if (image)
-            updateTeam({
-              variables: {
-                ...(actorImageType === ActorImageType.Avatar ? { avatar: image } : { banner: image }),
-                updateTeam: { id },
-              },
-            });
-          else deactivateTeamImage({ variables: { id, actorImageType } });
-        }
-      }}
-      avatar={avatar}
-      banner={banner}
-      color={color}
-      tabs={menus}
-      name={teamManage.actor.name}
-      details={details}
-      buttonList={buttonList}
-      switchTabRoute={(tab) => TEAM_MANAGE_TAB_ROUTE(teamManage.actor?.slug, tab)}
+    <TabsTopbarView
+      basePath={TEAM_MANAGE_ROUTE(teamManage?.actor?.slug)}
+      menus={menus}
+      topbarPrefix={
+        <div className="flex gap-4 items-center">
+          <AvatarImage {...avatar} />
+          <div className="title">Gestion</div>
+        </div>
+      }
     />
+
+    // <div>
+
+    //   <div className="relative w-full h-full">{currentTab.element}</div>
+    // </div>
   );
+
+  // return (
+  //   // <ManageProfileBase
+  //   //   actorImageEdit={(image, actorImageType) => {
+  //   //     if (teamManage) {
+  //   //       const id = teamManage.id as string;
+  //   //       if (image)
+  //   //         updateTeam({
+  //   //           variables: {
+  //   //             ...(actorImageType === ActorImageType.Avatar ? { avatar: image } : { banner: image }), // FIXME: file upload
+  //   //             updateTeam: { id },
+  //   //           },
+  //   //         });
+  //   //       else deactivateImage({ variables: { id, now: new Date().toISOString() } });
+  //   //     }
+  //   //   }}
+  //   //   avatar={avatar}
+  //   //   banner={banner}
+  //   //   color={color}
+  //   //   tabs={menus}
+  //   //   name={teamManage.actor.name}
+  //   //   details={details}
+  //   //   publicRoute={publicRoute}
+  //   //   // buttonList={buttonList}
+  //   //   switchTabRoute={(tab) => TEAM_MANAGE_TAB_ROUTE(teamManage.actor?.slug, tab)}
+  //   // />
+  // );
 }

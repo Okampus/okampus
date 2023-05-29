@@ -2,6 +2,9 @@ table:
   name: project
   schema: public
 object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: image_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -11,9 +14,6 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: upload
-    using:
-      foreign_key_constraint_on: image_id
 array_relationships:
   - name: actions
     using:
@@ -49,6 +49,13 @@ array_relationships:
         column: project_id
         table:
           name: project_tags
+          schema: public
+  - name: teamFinanceEdits
+    using:
+      foreign_key_constraint_on:
+        column: added_project_id
+        table:
+          name: team_finance_edit
           schema: public
   - name: teamFinances
     using:

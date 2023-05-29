@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { TenantScopedEntity } from '..';
 import { Collection, Entity, ManyToMany, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 

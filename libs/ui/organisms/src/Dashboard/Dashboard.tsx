@@ -1,3 +1,7 @@
+import { ReactComponent as SortArrowsFilledIcon } from '@okampus/assets/svg/icons/material/filled/sort-arrows.svg';
+import { ReactComponent as UpFilledIcon } from '@okampus/assets/svg/icons/material/filled/arrow-up.svg';
+import { ReactComponent as DownFilledIcon } from '@okampus/assets/svg/icons/material/filled/arrow-down.svg';
+
 import { Align } from '@okampus/shared/enums';
 import { Skeleton } from '@okampus/ui/atoms';
 import { clsx } from 'clsx';
@@ -14,50 +18,90 @@ export type Column<T> = {
 };
 
 type DashboardProps<T extends object> = {
+  className?: string;
   columns: Column<T>[];
   data: T[] | undefined;
   nItems?: number;
+  onElementClick?: (element: T) => void;
 };
 
-export function Dashboard<T extends object>({ columns, data, nItems = 10 }: DashboardProps<T>) {
+type SortColumn = { column?: number; direction?: 'asc' | 'desc' };
+
+export function Dashboard<T extends object>({
+  className,
+  columns,
+  data,
+  nItems = 10,
+  onElementClick,
+}: DashboardProps<T>) {
   // eslint-disable-next-line unicorn/no-useless-undefined
   const arr = data ?? Array.from({ length: nItems }, () => undefined);
+  const [sort, setSort] = React.useState<SortColumn>({ column: undefined, direction: undefined });
+
   return (
-    <div className="h-full w-full overflow-scroll scrollbar">
+    <div className={clsx('relative max-h-full w-full scrollbar', className)}>
       <table className="text-2 table-auto w-max min-w-full">
         {/* Header */}
-        <thead>
-          <tr className="text-2 uppercase tracking-wider border-b border-color-3">
+        <thead className="sticky top-0 bg-2">
+          <tr>
             {columns.map((column, colIdx) => (
-              <th
-                key={colIdx}
-                className={clsx(
-                  'py-3 px-4 font-medium',
-                  column.align
-                    ? column.align === Align.Center
-                      ? 'text-center'
-                      : column.align === Align.Right
-                      ? 'text-right'
-                      : 'text-left'
-                    : colIdx === 0
-                    ? 'text-left'
-                    : colIdx === columns.length - 1 && 'text-right'
-                )}
-              >
-                <h4>{column.label}</h4>
+              <th key={colIdx} className={clsx('font-medium')}>
+                <button
+                  className={clsx(
+                    'py-2.5 px-6 font-semibold flex items-center gap-2 w-full',
+                    sort.column === colIdx && 'text-0',
+                    column.align
+                      ? column.align === Align.Center
+                        ? 'justify-center'
+                        : column.align === Align.Right
+                        ? 'justify-end'
+                        : 'justify-start'
+                      : colIdx === 0
+                      ? 'justify-start'
+                      : colIdx === columns.length - 1
+                      ? 'justify-end'
+                      : 'justify-center'
+                  )}
+                  onClick={() =>
+                    setSort((prev) => ({
+                      column: prev.direction === 'desc' && prev.column === colIdx ? undefined : colIdx,
+                      direction:
+                        prev.column === colIdx && prev.direction === 'desc'
+                          ? undefined
+                          : prev.column === colIdx && prev.direction === 'asc'
+                          ? 'desc'
+                          : 'asc',
+                    }))
+                  }
+                >
+                  {column.label}
+                  {sort.column === colIdx ? (
+                    sort.direction === 'asc' ? (
+                      <UpFilledIcon className="w-3 h-3" />
+                    ) : (
+                      <DownFilledIcon className="w-3 h-3" />
+                    )
+                  ) : (
+                    <SortArrowsFilledIcon className="w-4 h-4" />
+                  )}
+                </button>
               </th>
             ))}
           </tr>
         </thead>
         {/* Rows */}
-        <tbody>
+        <tbody className="overflow-scroll scrollbar">
           {arr.map((row, rowIdx) => (
-            <tr className="text-0" key={rowIdx}>
+            <tr
+              className={clsx('text-0 border-b border-color-1', onElementClick && 'bg-3-hover cursor-pointer')}
+              key={rowIdx}
+              onClick={() => row && onElementClick?.(row)}
+            >
               {columns.map((column, colIdx) => (
-                <td key={colIdx} className={clsx(rowIdx === 0 && 'pt-6', 'text-2')}>
+                <td key={colIdx} className={clsx(rowIdx === 0 && 'pt-2', 'text-2')}>
                   <div
                     className={clsx(
-                      'py-3 px-4 flex',
+                      'py-4 px-6 flex',
                       column.classes,
                       column.align
                         ? column.align === Align.Center

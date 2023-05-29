@@ -1,17 +1,29 @@
+import { ProjectRepository } from './project.repository';
 import { TenantScopedEntity } from '..';
 import { TransformCollection } from '@okampus/api/shards';
-import { Cascade, Collection, Entity, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import {
+  Cascade,
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from '@mikro-orm/core';
 
 import type { ProjectRole } from './project-role/project-role.entity';
-import type { Upload } from '../upload/upload';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Team } from '../team/team.entity';
 import type { Event } from '../event/event.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { ProjectOptions } from './project.options';
 import type { Tag } from '../actor/tag/tag.entity';
 
-@Entity()
+@Entity({ customRepository: () => ProjectRepository })
 export class Project extends TenantScopedEntity {
+  [EntityRepositoryType]?: ProjectRepository;
+
   @Property({ type: 'text' })
   name!: string;
 
@@ -24,8 +36,8 @@ export class Project extends TenantScopedEntity {
   @Property({ type: 'float' })
   expectedBudget!: number;
 
-  @Property({ type: 'float', nullable: true, default: null })
-  actualBudget: number | null = null;
+  @Property({ type: 'float', default: 0 })
+  actualBudget = 0;
 
   @Property({ type: 'boolean' })
   isPrivate = false;
@@ -37,8 +49,8 @@ export class Project extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'Upload', nullable: true, default: null, cascade: [Cascade.ALL] })
-  image: Upload | null = null;
+  @ManyToOne({ type: 'FileUpload', nullable: true, default: null, cascade: [Cascade.ALL] })
+  image: FileUpload | null = null;
 
   @ManyToMany({ type: 'TeamMember' })
   @TransformCollection()

@@ -3,9 +3,9 @@ import { Skeleton } from '@okampus/ui/atoms';
 
 export function CardSkeleton() {
   return (
-    <div className="flex flex-col w-80 rounded-xl overflow-hidden">
+    <div className="flex flex-col w-80 rounded-lg overflow-hidden">
       <div className="h-24 bg-0" />
-      <div className="bg-1 text-0 px-4 pb-2 relative flex flex-col gap-1">
+      <div className="bg-1 text-0 p-4 relative flex flex-col gap-1">
         <Skeleton
           height={34}
           width={34}

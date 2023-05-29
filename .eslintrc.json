@@ -18,7 +18,6 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["plugin:unicorn/recommended"],
       "rules": {
-        "max-len": ["error", { "code": 120, "ignorePattern": "^\\s*<path" }],
         "import/no-cycle": ["error", { "maxDepth": 3, "ignoreExternal": true }],
         "import/order": [
           "error",
@@ -26,6 +25,8 @@
             "groups": ["index", "sibling", "parent", "internal", "external", "builtin", "object", "type"]
           }
         ],
+        "max-len": ["error", { "code": 120, "ignorePattern": "^\\s*<path" }],
+        "no-sequences": "off",
         "unicorn/prevent-abbreviations": "off",
         "unicorn/no-null": "off",
         "unicorn/no-array-callback-reference": "off",

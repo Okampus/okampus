@@ -64,6 +64,13 @@ array_relationships:
         table:
           name: favorite
           schema: public
+  - name: follows
+    using:
+      foreign_key_constraint_on:
+        column: followed_actor_id
+        table:
+          name: follow
+          schema: public
   - name: reports
     using:
       foreign_key_constraint_on:
@@ -84,4 +91,18 @@ array_relationships:
         column: actor_id
         table:
           name: social
+          schema: public
+  - name: teamFinanceEdits
+    using:
+      foreign_key_constraint_on:
+        column: added_payed_by_id
+        table:
+          name: team_finance_edit
+          schema: public
+  - name: teamFinances
+    using:
+      foreign_key_constraint_on:
+        column: payed_by_id
+        table:
+          name: team_finance
           schema: public

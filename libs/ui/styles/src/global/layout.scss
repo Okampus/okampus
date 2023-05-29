@@ -1,0 +1,14 @@
+%rounded-primary,
+.rounded-primary {
+  @apply rounded-md;
+}
+
+%h-primary,
+.h-primary {
+  @apply h-[3.25rem];
+}
+
+%p-primary,
+.p-primary {
+  @apply p-4;
+}

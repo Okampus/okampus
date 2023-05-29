@@ -11,7 +11,7 @@ import type { EventChangeRole } from '../event-change-role/event-change-role.ent
 export type EventJoinOptions = EventJoinProps &
   TenantScopedOptions & {
     eventChangeRole?: EventChangeRole | null;
-    formSubmission: FormSubmission;
+    formSubmission?: FormSubmission | null;
     joiner: UserInfo;
     event: Event;
     participated?: boolean;

@@ -2,15 +2,21 @@ table:
   name: team_finance
   schema: public
 object_relationships:
-  - name: actorFinance
+  - name: actor
     using:
-      foreign_key_constraint_on: actor_finance_id
+      foreign_key_constraint_on: payed_by_id
+  - name: actorAddress
+    using:
+      foreign_key_constraint_on: address_id
   - name: event
     using:
       foreign_key_constraint_on: event_id
   - name: expense
     using:
       foreign_key_constraint_on: expense_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: receipt_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id

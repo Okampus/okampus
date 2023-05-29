@@ -7,6 +7,6 @@ import type { UserInfo } from '../../individual/user-info/user-info.entity';
 export type ClassGroupTeacherOptions = ClassGroupTeacherProps &
   TenantScopedOptions & {
     user: UserInfo;
-    subject: Subject[];
+    subjects: Subject[];
     classgroup: ClassGroup;
   };

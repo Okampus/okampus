@@ -3,9 +3,10 @@ import { TenantScopedEntity } from '../..';
 import { Entity, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { Countries } from '@okampus/shared/consts';
 
-import type { Upload } from '../../upload/upload';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Actor } from '../actor.entity';
 import type { ActorAddressOptions } from './actor-address.options';
+import type { Campus } from '../../tenant/campus/campus.entity';
 
 @Entity()
 export class ActorAddress extends TenantScopedEntity {
@@ -36,8 +37,11 @@ export class ActorAddress extends TenantScopedEntity {
   @Enum({ items: () => Countries, default: Countries.France, type: EnumType })
   country: Countries = Countries.France;
 
-  @OneToOne({ type: 'Upload', nullable: true, default: null })
-  image: Upload | null = null;
+  @OneToOne({ type: 'FileUpload', nullable: true, default: null })
+  image: FileUpload | null = null;
+
+  @OneToOne({ type: 'Campus', inversedBy: 'address', nullable: true, default: null })
+  campus: Campus | null = null;
 
   @Property({ type: 'boolean' })
   public = false;

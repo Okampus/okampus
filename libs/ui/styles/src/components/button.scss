@@ -1,24 +1,22 @@
-%button-rounded,
-.button-rounded {
-  @apply rounded-full;
-}
+@import '../global/layout';
+@import '../global/colors';
 
 %button-disabled,
 .button-disabled {
-  @apply opacity-50 cursor-not-allowed;
+  @apply opacity-75 cursor-not-allowed;
 }
 
 %button {
-  @extend %button-rounded;
-  @apply font-bold tracking-tight flex justify-center items-center gap-2 shrink-0;
+  @extend %rounded-primary, %h-primary;
+  @apply font-semibold tracking-tight flex justify-center items-center gap-2.5 shrink-0;
 
-  &:hover {
-    @apply cursor-pointer contrast-75;
+  &:not(:disabled):hover {
+    @apply cursor-pointer contrast-[1.05];
   }
 
-  &:active {
-    @apply opacity-75;
-  }
+  // &:not(:disabled):active {
+  //   @apply opacity-75;
+  // }
 
   &:disabled {
     @extend %button-disabled;
@@ -27,12 +25,31 @@
 
 .button {
   @extend %button;
-  @apply px-8 text-xl h-14;
+  @apply px-6 py-3 text-lg;
+}
 
-  &-sm {
-    @extend %button;
-    @apply px-6 h-10 text-base;
+.icon-button {
+  @extend %button;
+  @apply aspect-square p-3;
+}
+
+%button-circle,
+.button-circle {
+  @extend %contrast-hover;
+  @apply rounded-2xl aspect-square p-2;
+
+  &:disabled {
+    @extend %button-disabled;
   }
+
+  &:not(:disabled):hover {
+    @apply cursor-pointer;
+  }
+}
+
+.button-circle-bordered {
+  @extend %button-circle;
+  @apply border border-color-5;
 }
 
 .button-list {

@@ -9,5 +9,9 @@ export const projectWithFinanceInfo = Selector('Project')({
   expectedBudget: true,
   actualBudget: true,
   teamFinances: [{}, teamFinanceBaseInfo],
+  events: [
+    {},
+    { __typename: true, id: true, budget: true, teamFinancesAggregate: [{}, { aggregate: { sum: { amount: true } } }] },
+  ],
 });
 export type ProjectWithFinanceInfo = InputType<GraphQLTypes['Project'], typeof projectWithFinanceInfo>;

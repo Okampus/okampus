@@ -1,5 +1,4 @@
 import type { MEILISEARCH_TYPE_FIELD } from '@okampus/shared/consts';
-import type { Snowflake } from '@okampus/shared/types';
 
 export interface BaseSearchable {
   name: string;
@@ -16,12 +15,12 @@ export interface BaseSearchable {
 }
 
 export interface SearchableIndexed extends BaseSearchable {
-  id: Snowflake;
-  entityId: Snowflake;
+  id: string;
+  entityId: string;
   [MEILISEARCH_TYPE_FIELD]: string;
 }
 
 export interface Searchable {
-  id: Snowflake;
-  tenant: { id: Snowflake };
+  id: string;
+  tenant: { id: string };
 }

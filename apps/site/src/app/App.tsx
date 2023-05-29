@@ -1,5 +1,6 @@
 import '@okampus/ui/styles/global/colors.scss';
 import '@okampus/ui/styles/global/fonts.scss';
+import '@okampus/ui/styles/global/layout.scss';
 import '@okampus/ui/styles/global/loader.scss';
 import '@okampus/ui/styles/global/scrollbar.scss';
 import '@okampus/ui/styles/global/utils.scss';
@@ -14,116 +15,111 @@ import './App.scss';
 import './styles/layout.scss';
 
 import { router } from './router';
-import { GridLoader } from '@okampus/ui/atoms';
 import { defaultSelectedMenu } from '@okampus/shared/types';
 import { NavigationContext } from '@okampus/ui/hooks';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { nanoid } from 'nanoid';
+import fr from '@okampus/assets/i18n/fr.json';
+
 import { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-import type { TenantInfoFragment } from '@okampus/shared/graphql';
-import type { FileLike, ModalProps, SelectedMenu, ToastProps, Route } from '@okampus/shared/types';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+import type { TenantDetailsInfo } from '@okampus/shared/graphql';
+import type { FileLike, SelectedMenu, ToastProps, Route } from '@okampus/shared/types';
+
+i18n.use(initReactI18next).init({
+  resources: { fr },
+  lng: 'fr',
+  fallbackLng: 'fr',
+
+  interpolation: {
+    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+  },
+});
 
 const startRoute = { idx: 0, path: window.location.pathname, key: 'default' };
 function App() {
-  const [tenant, setTenant] = useState<TenantInfoFragment | null>(null);
-  // TODO: tenantManage
+  const [tenant, setTenant] = useState<TenantDetailsInfo | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const [history, setHistory] = useState<Route[]>([startRoute]);
   const [previousRoute, setPreviousRoute] = useState<Route | null>(startRoute);
 
-  const [isModalShown, setIsModalShown] = useState<boolean>(false);
-  const [modal, setModal] = useState<ModalProps | null>(null);
+  const [isTopbarAlwaysShown, setIsTopbarAlwaysShown] = useState<boolean>(false);
+  const [topbar, setTopbar] = useState<React.ReactNode>(null);
 
-  const [isSideModalShown, setIsSideModalShown] = useState<boolean>(false);
-  const [sideModal, setSideModal] = useState<ModalProps | null>(null);
+  const [isSidePanelShown, setIsSidePanelShown] = useState<boolean>(false);
+  const [isSidePanelUncollapsed, setIsSidePanelUncollapsed] = useState<boolean>(false);
+  const [sidePanel, setSidePanel] = useState<React.ReactNode>(null);
+
+  const [isOverlayShown, setIsOverlayShown] = useState<boolean>(false);
+  const [overlay, setOverlay] = useState<React.ReactNode>(null);
 
   const [isFilePreviewed, setIsFilePreviewed] = useState<boolean>(false);
   const [previewedFile, setPreviewedFile] = useState<FileLike | null>(null);
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<ToastProps[]>([]);
+  const [notification, setNotification] = useState<ToastProps | null>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState<SelectedMenu>(defaultSelectedMenu);
 
-  const showSideModal = (modal: ModalProps | null) => {
-    setSideModal(modal);
-    setIsSideModalShown(true);
-  };
-  const hideSideModal = () => setIsSideModalShown(false);
+  const showSidePanel = (modal: React.ReactNode) => (setSidePanel(modal), setIsSidePanelShown(true));
+  const hideSidePanel = () => setIsSidePanelShown(false);
 
-  const showModal = (modal: ModalProps | null) => {
-    setModal(modal);
-    setIsModalShown(true);
-  };
-  const hideModal = () => setIsModalShown(false);
+  const showOverlay = (modal: React.ReactNode) => (setOverlay(modal), setIsOverlayShown(true));
+  const hideOverlay = () => setIsOverlayShown(false);
 
-  const previewFile = (file: FileLike | null) => {
-    setPreviewedFile(file);
-    setIsFilePreviewed(true);
-  };
+  const previewFile = (file: FileLike | null) => (setPreviewedFile(file), setIsFilePreviewed(true));
   const hideFilePreview = () => setIsFilePreviewed(false);
 
   const provideNavigationContext = {
     tenant,
     setTenant,
+    isLoggedIn,
+    setIsLoggedIn,
 
     history,
     setHistory,
     previousRoute,
     setPreviousRoute,
 
-    isModalShown,
-    modal,
-    showModal,
-    hideModal,
+    isTopbarAlwaysShown,
+    topbar,
+    setTopbar,
+    setIsTopbarAlwaysShown,
 
-    isSideModalShown,
-    sideModal,
-    showSideModal,
-    hideSideModal,
+    isSidePanelShown,
+    isSidePanelUncollapsed,
+    sidePanel,
+    showSidePanel,
+    hideSidePanel,
+    setIsSidePanelUncollapsed,
+
+    isOverlayShown,
+    overlay,
+    showOverlay,
+    hideOverlay,
 
     isFilePreviewed,
     previewedFile,
     previewFile,
     hideFilePreview,
 
-    isLoading,
-    setIsLoading,
     isSearching,
     setIsSearching,
 
     selected,
     setSelected,
 
-    notifications,
-    addNotification: (notification: Omit<ToastProps, 'id'>) =>
-      setNotifications((prev) => [...prev, { ...notification, id: Date.now().toString() + nanoid(10) }]),
-    removeNotification: (id: string) => setNotifications((prev) => prev.filter((n) => n.id !== id)),
-    getNotifications: () => notifications,
+    notification,
+    setNotification,
   };
   return (
-    <>
-      <NavigationContext.Provider value={provideNavigationContext}>
-        <RouterProvider router={router} />
-      </NavigationContext.Provider>
-
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="absolute top-0 w-full h-full bg-black z-[100]"
-          >
-            <GridLoader />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    <NavigationContext.Provider value={provideNavigationContext}>
+      <RouterProvider router={router} />
+    </NavigationContext.Provider>
   );
 }
 

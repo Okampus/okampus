@@ -1,5 +1,8 @@
 import { ItemGroup } from './ItemGroup';
-import { FileTypeIcon } from '@okampus/ui/atoms';
+import { FileIcon } from '@okampus/ui/atoms';
+import { useContext } from 'react';
+import { NavigationContext } from '@okampus/ui/hooks';
+
 import type { FileLike } from '@okampus/shared/types';
 
 export type FileGroupProps = {
@@ -9,6 +12,8 @@ export type FileGroupProps = {
 };
 
 export function FileGroup({ files, limit = 3, size = 14 }: FileGroupProps) {
+  const { previewFile } = useContext(NavigationContext);
+
   return (
     <ItemGroup
       className="space-x-[-0.5rem]"
@@ -17,7 +22,11 @@ export function FileGroup({ files, limit = 3, size = 14 }: FileGroupProps) {
       size={size}
       rounded={12}
       render={(file) => {
-        return <FileTypeIcon file={file} size={size} />;
+        return (
+          <div onClick={() => previewFile(file)}>
+            <FileIcon file={file} className="h-12 aspect-square" />
+          </div>
+        );
       }}
     />
   );

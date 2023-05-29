@@ -7,7 +7,7 @@ import type { IssueOptions } from './issue.options';
 @Entity()
 export abstract class Issue extends TenantScopedEntity {
   @OneToOne({ type: 'ContentMaster', inversedBy: 'issue' })
-  content!: ContentMaster;
+  contentMaster!: ContentMaster;
 
   constructor(options: IssueOptions) {
     super(options);

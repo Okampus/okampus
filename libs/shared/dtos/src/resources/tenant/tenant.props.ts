@@ -9,6 +9,10 @@ export class TenantProps {
   @IsString()
   name!: string;
 
+  @Field(() => String)
+  @IsString()
+  pointName!: string;
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()

@@ -5,6 +5,7 @@ export enum ControlType {
   SingleFile = 'single-file',
   Select = 'select',
   Number = 'number',
+  Checkbox = 'checkbox',
   MultiCheckbox = 'multi-checkbox',
   Radio = 'radio',
   Markdown = 'markdown',

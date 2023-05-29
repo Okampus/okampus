@@ -9,17 +9,26 @@ const fmtShort = Intl.DateTimeFormat('fr', {
   hour12: false,
 });
 
+const fmtShortNoHour = Intl.DateTimeFormat('fr', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+
 const fmtStandard = Intl.DateTimeFormat('fr', {
   day: 'numeric',
   month: 'numeric',
-  year: 'numeric',
+  year: '2-digit',
 });
 
 const fmtSimple = Intl.DateTimeFormat('fr', {
   day: 'numeric',
   month: 'short',
-  year: 'numeric',
 });
+
+const fmtHourSimple = Intl.DateTimeFormat('fr', { hour: 'numeric', minute: 'numeric' });
+const fmtWeekDay = Intl.DateTimeFormat('fr', { weekday: 'short' });
 
 export const getDate = (date?: string | Date): Date => {
   if (!date) return new Date();
@@ -35,9 +44,29 @@ export const getMonthShort = (date: string | Date): string =>
 export const getMonthLong = (date: string | Date): string =>
   Intl.DateTimeFormat('fr', { month: 'long' }).format(getDate(date));
 
+export const customDateFormat = (date: string | Date, options: Intl.DateTimeFormatOptions): string => {
+  date = getDate(date);
+  return Intl.DateTimeFormat('fr', options).format(date);
+};
+
+export const customDateFormatRange = (
+  date1: string | Date,
+  date2: string | Date,
+  options: Intl.DateTimeFormatOptions
+): string => {
+  date1 = getDate(date1);
+  date2 = getDate(date2);
+  return Intl.DateTimeFormat('fr', options).formatRange(date1, date2);
+};
+
 export function formatDateDayOfWeek(date: string | Date): string {
   date = getDate(date);
   return fmtShort.format(date);
+}
+
+export function formatDateDayOfWeekNoHour(date: string | Date): string {
+  date = getDate(date);
+  return fmtShortNoHour.format(date);
 }
 
 export function formatDateStandard(date: string | Date): string {
@@ -50,6 +79,11 @@ export function formatDateSimple(date: string | Date): string {
   const currentYear = new Date().getFullYear();
   if (date.getFullYear() === currentYear) return fmtSimple.format(date).replace(currentYear.toString(), '');
   return fmtSimple.format(date);
+}
+
+export function formatHourSimple(date: string | Date): string {
+  date = getDate(date);
+  return fmtHourSimple.format(date);
 }
 
 export function formatDateRangeDayOfWeek(date1: string | Date, date2: string | Date): string {
@@ -74,4 +108,11 @@ export function formatDateRangeSimple(date1: string | Date, date2: string | Date
   if (date1.getFullYear() === currentYear && date2.getFullYear() === currentYear)
     return fmtSimple.formatRange(date1, date2).replace(currentYear.toString(), '');
   return fmtSimple.formatRange(date1, date2);
+}
+
+export function formatHourRangeSimple(date1: string | Date, date2: string | Date): string {
+  date1 = getDate(date1);
+  date2 = getDate(date2);
+
+  return fmtHourSimple.formatRange(date1, date2);
 }

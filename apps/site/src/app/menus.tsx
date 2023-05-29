@@ -1,5 +1,5 @@
-import { ReactComponent as ExploreFilledIcon } from '@okampus/assets/svg/icons/material/filled/explore.svg';
-import { ReactComponent as ExploreOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/explore.svg';
+import { ReactComponent as SearchFilledIcon } from '@okampus/assets/svg/icons/material/filled/search.svg';
+import { ReactComponent as SearchOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/search.svg';
 import { ReactComponent as FavoriteFilledIcon } from '@okampus/assets/svg/icons/material/filled/favorite.svg';
 import { ReactComponent as FavoriteOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/favorite.svg';
 // import { ReactComponent as ArticleFilledIcon } from '@okampus/assets/svg/icons/material/filled/article.svg';
@@ -28,8 +28,10 @@ import { ReactComponent as GroupFilledIcon } from '@okampus/assets/svg/icons/mat
 import { ReactComponent as GroupOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/user-group.svg';
 import { ReactComponent as StepValidationFilledIcon } from '@okampus/assets/svg/icons/material/filled/step-validation.svg';
 import { ReactComponent as StepValidationOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/step-validation.svg';
+import { ADMIN_ROUTE, FAVORITES_ROUTE, HOME_ROUTE } from '@okampus/shared/consts';
 import { ViewType } from '@okampus/shared/enums';
-import { ADMIN_ROUTE, DISCOVER_ROUTE, FAVORITES_ROUTE, HOME_ROUTE } from '@okampus/shared/consts';
+
+import type { NavigationContextProps } from '@okampus/ui/hooks';
 // // import { ReactComponent as UserAddFilledIcon } from '@okampus/assets/svg/icons/material/filled/user-add.svg';
 // // import { ReactComponent as UserAddOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/user-add.svg';
 // import { ReactComponent as FolderFilledIcon } from '@okampus/assets/svg/icons/material/filled/folder-open.svg';
@@ -61,34 +63,35 @@ export type Menu = {
   icon?: React.FC<{ className?: string }>;
   iconSelected?: React.FC<{ className?: string }>;
   label: string;
-  link: string;
+  linkOrAction: string | ((context: NavigationContextProps) => void);
   sub?: Menu[];
+  tip?: string;
 };
 
 export type Subspace = {
   menus: Menu[];
 };
 
-export const menus = {
+export const menus: Record<ViewType, Subspace> = {
   [ViewType.Community]: {
     menus: [
       {
         icon: HomeOutlinedIcon,
         iconSelected: HomeFilledIcon,
         label: 'Accueil',
-        link: HOME_ROUTE,
+        linkOrAction: HOME_ROUTE,
       },
       {
-        icon: ExploreOutlinedIcon,
-        iconSelected: ExploreFilledIcon,
-        label: 'Découverte',
-        link: DISCOVER_ROUTE,
+        icon: SearchOutlinedIcon,
+        iconSelected: SearchFilledIcon,
+        label: 'Rechercher',
+        linkOrAction: (navigationContext: NavigationContextProps) => navigationContext.setIsSearching(true),
       },
       {
         icon: FavoriteOutlinedIcon,
         iconSelected: FavoriteFilledIcon,
         label: 'Favoris',
-        link: FAVORITES_ROUTE,
+        linkOrAction: FAVORITES_ROUTE,
       },
       // {
       //   icon: ArticleOutlinedIcon,
@@ -126,51 +129,51 @@ export const menus = {
         icon: SquareOutlinedIcon,
         iconSelected: SquareFilledIcon,
         label: "Vue d'ensemble",
-        link: ADMIN_ROUTE,
+        linkOrAction: ADMIN_ROUTE,
       },
       {
         icon: DashboardOutlinedIcon,
         iconSelected: DashboardFilledIcon,
         label: 'Dashboard',
-        link: '/admin/clubs',
+        linkOrAction: '/admin/clubs',
       },
       {
         icon: AddArticleOutlinedIcon,
         iconSelected: AddArticleFilledIcon,
         label: 'Guides',
-        link: '/admin/guides',
+        linkOrAction: '/admin/guides',
         tip: 'Guides & tutoriels',
       },
       {
         icon: EventValidateOutlinedIcon,
         iconSelected: EventValidateFilledIcon,
-        label: 'Événements',
-        link: '/admin/events',
+        label: 'Validations',
+        linkOrAction: '/admin/events',
         tip: 'Gestion des événements',
       },
       {
         icon: SettingsOutlinedIcon,
         iconSelected: SettingsFilledIcon,
         label: 'Portail',
-        link: '/admin/settings',
+        linkOrAction: '/admin/settings',
         sub: [
           {
             icon: PaletteOutlinedIcon,
             iconSelected: PaletteFilledIcon,
             label: 'Apparence',
-            link: '/admin/settings',
+            linkOrAction: '/admin/settings',
           },
           {
             icon: GroupOutlinedIcon,
             iconSelected: GroupFilledIcon,
             label: 'Rôles',
-            link: '/admin/roles',
+            linkOrAction: '/admin/roles',
           },
           {
             icon: StepValidationOutlinedIcon,
             iconSelected: StepValidationFilledIcon,
             label: 'Processus',
-            link: '/admin/validations',
+            linkOrAction: '/admin/validations',
           },
         ],
         tip: 'Paramètres du portail',

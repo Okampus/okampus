@@ -8,7 +8,7 @@ import { diffChars } from 'diff';
 
 import type { Team } from '../team/team.entity';
 import type { Favorite } from './favorite/favorite.entity';
-import type { Upload } from '../upload/upload';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { ContentOptions } from './content.options';
 import type { Reaction } from './reaction/reaction.entity';
 import type { Report } from './report/report.entity';
@@ -23,9 +23,9 @@ export class Content extends TenantScopedEntity {
   @Property({ type: 'boolean' })
   isAnonymous = false;
 
-  @ManyToMany({ type: 'Upload' })
+  @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()
-  attachments = new Collection<Upload>(this);
+  attachments = new Collection<FileUpload>(this);
 
   @ManyToOne({ type: 'Content', nullable: true, default: null })
   parent: Content | null = null;
@@ -56,7 +56,7 @@ export class Content extends TenantScopedEntity {
 
   @ManyToMany({ type: 'Team' })
   @TransformCollection()
-  representingTeams = new Collection<Team>(this);
+  teams = new Collection<Team>(this);
 
   @ManyToOne({ type: 'Event', nullable: true, default: null })
   event: Event | null = null;

@@ -9,14 +9,14 @@ import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { Form } from '../form/form.entity';
 import type { Project } from '../project/project.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
-import type { Upload } from '../upload/upload';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { EventRole } from './event-role/event-role.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    image?: Upload | null;
+    image?: FileUpload | null;
     roles?: EventRole[];
-    location: ActorAddress;
+    address: ActorAddress;
     supervisor: UserInfo;
     tags?: Tag[];
     project?: Project | null;

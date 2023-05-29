@@ -1,64 +1,56 @@
-import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/material/outlined/back.svg';
-import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/material/outlined/next.svg';
-import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
+// import { AvatarImage, Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
+import { TopbarUser } from './TopbarUser';
+import { ReactComponent as RightPanelOpen } from '@okampus/assets/svg/icons/material/outlined/right-panel-open.svg';
 
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import { logoutMutation } from '@okampus/shared/graphql';
-import { ActionButton, Avatar, Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
-import { NavigationContext, useMe } from '@okampus/ui/hooks';
-import { ActionList } from '@okampus/ui/molecules';
-import { getAvatar } from '@okampus/ui/utils';
-
-import { useApolloClient, useMutation } from '@apollo/client';
+import { NavigationContext, useCurrentUser, useTheme } from '@okampus/ui/hooks';
+// import { MenuList } from '@okampus/ui/molecules';
+import { NovuProvider, PopoverNotificationCenter, NotificationBell } from '@novu/notification-center';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { clsx } from 'clsx';
 
 // TODO: make avatar active when popper is open
 // TODO: improve popover
 
-type TopbarProps = {
-  opacity: number;
-  color: string;
-};
+export type TopbarProps = { color?: string; isSmall: boolean; opacity: number };
+export function Topbar({ color = 'var(--bg-main)', isSmall, opacity }: TopbarProps) {
+  const { currentUser } = useCurrentUser();
+  const { sidePanel, setIsSidePanelUncollapsed, topbar, isTopbarAlwaysShown } = useContext(NavigationContext);
 
-export function Topbar({ opacity, color = 'black' }: TopbarProps) {
-  const navigate = useNavigate();
-  const client = useApolloClient();
+  const [theme, setTheme] = useTheme();
 
-  const { me } = useMe();
-  const { history, setTenant } = useContext(NavigationContext);
+  // const buttonClass = 'h-10 w-10 py-2 rounded-[50%] bg-main';
 
-  const [logout] = useMutation(logoutMutation, {
-    onCompleted: () => {
-      setTenant(null);
-      client.clearStore();
-      navigate('/welcome', { replace: true });
-    },
-  });
+  // const last = history[history.length - 1];
+  // const isFirst = window.history.state?.idx === 0;
+  // const isLast =
+  //   window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
 
-  const avatar = getAvatar(me?.actor?.actorImages);
-  const buttonClass = 'h-10 w-10 py-2 rounded-[50%] bg-main';
-
-  const last = history[history.length - 1];
-  const isFirst = window.history.state?.idx === 0;
-  const isLast =
-    window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
-
-  const actions = [
-    {
-      label: 'Se déconnecter',
-      icon: <LogoutIcon className="h-6" />,
-      linkOrAction: logout,
-    },
-  ];
-
+  const currentIndividualId = currentUser?.individualById?.id as string | undefined;
+  const novuAppId = import.meta.env.VITE_NOVU_APP_ID;
   return (
-    <header className="fixed top-0 w-content bg-transparent h-[var(--topbar-height)] px-[var(--padding-view)] z-[51] flex items-center justify-between">
+    <header className="shrink-0 relative bg-transparent h-[var(--topbar-height)] z-[51] flex items-center justify-between border-b border-color-2">
       <div className="absolute inset-0" style={{ opacity, backgroundColor: color }} />
-      <div className="flex gap-6 items-center">
-        {/* History navigation */}
-        <div className="flex gap-4 opacity-80">
+      <div className="w-full flex items-center z-20 overflow-x-scroll scrollbar">
+        <div className="w-full px-content" style={{ opacity: isTopbarAlwaysShown ? 1 : opacity }}>
+          {topbar}
+        </div>
+      </div>
+
+      <div className="px-content flex items-center gap-5 text-3 justify-end z-20 shrink-0">
+        {isSmall && sidePanel && (
+          <RightPanelOpen className="h-8 w-8 cursor-pointer" onClick={() => setIsSidePanelUncollapsed(true)} />
+        )}
+        {currentIndividualId && (
+          <NovuProvider subscriberId={currentIndividualId} applicationIdentifier={novuAppId} i18n="fr">
+            <PopoverNotificationCenter colorScheme={theme || 'light'}>
+              {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
+            </PopoverNotificationCenter>
+          </NovuProvider>
+        )}
+        <TopbarUser theme={theme} setTheme={setTheme} />
+      </div>
+      {/* <div className="flex gap-6 items-center"> */}
+      {/* History navigation */}
+      {/* <div className="flex gap-4 opacity-80">
           <div
             className={clsx(
               buttonClass,
@@ -79,39 +71,52 @@ export function Topbar({ opacity, color = 'black' }: TopbarProps) {
           >
             <ChevronRightIcon className="h-6" />
           </div>
-        </div>
-
-        {/* Current location */}
-        {/* <div className="text-0 text-[1.75rem] tracking-tighter font-semibold font-title">
         </div> */}
-      </div>
+
+      {/* Current location */}
+      {/* <div className="text-0 text-[1.75rem] tracking-tighter font-semibold font-title">
+        </div> */}
+      {/* </div> */}
 
       {/* User settings */}
-      <div className="z-20">
+      {/* <div className="z-20">
         <Popover forcePlacement={true} placement="bottom-end" placementOffset={20}>
           <PopoverTrigger>
-            <Avatar name={me?.actor?.name} src={avatar} size={18} rounded={AVATAR_USER_ROUNDED} />
+            <AvatarImage
+              name={currentUser?.individualById?.actor?.name}
+              src={avatar}
+              size={18}
+              rounded={AVATAR_USER_ROUNDED}
+            />
           </PopoverTrigger>
           <PopoverContent popoverClassName="!p-0">
-            <div className="flex flex-col w-popover-card">
-              {/* TODO: add as component */}
-              <div className="card-sm bg-4 m-2 flex flex-col gap-2">
-                <div className="flex items-center gap-4">
-                  <Avatar src={avatar} name={me?.actor?.name} size={26} rounded={AVATAR_USER_ROUNDED} />
-                  <div className="flex flex-col">
-                    <div className="text-0 text-lg font-heading leading-tight font-medium">{me?.actor?.name}</div>
-                    <div className="text-3 text-sm font-heading">{me?.actor?.primaryEmail}</div>
+            <MenuList
+              header={
+                <div className="mb-2 pb-2 border-b border-color-2">
+                  <div className="flex items-center gap-4 px-8 py-5 bg-0 -m-2">
+                    <AvatarImage
+                      src={avatar}
+                      name={currentUser?.individualById?.actor?.name}
+                      size={22}
+                      rounded={AVATAR_USER_ROUNDED}
+                    />
+                    <div>
+                      <div className="text-1 text-xl font-semibold">{currentUser?.individualById?.actor?.name}</div>
+                      <div className="text-2">{currentUser?.individualById?.actor?.primaryEmail}</div>
+                    </div>
                   </div>
                 </div>
-                <ActionButton onClick={() => navigate('/me')}>Gérer mon profil</ActionButton>
-              </div>
-              <ActionList actions={actions} />
-              <hr className="border-color-2 w-full" />
-              <div className="text-xs py-3 text-center">RGPD • Conditions d'utilisation</div>
-            </div>
+              }
+              sections={sections}
+              footer={
+                <div className="text-0 mt-2 border-t border-color-2">
+                  <div className="text-xs py-3 text-center">RGPD • Conditions d'utilisation</div>
+                </div>
+              }
+            />
           </PopoverContent>
         </Popover>
-      </div>
+      </div> */}
     </header>
   );
 }

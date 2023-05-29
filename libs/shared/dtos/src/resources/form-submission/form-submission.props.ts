@@ -1,13 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
-import { IsArray, IsObject } from 'class-validator';
-import { FormSubmissionField } from '@okampus/shared/types';
+import { IsObject } from 'class-validator';
+import type { FormSchema, Submission } from '@okampus/shared/types';
 
 @InputType()
 export class FormSubmissionProps {
   @Field(() => GraphQLJSON)
-  @IsArray()
-  @IsObject({ each: true })
+  @IsObject()
   // TODO: custom validator
-  submission!: FormSubmissionField[];
+  submission!: Submission<FormSchema>;
 }

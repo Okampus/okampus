@@ -1,14 +1,14 @@
 import { ManyToOne, PrimaryKey, Property, t } from '@mikro-orm/core';
-import { isIn, snowflake } from '@okampus/shared/utils';
+import { isIn } from '@okampus/shared/utils';
 
 import type { Individual } from './individual/individual.entity';
 
 export abstract class BaseEntity {
-  @PrimaryKey({ type: t.bigint })
-  id: string = snowflake();
+  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."id_generator"()', autoincrement: false })
+  id!: string;
 
-  @Property({ type: 'date', defaultRaw: 'CURRENT_TIMESTAMP' })
-  createdAt = new Date();
+  @Property({ type: 'date', defaultRaw: 'current_timestamp' })
+  createdAt!: Date;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   createdBy: Individual | null = null; // null for system

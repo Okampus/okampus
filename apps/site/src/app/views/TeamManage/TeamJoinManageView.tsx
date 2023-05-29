@@ -1,48 +1,29 @@
-import { ValidateTeamJoinForm } from './ValidateTeamJoinForm';
-import { ReactComponent as ValidateFilledIcon } from '@okampus/assets/svg/icons/material/filled/validate.svg';
-import { ReactComponent as RefuseFilledIcon } from '@okampus/assets/svg/icons/material/filled/refuse.svg';
+import { ReactComponent as CheckCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
+import { ReactComponent as CloseCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/close-circle.svg';
 import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
+import { ReactComponent as FilterFilledIcon } from '@okampus/assets/svg/icons/material/filled/filter.svg';
 
-import { ApprovalState } from '@okampus/shared/enums';
-import {
-  formSubmissionFragment,
-  getFragmentData,
-  userFragment,
-  teamJoinFragment,
-  updateTeamJoinMutation,
-} from '@okampus/shared/graphql';
+import { AvatarImage, RoleBadge, Skeleton } from '@okampus/ui/atoms';
+import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
+import { ActionButton, LabeledTeamJoin } from '@okampus/ui/molecules';
 
-import { ActionButton, Avatar, Skeleton } from '@okampus/ui/atoms';
-import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
-import { LabeledTeamJoin } from '@okampus/ui/molecules';
-
-import { DynamicFormSubmission } from '@okampus/ui/organisms';
 import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import { getAvatar } from '@okampus/ui/utils';
-import { formatDateDayOfWeek } from '@okampus/shared/utils';
+import { ApprovalState, ControlType } from '@okampus/shared/enums';
+import { insertChangeRole, updateTeamJoin } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
-import { useContext, useState } from 'react';
+import { formatDateDayOfWeek } from '@okampus/shared/utils';
+
+import { FormModal, FormSubmissionRender } from '@okampus/ui/organisms';
+import { getAvatar } from '@okampus/ui/utils';
 
 import { useMutation } from '@apollo/client';
+import { useContext, useState } from 'react';
 
-import type { FormSubmissionInfoFragment, UserInfoFragment, TeamJoinInfoFragment } from '@okampus/shared/graphql';
-
-type TeamJoinViewProps = { column: React.ReactNode; panel: React.ReactNode };
-const TeamJoinView = ({ column, panel }: TeamJoinViewProps) => (
-  <div className="flex h-full">
-    <div className="flex flex-col h-full border-r border-color-3 w-80 shrink-0">{column}</div>
-    <div className="flex flex-col h-full w-full">{panel}</div>
-  </div>
-);
-
-export type TeamJoinUser = {
-  join: TeamJoinInfoFragment;
-  joiner: UserInfoFragment;
-  createdBy: UserInfoFragment | null;
-  formSubmission: FormSubmissionInfoFragment | null;
-};
+import type { TeamJoinWithUserInfo } from '@okampus/shared/graphql';
+import type { FormField, Submission, FormSchema } from '@okampus/shared/types';
 
 export function TeamJoinManageView() {
+  const { currentUser } = useCurrentUser();
   const { teamManage } = useTeamManage();
 
   const ALL = 'All';
@@ -69,12 +50,16 @@ export function TeamJoinManageView() {
     },
   ];
 
-  const [selectedTab, setSelectedTab] = useState<(typeof tabs)[number]>(tabs[0]);
-  const [selectedUser, setSelectedUser] = useState<TeamJoinUser | null>(null);
+  const [
+    selectedTab,
+    // setSelectedTab
+  ] = useState<typeof tabs[number]>(tabs[0]);
+  const [selectedTeamJoin, setSelectedTeamJoin] = useState<TeamJoinWithUserInfo | null>(null);
 
-  const [updateTeamJoin] = useMutation(updateTeamJoinMutation);
+  const [updateJoin] = useMutation(updateTeamJoin);
+  const [insertTeamChangeRole] = useMutation(insertChangeRole);
 
-  const { showModal, hideModal, addNotification } = useContext(NavigationContext);
+  const { showOverlay, hideOverlay, setNotification } = useContext(NavigationContext);
 
   // const teamJoinCards = {
   //   Team: {
@@ -119,231 +104,300 @@ export function TeamJoinManageView() {
   //   },
   // };
 
-  if (!teamManage || !teamManage.actor)
-    return (
-      <TeamJoinView
-        column={
-          <>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <Skeleton key={index} />
-            ))}
-          </>
-        }
-        panel={<Skeleton />}
-      />
-    );
-
-  const joins = teamManage.joins.map((join) => {
-    const loadedJoin = getFragmentData(teamJoinFragment, join);
-    return {
-      ...loadedJoin,
-      createdBy: getFragmentData(
-        userFragment,
-        loadedJoin.createdBy?.__typename === 'UserModel' ? loadedJoin.createdBy : null
-      ),
-      joiner: getFragmentData(userFragment, loadedJoin.joiner),
-      formSubmission: getFragmentData(formSubmissionFragment, loadedJoin.formSubmission) ?? null,
-    };
-  });
-
-  const filteredJoins = selectedTab.value === ALL ? joins : joins.filter((join) => join.state === selectedTab.value);
+  const filteredJoins = teamManage
+    ? selectedTab.value === ALL
+      ? teamManage.teamJoins
+      : teamManage.teamJoins.filter((join) => join.state === selectedTab.value)
+    : [];
 
   return (
-    <TeamJoinView
-      column={
-        <div className="flex flex-col border-color-3">
-          <div className="bg-0 pl-[var(--padding-view)] pr-6 py-4 font-heading h-20 flex items-center">
+    <div className="flex w-full gap-10">
+      <div className="flex flex-col h-full w-[22rem] shrink-0">
+        {!teamManage || !teamManage.actor ? (
+          Array.from({ length: 10 }).map((_, index) => <Skeleton key={index} />)
+        ) : (
+          <div className="flex flex-col">
+            <div className="pl-6 pr-3 py-4 h-20 border-b border-color-2 flex items-center">
+              <div className="flex justify-between w-full">
+                <div className="flex gap-2.5 items-center">
+                  <div className="title">{selectedTab.label}</div>
+                  <div className="text-2 text-2xl">({filteredJoins.length})</div>
+                </div>
+                <div className="flex gap-2">
+                  {/* <Popover>
+                    <PopoverTrigger>
+                      <button className="text-0 bg-1 rounded-lg p-2.5">
+                        <FilterFilledIcon className="w-6 h-6" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="bg-0 rounded-2xl">
+  
+                    </PopoverContent>
+                  </Popover> */}
+                  <button className="text-0 bg-2 rounded-lg p-2.5">
+                    <FilterFilledIcon className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ul className="p-2 flex flex-col">
+              {filteredJoins.map((join) => (
+                <li key={join.id as string}>
+                  <LabeledTeamJoin teamJoin={join} onClick={() => setSelectedTeamJoin(join)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col w-[calc(100%-20rem)]">
+        {!teamManage || !teamManage.actor ? (
+          <Skeleton />
+        ) : (
+          <div>
+            {/* <div className="px-content py-4 h-20 border-b border-color-2 flex items-center">
             <div className="flex justify-between">
               <div className="flex gap-1.5 items-center">
-                <div className="text-0 text-xl font-bold">{selectedTab.label}</div>
-                <div className="text-2 text-xl">({filteredJoins.length})</div>
+                <div className="text-0 text-xl font-bold">Vue d'ensemble</div>
               </div>
               <div className="flex gap-2">
-                {/* <Popover>
-                  <PopoverTrigger>
-                    <button className="text-0 bg-1 rounded-xl p-2.5">
-                      <FilterFilledIcon className="w-6 h-6" />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="bg-0 rounded-2xl">
-
-                  </PopoverContent>
-                </Popover> */}
-                {/* <button className="text-0 bg-1 rounded-xl p-2.5">
-                  <EllipsisFilledIcon className="w-6 h-6" />
-                </button> */}
-              </div>
-            </div>
-          </div>
-          <ul className="p-2 flex flex-col">
-            {filteredJoins.map((join) => (
-              <li key={join.id}>
-                <LabeledTeamJoin
-                  teamJoin={join}
-                  joiner={join.joiner}
-                  createdBy={join.createdBy ?? null}
-                  formSubmission={join.formSubmission}
-                  onClick={() =>
-                    setSelectedUser({
-                      join,
-                      joiner: join.joiner,
-                      createdBy: join.createdBy ?? null,
-                      formSubmission: join.formSubmission,
-                    })
-                  }
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      }
-      panel={
-        <div>
-          <div className="bg-0 px-view py-4 font-heading h-20 flex items-center">
-            <div className="flex justify-between">
-              <div className="flex gap-1.5 items-center">
-                <div className="text-0 text-xl font-bold">
-                  {selectedUser ? selectedUser.formSubmission?.description : "Vue d'ensemble"}
-                </div>
-              </div>
-              {/* <div className="flex gap-2">
-                <button className="text-0 bg-1 rounded-xl p-2.5">
+                <button className="text-0 bg-1 rounded-lg p-2.5">
                   <FilterFilledIcon className="w-6 h-6" />
                 </button>
-                <button className="text-0 bg-1 rounded-xl p-2.5">
+                <button className="text-0 bg-1 rounded-lg p-2.5">
                   <EllipsisFilledIcon className="w-6 h-6" />
                 </button>
-              </div> */}
+              </div>
             </div>
-          </div>
-          <div className="p-view">
-            {selectedUser ? (
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-10 items-center">
-                  <div className="flex gap-item items-center">
-                    <Avatar
-                      size={36}
-                      src={getAvatar(selectedUser.joiner.actor?.actorImages)}
-                      name={selectedUser.joiner.actor?.name}
-                      rounded={AVATAR_USER_ROUNDED}
-                    />
-                    <div className="flex flex-col gap-1">
-                      <div className="text-1 font-semibold text-4xl">{selectedUser.joiner.actor?.name}</div>
-                      <div className="text-3 text-xl">
-                        A candidaté{' '}
-                        <span className="text-0 font-medium">{formatDateDayOfWeek(selectedUser.join?.createdAt)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr className="border-color-3" />
-                <DynamicFormSubmission fields={selectedUser.formSubmission?.submission} />
-                <hr className="border-color-3" />
-                <div className="flex flex-col text-0 gap-6">
-                  <div className="flex gap-12">
-                    <div className="flex flex-col gap-2">
-                      <div className="font-heading font-semibold text-2 text-lg">Rôle souhaité</div>
-                      <div style={{ color: selectedUser.join.askedRole.color }} className="font-semibold">
-                        {selectedUser.join.askedRole.name}
-                      </div>
-                    </div>
-                    {selectedUser.join.state === ApprovalState.Approved && (
-                      <div className="flex flex-col gap-2">
-                        <div className="font-heading font-semibold text-2 text-lg">Rôle attribué</div>
-                        <div style={{ color: selectedUser.join.askedRole.color }} className="font-semibold">
-                          {selectedUser.join.receivedRole?.name}
+          </div> */}
+            <div className="pt-6">
+              {
+                selectedTeamJoin ? (
+                  <div className="flex flex-col gap-6">
+                    <div className="flex gap-10 items-center">
+                      <div className="flex gap-item items-center">
+                        <AvatarImage
+                          size={36}
+                          src={getAvatar(selectedTeamJoin.userInfo.individualById?.actor?.actorImages)}
+                          name={selectedTeamJoin.userInfo.individualById?.actor?.name}
+                          rounded={AVATAR_USER_ROUNDED}
+                        />
+                        <div className="flex flex-col gap-1">
+                          <div className="text-1 font-semibold text-4xl">
+                            {selectedTeamJoin.userInfo.individualById?.actor?.name}
+                          </div>
+                          <div className="text-3 text-xl">
+                            A candidaté{' '}
+                            <span className="text-0 font-medium">
+                              {formatDateDayOfWeek(selectedTeamJoin.createdAt as string)}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    )}
+                    </div>
+                    <FormSubmissionRender
+                      schema={selectedTeamJoin.formSubmission?.formEdit.newVersion as FormField[]}
+                      submission={selectedTeamJoin.formSubmission?.submission as Submission<FormSchema>}
+                    />
+                    <div className="flex flex-col text-0 gap-6">
+                      <div className="flex gap-12 px-1">
+                        <div className="flex flex-col gap-2">
+                          <div className="font-semibold text-2 text-lg">Rôle souhaité</div>
+                          <RoleBadge role={selectedTeamJoin.role} className="text-2xl" />
+                        </div>
+                        {selectedTeamJoin.state === ApprovalState.Approved && (
+                          <div className="flex flex-col gap-2">
+                            <div className="font-semibold text-2 text-lg">Rôle attribué</div>
+                            {/* <div style={{ color: selectedTeamJoin.roleByReceivedRoleId?.color }} className="font-semibold">
+                          {selectedTeamJoin.roleByReceivedRoleId?.name}
+                        </div> */}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex gap-item">
+                        {selectedTeamJoin.state === ApprovalState.Pending ? (
+                          <>
+                            <ActionButton
+                              action={{
+                                label: 'Accepter la candidature',
+                                type: ActionType.Success,
+                                linkOrActionOrMenu: () =>
+                                  showOverlay(
+                                    <FormModal
+                                      title="Attribuer un rôle"
+                                      schema={
+                                        [
+                                          {
+                                            name: 'role',
+                                            label: 'Rôle attribué',
+                                            type: ControlType.Select,
+                                            options: teamManage.roles.map((role) => ({
+                                              label: <RoleBadge role={role} />,
+                                              value: role?.id as string,
+                                            })),
+                                            isRequired: true,
+                                          },
+                                        ] as const
+                                      }
+                                      submitOptions={{
+                                        label: 'Attribuer',
+                                        type: ActionType.Action,
+                                        onSubmit: (values) => {
+                                          insertTeamChangeRole({
+                                            variables: {
+                                              insert: {
+                                                createdById: currentUser?.individualById?.id as string,
+                                                tenantId: teamManage.tenantId as string,
+                                                receivedPoleId: teamManage.poles?.[0]?.id as string,
+                                                receivedRoleId: values.role,
+                                                teamId: teamManage.id as string,
+                                                userId: selectedTeamJoin.userInfo.id as string,
+                                                note: '',
+                                              },
+                                            },
+                                            onCompleted: (data) => {
+                                              updateJoin({
+                                                variables: {
+                                                  id: selectedTeamJoin.id as string,
+                                                  update: {
+                                                    teamChangeRoleId: data.insertChangeRoleOne?.id as string,
+                                                    state: ApprovalState.Approved,
+                                                  },
+                                                },
+                                                onCompleted: () => {
+                                                  setNotification({
+                                                    type: ToastType.Success,
+                                                    message: `${selectedTeamJoin.individual?.actor?.name} a rejoint l'équipe ${teamManage.actor?.name} !`,
+                                                  });
+                                                  setSelectedTeamJoin(null);
+                                                  hideOverlay();
+                                                },
+                                                onError: (error) =>
+                                                  setNotification({
+                                                    type: ToastType.Error,
+                                                    message: error.message,
+                                                  }),
+                                              });
+                                            },
+                                          });
+                                        },
+                                      }}
+                                    />
+                                  ),
+                                // {
+                                //   showButtonModal({
+                                //     title: `Adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name}`,
+                                //     content: (
+                                //       <ValidateTeamJoinForm
+                                //         teamJoin={selectedTeamJoin}
+                                //         onSuccess={() => setSelectedTeamJoin(null)}
+                                //       />
+                                //     ),
+                                //   });
+                                // },
+                              }}
+                            />
+                            <ActionButton
+                              action={{
+                                label: 'Refuser la candidature',
+                                type: ActionType.Danger,
+                                linkOrActionOrMenu: () =>
+                                  updateJoin({
+                                    variables: {
+                                      id: selectedTeamJoin.id as string,
+                                      update: {
+                                        state: ApprovalState.Rejected,
+                                      },
+                                    },
+                                    onCompleted: () => {
+                                      setSelectedTeamJoin(null);
+                                      setNotification({
+                                        type: ToastType.Success,
+                                        message: `L'adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name} a été refusée !`,
+                                      });
+                                    },
+                                    onError: (error) =>
+                                      setNotification({
+                                        type: ToastType.Error,
+                                        message: error.message,
+                                      }),
+                                  }),
+                              }}
+                            />
+                          </>
+                        ) : selectedTeamJoin.state === ApprovalState.Approved ? (
+                          <div className="text-[var(--success)] flex gap-2 text-3xl font-semibold">
+                            <CheckCircleFilledIcon className="h-8 w-8" />
+                            Candidature approuvée
+                            <span className="text-0 font-medium">
+                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
+                            </span>
+                          </div>
+                        ) : selectedTeamJoin.state === ApprovalState.Rejected ? (
+                          <div className="text-[var(--danger)] flex gap-2 text-3xl font-semibold">
+                            <CloseCircleFilledIcon className="h-8 w-8" />
+                            Candidature refusée
+                            <span className="text-0 font-medium">
+                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="text-gray-500 flex gap-2 text-3xl font-semibold">
+                            <CanceledFilledIcon className="h-8 w-8" />
+                            Candidature annulée
+                            <span className="text-0 font-medium">
+                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-item">
-                    {selectedUser.join.state === ApprovalState.Pending ? (
-                      <>
-                        <ActionButton
-                          variant={ActionType.Confirm}
-                          onClick={() => {
-                            showModal({
-                              title: `Adhésion de ${selectedUser.joiner.actor?.name}`,
-                              content: (
-                                <ValidateTeamJoinForm teamJoin={selectedUser} onSuccess={() => setSelectedUser(null)} />
-                              ),
-                            });
-                          }}
-                        >
-                          Accepter la candidature
-                        </ActionButton>
-                        <ActionButton
-                          variant={ActionType.Danger}
-                          onClick={() =>
-                            updateTeamJoin({
-                              variables: {
-                                updateTeamJoin: {
-                                  id: selectedUser.join.id,
-                                  state: ApprovalState.Rejected,
-                                },
-                              },
-                              onCompleted: () => {
-                                setSelectedUser(null);
-                                addNotification({
-                                  type: ToastType.Success,
-                                  message: `L'adhésion de ${selectedUser.joiner.actor?.name} a été refusée !`,
-                                });
-                              },
-                              onError: (error) =>
-                                addNotification({
-                                  type: ToastType.Error,
-                                  message: error.message,
-                                }),
-                            })
-                          }
-                        >
-                          Refuser
-                        </ActionButton>
-                      </>
-                    ) : selectedUser.join.state === ApprovalState.Approved ? (
-                      <div className="text-[var(--success)] flex gap-2 text-3xl font-heading font-semibold">
-                        <ValidateFilledIcon className="h-8 w-8" />
-                        Candidature approuvée
-                        <span className="text-0 font-medium">{formatDateDayOfWeek(selectedUser.join?.updatedAt)}</span>
-                      </div>
-                    ) : selectedUser.join.state === ApprovalState.Rejected ? (
-                      <div className="text-[var(--danger)] flex gap-2 text-3xl font-heading font-semibold">
-                        <RefuseFilledIcon className="h-8 w-8" />
-                        Candidature refusée
-                        <span className="text-0 font-medium">{formatDateDayOfWeek(selectedUser.join?.updatedAt)}</span>
-                      </div>
-                    ) : (
-                      <div className="text-gray-500 flex gap-2 text-3xl font-heading font-semibold">
-                        <CanceledFilledIcon className="h-8 w-8" />
-                        Candidature annulée
-                        <span className="text-0 font-medium">{formatDateDayOfWeek(selectedUser.join?.updatedAt)}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              // <div>
-              //   <div className="flex text-0 gap-item">
-              //     <Avatar
-              //       size={22}
-              //       src={getAvatar(selectedUser.joiner.actor?.actorImages)}
-              //       name={selectedUser.joiner.actor?.name}
-              //       rounded={AVATAR_USER_ROUNDED}
-              //     />
-              //     <div className="flex flex-col font-heading">
-              //       <div className="text-1 font-semibold">{selectedUser.joiner.actor?.name}</div>
-              //       <div>{selectedUser.joiner.actor?.name}</div>
-              //     </div>
-              //   </div>
-              // </div>
-              <div className="text-0">
-                <div className="text-0 text-xl font-bold">Aucune adhésion sélectionnée</div>
-              </div>
-            )}
+                ) : null
+                // <div className="text-0">
+                //   <div className="text-0 text-xl font-bold">Aucune adhésion sélectionnée</div>
+                // </div>
+              }
+            </div>
           </div>
-        </div>
-      }
-    />
+        )}
+      </div>
+    </div>
+    // <TeamJoinView
+    //   column={
+    //     <div className="flex flex-col">
+    //       <div className="pl-6 pr-3 py-4 h-20 border-b border-color-2 flex items-center">
+    //         <div className="flex justify-between w-full">
+    //           <div className="flex gap-1.5 items-center">
+    //             <div className="text-0 text-xl font-bold">{selectedTab.label}</div>
+    //             <div className="text-2 text-xl">({filteredJoins.length})</div>
+    //           </div>
+    //           <div className="flex gap-2">
+    //             {/* <Popover>
+    //               <PopoverTrigger>
+    //                 <button className="text-0 bg-1 rounded-lg p-2.5">
+    //                   <FilterFilledIcon className="w-6 h-6" />
+    //                 </button>
+    //               </PopoverTrigger>
+    //               <PopoverContent className="bg-0 rounded-2xl">
+
+    //               </PopoverContent>
+    //             </Popover> */}
+    //             <button className="text-0 bg-2 rounded-lg p-2.5">
+    //               <FilterFilledIcon className="w-6 h-6" />
+    //             </button>
+    //           </div>
+    //         </div>
+    //       </div>
+    //       <ul className="p-2 flex flex-col">
+    //         {filteredJoins.map((join) => (
+    //           <li key={join.id as string}>
+    //             <LabeledTeamJoin teamJoin={join} onClick={() => setSelectedTeamJoin(join)} />
+    //           </li>
+    //         ))}
+    //       </ul>
+    //     </div>
+    //   }
+    // />
   );
 }

@@ -5,7 +5,6 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const contentMasterBaseInfo = Selector('ContentMaster')({
   ...entityBase,
-  // contentMasterTags: [{}, { tag: tagBaseInfo }],
   name: true,
   slug: true,
   content: contentBaseInfo,
