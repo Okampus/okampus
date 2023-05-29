@@ -7,7 +7,7 @@ export const customFontsToLoad = {
   harmonySansRegular: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Regular.ttf'),
   harmonySansLight: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Light.ttf'),
   harmonySansThin: require('@okampus/assets/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Thin.ttf'),
-  spaceMonoRegular: require('@okampus/assets/fonts/SpaceMono/SpaceMono-Regular.ttf'),
+  spaceMonoRegular: require('@okampus/assets/fonts/ChivoMono/ChivoMono-Regular.ttf'),
 };
 
 export type FontWeightsPrimary = 'light' | 'normal' | 'medium' | 'semiBold' | 'bold';

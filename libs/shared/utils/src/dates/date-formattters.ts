@@ -28,7 +28,6 @@ const fmtSimple = Intl.DateTimeFormat('fr', {
 });
 
 const fmtHourSimple = Intl.DateTimeFormat('fr', { hour: 'numeric', minute: 'numeric' });
-const fmtWeekDay = Intl.DateTimeFormat('fr', { weekday: 'short' });
 
 export const getDate = (date?: string | Date): Date => {
   if (!date) return new Date();

@@ -21,7 +21,7 @@ function selectionSetToObject(selectionSet: string[]): Fields {
     const deepFields = field.split('.');
     let current = result;
     for (const deepField of deepFields) {
-      if (!current[deepField]) current[deepField] = deepField === deepFields[deepFields.length - 1] ? true : {};
+      if (!current[deepField]) current[deepField] = deepField === deepFields.at(-1) ? true : {};
       const field = current[deepField];
       if (typeof field !== 'boolean') current = field;
     }

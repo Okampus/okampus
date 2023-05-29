@@ -8,7 +8,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],
+  "files": ["../../node_modules/@nx/expo/typings/svg.d.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

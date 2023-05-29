@@ -1,12 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "okampus",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
+      "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "build-storybook"],
-        "accessToken": "ODRiNjQ5MzktMDJjZS00MDIwLTljOTYtZjM2MGUzOGQ3NWZlfHJlYWQtd3JpdGU="
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
@@ -43,18 +41,24 @@
   },
   "defaultProject": "api",
   "generators": {
-    "@nrwl/react": {
+    "@nx/next": {
       "application": {
-        "style": "css",
+        "style": "scss",
+        "linter": "eslint"
+      }
+    },
+    "@nx/react": {
+      "application": {
+        "style": "scss",
         "linter": "eslint",
         "bundler": "vite",
         "babel": true
       },
       "component": {
-        "style": "css"
+        "style": "scss"
       },
       "library": {
-        "style": "css",
+        "style": "scss",
         "linter": "eslint"
       }
     }

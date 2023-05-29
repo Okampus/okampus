@@ -80,7 +80,6 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 
-import type { ISubscribersDefine } from '@novu/node';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
@@ -324,7 +323,8 @@ export class AppModule implements NestModule, OnModuleInit {
           // Delete all subscribers
           if (subscribersResult.data.length === 0) break;
 
-          const deletePromise = async ({ subscriberId: id }: ISubscribersDefine) => await novu.subscribers.delete(id);
+          const deletePromise = async ({ subscriberId: id }: { subscriberId: string }) =>
+            await novu.subscribers.delete(id);
           await Promise.all(subscribersResult.data.map(deletePromise));
         } while (subscribers.data.length > 0);
 

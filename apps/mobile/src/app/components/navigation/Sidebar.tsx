@@ -75,14 +75,5 @@ export function Sidebar(props: DrawerContentComponentProps) {
         </ScrollView>
       </View>
     </SafeAreaView>
-    // <View>
-    // <DrawerContentScrollView {...props}>
-    //     <StyledView className="flex flex-row">
-    //         <Text style={{ color: 'red' }}>Test</Text>
-    //         <StyledDrawerItemList className="w-12" {...props} />
-    //     </StyledView>
-    // </DrawerContentScrollView>
-    //     {/* <Text>Test</Text>
-    // </View> */}
   );
 }

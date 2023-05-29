@@ -5,7 +5,7 @@ const separatorRegex = new RegExp(`[${numberSeparators.join('')}]`, 'g');
 const isNumber = (char: string) => char >= '0' && char <= '9';
 const maxDecimalPlaces = 4;
 export function extractPositiveNumber(value: string): number | null {
-  const matches = value.replace(/\s/g, '').match(extractNumberRegex);
+  const matches = value.replaceAll(/\s/g, '').match(extractNumberRegex);
   if (!matches) return null;
 
   const match = matches[0];
@@ -19,12 +19,12 @@ export function extractPositiveNumber(value: string): number | null {
     break;
   }
 
-  if (!lastSeparator || match.replace(new RegExp(`[^${lastSeparator}]`, 'g'), '').length > 1)
-    return Number.parseInt(match.replace(separatorRegex, ''));
+  if (!lastSeparator || match.replaceAll(new RegExp(`[^${lastSeparator}]`, 'g'), '').length > 1)
+    return Number.parseInt(match.replaceAll(separatorRegex, ''));
 
   const [numberPart, decimalPart] = match.split(lastSeparator);
   return (
-    Number.parseInt(numberPart.replace(separatorRegex, '')) +
+    Number.parseInt(numberPart.replaceAll(separatorRegex, '')) +
     Number.parseInt(decimalPart.padEnd(maxDecimalPlaces, '0')) / 10 ** maxDecimalPlaces
   );
 }

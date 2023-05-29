@@ -49,7 +49,7 @@ export function ReceiptUpload({ values, setValues }: ReceiptUploadProps) {
         ({ name, price, quantity }) =>
           (description += `(${(price * quantity).toFixed(2)} €)${
             quantity > 1 ? (price ? ` ${price.toFixed(2)} € x ${quantity}` : ` ${quantity}`) : ''
-          } ${name.replace(/\n/g, ' / ')}\n`)
+          } ${name.replaceAll('\n', ' / ')}\n`)
       );
       if (data?.processReceipt?.phone) description += `\nTéléphone : ${data.processReceipt.phone}`;
 

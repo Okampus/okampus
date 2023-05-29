@@ -5,7 +5,7 @@
   "dependencies": {
     "@expo/metro-config": "*",
     "@expo/webpack-config": "*",
-    "@nrwl/expo": "*",
+    "@nx/expo": "*",
     "@storybook/core-common": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",

@@ -1,5 +1,5 @@
 import { capitalize } from './capitalize';
 
 export function toTitleCase(str: string): string {
-  return str.replace(/\b\w/g, capitalize);
+  return str.replaceAll(/\b\w/g, capitalize);
 }

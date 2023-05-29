@@ -648,15 +648,15 @@ const charMap = {
 export function toSlug(value: string): string {
   value = value
     .trim()
-    .replace(/[\s.]+/g, '-')
+    .replaceAll(/[\s.]+/g, '-')
     .toLowerCase();
   for (const key of value) {
     if (value.includes(key) && isIn(key, charMap)) {
       const replaceValue = charMap[key];
-      value = value.replace(key, replaceValue);
+      value = value.replaceAll(key, replaceValue);
     }
   }
 
-  value = value.replace(/[^\w-]/g, '');
+  value = value.replaceAll(/[^\w-]/g, '');
   return value;
 }

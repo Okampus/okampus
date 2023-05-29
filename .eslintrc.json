@@ -1,6 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
+  "plugins": ["@nx", "import", "unused-imports"],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -12,13 +13,12 @@
       }
     }
   },
-  "plugins": ["@nrwl/nx", "import", "unused-imports"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["plugin:unicorn/recommended"],
       "rules": {
-        "import/no-cycle": ["error", { "maxDepth": 3, "ignoreExternal": true }],
+        "import/no-cycle": ["error", { "maxDepth": 2, "ignoreExternal": true }],
         "import/order": [
           "error",
           {
@@ -42,7 +42,7 @@
             "argsIgnorePattern": "^_"
           }
         ],
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "allow": [],
@@ -164,7 +164,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
+      "extends": ["plugin:@nx/typescript"],
       "rules": {
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/consistent-type-imports": "warn"
@@ -172,7 +172,7 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "extends": ["plugin:@nx/javascript"],
       "rules": {
         "no-unused-vars": "off"
       }

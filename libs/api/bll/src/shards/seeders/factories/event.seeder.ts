@@ -34,7 +34,7 @@ export class EventSeeder extends Factory<Event> {
     if (submitted) {
       step = this.steps[randomInt(0, this.steps.length - 1)];
       state =
-        step === this.steps[this.steps.length - 1]
+        step === this.steps.at(-1)
           ? Math.random() > 0.5
             ? EventState.Approved
             : EventState.Published

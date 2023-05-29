@@ -59,7 +59,7 @@ const getCorrectYear = (year: string) => {
 };
 
 export function extractDate(value: string) {
-  const clean = removeDiacritics(value).toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ');
+  const clean = removeDiacritics(value).toLowerCase().replaceAll(/\W/g, ' ').replaceAll(/\s+/g, ' ');
 
   // first, test YMD, DMY, MDY (order is important)
   const regexToTest = [ymdRegex, dmyRegex, mdyRegex];

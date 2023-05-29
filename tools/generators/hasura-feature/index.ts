@@ -1,4 +1,4 @@
-import { Tree, formatFiles, generateFiles, names, joinPathFragments } from '@nrwl/devkit';
+import { Tree, formatFiles, generateFiles, names, joinPathFragments } from '@nx/devkit';
 
 function pluralize(str: string) {
   if (str.endsWith('s') || str.endsWith('sh') || str.endsWith('ch') || str.endsWith('x') || str.endsWith('z'))

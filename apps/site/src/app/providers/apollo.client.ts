@@ -8,7 +8,7 @@ import { setContext } from '@apollo/client/link/context';
 
 const parseHeaders = (rawHeaders: string): Headers => {
   const headers = new Headers();
-  const preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ');
+  const preProcessedHeaders = rawHeaders.replaceAll(/\r?\n[\t ]+/g, ' ');
   const preProcessedHeadersList = preProcessedHeaders.split(/\r?\n/);
   for (const preProcessedHeader of preProcessedHeadersList) {
     const parts = preProcessedHeader.split(':');
