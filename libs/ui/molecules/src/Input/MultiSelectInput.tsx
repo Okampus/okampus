@@ -65,7 +65,7 @@ export function MultiSelectInput<T>({
             {items.map((item, idx) => (
               <button
                 key={idx}
-                className="flex items-center py-2.5 px-3.5 rounded-md text-0"
+                className="flex items-center py-2.5 px-3 rounded-md text-0"
                 onClick={() => (onChange(item.value), setIsOpen(false))}
               >
                 {item.label}

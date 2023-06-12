@@ -1,11 +1,14 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+'use client';
 
 import { ReactComponent as GoFilledIcon } from '@okampus/assets/svg/icons/material/filled/go.svg';
 
-import { AVATAR_TEAM_ROUNDED, BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
+import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { AvatarImage, BannerImage } from '@okampus/ui/atoms';
 import { getAvatar, getBanner } from '@okampus/ui/utils';
+
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
 import type { TeamBaseInfo } from '@okampus/shared/graphql';
 
 type TeamCardProps = {
@@ -35,12 +38,7 @@ export function TeamListCard({ team, link }: TeamCardProps) {
           name={team.actor?.name}
         />
         <div className="absolute -bottom-4 left-6 rounded-xl bg-0 p-1">
-          <AvatarImage
-            name={team.actor?.name}
-            src={getAvatar(team.actor?.actorImages)}
-            size={20}
-            rounded={AVATAR_TEAM_ROUNDED}
-          />
+          <AvatarImage name={team.actor?.name} src={getAvatar(team.actor?.actorImages)} size={20} type="team" />
         </div>
       </div>
       <div className="flex flex-col gap-3 px-5 mb-5">

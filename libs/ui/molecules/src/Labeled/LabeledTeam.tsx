@@ -1,7 +1,6 @@
 import { TeamPopoverCard } from '../PopoverCard/TeamPopoverCard';
 import { AvatarImage } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
-import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
+import clsx from 'clsx';
 
 export type TeamLabelProps = {
   avatar?: string;
@@ -15,7 +14,7 @@ export function LabeledTeam({ name, teamType, id, avatar, ellipsis }: TeamLabelP
   return (
     <div className="flex gap-3 items-center text-hover contrast-hover text-0-hover">
       <TeamPopoverCard teamId={id}>
-        <AvatarImage src={avatar} name={name} size={teamType ? 18 : 11} rounded={AVATAR_TEAM_ROUNDED} />
+        <AvatarImage src={avatar} name={name} size={teamType ? 18 : 11} type="team" />
       </TeamPopoverCard>
 
       <TeamPopoverCard teamId={id}>

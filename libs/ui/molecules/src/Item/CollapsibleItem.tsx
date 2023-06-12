@@ -1,5 +1,5 @@
 import { ReactComponent as ChevronRightFilledIcon } from '@okampus/assets/svg/icons/material/filled/chevron-right.svg';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type CollapsibleItemProps = {
   open: boolean;

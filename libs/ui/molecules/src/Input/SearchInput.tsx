@@ -1,5 +1,5 @@
 import { ReactComponent as CheckFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import type { InputOptions, SelectItem } from '@okampus/shared/types';
 
 export type SearchInputProps<T> = {
@@ -71,7 +71,7 @@ export function SearchInput<T>({
   //           {items.map((item, idx) => (
   //             <button
   //               key={idx}
-  //               className="flex items-center py-2.5 px-3.5 rounded-md text-0"
+  //               className="flex items-center py-2.5 px-3 rounded-md text-0"
   //               onClick={() => (onChange(item.value), setIsOpen(false))}
   //             >
   //               {item.label}

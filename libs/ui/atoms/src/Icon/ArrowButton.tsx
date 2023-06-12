@@ -1,7 +1,7 @@
 import { ReactComponent as ChevronLeftIcon } from '@okampus/assets/svg/icons/material/outlined/back.svg';
 import { ReactComponent as ChevronRightIcon } from '@okampus/assets/svg/icons/material/outlined/next.svg';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useKeyPressEvent } from 'react-use';
 
 export type ArrowButtonProps = {

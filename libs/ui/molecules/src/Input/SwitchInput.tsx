@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import type { InputOptions } from '@okampus/shared/types';
 
 export type SwitchInputProps = { checked: boolean; onChange: (value: boolean) => void; options: InputOptions };

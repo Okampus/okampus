@@ -1,6 +1,6 @@
 import { CloseButton } from '../Icon/CloseButton';
 import { NavigationContext } from '@okampus/ui/hooks';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 

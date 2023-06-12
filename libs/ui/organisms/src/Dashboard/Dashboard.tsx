@@ -4,8 +4,10 @@ import { ReactComponent as DownFilledIcon } from '@okampus/assets/svg/icons/mate
 
 import { Align } from '@okampus/shared/enums';
 import { Skeleton } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import React from 'react';
+
+// TODO: add grouping rows.
 
 export type Column<T> = {
   label: React.ReactNode;

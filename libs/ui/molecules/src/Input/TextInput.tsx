@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useContext } from 'react';
 import { NavigationContext } from '@okampus/ui/hooks';
 import { ToastType } from '@okampus/shared/types';

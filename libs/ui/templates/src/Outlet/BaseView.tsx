@@ -1,6 +1,6 @@
 import { NavigationContext } from '@okampus/ui/hooks';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useContext, useEffect } from 'react';
 
 export type BaseViewProps = {

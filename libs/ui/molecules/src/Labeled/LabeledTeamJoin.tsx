@@ -1,12 +1,12 @@
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import { ApprovalState } from '@okampus/shared/enums';
-import { AvatarImage, RoleBadge } from '@okampus/ui/atoms';
-import { getAvatar } from '@okampus/ui/utils';
-
 import { ReactComponent as TimeOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/time.svg';
 import { ReactComponent as CheckCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
 import { ReactComponent as CloseCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/close-circle.svg';
 import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
+
+import { ApprovalState } from '@okampus/shared/enums';
+import { AvatarImage } from '@okampus/ui/atoms';
+import { getAvatar } from '@okampus/ui/utils';
+
 import type { TeamJoinWithUserInfo } from '@okampus/shared/graphql';
 
 export type LabeledTeamJoinProps = {
@@ -22,14 +22,11 @@ export function LabeledTeamJoin({ teamJoin, onClick }: LabeledTeamJoinProps) {
           size={22}
           src={getAvatar(teamJoin.userInfo.individualById?.actor?.actorImages)}
           name={teamJoin.userInfo.individualById?.actor?.name}
-          rounded={AVATAR_USER_ROUNDED}
+          type="user"
         />
         <div className="flex flex-col gap-0.5 font-heading">
           <div className="text-1 font-bold text-lg line-clamp-1">{teamJoin.userInfo.individualById?.actor?.name}</div>
-          <div className="flex items-center gap-1 text-xs">
-            Pour le rôle
-            <RoleBadge role={teamJoin.role} className="text-base" />
-          </div>
+          <div className="flex items-center gap-1 text-xs">Pour le rôle de {teamJoin.role.name}</div>
         </div>
       </div>
       {teamJoin.state === ApprovalState.Approved ? (

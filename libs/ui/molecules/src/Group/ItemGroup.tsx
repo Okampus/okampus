@@ -1,7 +1,7 @@
 import { VerticalList } from './VerticalList';
 import { Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 const defaultRenderMore = (extra: number, size: number, rounded: number) => (
   <div

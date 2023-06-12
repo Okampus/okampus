@@ -1,7 +1,3 @@
-import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { clsx } from 'clsx';
-
 import {
   useFloating,
   autoUpdate,
@@ -20,6 +16,12 @@ import {
   safePolygon,
   size,
 } from '@floating-ui/react';
+
+import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState, useRef, useMemo, createContext, useContext, forwardRef, isValidElement, cloneElement } from 'react';
+
+import type { ReactNode, HTMLProps, ButtonHTMLAttributes } from 'react';
 import type { MotionProps } from 'framer-motion';
 import type { Placement } from '@floating-ui/react';
 
@@ -54,11 +56,11 @@ export function usePopover({
   controlledOpen,
   onOpenChange,
 }: PopoverOptions = {}) {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
-  const [labelId, setLabelId] = React.useState<string | undefined>();
-  const [descriptionId, setDescriptionId] = React.useState<string | undefined>();
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
+  const [labelId, setLabelId] = useState<string | undefined>();
+  const [descriptionId, setDescriptionId] = useState<string | undefined>();
 
-  const arrowRef = React.useRef(null);
+  const arrowRef = useRef(null);
 
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = onOpenChange ?? setUncontrolledOpen;
@@ -101,7 +103,7 @@ export function usePopover({
     role,
   ]);
 
-  return React.useMemo(
+  return useMemo(
     () => ({
       open,
       setOpen,
@@ -121,15 +123,15 @@ export function usePopover({
 }
 
 type ContextType = ReturnType<typeof usePopover> | null;
-const PopoverContext = React.createContext<ContextType>(null);
+const PopoverContext = createContext<ContextType>(null);
 
 export const usePopoverContext = () => {
-  const context = React.useContext(PopoverContext);
+  const context = useContext(PopoverContext);
   if (context == null) throw new Error('Popover components must be wrapped in <Popover />');
   return context;
 };
 
-type PopoverProps = { children: React.ReactNode; triggerOn?: 'click' | 'hover' } & PopoverOptions;
+type PopoverProps = { children: ReactNode; triggerOn?: 'click' | 'hover' } & PopoverOptions;
 export function Popover({ children, modal = false, triggerOn = 'click', ...restOptions }: PopoverProps) {
   // This can accept any props as options, e.g. `placement`,
   // or other positioning options.
@@ -137,8 +139,8 @@ export function Popover({ children, modal = false, triggerOn = 'click', ...restO
   return <PopoverContext.Provider value={popover}>{children}</PopoverContext.Provider>;
 }
 
-type PopoverTriggerProps = { children: React.ReactNode; asChild?: boolean; motionConfig?: MotionProps };
-export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & PopoverTriggerProps>(
+type PopoverTriggerProps = { children: ReactNode; asChild?: boolean; motionConfig?: MotionProps };
+export const PopoverTrigger = forwardRef<HTMLElement, HTMLProps<HTMLElement> & PopoverTriggerProps>(
   function PopoverTrigger({ children, asChild = false, motionConfig, ...props }, propRef) {
     const context = usePopoverContext();
 
@@ -149,8 +151,8 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTML
     const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]) as any;
 
     // `asChild` allows the user to pass any element as the anchor
-    if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(
+    if (asChild && isValidElement(children)) {
+      return cloneElement(
         children,
         context.getReferenceProps({
           ref,
@@ -177,7 +179,7 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTML
 );
 
 type PopoverContentProps = { backgroundClass?: string; popoverClassName?: string; motionConfig?: MotionProps };
-export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & PopoverContentProps>(
+export const PopoverContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & PopoverContentProps>(
   function PopoverContent({ backgroundClass, popoverClassName = '', ...props }, propRef) {
     const { context: floatingContext, ...context } = usePopoverContext();
     const ref = useMergeRefs([context.refs.setFloating, propRef]);
@@ -258,7 +260,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLProps<H
   }
 );
 
-export const PopoverClose = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+export const PopoverClose = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
   function PopoverClose({ children, ...props }, ref) {
     const { setOpen } = usePopoverContext();
     return (

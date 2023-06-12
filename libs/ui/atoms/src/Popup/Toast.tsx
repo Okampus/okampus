@@ -8,7 +8,7 @@ import { ReactComponent as InfoIcon } from '@okampus/assets/svg/icons/material/f
 import { ToastType } from '@okampus/shared/types';
 import { NavigationContext } from '@okampus/ui/hooks';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 

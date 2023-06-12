@@ -1,6 +1,6 @@
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/filled/close.svg';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useKeyPressEvent } from 'react-use';
 
 // 'h-10 w-10 rounded-[50%] border-2 border-[var(--text-0)] contrast-hover flex justify-center items-center';

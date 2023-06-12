@@ -27,7 +27,7 @@ export function AvatarGroupUser({ users, itemsCount, limit = 3, size = 14 }: Ava
       rounded={AVATAR_USER_ROUNDED}
       render={(avatarProps) => (
         <UserPopoverCard userId={avatarProps.id}>
-          <AvatarImage {...avatarProps} size={size} rounded={AVATAR_USER_ROUNDED} />
+          <AvatarImage {...avatarProps} size={size} type="user" />
         </UserPopoverCard>
       )}
       renderListElement={(item) => <LabeledUser name={item.name ?? '?'} avatar={{ src: item.src }} id={item.id} />}

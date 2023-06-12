@@ -3,7 +3,7 @@ import { CalendarDateInput } from './CalendarDateInput';
 import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/material/filled/event-month.svg';
 import { Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
 import { useOutsideClick } from '@okampus/ui/hooks';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 import type { InputOptions } from '@okampus/shared/types';
 import type { ValidRefTarget } from '@okampus/ui/hooks';

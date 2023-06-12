@@ -1,7 +1,6 @@
 import { UserPopoverCard } from '../PopoverCard/UserPopoverCard';
 import { AvatarImage } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+import clsx from 'clsx';
 
 import type { AvatarImageProps } from '@okampus/ui/atoms';
 
@@ -27,7 +26,7 @@ export function LabeledUser({
   return (
     <div className={clsx('flex items-center font-semibold text-hover contrast-hover text-1', className)}>
       <UserPopoverCard userId={id}>
-        <AvatarImage src={avatar?.src} name={name} size={avatar?.size ?? 18} rounded={AVATAR_USER_ROUNDED} />
+        <AvatarImage src={avatar?.src} name={name} size={avatar?.size ?? 18} type="user" />
       </UserPopoverCard>
 
       <UserPopoverCard userId={id}>

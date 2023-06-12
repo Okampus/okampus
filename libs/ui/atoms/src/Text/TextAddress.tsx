@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type TextAddressProps = {
   address: { name: string; street: string; city: string; country: string };

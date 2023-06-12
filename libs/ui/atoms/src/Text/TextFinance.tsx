@@ -1,5 +1,5 @@
 import { formatCurrency, formatCurrencyWithSign } from '@okampus/shared/utils';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type TextFinanceProps = {
   amount: number;

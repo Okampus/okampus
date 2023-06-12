@@ -1,11 +1,12 @@
 import { PopoverCard } from './PopoverCard';
 import { CardSkeleton } from '../Skeleton/CardSkeleton';
 
+import { AVATAR_TEAM_ROUNDED, TEAM_ROUTE } from '@okampus/shared/consts';
+import { teamWithMembersInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
+import { formatDateStandard } from '@okampus/shared/utils';
+
 import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
 import { getAvatar, getBanner } from '@okampus/ui/utils';
-import { AVATAR_TEAM_ROUNDED, TEAM_ROUTE } from '@okampus/shared/consts';
-import { formatDateStandard } from '@okampus/shared/utils';
-import { teamWithMembersInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
 
 import type { TeamWithMembersInfo } from '@okampus/shared/graphql';
 

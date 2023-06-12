@@ -1,8 +1,8 @@
 import { UserPopoverCard } from '../PopoverCard/UserPopoverCard';
 
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { AvatarImage } from '@okampus/ui/atoms';
 import { getAvatar } from '@okampus/ui/utils';
+
 import type { TeamMemberWithUserInfo } from '@okampus/shared/graphql';
 
 export type LabelSideUserInfoOptions = {
@@ -16,12 +16,7 @@ export function LabeledSideUser({ teamMember }: LabelSideUserInfoOptions) {
   return (
     <UserPopoverCard userId={teamMember.userInfo.id} triggerClassName="w-full rounded-lg">
       <div className="flex gap-item items-center p-2 bg-1-hover rounded-lg text-1 text-0-hover font-semibold">
-        <AvatarImage
-          src={avatar}
-          name={teamMember.userInfo.individualById?.actor?.name}
-          size={17}
-          rounded={AVATAR_USER_ROUNDED}
-        />
+        <AvatarImage src={avatar} name={teamMember.userInfo.individualById?.actor?.name} size={17} type="user" />
         <div className="line-clamp-1">{teamMember.userInfo.individualById?.actor?.name}</div>
       </div>
     </UserPopoverCard>

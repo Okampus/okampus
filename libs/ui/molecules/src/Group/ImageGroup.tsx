@@ -1,5 +1,5 @@
 import { HorizontalImage } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type ImageGroupProps = {
   images: string[];

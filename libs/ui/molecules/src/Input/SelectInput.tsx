@@ -3,7 +3,7 @@ import { ReactComponent as ArrowDropdown } from '@okampus/assets/svg/icons/arrow
 import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
 import { useOutsideClick } from '@okampus/ui/hooks';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 

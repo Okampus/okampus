@@ -1,7 +1,7 @@
 import { MenuButton } from './MenuList';
 import { ActionType } from '@okampus/shared/types';
 import { motion } from 'framer-motion';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 import { Link } from 'react-router-dom';
 import type { ActionButtonProps } from '@okampus/shared/types';

@@ -1,6 +1,6 @@
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { getColorHexFromData } from '@okampus/shared/utils';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type BannerImageProps = {
   aspectRatio?: number;

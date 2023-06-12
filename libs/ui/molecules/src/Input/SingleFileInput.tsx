@@ -11,7 +11,7 @@ import { FileIcon } from '@okampus/ui/atoms';
 
 import { useMutation } from '@apollo/client';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { forwardRef, useRef, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 

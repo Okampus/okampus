@@ -1,5 +1,5 @@
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 const dateDayFormatter = new Intl.DateTimeFormat('fr', { day: 'numeric', month: 'short' });
 const hourFormatter = new Intl.DateTimeFormat('fr', { hour: 'numeric', minute: 'numeric' });

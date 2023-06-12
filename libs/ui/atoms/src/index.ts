@@ -1,6 +1,5 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './Badge/NumberBadge';
-export * from './Badge/RoleBadge';
 export * from './Badge/TagBadge';
 export * from './Badge/TextBadge';
 export * from './Gradient/DarkGradient';
@@ -12,6 +11,7 @@ export * from './Image/AvatarImage';
 export * from './Image/BannerImage';
 export * from './Image/GradientImage';
 export * from './Image/HorizontalImage';
+export * from './Layer/Backdrop';
 export * from './Loader/CircleLoader';
 export * from './Popup/FilePreviewer';
 export * from './Popup/Modal';

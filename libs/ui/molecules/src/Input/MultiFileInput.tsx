@@ -4,7 +4,7 @@ import { ReactComponent as CloudIcon } from '@okampus/assets/svg/icons/cloud.svg
 import { checkImage } from '@okampus/shared/utils';
 import { getFileTypeIcon } from '@okampus/ui/atoms';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 

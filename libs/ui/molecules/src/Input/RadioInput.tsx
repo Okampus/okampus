@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import type { InputOptions, SelectItem } from '@okampus/shared/types';
 
 export type RadioInputProps<T> = {

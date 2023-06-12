@@ -3,7 +3,7 @@ import { FileIcon } from '../Icon/FileIcon';
 import { ReactComponent as ArrowLeftIcon } from '@okampus/assets/svg/icons/arrow-left.svg';
 import { checkImage, checkPdf, toBase64, toText } from '@okampus/shared/utils';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 import { Document, Page } from 'react-pdf/dist/esm/entry.vite';
 import { useEffect, useRef, useState } from 'react';

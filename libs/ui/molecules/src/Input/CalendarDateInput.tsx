@@ -3,7 +3,7 @@ import { capitalize, getMonthMatrix } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 import { ArrowButton } from '@okampus/ui/atoms';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useState } from 'react';
 
 import type { Ref } from 'react';

@@ -4,7 +4,7 @@ import { AvatarImage } from '@okampus/ui/atoms';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { ReactComponent as EditIcon } from '@okampus/assets/svg/icons/material/outlined/edit.svg';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 // import { useContext } from 'react';
 
@@ -31,12 +31,7 @@ export function AvatarEditor({ avatar, small, onChange }: AvatarEditorProps) {
         whileHover={{ opacity: 0.75 }}
         transition={{ duration: 0.1 }}
       >
-        <div
-          className="absolute inset-0 w-full h-full bg-black text-white flex items-center justify-center"
-          style={{
-            borderRadius: `${avatar.rounded ?? 50}%`,
-          }}
-        >
+        <div className="absolute inset-0 w-full h-full bg-black text-white flex items-center justify-center rounded-[50%]">
           <div className="flex flex-col items-center gap-2">
             <EditIcon className="flex items-center justify-center" style={{ width: small ? '50%' : '30%' }} />
             <div className={clsx('font-semibold text-center', small && 'hidden')} style={{ fontSize }}>

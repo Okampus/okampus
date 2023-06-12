@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { formatHourSimple, getColorHexFromData } from '@okampus/shared/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';

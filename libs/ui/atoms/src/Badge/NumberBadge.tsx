@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 type NumberBadgeProps = { number: number; bgColor?: string; textColor?: string };
 export function NumberBadge({ number, bgColor = '#D23030', textColor = '#fff' }: NumberBadgeProps) {

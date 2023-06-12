@@ -10,7 +10,7 @@ import { bytes } from '@okampus/shared/utils';
 import { FileIcon } from '@okampus/ui/atoms';
 
 import { useMutation } from '@apollo/client';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useRef, useState } from 'react';
 
 import { Buckets } from '@okampus/shared/enums';

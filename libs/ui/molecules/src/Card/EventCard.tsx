@@ -1,9 +1,11 @@
 import { LabeledTeam } from '../Labeled/LabeledTeam';
+
 import { EventState } from '@okampus/shared/enums';
 import { formatDateRangeDayOfWeek } from '@okampus/shared/utils';
+import { getAvatar } from '@okampus/ui/utils';
+
 import { Link } from 'react-router-dom';
 
-import { getAvatar } from '@okampus/ui/utils';
 import type { EventManageBaseInfo } from '@okampus/shared/graphql';
 
 type EventCardProps = {

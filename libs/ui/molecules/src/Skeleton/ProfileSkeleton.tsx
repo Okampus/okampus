@@ -8,7 +8,7 @@ export function ProfileSkeleton() {
         <DarkGradient className="absolute inset-0">
           <div className="absolute inset-0" style={{ backgroundColor: 'var(--bg-0)' }} />
         </DarkGradient>
-        <Skeleton rounded="8%" width={82} height={82} className="z-10 shrink-0" />
+        <Skeleton width={82} height={82} className="z-10 shrink-0 rounded-sm" />
         <div className="z-10 py-3 w-full">
           <Skeleton width={32} height={10} />
           <Skeleton width="full" height={32} />

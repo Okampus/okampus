@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type ItemCardProps = { onClick?: () => void; className?: string; children: React.ReactNode };
 export function ItemCard({ onClick, className, children }: ItemCardProps) {
