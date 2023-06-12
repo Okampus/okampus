@@ -21,6 +21,7 @@ export * from './mutations/team/teamJoin/insertTeamJoin';
 export * from './mutations/team/teamJoin/updateTeamJoin';
 export * from './mutations/team/updateTeam';
 export * from './mutations/upload/singleUpload';
+export * from './scalars/query-order-map.scalar';
 export * from './selectors/actor/actorAddress/actorAddressBase';
 export * from './selectors/actor/actorBase';
 export * from './selectors/actor/actorFinance/actorFinanceBase';

@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { QueryOrderMapScalar } from '@okampus/shared/types';
 import { IsInt, IsObject, IsOptional, IsString, Min } from 'class-validator';
+import { QueryOrderMapScalar } from '@okampus/shared/graphql';
 import type { QueryOrder } from '@mikro-orm/core';
 
 @InputType()
