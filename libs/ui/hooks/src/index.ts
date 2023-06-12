@@ -8,7 +8,6 @@ export * from './contexts/useProjectManage';
 export * from './contexts/useTeam';
 export * from './contexts/useTeamManage';
 export * from './contexts/useUser';
-export * from './custom/useAxios';
 export * from './custom/useIsSmall';
 export * from './custom/useLazyAxios';
 export * from './custom/useLazyEffect';
