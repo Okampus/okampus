@@ -16,7 +16,7 @@ const allow = [_('libs/assets/src'), _('apps/site/src')];
 export default defineConfig({
   root: _('apps/site'),
   resolve: { alias: { '@assets': _('libs/assets/src') } },
-  server: { port: 4200, fs: { allow }, open: true, hmr: true },
+  server: { port: 4201, fs: { allow }, open: true, hmr: true },
   build: { outDir: _('dist/apps/site') },
   define: { 'import.meta.vitest': undefined },
   // Uncomment this if you are using workers.

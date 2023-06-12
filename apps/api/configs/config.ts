@@ -51,7 +51,7 @@ export const config: ApiConfig = {
     frontendOriginUrl,
     apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.${baseDomain}`,
     hasuraUrl: nodeEnv === 'development' ? 'http://localhost:8080' : `https://hasura.${baseDomain}`,
-    frontendUrl: nodeEnv === 'development' ? 'http://localhost:4200' : `https://${frontendOriginUrl}`,
+    frontendUrl: nodeEnv === 'development' ? 'http://localhost:4201' : `https://${frontendOriginUrl}`,
   },
   upload: {
     localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
