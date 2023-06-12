@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertTenantArgsType,
   InsertOneTenantArgsType,
-  UpdateTenantArgsType,
   UpdateByPkTenantArgsType,
   FindTenantArgsType,
   FindByPkTenantArgsType,
@@ -27,16 +26,6 @@ export class TenantsMutationResolver {
       info.variableValues
     );
     return await this.tenantsService.insertTenant(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateTenant(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateTenantArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.tenantsService.updateTenant(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class TenantsQueryResolver {
       info.variableValues
     );
     return await this.tenantsService.updateTenantByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteTenantByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkTenantArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tenantsService.deleteTenantByPk(getSelectionSet(info), pkColumns);
   }
 }
 

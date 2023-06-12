@@ -1,15 +1,8 @@
 import { typedGql } from '../../../zeus/typedDocumentNode';
 import { $ } from '../../../zeus';
-import { actorBaseInfo } from '../../../selectors/actor/actorBase';
+import { id } from '../../id';
+import { actorImageBaseInfo } from '../../../selectors/actor/actorImage/actorImageBase';
 
-export const deactivateActorImage = typedGql('mutation')({
-  updateActorImageByPk: [
-    { pkColumns: { id: $('id', 'String!') }, _set: { lastActiveDate: $('now', 'String!') } },
-    {
-      __typename: true,
-      id: true,
-      lastActiveDate: true,
-      actor: actorBaseInfo,
-    },
-  ],
+export const deactivateActorImageMutation = typedGql('mutation')({
+  updateActorImageByPk: [{ pkColumns: { id }, _set: { lastActiveDate: $('now', 'String!') } }, actorImageBaseInfo],
 });

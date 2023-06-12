@@ -336,7 +336,10 @@ export class DatabaseSeeder extends Seeder {
           ...scopedOptions,
         });
         team.actor.socials.add(
-          teamData.socials.map((social) => new Social({ actor: team.actor, ...social, ...scopedOptions }))
+          teamData.socials.map((social, i) => {
+            const teamSocial = new Social({ actor: team.actor, order: i, ...social, ...scopedOptions });
+            return teamSocial;
+          })
         );
 
         const description = faker.lorem.paragraph();
@@ -562,6 +565,7 @@ export class DatabaseSeeder extends Seeder {
 
         const project = new Project({
           name: projectName,
+          color: randomEnum(Colors),
           slug: toSlug(`${projectName}-${nanoid(6)}`),
           description: faker.lorem.paragraph(randomInt(2, 12)),
           supervisors: randomFromArray(teamMembers, 1, 3),

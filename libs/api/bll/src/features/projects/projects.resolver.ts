@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertProjectArgsType,
   InsertOneProjectArgsType,
-  UpdateProjectArgsType,
   UpdateByPkProjectArgsType,
   FindProjectArgsType,
   FindByPkProjectArgsType,
@@ -27,16 +26,6 @@ export class ProjectsMutationResolver {
       info.variableValues
     );
     return await this.projectsService.insertProject(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateProject(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateProjectArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.projectsService.updateProject(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class ProjectsQueryResolver {
       info.variableValues
     );
     return await this.projectsService.updateProjectByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteProjectByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkProjectArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.projectsService.deleteProjectByPk(getSelectionSet(info), pkColumns);
   }
 }
 

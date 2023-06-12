@@ -6,12 +6,15 @@ import {
   Collection,
   Entity,
   EntityRepositoryType,
+  Enum,
+  EnumType,
   ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
 } from '@mikro-orm/core';
 
+import { Colors } from '@okampus/shared/enums';
 import type { ProjectRole } from './project-role/project-role.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Team } from '../team/team.entity';
@@ -33,6 +36,9 @@ export class Project extends TenantScopedEntity {
   @Property({ type: 'text' })
   slug!: string;
 
+  @Enum({ items: () => Colors, type: EnumType, default: Colors.Blue })
+  color: Colors = Colors.Blue;
+
   @Property({ type: 'float' })
   expectedBudget!: number;
 
@@ -41,6 +47,9 @@ export class Project extends TenantScopedEntity {
 
   @Property({ type: 'boolean' })
   isPrivate = false;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  regularEventInterval: string | null = null; // TODO: use a custom interval type
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()

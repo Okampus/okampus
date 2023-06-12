@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertEventApprovalStepArgsType,
   InsertOneEventApprovalStepArgsType,
-  UpdateEventApprovalStepArgsType,
   UpdateByPkEventApprovalStepArgsType,
   FindEventApprovalStepArgsType,
   FindByPkEventApprovalStepArgsType,
@@ -27,16 +26,6 @@ export class EventApprovalStepsMutationResolver {
       info.variableValues
     );
     return await this.eventApprovalStepsService.insertEventApprovalStep(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateEventApprovalStep(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateEventApprovalStepArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventApprovalStepsService.updateEventApprovalStep(getSelectionSet(info), where, _set);
   }
 }
 
@@ -95,6 +84,16 @@ export class EventApprovalStepsQueryResolver {
       info.variableValues
     );
     return await this.eventApprovalStepsService.updateEventApprovalStepByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteEventApprovalStepByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkEventApprovalStepArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventApprovalStepsService.deleteEventApprovalStepByPk(getSelectionSet(info), pkColumns);
   }
 }
 

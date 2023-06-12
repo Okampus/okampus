@@ -20,8 +20,8 @@ export class Tag extends TenantScopedEntity {
   @Property({ type: 'text' })
   slug!: string;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null; // TODO: switch to Content?
+  @Property({ type: 'text', default: '' })
+  description = '';
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   image: FileUpload | null = null;

@@ -8,7 +8,6 @@ import { Canteen } from './canteen/canteen.entity';
 import { ClassGroupTeacher } from './class-group/class-group-teacher/class-group-teacher.entity';
 import { ClassGroup } from './class-group/class-group.entity';
 import { Cohort } from './cohort/cohort.entity';
-import { ContentEdit } from './content/content-edit/content-edit.entity';
 import { ContentMaster } from './content-master/content-master.entity';
 import { Content } from './content/content.entity';
 import { Favorite } from './content/favorite/favorite.entity';
@@ -55,9 +54,11 @@ import { Issue } from './content-master/issue/issue.entity';
 import { Campus } from './tenant/campus/campus.entity';
 import { EventAttendance } from './event/event-attendance/event-attendance.entity';
 import { Follow } from './actor/follow/follow.entity';
-import { TeamFinanceEdit } from './team/team-finance-edit/team-finance-edit.entity';
+import { Log } from './log/log.entity';
 
 export const allEntities = [
+  Log,
+
   Individual,
   BotInfo,
   UserInfo,
@@ -84,7 +85,6 @@ export const allEntities = [
   ChangeRole,
   Expense,
   TeamFinance,
-  TeamFinanceEdit,
   TeamJoin,
   TeamMember,
   TeamMetric,
@@ -119,7 +119,6 @@ export const allEntities = [
   EventApprovalStep,
 
   Content,
-  ContentEdit,
   ContentMaster,
   Issue,
 

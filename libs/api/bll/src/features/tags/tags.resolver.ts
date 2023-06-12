@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertTagArgsType,
   InsertOneTagArgsType,
-  UpdateTagArgsType,
   UpdateByPkTagArgsType,
   FindTagArgsType,
   FindByPkTagArgsType,
@@ -27,16 +26,6 @@ export class TagsMutationResolver {
       info.variableValues
     );
     return await this.tagsService.insertTag(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateTag(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateTagArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.tagsService.updateTag(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class TagsQueryResolver {
       info.variableValues
     );
     return await this.tagsService.updateTagByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteTagByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkTagArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tagsService.deleteTagByPk(getSelectionSet(info), pkColumns);
   }
 }
 

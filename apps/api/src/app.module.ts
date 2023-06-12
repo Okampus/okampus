@@ -41,7 +41,8 @@ import {
   GeocodeModule,
   TextractModule,
   NationalIdentificationModule,
-  // EventsModule,
+  ActorImagesModule,
+  ActorsModule,
 } from '@okampus/api/bll';
 import { Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -151,11 +152,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // Cache
     ...(config.redis.isEnabled
       ? [
-          PubSubModule.forRoot({
-            host: config.redis.host,
-            port: config.redis.port,
-            password: config.redis.password,
-          }),
+          PubSubModule.forRoot({ host: config.redis.host, port: config.redis.port, password: config.redis.password }),
           // CacheModule.register({
           //   store: redisStore,
           //   host: config.redis.host,
@@ -205,9 +202,12 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // FavoritesModule,
     // FilesModule,
     HealthModule,
+    EventsModule,
     EventAttendancesModule,
     EventApprovalStepsModule,
     TenantsModule,
+    ActorsModule,
+    ActorImagesModule,
     EventJoinsModule,
     EventsModule,
     FormsModule,

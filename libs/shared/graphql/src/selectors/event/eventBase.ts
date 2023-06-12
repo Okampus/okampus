@@ -4,6 +4,8 @@ import { contentMasterBaseInfo } from '../contentMaster/contentMasterBase';
 import { entityBase } from '../entityBase';
 import { actorAddressBaseInfo } from '../actor/actorAddress/actorAddressBase';
 import { teamBaseInfo } from '../team/teamBase';
+import { projectMinimalInfo } from '../project/projectMinimal';
+
 import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const eventBaseInfo = Selector('Event')({
@@ -17,11 +19,7 @@ export const eventBaseInfo = Selector('Event')({
   contentMaster: contentMasterBaseInfo,
   fileUpload: fileUploadBaseInfo,
   isPrivate: true,
-  teamEvents: [
-    {},
-    {
-      team: teamBaseInfo,
-    },
-  ],
+  project: projectMinimalInfo,
+  teamEvents: [{}, { team: teamBaseInfo }],
 });
 export type EventBaseInfo = InputType<GraphQLTypes['Event'], typeof eventBaseInfo>;

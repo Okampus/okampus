@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertFormArgsType,
   InsertOneFormArgsType,
-  UpdateFormArgsType,
   UpdateByPkFormArgsType,
   FindFormArgsType,
   FindByPkFormArgsType,
@@ -27,16 +26,6 @@ export class FormsMutationResolver {
       info.variableValues
     );
     return await this.formsService.insertForm(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateForm(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateFormArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.formsService.updateForm(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class FormsQueryResolver {
       info.variableValues
     );
     return await this.formsService.updateFormByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteFormByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkFormArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.formsService.deleteFormByPk(getSelectionSet(info), pkColumns);
   }
 }
 

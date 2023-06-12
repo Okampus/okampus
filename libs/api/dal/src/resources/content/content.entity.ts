@@ -1,10 +1,7 @@
-import { ContentEdit } from './content-edit/content-edit.entity';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
 
 import { Collection, Entity, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
-
-import { diffChars } from 'diff';
 
 import type { Team } from '../team/team.entity';
 import type { Favorite } from './favorite/favorite.entity';
@@ -13,7 +10,6 @@ import type { ContentOptions } from './content.options';
 import type { Reaction } from './reaction/reaction.entity';
 import type { Report } from './report/report.entity';
 import type { Vote } from './vote/vote.entity';
-import type { Event } from '../event/event.entity';
 
 @Entity()
 export class Content extends TenantScopedEntity {
@@ -50,29 +46,12 @@ export class Content extends TenantScopedEntity {
   @TransformCollection()
   reactions = new Collection<Reaction>(this);
 
-  @OneToMany({ type: 'ContentEdit', mappedBy: 'content' })
-  @TransformCollection()
-  edits = new Collection<ContentEdit>(this);
-
   @ManyToMany({ type: 'Team' })
   @TransformCollection()
   teams = new Collection<Team>(this);
 
-  @ManyToOne({ type: 'Event', nullable: true, default: null })
-  event: Event | null = null;
-
   constructor(options: ContentOptions) {
     super(options);
     this.assign(options);
-
-    this.edits.add([
-      new ContentEdit({
-        content: this,
-        newVersion: options.text,
-        addedDiff: diffChars('', options.text),
-        createdBy: options.createdBy,
-        tenant: options.tenant,
-      }),
-    ]);
   }
 }

@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertTeamFinanceArgsType,
   InsertOneTeamFinanceArgsType,
-  UpdateTeamFinanceArgsType,
   UpdateByPkTeamFinanceArgsType,
   FindTeamFinanceArgsType,
   FindByPkTeamFinanceArgsType,
@@ -27,16 +26,6 @@ export class TeamFinancesMutationResolver {
       info.variableValues
     );
     return await this.teamFinancesService.insertTeamFinance(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateTeamFinance(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateTeamFinanceArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.teamFinancesService.updateTeamFinance(getSelectionSet(info), where, _set);
   }
 }
 
@@ -90,6 +79,16 @@ export class TeamFinancesQueryResolver {
       info.variableValues
     );
     return await this.teamFinancesService.updateTeamFinanceByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteTeamFinanceByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkTeamFinanceArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamFinancesService.deleteTeamFinanceByPk(getSelectionSet(info), pkColumns);
   }
 }
 

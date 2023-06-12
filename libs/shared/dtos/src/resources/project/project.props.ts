@@ -1,5 +1,6 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Colors } from '@okampus/shared/enums';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class ProjectProps {
@@ -26,7 +27,16 @@ export class ProjectProps {
   @IsBoolean()
   isPrivate = false;
 
+  @Field(() => Colors, { nullable: true })
+  @IsEnum(Colors)
+  color!: Colors;
+
   @Field(() => String)
   @IsString()
   slug!: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  regularEventInterval?: string | null = null;
 }

@@ -8,6 +8,7 @@ export * from './interfaces/api/bll/pagination/cursor-columns.interface';
 export * from './interfaces/api/bll/pagination/full-page-info.interface';
 export * from './interfaces/api/bll/textract.types';
 export * from './interfaces/api/config.interface';
+export * from './interfaces/api/dal/log-diff';
 export * from './interfaces/cookie.interface';
 export * from './interfaces/global/duration.interface';
 export * from './interfaces/global/file-like.interface';

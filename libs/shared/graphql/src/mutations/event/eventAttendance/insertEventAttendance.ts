@@ -5,7 +5,6 @@ import { eventAttendanceBaseInfo } from '../../../selectors/event/eventAttendanc
 
 import type { ValueTypes } from '../../../zeus';
 
-// @ts-expect-error - Zeus depth limit
 export const insertEventAttendanceMutation = typedGql('mutation')({
   insertEventAttendanceOne: [
     { object: $('insert', 'EventAttendanceInsertInput!') as ValueTypes['EventAttendanceInsertInput'] },

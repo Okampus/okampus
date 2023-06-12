@@ -37,6 +37,40 @@ import type { FileUpload } from '../file-upload/file-upload.entity';
 export class Team extends TenantScopedEntity implements Searchable {
   [EntityRepositoryType]!: TeamRepository;
 
+  @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
+  type = TeamType.Club;
+
+  @Property({ type: 'text', default: '' })
+  tagline = '';
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationDay: number | null = null;
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationMonth: number | null = null;
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  originalCreationYear: number | null = null;
+
+  // @OneToMany('TeamHistory', 'team')
+  // histories = new Collection<TeamHistory>(this);
+
+  // TODO: long-term, convert to currency + amount + manage payments
+  @Property({ type: 'int' })
+  membershipFees = 0;
+
+  @Property({ type: 'float' })
+  currentFinance = 0;
+
+  @Property({ type: 'text' })
+  directorsCategoryName: string = RoleCategory.Directors;
+
+  @Property({ type: 'text' })
+  managersCategoryName: string = RoleCategory.Managers;
+
+  @Property({ type: 'text' })
+  membersCategoryName: string = RoleCategory.Members;
+
   @OneToOne({ type: 'Actor', mappedBy: 'team' })
   actor!: Actor;
 
@@ -93,40 +127,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Pole', mappedBy: 'team' })
   @TransformCollection()
   poles = new Collection<Pole>(this);
-
-  @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
-  type = TeamType.Club;
-
-  @Property({ type: 'text', nullable: true, default: null })
-  tagline: string | null = null;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationDay: number | null = null;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationMonth: number | null = null;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationYear: number | null = null;
-
-  // @OneToMany('TeamHistory', 'team')
-  // histories = new Collection<TeamHistory>(this);
-
-  // TODO: long-term, convert to currency + amount + manage payments
-  @Property({ type: 'int' })
-  membershipFees = 0;
-
-  @Property({ type: 'float' })
-  currentFinance = 0;
-
-  @Property({ type: 'text' })
-  directorsCategoryName: string = RoleCategory.Directors;
-
-  @Property({ type: 'text' })
-  managersCategoryName: string = RoleCategory.Managers;
-
-  @Property({ type: 'text' })
-  membersCategoryName: string = RoleCategory.Members;
 
   constructor(options: TeamOptions) {
     super(options);

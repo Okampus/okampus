@@ -12,9 +12,6 @@ object_relationships:
         table:
           name: content_master
           schema: public
-  - name: event
-    using:
-      foreign_key_constraint_on: event_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
@@ -28,13 +25,6 @@ array_relationships:
         column: content_id
         table:
           name: content_attachments
-          schema: public
-  - name: contentEdits
-    using:
-      foreign_key_constraint_on:
-        column: content_id
-        table:
-          name: content_edit
           schema: public
   - name: contentTeams
     using:

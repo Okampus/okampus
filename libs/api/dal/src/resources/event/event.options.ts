@@ -11,6 +11,7 @@ import type { Project } from '../project/project.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { EventRole } from './event-role/event-role.entity';
+import type { ContentMaster } from '../content-master/content-master.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
@@ -18,6 +19,7 @@ export type EventOptions = EventProps &
     roles?: EventRole[];
     address: ActorAddress;
     supervisor: UserInfo;
+    contentMaster: ContentMaster;
     tags?: Tag[];
     project?: Project | null;
     joinForm?: Form | null;

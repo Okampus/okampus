@@ -39,13 +39,6 @@ array_relationships:
         table:
           name: event
           schema: public
-  - name: teamFinanceEdits
-    using:
-      foreign_key_constraint_on:
-        column: added_address_id
-        table:
-          name: team_finance_edit
-          schema: public
   - name: teamFinances
     using:
       foreign_key_constraint_on:

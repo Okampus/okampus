@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertEventJoinArgsType,
   InsertOneEventJoinArgsType,
-  UpdateEventJoinArgsType,
   UpdateByPkEventJoinArgsType,
   FindEventJoinArgsType,
   FindByPkEventJoinArgsType,
@@ -27,16 +26,6 @@ export class EventJoinsMutationResolver {
       info.variableValues
     );
     return await this.eventJoinsService.insertEventJoin(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateEventJoin(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateEventJoinArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventJoinsService.updateEventJoin(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class EventJoinsQueryResolver {
       info.variableValues
     );
     return await this.eventJoinsService.updateEventJoinByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteEventJoinByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkEventJoinArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventJoinsService.deleteEventJoinByPk(getSelectionSet(info), pkColumns);
   }
 }
 

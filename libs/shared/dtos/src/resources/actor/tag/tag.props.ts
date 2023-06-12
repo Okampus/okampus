@@ -24,5 +24,5 @@ export class TagProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  description?: string | null = null;
+  description?: string = '';
 }

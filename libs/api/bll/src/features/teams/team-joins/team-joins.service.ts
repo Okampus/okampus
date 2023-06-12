@@ -1,31 +1,68 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { NotificationsService } from '../../../global/notifications/notifications.service';
+import { RequestContext } from '../../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../../global/graphql/hasura.service';
-
-import { RequestContext } from '../../../shards/abstract/request-context';
-
-import { BadRequestException, Injectable } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { LogsService } from '../../logs/logs.service';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamJoinRepository, TeamJoin } from '@okampus/api/dal';
+import { ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeRole, TeamJoinRepository, TeamMember } from '@okampus/api/dal';
-import { ApprovalState } from '@okampus/shared/enums';
+import { EntityManager } from '@mikro-orm/core';
 
 import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamJoinsService extends RequestContext {
   constructor(
-    private readonly teamJoinRepository: TeamJoinRepository,
+    private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
-    private readonly notificationsService: NotificationsService
+    private readonly logsService: LogsService,
+    private readonly teamJoinRepository: TeamJoinRepository
   ) {
     super();
   }
 
-  validateProps(props: ValueTypes['TeamJoinInsertInput']) {
+  async checkPermsCreate(props: ValueTypes['TeamJoinInsertInput']) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+
+    // Custom logic
+    return true;
+  }
+
+  async checkPermsDelete(id: string) {
+    const teamJoin = await this.teamJoinRepository.findOneOrFail(id);
+    if (teamJoin.deletedAt) throw new NotFoundException(`TeamJoin was deleted on ${teamJoin.deletedAt}.`);
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: ValueTypes['TeamJoinSetInput'], teamJoin: TeamJoin) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
+
+    if (teamJoin.deletedAt) throw new NotFoundException(`TeamJoin was deleted on ${teamJoin.deletedAt}.`);
+    if (teamJoin.hiddenAt) throw new NotFoundException('TeamJoin must be unhidden before it can be updated.');
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return teamJoin.createdBy?.id === this.requester().id;
+  }
+
+  async checkPropsConstraints(props: ValueTypes['TeamJoinSetInput']) {
+    this.hasuraService.checkForbiddenFields(props);
+
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
+    // Custom logic
+    return true;
+  }
+
+  async checkCreateRelationships(props: ValueTypes['TeamJoinInsertInput']) {
     // Custom logic
     return true;
   }
@@ -36,24 +73,31 @@ export class TeamJoinsService extends RequestContext {
     onConflict?: ValueTypes['TeamJoinOnConflict'],
     insertOne?: boolean
   ) {
-    const arePropsValid = await objects.every((object) => this.validateProps(object));
-    if (!arePropsValid) throw new BadRequestException('Cannot insert TeamJoin with invalid props.');
+    const arePropsValid = await Promise.all(
+      objects.map(async (props) => {
+        const canCreate = await this.checkPermsCreate(props);
+        if (!canCreate) throw new ForbiddenException('You are not allowed to insert TeamJoin.');
 
+        const arePropsValid = await this.checkPropsConstraints(props);
+        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+        const areRelationshipsValid = await this.checkCreateRelationships(props);
+        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
+
+        return canCreate && arePropsValid && areRelationshipsValid;
+      })
+    ).then((results) => results.every(Boolean));
+
+    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert TeamJoin.');
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTeamJoin', selectionSet, objects, onConflict, insertOne);
+
+    const teamJoin = await this.teamJoinRepository.findOneOrFail(data.insertTeamJoin[0].id);
+    await this.logsService.createLog(teamJoin);
+
     // Custom logic
     return data.insertTeamJoin;
-  }
-
-  async updateTeamJoin(
-    selectionSet: string[],
-    where: ValueTypes['TeamJoinBoolExp'],
-    _set: ValueTypes['TeamJoinSetInput']
-  ) {
-    const arePropsValid = this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update TeamJoin with invalid props.');
-
-    const data = await this.hasuraService.update('updateTeamJoin', selectionSet, where, _set);
-    return data.updateTeamJoin;
   }
 
   async findTeamJoin(
@@ -80,67 +124,33 @@ export class TeamJoinsService extends RequestContext {
     pkColumns: ValueTypes['TeamJoinPkColumnsInput'],
     _set: ValueTypes['TeamJoinSetInput']
   ) {
-    const arePropsValid = await this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update TeamJoin with invalid props.');
+    const teamJoin = await this.teamJoinRepository.findOneOrFail(pkColumns.id);
+
+    const canUpdate = await this.checkPermsUpdate(_set, teamJoin);
+    if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TeamJoin (${pkColumns.id}).`);
+
+    const arePropsValid = await this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
     const data = await this.hasuraService.updateByPk('updateTeamJoinByPk', selectionSet, pkColumns, _set);
-    const update = data.updateTeamJoinByPk;
 
-    if (update) {
-      const teamJoin = await this.teamJoinRepository.findOne(
-        { id: update.id },
-        { populate: ['team', 'team.actor', 'askedRole', 'joiner', 'joiner.individual', 'joiner.individual.actor'] }
-      );
-
-      if (!teamJoin) throw new BadRequestException('Cannot find TeamJoin to update notifications.');
-
-      const createdBy = this.requester();
-
-      const teamChangeRole = new ChangeRole({
-        team: teamJoin.team,
-        user: teamJoin.joiner,
-        createdBy,
-        tenant: this.tenant(),
-        receivedRole: teamJoin.askedRole, // TODO: get role from request? or use changeRole?
-        teamJoin,
-      });
-      this.teamJoinRepository.getEntityManager().persistAndFlush(teamChangeRole);
-
-      if (this.notificationsService.novu) {
-        const membership = await this.teamJoinRepository.getEntityManager().findOne(
-          TeamMember,
-          {
-            team: teamJoin.team,
-            user: createdBy.user,
-          },
-          { populate: ['roles'] }
-        );
-
-        console.log(
-          'membership',
-          membership,
-          teamJoin?.joiner.individual.id,
-          teamJoin?.joiner.individual.actor.primaryEmail
-        );
-        await this.notificationsService.novu.trigger('teamjoin', {
-          payload: {
-            state: teamJoin?.state === ApprovalState.Rejected ? 'refusée' : 'acceptée',
-            teamName: teamJoin?.team.actor.name,
-            roleName: teamJoin?.askedRole.name,
-            firstName: teamJoin?.joiner.firstName,
-            resolverName: createdBy.actor.name,
-            resolverRole: membership?.roles[0].name ?? "Hors de l'équipe",
-          },
-          to: {
-            subscriberId: teamJoin?.joiner.individual.id,
-            email: teamJoin?.joiner.individual.actor.primaryEmail || undefined,
-          },
-        });
-      }
-    }
+    await this.logsService.updateLog(teamJoin, _set);
 
     // Custom logic
-    return update;
+    return data.updateTeamJoinByPk;
+  }
+
+  async deleteTeamJoinByPk(selectionSet: string[], pkColumns: ValueTypes['TeamJoinPkColumnsInput']) {
+    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamJoin (${pkColumns.id}).`);
+
+    const data = await this.hasuraService.updateByPk('updateTeamJoinByPk', selectionSet, pkColumns, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await this.logsService.deleteLog(pkColumns.id);
+    // Custom logic
+    return data.updateTeamJoinByPk;
   }
 
   async aggregateTeamJoin(

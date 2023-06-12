@@ -7,7 +7,6 @@ import {
   Embedded,
   Entity,
   EntityRepositoryType,
-  ManyToOne,
   OneToMany,
   OneToOne,
   Property,
@@ -20,7 +19,6 @@ import type { Campus } from './campus/campus.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
 import type { TenantOptions } from './tenant.options';
-import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Team } from '../team/team.entity';
 
 // TODO: add official locations/addresses
@@ -54,9 +52,6 @@ export class Tenant extends BaseEntity {
 
   @OneToOne({ type: 'Team', nullable: true, default: null })
   team: Team | null = null;
-
-  @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
-  logo: FileUpload | null = null;
 
   constructor(options: TenantOptions) {
     super();

@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertEventArgsType,
   InsertOneEventArgsType,
-  UpdateEventArgsType,
   UpdateByPkEventArgsType,
   FindEventArgsType,
   FindByPkEventArgsType,
@@ -27,16 +26,6 @@ export class EventsMutationResolver {
       info.variableValues
     );
     return await this.eventsService.insertEvent(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateEvent(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateEventArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventsService.updateEvent(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class EventsQueryResolver {
       info.variableValues
     );
     return await this.eventsService.updateEventByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteEventByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkEventArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventsService.deleteEventByPk(getSelectionSet(info), pkColumns);
   }
 }
 

@@ -625,8 +625,6 @@ type Actor {
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
   team: Team
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamId: bigint
@@ -661,8 +659,6 @@ type ActorAddress {
   public: Boolean!
   state: String!
   street: String!
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   tenant: Tenant!
@@ -787,8 +783,6 @@ input ActorAddressBoolExp {
   public: BooleanComparisonExp
   state: StringComparisonExp
   street: StringComparisonExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   tenant: TenantBoolExp
@@ -837,7 +831,6 @@ input ActorAddressInsertInput {
   public: Boolean
   state: String
   street: String
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -964,7 +957,6 @@ input ActorAddressOrderBy {
   public: OrderBy
   state: OrderBy
   street: OrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -1822,8 +1814,6 @@ input ActorBoolExp {
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
   team: TeamBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamId: BigintComparisonExp
@@ -2777,7 +2767,6 @@ input ActorInsertInput {
   slug: String
   socials: SocialArrRelInsertInput
   team: TeamObjRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -2890,7 +2879,6 @@ input ActorOrderBy {
   slug: OrderBy
   socialsAggregate: SocialAggregateOrderBy
   team: TeamOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -6789,8 +6777,6 @@ type Content {
   content: Content
   contentAttachments(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): [ContentAttachments!]!
   contentAttachmentsAggregate(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): ContentAttachmentsAggregate!
-  contentEdits(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): [ContentEdit!]!
-  contentEditsAggregate(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): ContentEditAggregate!
   contentMaster: ContentMaster
   contentTeams(distinctOn: [ContentTeamsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentTeamsOrderBy!], where: ContentTeamsBoolExp): [ContentTeams!]!
   contentTeamsAggregate(distinctOn: [ContentTeamsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentTeamsOrderBy!], where: ContentTeamsBoolExp): ContentTeamsAggregate!
@@ -6799,8 +6785,6 @@ type Content {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
-  event: Event
-  eventId: bigint
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
   favoritesAggregate(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): FavoriteAggregate!
   hiddenAt: timestamptz
@@ -7124,7 +7108,6 @@ input ContentAttachmentsVarSampOrderBy {
 
 type ContentAvgFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -7132,7 +7115,6 @@ type ContentAvgFields {
 
 input ContentAvgOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -7145,8 +7127,6 @@ input ContentBoolExp {
   content: ContentBoolExp
   contentAttachments: ContentAttachmentsBoolExp
   contentAttachmentsAggregate: ContentAttachmentsAggregateBoolExp
-  contentEdits: ContentEditBoolExp
-  contentEditsAggregate: ContentEditAggregateBoolExp
   contentMaster: ContentMasterBoolExp
   contentTeams: ContentTeamsBoolExp
   contentTeamsAggregate: ContentTeamsAggregateBoolExp
@@ -7155,8 +7135,6 @@ input ContentBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  event: EventBoolExp
-  eventId: BigintComparisonExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -7181,399 +7159,8 @@ enum ContentConstraint {
   content_pkey
 }
 
-type ContentEdit {
-  addedDiff(path: String): jsonb
-  content: Content!
-  contentId: bigint!
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  individual: Individual
-  newVersion: String!
-  note: String
-  tenant: Tenant!
-  tenantId: bigint!
-}
-
-type ContentEditAggregate {
-  aggregate: ContentEditAggregateFields
-  nodes: [ContentEdit!]!
-}
-
-input ContentEditAggregateBoolExp {
-  count: contentEditAggregateBoolExpCount
-}
-
-input contentEditAggregateBoolExpCount {
-  arguments: [ContentEditSelectColumn!]
-  distinct: Boolean
-  filter: ContentEditBoolExp
-  predicate: IntComparisonExp!
-}
-
-type ContentEditAggregateFields {
-  avg: ContentEditAvgFields
-  count(columns: [ContentEditSelectColumn!], distinct: Boolean): Int!
-  max: ContentEditMaxFields
-  min: ContentEditMinFields
-  stddev: ContentEditStddevFields
-  stddevPop: ContentEditStddevPopFields
-  stddevSamp: ContentEditStddevSampFields
-  sum: ContentEditSumFields
-  varPop: ContentEditVarPopFields
-  varSamp: ContentEditVarSampFields
-  variance: ContentEditVarianceFields
-}
-
-input ContentEditAggregateOrderBy {
-  avg: ContentEditAvgOrderBy
-  count: OrderBy
-  max: ContentEditMaxOrderBy
-  min: ContentEditMinOrderBy
-  stddev: ContentEditStddevOrderBy
-  stddevPop: ContentEditStddevPopOrderBy
-  stddevSamp: ContentEditStddevSampOrderBy
-  sum: ContentEditSumOrderBy
-  varPop: ContentEditVarPopOrderBy
-  varSamp: ContentEditVarSampOrderBy
-  variance: ContentEditVarianceOrderBy
-}
-
-input ContentEditAppendInput {
-  addedDiff: jsonb
-}
-
-input ContentEditArrRelInsertInput {
-  data: [ContentEditInsertInput!]!
-  onConflict: ContentEditOnConflict
-}
-
-type ContentEditAvgFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditAvgOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-input ContentEditBoolExp {
-  _and: [ContentEditBoolExp!]
-  _not: ContentEditBoolExp
-  _or: [ContentEditBoolExp!]
-  addedDiff: JsonbComparisonExp
-  content: ContentBoolExp
-  contentId: BigintComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  individual: IndividualBoolExp
-  newVersion: StringComparisonExp
-  note: StringComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-}
-
-enum ContentEditConstraint {
-  content_edit_pkey
-}
-
-input ContentEditDeleteAtPathInput {
-  addedDiff: [String!]
-}
-
-input ContentEditDeleteElemInput {
-  addedDiff: Int
-}
-
-input ContentEditDeleteKeyInput {
-  addedDiff: String
-}
-
-input ContentEditIncInput {
-  contentId: bigint
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-input ContentEditInsertInput {
-  addedDiff: jsonb
-  content: ContentObjRelInsertInput
-  contentId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  individual: IndividualObjRelInsertInput
-  newVersion: String
-  note: String
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-}
-
-type ContentEditMaxFields {
-  contentId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  newVersion: String
-  note: String
-  tenantId: bigint
-}
-
-input ContentEditMaxOrderBy {
-  contentId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  newVersion: OrderBy
-  note: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditMinFields {
-  contentId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  newVersion: String
-  note: String
-  tenantId: bigint
-}
-
-input ContentEditMinOrderBy {
-  contentId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  newVersion: OrderBy
-  note: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditMutationResponse {
-  affectedRows: Int!
-  returning: [ContentEdit!]!
-}
-
-input ContentEditOnConflict {
-  constraint: ContentEditConstraint!
-  updateColumns: [ContentEditUpdateColumn!]! = []
-  where: ContentEditBoolExp
-}
-
-input ContentEditOrderBy {
-  addedDiff: OrderBy
-  content: ContentOrderBy
-  contentId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  individual: IndividualOrderBy
-  newVersion: OrderBy
-  note: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-}
-
-input ContentEditPkColumnsInput {
-  id: bigint!
-}
-
-input ContentEditPrependInput {
-  addedDiff: jsonb
-}
-
-enum ContentEditSelectColumn {
-  addedDiff
-  contentId
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  newVersion
-  note
-  tenantId
-}
-
-input ContentEditSetInput {
-  addedDiff: jsonb
-  contentId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  newVersion: String
-  note: String
-  tenantId: bigint
-}
-
-type ContentEditStddevFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditStddevOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditStddevPopFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditStddevPopOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditStddevSampFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditStddevSampOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-input ContentEditStreamCursorInput {
-  initialValue: ContentEditStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input ContentEditStreamCursorValueInput {
-  addedDiff: jsonb
-  contentId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  newVersion: String
-  note: String
-  tenantId: bigint
-}
-
-type ContentEditSumFields {
-  contentId: bigint
-  createdById: bigint
-  id: bigint
-  tenantId: bigint
-}
-
-input ContentEditSumOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-enum ContentEditUpdateColumn {
-  addedDiff
-  contentId
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  newVersion
-  note
-  tenantId
-}
-
-input ContentEditUpdates {
-  _append: ContentEditAppendInput
-  _deleteAtPath: ContentEditDeleteAtPathInput
-  _deleteElem: ContentEditDeleteElemInput
-  _deleteKey: ContentEditDeleteKeyInput
-  _inc: ContentEditIncInput
-  _prepend: ContentEditPrependInput
-  _set: ContentEditSetInput
-  where: ContentEditBoolExp!
-}
-
-type ContentEditVarianceFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditVarianceOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditVarPopFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditVarPopOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
-type ContentEditVarSampFields {
-  contentId: Float
-  createdById: Float
-  id: Float
-  tenantId: Float
-}
-
-input ContentEditVarSampOrderBy {
-  contentId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  tenantId: OrderBy
-}
-
 input ContentIncInput {
   createdById: bigint
-  eventId: bigint
   id: bigint
   parentId: bigint
   tenantId: bigint
@@ -7582,15 +7169,12 @@ input ContentIncInput {
 input ContentInsertInput {
   content: ContentObjRelInsertInput
   contentAttachments: ContentAttachmentsArrRelInsertInput
-  contentEdits: ContentEditArrRelInsertInput
   contentMaster: ContentMasterObjRelInsertInput
   contentTeams: ContentTeamsArrRelInsertInput
   contents: ContentArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  event: EventObjRelInsertInput
-  eventId: bigint
   favorites: FavoriteArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -8477,7 +8061,6 @@ type ContentMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   parentId: bigint
@@ -8489,7 +8072,6 @@ input ContentMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -8501,7 +8083,6 @@ type ContentMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   parentId: bigint
@@ -8513,7 +8094,6 @@ input ContentMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -8540,15 +8120,12 @@ input ContentOnConflict {
 input ContentOrderBy {
   content: ContentOrderBy
   contentAttachmentsAggregate: ContentAttachmentsAggregateOrderBy
-  contentEditsAggregate: ContentEditAggregateOrderBy
   contentMaster: ContentMasterOrderBy
   contentTeamsAggregate: ContentTeamsAggregateOrderBy
   contentsAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  event: EventOrderBy
-  eventId: OrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -8572,7 +8149,6 @@ enum ContentSelectColumn {
   createdAt
   createdById
   deletedAt
-  eventId
   hiddenAt
   id
   isAnonymous
@@ -8593,7 +8169,6 @@ input ContentSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAnonymous: Boolean
@@ -8604,7 +8179,6 @@ input ContentSetInput {
 
 type ContentStddevFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8612,7 +8186,6 @@ type ContentStddevFields {
 
 input ContentStddevOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8620,7 +8193,6 @@ input ContentStddevOrderBy {
 
 type ContentStddevPopFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8628,7 +8200,6 @@ type ContentStddevPopFields {
 
 input ContentStddevPopOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8636,7 +8207,6 @@ input ContentStddevPopOrderBy {
 
 type ContentStddevSampFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8644,7 +8214,6 @@ type ContentStddevSampFields {
 
 input ContentStddevSampOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8659,7 +8228,6 @@ input ContentStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAnonymous: Boolean
@@ -8670,7 +8238,6 @@ input ContentStreamCursorValueInput {
 
 type ContentSumFields {
   createdById: bigint
-  eventId: bigint
   id: bigint
   parentId: bigint
   tenantId: bigint
@@ -8678,7 +8245,6 @@ type ContentSumFields {
 
 input ContentSumOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8924,7 +8490,6 @@ enum ContentUpdateColumn {
   createdAt
   createdById
   deletedAt
-  eventId
   hiddenAt
   id
   isAnonymous
@@ -8941,7 +8506,6 @@ input ContentUpdates {
 
 type ContentVarianceFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8949,7 +8513,6 @@ type ContentVarianceFields {
 
 input ContentVarianceOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8957,7 +8520,6 @@ input ContentVarianceOrderBy {
 
 type ContentVarPopFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8965,7 +8527,6 @@ type ContentVarPopFields {
 
 input ContentVarPopOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -8973,7 +8534,6 @@ input ContentVarPopOrderBy {
 
 type ContentVarSampFields {
   createdById: Float
-  eventId: Float
   id: Float
   parentId: Float
   tenantId: Float
@@ -8981,7 +8541,6 @@ type ContentVarSampFields {
 
 input ContentVarSampOrderBy {
   createdById: OrderBy
-  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   tenantId: OrderBy
@@ -9878,20 +9437,17 @@ input DocumentVarSampOrderBy {
 type Event {
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
-  actorAddress: ActorAddress!
-  addressId: bigint!
+  actorAddress: ActorAddress
+  addressId: bigint
   approvalSubmissionId: bigint
   autoAcceptJoins: Boolean!
   budget: Float
-  contentMaster: ContentMaster
-  contentMasterId: bigint
-  contents(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
-  contentsAggregate(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): ContentAggregate!
+  contentMaster: ContentMaster!
+  contentMasterId: bigint!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz!
-  event: Event
   eventApprovalStep: EventApprovalStep
   eventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
@@ -9901,8 +9457,6 @@ type Event {
   eventRolesAggregate(distinctOn: [EventRoleSelectColumn!], limit: Int, offset: Int, orderBy: [EventRoleOrderBy!], where: EventRoleBoolExp): EventRoleAggregate!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
-  events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
-  eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
   fileUpload: FileUpload
   form: Form
   formSubmission: FormSubmission
@@ -9914,19 +9468,17 @@ type Event {
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   meta(path: String): jsonb!
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float!
   price: Float!
   project: Project!
   projectId: bigint!
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz!
   state: String!
   supervisorId: bigint!
   teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
   teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   tenant: Tenant!
@@ -11667,7 +11219,6 @@ type EventAvgFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -11685,7 +11236,6 @@ input EventAvgOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -11703,13 +11253,10 @@ input EventBoolExp {
   budget: FloatComparisonExp
   contentMaster: ContentMasterBoolExp
   contentMasterId: BigintComparisonExp
-  contents: ContentBoolExp
-  contentsAggregate: ContentAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   end: TimestamptzComparisonExp
-  event: EventBoolExp
   eventApprovalStep: EventApprovalStepBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
@@ -11719,8 +11266,6 @@ input EventBoolExp {
   eventRolesAggregate: EventRoleAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
-  events: EventBoolExp
-  eventsAggregate: EventAggregateBoolExp
   fileUpload: FileUploadBoolExp
   form: FormBoolExp
   formSubmission: FormSubmissionBoolExp
@@ -11732,19 +11277,17 @@ input EventBoolExp {
   joinFormId: BigintComparisonExp
   lastEventApprovalStepId: BigintComparisonExp
   meta: JsonbComparisonExp
+  onlineMeetingLink: StringComparisonExp
+  onlineMeetingPlace: StringComparisonExp
   presenceReward: FloatComparisonExp
   price: FloatComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  regularEventId: BigintComparisonExp
-  regularEventInterval: StringComparisonExp
   start: TimestamptzComparisonExp
   state: StringComparisonExp
   supervisorId: BigintComparisonExp
   teamEvents: TeamEventsBoolExp
   teamEventsAggregate: TeamEventsAggregateBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   tenant: TenantBoolExp
@@ -12169,7 +11712,6 @@ input EventIncInput {
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
   supervisorId: bigint
   tenantId: bigint
 }
@@ -12183,18 +11725,15 @@ input EventInsertInput {
   budget: Float
   contentMaster: ContentMasterObjRelInsertInput
   contentMasterId: bigint
-  contents: ContentArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
-  event: EventObjRelInsertInput
   eventApprovalStep: EventApprovalStepObjRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   eventRoles: EventRoleArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
-  events: EventArrRelInsertInput
   fileUpload: FileUploadObjRelInsertInput
   form: FormObjRelInsertInput
   formSubmission: FormSubmissionObjRelInsertInput
@@ -12206,17 +11745,16 @@ input EventInsertInput {
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   meta: jsonb
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float
   price: Float
   project: ProjectObjRelInsertInput
   projectId: bigint
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz
   state: String
   supervisorId: bigint
   teamEvents: TeamEventsArrRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -12842,11 +12380,11 @@ type EventMaxFields {
   imageId: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz
   state: String
   supervisorId: bigint
@@ -12867,11 +12405,11 @@ input EventMaxOrderBy {
   imageId: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  onlineMeetingLink: OrderBy
+  onlineMeetingPlace: OrderBy
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
-  regularEventInterval: OrderBy
   start: OrderBy
   state: OrderBy
   supervisorId: OrderBy
@@ -12892,11 +12430,11 @@ type EventMinFields {
   imageId: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz
   state: String
   supervisorId: bigint
@@ -12917,11 +12455,11 @@ input EventMinOrderBy {
   imageId: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  onlineMeetingLink: OrderBy
+  onlineMeetingPlace: OrderBy
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
-  regularEventInterval: OrderBy
   start: OrderBy
   state: OrderBy
   supervisorId: OrderBy
@@ -12953,18 +12491,15 @@ input EventOrderBy {
   budget: OrderBy
   contentMaster: ContentMasterOrderBy
   contentMasterId: OrderBy
-  contentsAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   end: OrderBy
-  event: EventOrderBy
   eventApprovalStep: EventApprovalStepOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventRolesAggregate: EventRoleAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
-  eventsAggregate: EventAggregateOrderBy
   fileUpload: FileUploadOrderBy
   form: FormOrderBy
   formSubmission: FormSubmissionOrderBy
@@ -12976,17 +12511,16 @@ input EventOrderBy {
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   meta: OrderBy
+  onlineMeetingLink: OrderBy
+  onlineMeetingPlace: OrderBy
   presenceReward: OrderBy
   price: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
-  regularEventInterval: OrderBy
   start: OrderBy
   state: OrderBy
   supervisorId: OrderBy
   teamEventsAggregate: TeamEventsAggregateOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -13570,11 +13104,11 @@ enum EventSelectColumn {
   joinFormId
   lastEventApprovalStepId
   meta
+  onlineMeetingLink
+  onlineMeetingPlace
   presenceReward
   price
   projectId
-  regularEventId
-  regularEventInterval
   start
   state
   supervisorId
@@ -13608,11 +13142,11 @@ input EventSetInput {
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   meta: jsonb
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz
   state: String
   supervisorId: bigint
@@ -13632,7 +13166,6 @@ type EventStddevFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -13650,7 +13183,6 @@ input EventStddevOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -13668,7 +13200,6 @@ type EventStddevPopFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -13686,7 +13217,6 @@ input EventStddevPopOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -13704,7 +13234,6 @@ type EventStddevSampFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -13722,7 +13251,6 @@ input EventStddevSampOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -13749,11 +13277,11 @@ input EventStreamCursorValueInput {
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   meta: jsonb
+  onlineMeetingLink: String
+  onlineMeetingPlace: String
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
-  regularEventInterval: String
   start: timestamptz
   state: String
   supervisorId: bigint
@@ -13773,7 +13301,6 @@ type EventSumFields {
   presenceReward: Float
   price: Float
   projectId: bigint
-  regularEventId: bigint
   supervisorId: bigint
   tenantId: bigint
 }
@@ -13791,7 +13318,6 @@ input EventSumOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -14049,11 +13575,11 @@ enum EventUpdateColumn {
   joinFormId
   lastEventApprovalStepId
   meta
+  onlineMeetingLink
+  onlineMeetingPlace
   presenceReward
   price
   projectId
-  regularEventId
-  regularEventInterval
   start
   state
   supervisorId
@@ -14084,7 +13610,6 @@ type EventVarianceFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -14102,7 +13627,6 @@ input EventVarianceOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -14120,7 +13644,6 @@ type EventVarPopFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -14138,7 +13661,6 @@ input EventVarPopOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -14156,7 +13678,6 @@ type EventVarSampFields {
   presenceReward: Float
   price: Float
   projectId: Float
-  regularEventId: Float
   supervisorId: Float
   tenantId: Float
 }
@@ -14174,7 +13695,6 @@ input EventVarSampOrderBy {
   presenceReward: OrderBy
   price: OrderBy
   projectId: OrderBy
-  regularEventId: OrderBy
   supervisorId: OrderBy
   tenantId: OrderBy
 }
@@ -15025,16 +14545,12 @@ type FileUpload {
   size: Int!
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
   tagsAggregate(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): TagAggregate!
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   teamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
   tenant: Tenant!
   tenantId: bigint!
-  tenants(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): [Tenant!]!
-  tenantsAggregate(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): TenantAggregate!
   url: String!
 }
 
@@ -15134,16 +14650,12 @@ input FileUploadBoolExp {
   size: IntComparisonExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
-  tenants: TenantBoolExp
-  tenantsAggregate: TenantAggregateBoolExp
   url: StringComparisonExp
 }
 
@@ -15180,12 +14692,10 @@ input FileUploadInsertInput {
   projects: ProjectArrRelInsertInput
   size: Int
   tags: TagArrRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teams: TeamArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
-  tenants: TenantArrRelInsertInput
   url: String
 }
 
@@ -15283,12 +14793,10 @@ input FileUploadOrderBy {
   projectsAggregate: ProjectAggregateOrderBy
   size: OrderBy
   tagsAggregate: TagAggregateOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
-  tenantsAggregate: TenantAggregateOrderBy
   url: OrderBy
 }
 
@@ -17488,8 +16996,6 @@ type Individual {
   classGroupsAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
   cohorts(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
   cohortsAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
-  contentEdits(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): [ContentEdit!]!
-  contentEditsAggregate(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): ContentEditAggregate!
   contentMasterContributors(distinctOn: [ContentMasterContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterContributorsOrderBy!], where: ContentMasterContributorsBoolExp): [ContentMasterContributors!]!
   contentMasterContributorsAggregate(distinctOn: [ContentMasterContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterContributorsOrderBy!], where: ContentMasterContributorsBoolExp): ContentMasterContributorsAggregate!
   contentMasters(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): [ContentMaster!]!
@@ -17569,8 +17075,6 @@ type Individual {
   subjectsAggregate(distinctOn: [SubjectSelectColumn!], limit: Int, offset: Int, orderBy: [SubjectOrderBy!], where: SubjectBoolExp): SubjectAggregate!
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
   tagsAggregate(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): TagAggregate!
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -17699,8 +17203,6 @@ input IndividualBoolExp {
   classGroupsAggregate: ClassGroupAggregateBoolExp
   cohorts: CohortBoolExp
   cohortsAggregate: CohortAggregateBoolExp
-  contentEdits: ContentEditBoolExp
-  contentEditsAggregate: ContentEditAggregateBoolExp
   contentMasterContributors: ContentMasterContributorsBoolExp
   contentMasterContributorsAggregate: ContentMasterContributorsAggregateBoolExp
   contentMasters: ContentMasterBoolExp
@@ -17780,8 +17282,6 @@ input IndividualBoolExp {
   subjectsAggregate: SubjectAggregateBoolExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -17840,7 +17340,6 @@ input IndividualInsertInput {
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   classGroups: ClassGroupArrRelInsertInput
   cohorts: CohortArrRelInsertInput
-  contentEdits: ContentEditArrRelInsertInput
   contentMasterContributors: ContentMasterContributorsArrRelInsertInput
   contentMasters: ContentMasterArrRelInsertInput
   contents: ContentArrRelInsertInput
@@ -17885,7 +17384,6 @@ input IndividualInsertInput {
   status: String
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -17993,7 +17491,6 @@ input IndividualOrderBy {
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   classGroupsAggregate: ClassGroupAggregateOrderBy
   cohortsAggregate: CohortAggregateOrderBy
-  contentEditsAggregate: ContentEditAggregateOrderBy
   contentMasterContributorsAggregate: ContentMasterContributorsAggregateOrderBy
   contentMastersAggregate: ContentMasterAggregateOrderBy
   contentsAggregate: ContentAggregateOrderBy
@@ -18038,7 +17535,6 @@ input IndividualOrderBy {
   status: OrderBy
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
@@ -18657,8 +18153,6 @@ type Mutation {
   deleteContentAttachments(where: ContentAttachmentsBoolExp!): ContentAttachmentsMutationResponse
   deleteContentAttachmentsByPk(contentId: bigint!, fileUploadId: bigint!): ContentAttachments
   deleteContentByPk(id: bigint!): Content
-  deleteContentEdit(where: ContentEditBoolExp!): ContentEditMutationResponse
-  deleteContentEditByPk(id: bigint!): ContentEdit
   deleteContentMaster(where: ContentMasterBoolExp!): ContentMasterMutationResponse
   deleteContentMasterByPk(id: bigint!): ContentMaster
   deleteContentMasterContributors(where: ContentMasterContributorsBoolExp!): ContentMasterContributorsMutationResponse
@@ -18745,8 +18239,6 @@ type Mutation {
   deleteTeamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
   deleteTeamFinance(where: TeamFinanceBoolExp!): TeamFinanceMutationResponse
   deleteTeamFinanceByPk(id: bigint!): TeamFinance
-  deleteTeamFinanceEdit(where: TeamFinanceEditBoolExp!): TeamFinanceEditMutationResponse
-  deleteTeamFinanceEditByPk(id: bigint!): TeamFinanceEdit
   deleteTeamJoin(where: TeamJoinBoolExp!): TeamJoinMutationResponse
   deleteTeamJoinByPk(id: bigint!): TeamJoin
   deleteTeamMember(where: TeamMemberBoolExp!): TeamMemberMutationResponse
@@ -18800,8 +18292,6 @@ type Mutation {
   insertContent(objects: [ContentInsertInput!]!, onConflict: ContentOnConflict): ContentMutationResponse
   insertContentAttachments(objects: [ContentAttachmentsInsertInput!]!, onConflict: ContentAttachmentsOnConflict): ContentAttachmentsMutationResponse
   insertContentAttachmentsOne(object: ContentAttachmentsInsertInput!, onConflict: ContentAttachmentsOnConflict): ContentAttachments
-  insertContentEdit(objects: [ContentEditInsertInput!]!, onConflict: ContentEditOnConflict): ContentEditMutationResponse
-  insertContentEditOne(object: ContentEditInsertInput!, onConflict: ContentEditOnConflict): ContentEdit
   insertContentMaster(objects: [ContentMasterInsertInput!]!, onConflict: ContentMasterOnConflict): ContentMasterMutationResponse
   insertContentMasterContributors(objects: [ContentMasterContributorsInsertInput!]!, onConflict: ContentMasterContributorsOnConflict): ContentMasterContributorsMutationResponse
   insertContentMasterContributorsOne(object: ContentMasterContributorsInsertInput!, onConflict: ContentMasterContributorsOnConflict): ContentMasterContributors
@@ -18887,8 +18377,6 @@ type Mutation {
   insertTeamEvents(objects: [TeamEventsInsertInput!]!, onConflict: TeamEventsOnConflict): TeamEventsMutationResponse
   insertTeamEventsOne(object: TeamEventsInsertInput!, onConflict: TeamEventsOnConflict): TeamEvents
   insertTeamFinance(objects: [TeamFinanceInsertInput!]!, onConflict: TeamFinanceOnConflict): TeamFinanceMutationResponse
-  insertTeamFinanceEdit(objects: [TeamFinanceEditInsertInput!]!, onConflict: TeamFinanceEditOnConflict): TeamFinanceEditMutationResponse
-  insertTeamFinanceEditOne(object: TeamFinanceEditInsertInput!, onConflict: TeamFinanceEditOnConflict): TeamFinanceEdit
   insertTeamFinanceOne(object: TeamFinanceInsertInput!, onConflict: TeamFinanceOnConflict): TeamFinance
   insertTeamJoin(objects: [TeamJoinInsertInput!]!, onConflict: TeamJoinOnConflict): TeamJoinMutationResponse
   insertTeamJoinOne(object: TeamJoinInsertInput!, onConflict: TeamJoinOnConflict): TeamJoin
@@ -18963,9 +18451,6 @@ type Mutation {
   updateContentAttachmentsByPk(_inc: ContentAttachmentsIncInput, _set: ContentAttachmentsSetInput, pkColumns: ContentAttachmentsPkColumnsInput!): ContentAttachments
   updateContentAttachmentsMany(updates: [ContentAttachmentsUpdates!]!): [ContentAttachmentsMutationResponse]
   updateContentByPk(_inc: ContentIncInput, _set: ContentSetInput, pkColumns: ContentPkColumnsInput!): Content
-  updateContentEdit(_append: ContentEditAppendInput, _deleteAtPath: ContentEditDeleteAtPathInput, _deleteElem: ContentEditDeleteElemInput, _deleteKey: ContentEditDeleteKeyInput, _inc: ContentEditIncInput, _prepend: ContentEditPrependInput, _set: ContentEditSetInput, where: ContentEditBoolExp!): ContentEditMutationResponse
-  updateContentEditByPk(_append: ContentEditAppendInput, _deleteAtPath: ContentEditDeleteAtPathInput, _deleteElem: ContentEditDeleteElemInput, _deleteKey: ContentEditDeleteKeyInput, _inc: ContentEditIncInput, _prepend: ContentEditPrependInput, _set: ContentEditSetInput, pkColumns: ContentEditPkColumnsInput!): ContentEdit
-  updateContentEditMany(updates: [ContentEditUpdates!]!): [ContentEditMutationResponse]
   updateContentMany(updates: [ContentUpdates!]!): [ContentMutationResponse]
   updateContentMaster(_inc: ContentMasterIncInput, _set: ContentMasterSetInput, where: ContentMasterBoolExp!): ContentMasterMutationResponse
   updateContentMasterByPk(_inc: ContentMasterIncInput, _set: ContentMasterSetInput, pkColumns: ContentMasterPkColumnsInput!): ContentMaster
@@ -19094,9 +18579,6 @@ type Mutation {
   updateTeamEventsMany(updates: [TeamEventsUpdates!]!): [TeamEventsMutationResponse]
   updateTeamFinance(_inc: TeamFinanceIncInput, _set: TeamFinanceSetInput, where: TeamFinanceBoolExp!): TeamFinanceMutationResponse
   updateTeamFinanceByPk(_inc: TeamFinanceIncInput, _set: TeamFinanceSetInput, pkColumns: TeamFinancePkColumnsInput!): TeamFinance
-  updateTeamFinanceEdit(_inc: TeamFinanceEditIncInput, _set: TeamFinanceEditSetInput, where: TeamFinanceEditBoolExp!): TeamFinanceEditMutationResponse
-  updateTeamFinanceEditByPk(_inc: TeamFinanceEditIncInput, _set: TeamFinanceEditSetInput, pkColumns: TeamFinanceEditPkColumnsInput!): TeamFinanceEdit
-  updateTeamFinanceEditMany(updates: [TeamFinanceEditUpdates!]!): [TeamFinanceEditMutationResponse]
   updateTeamFinanceMany(updates: [TeamFinanceUpdates!]!): [TeamFinanceMutationResponse]
   updateTeamJoin(_inc: TeamJoinIncInput, _set: TeamJoinSetInput, where: TeamJoinBoolExp!): TeamJoinMutationResponse
   updateTeamJoinByPk(_inc: TeamJoinIncInput, _set: TeamJoinSetInput, pkColumns: TeamJoinPkColumnsInput!): TeamJoin
@@ -19553,6 +19035,7 @@ type Project {
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actualBudget: Float!
+  color: String!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -19573,10 +19056,9 @@ type Project {
   projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   projectTags(distinctOn: [ProjectTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectTagsOrderBy!], where: ProjectTagsBoolExp): [ProjectTags!]!
   projectTagsAggregate(distinctOn: [ProjectTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectTagsOrderBy!], where: ProjectTagsBoolExp): ProjectTagsAggregate!
+  regularEventInterval: String
   slug: String!
   team: Team!
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamId: bigint!
@@ -19676,6 +19158,7 @@ input ProjectBoolExp {
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actualBudget: FloatComparisonExp
+  color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -19696,10 +19179,9 @@ input ProjectBoolExp {
   projectSupervisorsAggregate: ProjectSupervisorsAggregateBoolExp
   projectTags: ProjectTagsBoolExp
   projectTagsAggregate: ProjectTagsAggregateBoolExp
+  regularEventInterval: StringComparisonExp
   slug: StringComparisonExp
   team: TeamBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamId: BigintComparisonExp
@@ -19724,6 +19206,7 @@ input ProjectIncInput {
 input ProjectInsertInput {
   actions: ActionArrRelInsertInput
   actualBudget: Float
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19740,9 +19223,9 @@ input ProjectInsertInput {
   projectRoles: ProjectRoleArrRelInsertInput
   projectSupervisors: ProjectSupervisorsArrRelInsertInput
   projectTags: ProjectTagsArrRelInsertInput
+  regularEventInterval: String
   slug: String
   team: TeamObjRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -19751,6 +19234,7 @@ input ProjectInsertInput {
 
 type ProjectMaxFields {
   actualBudget: Float
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19760,6 +19244,7 @@ type ProjectMaxFields {
   id: bigint
   imageId: bigint
   name: String
+  regularEventInterval: String
   slug: String
   teamId: bigint
   tenantId: bigint
@@ -19767,6 +19252,7 @@ type ProjectMaxFields {
 
 input ProjectMaxOrderBy {
   actualBudget: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -19776,6 +19262,7 @@ input ProjectMaxOrderBy {
   id: OrderBy
   imageId: OrderBy
   name: OrderBy
+  regularEventInterval: OrderBy
   slug: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -19783,6 +19270,7 @@ input ProjectMaxOrderBy {
 
 type ProjectMinFields {
   actualBudget: Float
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19792,6 +19280,7 @@ type ProjectMinFields {
   id: bigint
   imageId: bigint
   name: String
+  regularEventInterval: String
   slug: String
   teamId: bigint
   tenantId: bigint
@@ -19799,6 +19288,7 @@ type ProjectMinFields {
 
 input ProjectMinOrderBy {
   actualBudget: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -19808,6 +19298,7 @@ input ProjectMinOrderBy {
   id: OrderBy
   imageId: OrderBy
   name: OrderBy
+  regularEventInterval: OrderBy
   slug: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -19832,6 +19323,7 @@ input ProjectOnConflict {
 input ProjectOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actualBudget: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -19848,9 +19340,9 @@ input ProjectOrderBy {
   projectRolesAggregate: ProjectRoleAggregateOrderBy
   projectSupervisorsAggregate: ProjectSupervisorsAggregateOrderBy
   projectTagsAggregate: ProjectTagsAggregateOrderBy
+  regularEventInterval: OrderBy
   slug: OrderBy
   team: TeamOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -20343,6 +19835,7 @@ input ProjectRoleVarSampOrderBy {
 
 enum ProjectSelectColumn {
   actualBudget
+  color
   createdAt
   createdById
   deletedAt
@@ -20353,6 +19846,7 @@ enum ProjectSelectColumn {
   imageId
   isPrivate
   name
+  regularEventInterval
   slug
   teamId
   tenantId
@@ -20368,6 +19862,7 @@ enum ProjectSelectColumnProjectAggregateBoolExpBool_orArgumentsColumns {
 
 input ProjectSetInput {
   actualBudget: Float
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -20378,6 +19873,7 @@ input ProjectSetInput {
   imageId: bigint
   isPrivate: Boolean
   name: String
+  regularEventInterval: String
   slug: String
   teamId: bigint
   tenantId: bigint
@@ -20450,6 +19946,7 @@ input ProjectStreamCursorInput {
 
 input ProjectStreamCursorValueInput {
   actualBudget: Float
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -20460,6 +19957,7 @@ input ProjectStreamCursorValueInput {
   imageId: bigint
   isPrivate: Boolean
   name: String
+  regularEventInterval: String
   slug: String
   teamId: bigint
   tenantId: bigint
@@ -20959,6 +20457,7 @@ input ProjectTagsVarSampOrderBy {
 
 enum ProjectUpdateColumn {
   actualBudget
+  color
   createdAt
   createdById
   deletedAt
@@ -20969,6 +20468,7 @@ enum ProjectUpdateColumn {
   imageId
   isPrivate
   name
+  regularEventInterval
   slug
   teamId
   tenantId
@@ -21098,9 +20598,6 @@ type Query {
   contentAttachmentsAggregate(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): ContentAttachmentsAggregate!
   contentAttachmentsByPk(contentId: bigint!, fileUploadId: bigint!): ContentAttachments
   contentByPk(id: bigint!): Content
-  contentEdit(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): [ContentEdit!]!
-  contentEditAggregate(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): ContentEditAggregate!
-  contentEditByPk(id: bigint!): ContentEdit
   contentMaster(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): [ContentMaster!]!
   contentMasterAggregate(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): ContentMasterAggregate!
   contentMasterByPk(id: bigint!): ContentMaster
@@ -21230,9 +20727,6 @@ type Query {
   teamFinance(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinanceAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamFinanceByPk(id: bigint!): TeamFinance
-  teamFinanceEdit(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
-  teamFinanceEditByPk(id: bigint!): TeamFinanceEdit
   teamJoin(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamJoinByPk(id: bigint!): TeamJoin
@@ -21257,6 +20751,7 @@ type Query {
   vote(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): [Vote!]!
   voteAggregate(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): VoteAggregate!
   voteByPk(id: bigint!): Vote
+  teamFinanceLogs(id: bigint, teamId: bigint): [Log!]!
   me: UserInfo
   searchLocation(query: String!): [Location!]!
   searchFrenchCompany(query: SearchCompanyQuery): [CompanyInfo!]!
@@ -23350,6 +22845,7 @@ type Social {
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
+  order: smallint!
   pseudo: String!
   tenant: Tenant!
   tenantId: bigint!
@@ -23410,6 +22906,7 @@ type SocialAvgFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23417,6 +22914,7 @@ input SocialAvgOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23432,6 +22930,7 @@ input SocialBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  order: SmallintComparisonExp
   pseudo: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -23447,6 +22946,7 @@ input SocialIncInput {
   actorId: bigint
   createdById: bigint
   id: bigint
+  order: smallint
   tenantId: bigint
 }
 
@@ -23459,6 +22959,7 @@ input SocialInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  order: smallint
   pseudo: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -23473,6 +22974,7 @@ type SocialMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  order: smallint
   pseudo: String
   tenantId: bigint
   type: String
@@ -23486,6 +22988,7 @@ input SocialMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  order: OrderBy
   pseudo: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -23499,6 +23002,7 @@ type SocialMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  order: smallint
   pseudo: String
   tenantId: bigint
   type: String
@@ -23512,6 +23016,7 @@ input SocialMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  order: OrderBy
   pseudo: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -23538,6 +23043,7 @@ input SocialOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  order: OrderBy
   pseudo: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -23556,6 +23062,7 @@ enum SocialSelectColumn {
   deletedAt
   hiddenAt
   id
+  order
   pseudo
   tenantId
   type
@@ -23569,6 +23076,7 @@ input SocialSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  order: smallint
   pseudo: String
   tenantId: bigint
   type: String
@@ -23579,6 +23087,7 @@ type SocialStddevFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23586,6 +23095,7 @@ input SocialStddevOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23593,6 +23103,7 @@ type SocialStddevPopFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23600,6 +23111,7 @@ input SocialStddevPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23607,6 +23119,7 @@ type SocialStddevSampFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23614,6 +23127,7 @@ input SocialStddevSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23629,6 +23143,7 @@ input SocialStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  order: smallint
   pseudo: String
   tenantId: bigint
   type: String
@@ -23639,6 +23154,7 @@ type SocialSumFields {
   actorId: bigint
   createdById: bigint
   id: bigint
+  order: smallint
   tenantId: bigint
 }
 
@@ -23646,6 +23162,7 @@ input SocialSumOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23656,6 +23173,7 @@ enum SocialUpdateColumn {
   deletedAt
   hiddenAt
   id
+  order
   pseudo
   tenantId
   type
@@ -23672,6 +23190,7 @@ type SocialVarianceFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23679,6 +23198,7 @@ input SocialVarianceOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23686,6 +23206,7 @@ type SocialVarPopFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23693,6 +23214,7 @@ input SocialVarPopOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -23700,6 +23222,7 @@ type SocialVarSampFields {
   actorId: Float
   createdById: Float
   id: Float
+  order: Float
   tenantId: Float
 }
 
@@ -23707,6 +23230,7 @@ input SocialVarSampOrderBy {
   actorId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -24439,10 +23963,6 @@ type Subscription {
   contentAttachmentsByPk(contentId: bigint!, fileUploadId: bigint!): ContentAttachments
   contentAttachmentsStream(batchSize: Int!, cursor: [ContentAttachmentsStreamCursorInput]!, where: ContentAttachmentsBoolExp): [ContentAttachments!]!
   contentByPk(id: bigint!): Content
-  contentEdit(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): [ContentEdit!]!
-  contentEditAggregate(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): ContentEditAggregate!
-  contentEditByPk(id: bigint!): ContentEdit
-  contentEditStream(batchSize: Int!, cursor: [ContentEditStreamCursorInput]!, where: ContentEditBoolExp): [ContentEdit!]!
   contentMaster(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): [ContentMaster!]!
   contentMasterAggregate(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): ContentMasterAggregate!
   contentMasterByPk(id: bigint!): ContentMaster
@@ -24614,10 +24134,6 @@ type Subscription {
   teamFinance(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinanceAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamFinanceByPk(id: bigint!): TeamFinance
-  teamFinanceEdit(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
-  teamFinanceEditByPk(id: bigint!): TeamFinanceEdit
-  teamFinanceEditStream(batchSize: Int!, cursor: [TeamFinanceEditStreamCursorInput]!, where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
   teamFinanceStream(batchSize: Int!, cursor: [TeamFinanceStreamCursorInput]!, where: TeamFinanceBoolExp): [TeamFinance!]!
   teamJoin(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
@@ -24663,7 +24179,7 @@ type Tag {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
-  description: String
+  description: String!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   fileUpload: FileUpload
@@ -25115,7 +24631,7 @@ type Team {
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   roles(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): [Role!]!
   rolesAggregate(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): RoleAggregate!
-  tagline: String
+  tagline: String!
   team: Team
   teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
   teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
@@ -25670,673 +25186,6 @@ input TeamFinanceBoolExp {
 enum TeamFinanceConstraint {
   team_finance_expense_id_unique
   team_finance_pkey
-}
-
-type TeamFinanceEdit {
-  actor: Actor
-  actorAddress: ActorAddress
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint!
-  amount: Float
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  event: Event
-  fileUpload: FileUpload!
-  hiddenAt: timestamptz
-  id: bigint!
-  individual: Individual
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  project: Project
-  removedAddress: Boolean!
-  removedEvent: Boolean!
-  removedPayedBy: Boolean!
-  removedProject: Boolean!
-  removedReceipt: Boolean!
-  state: String
-  teamFinanceId: bigint!
-  tenant: Tenant!
-  tenantId: bigint!
-}
-
-type TeamFinanceEditAggregate {
-  aggregate: TeamFinanceEditAggregateFields
-  nodes: [TeamFinanceEdit!]!
-}
-
-input TeamFinanceEditAggregateBoolExp {
-  bool_and: teamFinanceEditAggregateBoolExpBool_and
-  bool_or: teamFinanceEditAggregateBoolExpBool_or
-  count: teamFinanceEditAggregateBoolExpCount
-}
-
-input teamFinanceEditAggregateBoolExpBool_and {
-  arguments: TeamFinanceEditSelectColumnTeamFinanceEditAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: TeamFinanceEditBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input teamFinanceEditAggregateBoolExpBool_or {
-  arguments: TeamFinanceEditSelectColumnTeamFinanceEditAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: TeamFinanceEditBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input teamFinanceEditAggregateBoolExpCount {
-  arguments: [TeamFinanceEditSelectColumn!]
-  distinct: Boolean
-  filter: TeamFinanceEditBoolExp
-  predicate: IntComparisonExp!
-}
-
-type TeamFinanceEditAggregateFields {
-  avg: TeamFinanceEditAvgFields
-  count(columns: [TeamFinanceEditSelectColumn!], distinct: Boolean): Int!
-  max: TeamFinanceEditMaxFields
-  min: TeamFinanceEditMinFields
-  stddev: TeamFinanceEditStddevFields
-  stddevPop: TeamFinanceEditStddevPopFields
-  stddevSamp: TeamFinanceEditStddevSampFields
-  sum: TeamFinanceEditSumFields
-  varPop: TeamFinanceEditVarPopFields
-  varSamp: TeamFinanceEditVarSampFields
-  variance: TeamFinanceEditVarianceFields
-}
-
-input TeamFinanceEditAggregateOrderBy {
-  avg: TeamFinanceEditAvgOrderBy
-  count: OrderBy
-  max: TeamFinanceEditMaxOrderBy
-  min: TeamFinanceEditMinOrderBy
-  stddev: TeamFinanceEditStddevOrderBy
-  stddevPop: TeamFinanceEditStddevPopOrderBy
-  stddevSamp: TeamFinanceEditStddevSampOrderBy
-  sum: TeamFinanceEditSumOrderBy
-  varPop: TeamFinanceEditVarPopOrderBy
-  varSamp: TeamFinanceEditVarSampOrderBy
-  variance: TeamFinanceEditVarianceOrderBy
-}
-
-input TeamFinanceEditArrRelInsertInput {
-  data: [TeamFinanceEditInsertInput!]!
-  onConflict: TeamFinanceEditOnConflict
-}
-
-type TeamFinanceEditAvgFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditAvgOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-input TeamFinanceEditBoolExp {
-  _and: [TeamFinanceEditBoolExp!]
-  _not: TeamFinanceEditBoolExp
-  _or: [TeamFinanceEditBoolExp!]
-  actor: ActorBoolExp
-  actorAddress: ActorAddressBoolExp
-  addedAddressId: BigintComparisonExp
-  addedEventId: BigintComparisonExp
-  addedPayedById: BigintComparisonExp
-  addedProjectId: BigintComparisonExp
-  addedReceiptId: BigintComparisonExp
-  amount: FloatComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  event: EventBoolExp
-  fileUpload: FileUploadBoolExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  individual: IndividualBoolExp
-  method: StringComparisonExp
-  name: StringComparisonExp
-  payedAt: TimestamptzComparisonExp
-  payedByType: StringComparisonExp
-  project: ProjectBoolExp
-  removedAddress: BooleanComparisonExp
-  removedEvent: BooleanComparisonExp
-  removedPayedBy: BooleanComparisonExp
-  removedProject: BooleanComparisonExp
-  removedReceipt: BooleanComparisonExp
-  state: StringComparisonExp
-  teamFinanceId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-}
-
-enum TeamFinanceEditConstraint {
-  team_finance_edit_pkey
-}
-
-input TeamFinanceEditIncInput {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdById: bigint
-  id: bigint
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-input TeamFinanceEditInsertInput {
-  actor: ActorObjRelInsertInput
-  actorAddress: ActorAddressObjRelInsertInput
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  event: EventObjRelInsertInput
-  fileUpload: FileUploadObjRelInsertInput
-  hiddenAt: timestamptz
-  id: bigint
-  individual: IndividualObjRelInsertInput
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  project: ProjectObjRelInsertInput
-  removedAddress: Boolean
-  removedEvent: Boolean
-  removedPayedBy: Boolean
-  removedProject: Boolean
-  removedReceipt: Boolean
-  state: String
-  teamFinanceId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-}
-
-type TeamFinanceEditMaxFields {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  state: String
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-input TeamFinanceEditMaxOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  method: OrderBy
-  name: OrderBy
-  payedAt: OrderBy
-  payedByType: OrderBy
-  state: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditMinFields {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  state: String
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-input TeamFinanceEditMinOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  method: OrderBy
-  name: OrderBy
-  payedAt: OrderBy
-  payedByType: OrderBy
-  state: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditMutationResponse {
-  affectedRows: Int!
-  returning: [TeamFinanceEdit!]!
-}
-
-input TeamFinanceEditOnConflict {
-  constraint: TeamFinanceEditConstraint!
-  updateColumns: [TeamFinanceEditUpdateColumn!]! = []
-  where: TeamFinanceEditBoolExp
-}
-
-input TeamFinanceEditOrderBy {
-  actor: ActorOrderBy
-  actorAddress: ActorAddressOrderBy
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  event: EventOrderBy
-  fileUpload: FileUploadOrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  individual: IndividualOrderBy
-  method: OrderBy
-  name: OrderBy
-  payedAt: OrderBy
-  payedByType: OrderBy
-  project: ProjectOrderBy
-  removedAddress: OrderBy
-  removedEvent: OrderBy
-  removedPayedBy: OrderBy
-  removedProject: OrderBy
-  removedReceipt: OrderBy
-  state: OrderBy
-  teamFinanceId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-}
-
-input TeamFinanceEditPkColumnsInput {
-  id: bigint!
-}
-
-enum TeamFinanceEditSelectColumn {
-  addedAddressId
-  addedEventId
-  addedPayedById
-  addedProjectId
-  addedReceiptId
-  amount
-  createdAt
-  createdById
-  deletedAt
-  description
-  hiddenAt
-  id
-  method
-  name
-  payedAt
-  payedByType
-  removedAddress
-  removedEvent
-  removedPayedBy
-  removedProject
-  removedReceipt
-  state
-  teamFinanceId
-  tenantId
-}
-
-enum TeamFinanceEditSelectColumnTeamFinanceEditAggregateBoolExpBool_andArgumentsColumns {
-  removedAddress
-  removedEvent
-  removedPayedBy
-  removedProject
-  removedReceipt
-}
-
-enum TeamFinanceEditSelectColumnTeamFinanceEditAggregateBoolExpBool_orArgumentsColumns {
-  removedAddress
-  removedEvent
-  removedPayedBy
-  removedProject
-  removedReceipt
-}
-
-input TeamFinanceEditSetInput {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  removedAddress: Boolean
-  removedEvent: Boolean
-  removedPayedBy: Boolean
-  removedProject: Boolean
-  removedReceipt: Boolean
-  state: String
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-type TeamFinanceEditStddevFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditStddevOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditStddevPopFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditStddevPopOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditStddevSampFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditStddevSampOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-input TeamFinanceEditStreamCursorInput {
-  initialValue: TeamFinanceEditStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input TeamFinanceEditStreamCursorValueInput {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  hiddenAt: timestamptz
-  id: bigint
-  method: String
-  name: String
-  payedAt: timestamptz
-  payedByType: String
-  removedAddress: Boolean
-  removedEvent: Boolean
-  removedPayedBy: Boolean
-  removedProject: Boolean
-  removedReceipt: Boolean
-  state: String
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-type TeamFinanceEditSumFields {
-  addedAddressId: bigint
-  addedEventId: bigint
-  addedPayedById: bigint
-  addedProjectId: bigint
-  addedReceiptId: bigint
-  amount: Float
-  createdById: bigint
-  id: bigint
-  teamFinanceId: bigint
-  tenantId: bigint
-}
-
-input TeamFinanceEditSumOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-enum TeamFinanceEditUpdateColumn {
-  addedAddressId
-  addedEventId
-  addedPayedById
-  addedProjectId
-  addedReceiptId
-  amount
-  createdAt
-  createdById
-  deletedAt
-  description
-  hiddenAt
-  id
-  method
-  name
-  payedAt
-  payedByType
-  removedAddress
-  removedEvent
-  removedPayedBy
-  removedProject
-  removedReceipt
-  state
-  teamFinanceId
-  tenantId
-}
-
-input TeamFinanceEditUpdates {
-  _inc: TeamFinanceEditIncInput
-  _set: TeamFinanceEditSetInput
-  where: TeamFinanceEditBoolExp!
-}
-
-type TeamFinanceEditVarianceFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditVarianceOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditVarPopFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditVarPopOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
-}
-
-type TeamFinanceEditVarSampFields {
-  addedAddressId: Float
-  addedEventId: Float
-  addedPayedById: Float
-  addedProjectId: Float
-  addedReceiptId: Float
-  amount: Float
-  createdById: Float
-  id: Float
-  teamFinanceId: Float
-  tenantId: Float
-}
-
-input TeamFinanceEditVarSampOrderBy {
-  addedAddressId: OrderBy
-  addedEventId: OrderBy
-  addedPayedById: OrderBy
-  addedProjectId: OrderBy
-  addedReceiptId: OrderBy
-  amount: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamFinanceId: OrderBy
-  tenantId: OrderBy
 }
 
 input TeamFinanceIncInput {
@@ -28913,8 +27762,6 @@ type Tenant {
   classGroupsAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
   cohorts(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
   cohortsAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
-  contentEdits(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): [ContentEdit!]!
-  contentEditsAggregate(distinctOn: [ContentEditSelectColumn!], limit: Int, offset: Int, orderBy: [ContentEditOrderBy!], where: ContentEditBoolExp): ContentEditAggregate!
   contentMasters(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): [ContentMaster!]!
   contentMastersAggregate(distinctOn: [ContentMasterSelectColumn!], limit: Int, offset: Int, orderBy: [ContentMasterOrderBy!], where: ContentMasterBoolExp): ContentMasterAggregate!
   contents(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
@@ -28946,7 +27793,6 @@ type Tenant {
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
   favoritesAggregate(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): FavoriteAggregate!
-  fileUpload: FileUpload
   fileUploads(distinctOn: [FileUploadSelectColumn!], limit: Int, offset: Int, orderBy: [FileUploadOrderBy!], where: FileUploadBoolExp): [FileUpload!]!
   fileUploadsAggregate(distinctOn: [FileUploadSelectColumn!], limit: Int, offset: Int, orderBy: [FileUploadOrderBy!], where: FileUploadBoolExp): FileUploadAggregate!
   follows(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): [Follow!]!
@@ -28966,7 +27812,6 @@ type Tenant {
   individualsAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
   issues(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): [Issue!]!
   issuesAggregate(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): IssueAggregate!
-  logoId: bigint
   name: String!
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -28999,8 +27844,6 @@ type Tenant {
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
   tagsAggregate(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): TagAggregate!
   team: Team
-  teamFinanceEdits(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): [TeamFinanceEdit!]!
-  teamFinanceEditsAggregate(distinctOn: [TeamFinanceEditSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceEditOrderBy!], where: TeamFinanceEditBoolExp): TeamFinanceEditAggregate!
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
   teamId: bigint
@@ -29089,7 +27932,6 @@ type TenantAvgFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29097,7 +27939,6 @@ input TenantAvgOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29135,8 +27976,6 @@ input TenantBoolExp {
   classGroupsAggregate: ClassGroupAggregateBoolExp
   cohorts: CohortBoolExp
   cohortsAggregate: CohortAggregateBoolExp
-  contentEdits: ContentEditBoolExp
-  contentEditsAggregate: ContentEditAggregateBoolExp
   contentMasters: ContentMasterBoolExp
   contentMastersAggregate: ContentMasterAggregateBoolExp
   contents: ContentBoolExp
@@ -29168,7 +28007,6 @@ input TenantBoolExp {
   expensesAggregate: ExpenseAggregateBoolExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
-  fileUpload: FileUploadBoolExp
   fileUploads: FileUploadBoolExp
   fileUploadsAggregate: FileUploadAggregateBoolExp
   follows: FollowBoolExp
@@ -29188,7 +28026,6 @@ input TenantBoolExp {
   individualsAggregate: IndividualAggregateBoolExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
-  logoId: BigintComparisonExp
   name: StringComparisonExp
   oidcInfoOidcCallbackUri: StringComparisonExp
   oidcInfoOidcClientId: StringComparisonExp
@@ -29221,8 +28058,6 @@ input TenantBoolExp {
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
   team: TeamBoolExp
-  teamFinanceEdits: TeamFinanceEditBoolExp
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
   teamId: BigintComparisonExp
@@ -29253,7 +28088,6 @@ input TenantIncInput {
   createdById: bigint
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   teamId: bigint
 }
 
@@ -29273,7 +28107,6 @@ input TenantInsertInput {
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   classGroups: ClassGroupArrRelInsertInput
   cohorts: CohortArrRelInsertInput
-  contentEdits: ContentEditArrRelInsertInput
   contentMasters: ContentMasterArrRelInsertInput
   contents: ContentArrRelInsertInput
   createdAt: timestamptz
@@ -29292,7 +28125,6 @@ input TenantInsertInput {
   events: EventArrRelInsertInput
   expenses: ExpenseArrRelInsertInput
   favorites: FavoriteArrRelInsertInput
-  fileUpload: FileUploadObjRelInsertInput
   fileUploads: FileUploadArrRelInsertInput
   follows: FollowArrRelInsertInput
   form: FormObjRelInsertInput
@@ -29304,7 +28136,6 @@ input TenantInsertInput {
   individual: IndividualObjRelInsertInput
   individuals: IndividualArrRelInsertInput
   issues: IssueArrRelInsertInput
-  logoId: bigint
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -29326,7 +28157,6 @@ input TenantInsertInput {
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
   team: TeamObjRelInsertInput
-  teamFinanceEdits: TeamFinanceEditArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -29345,7 +28175,6 @@ type TenantMaxFields {
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -29364,7 +28193,6 @@ input TenantMaxOrderBy {
   domain: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   name: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
@@ -29383,7 +28211,6 @@ type TenantMinFields {
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -29402,7 +28229,6 @@ input TenantMinOrderBy {
   domain: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   name: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
@@ -29446,7 +28272,6 @@ input TenantOrderBy {
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   classGroupsAggregate: ClassGroupAggregateOrderBy
   cohortsAggregate: CohortAggregateOrderBy
-  contentEditsAggregate: ContentEditAggregateOrderBy
   contentMastersAggregate: ContentMasterAggregateOrderBy
   contentsAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
@@ -29465,7 +28290,6 @@ input TenantOrderBy {
   eventsAggregate: EventAggregateOrderBy
   expensesAggregate: ExpenseAggregateOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
-  fileUpload: FileUploadOrderBy
   fileUploadsAggregate: FileUploadAggregateOrderBy
   followsAggregate: FollowAggregateOrderBy
   form: FormOrderBy
@@ -29477,7 +28301,6 @@ input TenantOrderBy {
   individual: IndividualOrderBy
   individualsAggregate: IndividualAggregateOrderBy
   issuesAggregate: IssueAggregateOrderBy
-  logoId: OrderBy
   name: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
@@ -29499,7 +28322,6 @@ input TenantOrderBy {
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
   team: TeamOrderBy
-  teamFinanceEditsAggregate: TeamFinanceEditAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -29522,7 +28344,6 @@ enum TenantSelectColumn {
   domain
   eventValidationFormId
   id
-  logoId
   name
   oidcInfoOidcCallbackUri
   oidcInfoOidcClientId
@@ -29550,7 +28371,6 @@ input TenantSetInput {
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -29567,7 +28387,6 @@ type TenantStddevFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29575,7 +28394,6 @@ input TenantStddevOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29583,7 +28401,6 @@ type TenantStddevPopFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29591,7 +28408,6 @@ input TenantStddevPopOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29599,7 +28415,6 @@ type TenantStddevSampFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29607,7 +28422,6 @@ input TenantStddevSampOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29623,7 +28437,6 @@ input TenantStreamCursorValueInput {
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -29640,7 +28453,6 @@ type TenantSumFields {
   createdById: bigint
   eventValidationFormId: bigint
   id: bigint
-  logoId: bigint
   teamId: bigint
 }
 
@@ -29648,7 +28460,6 @@ input TenantSumOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29659,7 +28470,6 @@ enum TenantUpdateColumn {
   domain
   eventValidationFormId
   id
-  logoId
   name
   oidcInfoOidcCallbackUri
   oidcInfoOidcClientId
@@ -29682,7 +28492,6 @@ type TenantVarianceFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29690,7 +28499,6 @@ input TenantVarianceOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29698,7 +28506,6 @@ type TenantVarPopFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29706,7 +28513,6 @@ input TenantVarPopOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -29714,7 +28520,6 @@ type TenantVarSampFields {
   createdById: Float
   eventValidationFormId: Float
   id: Float
-  logoId: Float
   teamId: Float
 }
 
@@ -29722,7 +28527,6 @@ input TenantVarSampOrderBy {
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  logoId: OrderBy
   teamId: OrderBy
 }
 
@@ -32116,6 +30920,17 @@ input VoteVarSampOrderBy {
   id: OrderBy
   tenantId: OrderBy
   value: OrderBy
+}
+
+type Log {
+  event: String!
+  context: String!
+  entityName: String!
+  entityId: bigint!
+  diff: jsonb!
+  note: String!
+  team: Team
+  contentMaster: ContentMaster
 }
 
 scalar Upload

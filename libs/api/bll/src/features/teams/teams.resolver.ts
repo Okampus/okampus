@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertTeamArgsType,
   InsertOneTeamArgsType,
-  UpdateTeamArgsType,
   UpdateByPkTeamArgsType,
   FindTeamArgsType,
   FindByPkTeamArgsType,
@@ -27,16 +26,6 @@ export class TeamsMutationResolver {
       info.variableValues
     );
     return await this.teamsService.insertTeam(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateTeam(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateTeamArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.teamsService.updateTeam(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class TeamsQueryResolver {
       info.variableValues
     );
     return await this.teamsService.updateTeamByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteTeamByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkTeamArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamsService.deleteTeamByPk(getSelectionSet(info), pkColumns);
   }
 }
 

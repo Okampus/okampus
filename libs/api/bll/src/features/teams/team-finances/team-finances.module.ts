@@ -5,12 +5,13 @@ import {
   TeamFinancesQueryResolver,
 } from './team-finances.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
+import { LogsModule } from '../../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { TeamFinanceEdit } from '@okampus/api/dal';
+import { TeamFinance } from '@okampus/api/dal';
 
 @Module({
-  imports: [HasuraModule, MikroOrmModule.forFeature([TeamFinanceEdit])],
+  imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([TeamFinance])],
   providers: [
     TeamFinancesMutationResolver,
     TeamFinancesQueryResolver,

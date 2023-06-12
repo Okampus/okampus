@@ -1,0 +1,14 @@
+type Log {
+  event: String!
+  context: String!
+  entityName: String!
+  entityId: bigint!
+  diff: jsonb!
+  note: String!
+  team: Team
+  contentMaster: ContentMaster
+}
+
+type Query {
+  teamFinanceLogs(id: bigint, teamId: bigint): [Log!]!
+}

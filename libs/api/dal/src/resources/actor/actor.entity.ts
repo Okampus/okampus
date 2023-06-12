@@ -1,13 +1,23 @@
 // eslint-disable-next-line import/no-cycle
+import { ActorRepository } from './actor.repository';
 import { TenantScopedEntity } from '..';
-import { Collection, Entity, ManyToMany, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { toSlug } from '@okampus/shared/utils';
 
 import { nanoid } from 'nanoid';
-import type { ActorBankInfo } from './actor-bank-info/actor-bank-info.entity';
 
+import type { ActorBankInfo } from './actor-bank-info/actor-bank-info.entity';
 import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
 import type { Report } from '../content/report/report.entity';
@@ -17,8 +27,10 @@ import type { Team } from '../team/team.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
 
-@Entity()
+@Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
+  [EntityRepositoryType]!: ActorRepository;
+
   @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true })
   individual!: Individual | null;
 

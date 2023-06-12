@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertUserInfoArgsType,
   InsertOneUserInfoArgsType,
-  UpdateUserInfoArgsType,
   UpdateByPkUserInfoArgsType,
   FindUserInfoArgsType,
   FindByPkUserInfoArgsType,
@@ -27,16 +26,6 @@ export class UserInfosMutationResolver {
       info.variableValues
     );
     return await this.userInfosService.insertUserInfo(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateUserInfo(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateUserInfoArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.userInfosService.updateUserInfo(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class UserInfosQueryResolver {
       info.variableValues
     );
     return await this.userInfosService.updateUserInfoByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteUserInfoByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkUserInfoArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.userInfosService.deleteUserInfoByPk(getSelectionSet(info), pkColumns);
   }
 }
 

@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertTeamJoinArgsType,
   InsertOneTeamJoinArgsType,
-  UpdateTeamJoinArgsType,
   UpdateByPkTeamJoinArgsType,
   FindTeamJoinArgsType,
   FindByPkTeamJoinArgsType,
@@ -27,16 +26,6 @@ export class TeamJoinsMutationResolver {
       info.variableValues
     );
     return await this.teamJoinsService.insertTeamJoin(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateTeamJoin(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateTeamJoinArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.teamJoinsService.updateTeamJoin(getSelectionSet(info), where, _set);
   }
 }
 
@@ -82,8 +71,17 @@ export class TeamJoinsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    console.log('Goes here', pkColumns);
     return await this.teamJoinsService.updateTeamJoinByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteTeamJoinByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkTeamJoinArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamJoinsService.deleteTeamJoinByPk(getSelectionSet(info), pkColumns);
   }
 }
 

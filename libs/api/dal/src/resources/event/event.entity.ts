@@ -1,7 +1,6 @@
 import { EventRepository } from './event.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
-import { Content } from '../content/content.entity';
-import { ContentMaster } from '../content-master/content-master.entity';
+// import { Content } from '../content/content.entity';
 import {
   Cascade,
   Collection,
@@ -18,8 +17,12 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { ContentMasterType, EventState } from '@okampus/shared/enums';
-import { toSlug } from '@okampus/shared/utils';
+import {
+  // ContentMasterType,
+  EventState,
+} from '@okampus/shared/enums';
+import type { ContentMaster } from '../content-master/content-master.entity';
+// import { toSlug } from '@okampus/shared/utils';
 
 import type { ActorAddress } from '../actor/actor-address/actor-address.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
@@ -66,8 +69,8 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Enum({ items: () => EventState, type: EnumType, default: EventState.Draft })
   state = EventState.Draft;
 
-  @OneToOne({ type: 'ContentMaster', inversedBy: 'event', nullable: true })
-  contentMaster: ContentMaster | null = null;
+  @OneToOne({ type: 'ContentMaster', inversedBy: 'event' })
+  contentMaster!: ContentMaster;
 
   @Property({ type: 'json', default: '{}' })
   meta: JSONObject = {};
@@ -75,8 +78,14 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'float', nullable: true, default: null })
   budget: number | null = null;
 
-  @ManyToOne({ type: 'ActorAddress' })
-  address!: ActorAddress;
+  @ManyToOne({ type: 'ActorAddress', nullable: true, default: null })
+  address: ActorAddress | null = null;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  onlineMeetingPlace = null;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  onlineMeetingLink = null;
 
   @ManyToOne({ type: 'UserInfo' })
   supervisor!: UserInfo;
@@ -97,12 +106,6 @@ export class Event extends TenantScopedEntity implements Searchable {
 
   @ManyToOne({ type: 'Project' })
   project!: Project;
-
-  @ManyToOne({ type: 'Event', nullable: true, default: null })
-  regularEvent: Event | null = null;
-
-  @Property({ type: 'text', nullable: true, default: null })
-  regularEventInterval: string | null = null; // TODO: use a custom interval type
 
   @OneToOne({ type: 'FormSubmission', nullable: true, default: null })
   approvalSubmission: FormSubmission | null = null;
@@ -127,21 +130,21 @@ export class Event extends TenantScopedEntity implements Searchable {
     this.assign(options);
 
     // Event description
-    const description = new Content({
-      text: options.text || '',
-      teams: options.teams,
-      createdBy: options.createdBy,
-      tenant: options.tenant,
-    });
+    // const description = new Content({
+    //   text: options.text || '',
+    //   teams: options.teams,
+    //   createdBy: options.createdBy,
+    //   tenant: options.tenant,
+    // });
 
-    this.contentMaster = new ContentMaster({
-      event: this,
-      name: options.name,
-      slug: toSlug(options.slug ?? options.name),
-      type: ContentMasterType.Event,
-      rootContent: description,
-      createdBy: options.createdBy,
-      tenant: options.tenant,
-    });
+    // this.contentMaster = new ContentMaster({
+    //   event: this,
+    //   name: options.name,
+    //   slug: toSlug(options.slug ?? options.name),
+    //   type: ContentMasterType.Event,
+    //   rootContent: description,
+    //   createdBy: options.createdBy,
+    //   tenant: options.tenant,
+    // });
   }
 }

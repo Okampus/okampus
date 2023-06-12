@@ -86,13 +86,6 @@ array_relationships:
         table:
           name: tag
           schema: public
-  - name: teamFinanceEdits
-    using:
-      foreign_key_constraint_on:
-        column: added_receipt_id
-        table:
-          name: team_finance_edit
-          schema: public
   - name: teamFinances
     using:
       foreign_key_constraint_on:
@@ -106,11 +99,4 @@ array_relationships:
         column: video_id
         table:
           name: team
-          schema: public
-  - name: tenants
-    using:
-      foreign_key_constraint_on:
-        column: logo_id
-        table:
-          name: tenant
           schema: public

@@ -38,7 +38,7 @@ export class ContentMaster extends TenantScopedEntity {
 
   @ManyToMany({ type: 'Individual' })
   @TransformCollection()
-  contributors = new Collection<Individual>(this);
+  contributors = new Collection<Individual>(this, this.createdBy ? [this.createdBy] : []);
 
   constructor(options: ContentMasterOptions) {
     super(options);

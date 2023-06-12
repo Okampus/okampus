@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertIndividualArgsType,
   InsertOneIndividualArgsType,
-  UpdateIndividualArgsType,
   UpdateByPkIndividualArgsType,
   FindIndividualArgsType,
   FindByPkIndividualArgsType,
@@ -27,16 +26,6 @@ export class IndividualsMutationResolver {
       info.variableValues
     );
     return await this.individualsService.insertIndividual(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateIndividual(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateIndividualArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.individualsService.updateIndividual(getSelectionSet(info), where, _set);
   }
 }
 
@@ -90,6 +79,16 @@ export class IndividualsQueryResolver {
       info.variableValues
     );
     return await this.individualsService.updateIndividualByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteIndividualByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkIndividualArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), pkColumns);
   }
 }
 

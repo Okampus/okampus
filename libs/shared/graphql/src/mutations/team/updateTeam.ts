@@ -2,6 +2,7 @@
 import { teamManageInfo } from '../../selectors/team/teamManage';
 import { teamWithMembersInfo } from '../../selectors/team/teamWithMembers';
 import { $ } from '../../zeus';
+import { id } from '../id';
 import { typedGql } from '../../zeus/typedDocumentNode';
 
 import type { ValueTypes } from '../../zeus';
@@ -9,7 +10,10 @@ import type { ValueTypes } from '../../zeus';
 // @ts-expect-error - Zeus depth limit
 export const updateTeam = typedGql('mutation')({
   updateTeamByPk: [
-    { pkColumns: { id: $('id', 'bigint!') }, _set: $('update', 'TeamSetInput!') as ValueTypes['TeamSetInput'] },
+    {
+      pkColumns: { id },
+      _set: $('update', 'TeamSetInput!') as ValueTypes['TeamSetInput'],
+    },
     teamWithMembersInfo,
   ],
 });
@@ -17,7 +21,10 @@ export const updateTeam = typedGql('mutation')({
 // @ts-expect-error - Zeus depth limit
 export const updateTeamManage = typedGql('mutation')({
   updateTeamByPk: [
-    { pkColumns: { id: $('id', 'bigint!') }, _set: $('update', 'TeamSetInput!') as ValueTypes['TeamSetInput'] },
+    {
+      pkColumns: { id },
+      _set: $('update', 'TeamSetInput!') as ValueTypes['TeamSetInput'],
+    },
     teamManageInfo,
   ],
 });

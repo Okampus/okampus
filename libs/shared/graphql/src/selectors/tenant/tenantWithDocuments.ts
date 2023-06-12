@@ -7,6 +7,7 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 export const tenantWithDocumentsInfo = Selector('Tenant')({
   ...tenantBaseInfo,
   team: {
+    ...tenantBaseInfo.team,
     documents: [{}, documentBaseInfo],
   },
 });

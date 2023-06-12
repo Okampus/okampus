@@ -1,18 +1,68 @@
 import { RequestContext } from '../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../global/graphql/hasura.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { FormRepository } from '@okampus/api/dal';
+import { LogsService } from '../logs/logs.service';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FormRepository, Form } from '@okampus/api/dal';
+import { ScopeRole } from '@okampus/shared/enums';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+
 import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class FormsService extends RequestContext {
-  constructor(private readonly formRepository: FormRepository, private readonly hasuraService: HasuraService) {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly hasuraService: HasuraService,
+    private readonly logsService: LogsService,
+    private readonly formRepository: FormRepository
+  ) {
     super();
   }
 
-  validateProps(props: ValueTypes['FormInsertInput']) {
+  async checkPermsCreate(props: ValueTypes['FormInsertInput']) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+
+    // Custom logic
+    return true;
+  }
+
+  async checkPermsDelete(id: string) {
+    const form = await this.formRepository.findOneOrFail(id);
+    if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: ValueTypes['FormSetInput'], form: Form) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
+
+    if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
+    if (form.hiddenAt) throw new NotFoundException('Form must be unhidden before it can be updated.');
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return form.createdBy?.id === this.requester().id;
+  }
+
+  async checkPropsConstraints(props: ValueTypes['FormSetInput']) {
+    this.hasuraService.checkForbiddenFields(props);
+
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
+    // Custom logic
+    return true;
+  }
+
+  async checkCreateRelationships(props: ValueTypes['FormInsertInput']) {
     // Custom logic
     return true;
   }
@@ -23,21 +73,31 @@ export class FormsService extends RequestContext {
     onConflict?: ValueTypes['FormOnConflict'],
     insertOne?: boolean
   ) {
-    const arePropsValid = await objects.every((object) => this.validateProps(object));
-    if (!arePropsValid) throw new BadRequestException('Cannot insert Form with invalid props.');
+    const arePropsValid = await Promise.all(
+      objects.map(async (props) => {
+        const canCreate = await this.checkPermsCreate(props);
+        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
+        const arePropsValid = await this.checkPropsConstraints(props);
+        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+        const areRelationshipsValid = await this.checkCreateRelationships(props);
+        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
+
+        return canCreate && arePropsValid && areRelationshipsValid;
+      })
+    ).then((results) => results.every(Boolean));
+
+    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Form.');
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertForm', selectionSet, objects, onConflict, insertOne);
+
+    const form = await this.formRepository.findOneOrFail(data.insertForm[0].id);
+    await this.logsService.createLog(form);
+
     // Custom logic
     return data.insertForm;
-  }
-
-  async updateForm(selectionSet: string[], where: ValueTypes['FormBoolExp'], _set: ValueTypes['FormSetInput']) {
-    const arePropsValid = this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update Form with invalid props.');
-
-    const data = await this.hasuraService.update('updateForm', selectionSet, where, _set);
-    // Custom logic
-    return data.updateForm;
   }
 
   async findForm(
@@ -64,10 +124,31 @@ export class FormsService extends RequestContext {
     pkColumns: ValueTypes['FormPkColumnsInput'],
     _set: ValueTypes['FormSetInput']
   ) {
-    const arePropsValid = await this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update Form with invalid props.');
+    const form = await this.formRepository.findOneOrFail(pkColumns.id);
+
+    const canUpdate = await this.checkPermsUpdate(_set, form);
+    if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${pkColumns.id}).`);
+
+    const arePropsValid = await this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
     const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, _set);
+
+    await this.logsService.updateLog(form, _set);
+
+    // Custom logic
+    return data.updateFormByPk;
+  }
+
+  async deleteFormByPk(selectionSet: string[], pkColumns: ValueTypes['FormPkColumnsInput']) {
+    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${pkColumns.id}).`);
+
+    const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await this.logsService.deleteLog(pkColumns.id);
     // Custom logic
     return data.updateFormByPk;
   }

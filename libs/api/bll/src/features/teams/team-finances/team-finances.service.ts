@@ -1,28 +1,68 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { TeamFinanceEditRepository } from '@okampus/api/dal';
+import { LogsService } from '../../logs/logs.service';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamFinanceRepository, TeamFinance } from '@okampus/api/dal';
+import { ScopeRole } from '@okampus/shared/enums';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+
 import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamFinancesService extends RequestContext {
   constructor(
-    private readonly teamFinanceEditRepository: TeamFinanceEditRepository,
-    private readonly hasuraService: HasuraService
+    private readonly em: EntityManager,
+    private readonly hasuraService: HasuraService,
+    private readonly logsService: LogsService,
+    private readonly teamFinanceRepository: TeamFinanceRepository
   ) {
     super();
   }
 
-  validateProps(props: ValueTypes['TeamFinanceInsertInput']) {
+  async checkPermsCreate(props: ValueTypes['TeamFinanceInsertInput']) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
+
+    // Custom logic
+    return true;
+  }
+
+  async checkPermsDelete(id: string) {
+    const teamFinance = await this.teamFinanceRepository.findOneOrFail(id);
+    if (teamFinance.deletedAt) throw new NotFoundException(`TeamFinance was deleted on ${teamFinance.deletedAt}.`);
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: ValueTypes['TeamFinanceSetInput'], teamFinance: TeamFinance) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
+
+    if (teamFinance.deletedAt) throw new NotFoundException(`TeamFinance was deleted on ${teamFinance.deletedAt}.`);
+    if (teamFinance.hiddenAt) throw new NotFoundException('TeamFinance must be unhidden before it can be updated.');
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return teamFinance.createdBy?.id === this.requester().id;
+  }
+
+  async checkPropsConstraints(props: ValueTypes['TeamFinanceSetInput']) {
+    this.hasuraService.checkForbiddenFields(props);
+
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
+    // Custom logic
+    return true;
+  }
 
-    if (props.actorAddress && props.actorAddress.data) {
-      props.actorAddress.data.tenantId = this.tenant().id;
-      props.actorAddress.data.createdById = this.requester().id;
-    }
+  async checkCreateRelationships(props: ValueTypes['TeamFinanceInsertInput']) {
     // Custom logic
     return true;
   }
@@ -33,32 +73,31 @@ export class TeamFinancesService extends RequestContext {
     onConflict?: ValueTypes['TeamFinanceOnConflict'],
     insertOne?: boolean
   ) {
-    const arePropsValid = await objects.every((object) => this.validateProps(object));
-    if (!arePropsValid) throw new BadRequestException('Cannot insert TeamFinance with invalid props.');
+    const arePropsValid = await Promise.all(
+      objects.map(async (props) => {
+        const canCreate = await this.checkPermsCreate(props);
+        if (!canCreate) throw new ForbiddenException('You are not allowed to insert TeamFinance.');
 
+        const arePropsValid = await this.checkPropsConstraints(props);
+        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+        const areRelationshipsValid = await this.checkCreateRelationships(props);
+        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
+
+        return canCreate && arePropsValid && areRelationshipsValid;
+      })
+    ).then((results) => results.every(Boolean));
+
+    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert TeamFinance.');
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTeamFinance', selectionSet, objects, onConflict, insertOne);
+
+    const teamFinance = await this.teamFinanceRepository.findOneOrFail(data.insertTeamFinance[0].id);
+    await this.logsService.createLog(teamFinance);
 
     // Custom logic
     return data.insertTeamFinance;
-  }
-
-  async updateTeamFinance(
-    selectionSet: string[],
-    where: ValueTypes['TeamFinanceBoolExp'],
-    _set: ValueTypes['TeamFinanceSetInput']
-  ) {
-    const arePropsValid = this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update TeamFinance with invalid props.');
-
-    // const teamFinanceEdit = this.teamFinanceEditRepository.create({
-    //   tenant: this.tenant()
-    // })
-
-    // await this.teamFinanceEditRepository.getEntityManager().persistAndFlush(teamFinanceEdit);
-
-    const data = await this.hasuraService.update('updateTeamFinance', selectionSet, where, _set);
-    // Custom logic
-    return data.updateTeamFinance;
   }
 
   async findTeamFinance(
@@ -85,10 +124,31 @@ export class TeamFinancesService extends RequestContext {
     pkColumns: ValueTypes['TeamFinancePkColumnsInput'],
     _set: ValueTypes['TeamFinanceSetInput']
   ) {
-    const arePropsValid = await this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update TeamFinance with invalid props.');
+    const teamFinance = await this.teamFinanceRepository.findOneOrFail(pkColumns.id);
+
+    const canUpdate = await this.checkPermsUpdate(_set, teamFinance);
+    if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TeamFinance (${pkColumns.id}).`);
+
+    const arePropsValid = await this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
     const data = await this.hasuraService.updateByPk('updateTeamFinanceByPk', selectionSet, pkColumns, _set);
+
+    await this.logsService.updateLog(teamFinance, _set);
+
+    // Custom logic
+    return data.updateTeamFinanceByPk;
+  }
+
+  async deleteTeamFinanceByPk(selectionSet: string[], pkColumns: ValueTypes['TeamFinancePkColumnsInput']) {
+    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamFinance (${pkColumns.id}).`);
+
+    const data = await this.hasuraService.updateByPk('updateTeamFinanceByPk', selectionSet, pkColumns, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await this.logsService.deleteLog(pkColumns.id);
     // Custom logic
     return data.updateTeamFinanceByPk;
   }

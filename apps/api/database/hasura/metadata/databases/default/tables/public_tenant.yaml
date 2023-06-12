@@ -2,9 +2,6 @@ table:
   name: tenant
   schema: public
 object_relationships:
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: logo_id
   - name: form
     using:
       foreign_key_constraint_on: event_validation_form_id
@@ -119,13 +116,6 @@ array_relationships:
         column: tenant_id
         table:
           name: cohort
-          schema: public
-  - name: contentEdits
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: content_edit
           schema: public
   - name: contentMasters
     using:
@@ -350,13 +340,6 @@ array_relationships:
         column: tenant_id
         table:
           name: tag
-          schema: public
-  - name: teamFinanceEdits
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: team_finance_edit
           schema: public
   - name: teamFinances
     using:

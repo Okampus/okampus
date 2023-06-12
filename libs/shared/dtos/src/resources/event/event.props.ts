@@ -1,28 +1,11 @@
 import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
-import { IsBoolean, IsDate, IsEnum, IsNumber, IsObject, IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsBoolean, IsDate, IsEnum, IsNumber, IsObject, IsOptional } from 'class-validator';
 import { EventState } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
 import type { JSONObject } from '@okampus/shared/types';
 
 @InputType()
 export class EventProps {
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @Length(1, 100)
-  @Matches(/^[\d:a-z-]+$/)
-  @IsString()
-  slug?: string | null;
-
-  @Field(() => String)
-  @Length(1, 100)
-  @IsString()
-  name!: string;
-
-  @Field(() => String)
-  @Length(1, 10_000)
-  @IsString()
-  text!: string;
-
   @Field(() => GraphQLISODateTime)
   @IsDate()
   start!: Date;
@@ -64,9 +47,4 @@ export class EventProps {
   @IsOptional()
   @IsBoolean()
   autoAcceptJoins?: boolean;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  regularEventInterval?: string | null;
 }

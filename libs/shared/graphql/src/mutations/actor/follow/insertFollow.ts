@@ -4,7 +4,8 @@ import { $ } from '../../../zeus';
 
 import type { ValueTypes } from '../../../zeus';
 
-// @ts-expect-error - Zeus depth limit
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const insertFollowMutation = typedGql('mutation')({
   insertFollowOne: [{ object: $('insert', 'FollowInsertInput!') as ValueTypes['FollowInsertInput'] }, followBaseInfo],
 });

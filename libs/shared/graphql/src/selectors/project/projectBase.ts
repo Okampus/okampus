@@ -10,23 +10,11 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const projectBaseInfo = Selector('Project')({
   ...entityBase,
+  color: true,
   name: true,
   slug: true,
   description: true,
-  eventsAggregate: [
-    {},
-    {
-      nodes: eventDetailsInfo,
-      aggregate: {
-        min: {
-          start: true,
-        },
-        max: {
-          end: true,
-        },
-      },
-    },
-  ],
+  eventsAggregate: [{}, { nodes: eventDetailsInfo, aggregate: { min: { start: true }, max: { end: true } } }],
   fileUpload: fileUploadBaseInfo,
   projectSupervisors: [{}, { teamMember: teamMemberWithUserInfo }],
   projectTags: [{}, { tag: tagBaseInfo }],

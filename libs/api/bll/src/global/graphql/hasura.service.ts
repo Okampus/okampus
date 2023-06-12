@@ -1,8 +1,21 @@
 import { RequestContext } from '../../shards/abstract/request-context';
 import { loadConfig } from '../../shards/utils/load-config';
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { EntityManager } from '@mikro-orm/core';
+
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TeamMemberRepository } from '@okampus/api/dal';
 import { GraphQLEnum, isNonNullObject } from '@okampus/shared/utils';
 
 import axios from 'axios';
@@ -12,7 +25,6 @@ type Obj = Record<string, unknown>;
 interface Fields {
   [key: string]: true | Fields;
 }
-type Relationship = { idPath: string; relPath?: string };
 
 function selectionSetToObject(selectionSet: string[]): Fields {
   const result: Fields = {};
@@ -65,13 +77,36 @@ const buildOperation = (operation: 'query' | 'mutation', name: string, selection
   return `${operation} { ${name}${argsString ? `(${argsString})` : ''} { ${strigifySelectionSet(selectionSet)} } }`;
 };
 
+const forbiddenFields = [
+  'id',
+  'createdAt',
+  'updatedAt',
+  'tenantId',
+  'tenant',
+  'createdById',
+  'individual',
+  'deletedAt',
+  'hiddenAt',
+];
+
+export type ExpectNestedRelation = {
+  path: string;
+  defaultProps?: Record<string, unknown>;
+  overwrite?: Record<string, unknown>;
+  checkTransform?: (value: Record<string, unknown>) => Record<string, unknown>;
+};
+
 @Injectable()
 export class HasuraService extends RequestContext {
   axiosInstance: AxiosInstance;
 
   logger = new Logger(HasuraService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly configService: ConfigService,
+    private readonly teamMemberRepository: TeamMemberRepository
+  ) {
     super();
 
     const baseURL = `${loadConfig<string>(this.configService, 'network.hasuraUrl')}/v1/graphql`;
@@ -149,107 +184,91 @@ export class HasuraService extends RequestContext {
     return data;
   }
 
-  applyData<T>(props: T, defaultProps: Record<string, unknown> = {}, overwrite: Record<string, unknown> = {}) {
-    return {
-      ...defaultProps,
-      ...props,
-      ...overwrite,
-      tenantId: this.tenant().id,
-      createdById: this.requester().id,
-    };
+  async checkTeamPermissions(teamId: string, permissions: number) {
+    const individual = this.requester();
+    if (!individual.user) throw new InternalServerErrorException('No user found in individual.');
+
+    const teamMember = await this.teamMemberRepository.findOne(
+      { team: { id: teamId }, user: individual.user },
+      { populate: ['roles'] }
+    );
+
+    if (!teamMember)
+      throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
+
+    if (!teamMember.roles.getItems().some((role) => (permissions & role.permissions) === permissions))
+      throw new ForbiddenException(
+        `You do not have the required permissions (${permissions}) in the required team (${teamId}) to perform this query.`
+      );
   }
 
-  expectData<T extends Record<string, unknown>>(
-    props: T,
-    dataPath: string,
-    defaultProps: Record<string, unknown> = {},
-    overwrite: Record<string, unknown> = {}
-  ) {
-    let data: Record<string, unknown> = props;
+  checkForbiddenFields(props: Record<string, unknown>) {
+    for (const key of forbiddenFields)
+      if (key in props && props[key]) throw new BadRequestException(`Forbidden field in mutation: ${key}`);
+  }
 
-    const dataKeys = dataPath.split('.');
-    const lastDataKey = dataKeys.pop();
+  applyData<T>(props: T, defaultProps: Record<string, unknown> = {}, overwrite: Record<string, unknown> = {}) {
+    return { ...defaultProps, ...props, ...overwrite, tenantId: this.tenant().id, createdById: this.requester().id };
+  }
 
-    if (!lastDataKey) throw new BadRequestException('Invalid arguments: no dataPath provided.');
+  expectNestedRelationship(props: unknown, relationships: ExpectNestedRelation[]) {
+    for (const relationship of relationships) {
+      let deepProps = props;
 
-    if (!isNonNullObject(data)) throw new BadRequestException(`Invalid props: props must be an object.`);
-    for (const dataKey of dataKeys) {
-      data[dataKey] = typeof data[dataKey] === 'object' ? data[dataKey] : {};
-      const dataValue = data[dataKey];
-      if (isNonNullObject(dataValue)) data = dataValue;
+      const pathSegments = relationship.path.split('.');
+      const lastPathKey = pathSegments.pop();
+
+      let propsString = 'props';
+      deepProps = props;
+      if (!lastPathKey) throw new InternalServerErrorException('Invalid arguments: no relationship path provided.');
+
+      for (const dataKey of pathSegments) {
+        if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+
+        propsString += `.${dataKey}`;
+
+        deepProps[dataKey] = typeof deepProps[dataKey] === 'object' ? deepProps[dataKey] : {};
+        if (isNonNullObject(deepProps[dataKey])) deepProps = deepProps[dataKey];
+      }
+
+      if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+      const dataValue = deepProps[lastPathKey];
+      if (!isNonNullObject(dataValue) || !('data' in dataValue) || !isNonNullObject(dataValue.data))
+        throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);
+
+      const data = relationship.checkTransform
+        ? relationship.checkTransform(this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite))
+        : this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite);
+
+      deepProps[lastPathKey] = { data };
     }
 
-    const dataValue = data[lastDataKey];
-    if (!isNonNullObject(dataValue))
-      throw new BadRequestException(`Invalid props: props.${dataPath} must be an object.`);
-
-    data[lastDataKey] = { data: this.applyData(dataValue.data ?? {}, defaultProps, overwrite) };
     return true;
   }
 
-  expectRelationship<T>(props: T, relationships: Array<Relationship>) {
+  expectIdRelationships(props: unknown, relationships: Array<string>) {
     for (const relationship of relationships) {
-      let id;
-      let deepProps: unknown = props;
+      let deepProps = props;
 
-      const relPath = relationship.relPath || '';
-      const relKeys = relPath.split('.');
-      const lastKey = relKeys.pop();
-
-      if (lastKey) {
-        // else no relPath was provided
-        for (const relKey of relKeys) {
-          if (!isNonNullObject(deepProps) || deepProps[relKey] === undefined) break;
-          deepProps = deepProps[relKey];
-        }
-
-        if (isNonNullObject(deepProps)) {
-          const relProps = deepProps[lastKey];
-          if (
-            relProps &&
-            isNonNullObject(relProps) &&
-            relProps.data &&
-            isNonNullObject(relProps.data) &&
-            relProps.data.id &&
-            typeof relProps.data.id === 'string'
-          ) {
-            id = relProps.data.id;
-          }
-          delete deepProps[lastKey];
-        }
-      }
-
-      const idKeys = relationship.idPath.split('.');
-      const lastIdKey = idKeys.pop();
+      const pathSegments = relationship.split('.');
+      const lastPathKey = pathSegments.pop();
 
       let propsString = 'props';
-      let errorString = 'Invalid arguments: no idPath provided.';
       deepProps = props;
-      if (lastIdKey) {
-        // else no idPath was provided
-        for (const idKey of idKeys) {
-          if (!isNonNullObject(deepProps) || deepProps[idKey] === undefined) {
-            errorString = `Invalid props: ${propsString} must be an object.`;
-            break;
-          }
-          deepProps = deepProps[idKey];
-          propsString += `.${idKey}`;
-        }
+      if (!lastPathKey) throw new InternalServerErrorException('Invalid arguments: no relationship path provided.');
 
-        if (isNonNullObject(deepProps)) {
-          const idProps = deepProps[lastIdKey];
-          if (idProps && typeof idProps === 'string') {
-            id = idProps;
-            delete deepProps[lastIdKey];
-          } else {
-            errorString = `Invalid props: ${propsString}.${lastIdKey} must be a string.`;
-          }
-        } else {
-          errorString = `Invalid props: ${propsString} must be an object.`;
-        }
+      for (const idKey of pathSegments) {
+        if (!isNonNullObject(deepProps) || deepProps[idKey] === undefined)
+          throw new BadRequestException(`Expected ${propsString} to be an object.`);
+
+        deepProps = deepProps[idKey];
+        propsString += `.${idKey}`;
       }
 
-      if (!id) throw new BadRequestException(errorString);
+      if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+      const idProps = deepProps[lastPathKey];
+      if (!idProps || typeof idProps !== 'string')
+        throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be a Snowflake.`);
     }
 
     return true;

@@ -1,54 +1,69 @@
+import { RequestContext } from '../../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { UploadsService } from '../../uploads/uploads.service';
+import { LogsService } from '../../logs/logs.service';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { NotificationsService } from '../../../global/notifications/notifications.service';
-import { RequestContext } from '../../../shards/abstract/request-context';
+import { EventJoinRepository, EventJoin } from '@okampus/api/dal';
+import { ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ConfigService } from '@nestjs/config';
-import { BadRequestException, Injectable } from '@nestjs/common';
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { EventJoinRepository } from '@okampus/api/dal';
-import { EVENT_MANAGE_TAB_ROUTE, EVENT_MANAGE_ROUTES } from '@okampus/shared/consts';
+import { EntityManager } from '@mikro-orm/core';
 
 import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventJoinsService extends RequestContext {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly eventJoinRepository: EventJoinRepository,
+    private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
-    private readonly uploadsService: UploadsService,
-    private readonly notificationsService: NotificationsService
+    private readonly logsService: LogsService,
+    private readonly eventJoinRepository: EventJoinRepository
   ) {
     super();
   }
 
-  async validateProps(props: ValueTypes['EventJoinInsertInput']) {
-    // TODO: add expect relationships
-    const joinerId = props.userInfo?.data?.id || props.joinerId;
-    if (!joinerId) throw new BadRequestException('Cannot insert EventJoin without joinerId or userInfo.data.id.');
-
-    const eventId = props.event?.data?.id || props.eventId;
-    if (!eventId) throw new BadRequestException('Cannot insert EventJoin without eventId or event.data.id.');
-
-    const alreadyExists = await this.eventJoinRepository.findOne({ joiner: { id: joinerId }, event: { id: eventId } });
-    if (alreadyExists) throw new BadRequestException('Cannot insert EventJoin that already exists.');
-
-    delete props.userInfo;
-    delete props.event;
-
-    props.joinerId = joinerId;
-    props.eventId = eventId;
+  async checkPermsCreate(props: ValueTypes['EventJoinInsertInput']) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
+    return true;
+  }
+
+  async checkPermsDelete(id: string) {
+    const eventJoin = await this.eventJoinRepository.findOneOrFail(id);
+    if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return false;
+  }
+
+  async checkPermsUpdate(props: ValueTypes['EventJoinSetInput'], eventJoin: EventJoin) {
+    if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
+
+    if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
+    if (eventJoin.hiddenAt) throw new NotFoundException('EventJoin must be unhidden before it can be updated.');
+
+    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+
+    // Custom logic
+    return eventJoin.createdBy?.id === this.requester().id;
+  }
+
+  async checkPropsConstraints(props: ValueTypes['EventJoinSetInput']) {
+    this.hasuraService.checkForbiddenFields(props);
+
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
+    // Custom logic
+    return true;
+  }
 
+  async checkCreateRelationships(props: ValueTypes['EventJoinInsertInput']) {
+    // Custom logic
     return true;
   }
 
@@ -58,61 +73,31 @@ export class EventJoinsService extends RequestContext {
     onConflict?: ValueTypes['EventJoinOnConflict'],
     insertOne?: boolean
   ) {
-    // eslint-disable-next-line unicorn/no-await-expression-member
-    const arePropsValid = (await Promise.all(objects.map((object) => this.validateProps(object)))).every(Boolean);
-    if (!arePropsValid) throw new BadRequestException('Cannot insert EventJoin with invalid props.');
+    const arePropsValid = await Promise.all(
+      objects.map(async (props) => {
+        const canCreate = await this.checkPermsCreate(props);
+        if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventJoin.');
 
+        const arePropsValid = await this.checkPropsConstraints(props);
+        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+        const areRelationshipsValid = await this.checkCreateRelationships(props);
+        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
+
+        return canCreate && arePropsValid && areRelationshipsValid;
+      })
+    ).then((results) => results.every(Boolean));
+
+    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert EventJoin.');
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertEventJoin', selectionSet, objects, onConflict, insertOne);
-    const returning = data.insertEventJoin.returning;
 
-    if (this.notificationsService.novu && returning?.length) {
-      const eventJoins = await this.eventJoinRepository.findByIds(
-        returning.map((object: { id: unknown }) => object.id) as string[],
-        { populate: ['event', 'event.contentMaster', 'event.address', 'joiner'] }
-      );
-
-      for (const eventJoin of eventJoins) {
-        const attendanceValidation = `${this.configService.get('network.frontendUrl')}/${EVENT_MANAGE_TAB_ROUTE({
-          slug: eventJoin.event.contentMaster?.slug,
-          tab: EVENT_MANAGE_ROUTES.CONFIRM_PRESENCE,
-        })}/${eventJoin.id}`;
-
-        const qrCode = await this.uploadsService.createQRUpload(attendanceValidation, eventJoin.id);
-        eventJoin.qrCode = qrCode;
-
-        await this.notificationsService.novu.trigger('eventjoin', {
-          payload: {
-            eventAddress: eventJoin.event.address?.name,
-            eventName: eventJoin.event.contentMaster?.name,
-            eventDate: eventJoin.event.start.toLocaleDateString('fr-FR'),
-            firstName: eventJoin.joiner.firstName,
-            qrCode: eventJoin.qrCode.url,
-          },
-          to: {
-            subscriberId: this.requester().id,
-            email: this.requester().actor.primaryEmail || undefined,
-          },
-        });
-      }
-
-      await this.eventJoinRepository.getEntityManager().flush();
-    }
+    const eventJoin = await this.eventJoinRepository.findOneOrFail(data.insertEventJoin[0].id);
+    await this.logsService.createLog(eventJoin);
 
     // Custom logic
     return data.insertEventJoin;
-  }
-
-  async updateEventJoin(
-    selectionSet: string[],
-    where: ValueTypes['EventJoinBoolExp'],
-    _set: ValueTypes['EventJoinSetInput']
-  ) {
-    const arePropsValid = await this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update EventJoin with invalid props.');
-
-    const data = await this.hasuraService.update('updateEventJoin', selectionSet, where, _set);
-    // Custom logic
-    return data.updateEventJoin;
   }
 
   async findEventJoin(
@@ -139,10 +124,31 @@ export class EventJoinsService extends RequestContext {
     pkColumns: ValueTypes['EventJoinPkColumnsInput'],
     _set: ValueTypes['EventJoinSetInput']
   ) {
-    const arePropsValid = await this.validateProps(_set);
-    if (!arePropsValid) throw new BadRequestException('Cannot update EventJoin with invalid props.');
+    const eventJoin = await this.eventJoinRepository.findOneOrFail(pkColumns.id);
+
+    const canUpdate = await this.checkPermsUpdate(_set, eventJoin);
+    if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventJoin (${pkColumns.id}).`);
+
+    const arePropsValid = await this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
     const data = await this.hasuraService.updateByPk('updateEventJoinByPk', selectionSet, pkColumns, _set);
+
+    await this.logsService.updateLog(eventJoin, _set);
+
+    // Custom logic
+    return data.updateEventJoinByPk;
+  }
+
+  async deleteEventJoinByPk(selectionSet: string[], pkColumns: ValueTypes['EventJoinPkColumnsInput']) {
+    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${pkColumns.id}).`);
+
+    const data = await this.hasuraService.updateByPk('updateEventJoinByPk', selectionSet, pkColumns, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await this.logsService.deleteLog(pkColumns.id);
     // Custom logic
     return data.updateEventJoinByPk;
   }

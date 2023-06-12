@@ -134,13 +134,6 @@ array_relationships:
         table:
           name: cohort
           schema: public
-  - name: contentEdits
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: content_edit
-          schema: public
   - name: contentMasterContributors
     using:
       foreign_key_constraint_on:
@@ -385,13 +378,6 @@ array_relationships:
         column: created_by_id
         table:
           name: tag
-          schema: public
-  - name: teamFinanceEdits
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: team_finance_edit
           schema: public
   - name: teamFinances
     using:

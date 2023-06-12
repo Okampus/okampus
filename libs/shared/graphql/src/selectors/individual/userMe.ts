@@ -16,13 +16,7 @@ export const userMeInfo = Selector('UserInfo')({
   tenant: tenantDetailsInfo,
   individualById: {
     ...individualBaseInfo,
-    follows: [
-      {},
-      {
-        ...entityBase,
-        actor: actorBaseInfo,
-      },
-    ],
+    follows: [{}, { ...entityBase, actor: actorBaseInfo }],
   },
 });
 export type UserMeInfo = InputType<GraphQLTypes['UserInfo'], typeof userMeInfo>;

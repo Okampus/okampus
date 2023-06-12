@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertEventAttendanceArgsType,
   InsertOneEventAttendanceArgsType,
-  UpdateEventAttendanceArgsType,
   UpdateByPkEventAttendanceArgsType,
   FindEventAttendanceArgsType,
   FindByPkEventAttendanceArgsType,
@@ -27,16 +26,6 @@ export class EventAttendancesMutationResolver {
       info.variableValues
     );
     return await this.eventAttendancesService.insertEventAttendance(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateEventAttendance(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateEventAttendanceArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventAttendancesService.updateEventAttendance(getSelectionSet(info), where, _set);
   }
 }
 
@@ -95,6 +84,16 @@ export class EventAttendancesQueryResolver {
       info.variableValues
     );
     return await this.eventAttendancesService.updateEventAttendanceByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteEventAttendanceByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkEventAttendanceArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventAttendancesService.deleteEventAttendanceByPk(getSelectionSet(info), pkColumns);
   }
 }
 

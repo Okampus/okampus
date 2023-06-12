@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   InsertFollowArgsType,
   InsertOneFollowArgsType,
-  UpdateFollowArgsType,
   UpdateByPkFollowArgsType,
   FindFollowArgsType,
   FindByPkFollowArgsType,
@@ -27,16 +26,6 @@ export class FollowsMutationResolver {
       info.variableValues
     );
     return await this.followsService.insertFollow(getSelectionSet(info), objects, onConflict);
-  }
-
-  @Mutation()
-  async updateFollow(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<UpdateFollowArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.followsService.updateFollow(getSelectionSet(info), where, _set);
   }
 }
 
@@ -83,6 +72,16 @@ export class FollowsQueryResolver {
       info.variableValues
     );
     return await this.followsService.updateFollowByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async deleteFollowByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPkFollowArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.followsService.deleteFollowByPk(getSelectionSet(info), pkColumns);
   }
 }
 

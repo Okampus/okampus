@@ -5,12 +5,13 @@ import {
   IndividualsQueryResolver,
 } from './individuals.resolver';
 import { HasuraModule } from '../../global/graphql/hasura.module';
+import { LogsModule } from '../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { Individual } from '@okampus/api/dal';
 
 @Module({
-  imports: [HasuraModule, MikroOrmModule.forFeature([Individual])],
+  imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Individual])],
   providers: [
     IndividualsMutationResolver,
     IndividualsQueryResolver,
