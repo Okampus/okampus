@@ -67,7 +67,6 @@ export * from './dal/team/team-type.enum';
 export * from './dal/tenant/approval-step-type.enum';
 export * from './dal/tenant/badge-level.enum';
 export * from './dal/tenant/statistic.enum';
-export * from './dal/tenant/tenant-permissions.enum';
 export * from './global/align.enum';
 export * from './global/approval-state.enum';
 export * from './global/colors.enum';

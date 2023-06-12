@@ -5,22 +5,37 @@ const VIEW_JOINS = 4;
 const MANAGE_JOINS = 8;
 const MANAGE_ROLES = 16;
 const MANAGE_MEMBERS = 32;
-const MANAGE_TEAM = 64;
+const MANAGE_PROFILE = 64;
 const VIEW_DRAFT_EVENTS = 128;
 const CREATE_EVENTS = 256;
 const MANAGE_EVENTS = 512;
+const CREATE_CONTENTS = 1024;
+const MANAGE_CONTENTS = 2048;
+const CREATE_ACTIONS = 4096;
+const MANAGE_ACTIONS = 8192;
 
-const ADMIN =
+const TEAM_ADMIN =
   VIEW_TREASURY |
   MANAGE_TREASURY |
   VIEW_JOINS |
   MANAGE_JOINS |
   MANAGE_ROLES |
   MANAGE_MEMBERS |
-  MANAGE_TEAM |
+  MANAGE_PROFILE |
   VIEW_DRAFT_EVENTS |
   CREATE_EVENTS |
-  MANAGE_EVENTS;
+  MANAGE_EVENTS |
+  CREATE_CONTENTS |
+  MANAGE_CONTENTS |
+  CREATE_ACTIONS |
+  MANAGE_ACTIONS;
+
+const VIEW_HIDDEN = 16_384;
+const MANAGE_HIDDEN = 32_768;
+const CREATE_TEAM = 65_536;
+const MANAGE_CAMPUS = 131_072;
+const MANAGE_APPROVAL_STEPS = 262_144;
+const MANAGE_EVENT_APPROVALS = 524_288;
 
 export enum TeamPermissions {
   Default = DEFAULT,
@@ -30,9 +45,22 @@ export enum TeamPermissions {
   ManageJoins = MANAGE_JOINS,
   ManageRoles = MANAGE_ROLES,
   ManageMembers = MANAGE_MEMBERS,
-  ManageTeam = MANAGE_TEAM,
+  ManageProfile = MANAGE_PROFILE,
   ViewDraftEvents = VIEW_DRAFT_EVENTS,
   CreateEvents = CREATE_EVENTS,
   ManageEvents = MANAGE_EVENTS,
-  Admin = ADMIN,
+  CreateContents = CREATE_CONTENTS,
+  ManageContents = MANAGE_CONTENTS,
+  CreateActions = CREATE_ACTIONS,
+  ManageActions = MANAGE_ACTIONS,
+  Admin = TEAM_ADMIN,
+}
+
+export enum TenantPermissions {
+  ViewHidden = VIEW_HIDDEN,
+  ManageHidden = MANAGE_HIDDEN,
+  CreateTeam = CREATE_TEAM,
+  ManageCampus = MANAGE_CAMPUS,
+  ManageApprovalSteps = MANAGE_APPROVAL_STEPS,
+  ManageEventApprovals = MANAGE_EVENT_APPROVALS,
 }
