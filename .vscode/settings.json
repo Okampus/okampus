@@ -1,5 +1,6 @@
 {
   "editor.detectIndentation": false,
   "editor.indentSize": "tabSize",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "eslint.validate": ["json"]
 }

@@ -16,13 +16,13 @@
       "options": {
         "commands": [
           "tsc --pretty -p apps/api/tsconfig.migrations.json",
-          "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs | pino-pretty -c -t"
+          "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs | tee /dev/null | pino-pretty -c -t"
         ]
       },
       "dependsOn": ["migration:create"]
     },
     "serve": {
-      "command": "vite serve --config apps/api/vite.config.ts --mode development | pino-pretty -c -t",
+      "command": "vite serve --config apps/api/vite.config.ts --mode development | tee /dev/null | pino-pretty -c -t",
       "dependsOn": ["merge", "migration:up"]
     },
     "lint": {
@@ -63,7 +63,7 @@
     },
     "graphql:codegen": {
       "dependsOn": ["graphql:merge"],
-      "command": "zeus libs/shared/graphql/src/schema.merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts && sed -i 's_ | Variable<any, string>__g' libs/shared/graphql/src/zeus/index.ts"
+      "command": "zeus libs/shared/graphql/src/schema.merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts && sed -i -e 's/ | Variable<any, string>//g' -e 's/\\[\"bigint\"\\]:[^;]*;/[\"bigint\"]: string;/g' libs/shared/graphql/src/zeus/index.ts"
     },
     "graphql:merge": {
       "dependsOn": ["hasura:schema"],

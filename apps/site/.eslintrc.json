@@ -1,9 +1,7 @@
 {
   "extends": ["plugin:@nx/react", "../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
-  "rules": {
-    "unicorn/filename-case": "off"
-  },
+  "rules": { "unicorn/filename-case": "off" },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
