@@ -1,4 +1,3 @@
-import { Backdrop } from '../components/Layout/Backdrop';
 import { Topbar } from '../components/Layout/Topbar';
 import { Sidebar } from '../components/Layout/Sidebar';
 
@@ -13,11 +12,11 @@ import {
 } from '@okampus/shared/consts';
 import { SubspaceType, ViewType } from '@okampus/shared/enums';
 
-import { FilePreviewer, Toast } from '@okampus/ui/atoms';
+import { Backdrop, FilePreviewer, Toast } from '@okampus/ui/atoms';
 import { NavigationContext, useIsSmall } from '@okampus/ui/hooks';
 import { stripSlash } from '@okampus/shared/utils';
 
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useContext, useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';

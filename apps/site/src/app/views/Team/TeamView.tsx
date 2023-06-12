@@ -60,8 +60,6 @@ export function TeamView() {
     // },
   ];
 
-  // const avatar = { src: getAvatar(team.actor.actorImages), rounded: AVATAR_TEAM_ROUNDED };
-  // const banner = { src: getBanner(team.actor.actorImages), aspectRatio: BANNER_ASPECT_RATIO };
   // const color = getColorHexFromData(team?.actor?.name);
 
   return <TabsTopbarView basePath={TEAM_ROUTE(team.actor?.slug)} menus={menus} />;

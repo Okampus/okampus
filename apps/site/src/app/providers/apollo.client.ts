@@ -25,8 +25,8 @@ const parseHeaders = (rawHeaders: string): Headers => {
 type OnloadOptions = { status: number; statusText: string; headers: Headers } & Record<string, unknown>;
 type CustomFetchOptions = RequestInit & {
   useUpload: boolean;
-  onProgress: (ev: ProgressEvent) => void;
-  onAbortPossible: (abortHandler: () => void) => void;
+  onProgress?: (ev: ProgressEvent) => void;
+  onAbortPossible?: (abortHandler: () => void) => void;
 };
 
 export const uploadFetch = (url: URL | RequestInfo, options: CustomFetchOptions): Promise<Response> =>
@@ -48,8 +48,8 @@ export const uploadFetch = (url: URL | RequestInfo, options: CustomFetchOptions)
     for (const [headerName, headerValue] of Object.entries(options.headers || {}))
       xhr.setRequestHeader(headerName, headerValue);
 
-    if (xhr.upload) xhr.upload.addEventListener('progress', options.onProgress);
-    options.onAbortPossible(() => xhr.abort());
+    if (xhr.upload && options.onProgress) xhr.upload.addEventListener('progress', options.onProgress);
+    if (options.onAbortPossible) options.onAbortPossible(() => xhr.abort());
 
     xhr.send(options.body as XMLHttpRequestBodyInit | Document | null | undefined);
   });

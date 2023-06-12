@@ -30,7 +30,7 @@ import { getAvatar } from '@okampus/ui/utils';
 
 // import { mergeCache } from '#site/app/utils/apollo/merge-cache';
 import { useMutation } from '@apollo/client';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useContext } from 'react';
 
 import type { FormBaseInfo } from '@okampus/shared/graphql';

@@ -1,7 +1,6 @@
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { insertTeamJoin } from '@okampus/shared/graphql';
 
-import { RoleBadge } from '@okampus/ui/atoms';
 import { FormModal } from '@okampus/ui/organisms';
 
 import { mergeCache } from '#site/app/utils/apollo/merge-cache';
@@ -23,7 +22,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
   const { currentUser } = useCurrentUser();
   if (!team) return null;
 
-  const roleOptions = team.roles.map((role) => ({ label: <RoleBadge role={role} />, value: role.id as string }));
+  const roleOptions = team.roles.map((role) => ({ label: role.name, value: role.id as string }));
   const fields = [
     { name: 'role', label: 'Rôle', type: ControlType.Select, options: roleOptions, isRequired: true },
     ...((team.form?.schema ?? []) as FormSchema),

@@ -2,7 +2,7 @@ import { CollapsibleItem } from '@okampus/ui/molecules';
 import { FinanceDashboard } from '#site/app/components/Dashboard/FinanceDashboard';
 import { formatCurrency, sum } from '@okampus/shared/utils';
 import { useState } from 'react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 import type { EventBaseInfo, ProjectWithFinanceInfo, TeamFinanceBaseInfo } from '@okampus/shared/graphql';
 

@@ -3,7 +3,6 @@ import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 import { formatDateDayOfWeekNoHour, getColorHexFromData } from '@okampus/shared/utils';
 import { CloseButton, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
-// import { getAvatar } from '@okampus/ui/utils';
 
 import {
   DateInput,
@@ -62,7 +61,6 @@ export function TeamFinanceSidePanel({ teamFinance }: TeamFinanceSidePanelProps)
         {/* <LabeledUser
           id={teamFinance.actor?.individualByIndividualId?.userInfo?.id as string}
           name={teamFinance.actor?.name}
-          avatar={{ src: getAvatar(teamFinance.actor?.actorImages), size: 15 }}
         /> */}
         {/* <SelectInput items={{
           

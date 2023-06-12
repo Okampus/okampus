@@ -1,12 +1,14 @@
 import { payedByLabel } from './PayedByFormStep';
+
 import { DateInput, NumberInput, SearchInput, SelectInput, TextInput, UserItem } from '@okampus/ui/molecules';
 import { projectBaseInfo, useTypedLazyQuery, useTypedQuery } from '@okampus/shared/graphql';
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
+import { TextAddress } from '@okampus/ui/atoms';
 import { useTeamManage } from '@okampus/ui/hooks';
 import { getAvatar } from '@okampus/ui/utils';
-import { TextAddress } from '@okampus/ui/atoms';
-import { useEffect } from 'react';
+
 import { t } from 'i18next';
+import { useEffect } from 'react';
 
 import type { teamTransactionCreateDefaultValues } from './default';
 import type { FormStepContext } from '@okampus/ui/organisms';

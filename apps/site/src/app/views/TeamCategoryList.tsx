@@ -33,7 +33,7 @@ export function TeamCategoryList() {
               />
             ))
           : Array.from({ length: 12 }).map((_, index) => (
-              <Skeleton key={index} height={72} width={72} rounded="2rem" />
+              <Skeleton key={index} height={72} width={72} className="rounded-2xl" />
             ))}
       </div>
       <div className="title pt-24">Toutes les associations</div>

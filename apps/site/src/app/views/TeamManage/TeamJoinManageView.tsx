@@ -3,16 +3,14 @@ import { ReactComponent as CloseCircleFilledIcon } from '@okampus/assets/svg/ico
 import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
 import { ReactComponent as FilterFilledIcon } from '@okampus/assets/svg/icons/material/filled/filter.svg';
 
-import { AvatarImage, RoleBadge, Skeleton } from '@okampus/ui/atoms';
-import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
-import { ActionButton, LabeledTeamJoin } from '@okampus/ui/molecules';
-
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { insertChangeRole, updateTeamJoin } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { formatDateDayOfWeek } from '@okampus/shared/utils';
 
+import { AvatarImage, Skeleton } from '@okampus/ui/atoms';
+import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
+import { ActionButton, LabeledTeamJoin } from '@okampus/ui/molecules';
 import { FormModal, FormSubmissionRender } from '@okampus/ui/organisms';
 import { getAvatar } from '@okampus/ui/utils';
 
@@ -180,7 +178,7 @@ export function TeamJoinManageView() {
                           size={36}
                           src={getAvatar(selectedTeamJoin.userInfo.individualById?.actor?.actorImages)}
                           name={selectedTeamJoin.userInfo.individualById?.actor?.name}
-                          rounded={AVATAR_USER_ROUNDED}
+                          type="user"
                         />
                         <div className="flex flex-col gap-1">
                           <div className="text-1 font-semibold text-4xl">
@@ -203,7 +201,7 @@ export function TeamJoinManageView() {
                       <div className="flex gap-12 px-1">
                         <div className="flex flex-col gap-2">
                           <div className="font-semibold text-2 text-lg">Rôle souhaité</div>
-                          <RoleBadge role={selectedTeamJoin.role} className="text-2xl" />
+                          <div className="font-semibold text-2 text-lg">{selectedTeamJoin.role?.name}</div>
                         </div>
                         {selectedTeamJoin.state === ApprovalState.Approved && (
                           <div className="flex flex-col gap-2">
@@ -232,7 +230,7 @@ export function TeamJoinManageView() {
                                             label: 'Rôle attribué',
                                             type: ControlType.Select,
                                             options: teamManage.roles.map((role) => ({
-                                              label: <RoleBadge role={role} />,
+                                              label: role?.name as string,
                                               value: role?.id as string,
                                             })),
                                             isRequired: true,

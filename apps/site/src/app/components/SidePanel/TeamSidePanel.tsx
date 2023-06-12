@@ -3,7 +3,7 @@ import { TeamJoinForm } from '../Form/FormModal/TeamJoinForm';
 import { ReactComponent as UserAddFilledIcon } from '@okampus/assets/svg/icons/material/filled/user-add.svg';
 import { ReactComponent as TimeFilledIcon } from '@okampus/assets/svg/icons/material/filled/time.svg';
 
-import { TEAM_ROUTE, TEAM_MANAGE_ROUTE, BANNER_ASPECT_RATIO, AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
+import { TEAM_ROUTE, TEAM_MANAGE_ROUTE, BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { RoleCategory, SubspaceType } from '@okampus/shared/enums';
 import { insertFollowMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
@@ -128,9 +128,9 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
           <AvatarImage
             className="mx-auto border-4 border-[var(--bg-0)]"
             name={team.actor?.name}
-            rounded={AVATAR_TEAM_ROUNDED}
             src={getAvatar(team.actor?.actorImages)}
             size={40}
+            type="team"
           />
         </div>
       </div>

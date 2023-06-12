@@ -24,9 +24,12 @@ import { getAvatar } from '@okampus/ui/utils';
 import { SITE_URL } from '#site/app/consts';
 
 import { useMutation } from '@apollo/client';
-import { clsx } from 'clsx';
+
+import clsx from 'clsx';
+
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+
 import type { FormSchema } from '@okampus/shared/types';
 
 import type { ProjectDetailsInfo, UserBaseInfo, EventJoinBaseInfo, EventWithJoinInfo } from '@okampus/shared/graphql';

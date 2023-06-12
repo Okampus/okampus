@@ -1,4 +1,5 @@
 import { Align, DocumentType, TeamRoleType, TeamType } from '@okampus/shared/enums';
+import { teamDashboardInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { isNotNull } from '@okampus/shared/utils';
 
 import { FileIcon, Skeleton, TextBadge, TextFinance } from '@okampus/ui/atoms';
@@ -13,7 +14,6 @@ import {
 import { Dashboard } from '@okampus/ui/organisms';
 import { getAvatar } from '@okampus/ui/utils';
 
-import { teamDashboardInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { useContext } from 'react';
 
 import type { Column } from '@okampus/ui/organisms';

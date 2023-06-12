@@ -13,8 +13,6 @@ import { ReactComponent as AddBoxFilledIcon } from '@okampus/assets/svg/icons/ma
 import { ReactComponent as AddBoxOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/add-box.svg';
 
 import {
-  AVATAR_TEAM_ROUNDED,
-  AVATAR_TENANT_ROUNDED,
   AVATAR_USER_ROUNDED,
   CLUBS_ROUTE,
   CLUB_CATEGORY_ROUTE,
@@ -25,16 +23,17 @@ import {
   WELCOME_ROUTE,
 } from '@okampus/shared/consts';
 import { ScopeRole, TagType, ViewType } from '@okampus/shared/enums';
-import { isIn, isNotNull, nonEmptyOrNull } from '@okampus/shared/utils';
-
+import { fileUploadBaseInfo, OrderBy, tagBaseInfo, useTypedLazyQuery, logoutMutation } from '@okampus/shared/graphql';
+import { isIn, isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 import { AvatarImage, Popover, PopoverContent, PopoverTrigger, Skeleton } from '@okampus/ui/atoms';
 import { NavigationContext, useCurrentUser } from '@okampus/ui/hooks';
 import { MenuList } from '@okampus/ui/molecules';
 import { getAvatar } from '@okampus/ui/utils';
 
-import { fileUploadBaseInfo, OrderBy, tagBaseInfo, useTypedLazyQuery, logoutMutation } from '@okampus/shared/graphql';
 import { useApolloClient, useMutation } from '@apollo/client';
-import { clsx } from 'clsx';
+
+import clsx from 'clsx';
+
 import { motion } from 'framer-motion';
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -137,7 +136,7 @@ export function Sidebar() {
     },
   });
 
-  const shortcuts = nonEmptyOrNull(currentUser?.shortcuts.map((shortcut) => shortcut?.actor).filter(isNotNull));
+  const shortcuts = arrayNotEmptyOrNull(currentUser?.shortcuts.map((shortcut) => shortcut?.actor).filter(isNotNull));
   const tags = data?.tag;
 
   useEffect(() => {
@@ -182,9 +181,9 @@ export function Sidebar() {
                 <>
                   <AvatarImage
                     name={tenant.name}
-                    src={tenant.fileUpload?.url}
+                    src={getAvatar(tenant.team?.actor?.actorImages)}
                     size={16}
-                    rounded={AVATAR_TENANT_ROUNDED}
+                    type="tenant"
                   />
                   <div className={clsx('flex flex-col items-start', smallHideClassName)}>
                     <h2 className="text-0 text-xl tracking-tighter font-bold line-clamp-1">{tenant.name}</h2>
@@ -195,7 +194,7 @@ export function Sidebar() {
                 </>
               ) : (
                 <>
-                  <Skeleton rounded={`${AVATAR_TENANT_ROUNDED}%`} width={19} ratio={1} />
+                  <Skeleton className="rounded-[12.5%]" width={19} ratio={1} />
                   <div className={smallHideClassName}>
                     <Skeleton height={6} width={48} />
                     <Skeleton height={4} width={48} />
@@ -255,9 +254,9 @@ export function Sidebar() {
                         icon: () => (
                           <AvatarImage
                             name={teamShortcut.name}
-                            rounded={AVATAR_TEAM_ROUNDED}
                             src={getAvatar(teamShortcut.actorImages)}
                             className={clsx(selected.menuId.startsWith(link) && 'shadow-primary')}
+                            type="team"
                             size={14}
                           />
                         ),
@@ -309,7 +308,7 @@ export function Sidebar() {
                 .fill(0)
                 .map((_, idx) => (
                   <div className={sidebarLinkClass} key={idx}>
-                    <Skeleton rounded={`${AVATAR_USER_ROUNDED}%`} className={iconClassName} />
+                    <Skeleton className={clsx(iconClassName, 'roudned-full')} />
                     <Skeleton height={6} width={64} className={linkClassName} />
                   </div>
                 ))}

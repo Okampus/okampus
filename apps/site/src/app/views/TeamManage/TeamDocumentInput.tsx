@@ -4,7 +4,7 @@ import { bytes, formatDateStandard } from '@okampus/shared/utils';
 import { FileIcon } from '@okampus/ui/atoms';
 
 import { useRef } from 'react';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 import type { FileLike } from '@okampus/shared/types';
 import type { ChangeEvent } from 'react';

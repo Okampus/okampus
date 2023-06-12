@@ -3,7 +3,6 @@ import { TreasuryManageView } from './TreasuryManageView';
 import { TeamEventManageView } from './TeamEventManageView';
 import { TeamJoinManageView } from './TeamJoinManageView';
 import { TeamProjectManageView } from './TeamProjectManageView';
-import { TabsTopbarView } from '@okampus/ui/templates';
 
 import { AVATAR_TEAM_ROUNDED, TEAM_MANAGE_ROUTE, TEAM_MANAGE_ROUTES, TEAM_ROUTE } from '@okampus/shared/consts';
 import { ToastType } from '@okampus/shared/types';
@@ -11,6 +10,7 @@ import { ToastType } from '@okampus/shared/types';
 import { AvatarImage } from '@okampus/ui/atoms';
 import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
 import { FormItem } from '@okampus/ui/molecules';
+import { TabsTopbarView } from '@okampus/ui/templates';
 import { getAvatar } from '@okampus/ui/utils';
 
 import { FormEditView } from '#site/app/components/Form/FormEdit/FormEditView';
@@ -39,7 +39,6 @@ export function TeamManageView() {
     size: 16,
     name: teamManage.actor.name,
   };
-  // const banner = { src: getBanner(teamManage.actor?.actorImages) };
   // const color = getColorHexFromData(teamManage.actor.name);
 
   const editForm = (form: FormBaseInfo) => {

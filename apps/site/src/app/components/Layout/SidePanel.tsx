@@ -14,7 +14,6 @@
 //   useEventManage,
 //   useCurrentUser,
 // } from '@okampus/ui/hooks';
-// import { getAvatar, getBanner } from '@okampus/ui/utils';
 import {
   // AVATAR_TEAM_ROUNDED, AVATAR_USER_ROUNDED,
   BANNER_ASPECT_RATIO,

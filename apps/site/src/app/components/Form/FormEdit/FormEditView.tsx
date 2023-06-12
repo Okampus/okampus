@@ -5,7 +5,7 @@ import { ReactComponent as PlusFilledIcon } from '@okampus/assets/svg/icons/mate
 
 import { ControlType } from '@okampus/shared/enums';
 import { formDetailsInfo, updateFormBase, useTypedQuery } from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
+import { ActionType, SelectItem } from '@okampus/shared/types';
 import { toSlug } from '@okampus/shared/utils';
 
 import { NavigationContext } from '@okampus/ui/hooks';
@@ -23,7 +23,7 @@ export type FormEditViewProps = { id: string };
 const QUESTIONS = 'questions';
 const ANSWERS = 'answers';
 
-const option = (idx: number) => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
+const option = (idx: number): SelectItem<string> => ({ label: `Option ${idx + 1}`, value: `Option ${idx + 1}` });
 
 export function FormEditView({ id }: FormEditViewProps) {
   const [fields, setFields] = useState<FormField[] | null>(null);

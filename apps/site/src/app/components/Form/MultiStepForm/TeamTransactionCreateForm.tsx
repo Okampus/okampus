@@ -15,7 +15,6 @@
 //         <div className="flex items-center gap-2">
 //           <AvatarImage
 //             name={userInfo.individualById?.actor?.name}
-//             src={getAvatar(userInfo.individualById?.actor?.actorImages)}
 //             size={7}
 //             rounded={AVATAR_USER_ROUNDED}
 //           />
@@ -23,7 +22,6 @@
 //         </div>
 //         // <LabeledUser
 //         //   name={userInfo.individualById?.actor?.name ??}
-//         //   avatar={{ src: getAvatar(userInfo.individualById?.actor?.actorImages), size: 10 }}
 //         //   // role={teamMemberRoles[0]?.role?.name}
 //         // />
 //       ),

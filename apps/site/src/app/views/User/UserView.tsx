@@ -31,8 +31,6 @@ export function UserView() {
   const totalActions = sum(projectActions.map((action) => action.score));
 
   // const color = getColorHexFromData(user.individualById?.actor?.name);
-  // const avatar = { src: getAvatar(user.individualById?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
-  // const banner = { src: getBanner(user.individualById?.actor?.actorImages) };
   const menus = [
     {
       key: USER_ROUTES.PROFILE,
