@@ -6,7 +6,6 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 import type {
   Insert<%= className %>ArgsType,
   InsertOne<%= className %>ArgsType,
-  Update<%= className %>ArgsType,
   UpdateByPk<%= className %>ArgsType,
   Find<%= className %>ArgsType,
   FindByPk<%= className %>ArgsType,
@@ -28,16 +27,6 @@ export class <%= pluralClassName %>MutationResolver {
     );
     return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), objects, onConflict);
   }
-
-  @Mutation()
-  async update<%= className %>(@Info() info: GraphQLResolveInfo) {
-    const { where, _set } = getGraphQLArgs<Update<%= className %>ArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.<%= pluralPropertyName %>Service.update<%= className %>(getSelectionSet(info), where, _set);
-  }  
 }
 
 @Resolver('<%= className %>')
@@ -83,6 +72,16 @@ export class <%= pluralClassName %>QueryResolver {
       info.variableValues
     );
     return await this.<%= pluralPropertyName %>Service.update<%= className %>ByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async delete<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPk<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.delete<%= className %>ByPk(getSelectionSet(info), pkColumns);
   }
 }
 

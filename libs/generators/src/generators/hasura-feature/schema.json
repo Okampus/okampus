@@ -16,6 +16,10 @@
       "type": "string",
       "description": "Subfolder to place the feature in"
     },
+    "folder": {
+      "type": "string",
+      "description": "Folder to place the feature in"
+    },
     "plural": {
       "type": "string",
       "description": "Plural name of the feature"

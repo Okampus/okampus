@@ -1,4 +1,5 @@
-import { Tree, formatFiles, generateFiles, names, joinPathFragments } from '@nx/devkit';
+import { formatFiles, generateFiles, names, joinPathFragments } from '@nx/devkit';
+import type { Tree } from '@nx/devkit';
 
 function pluralize(str: string) {
   if (str.endsWith('s') || str.endsWith('sh') || str.endsWith('ch') || str.endsWith('x') || str.endsWith('z'))
@@ -7,7 +8,10 @@ function pluralize(str: string) {
   return str + 's';
 }
 
-export default async function (tree: Tree, schema: { name: string; subfolder?: string; pkColumns?: string[] }) {
+export default async function (
+  tree: Tree,
+  schema: { name: string; subfolder?: string; pkColumns?: string[]; folder?: string }
+) {
   const { className, propertyName } = names(schema.name);
   const { fileName, className: pluralClassName, propertyName: pluralPropertyName } = names(pluralize(schema.name));
 
@@ -26,7 +30,7 @@ export default async function (tree: Tree, schema: { name: string; subfolder?: s
   generateFiles(
     tree,
     joinPathFragments(__dirname, 'templates'),
-    `./libs/api/bll/src/features/${subfolderPath}${fileName}`,
+    `./libs/api/bll/src/${schema.folder || 'features'}/${subfolderPath}${fileName}`,
     substitutions
   );
   await formatFiles(tree);
