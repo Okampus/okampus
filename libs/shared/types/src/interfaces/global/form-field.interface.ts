@@ -1,6 +1,6 @@
 import type { ControlType } from '@okampus/shared/enums';
 import type { ArrayElement } from '../../types/array.type';
-import type { SelectItem } from '../ui/selected-item.interface';
+import type { SelectItem } from '../ui/select-item.interface';
 import type { Cast } from '../../types/cast.type';
 import type { DeepWriteable } from '../../types/deep-writeable.type';
 

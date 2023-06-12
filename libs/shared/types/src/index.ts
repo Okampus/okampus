@@ -20,7 +20,7 @@ export * from './interfaces/ui/props/form-render.props';
 export * from './interfaces/ui/props/menu.props';
 export * from './interfaces/ui/props/route.props';
 export * from './interfaces/ui/props/toast.props';
-export * from './interfaces/ui/selected-item.interface';
+export * from './interfaces/ui/select-item.interface';
 export * from './interfaces/ui/selected-menu.interface';
 export * from './scalars/query-order-map.scalar';
 export * from './types/abstract-constructor.type';

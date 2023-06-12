@@ -1,5 +1,5 @@
 export interface InputOptions {
-  name: string;
+  name?: string;
   label?: string;
   disabled?: boolean;
   required?: boolean;
