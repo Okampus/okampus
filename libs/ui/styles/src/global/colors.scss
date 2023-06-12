@@ -6,20 +6,16 @@
   --danger: #d12c1a;
   --info: #348adb;
   --bg-label: #f3f3f3cc;
-  --bg-0: #eee;
-  --bg-1: #f6f6f6;
-  --bg-2: #ececec;
-  --bg-3: #ddd;
-  --bg-4: #ccc;
-  --bg-5: #bbb;
-  --bg-opposite: #333;
   --bg-main: #fff;
+  --bg-0: #f5f5f5;
+  --bg-1: #ebebeb;
+  --bg-2: #d5d5d5;
+  --bg-3: #ccc;
+  --bg-4: #a6a6a6;
+  --bg-opposite: #333;
   --text-0: #000;
   --text-1: #333;
   --text-2: #767575;
-  --text-3: #888;
-  --text-4: #ccc;
-  --text-5: #eee;
   --border-0: #fff;
   --border-1: #eaeaeacc;
   --border-2: #cdcdcdcc;
@@ -29,13 +25,13 @@
 
   &.dark {
     --bg-label: #000a;
+    --bg-main: #121212;
     --bg-0: #000;
     --bg-1: #0a0a0a;
     --bg-2: #1e1e1e;
     --bg-3: #2a2a2a;
     --bg-4: #333;
     --bg-5: #444;
-    --bg-main: #121212;
     --bg-opposite: #eee;
     --text-0: #fff;
     --text-1: #eee;
@@ -154,10 +150,6 @@
   @apply bg-[var(--inactive)] data-[active=true]:bg-[var(--primary)] active:bg-[var(--primary)];
 }
 
-.text-hover {
-  @apply hover:text-[#111] dark:hover:text-[#eee];
-}
-
 .text-shadow-hover:hover {
   text-shadow: 0 0 2px 3px #000;
   .dark & {
@@ -170,8 +162,12 @@
   filter: contrast(1.25);
 }
 
+.text-hover {
+  @apply hover:text-[#111] dark:hover:text-[#eee];
+}
+
 .text-hover:hover * {
-  // text-shadow: #555 0 0 2px;
+  text-shadow: #222 0 0 2px;
   .dark & {
     text-shadow: #fff 0 0 2px;
   }
@@ -190,21 +186,6 @@
 .text-2,
 .text-2-hover:hover {
   @apply text-[var(--text-2)];
-}
-
-.text-3,
-.text-3-hover:hover {
-  @apply text-[var(--text-3)];
-}
-
-.text-4,
-.text-4-hover:hover {
-  @apply text-[var(--text-4)];
-}
-
-.text-5,
-.text-5-hover:hover {
-  @apply text-[var(--text-5)];
 }
 
 .text-primary {

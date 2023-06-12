@@ -1,14 +1,7 @@
-%rounded-primary,
-.rounded-primary {
-  @apply rounded-md;
-}
-
-%h-primary,
-.h-primary {
-  @apply h-[3.25rem];
-}
-
-%p-primary,
-.p-primary {
-  @apply p-4;
+:root {
+  --h-topbar: 3.5rem;
+  --h-content: calc(100vh - var(--h-topbar));
+  --w-tabbar: 4rem;
+  --w-sidepanel: 20rem;
+  --w-sidebar: calc(var(--w-sidepanel) - var(--w-tabbar));
 }

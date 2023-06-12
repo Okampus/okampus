@@ -1,3 +1,4 @@
+%scrollbar,
 .scrollbar {
   --scrollbar-thumb-color: #888;
   --scrollbar-thumb-color-hover: #6d6d6d;
@@ -38,6 +39,7 @@
 }
 
 .scrollbar-on-hover {
+  @extend %scrollbar;
   &:not(:hover) {
     --scrollbar-thumb-color: rgb(0 0 0 / 0%) !important;
 

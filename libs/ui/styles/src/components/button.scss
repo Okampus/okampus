@@ -7,8 +7,7 @@
 }
 
 %button {
-  @extend %rounded-primary, %h-primary;
-  @apply font-semibold tracking-tight flex justify-center items-center gap-2.5 shrink-0;
+  @apply rounded h-12 font-semibold tracking-tight flex justify-center items-center gap-2.5 shrink-0;
 
   &:not(:disabled):hover {
     @apply cursor-pointer contrast-[1.05];
@@ -49,7 +48,7 @@
 
 .button-circle-bordered {
   @extend %button-circle;
-  @apply border border-color-5;
+  @apply border border-[var(--border-5)];
 }
 
 .button-list {

@@ -13,8 +13,7 @@ input:-webkit-autofill:active {
 }
 
 .input {
-  @extend %h-primary;
-  @apply rounded-sm px-3.5 font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-main)] border border-[var(--border-2)];
+  @apply h-12 rounded-sm px-3 font-medium outline-none focus:outline-2 active:outline-2 flex items-center text-[var(--text-0)] bg-[var(--bg-main)] border border-[var(--border-2)];
   &[type='date'] {
     @apply px-2.5;
   }
@@ -22,7 +21,7 @@ input:-webkit-autofill:active {
 
 .input-label {
   transition: color 0.2s, top 0.2s, font-weight 0.2s, font-size 0.2s !important;
-  @apply absolute top-3 px-3.5 text-[var(--text-1)] opacity-90 font-medium line-clamp-1 pointer-events-none text-lg text-left;
+  @apply absolute top-3 px-3 text-[var(--text-1)] opacity-90 font-medium line-clamp-1 pointer-events-none text-base text-left;
 }
 
 input:not(:placeholder-shown) ~ .input-label,
