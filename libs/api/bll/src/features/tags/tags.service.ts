@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TagRepository, Tag } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class TagsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTag', selectionSet, objects, onConflict, insertOne);
 
-    const tag = await this.tagRepository.findOneOrFail(data.insertTag[0].id);
-    await this.logsService.createLog(tag);
+    for (const inserted of data.insertTag.returning) {
+      const tag = await this.tagRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Tag, tag);
+    }
 
     // Custom logic
     return data.insertTag;
@@ -134,7 +136,7 @@ export class TagsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateTagByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(tag, _set);
+    await this.logsService.updateLog(EntityName.Tag, tag, _set);
 
     // Custom logic
     return data.updateTagByPk;
@@ -148,7 +150,7 @@ export class TagsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Tag, pkColumns.id);
     // Custom logic
     return data.updateTagByPk;
   }

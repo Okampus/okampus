@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FollowRepository, Follow } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class FollowsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertFollow', selectionSet, objects, onConflict, insertOne);
 
-    const follow = await this.followRepository.findOneOrFail(data.insertFollow[0].id);
-    await this.logsService.createLog(follow);
+    for (const inserted of data.insertFollow.returning) {
+      const follow = await this.followRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Follow, follow);
+    }
 
     // Custom logic
     return data.insertFollow;
@@ -134,7 +136,7 @@ export class FollowsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateFollowByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(follow, _set);
+    await this.logsService.updateLog(EntityName.Follow, follow, _set);
 
     // Custom logic
     return data.updateFollowByPk;
@@ -148,7 +150,7 @@ export class FollowsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Follow, pkColumns.id);
     // Custom logic
     return data.updateFollowByPk;
   }

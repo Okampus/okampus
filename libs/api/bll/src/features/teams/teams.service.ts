@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamRepository, Team } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class TeamsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTeam', selectionSet, objects, onConflict, insertOne);
 
-    const team = await this.teamRepository.findOneOrFail(data.insertTeam[0].id);
-    await this.logsService.createLog(team);
+    for (const inserted of data.insertTeam.returning) {
+      const team = await this.teamRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Team, team);
+    }
 
     // Custom logic
     return data.insertTeam;
@@ -134,7 +136,7 @@ export class TeamsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateTeamByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(team, _set);
+    await this.logsService.updateLog(EntityName.Team, team, _set);
 
     // Custom logic
     return data.updateTeamByPk;
@@ -148,7 +150,7 @@ export class TeamsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Team, pkColumns.id);
     // Custom logic
     return data.updateTeamByPk;
   }

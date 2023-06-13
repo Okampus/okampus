@@ -24,11 +24,11 @@ export class LogsService extends RequestContext {
     super();
   }
 
-  async createLog(entity: BaseEntity, context: LogContext = {}) {
+  async createLog(entityName: EntityName, entity: BaseEntity, context: LogContext = {}) {
     const createLog = new Log({
       event: EventType.Create,
       context: this.requester().bot ? EventContext.Bot : EventContext.User,
-      entityName: EntityName.Tag,
+      entityName,
       entityId: entity.id,
       individual: context.individual || this.requester(),
       contentMaster: context.contentMaster,
@@ -39,11 +39,11 @@ export class LogsService extends RequestContext {
     await this.em.persistAndFlush(createLog);
   }
 
-  async deleteLog(entityId: string, context: LogContext = {}) {
+  async deleteLog(entityName: EntityName, entityId: string, context: LogContext = {}) {
     const deleteLog = new Log({
-      event: EventType.Create,
+      event: EventType.Delete,
       context: this.requester().bot ? EventContext.Bot : EventContext.User,
-      entityName: EntityName.Tag,
+      entityName,
       entityId,
       individual: context.individual || this.requester(),
       contentMaster: context.contentMaster,
@@ -54,7 +54,7 @@ export class LogsService extends RequestContext {
     await this.em.persistAndFlush(deleteLog);
   }
 
-  async updateLog(entity: BaseEntity, _set: Record<string, unknown>, context: LogContext = {}) {
+  async updateLog(entityName: EntityName, entity: BaseEntity, _set: Record<string, unknown>, context: LogContext = {}) {
     const diff: LogDiff = {};
     for (const [key, value] of Object.entries(_set)) {
       const validType =
@@ -97,7 +97,7 @@ export class LogsService extends RequestContext {
       const updateLog = new Log({
         event: EventType.Update,
         context: this.requester().bot ? EventContext.Bot : EventContext.User,
-        entityName: EntityName.Tag,
+        entityName,
         entityId: entity.id,
         individual: context.individual || this.requester(),
         contentMaster: context.contentMaster,

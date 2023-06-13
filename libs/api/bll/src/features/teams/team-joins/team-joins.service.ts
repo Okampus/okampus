@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamJoinRepository, TeamJoin } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class TeamJoinsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTeamJoin', selectionSet, objects, onConflict, insertOne);
 
-    const teamJoin = await this.teamJoinRepository.findOneOrFail(data.insertTeamJoin[0].id);
-    await this.logsService.createLog(teamJoin);
+    for (const inserted of data.insertTeamJoin.returning) {
+      const teamJoin = await this.teamJoinRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.TeamJoin, teamJoin);
+    }
 
     // Custom logic
     return data.insertTeamJoin;
@@ -134,7 +136,7 @@ export class TeamJoinsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateTeamJoinByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(teamJoin, _set);
+    await this.logsService.updateLog(EntityName.TeamJoin, teamJoin, _set);
 
     // Custom logic
     return data.updateTeamJoinByPk;
@@ -148,7 +150,7 @@ export class TeamJoinsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.TeamJoin, pkColumns.id);
     // Custom logic
     return data.updateTeamJoinByPk;
   }

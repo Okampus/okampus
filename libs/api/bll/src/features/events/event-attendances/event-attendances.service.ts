@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventAttendanceRepository, EventAttendance } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -96,8 +96,10 @@ export class EventAttendancesService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertEventAttendance', selectionSet, objects, onConflict, insertOne);
 
-    const eventAttendance = await this.eventAttendanceRepository.findOneOrFail(data.insertEventAttendance[0].id);
-    await this.logsService.createLog(eventAttendance);
+    for (const inserted of data.insertEventAttendance.returning) {
+      const eventAttendance = await this.eventAttendanceRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.EventAttendance, eventAttendance);
+    }
 
     // Custom logic
     return data.insertEventAttendance;
@@ -145,7 +147,7 @@ export class EventAttendancesService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateEventAttendanceByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(eventAttendance, _set);
+    await this.logsService.updateLog(EntityName.EventAttendance, eventAttendance, _set);
 
     // Custom logic
     return data.updateEventAttendanceByPk;
@@ -159,7 +161,7 @@ export class EventAttendancesService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventAttendance, pkColumns.id);
     // Custom logic
     return data.updateEventAttendanceByPk;
   }

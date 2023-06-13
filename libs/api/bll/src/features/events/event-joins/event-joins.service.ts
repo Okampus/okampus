@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventJoinRepository, EventJoin } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class EventJoinsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertEventJoin', selectionSet, objects, onConflict, insertOne);
 
-    const eventJoin = await this.eventJoinRepository.findOneOrFail(data.insertEventJoin[0].id);
-    await this.logsService.createLog(eventJoin);
+    for (const inserted of data.insertEventJoin.returning) {
+      const eventJoin = await this.eventJoinRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.EventJoin, eventJoin);
+    }
 
     // Custom logic
     return data.insertEventJoin;
@@ -134,7 +136,7 @@ export class EventJoinsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateEventJoinByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(eventJoin, _set);
+    await this.logsService.updateLog(EntityName.EventJoin, eventJoin, _set);
 
     // Custom logic
     return data.updateEventJoinByPk;
@@ -148,7 +150,7 @@ export class EventJoinsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventJoin, pkColumns.id);
     // Custom logic
     return data.updateEventJoinByPk;
   }

@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantRepository, Tenant } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -91,8 +91,10 @@ export class TenantsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertTenant', selectionSet, objects, onConflict, insertOne);
 
-    const tenant = await this.tenantRepository.findOneOrFail(data.insertTenant[0].id);
-    await this.logsService.createLog(tenant);
+    for (const inserted of data.insertTenant.returning) {
+      const tenant = await this.tenantRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Tenant, tenant);
+    }
 
     // Custom logic
     return data.insertTenant;
@@ -132,7 +134,7 @@ export class TenantsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateTenantByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(tenant, _set);
+    await this.logsService.updateLog(EntityName.Tenant, tenant, _set);
 
     // Custom logic
     return data.updateTenantByPk;
@@ -146,7 +148,7 @@ export class TenantsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Tenant, pkColumns.id);
     // Custom logic
     return data.updateTenantByPk;
   }

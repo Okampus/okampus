@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorImageRepository, ActorImage } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class ActorImagesService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertActorImage', selectionSet, objects, onConflict, insertOne);
 
-    const actorImage = await this.actorImageRepository.findOneOrFail(data.insertActorImage[0].id);
-    await this.logsService.createLog(actorImage);
+    for (const inserted of data.insertActorImage.returning) {
+      const actorImage = await this.actorImageRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.ActorImage, actorImage);
+    }
 
     // Custom logic
     return data.insertActorImage;
@@ -134,7 +136,7 @@ export class ActorImagesService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(actorImage, _set);
+    await this.logsService.updateLog(EntityName.ActorImage, actorImage, _set);
 
     // Custom logic
     return data.updateActorImageByPk;
@@ -148,7 +150,7 @@ export class ActorImagesService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.ActorImage, pkColumns.id);
     // Custom logic
     return data.updateActorImageByPk;
   }

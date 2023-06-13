@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventRepository, Event } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class EventsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertEvent', selectionSet, objects, onConflict, insertOne);
 
-    const event = await this.eventRepository.findOneOrFail(data.insertEvent[0].id);
-    await this.logsService.createLog(event);
+    for (const inserted of data.insertEvent.returning) {
+      const event = await this.eventRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Event, event);
+    }
 
     // Custom logic
     return data.insertEvent;
@@ -134,7 +136,7 @@ export class EventsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateEventByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(event, _set);
+    await this.logsService.updateLog(EntityName.Event, event, _set);
 
     // Custom logic
     return data.updateEventByPk;
@@ -148,7 +150,7 @@ export class EventsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Event, pkColumns.id);
     // Custom logic
     return data.updateEventByPk;
   }

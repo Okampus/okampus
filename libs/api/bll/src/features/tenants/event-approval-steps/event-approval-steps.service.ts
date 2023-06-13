@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventApprovalStepRepository, EventApprovalStep } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -102,8 +102,10 @@ export class EventApprovalStepsService extends RequestContext {
       insertOne
     );
 
-    const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(data.insertEventApprovalStep[0].id);
-    await this.logsService.createLog(eventApprovalStep);
+    for (const inserted of data.insertEventApprovalStep.returning) {
+      const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.EventApprovalStep, eventApprovalStep);
+    }
 
     // Custom logic
     return data.insertEventApprovalStep;
@@ -151,7 +153,7 @@ export class EventApprovalStepsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(eventApprovalStep, _set);
+    await this.logsService.updateLog(EntityName.EventApprovalStep, eventApprovalStep, _set);
 
     // Custom logic
     return data.updateEventApprovalStepByPk;
@@ -165,7 +167,7 @@ export class EventApprovalStepsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventApprovalStep, pkColumns.id);
     // Custom logic
     return data.updateEventApprovalStepByPk;
   }

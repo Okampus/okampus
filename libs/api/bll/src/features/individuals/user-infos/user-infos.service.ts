@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UserInfoRepository, UserInfo } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class UserInfosService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertUserInfo', selectionSet, objects, onConflict, insertOne);
 
-    const userInfo = await this.userInfoRepository.findOneOrFail(data.insertUserInfo[0].id);
-    await this.logsService.createLog(userInfo);
+    for (const inserted of data.insertUserInfo.returning) {
+      const userInfo = await this.userInfoRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.UserInfo, userInfo);
+    }
 
     // Custom logic
     return data.insertUserInfo;
@@ -134,7 +136,7 @@ export class UserInfosService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateUserInfoByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(userInfo, _set);
+    await this.logsService.updateLog(EntityName.UserInfo, userInfo, _set);
 
     // Custom logic
     return data.updateUserInfoByPk;
@@ -148,7 +150,7 @@ export class UserInfosService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.UserInfo, pkColumns.id);
     // Custom logic
     return data.updateUserInfoByPk;
   }

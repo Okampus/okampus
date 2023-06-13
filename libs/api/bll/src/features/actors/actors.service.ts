@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorRepository, Actor } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class ActorsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertActor', selectionSet, objects, onConflict, insertOne);
 
-    const actor = await this.actorRepository.findOneOrFail(data.insertActor[0].id);
-    await this.logsService.createLog(actor);
+    for (const inserted of data.insertActor.returning) {
+      const actor = await this.actorRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Actor, actor);
+    }
 
     // Custom logic
     return data.insertActor;
@@ -134,7 +136,7 @@ export class ActorsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateActorByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(actor, _set);
+    await this.logsService.updateLog(EntityName.Actor, actor, _set);
 
     // Custom logic
     return data.updateActorByPk;
@@ -148,7 +150,7 @@ export class ActorsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Actor, pkColumns.id);
     // Custom logic
     return data.updateActorByPk;
   }

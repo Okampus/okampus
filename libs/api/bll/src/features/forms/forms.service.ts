@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FormRepository, Form } from '@okampus/api/dal';
-import { ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -93,8 +93,10 @@ export class FormsService extends RequestContext {
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insert('insertForm', selectionSet, objects, onConflict, insertOne);
 
-    const form = await this.formRepository.findOneOrFail(data.insertForm[0].id);
-    await this.logsService.createLog(form);
+    for (const inserted of data.insertForm.returning) {
+      const form = await this.formRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Form, form);
+    }
 
     // Custom logic
     return data.insertForm;
@@ -134,7 +136,7 @@ export class FormsService extends RequestContext {
 
     const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, _set);
 
-    await this.logsService.updateLog(form, _set);
+    await this.logsService.updateLog(EntityName.Form, form, _set);
 
     // Custom logic
     return data.updateFormByPk;
@@ -148,7 +150,7 @@ export class FormsService extends RequestContext {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Form, pkColumns.id);
     // Custom logic
     return data.updateFormByPk;
   }
