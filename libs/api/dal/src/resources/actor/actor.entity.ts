@@ -48,6 +48,9 @@ export class Actor extends TenantScopedEntity {
   name!: string;
 
   @Property({ type: 'text', default: '' })
+  status = '';
+
+  @Property({ type: 'text', default: '' })
   bio = '';
 
   @Property({ type: 'text', nullable: true, default: null })

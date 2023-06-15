@@ -11,7 +11,6 @@ export const teamBaseInfo = Selector('Team')({
   ...entityBase,
   tenantId: true,
   type: true,
-  tagline: true,
   actor: actorBaseInfo,
   directorsCategoryName: true,
   managersCategoryName: true,

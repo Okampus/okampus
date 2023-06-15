@@ -1064,16 +1064,6 @@
           ],
           "mappedType": "enum"
         },
-        "tagline": {
-          "name": "tagline",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
         "original_creation_day": {
           "name": "original_creation_day",
           "type": "smallint",
@@ -1440,15 +1430,6 @@
             "admin"
           ],
           "mappedType": "enum"
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         }
       },
       "name": "individual",
@@ -6981,6 +6962,16 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "bio": {

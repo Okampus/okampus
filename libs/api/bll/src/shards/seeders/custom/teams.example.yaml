@@ -3,7 +3,7 @@
   slug: team-example
   bio: This is an example team
   primaryEmail: team@example.com
-  tagline: This is an example tagline
+  status: This is an example status
   originalCreationDay: 01
   originalCreationMonth: 01
   originalCreationYear: 1970
@@ -25,7 +25,7 @@
   slug: team-example2
   bio: This is an example team
   primaryEmail: team@example.com
-  tagline: This is an example tagline
+  status: This is an example status
   originalCreationDay: 01
   originalCreationMonth: 01
   originalCreationYear: 1970

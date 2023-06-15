@@ -624,6 +624,7 @@ type Actor {
   slug: String!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
+  status: String!
   team: Team
   teamFinances(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): [TeamFinance!]!
   teamFinancesAggregate(distinctOn: [TeamFinanceSelectColumn!], limit: Int, offset: Int, orderBy: [TeamFinanceOrderBy!], where: TeamFinanceBoolExp): TeamFinanceAggregate!
@@ -1813,6 +1814,7 @@ input ActorBoolExp {
   slug: StringComparisonExp
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
+  status: StringComparisonExp
   team: TeamBoolExp
   teamFinances: TeamFinanceBoolExp
   teamFinancesAggregate: TeamFinanceAggregateBoolExp
@@ -2766,6 +2768,7 @@ input ActorInsertInput {
   shortcuts: ShortcutArrRelInsertInput
   slug: String
   socials: SocialArrRelInsertInput
+  status: String
   team: TeamObjRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
   teamId: bigint
@@ -2785,6 +2788,7 @@ type ActorMaxFields {
   name: String
   primaryEmail: String
   slug: String
+  status: String
   teamId: bigint
   tenantId: bigint
 }
@@ -2801,6 +2805,7 @@ input ActorMaxOrderBy {
   name: OrderBy
   primaryEmail: OrderBy
   slug: OrderBy
+  status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2817,6 +2822,7 @@ type ActorMinFields {
   name: String
   primaryEmail: String
   slug: String
+  status: String
   teamId: bigint
   tenantId: bigint
 }
@@ -2833,6 +2839,7 @@ input ActorMinOrderBy {
   name: OrderBy
   primaryEmail: OrderBy
   slug: OrderBy
+  status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2878,6 +2885,7 @@ input ActorOrderBy {
   shortcutsAggregate: ShortcutAggregateOrderBy
   slug: OrderBy
   socialsAggregate: SocialAggregateOrderBy
+  status: OrderBy
   team: TeamOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
   teamId: OrderBy
@@ -2901,6 +2909,7 @@ enum ActorSelectColumn {
   name
   primaryEmail
   slug
+  status
   teamId
   tenantId
 }
@@ -2917,6 +2926,7 @@ input ActorSetInput {
   name: String
   primaryEmail: String
   slug: String
+  status: String
   teamId: bigint
   tenantId: bigint
 }
@@ -2986,6 +2996,7 @@ input ActorStreamCursorValueInput {
   name: String
   primaryEmail: String
   slug: String
+  status: String
   teamId: bigint
   tenantId: bigint
 }
@@ -3254,6 +3265,7 @@ enum ActorUpdateColumn {
   name
   primaryEmail
   slug
+  status
   teamId
   tenantId
 }
@@ -17070,7 +17082,6 @@ type Individual {
   shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
   socialsAggregate(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): SocialAggregate!
-  status: String!
   subjects(distinctOn: [SubjectSelectColumn!], limit: Int, offset: Int, orderBy: [SubjectOrderBy!], where: SubjectBoolExp): [Subject!]!
   subjectsAggregate(distinctOn: [SubjectSelectColumn!], limit: Int, offset: Int, orderBy: [SubjectOrderBy!], where: SubjectBoolExp): SubjectAggregate!
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
@@ -17277,7 +17288,6 @@ input IndividualBoolExp {
   shortcutsAggregate: ShortcutAggregateBoolExp
   socials: SocialBoolExp
   socialsAggregate: SocialAggregateBoolExp
-  status: StringComparisonExp
   subjects: SubjectBoolExp
   subjectsAggregate: SubjectAggregateBoolExp
   tags: TagBoolExp
@@ -17381,7 +17391,6 @@ input IndividualInsertInput {
   sessions: SessionArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
   socials: SocialArrRelInsertInput
-  status: String
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
@@ -17408,7 +17417,6 @@ type IndividualMaxFields {
   id: bigint
   passwordHash: String
   scopeRole: String
-  status: String
   tenantId: bigint
   userId: bigint
 }
@@ -17422,7 +17430,6 @@ input IndividualMaxOrderBy {
   id: OrderBy
   passwordHash: OrderBy
   scopeRole: OrderBy
-  status: OrderBy
   tenantId: OrderBy
   userId: OrderBy
 }
@@ -17436,7 +17443,6 @@ type IndividualMinFields {
   id: bigint
   passwordHash: String
   scopeRole: String
-  status: String
   tenantId: bigint
   userId: bigint
 }
@@ -17450,7 +17456,6 @@ input IndividualMinOrderBy {
   id: OrderBy
   passwordHash: OrderBy
   scopeRole: OrderBy
-  status: OrderBy
   tenantId: OrderBy
   userId: OrderBy
 }
@@ -17532,7 +17537,6 @@ input IndividualOrderBy {
   sessionsAggregate: SessionAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
-  status: OrderBy
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
@@ -17563,7 +17567,6 @@ enum IndividualSelectColumn {
   id
   passwordHash
   scopeRole
-  status
   tenantId
   userId
 }
@@ -17577,7 +17580,6 @@ input IndividualSetInput {
   id: bigint
   passwordHash: String
   scopeRole: String
-  status: String
   tenantId: bigint
   userId: bigint
 }
@@ -17644,7 +17646,6 @@ input IndividualStreamCursorValueInput {
   id: bigint
   passwordHash: String
   scopeRole: String
-  status: String
   tenantId: bigint
   userId: bigint
 }
@@ -17674,7 +17675,6 @@ enum IndividualUpdateColumn {
   id
   passwordHash
   scopeRole
-  status
   tenantId
   userId
 }
@@ -24631,7 +24631,6 @@ type Team {
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   roles(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): [Role!]!
   rolesAggregate(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): RoleAggregate!
-  tagline: String!
   team: Team
   teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
   teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
@@ -24773,7 +24772,6 @@ input TeamBoolExp {
   projectsAggregate: ProjectAggregateBoolExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
-  tagline: StringComparisonExp
   team: TeamBoolExp
   teamEvents: TeamEventsBoolExp
   teamEventsAggregate: TeamEventsAggregateBoolExp
@@ -25745,7 +25743,6 @@ input TeamInsertInput {
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
-  tagline: String
   team: TeamObjRelInsertInput
   teamEvents: TeamEventsArrRelInsertInput
   teamFinances: TeamFinanceArrRelInsertInput
@@ -26260,7 +26257,6 @@ type TeamMaxFields {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
-  tagline: String
   tenantId: bigint
   type: String
   videoId: bigint
@@ -26284,7 +26280,6 @@ input TeamMaxOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
-  tagline: OrderBy
   tenantId: OrderBy
   type: OrderBy
   videoId: OrderBy
@@ -27304,7 +27299,6 @@ type TeamMinFields {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
-  tagline: String
   tenantId: bigint
   type: String
   videoId: bigint
@@ -27328,7 +27322,6 @@ input TeamMinOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
-  tagline: OrderBy
   tenantId: OrderBy
   type: OrderBy
   videoId: OrderBy
@@ -27382,7 +27375,6 @@ input TeamOrderBy {
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
-  tagline: OrderBy
   team: TeamOrderBy
   teamEventsAggregate: TeamEventsAggregateOrderBy
   teamFinancesAggregate: TeamFinanceAggregateOrderBy
@@ -27418,7 +27410,6 @@ enum TeamSelectColumn {
   originalCreationMonth
   originalCreationYear
   parentId
-  tagline
   tenantId
   type
   videoId
@@ -27442,7 +27433,6 @@ input TeamSetInput {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
-  tagline: String
   tenantId: bigint
   type: String
   videoId: bigint
@@ -27567,7 +27557,6 @@ input TeamStreamCursorValueInput {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
-  tagline: String
   tenantId: bigint
   type: String
   videoId: bigint
@@ -27623,7 +27612,6 @@ enum TeamUpdateColumn {
   originalCreationMonth
   originalCreationYear
   parentId
-  tagline
   tenantId
   type
   videoId

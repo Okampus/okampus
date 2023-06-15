@@ -136,7 +136,7 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
       </div>
       <div className="px-6 title mt-14 text-center">{team.actor?.name}</div>
 
-      <div className="text-0 p-4 font-medium text-lg text-justify leading-6">{team.tagline}</div>
+      <div className="text-0 p-4 font-medium text-lg text-justify leading-6">{team.actor?.status}</div>
       <div className="grid gap-4 my-2 grid-cols-2 w-full px-4">
         <ActionButton
           className="w-full"

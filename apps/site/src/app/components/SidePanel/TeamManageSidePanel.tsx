@@ -1,6 +1,6 @@
 import { USER_ROUTE } from '@okampus/shared/consts';
 import { ControlType } from '@okampus/shared/enums';
-import { updateTeamManage } from '@okampus/shared/graphql';
+import { updateTeamMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { NavigationContext } from '@okampus/ui/hooks';
@@ -15,7 +15,7 @@ import type { TeamManageInfo } from '@okampus/shared/graphql';
 export type TeamManageSidePanelProps = { teamManage: TeamManageInfo };
 export function TeamManageSidePanel({ teamManage }: TeamManageSidePanelProps) {
   const { setNotification, showOverlay, hideOverlay } = useContext(NavigationContext);
-  const [updateTeam] = useMutation(updateTeamManage);
+  const [updateTeam] = useMutation(updateTeamMutation);
 
   const fields = [
     {
@@ -24,13 +24,6 @@ export function TeamManageSidePanel({ teamManage }: TeamManageSidePanelProps) {
       label: "Nom de l'équipe",
       default: teamManage.actor?.name,
       placeholder: 'Nom',
-    },
-    {
-      name: 'tagline',
-      type: ControlType.Text,
-      label: 'Slogan',
-      default: teamManage.tagline,
-      placeholder: 'Slogan  ',
     },
     {
       name: 'bio',

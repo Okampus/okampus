@@ -30,9 +30,6 @@ export class Individual extends TenantScopedEntity {
   // @OneToMany('BadgeUnlock', 'user')
   // badgesUnlocked = new Collection<BadgeUnlock>(this);
 
-  @Property({ type: 'text' })
-  status = '';
-
   constructor(options: IndividualOptions) {
     super(options);
     this.assign(options);

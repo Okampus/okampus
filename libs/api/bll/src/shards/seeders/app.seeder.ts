@@ -204,7 +204,7 @@ type TeamData = {
   name: string;
   type: TeamType;
   primaryEmail?: string;
-  tagline?: string;
+  status?: string;
   bio?: string;
   categories?: string[];
   socials: SocialData[];
@@ -223,7 +223,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
       tags: randomFromArray(categories, 1, 3),
       socials: [],
       slug: toSlug(name),
-      tagline: faker.company.catchPhrase(),
+      status: faker.company.catchPhrase(),
       type: TeamType.Association,
     };
   });
@@ -245,13 +245,13 @@ async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<Tea
 
       const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
       const tags = categorySlugs.map((slug) => categories.find((category) => category.slug === slug)).filter(Boolean);
-      const tagline = team.tagline ?? '';
+      const status = team.status ?? '';
       const bio = team.bio ?? '';
       const primaryEmail = team.primaryEmail ?? `${slug}@${tenant.domain}.fr`;
       const socials = team.socials ?? [];
       const type = team.parent ? TeamType.Club : TeamType.Association;
 
-      return { name: team.name, primaryEmail, avatar, bio, tags, slug, tagline, parent: team.parent, socials, type };
+      return { name: team.name, primaryEmail, avatar, bio, tags, slug, status, parent: team.parent, socials, type };
     })
   );
 }

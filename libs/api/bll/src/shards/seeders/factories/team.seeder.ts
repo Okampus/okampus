@@ -24,7 +24,7 @@ export class TeamSeeder extends Factory<Team> {
       currentFinance: 0,
       primaryEmail: `${toSlug(name)}@${this.tenant.domain}.fr`,
       slug: toSlug(name),
-      tagline: faker.company.catchPhrase(),
+      status: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),
       type: TeamType.Club,
       createdBy: null,

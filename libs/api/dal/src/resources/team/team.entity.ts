@@ -40,9 +40,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
   type = TeamType.Club;
 
-  @Property({ type: 'text', default: '' })
-  tagline = '';
-
   @Property({ type: 'smallint', nullable: true, default: null })
   originalCreationDay: number | null = null;
 
@@ -137,6 +134,7 @@ export class Team extends TenantScopedEntity implements Searchable {
       bio: options.bio,
       primaryEmail: options.primaryEmail,
       slug: options.slug,
+      status: options.status,
       tags: options.tags,
       createdBy: options.createdBy,
       tenant: options.tenant,

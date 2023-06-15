@@ -4,11 +4,6 @@ import { IsEnum, IsInt, IsNumber, IsOptional, IsString, Min } from 'class-valida
 
 @InputType()
 export class TeamProps {
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  tagline?: string | null;
-
   @Field(() => TeamType, { nullable: true })
   @IsOptional()
   @IsEnum(TeamType)
