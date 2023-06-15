@@ -48,6 +48,7 @@ export * from './objects/keep-defined';
 export * from './objects/lowercase-keys';
 export * from './objects/nested-obj-keys-to-arr';
 export * from './objects/object-contains';
+export * from './objects/object-filter';
 export * from './objects/remove-circular';
 export * from './random/random-digits';
 export * from './random/random-enum';
