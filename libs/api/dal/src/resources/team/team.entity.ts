@@ -132,7 +132,7 @@ export class Team extends TenantScopedEntity implements Searchable {
     this.actor = new Actor({
       name: options.name,
       bio: options.bio,
-      primaryEmail: options.primaryEmail,
+      email: options.email,
       slug: options.slug,
       status: options.status,
       tags: options.tags,

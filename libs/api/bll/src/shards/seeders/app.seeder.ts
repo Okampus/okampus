@@ -203,7 +203,8 @@ type SocialData = { pseudo: string; type: SocialType; url: string };
 type TeamData = {
   name: string;
   type: TeamType;
-  primaryEmail?: string;
+  email?: string;
+  website?: string;
   status?: string;
   bio?: string;
   categories?: string[];
@@ -217,7 +218,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
     const name = faker.company.name();
     return {
       name,
-      primaryEmail: `${toSlug(name)}@${tenant.domain}.fr`,
+      email: `${toSlug(name)}@${tenant.domain}.fr`,
       avatar: null,
       bio: faker.lorem.paragraph(randomInt(2, 12)),
       tags: randomFromArray(categories, 1, 3),
@@ -246,12 +247,13 @@ async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<Tea
       const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
       const tags = categorySlugs.map((slug) => categories.find((category) => category.slug === slug)).filter(Boolean);
       const status = team.status ?? '';
+      const website = team.website ?? '';
       const bio = team.bio ?? '';
-      const primaryEmail = team.primaryEmail ?? `${slug}@${tenant.domain}.fr`;
+      const email = team.email ?? `${slug}@${tenant.domain}.fr`;
       const socials = team.socials ?? [];
       const type = team.parent ? TeamType.Club : TeamType.Association;
 
-      return { name: team.name, primaryEmail, avatar, bio, tags, slug, status, parent: team.parent, socials, type };
+      return { name: team.name, email, avatar, bio, tags, slug, status, website, parent: team.parent, socials, type };
     })
   );
 }
@@ -414,7 +416,7 @@ export class DatabaseSeeder extends Seeder {
     //       bio: faker.lorem.paragraph(randomInt(2, 12)),
     //       tags: randomFromArray(categories, 1, 3),
     //       currentFinance: 0,
-    //       primaryEmail: `${toSlug(name)}@${tenant.domain}.fr`,
+    //       email: `${toSlug(name)}@${tenant.domain}.fr`,
     //       slug: toSlug(name),
     //       tagline: faker.company.catchPhrase(),
     //       type: TeamType.Club,

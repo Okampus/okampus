@@ -37,7 +37,7 @@ export class Individual extends TenantScopedEntity {
     this.actor = new Actor({
       name: options.name,
       bio: options.bio,
-      primaryEmail: options.primaryEmail,
+      email: options.email,
       slug: options.slug,
       tags: options.tags,
       createdBy: options.createdBy,

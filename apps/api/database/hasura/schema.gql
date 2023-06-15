@@ -984,6 +984,7 @@ type Actor {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  email: String!
 
   # An array relationship
   favorites(
@@ -1067,7 +1068,6 @@ type Actor {
   individualByIndividualId: Individual
   individualId: bigint
   name: String!
-  primaryEmail: String
 
   # An array relationship
   reports(
@@ -1222,6 +1222,7 @@ type Actor {
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
+  website: String!
 }
 
 # columns and relationships of "actor_address"
@@ -2836,6 +2837,7 @@ input ActorBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  email: StringComparisonExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   follows: FollowBoolExp
@@ -2847,7 +2849,6 @@ input ActorBoolExp {
   individualByIndividualId: IndividualBoolExp
   individualId: BigintComparisonExp
   name: StringComparisonExp
-  primaryEmail: StringComparisonExp
   reports: ReportBoolExp
   reportsAggregate: ReportAggregateBoolExp
   shortcuts: ShortcutBoolExp
@@ -2862,6 +2863,7 @@ input ActorBoolExp {
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  website: StringComparisonExp
 }
 
 # unique or primary key constraints on table "actor"
@@ -4028,6 +4030,7 @@ input ActorInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   favorites: FavoriteArrRelInsertInput
   follows: FollowArrRelInsertInput
   hiddenAt: timestamptz
@@ -4037,7 +4040,6 @@ input ActorInsertInput {
   individualByIndividualId: IndividualObjRelInsertInput
   individualId: bigint
   name: String
-  primaryEmail: String
   reports: ReportArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
   slug: String
@@ -4048,6 +4050,7 @@ input ActorInsertInput {
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  website: String
 }
 
 # aggregate max on columns
@@ -4056,16 +4059,17 @@ type ActorMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 # order by max() on columns of table "actor"
@@ -4074,16 +4078,17 @@ input ActorMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   hiddenAt: OrderBy
   ical: OrderBy
   id: OrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   slug: OrderBy
   status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 # aggregate min on columns
@@ -4092,16 +4097,17 @@ type ActorMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 # order by min() on columns of table "actor"
@@ -4110,16 +4116,17 @@ input ActorMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   hiddenAt: OrderBy
   ical: OrderBy
   id: OrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   slug: OrderBy
   status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 # response of any mutation on the table "actor"
@@ -4158,6 +4165,7 @@ input ActorOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   followsAggregate: FollowAggregateOrderBy
   hiddenAt: OrderBy
@@ -4167,7 +4175,6 @@ input ActorOrderBy {
   individualByIndividualId: IndividualOrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   reportsAggregate: ReportAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   slug: OrderBy
@@ -4178,6 +4185,7 @@ input ActorOrderBy {
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 # primary key columns input for table: actor
@@ -4200,6 +4208,9 @@ enum ActorSelectColumn {
   deletedAt
 
   # column name
+  email
+
+  # column name
   hiddenAt
 
   # column name
@@ -4215,9 +4226,6 @@ enum ActorSelectColumn {
   name
 
   # column name
-  primaryEmail
-
-  # column name
   slug
 
   # column name
@@ -4228,6 +4236,9 @@ enum ActorSelectColumn {
 
   # column name
   tenantId
+
+  # column name
+  website
 }
 
 # input type for updating data in table "actor"
@@ -4236,16 +4247,17 @@ input ActorSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 # aggregate stddev on columns
@@ -4317,16 +4329,17 @@ input ActorStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 # aggregate sum on columns
@@ -4659,6 +4672,9 @@ enum ActorUpdateColumn {
   deletedAt
 
   # column name
+  email
+
+  # column name
   hiddenAt
 
   # column name
@@ -4674,9 +4690,6 @@ enum ActorUpdateColumn {
   name
 
   # column name
-  primaryEmail
-
-  # column name
   slug
 
   # column name
@@ -4687,6 +4700,9 @@ enum ActorUpdateColumn {
 
   # column name
   tenantId
+
+  # column name
+  website
 }
 
 input ActorUpdates {

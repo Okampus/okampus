@@ -29,7 +29,7 @@ export function tenantStrategyFactory({ authService, tenantSlug, oidcConfig, cli
       const user = { firstName, middleNames, lastName: toTitleCase(data.family_name) };
       const name = `${user.firstName} ${user.lastName}`;
 
-      const createUser = { name, slug: data.sub, user, primaryEmail: data.email, scopeRole, tenant, createdBy: null };
+      const createUser = { name, slug: data.sub, user, email: data.email, scopeRole, tenant, createdBy: null };
 
       try {
         return await this.authService.findUserBySlug(createUser.slug);

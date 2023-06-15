@@ -1,6 +1,4 @@
 export enum SocialType {
-  Mail = 'Mail',
-  Site = 'Site',
   Discord = 'Discord',
   GitHub = 'GitHub',
   TikTok = 'TikTok',
@@ -14,3 +12,5 @@ export enum SocialType {
   // WhatsApp = 'WhatsApp',
   // Telegram = 'Telegram',
 }
+
+// TODO: complete this enum

@@ -16,6 +16,7 @@ export * from './interfaces/global/file-mime-check-payload.interface';
 export * from './interfaces/global/form-field.interface';
 export * from './interfaces/ui/css-unit.interface';
 export * from './interfaces/ui/input-options.interface';
+export * from './interfaces/ui/link-item.interface';
 export * from './interfaces/ui/props/action.props';
 export * from './interfaces/ui/props/form-render.props';
 export * from './interfaces/ui/props/menu.props';

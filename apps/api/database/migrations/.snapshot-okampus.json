@@ -6984,14 +6984,24 @@
           "default": "''",
           "mappedType": "text"
         },
-        "primary_email": {
-          "name": "primary_email",
+        "email": {
+          "name": "email",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "website": {
+          "name": "website",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "ical": {
@@ -7189,8 +7199,6 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "Mail",
-            "Site",
             "Discord",
             "GitHub",
             "TikTok",

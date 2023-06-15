@@ -605,6 +605,7 @@ type Actor {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  email: String!
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
   favoritesAggregate(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): FavoriteAggregate!
   follows(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): [Follow!]!
@@ -616,7 +617,6 @@ type Actor {
   individualByIndividualId: Individual
   individualId: bigint
   name: String!
-  primaryEmail: String
   reports(distinctOn: [ReportSelectColumn!], limit: Int, offset: Int, orderBy: [ReportOrderBy!], where: ReportBoolExp): [Report!]!
   reportsAggregate(distinctOn: [ReportSelectColumn!], limit: Int, offset: Int, orderBy: [ReportOrderBy!], where: ReportBoolExp): ReportAggregate!
   shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
@@ -631,6 +631,7 @@ type Actor {
   teamId: bigint
   tenant: Tenant!
   tenantId: bigint!
+  website: String!
 }
 
 type ActorAddress {
@@ -1795,6 +1796,7 @@ input ActorBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  email: StringComparisonExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   follows: FollowBoolExp
@@ -1806,7 +1808,6 @@ input ActorBoolExp {
   individualByIndividualId: IndividualBoolExp
   individualId: BigintComparisonExp
   name: StringComparisonExp
-  primaryEmail: StringComparisonExp
   reports: ReportBoolExp
   reportsAggregate: ReportAggregateBoolExp
   shortcuts: ShortcutBoolExp
@@ -1821,6 +1822,7 @@ input ActorBoolExp {
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  website: StringComparisonExp
 }
 
 enum ActorConstraint {
@@ -2754,6 +2756,7 @@ input ActorInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   favorites: FavoriteArrRelInsertInput
   follows: FollowArrRelInsertInput
   hiddenAt: timestamptz
@@ -2763,7 +2766,6 @@ input ActorInsertInput {
   individualByIndividualId: IndividualObjRelInsertInput
   individualId: bigint
   name: String
-  primaryEmail: String
   reports: ReportArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
   slug: String
@@ -2774,6 +2776,7 @@ input ActorInsertInput {
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  website: String
 }
 
 type ActorMaxFields {
@@ -2781,16 +2784,17 @@ type ActorMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 input ActorMaxOrderBy {
@@ -2798,16 +2802,17 @@ input ActorMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   hiddenAt: OrderBy
   ical: OrderBy
   id: OrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   slug: OrderBy
   status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 type ActorMinFields {
@@ -2815,16 +2820,17 @@ type ActorMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 input ActorMinOrderBy {
@@ -2832,16 +2838,17 @@ input ActorMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   hiddenAt: OrderBy
   ical: OrderBy
   id: OrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   slug: OrderBy
   status: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 type ActorMutationResponse {
@@ -2871,6 +2878,7 @@ input ActorOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  email: OrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   followsAggregate: FollowAggregateOrderBy
   hiddenAt: OrderBy
@@ -2880,7 +2888,6 @@ input ActorOrderBy {
   individualByIndividualId: IndividualOrderBy
   individualId: OrderBy
   name: OrderBy
-  primaryEmail: OrderBy
   reportsAggregate: ReportAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   slug: OrderBy
@@ -2891,6 +2898,7 @@ input ActorOrderBy {
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  website: OrderBy
 }
 
 input ActorPkColumnsInput {
@@ -2902,16 +2910,17 @@ enum ActorSelectColumn {
   createdAt
   createdById
   deletedAt
+  email
   hiddenAt
   ical
   id
   individualId
   name
-  primaryEmail
   slug
   status
   teamId
   tenantId
+  website
 }
 
 input ActorSetInput {
@@ -2919,16 +2928,17 @@ input ActorSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 type ActorStddevFields {
@@ -2989,16 +2999,17 @@ input ActorStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  email: String
   hiddenAt: timestamptz
   ical: String
   id: bigint
   individualId: bigint
   name: String
-  primaryEmail: String
   slug: String
   status: String
   teamId: bigint
   tenantId: bigint
+  website: String
 }
 
 type ActorSumFields {
@@ -3258,16 +3269,17 @@ enum ActorUpdateColumn {
   createdAt
   createdById
   deletedAt
+  email
   hiddenAt
   ical
   id
   individualId
   name
-  primaryEmail
   slug
   status
   teamId
   tenantId
+  website
 }
 
 input ActorUpdates {

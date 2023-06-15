@@ -11,7 +11,7 @@ export * from './bll/token-type.enum';
 export * from './dal/actor/actor-image-type.enum';
 export * from './dal/actor/session-client-type.enum';
 export * from './dal/actor/shortcut-type.enum';
-export * from './dal/actor/social-account-type.enum';
+export * from './dal/actor/social-type.enum';
 export * from './dal/canteen/canteen-permissions.enum';
 export * from './dal/canteen/food-type.enum';
 export * from './dal/class-group/class-role.enum';

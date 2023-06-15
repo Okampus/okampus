@@ -59,7 +59,7 @@ export function TopbarUser({ theme, setTheme }: TopbarUserProps) {
                 <AvatarImage src={avatar} name={name} size={22} type="user" />
                 <div>
                   <div className="text-1 text-xl font-bold">{name}</div>
-                  <div className="text-2">{currentUser?.individualById?.actor?.primaryEmail}</div>
+                  <div className="text-2">{currentUser?.individualById?.actor?.email}</div>
                 </div>
               </div>
             </div>

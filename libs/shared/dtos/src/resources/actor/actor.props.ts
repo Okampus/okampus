@@ -27,5 +27,10 @@ export class ActorProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsEmail()
-  primaryEmail?: string | null;
+  email?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  website?: string;
 }

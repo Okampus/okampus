@@ -102,7 +102,7 @@ export function Topbar({ color = 'var(--bg-main)', isSmall, opacity }: TopbarPro
                     />
                     <div>
                       <div className="text-1 text-xl font-semibold">{currentUser?.individualById?.actor?.name}</div>
-                      <div className="text-2">{currentUser?.individualById?.actor?.primaryEmail}</div>
+                      <div className="text-2">{currentUser?.individualById?.actor?.email}</div>
                     </div>
                   </div>
                 </div>

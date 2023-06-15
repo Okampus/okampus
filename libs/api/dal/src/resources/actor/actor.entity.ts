@@ -53,8 +53,11 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   bio = '';
 
-  @Property({ type: 'text', nullable: true, default: null })
-  primaryEmail: string | null = null;
+  @Property({ type: 'text', default: '' })
+  email = '';
+
+  @Property({ type: 'text', default: '' })
+  website = '';
 
   @Property({ type: 'text' })
   @Unique()

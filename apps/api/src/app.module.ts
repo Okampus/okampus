@@ -287,7 +287,7 @@ export class AppModule implements NestModule, OnModuleInit {
         slug: ANON_ACCOUNT_SLUG,
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
         userInfo: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
-        primaryEmail: ANON_ACCOUNT_EMAIL,
+        email: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         createdBy: null,
         tenant,
@@ -298,7 +298,7 @@ export class AppModule implements NestModule, OnModuleInit {
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
         userInfo: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
         scopeRole: ScopeRole.Admin,
-        primaryEmail: ADMIN_ACCOUNT_EMAIL,
+        email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,
         tenant,
       });

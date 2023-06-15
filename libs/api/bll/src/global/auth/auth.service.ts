@@ -301,7 +301,7 @@ export class AuthService extends RequestContext {
     res: FastifyReply
   ): Promise<UserInfo> {
     const individual = await this.em.findOneOrFail(Individual, {
-      actor: { $or: [{ slug: body.username }, { primaryEmail: body.username }] },
+      actor: { $or: [{ slug: body.username }, { email: body.username }] },
       tenant: this.tenant(),
     });
 

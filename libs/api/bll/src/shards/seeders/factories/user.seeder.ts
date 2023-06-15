@@ -29,7 +29,7 @@ export class UserSeeder extends Factory<Individual> {
       name: `${firstName} ${lastName}`,
       userInfo: { firstName, lastName },
       passwordHash: this.passwordHash,
-      primaryEmail: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
+      email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
       scopeRole: this.scopeRole,
       createdBy: null,
       tenant: this.tenant,

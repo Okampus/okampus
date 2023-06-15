@@ -12,7 +12,7 @@ export class Social extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })
   actor!: Actor;
 
-  @Property({ type: 'int2' })
+  @Property({ type: 'smallint' })
   order!: number;
 
   @Enum({ items: () => SocialType, type: EnumType })
