@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertFollowArgsType,
   InsertOneFollowArgsType,
   UpdateByPkFollowArgsType,
   FindFollowArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './follows.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('FollowMutationResponse')
-export class FollowsMutationResolver {
-  constructor(private readonly followsService: FollowsService) {}
-
-  @Mutation()
-  async insertFollow(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertFollowArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.followsService.insertFollow(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Follow')
 export class FollowsQueryResolver {
@@ -50,7 +34,7 @@ export class FollowsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.followsService.insertFollow(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.followsService.insertFollowOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

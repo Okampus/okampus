@@ -67,39 +67,28 @@ export class ActionsService extends RequestContext {
     return true;
   }
 
-  async insertAction(
+  async insertActionOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['ActionInsertInput']>,
-    onConflict?: ValueTypes['ActionOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['ActionInsertInput'],
+    onConflict?: ValueTypes['ActionOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Action.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertAction', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertActionOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertAction.returning) {
-      const action = await this.actionRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Action, action);
-    }
+    const action = await this.actionRepository.findOneOrFail(data.insertActionOne.id);
+    await this.logsService.createLog(EntityName.Action, action);
 
     // Custom logic
-    return data.insertAction;
+    return data.insertActionOne;
   }
 
   async findAction(

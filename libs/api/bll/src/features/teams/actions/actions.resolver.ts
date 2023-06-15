@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertActionArgsType,
   InsertOneActionArgsType,
   UpdateByPkActionArgsType,
   FindActionArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './actions.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('ActionMutationResponse')
-export class ActionsMutationResolver {
-  constructor(private readonly actionsService: ActionsService) {}
-
-  @Mutation()
-  async insertAction(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertActionArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.actionsService.insertAction(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Action')
 export class ActionsQueryResolver {
@@ -50,7 +34,7 @@ export class ActionsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.actionsService.insertAction(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.actionsService.insertActionOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

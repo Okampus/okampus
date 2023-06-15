@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertTeamJoinArgsType,
   InsertOneTeamJoinArgsType,
   UpdateByPkTeamJoinArgsType,
   FindTeamJoinArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './team-joins.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('TeamJoinMutationResponse')
-export class TeamJoinsMutationResolver {
-  constructor(private readonly teamJoinsService: TeamJoinsService) {}
-
-  @Mutation()
-  async insertTeamJoin(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertTeamJoinArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.teamJoinsService.insertTeamJoin(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('TeamJoin')
 export class TeamJoinsQueryResolver {
@@ -50,7 +34,7 @@ export class TeamJoinsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.teamJoinsService.insertTeamJoin(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.teamJoinsService.insertTeamJoinOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

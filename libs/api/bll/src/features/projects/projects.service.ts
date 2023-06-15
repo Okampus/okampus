@@ -67,39 +67,28 @@ export class ProjectsService extends RequestContext {
     return true;
   }
 
-  async insertProject(
+  async insertProjectOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['ProjectInsertInput']>,
-    onConflict?: ValueTypes['ProjectOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['ProjectInsertInput'],
+    onConflict?: ValueTypes['ProjectOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Project.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertProject', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertProjectOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertProject.returning) {
-      const project = await this.projectRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Project, project);
-    }
+    const project = await this.projectRepository.findOneOrFail(data.insertProjectOne.id);
+    await this.logsService.createLog(EntityName.Project, project);
 
     // Custom logic
-    return data.insertProject;
+    return data.insertProjectOne;
   }
 
   async findProject(

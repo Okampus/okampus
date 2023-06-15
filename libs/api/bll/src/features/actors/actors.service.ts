@@ -67,39 +67,28 @@ export class ActorsService extends RequestContext {
     return true;
   }
 
-  async insertActor(
+  async insertActorOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['ActorInsertInput']>,
-    onConflict?: ValueTypes['ActorOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['ActorInsertInput'],
+    onConflict?: ValueTypes['ActorOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Actor.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertActor', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertActorOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertActor.returning) {
-      const actor = await this.actorRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Actor, actor);
-    }
+    const actor = await this.actorRepository.findOneOrFail(data.insertActorOne.id);
+    await this.logsService.createLog(EntityName.Actor, actor);
 
     // Custom logic
-    return data.insertActor;
+    return data.insertActorOne;
   }
 
   async findActor(

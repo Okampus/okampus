@@ -67,39 +67,28 @@ export class TagsService extends RequestContext {
     return true;
   }
 
-  async insertTag(
+  async insertTagOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['TagInsertInput']>,
-    onConflict?: ValueTypes['TagOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['TagInsertInput'],
+    onConflict?: ValueTypes['TagOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tag.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tag.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Tag.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertTag', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertTagOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertTag.returning) {
-      const tag = await this.tagRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Tag, tag);
-    }
+    const tag = await this.tagRepository.findOneOrFail(data.insertTagOne.id);
+    await this.logsService.createLog(EntityName.Tag, tag);
 
     // Custom logic
-    return data.insertTag;
+    return data.insertTagOne;
   }
 
   async findTag(

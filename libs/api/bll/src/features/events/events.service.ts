@@ -67,39 +67,28 @@ export class EventsService extends RequestContext {
     return true;
   }
 
-  async insertEvent(
+  async insertEventOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['EventInsertInput']>,
-    onConflict?: ValueTypes['EventOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['EventInsertInput'],
+    onConflict?: ValueTypes['EventOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Event.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Event.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Event.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertEvent', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertEventOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertEvent.returning) {
-      const event = await this.eventRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Event, event);
-    }
+    const event = await this.eventRepository.findOneOrFail(data.insertEventOne.id);
+    await this.logsService.createLog(EntityName.Event, event);
 
     // Custom logic
-    return data.insertEvent;
+    return data.insertEventOne;
   }
 
   async findEvent(

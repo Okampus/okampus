@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  Insert<%= className %>ArgsType,
   InsertOne<%= className %>ArgsType,
   UpdateByPk<%= className %>ArgsType,
   Find<%= className %>ArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './<%= fileName %>.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('<%= className %>MutationResponse')
-export class <%= pluralClassName %>MutationResolver {
-  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
-
-  @Mutation()
-  async insert<%= className %>(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<Insert<%= className %>ArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('<%= className %>')
 export class <%= pluralClassName %>QueryResolver {
@@ -50,7 +34,7 @@ export class <%= pluralClassName %>QueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.<%= pluralPropertyName %>Service.insert<%= className %>One(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

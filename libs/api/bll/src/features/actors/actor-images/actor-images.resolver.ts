@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertActorImageArgsType,
   InsertOneActorImageArgsType,
   UpdateByPkActorImageArgsType,
   FindActorImageArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './actor-images.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('ActorImageMutationResponse')
-export class ActorImagesMutationResolver {
-  constructor(private readonly actorImagesService: ActorImagesService) {}
-
-  @Mutation()
-  async insertActorImage(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertActorImageArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.actorImagesService.insertActorImage(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('ActorImage')
 export class ActorImagesQueryResolver {
@@ -57,7 +41,7 @@ export class ActorImagesQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.actorImagesService.insertActorImage(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.actorImagesService.insertActorImageOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

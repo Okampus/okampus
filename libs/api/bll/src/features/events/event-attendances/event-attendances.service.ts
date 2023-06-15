@@ -70,39 +70,28 @@ export class EventAttendancesService extends RequestContext {
     return true;
   }
 
-  async insertEventAttendance(
+  async insertEventAttendanceOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['EventAttendanceInsertInput']>,
-    onConflict?: ValueTypes['EventAttendanceOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['EventAttendanceInsertInput'],
+    onConflict?: ValueTypes['EventAttendanceOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventAttendance.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventAttendance.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert EventAttendance.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertEventAttendance', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertEventAttendanceOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertEventAttendance.returning) {
-      const eventAttendance = await this.eventAttendanceRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.EventAttendance, eventAttendance);
-    }
+    const eventAttendance = await this.eventAttendanceRepository.findOneOrFail(data.insertEventAttendanceOne.id);
+    await this.logsService.createLog(EntityName.EventAttendance, eventAttendance);
 
     // Custom logic
-    return data.insertEventAttendance;
+    return data.insertEventAttendanceOne;
   }
 
   async findEventAttendance(

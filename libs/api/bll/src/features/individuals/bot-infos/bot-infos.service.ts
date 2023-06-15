@@ -67,39 +67,28 @@ export class BotInfosService extends RequestContext {
     return true;
   }
 
-  async insertBotInfo(
+  async insertBotInfoOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['BotInfoInsertInput']>,
-    onConflict?: ValueTypes['BotInfoOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['BotInfoInsertInput'],
+    onConflict?: ValueTypes['BotInfoOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert BotInfo.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert BotInfo.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert BotInfo.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertBotInfo', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertBotInfoOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertBotInfo.returning) {
-      const botInfo = await this.botInfoRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.BotInfo, botInfo);
-    }
+    const botInfo = await this.botInfoRepository.findOneOrFail(data.insertBotInfoOne.id);
+    await this.logsService.createLog(EntityName.BotInfo, botInfo);
 
     // Custom logic
-    return data.insertBotInfo;
+    return data.insertBotInfoOne;
   }
 
   async findBotInfo(

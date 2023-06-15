@@ -67,39 +67,28 @@ export class FormsService extends RequestContext {
     return true;
   }
 
-  async insertForm(
+  async insertFormOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['FormInsertInput']>,
-    onConflict?: ValueTypes['FormOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['FormInsertInput'],
+    onConflict?: ValueTypes['FormOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Form.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertForm', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertFormOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertForm.returning) {
-      const form = await this.formRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Form, form);
-    }
+    const form = await this.formRepository.findOneOrFail(data.insertFormOne.id);
+    await this.logsService.createLog(EntityName.Form, form);
 
     // Custom logic
-    return data.insertForm;
+    return data.insertFormOne;
   }
 
   async findForm(

@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertIndividualArgsType,
   InsertOneIndividualArgsType,
   UpdateByPkIndividualArgsType,
   FindIndividualArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './individuals.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('IndividualMutationResponse')
-export class IndividualsMutationResolver {
-  constructor(private readonly individualsService: IndividualsService) {}
-
-  @Mutation()
-  async insertIndividual(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertIndividualArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.individualsService.insertIndividual(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Individual')
 export class IndividualsQueryResolver {
@@ -57,7 +41,7 @@ export class IndividualsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.individualsService.insertIndividual(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.individualsService.insertIndividualOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

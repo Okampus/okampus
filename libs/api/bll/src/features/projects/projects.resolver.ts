@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertProjectArgsType,
   InsertOneProjectArgsType,
   UpdateByPkProjectArgsType,
   FindProjectArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './projects.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('ProjectMutationResponse')
-export class ProjectsMutationResolver {
-  constructor(private readonly projectsService: ProjectsService) {}
-
-  @Mutation()
-  async insertProject(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertProjectArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.projectsService.insertProject(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Project')
 export class ProjectsQueryResolver {
@@ -50,7 +34,7 @@ export class ProjectsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.projectsService.insertProject(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.projectsService.insertProjectOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

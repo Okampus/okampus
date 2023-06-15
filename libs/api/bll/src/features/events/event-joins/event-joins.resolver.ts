@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertEventJoinArgsType,
   InsertOneEventJoinArgsType,
   UpdateByPkEventJoinArgsType,
   FindEventJoinArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './event-joins.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('EventJoinMutationResponse')
-export class EventJoinsMutationResolver {
-  constructor(private readonly eventJoinsService: EventJoinsService) {}
-
-  @Mutation()
-  async insertEventJoin(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertEventJoinArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventJoinsService.insertEventJoin(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('EventJoin')
 export class EventJoinsQueryResolver {
@@ -50,7 +34,7 @@ export class EventJoinsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.eventJoinsService.insertEventJoin(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.eventJoinsService.insertEventJoinOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

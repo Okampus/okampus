@@ -67,39 +67,28 @@ export class UserInfosService extends RequestContext {
     return true;
   }
 
-  async insertUserInfo(
+  async insertUserInfoOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['UserInfoInsertInput']>,
-    onConflict?: ValueTypes['UserInfoOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['UserInfoInsertInput'],
+    onConflict?: ValueTypes['UserInfoOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert UserInfo.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert UserInfo.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert UserInfo.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertUserInfo', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertUserInfoOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertUserInfo.returning) {
-      const userInfo = await this.userInfoRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.UserInfo, userInfo);
-    }
+    const userInfo = await this.userInfoRepository.findOneOrFail(data.insertUserInfoOne.id);
+    await this.logsService.createLog(EntityName.UserInfo, userInfo);
 
     // Custom logic
-    return data.insertUserInfo;
+    return data.insertUserInfoOne;
   }
 
   async findUserInfo(

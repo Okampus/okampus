@@ -67,39 +67,28 @@ export class TeamsService extends RequestContext {
     return true;
   }
 
-  async insertTeam(
+  async insertTeamOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['TeamInsertInput']>,
-    onConflict?: ValueTypes['TeamOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['TeamInsertInput'],
+    onConflict?: ValueTypes['TeamOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Team.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Team.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Team.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertTeam', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertTeamOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertTeam.returning) {
-      const team = await this.teamRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Team, team);
-    }
+    const team = await this.teamRepository.findOneOrFail(data.insertTeamOne.id);
+    await this.logsService.createLog(EntityName.Team, team);
 
     // Custom logic
-    return data.insertTeam;
+    return data.insertTeamOne;
   }
 
   async findTeam(

@@ -136,6 +136,12 @@ export class HasuraService extends RequestContext {
     return data;
   }
 
+  async insertOne(queryName: string, selectionSet: string[], objects: Obj, onConflict?: Obj) {
+    const query = buildOperation('mutation', queryName, selectionSet, { objects, onConflict });
+    const data = await this.makeOperation(query);
+    return data;
+  }
+
   async update(queryName: string, selectionSet: string[], where: Obj, _set: Obj) {
     const query = buildOperation('mutation', queryName, selectionSet, { where, _set });
     const data = await this.makeOperation(query);

@@ -67,39 +67,28 @@ export class FollowsService extends RequestContext {
     return true;
   }
 
-  async insertFollow(
+  async insertFollowOne(
     selectionSet: string[],
-    objects: Array<ValueTypes['FollowInsertInput']>,
-    onConflict?: ValueTypes['FollowOnConflict'],
-    insertOne?: boolean
+    object: ValueTypes['FollowInsertInput'],
+    onConflict?: ValueTypes['FollowOnConflict']
   ) {
-    const arePropsValid = await Promise.all(
-      objects.map(async (props) => {
-        const canCreate = await this.checkPermsCreate(props);
-        if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
+    const canCreate = await this.checkPermsCreate(object);
+    if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
 
-        const arePropsValid = await this.checkPropsConstraints(props);
-        if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = await this.checkPropsConstraints(object);
+    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-        const areRelationshipsValid = await this.checkCreateRelationships(props);
-        if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
-
-        return canCreate && arePropsValid && areRelationshipsValid;
-      })
-    ).then((results) => results.every(Boolean));
-
-    if (!arePropsValid) throw new ForbiddenException('You are not allowed to insert Follow.');
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
-    const data = await this.hasuraService.insert('insertFollow', selectionSet, objects, onConflict, insertOne);
+    const data = await this.hasuraService.insertOne('insertFollowOne', selectionSet, object, onConflict);
 
-    for (const inserted of data.insertFollow.returning) {
-      const follow = await this.followRepository.findOneOrFail(inserted.id);
-      await this.logsService.createLog(EntityName.Follow, follow);
-    }
+    const follow = await this.followRepository.findOneOrFail(data.insertFollowOne.id);
+    await this.logsService.createLog(EntityName.Follow, follow);
 
     // Custom logic
-    return data.insertFollow;
+    return data.insertFollowOne;
   }
 
   async findFollow(

@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertTeamFinanceArgsType,
   InsertOneTeamFinanceArgsType,
   UpdateByPkTeamFinanceArgsType,
   FindTeamFinanceArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './team-finances.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('TeamFinanceMutationResponse')
-export class TeamFinancesMutationResolver {
-  constructor(private readonly teamFinancesService: TeamFinancesService) {}
-
-  @Mutation()
-  async insertTeamFinance(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertTeamFinanceArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.teamFinancesService.insertTeamFinance(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('TeamFinance')
 export class TeamFinancesQueryResolver {
@@ -57,7 +41,7 @@ export class TeamFinancesQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.teamFinancesService.insertTeamFinance(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.teamFinancesService.insertTeamFinanceOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

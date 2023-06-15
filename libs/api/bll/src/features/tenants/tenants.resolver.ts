@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertTenantArgsType,
   InsertOneTenantArgsType,
   UpdateByPkTenantArgsType,
   FindTenantArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './tenants.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('TenantMutationResponse')
-export class TenantsMutationResolver {
-  constructor(private readonly tenantsService: TenantsService) {}
-
-  @Mutation()
-  async insertTenant(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertTenantArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.tenantsService.insertTenant(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Tenant')
 export class TenantsQueryResolver {
@@ -50,7 +34,7 @@ export class TenantsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.tenantsService.insertTenant(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.tenantsService.insertTenantOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

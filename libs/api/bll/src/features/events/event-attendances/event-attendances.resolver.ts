@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertEventAttendanceArgsType,
   InsertOneEventAttendanceArgsType,
   UpdateByPkEventAttendanceArgsType,
   FindEventAttendanceArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './event-attendances.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('EventAttendanceMutationResponse')
-export class EventAttendancesMutationResolver {
-  constructor(private readonly eventAttendancesService: EventAttendancesService) {}
-
-  @Mutation()
-  async insertEventAttendance(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertEventAttendanceArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.eventAttendancesService.insertEventAttendance(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('EventAttendance')
 export class EventAttendancesQueryResolver {
@@ -57,12 +41,7 @@ export class EventAttendancesQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.eventAttendancesService.insertEventAttendance(
-      getSelectionSet(info),
-      [object],
-      onConflict,
-      true
-    );
+    const data = await this.eventAttendancesService.insertEventAttendanceOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 

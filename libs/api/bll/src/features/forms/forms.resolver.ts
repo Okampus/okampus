@@ -4,7 +4,6 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
-  InsertFormArgsType,
   InsertOneFormArgsType,
   UpdateByPkFormArgsType,
   FindFormArgsType,
@@ -13,21 +12,6 @@ import type {
 } from './forms.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
-
-@Resolver('FormMutationResponse')
-export class FormsMutationResolver {
-  constructor(private readonly formsService: FormsService) {}
-
-  @Mutation()
-  async insertForm(@Info() info: GraphQLResolveInfo) {
-    const { objects, onConflict } = getGraphQLArgs<InsertFormArgsType>(
-      info.parentType.getFields()[info.fieldName],
-      info.fieldNodes[0],
-      info.variableValues
-    );
-    return await this.formsService.insertForm(getSelectionSet(info), objects, onConflict);
-  }
-}
 
 @Resolver('Form')
 export class FormsQueryResolver {
@@ -50,7 +34,7 @@ export class FormsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.formsService.insertForm(getSelectionSet(info), [object], onConflict, true);
+    const data = await this.formsService.insertFormOne(getSelectionSet(info), object, onConflict);
     return data.returning[0];
   }
 
