@@ -4,6 +4,7 @@ export * from './mutations/actor/actorImage/deactivateActorImage';
 export * from './mutations/actor/actorImage/insertActorImage';
 export * from './mutations/actor/follow/insertFollow';
 export * from './mutations/actor/follow/updateFollow';
+export * from './mutations/actor/updateActor';
 export * from './mutations/auth/login';
 export * from './mutations/auth/logout';
 export * from './mutations/document/insertDocument';

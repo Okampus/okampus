@@ -6,10 +6,7 @@ import type { ValueTypes } from '../../../zeus';
 
 export const updateFollow = typedGql('mutation')({
   updateFollowByPk: [
-    {
-      pkColumns: { id },
-      _set: $('update', 'FollowSetInput!') as ValueTypes['FollowSetInput'],
-    },
+    { pkColumns: { id }, _set: $('update', 'FollowSetInput!') as ValueTypes['FollowSetInput'] },
     followBaseInfo,
   ],
 });

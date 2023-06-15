@@ -7,5 +7,6 @@ export const socialBaseInfo = Selector('Social')({
   pseudo: true,
   url: true,
   type: true,
+  order: true,
 });
 export type SocialBaseInfo = InputType<GraphQLTypes['Social'], typeof socialBaseInfo>;

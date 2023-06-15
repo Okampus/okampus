@@ -3,7 +3,8 @@ import { $ } from '../../../zeus';
 import { typedGql } from '../../../zeus/typedDocumentNode';
 import type { ValueTypes } from '../../../zeus';
 
-// @ts-expect-error - Zeus depth limit
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const insertChangeRole = typedGql('mutation')({
   insertChangeRoleOne: [
     { object: $('insert', 'ChangeRoleInsertInput!') as ValueTypes['ChangeRoleInsertInput'] },
