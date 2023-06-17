@@ -100,7 +100,7 @@ function TeamProjectManageViewWrapper({ team }: { team: TeamManageInfo }) {
                           const data = values as Submission<typeof fields>;
                           createProject({
                             variables: {
-                              insert: {
+                              object: {
                                 ...data,
                                 slug: toSlug(data.name),
                                 teamId: team.id,

@@ -14,6 +14,7 @@ export const actorBaseInfo = Selector('Actor')({
   name: true,
   slug: true,
   status: true,
+  website: true,
   email: true,
   actorImages: [{ where: { lastActiveDate: { _isNull: true } } }, actorImageBaseInfo],
   actorTags: [{}, { tag: tagBaseInfo }],

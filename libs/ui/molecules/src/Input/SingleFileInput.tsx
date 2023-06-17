@@ -37,7 +37,7 @@ export const SingleFileInput = forwardRef(({ onChange, options }: SingleFileInpu
 
   const uploadFile = (uploadedFile: File) => {
     setFile(uploadedFile);
-    const variables = { insert: uploadedFile };
+    const variables = { object: uploadedFile };
     insertUpload({ variables, onCompleted: ({ singleUpload }) => onChange(singleUpload?.id as string) });
   };
 
@@ -52,7 +52,7 @@ export const SingleFileInput = forwardRef(({ onChange, options }: SingleFileInpu
   // const onUpload = (uploadedFile: File | null) => {
   //   if (uploadedFile) {
   // setFile(uploadedFile);
-  // const variables = { insert: uploadedFile };
+  // const variables = { object: uploadedFile };
   // insertUpload({ variables, onCompleted: ({ singleUpload }) => onChange(singleUpload?.id as string) });
   //   } else {
   //     onChange(null);

@@ -7,7 +7,7 @@ import type { ValueTypes } from '../../zeus';
 // @ts-expect-error - Zeus depth limit
 export const insertProject = typedGql('mutation')({
   insertProjectOne: [
-    { object: $('insert', 'ProjectInsertInput!') as ValueTypes['ProjectInsertInput'] },
+    { object: $('object', 'ProjectInsertInput!') as ValueTypes['ProjectInsertInput'] },
     {
       ...projectBaseInfo,
       org: {

@@ -138,7 +138,7 @@ export function TeamEventManageView() {
 
             //     createEvent({
             //       variables: {
-            //         insert: {
+            //         object: {
             //           state: EventState.Submitted,
             //           contentMaster: { data: { name, slug: toSlug(name ?? '') } },
             //           teamEvents: { data: [{ teamId: teamManage?.id }] },

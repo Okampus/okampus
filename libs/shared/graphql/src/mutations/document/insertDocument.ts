@@ -7,7 +7,7 @@ import type { ValueTypes } from '../../zeus';
 // @ts-ignore
 export const insertDocumentMutation = typedGql('mutation')({
   insertDocumentOne: [
-    { object: $('insert', 'DocumentInsertInput!') as ValueTypes['DocumentInsertInput'] },
+    { object: $('object', 'DocumentInsertInput!') as ValueTypes['DocumentInsertInput'] },
     documentBaseInfo,
   ],
 });

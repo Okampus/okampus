@@ -108,7 +108,7 @@ export function FormEditView({ id }: FormEditViewProps) {
                   linkOrActionOrMenu: () => {
                     // insertFormEdit({
                     //   variables: {
-                    //     insert: {
+                    //     object: {
                     //       createdById: currentUser?.individualById?.id,
                     //       tenantId: currentUser?.tenantId,
                     //       formId: id,

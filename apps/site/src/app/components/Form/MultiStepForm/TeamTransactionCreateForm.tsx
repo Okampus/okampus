@@ -231,7 +231,7 @@ export function TeamTransactionCreateForm() {
         if (teamManage) {
           insertTeamFinance({
             variables: {
-              insert: {
+              object: {
                 name,
                 amount: -amount,
                 description,

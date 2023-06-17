@@ -9,7 +9,7 @@ import type { ValueTypes } from '../../../zeus';
 // @ts-expect-error - Zeus depth limit
 export const insertEventJoinMutation = typedGql('mutation')({
   insertEventJoinOne: [
-    { object: $('insert', 'EventJoinInsertInput!') as ValueTypes['EventJoinInsertInput'] },
+    { object: $('object', 'EventJoinInsertInput!') as ValueTypes['EventJoinInsertInput'] },
     {
       ...eventJoinDetailsInfo,
       event: {

@@ -6,5 +6,5 @@ import type { ValueTypes } from '../../zeus';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const insertActionMutation = typedGql('mutation')({
-  insertActionOne: [{ object: $('insert', 'ActionInsertInput!') as ValueTypes['ActionInsertInput'] }, actionBaseInfo],
+  insertActionOne: [{ object: $('object', 'ActionInsertInput!') as ValueTypes['ActionInsertInput'] }, actionBaseInfo],
 });

@@ -7,7 +7,7 @@ import type { ValueTypes } from '../../../zeus';
 // @ts-ignore
 export const insertActorImageMutation = typedGql('mutation')({
   insertActorImageOne: [
-    { object: $('insert', 'ActorImageInsertInput!') as ValueTypes['ActorImageInsertInput'] },
+    { object: $('object', 'ActorImageInsertInput!') as ValueTypes['ActorImageInsertInput'] },
     actorImageBaseInfo,
   ],
 });

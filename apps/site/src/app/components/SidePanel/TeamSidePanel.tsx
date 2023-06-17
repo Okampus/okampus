@@ -180,7 +180,7 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
               // isCurrentUserFollowing ?
               // :
               insertFollow({
-                variables: { insert: { followedActorId: team.actor?.id as string } },
+                variables: { object: { followedActorId: team.actor?.id as string } },
                 onCompleted: ({ insertFollowOne: data }) => {
                   mergeCache(
                     { __typename: 'Individual', id: currentUser?.individualById?.id as string },

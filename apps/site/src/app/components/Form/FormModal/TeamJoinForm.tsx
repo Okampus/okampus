@@ -40,7 +40,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
           if (role)
             createTeamJoin({
               variables: {
-                insert: {
+                object: {
                   teamId: team.id as string,
                   createdById: currentUser?.individualById?.id as string,
                   tenantId: team.tenantId,

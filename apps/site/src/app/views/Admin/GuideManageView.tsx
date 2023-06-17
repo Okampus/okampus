@@ -56,7 +56,7 @@ export function GuideManageView() {
                 // };
                 tenantAddDocument({
                   variables: {
-                    insert: {
+                    object: {
                       ...data,
                     },
                     // createDocument,

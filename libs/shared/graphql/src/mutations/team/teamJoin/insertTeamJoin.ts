@@ -3,9 +3,11 @@ import { $ } from '../../../zeus';
 import { typedGql } from '../../../zeus/typedDocumentNode';
 import type { ValueTypes } from '../../../zeus';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const insertTeamJoin = typedGql('mutation')({
   insertTeamJoinOne: [
-    { object: $('insert', 'TeamJoinInsertInput!') as ValueTypes['TeamJoinInsertInput'] },
+    { object: $('object', 'TeamJoinInsertInput!') as ValueTypes['TeamJoinInsertInput'] },
     teamJoinBaseInfo,
   ],
 });

@@ -75,7 +75,7 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
                     !amIRegistered &&
                     createEventJoin({
                       variables: {
-                        insert: {
+                        object: {
                           eventId: event.id,
                           joinerId: currentUser?.id,
                         },

@@ -7,7 +7,7 @@ import type { ValueTypes } from '../../../zeus';
 
 export const insertEventAttendanceMutation = typedGql('mutation')({
   insertEventAttendanceOne: [
-    { object: $('insert', 'EventAttendanceInsertInput!') as ValueTypes['EventAttendanceInsertInput'] },
+    { object: $('object', 'EventAttendanceInsertInput!') as ValueTypes['EventAttendanceInsertInput'] },
     {
       ...eventAttendanceBaseInfo,
       eventJoin: {

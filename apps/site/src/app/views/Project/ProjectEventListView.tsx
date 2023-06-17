@@ -146,7 +146,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                 content: () => {
                   createEventJoin({
                     variables: {
-                      insert: {
+                      object: {
                         eventId: event.id,
                         joinerId: currentUser?.id,
                       },
@@ -179,7 +179,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
         //   console.log('Date', start, end, tenant?.campuses[0]);
         //   createEvent({
         //     variables: {
-        //       insert: {
+        //       object: {
         //         contentMaster: { data: { name, slug: toSlug(name) } },
         //         teamEvents: { data: [{ teamId: teamManage?.id }] },
         //         locationId: tenant?.campuses[0]?.actorAddress?.id,
@@ -196,7 +196,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
     } else {
       createEventJoin({
         variables: {
-          insert: {
+          object: {
             eventId: event.id,
             joinerId: currentUser?.id,
           },

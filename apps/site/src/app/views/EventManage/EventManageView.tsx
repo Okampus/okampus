@@ -130,7 +130,7 @@ export function EventManageView() {
               //     //               // onSubmit={(values) =>
               //     //               //   insertAction({
               //     //               //     variables: {
-              //     //               //       insert: {
+              //     //               //       object: {
               //     //               //         eventJoinId: eventJoin.id,
               //     //               //         ...values,
               //     //               //       },
@@ -242,7 +242,7 @@ export function EventManageView() {
                             linkOrActionOrMenu: () =>
                               insertEventAttendance({
                                 variables: {
-                                  insert: {
+                                  object: {
                                     eventJoinId: eventJoin.id,
                                     participated: true,
                                     confirmedVia: AttendanceConfirmedVia.Manual,
@@ -259,7 +259,7 @@ export function EventManageView() {
                             linkOrActionOrMenu: () =>
                               insertEventAttendance({
                                 variables: {
-                                  insert: {
+                                  object: {
                                     eventJoinId: eventJoin.id,
                                     participated: false,
                                     confirmedVia: AttendanceConfirmedVia.Manual,

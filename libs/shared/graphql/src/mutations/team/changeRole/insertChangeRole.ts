@@ -7,7 +7,7 @@ import type { ValueTypes } from '../../../zeus';
 // @ts-ignore
 export const insertChangeRole = typedGql('mutation')({
   insertChangeRoleOne: [
-    { object: $('insert', 'ChangeRoleInsertInput!') as ValueTypes['ChangeRoleInsertInput'] },
+    { object: $('object', 'ChangeRoleInsertInput!') as ValueTypes['ChangeRoleInsertInput'] },
     changeRoleBaseInfo,
   ],
 });

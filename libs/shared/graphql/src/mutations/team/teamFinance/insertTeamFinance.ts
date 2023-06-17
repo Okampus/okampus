@@ -8,7 +8,7 @@ import type { ValueTypes } from '../../../zeus';
 // @ts-expect-error - Zeus depth limit
 export const insertTeamFinanceMutation = typedGql('mutation')({
   insertTeamFinanceOne: [
-    { object: $('insert', 'TeamFinanceInsertInput!') as ValueTypes['TeamFinanceInsertInput'] },
+    { object: $('object', 'TeamFinanceInsertInput!') as ValueTypes['TeamFinanceInsertInput'] },
     { ...teamFinanceBaseInfo, team: { ...entityBase, projects: [{}, projectWithFinanceInfo] } }, // TODO: replace by merge
   ],
 });

@@ -243,7 +243,7 @@ export function TeamJoinManageView() {
                                         onSubmit: (values) => {
                                           insertTeamChangeRole({
                                             variables: {
-                                              insert: {
+                                              object: {
                                                 createdById: currentUser?.individualById?.id as string,
                                                 tenantId: teamManage.tenantId as string,
                                                 receivedPoleId: teamManage.poles?.[0]?.id as string,

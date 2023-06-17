@@ -140,7 +140,7 @@ export function TeamEventCreateForm() {
 
         insertEvent({
           variables: {
-            insert: {
+            object: {
               state: EventState.Submitted,
               contentMaster: { data: { name, slug: toSlug(name ?? '') } },
               teamEvents: { data: [{ teamId: teamManage?.id }] },
