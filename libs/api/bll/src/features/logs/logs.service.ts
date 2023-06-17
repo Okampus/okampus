@@ -12,7 +12,11 @@ import { DiffType } from '@okampus/shared/types';
 import { isIn } from '@okampus/shared/utils';
 import type { LogDiff } from '@okampus/shared/types';
 
-export type LogContext = { contentMaster?: ContentMaster; individual?: Individual; team?: Team };
+export type LogContext = {
+  contentMaster?: ContentMaster;
+  individual?: Individual;
+  team?: Team;
+};
 
 @Injectable()
 export class LogsService extends RequestContext {
@@ -54,9 +58,16 @@ export class LogsService extends RequestContext {
     await this.em.persistAndFlush(deleteLog);
   }
 
-  async updateLog(entityName: EntityName, entity: BaseEntity, _set: Record<string, unknown>, context: LogContext = {}) {
+  async updateLog(
+    entityName: EntityName,
+    entity: BaseEntity,
+    _set: Record<string, unknown>,
+    context: LogContext & { ignoreFields?: string[] } = {}
+  ) {
     const diff: LogDiff = {};
     for (const [key, value] of Object.entries(_set)) {
+      if (context.ignoreFields?.includes(key)) continue;
+
       const validType =
         typeof value === 'string' ||
         typeof value === 'number' ||
