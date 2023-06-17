@@ -5,11 +5,16 @@ export function getAvatar(actorImages?: ActorImageBaseInfo[]) {
   if (!actorImages || actorImages.length === 0) return;
   const darkMode = localStorage.getItem('theme') === 'dark';
   if (darkMode) {
-    const darkAvatar = actorImages.find((actorImage) => actorImage.type === ActorImageType.AvatarDarkMode);
+    const darkAvatar = actorImages
+      .filter((actorImage) => actorImage.type === ActorImageType.AvatarDarkMode)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
     if (darkAvatar) return darkAvatar.fileUpload.url;
   }
 
-  const avatar = actorImages.find((actorImage) => actorImage.type === ActorImageType.Avatar);
+  const avatar = actorImages
+    .filter((actorImage) => actorImage.type === ActorImageType.Avatar)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+
   if (avatar) return avatar.fileUpload.url;
   return;
 }
