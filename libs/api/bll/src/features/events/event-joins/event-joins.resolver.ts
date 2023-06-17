@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneEventJoinArgsType,
+  InsertEventJoinArgsType,
   UpdateByPkEventJoinArgsType,
+  UpdateEventJoinArgsType,
   FindEventJoinArgsType,
   FindByPkEventJoinArgsType,
   AggregateEventJoinArgsType,
 } from './event-joins.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('EventJoinMutationResponse')
+export class EventJoinsMutationResolver {
+  constructor(private readonly eventJoinsService: EventJoinsService) {}
+
+  @Mutation()
+  async insertEventJoin(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertEventJoinArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventJoinsService.insertEventJoin(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateEventJoinMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateEventJoinArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventJoinsService.updateEventJoinMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('EventJoin')
 export class EventJoinsQueryResolver {

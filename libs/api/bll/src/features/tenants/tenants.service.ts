@@ -24,24 +24,22 @@ export class TenantsService extends RequestContext {
     super();
   }
 
-  async checkPermsCreate(props: ValueTypes['TenantInsertInput']) {
+  checkPermsCreate(props: ValueTypes['TenantInsertInput']) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  async checkPermsDelete(id: string) {
-    const tenant = await this.tenantRepository.findOneOrFail(id);
+  checkPermsDelete(tenant: Tenant) {
     if (tenant.deletedAt) throw new NotFoundException(`Tenant was deleted on ${tenant.deletedAt}.`);
-
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
     // Custom logic
     return false;
   }
 
-  async checkPermsUpdate(props: ValueTypes['TenantSetInput'], tenant: Tenant) {
+  checkPermsUpdate(props: ValueTypes['TenantSetInput'], tenant: Tenant) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (tenant.deletedAt) throw new NotFoundException(`Tenant was deleted on ${tenant.deletedAt}.`);
@@ -52,7 +50,7 @@ export class TenantsService extends RequestContext {
     return tenant.createdBy?.id === this.requester().id;
   }
 
-  async checkPropsConstraints(props: ValueTypes['TenantSetInput']) {
+  checkPropsConstraints(props: ValueTypes['TenantSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
     props.createdById = this.requester().id;
@@ -60,7 +58,7 @@ export class TenantsService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: ValueTypes['TenantInsertInput']) {
+  checkCreateRelationships(props: ValueTypes['TenantInsertInput']) {
     // Custom logic
     return true;
   }
@@ -70,13 +68,13 @@ export class TenantsService extends RequestContext {
     object: ValueTypes['TenantInsertInput'],
     onConflict?: ValueTypes['TenantOnConflict']
   ) {
-    const canCreate = await this.checkPermsCreate(object);
+    const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tenant.');
 
-    const arePropsValid = await this.checkPropsConstraints(object);
+    const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -108,6 +106,64 @@ export class TenantsService extends RequestContext {
     return data.tenantByPk;
   }
 
+  async insertTenant(
+    selectionSet: string[],
+    objects: Array<ValueTypes['TenantInsertInput']>,
+    onConflict?: ValueTypes['TenantOnConflict']
+  ) {
+    for (const object of objects) {
+      const canCreate = await this.checkPermsCreate(object);
+      if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tenant.');
+
+      const arePropsValid = await this.checkPropsConstraints(object);
+      if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+      const areRelationshipsValid = this.checkCreateRelationships(object);
+      if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
+    }
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    const data = await this.hasuraService.insert('insertTenant', selectionSet, objects, onConflict);
+
+    for (const inserted of data.insertTenant.returning) {
+      const tenant = await this.tenantRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Tenant, tenant);
+    }
+
+    // Custom logic
+    return data.insertTenant;
+  }
+
+  async updateTenantMany(selectionSet: string[], updates: Array<ValueTypes['TenantUpdates']>) {
+    const areWheresCorrect = this.hasuraService.checkUpdates(updates);
+    if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
+
+    const tenants = await this.tenantRepository.findByIds(updates.map((update) => update.where.id._eq));
+    for (const update of updates) {
+      const tenant = tenants.find((tenant) => tenant.id === update.where.id._eq);
+      if (!tenant) throw new NotFoundException(`Tenant (${update.where.id._eq}) was not found.`);
+
+      const canUpdate = this.checkPermsUpdate(update._set, tenant);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Tenant (${update.where.id._eq}).`);
+
+      const arePropsValid = this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }
+
+    const data = await this.hasuraService.updateMany('updateTenantMany', selectionSet, updates);
+
+    await Promise.all(
+      tenants.map(async (tenant) => {
+        const update = updates.find((update) => update.where.id._eq === tenant.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Tenant, tenant, update._set);
+      })
+    );
+
+    // Custom logic
+    return data.updateTenantMany;
+  }
+
   async updateTenantByPk(
     selectionSet: string[],
     pkColumns: ValueTypes['TenantPkColumnsInput'],
@@ -115,11 +171,11 @@ export class TenantsService extends RequestContext {
   ) {
     const tenant = await this.tenantRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = await this.checkPermsUpdate(_set, tenant);
+    const canUpdate = this.checkPermsUpdate(_set, tenant);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Tenant (${pkColumns.id}).`);
 
-    const arePropsValid = await this.checkPropsConstraints(_set);
-    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateTenantByPk', selectionSet, pkColumns, _set);
 
@@ -130,7 +186,9 @@ export class TenantsService extends RequestContext {
   }
 
   async deleteTenantByPk(selectionSet: string[], pkColumns: ValueTypes['TenantPkColumnsInput']) {
-    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    const tenant = await this.tenantRepository.findOneOrFail(pkColumns.id);
+
+    const canDelete = this.checkPermsDelete(tenant);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tenant (${pkColumns.id}).`);
 
     const data = await this.hasuraService.updateByPk('updateTenantByPk', selectionSet, pkColumns, {

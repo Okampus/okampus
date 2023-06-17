@@ -1,6 +1,7 @@
 nx g hasura-feature tag --folder new-features
 nx g hasura-feature actor --folder new-features
 nx g hasura-feature follow --subfolder actors --folder new-features
+nx g hasura-feature social --subfolder actors --folder new-features
 nx g hasura-feature actor-image --subfolder actors --folder new-features
 nx g hasura-feature event --folder new-features
 nx g hasura-feature event-attendance --subfolder events --folder new-features
@@ -15,3 +16,4 @@ nx g hasura-feature action --subfolder teams --folder new-features
 nx g hasura-feature team-finance --subfolder teams --folder new-features
 nx g hasura-feature team-join --subfolder teams --folder new-features
 nx g hasura-feature tenant --folder new-features
+nx g hasura-feature event-approval-step --subfolder tenants --folder new-features

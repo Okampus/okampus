@@ -24,25 +24,23 @@ export class EventApprovalStepsService extends RequestContext {
     super();
   }
 
-  async checkPermsCreate(props: ValueTypes['EventApprovalStepInsertInput']) {
+  checkPermsCreate(props: ValueTypes['EventApprovalStepInsertInput']) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  async checkPermsDelete(id: string) {
-    const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(id);
+  checkPermsDelete(eventApprovalStep: EventApprovalStep) {
     if (eventApprovalStep.deletedAt)
       throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
-
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
     // Custom logic
     return false;
   }
 
-  async checkPermsUpdate(props: ValueTypes['EventApprovalStepSetInput'], eventApprovalStep: EventApprovalStep) {
+  checkPermsUpdate(props: ValueTypes['EventApprovalStepSetInput'], eventApprovalStep: EventApprovalStep) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (eventApprovalStep.deletedAt)
@@ -56,7 +54,7 @@ export class EventApprovalStepsService extends RequestContext {
     return eventApprovalStep.createdBy?.id === this.requester().id;
   }
 
-  async checkPropsConstraints(props: ValueTypes['EventApprovalStepSetInput']) {
+  checkPropsConstraints(props: ValueTypes['EventApprovalStepSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
     props.tenantId = this.tenant().id;
@@ -65,7 +63,7 @@ export class EventApprovalStepsService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: ValueTypes['EventApprovalStepInsertInput']) {
+  checkCreateRelationships(props: ValueTypes['EventApprovalStepInsertInput']) {
     // Custom logic
     return true;
   }
@@ -75,13 +73,13 @@ export class EventApprovalStepsService extends RequestContext {
     object: ValueTypes['EventApprovalStepInsertInput'],
     onConflict?: ValueTypes['EventApprovalStepOnConflict']
   ) {
-    const canCreate = await this.checkPermsCreate(object);
+    const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApprovalStep.');
 
-    const arePropsValid = await this.checkPropsConstraints(object);
+    const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -121,6 +119,69 @@ export class EventApprovalStepsService extends RequestContext {
     return data.eventApprovalStepByPk;
   }
 
+  async insertEventApprovalStep(
+    selectionSet: string[],
+    objects: Array<ValueTypes['EventApprovalStepInsertInput']>,
+    onConflict?: ValueTypes['EventApprovalStepOnConflict']
+  ) {
+    for (const object of objects) {
+      const canCreate = await this.checkPermsCreate(object);
+      if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApprovalStep.');
+
+      const arePropsValid = await this.checkPropsConstraints(object);
+      if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+      const areRelationshipsValid = this.checkCreateRelationships(object);
+      if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
+    }
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    const data = await this.hasuraService.insert('insertEventApprovalStep', selectionSet, objects, onConflict);
+
+    for (const inserted of data.insertEventApprovalStep.returning) {
+      const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.EventApprovalStep, eventApprovalStep);
+    }
+
+    // Custom logic
+    return data.insertEventApprovalStep;
+  }
+
+  async updateEventApprovalStepMany(selectionSet: string[], updates: Array<ValueTypes['EventApprovalStepUpdates']>) {
+    const areWheresCorrect = this.hasuraService.checkUpdates(updates);
+    if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
+
+    const eventApprovalSteps = await this.eventApprovalStepRepository.findByIds(
+      updates.map((update) => update.where.id._eq)
+    );
+    for (const update of updates) {
+      const eventApprovalStep = eventApprovalSteps.find(
+        (eventApprovalStep) => eventApprovalStep.id === update.where.id._eq
+      );
+      if (!eventApprovalStep) throw new NotFoundException(`EventApprovalStep (${update.where.id._eq}) was not found.`);
+
+      const canUpdate = this.checkPermsUpdate(update._set, eventApprovalStep);
+      if (!canUpdate)
+        throw new ForbiddenException(`You are not allowed to update EventApprovalStep (${update.where.id._eq}).`);
+
+      const arePropsValid = this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }
+
+    const data = await this.hasuraService.updateMany('updateEventApprovalStepMany', selectionSet, updates);
+
+    await Promise.all(
+      eventApprovalSteps.map(async (eventApprovalStep) => {
+        const update = updates.find((update) => update.where.id._eq === eventApprovalStep.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.EventApprovalStep, eventApprovalStep, update._set);
+      })
+    );
+
+    // Custom logic
+    return data.updateEventApprovalStepMany;
+  }
+
   async updateEventApprovalStepByPk(
     selectionSet: string[],
     pkColumns: ValueTypes['EventApprovalStepPkColumnsInput'],
@@ -128,11 +189,11 @@ export class EventApprovalStepsService extends RequestContext {
   ) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = await this.checkPermsUpdate(_set, eventApprovalStep);
+    const canUpdate = this.checkPermsUpdate(_set, eventApprovalStep);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update EventApprovalStep (${pkColumns.id}).`);
 
-    const arePropsValid = await this.checkPropsConstraints(_set);
-    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, pkColumns, _set);
 
@@ -143,7 +204,9 @@ export class EventApprovalStepsService extends RequestContext {
   }
 
   async deleteEventApprovalStepByPk(selectionSet: string[], pkColumns: ValueTypes['EventApprovalStepPkColumnsInput']) {
-    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
+
+    const canDelete = this.checkPermsDelete(eventApprovalStep);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${pkColumns.id}).`);
 
     const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, pkColumns, {

@@ -43,6 +43,7 @@ import {
   NationalIdentificationModule,
   ActorImagesModule,
   ActorsModule,
+  SocialsModule,
 } from '@okampus/api/bll';
 import { Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -218,6 +219,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     TeamsModule,
     ActionsModule,
     FollowsModule,
+    SocialsModule,
     // InterestsModule,
     // MetricsModule,
     // ReactionsModule,

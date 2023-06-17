@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneBotInfoArgsType,
+  InsertBotInfoArgsType,
   UpdateByPkBotInfoArgsType,
+  UpdateBotInfoArgsType,
   FindBotInfoArgsType,
   FindByPkBotInfoArgsType,
   AggregateBotInfoArgsType,
 } from './bot-infos.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('BotInfoMutationResponse')
+export class BotInfosMutationResolver {
+  constructor(private readonly botInfosService: BotInfosService) {}
+
+  @Mutation()
+  async insertBotInfo(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertBotInfoArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.botInfosService.insertBotInfo(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateBotInfoMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateBotInfoArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.botInfosService.updateBotInfoMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('BotInfo')
 export class BotInfosQueryResolver {

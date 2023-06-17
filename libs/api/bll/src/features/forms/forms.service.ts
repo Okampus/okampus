@@ -24,24 +24,22 @@ export class FormsService extends RequestContext {
     super();
   }
 
-  async checkPermsCreate(props: ValueTypes['FormInsertInput']) {
+  checkPermsCreate(props: ValueTypes['FormInsertInput']) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  async checkPermsDelete(id: string) {
-    const form = await this.formRepository.findOneOrFail(id);
+  checkPermsDelete(form: Form) {
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
-
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
     // Custom logic
     return false;
   }
 
-  async checkPermsUpdate(props: ValueTypes['FormSetInput'], form: Form) {
+  checkPermsUpdate(props: ValueTypes['FormSetInput'], form: Form) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
@@ -53,7 +51,7 @@ export class FormsService extends RequestContext {
     return form.createdBy?.id === this.requester().id;
   }
 
-  async checkPropsConstraints(props: ValueTypes['FormSetInput']) {
+  checkPropsConstraints(props: ValueTypes['FormSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
     props.tenantId = this.tenant().id;
@@ -62,7 +60,7 @@ export class FormsService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: ValueTypes['FormInsertInput']) {
+  checkCreateRelationships(props: ValueTypes['FormInsertInput']) {
     // Custom logic
     return true;
   }
@@ -72,13 +70,13 @@ export class FormsService extends RequestContext {
     object: ValueTypes['FormInsertInput'],
     onConflict?: ValueTypes['FormOnConflict']
   ) {
-    const canCreate = await this.checkPermsCreate(object);
+    const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
-    const arePropsValid = await this.checkPropsConstraints(object);
+    const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -110,6 +108,64 @@ export class FormsService extends RequestContext {
     return data.formByPk;
   }
 
+  async insertForm(
+    selectionSet: string[],
+    objects: Array<ValueTypes['FormInsertInput']>,
+    onConflict?: ValueTypes['FormOnConflict']
+  ) {
+    for (const object of objects) {
+      const canCreate = await this.checkPermsCreate(object);
+      if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
+
+      const arePropsValid = await this.checkPropsConstraints(object);
+      if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+      const areRelationshipsValid = this.checkCreateRelationships(object);
+      if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
+    }
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    const data = await this.hasuraService.insert('insertForm', selectionSet, objects, onConflict);
+
+    for (const inserted of data.insertForm.returning) {
+      const form = await this.formRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Form, form);
+    }
+
+    // Custom logic
+    return data.insertForm;
+  }
+
+  async updateFormMany(selectionSet: string[], updates: Array<ValueTypes['FormUpdates']>) {
+    const areWheresCorrect = this.hasuraService.checkUpdates(updates);
+    if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
+
+    const forms = await this.formRepository.findByIds(updates.map((update) => update.where.id._eq));
+    for (const update of updates) {
+      const form = forms.find((form) => form.id === update.where.id._eq);
+      if (!form) throw new NotFoundException(`Form (${update.where.id._eq}) was not found.`);
+
+      const canUpdate = this.checkPermsUpdate(update._set, form);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${update.where.id._eq}).`);
+
+      const arePropsValid = this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }
+
+    const data = await this.hasuraService.updateMany('updateFormMany', selectionSet, updates);
+
+    await Promise.all(
+      forms.map(async (form) => {
+        const update = updates.find((update) => update.where.id._eq === form.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Form, form, update._set);
+      })
+    );
+
+    // Custom logic
+    return data.updateFormMany;
+  }
+
   async updateFormByPk(
     selectionSet: string[],
     pkColumns: ValueTypes['FormPkColumnsInput'],
@@ -117,11 +173,11 @@ export class FormsService extends RequestContext {
   ) {
     const form = await this.formRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = await this.checkPermsUpdate(_set, form);
+    const canUpdate = this.checkPermsUpdate(_set, form);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Form (${pkColumns.id}).`);
 
-    const arePropsValid = await this.checkPropsConstraints(_set);
-    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, _set);
 
@@ -132,7 +188,9 @@ export class FormsService extends RequestContext {
   }
 
   async deleteFormByPk(selectionSet: string[], pkColumns: ValueTypes['FormPkColumnsInput']) {
-    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    const form = await this.formRepository.findOneOrFail(pkColumns.id);
+
+    const canDelete = this.checkPermsDelete(form);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${pkColumns.id}).`);
 
     const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, {

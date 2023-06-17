@@ -123,27 +123,26 @@ export class HasuraService extends RequestContext {
 
     this.logger.log(`Request - ${JSON.stringify(operation)}`);
     const response = await this.axiosInstance.request({ data: { query: operation } });
+    this.logger.log(`Response - ${JSON.stringify(response.data)}`);
 
     if (response.data.errors) throw new BadRequestException(response.data.errors);
-    // this.logger.log(`Response - ${JSON.stringify(response.data)}`);
     return response.data.data;
   }
 
-  async insert(queryName: string, selectionSet: string[], objects: Array<Obj>, onConflict?: Obj, insertOne?: boolean) {
-    const selection = insertOne ? selectionSet.map((field) => `returning.${field}`) : selectionSet;
-    const query = buildOperation('mutation', queryName, selection, { objects, onConflict });
-    const data = await this.makeOperation(query);
-    return data;
-  }
-
-  async insertOne(queryName: string, selectionSet: string[], objects: Obj, onConflict?: Obj) {
+  async insert(queryName: string, selectionSet: string[], objects: Array<Obj>, onConflict?: Obj) {
     const query = buildOperation('mutation', queryName, selectionSet, { objects, onConflict });
     const data = await this.makeOperation(query);
     return data;
   }
 
-  async update(queryName: string, selectionSet: string[], where: Obj, _set: Obj) {
-    const query = buildOperation('mutation', queryName, selectionSet, { where, _set });
+  async insertOne(queryName: string, selectionSet: string[], object: Obj, onConflict?: Obj) {
+    const query = buildOperation('mutation', queryName, selectionSet, { object, onConflict });
+    const data = await this.makeOperation(query);
+    return data;
+  }
+
+  async updateMany(queryName: string, selectionSet: string[], updates: Obj[]) {
+    const query = buildOperation('mutation', queryName, selectionSet, { updates });
     const data = await this.makeOperation(query);
     return data;
   }
@@ -211,6 +210,22 @@ export class HasuraService extends RequestContext {
   checkForbiddenFields(props: Record<string, unknown>) {
     for (const key of forbiddenFields)
       if (key in props && props[key]) throw new BadRequestException(`Forbidden field in mutation: ${key}`);
+  }
+
+  checkUpdates(
+    updates: Array<{ where: { id?: { _eq?: string | null } | null }; _set?: Record<string, unknown> | null }>
+  ): updates is Array<{ where: { id: { _eq: string } }; _set: Record<string, unknown> }> {
+    return updates.every(
+      (update) =>
+        update.where.id &&
+        Object.keys(update.where).length === 1 &&
+        update.where.id._eq &&
+        Object.keys(update.where.id).length === 1 &&
+        typeof update.where.id._eq === 'string' &&
+        update._set &&
+        Object.keys(update).length === 2 &&
+        Object.keys(update._set).length > 0
+    );
   }
 
   applyData<T>(props: T, defaultProps: Record<string, unknown> = {}, overwrite: Record<string, unknown> = {}) {

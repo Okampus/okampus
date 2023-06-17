@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneTenantArgsType,
+  InsertTenantArgsType,
   UpdateByPkTenantArgsType,
+  UpdateTenantArgsType,
   FindTenantArgsType,
   FindByPkTenantArgsType,
   AggregateTenantArgsType,
 } from './tenants.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('TenantMutationResponse')
+export class TenantsMutationResolver {
+  constructor(private readonly tenantsService: TenantsService) {}
+
+  @Mutation()
+  async insertTenant(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertTenantArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tenantsService.insertTenant(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateTenantMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateTenantArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tenantsService.updateTenantMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Tenant')
 export class TenantsQueryResolver {

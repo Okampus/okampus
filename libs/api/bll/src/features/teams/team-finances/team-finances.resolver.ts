@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneTeamFinanceArgsType,
+  InsertTeamFinanceArgsType,
   UpdateByPkTeamFinanceArgsType,
+  UpdateTeamFinanceArgsType,
   FindTeamFinanceArgsType,
   FindByPkTeamFinanceArgsType,
   AggregateTeamFinanceArgsType,
 } from './team-finances.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('TeamFinanceMutationResponse')
+export class TeamFinancesMutationResolver {
+  constructor(private readonly teamFinancesService: TeamFinancesService) {}
+
+  @Mutation()
+  async insertTeamFinance(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertTeamFinanceArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamFinancesService.insertTeamFinance(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateTeamFinanceMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateTeamFinanceArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamFinancesService.updateTeamFinanceMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('TeamFinance')
 export class TeamFinancesQueryResolver {

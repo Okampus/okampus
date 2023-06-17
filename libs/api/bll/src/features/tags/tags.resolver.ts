@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneTagArgsType,
+  InsertTagArgsType,
   UpdateByPkTagArgsType,
+  UpdateTagArgsType,
   FindTagArgsType,
   FindByPkTagArgsType,
   AggregateTagArgsType,
 } from './tags.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('TagMutationResponse')
+export class TagsMutationResolver {
+  constructor(private readonly tagsService: TagsService) {}
+
+  @Mutation()
+  async insertTag(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertTagArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tagsService.insertTag(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateTagMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateTagArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tagsService.updateTagMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Tag')
 export class TagsQueryResolver {

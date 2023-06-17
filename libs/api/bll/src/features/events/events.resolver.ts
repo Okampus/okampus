@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneEventArgsType,
+  InsertEventArgsType,
   UpdateByPkEventArgsType,
+  UpdateEventArgsType,
   FindEventArgsType,
   FindByPkEventArgsType,
   AggregateEventArgsType,
 } from './events.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('EventMutationResponse')
+export class EventsMutationResolver {
+  constructor(private readonly eventsService: EventsService) {}
+
+  @Mutation()
+  async insertEvent(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertEventArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventsService.insertEvent(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateEventMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateEventArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventsService.updateEventMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Event')
 export class EventsQueryResolver {

@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneIndividualArgsType,
+  InsertIndividualArgsType,
   UpdateByPkIndividualArgsType,
+  UpdateIndividualArgsType,
   FindIndividualArgsType,
   FindByPkIndividualArgsType,
   AggregateIndividualArgsType,
 } from './individuals.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('IndividualMutationResponse')
+export class IndividualsMutationResolver {
+  constructor(private readonly individualsService: IndividualsService) {}
+
+  @Mutation()
+  async insertIndividual(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertIndividualArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.individualsService.insertIndividual(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateIndividualMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateIndividualArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.individualsService.updateIndividualMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Individual')
 export class IndividualsQueryResolver {

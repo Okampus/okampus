@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneActionArgsType,
+  InsertActionArgsType,
   UpdateByPkActionArgsType,
+  UpdateActionArgsType,
   FindActionArgsType,
   FindByPkActionArgsType,
   AggregateActionArgsType,
 } from './actions.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('ActionMutationResponse')
+export class ActionsMutationResolver {
+  constructor(private readonly actionsService: ActionsService) {}
+
+  @Mutation()
+  async insertAction(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertActionArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.actionsService.insertAction(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateActionMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateActionArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.actionsService.updateActionMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Action')
 export class ActionsQueryResolver {

@@ -24,24 +24,22 @@ export class ActorsService extends RequestContext {
     super();
   }
 
-  async checkPermsCreate(props: ValueTypes['ActorInsertInput']) {
+  checkPermsCreate(props: ValueTypes['ActorInsertInput']) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  async checkPermsDelete(id: string) {
-    const actor = await this.actorRepository.findOneOrFail(id);
+  checkPermsDelete(actor: Actor) {
     if (actor.deletedAt) throw new NotFoundException(`Actor was deleted on ${actor.deletedAt}.`);
-
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
     // Custom logic
     return false;
   }
 
-  async checkPermsUpdate(props: ValueTypes['ActorSetInput'], actor: Actor) {
+  checkPermsUpdate(props: ValueTypes['ActorSetInput'], actor: Actor) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (actor.deletedAt) throw new NotFoundException(`Actor was deleted on ${actor.deletedAt}.`);
@@ -53,7 +51,7 @@ export class ActorsService extends RequestContext {
     return actor.createdBy?.id === this.requester().id;
   }
 
-  async checkPropsConstraints(props: ValueTypes['ActorSetInput']) {
+  checkPropsConstraints(props: ValueTypes['ActorSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
     props.tenantId = this.tenant().id;
@@ -62,7 +60,7 @@ export class ActorsService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: ValueTypes['ActorInsertInput']) {
+  checkCreateRelationships(props: ValueTypes['ActorInsertInput']) {
     // Custom logic
     return true;
   }
@@ -72,13 +70,13 @@ export class ActorsService extends RequestContext {
     object: ValueTypes['ActorInsertInput'],
     onConflict?: ValueTypes['ActorOnConflict']
   ) {
-    const canCreate = await this.checkPermsCreate(object);
+    const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
 
-    const arePropsValid = await this.checkPropsConstraints(object);
+    const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -110,6 +108,64 @@ export class ActorsService extends RequestContext {
     return data.actorByPk;
   }
 
+  async insertActor(
+    selectionSet: string[],
+    objects: Array<ValueTypes['ActorInsertInput']>,
+    onConflict?: ValueTypes['ActorOnConflict']
+  ) {
+    for (const object of objects) {
+      const canCreate = await this.checkPermsCreate(object);
+      if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
+
+      const arePropsValid = await this.checkPropsConstraints(object);
+      if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+      const areRelationshipsValid = this.checkCreateRelationships(object);
+      if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
+    }
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    const data = await this.hasuraService.insert('insertActor', selectionSet, objects, onConflict);
+
+    for (const inserted of data.insertActor.returning) {
+      const actor = await this.actorRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.Actor, actor);
+    }
+
+    // Custom logic
+    return data.insertActor;
+  }
+
+  async updateActorMany(selectionSet: string[], updates: Array<ValueTypes['ActorUpdates']>) {
+    const areWheresCorrect = this.hasuraService.checkUpdates(updates);
+    if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
+
+    const actors = await this.actorRepository.findByIds(updates.map((update) => update.where.id._eq));
+    for (const update of updates) {
+      const actor = actors.find((actor) => actor.id === update.where.id._eq);
+      if (!actor) throw new NotFoundException(`Actor (${update.where.id._eq}) was not found.`);
+
+      const canUpdate = this.checkPermsUpdate(update._set, actor);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Actor (${update.where.id._eq}).`);
+
+      const arePropsValid = this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }
+
+    const data = await this.hasuraService.updateMany('updateActorMany', selectionSet, updates);
+
+    await Promise.all(
+      actors.map(async (actor) => {
+        const update = updates.find((update) => update.where.id._eq === actor.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Actor, actor, update._set);
+      })
+    );
+
+    // Custom logic
+    return data.updateActorMany;
+  }
+
   async updateActorByPk(
     selectionSet: string[],
     pkColumns: ValueTypes['ActorPkColumnsInput'],
@@ -117,11 +173,11 @@ export class ActorsService extends RequestContext {
   ) {
     const actor = await this.actorRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = await this.checkPermsUpdate(_set, actor);
+    const canUpdate = this.checkPermsUpdate(_set, actor);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Actor (${pkColumns.id}).`);
 
-    const arePropsValid = await this.checkPropsConstraints(_set);
-    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateActorByPk', selectionSet, pkColumns, _set);
 
@@ -132,7 +188,9 @@ export class ActorsService extends RequestContext {
   }
 
   async deleteActorByPk(selectionSet: string[], pkColumns: ValueTypes['ActorPkColumnsInput']) {
-    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    const actor = await this.actorRepository.findOneOrFail(pkColumns.id);
+
+    const canDelete = this.checkPermsDelete(actor);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Actor (${pkColumns.id}).`);
 
     const data = await this.hasuraService.updateByPk('updateActorByPk', selectionSet, pkColumns, {

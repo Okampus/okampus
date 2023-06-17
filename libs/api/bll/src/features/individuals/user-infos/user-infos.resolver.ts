@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneUserInfoArgsType,
+  InsertUserInfoArgsType,
   UpdateByPkUserInfoArgsType,
+  UpdateUserInfoArgsType,
   FindUserInfoArgsType,
   FindByPkUserInfoArgsType,
   AggregateUserInfoArgsType,
 } from './user-infos.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('UserInfoMutationResponse')
+export class UserInfosMutationResolver {
+  constructor(private readonly userInfosService: UserInfosService) {}
+
+  @Mutation()
+  async insertUserInfo(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertUserInfoArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.userInfosService.insertUserInfo(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateUserInfoMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateUserInfoArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.userInfosService.updateUserInfoMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('UserInfo')
 export class UserInfosQueryResolver {

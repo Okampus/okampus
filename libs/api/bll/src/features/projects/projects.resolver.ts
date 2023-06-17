@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneProjectArgsType,
+  InsertProjectArgsType,
   UpdateByPkProjectArgsType,
+  UpdateProjectArgsType,
   FindProjectArgsType,
   FindByPkProjectArgsType,
   AggregateProjectArgsType,
 } from './projects.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('ProjectMutationResponse')
+export class ProjectsMutationResolver {
+  constructor(private readonly projectsService: ProjectsService) {}
+
+  @Mutation()
+  async insertProject(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertProjectArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.projectsService.insertProject(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateProjectMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateProjectArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.projectsService.updateProjectMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Project')
 export class ProjectsQueryResolver {

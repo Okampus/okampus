@@ -24,24 +24,22 @@ export class BotInfosService extends RequestContext {
     super();
   }
 
-  async checkPermsCreate(props: ValueTypes['BotInfoInsertInput']) {
+  checkPermsCreate(props: ValueTypes['BotInfoInsertInput']) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
     return true;
   }
 
-  async checkPermsDelete(id: string) {
-    const botInfo = await this.botInfoRepository.findOneOrFail(id);
+  checkPermsDelete(botInfo: BotInfo) {
     if (botInfo.deletedAt) throw new NotFoundException(`BotInfo was deleted on ${botInfo.deletedAt}.`);
-
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
     // Custom logic
     return false;
   }
 
-  async checkPermsUpdate(props: ValueTypes['BotInfoSetInput'], botInfo: BotInfo) {
+  checkPermsUpdate(props: ValueTypes['BotInfoSetInput'], botInfo: BotInfo) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (botInfo.deletedAt) throw new NotFoundException(`BotInfo was deleted on ${botInfo.deletedAt}.`);
@@ -53,7 +51,7 @@ export class BotInfosService extends RequestContext {
     return botInfo.createdBy?.id === this.requester().id;
   }
 
-  async checkPropsConstraints(props: ValueTypes['BotInfoSetInput']) {
+  checkPropsConstraints(props: ValueTypes['BotInfoSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
     props.tenantId = this.tenant().id;
@@ -62,7 +60,7 @@ export class BotInfosService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: ValueTypes['BotInfoInsertInput']) {
+  checkCreateRelationships(props: ValueTypes['BotInfoInsertInput']) {
     // Custom logic
     return true;
   }
@@ -72,13 +70,13 @@ export class BotInfosService extends RequestContext {
     object: ValueTypes['BotInfoInsertInput'],
     onConflict?: ValueTypes['BotInfoOnConflict']
   ) {
-    const canCreate = await this.checkPermsCreate(object);
+    const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert BotInfo.');
 
-    const arePropsValid = await this.checkPropsConstraints(object);
+    const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -110,6 +108,64 @@ export class BotInfosService extends RequestContext {
     return data.botInfoByPk;
   }
 
+  async insertBotInfo(
+    selectionSet: string[],
+    objects: Array<ValueTypes['BotInfoInsertInput']>,
+    onConflict?: ValueTypes['BotInfoOnConflict']
+  ) {
+    for (const object of objects) {
+      const canCreate = await this.checkPermsCreate(object);
+      if (!canCreate) throw new ForbiddenException('You are not allowed to insert BotInfo.');
+
+      const arePropsValid = await this.checkPropsConstraints(object);
+      if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+
+      const areRelationshipsValid = this.checkCreateRelationships(object);
+      if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
+    }
+
+    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    const data = await this.hasuraService.insert('insertBotInfo', selectionSet, objects, onConflict);
+
+    for (const inserted of data.insertBotInfo.returning) {
+      const botInfo = await this.botInfoRepository.findOneOrFail(inserted.id);
+      await this.logsService.createLog(EntityName.BotInfo, botInfo);
+    }
+
+    // Custom logic
+    return data.insertBotInfo;
+  }
+
+  async updateBotInfoMany(selectionSet: string[], updates: Array<ValueTypes['BotInfoUpdates']>) {
+    const areWheresCorrect = this.hasuraService.checkUpdates(updates);
+    if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
+
+    const botInfos = await this.botInfoRepository.findByIds(updates.map((update) => update.where.id._eq));
+    for (const update of updates) {
+      const botInfo = botInfos.find((botInfo) => botInfo.id === update.where.id._eq);
+      if (!botInfo) throw new NotFoundException(`BotInfo (${update.where.id._eq}) was not found.`);
+
+      const canUpdate = this.checkPermsUpdate(update._set, botInfo);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update BotInfo (${update.where.id._eq}).`);
+
+      const arePropsValid = this.checkPropsConstraints(update._set);
+      if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
+    }
+
+    const data = await this.hasuraService.updateMany('updateBotInfoMany', selectionSet, updates);
+
+    await Promise.all(
+      botInfos.map(async (botInfo) => {
+        const update = updates.find((update) => update.where.id._eq === botInfo.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.BotInfo, botInfo, update._set);
+      })
+    );
+
+    // Custom logic
+    return data.updateBotInfoMany;
+  }
+
   async updateBotInfoByPk(
     selectionSet: string[],
     pkColumns: ValueTypes['BotInfoPkColumnsInput'],
@@ -117,11 +173,11 @@ export class BotInfosService extends RequestContext {
   ) {
     const botInfo = await this.botInfoRepository.findOneOrFail(pkColumns.id);
 
-    const canUpdate = await this.checkPermsUpdate(_set, botInfo);
+    const canUpdate = this.checkPermsUpdate(_set, botInfo);
     if (!canUpdate) throw new ForbiddenException(`You are not allowed to update BotInfo (${pkColumns.id}).`);
 
-    const arePropsValid = await this.checkPropsConstraints(_set);
-    if (!arePropsValid) throw new BadRequestException('Props are not valid.');
+    const arePropsValid = this.checkPropsConstraints(_set);
+    if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(_set)}.`);
 
     const data = await this.hasuraService.updateByPk('updateBotInfoByPk', selectionSet, pkColumns, _set);
 
@@ -132,7 +188,9 @@ export class BotInfosService extends RequestContext {
   }
 
   async deleteBotInfoByPk(selectionSet: string[], pkColumns: ValueTypes['BotInfoPkColumnsInput']) {
-    const canDelete = await this.checkPermsDelete(pkColumns.id);
+    const botInfo = await this.botInfoRepository.findOneOrFail(pkColumns.id);
+
+    const canDelete = this.checkPermsDelete(botInfo);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BotInfo (${pkColumns.id}).`);
 
     const data = await this.hasuraService.updateByPk('updateBotInfoByPk', selectionSet, pkColumns, {

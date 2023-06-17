@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneEventAttendanceArgsType,
+  InsertEventAttendanceArgsType,
   UpdateByPkEventAttendanceArgsType,
+  UpdateEventAttendanceArgsType,
   FindEventAttendanceArgsType,
   FindByPkEventAttendanceArgsType,
   AggregateEventAttendanceArgsType,
 } from './event-attendances.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('EventAttendanceMutationResponse')
+export class EventAttendancesMutationResolver {
+  constructor(private readonly eventAttendancesService: EventAttendancesService) {}
+
+  @Mutation()
+  async insertEventAttendance(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertEventAttendanceArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventAttendancesService.insertEventAttendance(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateEventAttendanceMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateEventAttendanceArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventAttendancesService.updateEventAttendanceMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('EventAttendance')
 export class EventAttendancesQueryResolver {

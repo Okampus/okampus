@@ -1,5 +1,6 @@
 import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
 import { 
+  <%= pluralClassName %>MutationResolver,
   <%= pluralClassName %>QueryAggregateResolver, 
   <%= pluralClassName %>QueryResolver
 } from './<%= fileName %>.resolver';
@@ -12,8 +13,9 @@ import { <%= className %> } from '@okampus/api/dal';
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([<%= className %>])],
   providers: [
+    <%= pluralClassName %>MutationResolver,
     <%= pluralClassName %>QueryResolver, 
-    <%= pluralClassName %>QueryAggregateResolver, 
+    <%= pluralClassName %>QueryAggregateResolver,
     <%= pluralClassName %>Service
   ],
   exports: [<%= pluralClassName %>Service],

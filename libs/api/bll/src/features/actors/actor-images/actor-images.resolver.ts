@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneActorImageArgsType,
+  InsertActorImageArgsType,
   UpdateByPkActorImageArgsType,
+  UpdateActorImageArgsType,
   FindActorImageArgsType,
   FindByPkActorImageArgsType,
   AggregateActorImageArgsType,
 } from './actor-images.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('ActorImageMutationResponse')
+export class ActorImagesMutationResolver {
+  constructor(private readonly actorImagesService: ActorImagesService) {}
+
+  @Mutation()
+  async insertActorImage(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertActorImageArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.actorImagesService.insertActorImage(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateActorImageMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateActorImageArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.actorImagesService.updateActorImageMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('ActorImage')
 export class ActorImagesQueryResolver {

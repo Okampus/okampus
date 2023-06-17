@@ -1,5 +1,9 @@
 import { TeamFinancesService } from './team-finances.service';
-import { TeamFinancesQueryAggregateResolver, TeamFinancesQueryResolver } from './team-finances.resolver';
+import {
+  TeamFinancesMutationResolver,
+  TeamFinancesQueryAggregateResolver,
+  TeamFinancesQueryResolver,
+} from './team-finances.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -8,7 +12,12 @@ import { TeamFinance } from '@okampus/api/dal';
 
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([TeamFinance])],
-  providers: [TeamFinancesQueryResolver, TeamFinancesQueryAggregateResolver, TeamFinancesService],
+  providers: [
+    TeamFinancesMutationResolver,
+    TeamFinancesQueryResolver,
+    TeamFinancesQueryAggregateResolver,
+    TeamFinancesService,
+  ],
   exports: [TeamFinancesService],
 })
 export class TeamFinancesModule {}

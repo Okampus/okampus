@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneFormArgsType,
+  InsertFormArgsType,
   UpdateByPkFormArgsType,
+  UpdateFormArgsType,
   FindFormArgsType,
   FindByPkFormArgsType,
   AggregateFormArgsType,
 } from './forms.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('FormMutationResponse')
+export class FormsMutationResolver {
+  constructor(private readonly formsService: FormsService) {}
+
+  @Mutation()
+  async insertForm(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertFormArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.formsService.insertForm(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateFormMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateFormArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.formsService.updateFormMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('Form')
 export class FormsQueryResolver {

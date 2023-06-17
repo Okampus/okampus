@@ -5,13 +5,40 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   InsertOneEventApprovalStepArgsType,
+  InsertEventApprovalStepArgsType,
   UpdateByPkEventApprovalStepArgsType,
+  UpdateEventApprovalStepArgsType,
   FindEventApprovalStepArgsType,
   FindByPkEventApprovalStepArgsType,
   AggregateEventApprovalStepArgsType,
 } from './event-approval-steps.types';
 
 import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('EventApprovalStepMutationResponse')
+export class EventApprovalStepsMutationResolver {
+  constructor(private readonly eventApprovalStepsService: EventApprovalStepsService) {}
+
+  @Mutation()
+  async insertEventApprovalStep(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<InsertEventApprovalStepArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventApprovalStepsService.insertEventApprovalStep(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async updateEventApprovalStepMany(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: UpdateEventApprovalStepArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventApprovalStepsService.updateEventApprovalStepMany(getSelectionSet(info), updates);
+  }
+}
 
 @Resolver('EventApprovalStep')
 export class EventApprovalStepsQueryResolver {
