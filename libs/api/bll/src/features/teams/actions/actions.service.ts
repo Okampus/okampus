@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActionRepository, Action } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActionsService extends RequestContext {
+  private readonly logger = new Logger(ActionsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class ActionsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertAction', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertAction.returning) {
@@ -185,6 +187,31 @@ export class ActionsService extends RequestContext {
 
     // Custom logic
     return data.updateActionByPk;
+  }
+
+  async deleteAction(selectionSet: string[], where: ValueTypes['ActionBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const actions = await this.actionRepository.findByIds(where.id._in);
+    for (const action of actions) {
+      const canDelete = this.checkPermsDelete(action);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateAction', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      actions.map(async (action) => {
+        await this.logsService.deleteLog(EntityName.Action, action.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateAction;
   }
 
   async deleteActionByPk(selectionSet: string[], pkColumns: ValueTypes['ActionPkColumnsInput']) {

@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventJoinRepository, EventJoin } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventJoinsService extends RequestContext {
+  private readonly logger = new Logger(EventJoinsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class EventJoinsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertEventJoin', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertEventJoin.returning) {
@@ -185,6 +187,31 @@ export class EventJoinsService extends RequestContext {
 
     // Custom logic
     return data.updateEventJoinByPk;
+  }
+
+  async deleteEventJoin(selectionSet: string[], where: ValueTypes['EventJoinBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const eventJoins = await this.eventJoinRepository.findByIds(where.id._in);
+    for (const eventJoin of eventJoins) {
+      const canDelete = this.checkPermsDelete(eventJoin);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${eventJoin.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateEventJoin', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      eventJoins.map(async (eventJoin) => {
+        await this.logsService.deleteLog(EntityName.EventJoin, eventJoin.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateEventJoin;
   }
 
   async deleteEventJoinByPk(selectionSet: string[], pkColumns: ValueTypes['EventJoinPkColumnsInput']) {

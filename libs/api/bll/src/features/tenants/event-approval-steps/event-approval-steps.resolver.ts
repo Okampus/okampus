@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteEventApprovalStepArgsType,
   InsertOneEventApprovalStepArgsType,
   InsertEventApprovalStepArgsType,
   UpdateByPkEventApprovalStepArgsType,
@@ -38,6 +39,16 @@ export class EventApprovalStepsMutationResolver {
     );
     return await this.eventApprovalStepsService.updateEventApprovalStepMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteEventApprovalStep(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteEventApprovalStepArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.eventApprovalStepsService.deleteEventApprovalStep(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('EventApprovalStep')
@@ -68,12 +79,7 @@ export class EventApprovalStepsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.eventApprovalStepsService.insertEventApprovalStepOne(
-      getSelectionSet(info),
-      object,
-      onConflict
-    );
-    return data.returning[0];
+    return await this.eventApprovalStepsService.insertEventApprovalStepOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

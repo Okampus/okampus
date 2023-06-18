@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TenantRepository, Tenant } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TenantsService extends RequestContext {
+  private readonly logger = new Logger(TenantsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -122,7 +124,7 @@ export class TenantsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertTenant', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTenant.returning) {
@@ -183,6 +185,31 @@ export class TenantsService extends RequestContext {
 
     // Custom logic
     return data.updateTenantByPk;
+  }
+
+  async deleteTenant(selectionSet: string[], where: ValueTypes['TenantBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const tenants = await this.tenantRepository.findByIds(where.id._in);
+    for (const tenant of tenants) {
+      const canDelete = this.checkPermsDelete(tenant);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tenant (${tenant.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateTenant', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      tenants.map(async (tenant) => {
+        await this.logsService.deleteLog(EntityName.Tenant, tenant.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateTenant;
   }
 
   async deleteTenantByPk(selectionSet: string[], pkColumns: ValueTypes['TenantPkColumnsInput']) {

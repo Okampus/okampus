@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamFinanceRepository, TeamFinance } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamFinancesService extends RequestContext {
+  private readonly logger = new Logger(TeamFinancesService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class TeamFinancesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertTeamFinance', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTeamFinance.returning) {
@@ -186,6 +188,31 @@ export class TeamFinancesService extends RequestContext {
 
     // Custom logic
     return data.updateTeamFinanceByPk;
+  }
+
+  async deleteTeamFinance(selectionSet: string[], where: ValueTypes['TeamFinanceBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const teamFinances = await this.teamFinanceRepository.findByIds(where.id._in);
+    for (const teamFinance of teamFinances) {
+      const canDelete = this.checkPermsDelete(teamFinance);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamFinance (${teamFinance.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateTeamFinance', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      teamFinances.map(async (teamFinance) => {
+        await this.logsService.deleteLog(EntityName.TeamFinance, teamFinance.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateTeamFinance;
   }
 
   async deleteTeamFinanceByPk(selectionSet: string[], pkColumns: ValueTypes['TeamFinancePkColumnsInput']) {

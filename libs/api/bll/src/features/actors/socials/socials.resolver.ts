@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteSocialArgsType,
   InsertOneSocialArgsType,
   InsertSocialArgsType,
   UpdateByPkSocialArgsType,
@@ -38,6 +39,16 @@ export class SocialsMutationResolver {
     );
     return await this.socialsService.updateSocialMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteSocial(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteSocialArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.socialsService.deleteSocial(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Social')
@@ -61,8 +72,7 @@ export class SocialsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.socialsService.insertSocialOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.socialsService.insertSocialOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

@@ -15,6 +15,10 @@ export type UpdateEventAttendanceArgsType = {
   _set: ValueTypes['EventAttendanceSetInput'];
 };
 
+export type DeleteEventAttendanceArgsType = {
+  where: ValueTypes['EventAttendanceBoolExp'];
+};
+
 export type UpdateByPkEventAttendanceArgsType = {
   pkColumns: ValueTypes['EventAttendancePkColumnsInput'];
   _set: ValueTypes['EventAttendanceSetInput'];

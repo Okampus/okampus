@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TagRepository, Tag } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TagsService extends RequestContext {
+  private readonly logger = new Logger(TagsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class TagsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertTag', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTag.returning) {
@@ -185,6 +187,31 @@ export class TagsService extends RequestContext {
 
     // Custom logic
     return data.updateTagByPk;
+  }
+
+  async deleteTag(selectionSet: string[], where: ValueTypes['TagBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const tags = await this.tagRepository.findByIds(where.id._in);
+    for (const tag of tags) {
+      const canDelete = this.checkPermsDelete(tag);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Tag (${tag.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateTag', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      tags.map(async (tag) => {
+        await this.logsService.deleteLog(EntityName.Tag, tag.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateTag;
   }
 
   async deleteTagByPk(selectionSet: string[], pkColumns: ValueTypes['TagPkColumnsInput']) {

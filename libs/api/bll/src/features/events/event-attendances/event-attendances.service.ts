@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventAttendanceRepository, EventAttendance } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventAttendancesService extends RequestContext {
+  private readonly logger = new Logger(EventAttendancesService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -135,7 +137,7 @@ export class EventAttendancesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertEventAttendance', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertEventAttendance.returning) {
@@ -199,6 +201,32 @@ export class EventAttendancesService extends RequestContext {
 
     // Custom logic
     return data.updateEventAttendanceByPk;
+  }
+
+  async deleteEventAttendance(selectionSet: string[], where: ValueTypes['EventAttendanceBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const eventAttendances = await this.eventAttendanceRepository.findByIds(where.id._in);
+    for (const eventAttendance of eventAttendances) {
+      const canDelete = this.checkPermsDelete(eventAttendance);
+      if (!canDelete)
+        throw new ForbiddenException(`You are not allowed to delete EventAttendance (${eventAttendance.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateEventAttendance', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      eventAttendances.map(async (eventAttendance) => {
+        await this.logsService.deleteLog(EntityName.EventAttendance, eventAttendance.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateEventAttendance;
   }
 
   async deleteEventAttendanceByPk(selectionSet: string[], pkColumns: ValueTypes['EventAttendancePkColumnsInput']) {

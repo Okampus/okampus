@@ -129,7 +129,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insert<%= className %>', selectionSet, objects, onConflict);
 
     for (const inserted of data.insert<%= className %>.returning) {
@@ -191,6 +191,29 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
     // Custom logic
     return data.update<%= className %>ByPk;
+  }
+
+  async delete<%= className %>(
+    selectionSet: string[],
+    where: ValueTypes['<%= className %>BoolExp'],
+  ) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const <%= pluralPropertyName %> = await this.<%= propertyName %>Repository.findByIds(where.id._in);
+    for (const <%= propertyName %> of <%= pluralPropertyName %>) {
+      const canDelete = this.checkPermsDelete(<%= propertyName %>);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${<%= propertyName %>.id}).`);
+    }
+  
+    const data = await this.hasuraService.update('update<%= className %>', selectionSet, where, { deletedAt: new Date().toISOString() });
+
+    await Promise.all(<%= pluralPropertyName %>.map(async (<%= propertyName %>) => {
+      await this.logsService.deleteLog(EntityName.<%= className %>, <%= propertyName %>.id);
+    }));
+
+    // Custom logic
+    return data.update<%= className %>;
   }
 
   async delete<%= className %>ByPk(

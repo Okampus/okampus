@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventRepository, Event } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventsService extends RequestContext {
+  private readonly logger = new Logger(EventsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class EventsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertEvent', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertEvent.returning) {
@@ -185,6 +187,31 @@ export class EventsService extends RequestContext {
 
     // Custom logic
     return data.updateEventByPk;
+  }
+
+  async deleteEvent(selectionSet: string[], where: ValueTypes['EventBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const events = await this.eventRepository.findByIds(where.id._in);
+    for (const event of events) {
+      const canDelete = this.checkPermsDelete(event);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${event.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateEvent', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      events.map(async (event) => {
+        await this.logsService.deleteLog(EntityName.Event, event.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateEvent;
   }
 
   async deleteEventByPk(selectionSet: string[], pkColumns: ValueTypes['EventPkColumnsInput']) {

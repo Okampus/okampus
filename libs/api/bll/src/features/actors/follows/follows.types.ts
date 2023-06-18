@@ -15,6 +15,10 @@ export type UpdateFollowArgsType = {
   _set: ValueTypes['FollowSetInput'];
 };
 
+export type DeleteFollowArgsType = {
+  where: ValueTypes['FollowBoolExp'];
+};
+
 export type UpdateByPkFollowArgsType = {
   pkColumns: ValueTypes['FollowPkColumnsInput'];
   _set: ValueTypes['FollowSetInput'];

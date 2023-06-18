@@ -15,6 +15,10 @@ export type UpdateEventApprovalStepArgsType = {
   _set: ValueTypes['EventApprovalStepSetInput'];
 };
 
+export type DeleteEventApprovalStepArgsType = {
+  where: ValueTypes['EventApprovalStepBoolExp'];
+};
+
 export type UpdateByPkEventApprovalStepArgsType = {
   pkColumns: ValueTypes['EventApprovalStepPkColumnsInput'];
   _set: ValueTypes['EventApprovalStepSetInput'];

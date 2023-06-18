@@ -15,6 +15,10 @@ export type UpdateTagArgsType = {
   _set: ValueTypes['TagSetInput'];
 };
 
+export type DeleteTagArgsType = {
+  where: ValueTypes['TagBoolExp'];
+};
+
 export type UpdateByPkTagArgsType = {
   pkColumns: ValueTypes['TagPkColumnsInput'];
   _set: ValueTypes['TagSetInput'];

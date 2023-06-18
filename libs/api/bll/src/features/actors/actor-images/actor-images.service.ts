@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorImageRepository, ActorImage } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActorImagesService extends RequestContext {
+  private readonly logger = new Logger(ActorImagesService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class ActorImagesService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertActorImage', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertActorImage.returning) {
@@ -186,6 +188,31 @@ export class ActorImagesService extends RequestContext {
 
     // Custom logic
     return data.updateActorImageByPk;
+  }
+
+  async deleteActorImage(selectionSet: string[], where: ValueTypes['ActorImageBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const actorImages = await this.actorImageRepository.findByIds(where.id._in);
+    for (const actorImage of actorImages) {
+      const canDelete = this.checkPermsDelete(actorImage);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${actorImage.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateActorImage', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      actorImages.map(async (actorImage) => {
+        await this.logsService.deleteLog(EntityName.ActorImage, actorImage.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateActorImage;
   }
 
   async deleteActorImageByPk(selectionSet: string[], pkColumns: ValueTypes['ActorImagePkColumnsInput']) {

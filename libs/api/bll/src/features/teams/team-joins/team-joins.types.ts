@@ -15,6 +15,10 @@ export type UpdateTeamJoinArgsType = {
   _set: ValueTypes['TeamJoinSetInput'];
 };
 
+export type DeleteTeamJoinArgsType = {
+  where: ValueTypes['TeamJoinBoolExp'];
+};
+
 export type UpdateByPkTeamJoinArgsType = {
   pkColumns: ValueTypes['TeamJoinPkColumnsInput'];
   _set: ValueTypes['TeamJoinSetInput'];

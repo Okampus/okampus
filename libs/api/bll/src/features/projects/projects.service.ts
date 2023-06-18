@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ProjectRepository, Project } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class ProjectsService extends RequestContext {
+  private readonly logger = new Logger(ProjectsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class ProjectsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertProject', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertProject.returning) {
@@ -185,6 +187,31 @@ export class ProjectsService extends RequestContext {
 
     // Custom logic
     return data.updateProjectByPk;
+  }
+
+  async deleteProject(selectionSet: string[], where: ValueTypes['ProjectBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const projects = await this.projectRepository.findByIds(where.id._in);
+    for (const project of projects) {
+      const canDelete = this.checkPermsDelete(project);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Project (${project.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateProject', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      projects.map(async (project) => {
+        await this.logsService.deleteLog(EntityName.Project, project.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateProject;
   }
 
   async deleteProjectByPk(selectionSet: string[], pkColumns: ValueTypes['ProjectPkColumnsInput']) {

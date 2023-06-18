@@ -15,6 +15,10 @@ export type UpdateFormArgsType = {
   _set: ValueTypes['FormSetInput'];
 };
 
+export type DeleteFormArgsType = {
+  where: ValueTypes['FormBoolExp'];
+};
+
 export type UpdateByPkFormArgsType = {
   pkColumns: ValueTypes['FormPkColumnsInput'];
   _set: ValueTypes['FormSetInput'];

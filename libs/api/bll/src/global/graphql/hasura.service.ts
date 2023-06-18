@@ -117,12 +117,9 @@ export class HasuraService extends RequestContext {
   }
 
   async makeOperation(operation: string) {
-    // const headers = {
-    //   'X-Hasura-Role': requestContext.get('individual')?.scopeRole || 'anonymous',
-    // };
-
+    const headers = { 'X-Hasura-Role': 'admin' };
     this.logger.log(`Request - ${JSON.stringify(operation)}`);
-    const response = await this.axiosInstance.request({ data: { query: operation } });
+    const response = await this.axiosInstance.request({ data: { query: operation }, headers });
     this.logger.log(`Response - ${JSON.stringify(response.data)}`);
 
     if (response.data.errors) throw new BadRequestException(response.data.errors);
@@ -137,6 +134,12 @@ export class HasuraService extends RequestContext {
 
   async insertOne(queryName: string, selectionSet: string[], object: Obj, onConflict?: Obj) {
     const query = buildOperation('mutation', queryName, selectionSet, { object, onConflict });
+    const data = await this.makeOperation(query);
+    return data;
+  }
+
+  async update(queryName: string, selectionSet: string[], where: Obj, _set: Obj) {
+    const query = buildOperation('mutation', queryName, selectionSet, { where, _set });
     const data = await this.makeOperation(query);
     return data;
   }
@@ -225,6 +228,17 @@ export class HasuraService extends RequestContext {
         update._set &&
         Object.keys(update).length === 2 &&
         Object.keys(update._set).length > 0
+    );
+  }
+
+  checkDeleteWhere(deleteWhere: { id?: { _in?: string[] | null } | null }): deleteWhere is { id: { _in: string[] } } {
+    return !!(
+      deleteWhere.id &&
+      Object.keys(deleteWhere).length === 1 &&
+      deleteWhere.id._in &&
+      Array.isArray(deleteWhere.id._in) &&
+      deleteWhere.id._in.every((id) => typeof id === 'string') &&
+      Object.keys(deleteWhere.id).length === 1
     );
   }
 

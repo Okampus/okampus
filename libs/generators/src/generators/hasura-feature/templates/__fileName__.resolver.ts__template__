@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  Delete<%= className %>ArgsType,
   InsertOne<%= className %>ArgsType,
   Insert<%= className %>ArgsType,
   UpdateByPk<%= className %>ArgsType,
@@ -38,6 +39,16 @@ export class <%= pluralClassName %>MutationResolver {
     );
     return await this.<%= pluralPropertyName %>Service.update<%= className %>Many(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async delete<%= className %>(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<Delete<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.delete<%= className %>(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('<%= className %>')
@@ -62,8 +73,7 @@ export class <%= pluralClassName %>QueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.<%= pluralPropertyName %>Service.insert<%= className %>One(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.<%= pluralPropertyName %>Service.insert<%= className %>One(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

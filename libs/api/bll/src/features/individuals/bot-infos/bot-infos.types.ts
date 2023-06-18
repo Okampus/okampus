@@ -15,6 +15,10 @@ export type UpdateBotInfoArgsType = {
   _set: ValueTypes['BotInfoSetInput'];
 };
 
+export type DeleteBotInfoArgsType = {
+  where: ValueTypes['BotInfoBoolExp'];
+};
+
 export type UpdateByPkBotInfoArgsType = {
   pkColumns: ValueTypes['BotInfoPkColumnsInput'];
   _set: ValueTypes['BotInfoSetInput'];

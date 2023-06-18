@@ -15,6 +15,10 @@ export type UpdateProjectArgsType = {
   _set: ValueTypes['ProjectSetInput'];
 };
 
+export type DeleteProjectArgsType = {
+  where: ValueTypes['ProjectBoolExp'];
+};
+
 export type UpdateByPkProjectArgsType = {
   pkColumns: ValueTypes['ProjectPkColumnsInput'];
   _set: ValueTypes['ProjectSetInput'];

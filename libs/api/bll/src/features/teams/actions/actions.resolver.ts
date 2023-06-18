@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteActionArgsType,
   InsertOneActionArgsType,
   InsertActionArgsType,
   UpdateByPkActionArgsType,
@@ -38,6 +39,16 @@ export class ActionsMutationResolver {
     );
     return await this.actionsService.updateActionMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteAction(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteActionArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.actionsService.deleteAction(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Action')
@@ -61,8 +72,7 @@ export class ActionsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.actionsService.insertActionOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.actionsService.insertActionOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

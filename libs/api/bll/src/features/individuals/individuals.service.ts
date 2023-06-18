@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { IndividualRepository, Individual } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class IndividualsService extends RequestContext {
+  private readonly logger = new Logger(IndividualsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class IndividualsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertIndividual', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertIndividual.returning) {
@@ -186,6 +188,31 @@ export class IndividualsService extends RequestContext {
 
     // Custom logic
     return data.updateIndividualByPk;
+  }
+
+  async deleteIndividual(selectionSet: string[], where: ValueTypes['IndividualBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const individuals = await this.individualRepository.findByIds(where.id._in);
+    for (const individual of individuals) {
+      const canDelete = this.checkPermsDelete(individual);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Individual (${individual.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateIndividual', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      individuals.map(async (individual) => {
+        await this.logsService.deleteLog(EntityName.Individual, individual.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateIndividual;
   }
 
   async deleteIndividualByPk(selectionSet: string[], pkColumns: ValueTypes['IndividualPkColumnsInput']) {

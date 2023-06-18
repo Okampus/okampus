@@ -15,6 +15,10 @@ export type UpdateTenantArgsType = {
   _set: ValueTypes['TenantSetInput'];
 };
 
+export type DeleteTenantArgsType = {
+  where: ValueTypes['TenantBoolExp'];
+};
+
 export type UpdateByPkTenantArgsType = {
   pkColumns: ValueTypes['TenantPkColumnsInput'];
   _set: ValueTypes['TenantSetInput'];

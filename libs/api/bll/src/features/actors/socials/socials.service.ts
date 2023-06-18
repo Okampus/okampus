@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { SocialRepository, Social } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,7 +15,7 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class SocialsService extends RequestContext {
-  logger = new Logger(SocialsService.name);
+  private readonly logger = new Logger(SocialsService.name);
 
   constructor(
     private readonly em: EntityManager,
@@ -187,6 +187,31 @@ export class SocialsService extends RequestContext {
 
     // Custom logic
     return data.updateSocialByPk;
+  }
+
+  async deleteSocial(selectionSet: string[], where: ValueTypes['SocialBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const socials = await this.socialRepository.findByIds(where.id._in);
+    for (const social of socials) {
+      const canDelete = this.checkPermsDelete(social);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${social.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateSocial', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      socials.map(async (social) => {
+        await this.logsService.deleteLog(EntityName.Social, social.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateSocial;
   }
 
   async deleteSocialByPk(selectionSet: string[], pkColumns: ValueTypes['SocialPkColumnsInput']) {

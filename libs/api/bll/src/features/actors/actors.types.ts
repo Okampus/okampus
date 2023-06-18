@@ -15,6 +15,10 @@ export type UpdateActorArgsType = {
   _set: ValueTypes['ActorSetInput'];
 };
 
+export type DeleteActorArgsType = {
+  where: ValueTypes['ActorBoolExp'];
+};
+
 export type UpdateByPkActorArgsType = {
   pkColumns: ValueTypes['ActorPkColumnsInput'];
   _set: ValueTypes['ActorSetInput'];

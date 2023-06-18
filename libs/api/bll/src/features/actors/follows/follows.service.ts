@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FollowRepository, Follow } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class FollowsService extends RequestContext {
+  private readonly logger = new Logger(FollowsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class FollowsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertFollow', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertFollow.returning) {
@@ -185,6 +187,31 @@ export class FollowsService extends RequestContext {
 
     // Custom logic
     return data.updateFollowByPk;
+  }
+
+  async deleteFollow(selectionSet: string[], where: ValueTypes['FollowBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const follows = await this.followRepository.findByIds(where.id._in);
+    for (const follow of follows) {
+      const canDelete = this.checkPermsDelete(follow);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${follow.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateFollow', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      follows.map(async (follow) => {
+        await this.logsService.deleteLog(EntityName.Follow, follow.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateFollow;
   }
 
   async deleteFollowByPk(selectionSet: string[], pkColumns: ValueTypes['FollowPkColumnsInput']) {

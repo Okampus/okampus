@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteFormArgsType,
   InsertOneFormArgsType,
   InsertFormArgsType,
   UpdateByPkFormArgsType,
@@ -38,6 +39,16 @@ export class FormsMutationResolver {
     );
     return await this.formsService.updateFormMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteForm(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteFormArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.formsService.deleteForm(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Form')
@@ -61,8 +72,7 @@ export class FormsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.formsService.insertFormOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.formsService.insertFormOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

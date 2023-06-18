@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorRepository, Actor } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActorsService extends RequestContext {
+  private readonly logger = new Logger(ActorsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class ActorsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertActor', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertActor.returning) {
@@ -185,6 +187,31 @@ export class ActorsService extends RequestContext {
 
     // Custom logic
     return data.updateActorByPk;
+  }
+
+  async deleteActor(selectionSet: string[], where: ValueTypes['ActorBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const actors = await this.actorRepository.findByIds(where.id._in);
+    for (const actor of actors) {
+      const canDelete = this.checkPermsDelete(actor);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Actor (${actor.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateActor', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      actors.map(async (actor) => {
+        await this.logsService.deleteLog(EntityName.Actor, actor.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateActor;
   }
 
   async deleteActorByPk(selectionSet: string[], pkColumns: ValueTypes['ActorPkColumnsInput']) {

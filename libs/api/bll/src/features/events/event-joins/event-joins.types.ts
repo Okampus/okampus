@@ -15,6 +15,10 @@ export type UpdateEventJoinArgsType = {
   _set: ValueTypes['EventJoinSetInput'];
 };
 
+export type DeleteEventJoinArgsType = {
+  where: ValueTypes['EventJoinBoolExp'];
+};
+
 export type UpdateByPkEventJoinArgsType = {
   pkColumns: ValueTypes['EventJoinPkColumnsInput'];
   _set: ValueTypes['EventJoinSetInput'];

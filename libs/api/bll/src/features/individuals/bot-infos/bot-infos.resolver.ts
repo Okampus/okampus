@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteBotInfoArgsType,
   InsertOneBotInfoArgsType,
   InsertBotInfoArgsType,
   UpdateByPkBotInfoArgsType,
@@ -38,6 +39,16 @@ export class BotInfosMutationResolver {
     );
     return await this.botInfosService.updateBotInfoMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteBotInfo(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteBotInfoArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.botInfosService.deleteBotInfo(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('BotInfo')
@@ -61,8 +72,7 @@ export class BotInfosQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.botInfosService.insertBotInfoOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.botInfosService.insertBotInfoOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

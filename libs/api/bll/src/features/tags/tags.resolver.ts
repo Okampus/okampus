@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteTagArgsType,
   InsertOneTagArgsType,
   InsertTagArgsType,
   UpdateByPkTagArgsType,
@@ -38,6 +39,16 @@ export class TagsMutationResolver {
     );
     return await this.tagsService.updateTagMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteTag(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteTagArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.tagsService.deleteTag(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Tag')
@@ -61,8 +72,7 @@ export class TagsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.tagsService.insertTagOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.tagsService.insertTagOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

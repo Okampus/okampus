@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteFollowArgsType,
   InsertOneFollowArgsType,
   InsertFollowArgsType,
   UpdateByPkFollowArgsType,
@@ -38,6 +39,16 @@ export class FollowsMutationResolver {
     );
     return await this.followsService.updateFollowMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteFollow(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteFollowArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.followsService.deleteFollow(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Follow')
@@ -61,8 +72,7 @@ export class FollowsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.followsService.insertFollowOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.followsService.insertFollowOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

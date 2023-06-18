@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { BotInfoRepository, BotInfo } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class BotInfosService extends RequestContext {
+  private readonly logger = new Logger(BotInfosService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class BotInfosService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertBotInfo', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertBotInfo.returning) {
@@ -185,6 +187,31 @@ export class BotInfosService extends RequestContext {
 
     // Custom logic
     return data.updateBotInfoByPk;
+  }
+
+  async deleteBotInfo(selectionSet: string[], where: ValueTypes['BotInfoBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const botInfos = await this.botInfoRepository.findByIds(where.id._in);
+    for (const botInfo of botInfos) {
+      const canDelete = this.checkPermsDelete(botInfo);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BotInfo (${botInfo.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateBotInfo', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      botInfos.map(async (botInfo) => {
+        await this.logsService.deleteLog(EntityName.BotInfo, botInfo.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateBotInfo;
   }
 
   async deleteBotInfoByPk(selectionSet: string[], pkColumns: ValueTypes['BotInfoPkColumnsInput']) {

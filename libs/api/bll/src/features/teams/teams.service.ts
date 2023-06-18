@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamRepository, Team } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamsService extends RequestContext {
+  private readonly logger = new Logger(TeamsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class TeamsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertTeam', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertTeam.returning) {
@@ -185,6 +187,31 @@ export class TeamsService extends RequestContext {
 
     // Custom logic
     return data.updateTeamByPk;
+  }
+
+  async deleteTeam(selectionSet: string[], where: ValueTypes['TeamBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const teams = await this.teamRepository.findByIds(where.id._in);
+    for (const team of teams) {
+      const canDelete = this.checkPermsDelete(team);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${team.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateTeam', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      teams.map(async (team) => {
+        await this.logsService.deleteLog(EntityName.Team, team.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateTeam;
   }
 
   async deleteTeamByPk(selectionSet: string[], pkColumns: ValueTypes['TeamPkColumnsInput']) {

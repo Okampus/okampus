@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FormRepository, Form } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class FormsService extends RequestContext {
+  private readonly logger = new Logger(FormsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class FormsService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertForm', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertForm.returning) {
@@ -185,6 +187,31 @@ export class FormsService extends RequestContext {
 
     // Custom logic
     return data.updateFormByPk;
+  }
+
+  async deleteForm(selectionSet: string[], where: ValueTypes['FormBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const forms = await this.formRepository.findByIds(where.id._in);
+    for (const form of forms) {
+      const canDelete = this.checkPermsDelete(form);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${form.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateForm', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      forms.map(async (form) => {
+        await this.logsService.deleteLog(EntityName.Form, form.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateForm;
   }
 
   async deleteFormByPk(selectionSet: string[], pkColumns: ValueTypes['FormPkColumnsInput']) {

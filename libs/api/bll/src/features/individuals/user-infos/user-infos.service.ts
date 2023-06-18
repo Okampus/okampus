@@ -3,7 +3,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../../logs/logs.service';
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UserInfoRepository, UserInfo } from '@okampus/api/dal';
 import { EntityName, ScopeRole } from '@okampus/shared/enums';
@@ -15,6 +15,8 @@ import type { ValueTypes } from '@okampus/shared/graphql';
 
 @Injectable()
 export class UserInfosService extends RequestContext {
+  private readonly logger = new Logger(UserInfosService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
@@ -124,7 +126,7 @@ export class UserInfosService extends RequestContext {
       if (!areRelationshipsValid) throw new BadRequestException('Create relationships are not valid.');
     }
 
-    selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
+    selectionSet = [...selectionSet.filter((field) => field !== 'returning.id'), 'returning.id'];
     const data = await this.hasuraService.insert('insertUserInfo', selectionSet, objects, onConflict);
 
     for (const inserted of data.insertUserInfo.returning) {
@@ -185,6 +187,31 @@ export class UserInfosService extends RequestContext {
 
     // Custom logic
     return data.updateUserInfoByPk;
+  }
+
+  async deleteUserInfo(selectionSet: string[], where: ValueTypes['UserInfoBoolExp']) {
+    const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+
+    const userInfos = await this.userInfoRepository.findByIds(where.id._in);
+    for (const userInfo of userInfos) {
+      const canDelete = this.checkPermsDelete(userInfo);
+      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete UserInfo (${userInfo.id}).`);
+    }
+
+    const data = await this.hasuraService.update('updateUserInfo', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
+
+    await Promise.all(
+      userInfos.map(async (userInfo) => {
+        await this.logsService.deleteLog(EntityName.UserInfo, userInfo.id);
+      })
+    );
+
+    // Custom logic
+    return data.updateUserInfo;
   }
 
   async deleteUserInfoByPk(selectionSet: string[], pkColumns: ValueTypes['UserInfoPkColumnsInput']) {

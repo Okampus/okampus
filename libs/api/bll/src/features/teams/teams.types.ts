@@ -15,6 +15,10 @@ export type UpdateTeamArgsType = {
   _set: ValueTypes['TeamSetInput'];
 };
 
+export type DeleteTeamArgsType = {
+  where: ValueTypes['TeamBoolExp'];
+};
+
 export type UpdateByPkTeamArgsType = {
   pkColumns: ValueTypes['TeamPkColumnsInput'];
   _set: ValueTypes['TeamSetInput'];

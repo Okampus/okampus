@@ -15,6 +15,10 @@ export type UpdateEventArgsType = {
   _set: ValueTypes['EventSetInput'];
 };
 
+export type DeleteEventArgsType = {
+  where: ValueTypes['EventBoolExp'];
+};
+
 export type UpdateByPkEventArgsType = {
   pkColumns: ValueTypes['EventPkColumnsInput'];
   _set: ValueTypes['EventSetInput'];

@@ -15,6 +15,10 @@ export type UpdateIndividualArgsType = {
   _set: ValueTypes['IndividualSetInput'];
 };
 
+export type DeleteIndividualArgsType = {
+  where: ValueTypes['IndividualBoolExp'];
+};
+
 export type UpdateByPkIndividualArgsType = {
   pkColumns: ValueTypes['IndividualPkColumnsInput'];
   _set: ValueTypes['IndividualSetInput'];

@@ -15,6 +15,10 @@ export type UpdateSocialArgsType = {
   _set: ValueTypes['SocialSetInput'];
 };
 
+export type DeleteSocialArgsType = {
+  where: ValueTypes['SocialBoolExp'];
+};
+
 export type UpdateByPkSocialArgsType = {
   pkColumns: ValueTypes['SocialPkColumnsInput'];
   _set: ValueTypes['SocialSetInput'];

@@ -15,6 +15,10 @@ export type UpdateUserInfoArgsType = {
   _set: ValueTypes['UserInfoSetInput'];
 };
 
+export type DeleteUserInfoArgsType = {
+  where: ValueTypes['UserInfoBoolExp'];
+};
+
 export type UpdateByPkUserInfoArgsType = {
   pkColumns: ValueTypes['UserInfoPkColumnsInput'];
   _set: ValueTypes['UserInfoSetInput'];

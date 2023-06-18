@@ -4,6 +4,7 @@ import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
+  DeleteTeamArgsType,
   InsertOneTeamArgsType,
   InsertTeamArgsType,
   UpdateByPkTeamArgsType,
@@ -38,6 +39,16 @@ export class TeamsMutationResolver {
     );
     return await this.teamsService.updateTeamMany(getSelectionSet(info), updates);
   }
+
+  @Mutation()
+  async deleteTeam(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<DeleteTeamArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.teamsService.deleteTeam(getSelectionSet(info), where);
+  }
 }
 
 @Resolver('Team')
@@ -61,8 +72,7 @@ export class TeamsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    const data = await this.teamsService.insertTeamOne(getSelectionSet(info), object, onConflict);
-    return data.returning[0];
+    return await this.teamsService.insertTeamOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()

@@ -15,6 +15,10 @@ export type UpdateActorImageArgsType = {
   _set: ValueTypes['ActorImageSetInput'];
 };
 
+export type DeleteActorImageArgsType = {
+  where: ValueTypes['ActorImageBoolExp'];
+};
+
 export type UpdateByPkActorImageArgsType = {
   pkColumns: ValueTypes['ActorImagePkColumnsInput'];
   _set: ValueTypes['ActorImageSetInput'];

@@ -15,6 +15,10 @@ export type UpdateActionArgsType = {
   _set: ValueTypes['ActionSetInput'];
 };
 
+export type DeleteActionArgsType = {
+  where: ValueTypes['ActionBoolExp'];
+};
+
 export type UpdateByPkActionArgsType = {
   pkColumns: ValueTypes['ActionPkColumnsInput'];
   _set: ValueTypes['ActionSetInput'];
