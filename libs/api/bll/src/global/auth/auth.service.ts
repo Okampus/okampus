@@ -33,7 +33,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Individual, Session, Tenant, UserInfo } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
-import { isNotNull, objectContains } from '@okampus/shared/utils';
+import { objectContains } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
 
@@ -123,7 +123,7 @@ export class AuthService extends RequestContext {
 
     if (objectContains(decoded, claims)) {
       const sub = decoded.sub;
-      if (isNotNull(sub)) return { ...decoded, sub };
+      if (sub !== undefined) return { ...decoded, sub };
     }
     throw new UnauthorizedException('Invalid token claims');
   }

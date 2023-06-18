@@ -1,5 +1,6 @@
 export interface SelectItem<T> {
   value: T;
-  label: React.ReactNode;
+  key?: string | number;
   group?: string;
+  label: React.ReactNode;
 }
