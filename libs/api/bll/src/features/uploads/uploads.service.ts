@@ -122,8 +122,8 @@ export class UploadsService extends RequestContext {
       createdById: createdBy?.id ?? null,
       tenantId: tenant.id,
     };
-    const data = await this.hasuraService.insertOne('insertFileUpload', ['id'], fileInsert);
-    const id = data.insertFileUpload.returning[0].id;
+    const data = await this.hasuraService.insertOne('insertFileUploadOne', ['id'], fileInsert);
+    const id = data.insertFileUploadOne.id;
 
     return this.em.findOneOrFail(FileUpload, { id });
   }
