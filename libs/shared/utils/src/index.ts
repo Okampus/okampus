@@ -38,6 +38,7 @@ export * from './graphql/is-non-null-type';
 export * from './numbers/extract-positive-number';
 export * from './numbers/number-formatters';
 export * from './numbers/sum';
+export * from './objects/deep-equal';
 export * from './objects/exclude';
 export * from './objects/is-empty';
 export * from './objects/is-in';
