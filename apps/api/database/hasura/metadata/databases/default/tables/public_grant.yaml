@@ -1,0 +1,44 @@
+table:
+  name: grant
+  schema: public
+object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: signature_id
+  - name: generatedDocument
+    using:
+      foreign_key_constraint_on: generated_document_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: individualByValidatedById
+    using:
+      foreign_key_constraint_on: validated_by_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: grantAttachments
+    using:
+      foreign_key_constraint_on:
+        column: grant_id
+        table:
+          name: grant_attachments
+          schema: public
+  - name: grantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: grant_id
+        table:
+          name: grant_unlock
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: grant_id
+        table:
+          name: project
+          schema: public

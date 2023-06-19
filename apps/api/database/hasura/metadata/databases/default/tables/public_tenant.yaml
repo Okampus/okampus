@@ -208,6 +208,20 @@ array_relationships:
         table:
           name: form
           schema: public
+  - name: grantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: grant_unlock
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: grant
+          schema: public
   - name: individuals
     using:
       foreign_key_constraint_on:

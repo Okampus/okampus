@@ -1,0 +1,10 @@
+table:
+  name: grant_attachments
+  schema: public
+object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: file_upload_id
+  - name: grant
+    using:
+      foreign_key_constraint_on: grant_id

@@ -34,6 +34,9 @@ export enum EntityName {
   TeamMember = 'TeamMember',
   TeamMetric = 'TeamMetric',
 
+  Grant = 'Grant',
+  GrantUnlock = 'GrantUnlock',
+
   Canteen = 'Canteen',
   CanteenFood = 'CanteenFood',
   CanteenMenu = 'CanteenMenu',

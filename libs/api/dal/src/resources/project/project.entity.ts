@@ -2,7 +2,6 @@ import { ProjectRepository } from './project.repository';
 import { TenantScopedEntity } from '..';
 import { TransformCollection } from '@okampus/api/shards';
 import {
-  Cascade,
   Collection,
   Entity,
   EntityRepositoryType,
@@ -16,9 +15,10 @@ import {
 
 import { Colors } from '@okampus/shared/enums';
 
+import type { Event } from '../event/event.entity';
+import type { Grant } from '../team/grant/grant.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
-import type { Event } from '../event/event.entity';
 import type { Mission } from '../team/mission/mission.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
@@ -59,8 +59,11 @@ export class Project extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'FileUpload', nullable: true, default: null, cascade: [Cascade.ALL] })
+  @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   image: FileUpload | null = null;
+
+  @ManyToOne({ type: 'Grant', nullable: true, default: null })
+  grant: Grant | null = null;
 
   @ManyToMany({ type: 'TeamMember' })
   @TransformCollection()

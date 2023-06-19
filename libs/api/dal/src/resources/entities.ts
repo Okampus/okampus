@@ -51,6 +51,8 @@ import { MissionJoin } from './team/mission-join/mission-join.entity';
 import { EventManage } from './event/event-manage/event-manage.entity';
 import { Issue } from './issue/issue.entity';
 import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
+import { Grant } from './team/grant/grant.entity';
+import { GrantUnlock } from './team/grant-unlock/grant-unlock.entity';
 
 export const allEntities = [
   Log,
@@ -89,6 +91,9 @@ export const allEntities = [
   TeamJoin,
   TeamMember,
   TeamMetric,
+
+  Grant,
+  GrantUnlock,
 
   Canteen,
   CanteenFood,

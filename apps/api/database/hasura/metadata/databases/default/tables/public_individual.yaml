@@ -134,6 +134,13 @@ array_relationships:
         table:
           name: event_join
           schema: public
+  - name: createdGrantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: grant_unlock
+          schema: public
   - name: createdTeamJoins
     using:
       foreign_key_constraint_on:
@@ -252,6 +259,27 @@ array_relationships:
         column: created_by_id
         table:
           name: form
+          schema: public
+  - name: grantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: validated_by_id
+        table:
+          name: grant_unlock
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: grant
+          schema: public
+  - name: grantsByValidatedById
+    using:
+      foreign_key_constraint_on:
+        column: validated_by_id
+        table:
+          name: grant
           schema: public
   - name: individuals
     using:

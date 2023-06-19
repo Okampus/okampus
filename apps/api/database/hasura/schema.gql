@@ -17189,6 +17189,186 @@ type FileUpload {
     # filter the rows returned
     where: FinanceAttachmentsBoolExp
   ): FinanceAttachmentsAggregate!
+
+  # An array relationship
+  generatedDocumentGrantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  generatedDocumentGrantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grantAttachments(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): [GrantAttachments!]!
+
+  # An aggregate relationship
+  grantAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): GrantAttachmentsAggregate!
+
+  # An array relationship
+  grantUnlockAttachments(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): [GrantUnlockAttachments!]!
+
+  # An aggregate relationship
+  grantUnlockAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): GrantUnlockAttachmentsAggregate!
+
+  # An array relationship
+  grantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  grantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  grantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -17231,6 +17411,42 @@ type FileUpload {
     # filter the rows returned
     where: ProjectBoolExp
   ): ProjectAggregate!
+
+  # An array relationship
+  signatureGrants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  signatureGrantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
   size: Int!
 
   # An array relationship
@@ -17407,12 +17623,24 @@ input FileUploadBoolExp {
   fileLastModifiedAt: TimestamptzComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
+  generatedDocumentGrantUnlocks: GrantUnlockBoolExp
+  generatedDocumentGrantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grantAttachments: GrantAttachmentsBoolExp
+  grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
+  grantUnlockAttachments: GrantUnlockAttachmentsBoolExp
+  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateBoolExp
+  grantUnlocks: GrantUnlockBoolExp
+  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grants: GrantBoolExp
+  grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
   name: StringComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
+  signatureGrants: GrantBoolExp
+  signatureGrantsAggregate: GrantAggregateBoolExp
   size: IntComparisonExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
@@ -17453,11 +17681,17 @@ input FileUploadInsertInput {
   expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   financeAttachments: FinanceAttachmentsArrRelInsertInput
+  generatedDocumentGrantUnlocks: GrantUnlockArrRelInsertInput
+  grantAttachments: GrantAttachmentsArrRelInsertInput
+  grantUnlockAttachments: GrantUnlockAttachmentsArrRelInsertInput
+  grantUnlocks: GrantUnlockArrRelInsertInput
+  grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   name: String
   projects: ProjectArrRelInsertInput
+  signatureGrants: GrantArrRelInsertInput
   size: Int
   tags: TagArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -17566,11 +17800,17 @@ input FileUploadOrderBy {
   expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
+  generatedDocumentGrantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
+  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateOrderBy
+  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   name: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
+  signatureGrantsAggregate: GrantAggregateOrderBy
   size: OrderBy
   tagsAggregate: TagAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
@@ -17878,6 +18118,42 @@ type Finance {
     # filter the rows returned
     where: FinanceAttachmentsBoolExp
   ): FinanceAttachmentsAggregate!
+
+  # An array relationship
+  grantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  grantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -18304,6 +18580,8 @@ input FinanceBoolExp {
   expenseId: BigintComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
+  grantUnlocks: GrantUnlockBoolExp
+  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -18361,6 +18639,7 @@ input FinanceInsertInput {
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
   financeAttachments: FinanceAttachmentsArrRelInsertInput
+  grantUnlocks: GrantUnlockArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
@@ -18519,6 +18798,7 @@ input FinanceOrderBy {
   expense: ExpenseOrderBy
   expenseId: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
+  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
@@ -20633,6 +20913,2079 @@ input FormVarSampOrderBy {
   tenantId: OrderBy
 }
 
+# columns and relationships of "grant"
+type Grant {
+  amountAsked: Float!
+  amountGiven: Float!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+
+  # An object relationship
+  fileUpload: FileUpload
+
+  # An object relationship
+  generatedDocument: FileUpload
+  generatedDocumentId: bigint
+
+  # An array relationship
+  grantAttachments(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): [GrantAttachments!]!
+
+  # An aggregate relationship
+  grantAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): GrantAttachmentsAggregate!
+
+  # An array relationship
+  grantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  grantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An object relationship
+  individualByValidatedById: Individual
+
+  # An array relationship
+  projects(
+    # distinct select on columns
+    distinctOn: [ProjectSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectOrderBy!]
+
+    # filter the rows returned
+    where: ProjectBoolExp
+  ): [Project!]!
+
+  # An aggregate relationship
+  projectsAggregate(
+    # distinct select on columns
+    distinctOn: [ProjectSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ProjectOrderBy!]
+
+    # filter the rows returned
+    where: ProjectBoolExp
+  ): ProjectAggregate!
+  signatureId: bigint
+  state: String!
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregated selection of "grant"
+type GrantAggregate {
+  aggregate: GrantAggregateFields
+  nodes: [Grant!]!
+}
+
+input GrantAggregateBoolExp {
+  count: grantAggregateBoolExpCount
+}
+
+input grantAggregateBoolExpCount {
+  arguments: [GrantSelectColumn!]
+  distinct: Boolean
+  filter: GrantBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "grant"
+type GrantAggregateFields {
+  avg: GrantAvgFields
+  count(columns: [GrantSelectColumn!], distinct: Boolean): Int!
+  max: GrantMaxFields
+  min: GrantMinFields
+  stddev: GrantStddevFields
+  stddevPop: GrantStddevPopFields
+  stddevSamp: GrantStddevSampFields
+  sum: GrantSumFields
+  varPop: GrantVarPopFields
+  varSamp: GrantVarSampFields
+  variance: GrantVarianceFields
+}
+
+# order by aggregate values of table "grant"
+input GrantAggregateOrderBy {
+  avg: GrantAvgOrderBy
+  count: OrderBy
+  max: GrantMaxOrderBy
+  min: GrantMinOrderBy
+  stddev: GrantStddevOrderBy
+  stddevPop: GrantStddevPopOrderBy
+  stddevSamp: GrantStddevSampOrderBy
+  sum: GrantSumOrderBy
+  varPop: GrantVarPopOrderBy
+  varSamp: GrantVarSampOrderBy
+  variance: GrantVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "grant"
+input GrantArrRelInsertInput {
+  data: [GrantInsertInput!]!
+
+  # upsert condition
+  onConflict: GrantOnConflict
+}
+
+# columns and relationships of "grant_attachments"
+type GrantAttachments {
+  # An object relationship
+  fileUpload: FileUpload!
+  fileUploadId: bigint!
+
+  # An object relationship
+  grant: Grant!
+  grantId: bigint!
+}
+
+# aggregated selection of "grant_attachments"
+type GrantAttachmentsAggregate {
+  aggregate: GrantAttachmentsAggregateFields
+  nodes: [GrantAttachments!]!
+}
+
+input GrantAttachmentsAggregateBoolExp {
+  count: grantAttachmentsAggregateBoolExpCount
+}
+
+input grantAttachmentsAggregateBoolExpCount {
+  arguments: [GrantAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: GrantAttachmentsBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "grant_attachments"
+type GrantAttachmentsAggregateFields {
+  avg: GrantAttachmentsAvgFields
+  count(columns: [GrantAttachmentsSelectColumn!], distinct: Boolean): Int!
+  max: GrantAttachmentsMaxFields
+  min: GrantAttachmentsMinFields
+  stddev: GrantAttachmentsStddevFields
+  stddevPop: GrantAttachmentsStddevPopFields
+  stddevSamp: GrantAttachmentsStddevSampFields
+  sum: GrantAttachmentsSumFields
+  varPop: GrantAttachmentsVarPopFields
+  varSamp: GrantAttachmentsVarSampFields
+  variance: GrantAttachmentsVarianceFields
+}
+
+# order by aggregate values of table "grant_attachments"
+input GrantAttachmentsAggregateOrderBy {
+  avg: GrantAttachmentsAvgOrderBy
+  count: OrderBy
+  max: GrantAttachmentsMaxOrderBy
+  min: GrantAttachmentsMinOrderBy
+  stddev: GrantAttachmentsStddevOrderBy
+  stddevPop: GrantAttachmentsStddevPopOrderBy
+  stddevSamp: GrantAttachmentsStddevSampOrderBy
+  sum: GrantAttachmentsSumOrderBy
+  varPop: GrantAttachmentsVarPopOrderBy
+  varSamp: GrantAttachmentsVarSampOrderBy
+  variance: GrantAttachmentsVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "grant_attachments"
+input GrantAttachmentsArrRelInsertInput {
+  data: [GrantAttachmentsInsertInput!]!
+
+  # upsert condition
+  onConflict: GrantAttachmentsOnConflict
+}
+
+# aggregate avg on columns
+type GrantAttachmentsAvgFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by avg() on columns of table "grant_attachments"
+input GrantAttachmentsAvgOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "grant_attachments". All fields are combined with a logical 'AND'.
+input GrantAttachmentsBoolExp {
+  _and: [GrantAttachmentsBoolExp!]
+  _not: GrantAttachmentsBoolExp
+  _or: [GrantAttachmentsBoolExp!]
+  fileUpload: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  grant: GrantBoolExp
+  grantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "grant_attachments"
+enum GrantAttachmentsConstraint {
+  # unique or primary key constraint on columns "file_upload_id", "grant_id"
+  grant_attachments_pkey
+}
+
+# input type for incrementing numeric columns in table "grant_attachments"
+input GrantAttachmentsIncInput {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# input type for inserting data into table "grant_attachments"
+input GrantAttachmentsInsertInput {
+  fileUpload: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  grant: GrantObjRelInsertInput
+  grantId: bigint
+}
+
+# aggregate max on columns
+type GrantAttachmentsMaxFields {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# order by max() on columns of table "grant_attachments"
+input GrantAttachmentsMaxOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate min on columns
+type GrantAttachmentsMinFields {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# order by min() on columns of table "grant_attachments"
+input GrantAttachmentsMinOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# response of any mutation on the table "grant_attachments"
+type GrantAttachmentsMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [GrantAttachments!]!
+}
+
+# on_conflict condition type for table "grant_attachments"
+input GrantAttachmentsOnConflict {
+  constraint: GrantAttachmentsConstraint!
+  updateColumns: [GrantAttachmentsUpdateColumn!]! = []
+  where: GrantAttachmentsBoolExp
+}
+
+# Ordering options when selecting data from "grant_attachments".
+input GrantAttachmentsOrderBy {
+  fileUpload: FileUploadOrderBy
+  fileUploadId: OrderBy
+  grant: GrantOrderBy
+  grantId: OrderBy
+}
+
+# primary key columns input for table: grant_attachments
+input GrantAttachmentsPkColumnsInput {
+  fileUploadId: bigint!
+  grantId: bigint!
+}
+
+# select columns of table "grant_attachments"
+enum GrantAttachmentsSelectColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  grantId
+}
+
+# input type for updating data in table "grant_attachments"
+input GrantAttachmentsSetInput {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# aggregate stddev on columns
+type GrantAttachmentsStddevFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by stddev() on columns of table "grant_attachments"
+input GrantAttachmentsStddevOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type GrantAttachmentsStddevPopFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by stddevPop() on columns of table "grant_attachments"
+input GrantAttachmentsStddevPopOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type GrantAttachmentsStddevSampFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by stddevSamp() on columns of table "grant_attachments"
+input GrantAttachmentsStddevSampOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# Streaming cursor of the table "grant_attachments"
+input GrantAttachmentsStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: GrantAttachmentsStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input GrantAttachmentsStreamCursorValueInput {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# aggregate sum on columns
+type GrantAttachmentsSumFields {
+  fileUploadId: bigint
+  grantId: bigint
+}
+
+# order by sum() on columns of table "grant_attachments"
+input GrantAttachmentsSumOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# update columns of table "grant_attachments"
+enum GrantAttachmentsUpdateColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  grantId
+}
+
+input GrantAttachmentsUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: GrantAttachmentsIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: GrantAttachmentsSetInput
+
+  # filter the rows which have to be updated
+  where: GrantAttachmentsBoolExp!
+}
+
+# aggregate variance on columns
+type GrantAttachmentsVarianceFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by variance() on columns of table "grant_attachments"
+input GrantAttachmentsVarianceOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate varPop on columns
+type GrantAttachmentsVarPopFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by varPop() on columns of table "grant_attachments"
+input GrantAttachmentsVarPopOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type GrantAttachmentsVarSampFields {
+  fileUploadId: Float
+  grantId: Float
+}
+
+# order by varSamp() on columns of table "grant_attachments"
+input GrantAttachmentsVarSampOrderBy {
+  fileUploadId: OrderBy
+  grantId: OrderBy
+}
+
+# aggregate avg on columns
+type GrantAvgFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by avg() on columns of table "grant"
+input GrantAvgOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# Boolean expression to filter rows from the table "grant". All fields are combined with a logical 'AND'.
+input GrantBoolExp {
+  _and: [GrantBoolExp!]
+  _not: GrantBoolExp
+  _or: [GrantBoolExp!]
+  amountAsked: FloatComparisonExp
+  amountGiven: FloatComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  fileUpload: FileUploadBoolExp
+  generatedDocument: FileUploadBoolExp
+  generatedDocumentId: BigintComparisonExp
+  grantAttachments: GrantAttachmentsBoolExp
+  grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
+  grantUnlocks: GrantUnlockBoolExp
+  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  individualByValidatedById: IndividualBoolExp
+  projects: ProjectBoolExp
+  projectsAggregate: ProjectAggregateBoolExp
+  signatureId: BigintComparisonExp
+  state: StringComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  validatedAt: TimestamptzComparisonExp
+  validatedById: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "grant"
+enum GrantConstraint {
+  # unique or primary key constraint on columns "id"
+  grant_pkey
+}
+
+# input type for incrementing numeric columns in table "grant"
+input GrantIncInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  generatedDocumentId: bigint
+  id: bigint
+  signatureId: bigint
+  teamId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+# input type for inserting data into table "grant"
+input GrantInsertInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  fileUpload: FileUploadObjRelInsertInput
+  generatedDocument: FileUploadObjRelInsertInput
+  generatedDocumentId: bigint
+  grantAttachments: GrantAttachmentsArrRelInsertInput
+  grantUnlocks: GrantUnlockArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  individualByValidatedById: IndividualObjRelInsertInput
+  projects: ProjectArrRelInsertInput
+  signatureId: bigint
+  state: String
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate max on columns
+type GrantMaxFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  generatedDocumentId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  teamId: bigint
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# order by max() on columns of table "grant"
+input GrantMaxOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  generatedDocumentId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate min on columns
+type GrantMinFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  generatedDocumentId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  teamId: bigint
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# order by min() on columns of table "grant"
+input GrantMinOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  generatedDocumentId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# response of any mutation on the table "grant"
+type GrantMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [Grant!]!
+}
+
+# input type for inserting object relation for remote table "grant"
+input GrantObjRelInsertInput {
+  data: GrantInsertInput!
+
+  # upsert condition
+  onConflict: GrantOnConflict
+}
+
+# on_conflict condition type for table "grant"
+input GrantOnConflict {
+  constraint: GrantConstraint!
+  updateColumns: [GrantUpdateColumn!]! = []
+  where: GrantBoolExp
+}
+
+# Ordering options when selecting data from "grant".
+input GrantOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  fileUpload: FileUploadOrderBy
+  generatedDocument: FileUploadOrderBy
+  generatedDocumentId: OrderBy
+  grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
+  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  individualByValidatedById: IndividualOrderBy
+  projectsAggregate: ProjectAggregateOrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# primary key columns input for table: grant
+input GrantPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "grant"
+enum GrantSelectColumn {
+  # column name
+  amountAsked
+
+  # column name
+  amountGiven
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  generatedDocumentId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  signatureId
+
+  # column name
+  state
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  validatedAt
+
+  # column name
+  validatedById
+}
+
+# input type for updating data in table "grant"
+input GrantSetInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  generatedDocumentId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  teamId: bigint
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate stddev on columns
+type GrantStddevFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddev() on columns of table "grant"
+input GrantStddevOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate stddevPop on columns
+type GrantStddevPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddevPop() on columns of table "grant"
+input GrantStddevPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type GrantStddevSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddevSamp() on columns of table "grant"
+input GrantStddevSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# Streaming cursor of the table "grant"
+input GrantStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: GrantStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input GrantStreamCursorValueInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  generatedDocumentId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  teamId: bigint
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate sum on columns
+type GrantSumFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  generatedDocumentId: bigint
+  id: bigint
+  signatureId: bigint
+  teamId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+# order by sum() on columns of table "grant"
+input GrantSumOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# columns and relationships of "grant_unlock"
+type GrantUnlock {
+  amountAsked: Float!
+  amountGiven: Float!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+
+  # An object relationship
+  fileUpload: FileUpload
+
+  # An object relationship
+  finance: Finance
+  financeId: bigint
+  generatedDocumentId: bigint
+
+  # An object relationship
+  grant: Grant!
+  grantId: bigint!
+
+  # An array relationship
+  grantUnlockAttachments(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): [GrantUnlockAttachments!]!
+
+  # An aggregate relationship
+  grantUnlockAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): GrantUnlockAttachmentsAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An object relationship
+  individualByValidatedById: Individual
+
+  # An object relationship
+  signature: FileUpload
+  signatureId: bigint
+  state: String!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregated selection of "grant_unlock"
+type GrantUnlockAggregate {
+  aggregate: GrantUnlockAggregateFields
+  nodes: [GrantUnlock!]!
+}
+
+input GrantUnlockAggregateBoolExp {
+  count: grantUnlockAggregateBoolExpCount
+}
+
+input grantUnlockAggregateBoolExpCount {
+  arguments: [GrantUnlockSelectColumn!]
+  distinct: Boolean
+  filter: GrantUnlockBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "grant_unlock"
+type GrantUnlockAggregateFields {
+  avg: GrantUnlockAvgFields
+  count(columns: [GrantUnlockSelectColumn!], distinct: Boolean): Int!
+  max: GrantUnlockMaxFields
+  min: GrantUnlockMinFields
+  stddev: GrantUnlockStddevFields
+  stddevPop: GrantUnlockStddevPopFields
+  stddevSamp: GrantUnlockStddevSampFields
+  sum: GrantUnlockSumFields
+  varPop: GrantUnlockVarPopFields
+  varSamp: GrantUnlockVarSampFields
+  variance: GrantUnlockVarianceFields
+}
+
+# order by aggregate values of table "grant_unlock"
+input GrantUnlockAggregateOrderBy {
+  avg: GrantUnlockAvgOrderBy
+  count: OrderBy
+  max: GrantUnlockMaxOrderBy
+  min: GrantUnlockMinOrderBy
+  stddev: GrantUnlockStddevOrderBy
+  stddevPop: GrantUnlockStddevPopOrderBy
+  stddevSamp: GrantUnlockStddevSampOrderBy
+  sum: GrantUnlockSumOrderBy
+  varPop: GrantUnlockVarPopOrderBy
+  varSamp: GrantUnlockVarSampOrderBy
+  variance: GrantUnlockVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "grant_unlock"
+input GrantUnlockArrRelInsertInput {
+  data: [GrantUnlockInsertInput!]!
+
+  # upsert condition
+  onConflict: GrantUnlockOnConflict
+}
+
+# columns and relationships of "grant_unlock_attachments"
+type GrantUnlockAttachments {
+  # An object relationship
+  fileUpload: FileUpload!
+  fileUploadId: bigint!
+
+  # An object relationship
+  grantUnlock: GrantUnlock!
+  grantUnlockId: bigint!
+}
+
+# aggregated selection of "grant_unlock_attachments"
+type GrantUnlockAttachmentsAggregate {
+  aggregate: GrantUnlockAttachmentsAggregateFields
+  nodes: [GrantUnlockAttachments!]!
+}
+
+input GrantUnlockAttachmentsAggregateBoolExp {
+  count: grantUnlockAttachmentsAggregateBoolExpCount
+}
+
+input grantUnlockAttachmentsAggregateBoolExpCount {
+  arguments: [GrantUnlockAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: GrantUnlockAttachmentsBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "grant_unlock_attachments"
+type GrantUnlockAttachmentsAggregateFields {
+  avg: GrantUnlockAttachmentsAvgFields
+  count(columns: [GrantUnlockAttachmentsSelectColumn!], distinct: Boolean): Int!
+  max: GrantUnlockAttachmentsMaxFields
+  min: GrantUnlockAttachmentsMinFields
+  stddev: GrantUnlockAttachmentsStddevFields
+  stddevPop: GrantUnlockAttachmentsStddevPopFields
+  stddevSamp: GrantUnlockAttachmentsStddevSampFields
+  sum: GrantUnlockAttachmentsSumFields
+  varPop: GrantUnlockAttachmentsVarPopFields
+  varSamp: GrantUnlockAttachmentsVarSampFields
+  variance: GrantUnlockAttachmentsVarianceFields
+}
+
+# order by aggregate values of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsAggregateOrderBy {
+  avg: GrantUnlockAttachmentsAvgOrderBy
+  count: OrderBy
+  max: GrantUnlockAttachmentsMaxOrderBy
+  min: GrantUnlockAttachmentsMinOrderBy
+  stddev: GrantUnlockAttachmentsStddevOrderBy
+  stddevPop: GrantUnlockAttachmentsStddevPopOrderBy
+  stddevSamp: GrantUnlockAttachmentsStddevSampOrderBy
+  sum: GrantUnlockAttachmentsSumOrderBy
+  varPop: GrantUnlockAttachmentsVarPopOrderBy
+  varSamp: GrantUnlockAttachmentsVarSampOrderBy
+  variance: GrantUnlockAttachmentsVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "grant_unlock_attachments"
+input GrantUnlockAttachmentsArrRelInsertInput {
+  data: [GrantUnlockAttachmentsInsertInput!]!
+
+  # upsert condition
+  onConflict: GrantUnlockAttachmentsOnConflict
+}
+
+# aggregate avg on columns
+type GrantUnlockAttachmentsAvgFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by avg() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsAvgOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "grant_unlock_attachments". All fields are combined with a logical 'AND'.
+input GrantUnlockAttachmentsBoolExp {
+  _and: [GrantUnlockAttachmentsBoolExp!]
+  _not: GrantUnlockAttachmentsBoolExp
+  _or: [GrantUnlockAttachmentsBoolExp!]
+  fileUpload: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  grantUnlock: GrantUnlockBoolExp
+  grantUnlockId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "grant_unlock_attachments"
+enum GrantUnlockAttachmentsConstraint {
+  # unique or primary key constraint on columns "file_upload_id", "grant_unlock_id"
+  grant_unlock_attachments_pkey
+}
+
+# input type for incrementing numeric columns in table "grant_unlock_attachments"
+input GrantUnlockAttachmentsIncInput {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# input type for inserting data into table "grant_unlock_attachments"
+input GrantUnlockAttachmentsInsertInput {
+  fileUpload: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  grantUnlock: GrantUnlockObjRelInsertInput
+  grantUnlockId: bigint
+}
+
+# aggregate max on columns
+type GrantUnlockAttachmentsMaxFields {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# order by max() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsMaxOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate min on columns
+type GrantUnlockAttachmentsMinFields {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# order by min() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsMinOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# response of any mutation on the table "grant_unlock_attachments"
+type GrantUnlockAttachmentsMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [GrantUnlockAttachments!]!
+}
+
+# on_conflict condition type for table "grant_unlock_attachments"
+input GrantUnlockAttachmentsOnConflict {
+  constraint: GrantUnlockAttachmentsConstraint!
+  updateColumns: [GrantUnlockAttachmentsUpdateColumn!]! = []
+  where: GrantUnlockAttachmentsBoolExp
+}
+
+# Ordering options when selecting data from "grant_unlock_attachments".
+input GrantUnlockAttachmentsOrderBy {
+  fileUpload: FileUploadOrderBy
+  fileUploadId: OrderBy
+  grantUnlock: GrantUnlockOrderBy
+  grantUnlockId: OrderBy
+}
+
+# primary key columns input for table: grant_unlock_attachments
+input GrantUnlockAttachmentsPkColumnsInput {
+  fileUploadId: bigint!
+  grantUnlockId: bigint!
+}
+
+# select columns of table "grant_unlock_attachments"
+enum GrantUnlockAttachmentsSelectColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  grantUnlockId
+}
+
+# input type for updating data in table "grant_unlock_attachments"
+input GrantUnlockAttachmentsSetInput {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# aggregate stddev on columns
+type GrantUnlockAttachmentsStddevFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by stddev() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsStddevOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type GrantUnlockAttachmentsStddevPopFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by stddevPop() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsStddevPopOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type GrantUnlockAttachmentsStddevSampFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by stddevSamp() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsStddevSampOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# Streaming cursor of the table "grant_unlock_attachments"
+input GrantUnlockAttachmentsStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: GrantUnlockAttachmentsStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input GrantUnlockAttachmentsStreamCursorValueInput {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# aggregate sum on columns
+type GrantUnlockAttachmentsSumFields {
+  fileUploadId: bigint
+  grantUnlockId: bigint
+}
+
+# order by sum() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsSumOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# update columns of table "grant_unlock_attachments"
+enum GrantUnlockAttachmentsUpdateColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  grantUnlockId
+}
+
+input GrantUnlockAttachmentsUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: GrantUnlockAttachmentsIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: GrantUnlockAttachmentsSetInput
+
+  # filter the rows which have to be updated
+  where: GrantUnlockAttachmentsBoolExp!
+}
+
+# aggregate variance on columns
+type GrantUnlockAttachmentsVarianceFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by variance() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsVarianceOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate varPop on columns
+type GrantUnlockAttachmentsVarPopFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by varPop() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsVarPopOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate varSamp on columns
+type GrantUnlockAttachmentsVarSampFields {
+  fileUploadId: Float
+  grantUnlockId: Float
+}
+
+# order by varSamp() on columns of table "grant_unlock_attachments"
+input GrantUnlockAttachmentsVarSampOrderBy {
+  fileUploadId: OrderBy
+  grantUnlockId: OrderBy
+}
+
+# aggregate avg on columns
+type GrantUnlockAvgFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by avg() on columns of table "grant_unlock"
+input GrantUnlockAvgOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# Boolean expression to filter rows from the table "grant_unlock". All fields are combined with a logical 'AND'.
+input GrantUnlockBoolExp {
+  _and: [GrantUnlockBoolExp!]
+  _not: GrantUnlockBoolExp
+  _or: [GrantUnlockBoolExp!]
+  amountAsked: FloatComparisonExp
+  amountGiven: FloatComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  fileUpload: FileUploadBoolExp
+  finance: FinanceBoolExp
+  financeId: BigintComparisonExp
+  generatedDocumentId: BigintComparisonExp
+  grant: GrantBoolExp
+  grantId: BigintComparisonExp
+  grantUnlockAttachments: GrantUnlockAttachmentsBoolExp
+  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  individualByValidatedById: IndividualBoolExp
+  signature: FileUploadBoolExp
+  signatureId: BigintComparisonExp
+  state: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  validatedAt: TimestamptzComparisonExp
+  validatedById: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "grant_unlock"
+enum GrantUnlockConstraint {
+  # unique or primary key constraint on columns "id"
+  grant_unlock_pkey
+}
+
+# input type for incrementing numeric columns in table "grant_unlock"
+input GrantUnlockIncInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  id: bigint
+  signatureId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+# input type for inserting data into table "grant_unlock"
+input GrantUnlockInsertInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  fileUpload: FileUploadObjRelInsertInput
+  finance: FinanceObjRelInsertInput
+  financeId: bigint
+  generatedDocumentId: bigint
+  grant: GrantObjRelInsertInput
+  grantId: bigint
+  grantUnlockAttachments: GrantUnlockAttachmentsArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  individualByValidatedById: IndividualObjRelInsertInput
+  signature: FileUploadObjRelInsertInput
+  signatureId: bigint
+  state: String
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate max on columns
+type GrantUnlockMaxFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# order by max() on columns of table "grant_unlock"
+input GrantUnlockMaxOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate min on columns
+type GrantUnlockMinFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# order by min() on columns of table "grant_unlock"
+input GrantUnlockMinOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# response of any mutation on the table "grant_unlock"
+type GrantUnlockMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [GrantUnlock!]!
+}
+
+# input type for inserting object relation for remote table "grant_unlock"
+input GrantUnlockObjRelInsertInput {
+  data: GrantUnlockInsertInput!
+
+  # upsert condition
+  onConflict: GrantUnlockOnConflict
+}
+
+# on_conflict condition type for table "grant_unlock"
+input GrantUnlockOnConflict {
+  constraint: GrantUnlockConstraint!
+  updateColumns: [GrantUnlockUpdateColumn!]! = []
+  where: GrantUnlockBoolExp
+}
+
+# Ordering options when selecting data from "grant_unlock".
+input GrantUnlockOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  fileUpload: FileUploadOrderBy
+  finance: FinanceOrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grant: GrantOrderBy
+  grantId: OrderBy
+  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  individualByValidatedById: IndividualOrderBy
+  signature: FileUploadOrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+# primary key columns input for table: grant_unlock
+input GrantUnlockPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "grant_unlock"
+enum GrantUnlockSelectColumn {
+  # column name
+  amountAsked
+
+  # column name
+  amountGiven
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  financeId
+
+  # column name
+  generatedDocumentId
+
+  # column name
+  grantId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  signatureId
+
+  # column name
+  state
+
+  # column name
+  tenantId
+
+  # column name
+  validatedAt
+
+  # column name
+  validatedById
+}
+
+# input type for updating data in table "grant_unlock"
+input GrantUnlockSetInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate stddev on columns
+type GrantUnlockStddevFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddev() on columns of table "grant_unlock"
+input GrantUnlockStddevOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate stddevPop on columns
+type GrantUnlockStddevPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddevPop() on columns of table "grant_unlock"
+input GrantUnlockStddevPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type GrantUnlockStddevSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by stddevSamp() on columns of table "grant_unlock"
+input GrantUnlockStddevSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# Streaming cursor of the table "grant_unlock"
+input GrantUnlockStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: GrantUnlockStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input GrantUnlockStreamCursorValueInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+# aggregate sum on columns
+type GrantUnlockSumFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  id: bigint
+  signatureId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+# order by sum() on columns of table "grant_unlock"
+input GrantUnlockSumOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# update columns of table "grant_unlock"
+enum GrantUnlockUpdateColumn {
+  # column name
+  amountAsked
+
+  # column name
+  amountGiven
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  financeId
+
+  # column name
+  generatedDocumentId
+
+  # column name
+  grantId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  signatureId
+
+  # column name
+  state
+
+  # column name
+  tenantId
+
+  # column name
+  validatedAt
+
+  # column name
+  validatedById
+}
+
+input GrantUnlockUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: GrantUnlockIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: GrantUnlockSetInput
+
+  # filter the rows which have to be updated
+  where: GrantUnlockBoolExp!
+}
+
+# aggregate variance on columns
+type GrantUnlockVarianceFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by variance() on columns of table "grant_unlock"
+input GrantUnlockVarianceOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate varPop on columns
+type GrantUnlockVarPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by varPop() on columns of table "grant_unlock"
+input GrantUnlockVarPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate varSamp on columns
+type GrantUnlockVarSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by varSamp() on columns of table "grant_unlock"
+input GrantUnlockVarSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# update columns of table "grant"
+enum GrantUpdateColumn {
+  # column name
+  amountAsked
+
+  # column name
+  amountGiven
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  generatedDocumentId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  signatureId
+
+  # column name
+  state
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  validatedAt
+
+  # column name
+  validatedById
+}
+
+input GrantUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: GrantIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: GrantSetInput
+
+  # filter the rows which have to be updated
+  where: GrantBoolExp!
+}
+
+# aggregate variance on columns
+type GrantVarianceFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by variance() on columns of table "grant"
+input GrantVarianceOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate varPop on columns
+type GrantVarPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by varPop() on columns of table "grant"
+input GrantVarPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+# aggregate varSamp on columns
+type GrantVarSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  generatedDocumentId: Float
+  id: Float
+  signatureId: Float
+  teamId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+# order by varSamp() on columns of table "grant"
+input GrantVarSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  generatedDocumentId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
 # columns and relationships of "individual"
 type Individual {
   # An array relationship
@@ -21222,6 +23575,42 @@ type Individual {
     # filter the rows returned
     where: EventJoinBoolExp
   ): EventJoinAggregate!
+
+  # An array relationship
+  createdGrantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  createdGrantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
 
   # An array relationship
   createdTeamJoins(
@@ -21835,6 +24224,114 @@ type Individual {
     # filter the rows returned
     where: FormBoolExp
   ): FormAggregate!
+
+  # An array relationship
+  grantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  grantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  grantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
+
+  # An array relationship
+  grantsByValidatedById(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  grantsByValidatedByIdAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -23045,6 +25542,8 @@ input IndividualBoolExp {
   createdById: BigintComparisonExp
   createdEventJoins: EventJoinBoolExp
   createdEventJoinsAggregate: EventJoinAggregateBoolExp
+  createdGrantUnlocks: GrantUnlockBoolExp
+  createdGrantUnlocksAggregate: GrantUnlockAggregateBoolExp
   createdTeamJoins: TeamJoinBoolExp
   createdTeamJoinsAggregate: TeamJoinAggregateBoolExp
   deletedAt: TimestamptzComparisonExp
@@ -23080,6 +25579,12 @@ input IndividualBoolExp {
   formSubmissionsAggregate: FormSubmissionAggregateBoolExp
   forms: FormBoolExp
   formsAggregate: FormAggregateBoolExp
+  grantUnlocks: GrantUnlockBoolExp
+  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grants: GrantBoolExp
+  grantsAggregate: GrantAggregateBoolExp
+  grantsByValidatedById: GrantBoolExp
+  grantsByValidatedByIdAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individuals: IndividualBoolExp
@@ -23195,6 +25700,7 @@ input IndividualInsertInput {
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   createdEventJoins: EventJoinArrRelInsertInput
+  createdGrantUnlocks: GrantUnlockArrRelInsertInput
   createdTeamJoins: TeamJoinArrRelInsertInput
   deletedAt: timestamptz
   documents: DocumentArrRelInsertInput
@@ -23213,6 +25719,9 @@ input IndividualInsertInput {
   follows: FollowArrRelInsertInput
   formSubmissions: FormSubmissionArrRelInsertInput
   forms: FormArrRelInsertInput
+  grantUnlocks: GrantUnlockArrRelInsertInput
+  grants: GrantArrRelInsertInput
+  grantsByValidatedById: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individuals: IndividualArrRelInsertInput
@@ -23357,6 +25866,7 @@ input IndividualOrderBy {
   createdBy: IndividualOrderBy
   createdById: OrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
+  createdGrantUnlocksAggregate: GrantUnlockAggregateOrderBy
   createdTeamJoinsAggregate: TeamJoinAggregateOrderBy
   deletedAt: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
@@ -23375,6 +25885,9 @@ input IndividualOrderBy {
   followsAggregate: FollowAggregateOrderBy
   formSubmissionsAggregate: FormSubmissionAggregateOrderBy
   formsAggregate: FormAggregateOrderBy
+  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantsAggregate: GrantAggregateOrderBy
+  grantsByValidatedByIdAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individualsAggregate: IndividualAggregateOrderBy
@@ -27180,6 +29693,42 @@ type Mutation {
   # delete single row from the table: "form_submission"
   deleteFormSubmissionByPk(id: bigint!): FormSubmission
 
+  # delete data from the table: "grant"
+  deleteGrant(
+    # filter the rows which have to be deleted
+    where: GrantBoolExp!
+  ): GrantMutationResponse
+
+  # delete data from the table: "grant_attachments"
+  deleteGrantAttachments(
+    # filter the rows which have to be deleted
+    where: GrantAttachmentsBoolExp!
+  ): GrantAttachmentsMutationResponse
+
+  # delete single row from the table: "grant_attachments"
+  deleteGrantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
+
+  # delete single row from the table: "grant"
+  deleteGrantByPk(id: bigint!): Grant
+
+  # delete data from the table: "grant_unlock"
+  deleteGrantUnlock(
+    # filter the rows which have to be deleted
+    where: GrantUnlockBoolExp!
+  ): GrantUnlockMutationResponse
+
+  # delete data from the table: "grant_unlock_attachments"
+  deleteGrantUnlockAttachments(
+    # filter the rows which have to be deleted
+    where: GrantUnlockAttachmentsBoolExp!
+  ): GrantUnlockAttachmentsMutationResponse
+
+  # delete single row from the table: "grant_unlock_attachments"
+  deleteGrantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
+
+  # delete single row from the table: "grant_unlock"
+  deleteGrantUnlockByPk(id: bigint!): GrantUnlock
+
   # delete data from the table: "individual"
   deleteIndividual(
     # filter the rows which have to be deleted
@@ -28142,6 +30691,78 @@ type Mutation {
     # upsert condition
     onConflict: FormSubmissionOnConflict
   ): FormSubmission
+
+  # insert data into the table: "grant"
+  insertGrant(
+    # the rows to be inserted
+    objects: [GrantInsertInput!]!
+
+    # upsert condition
+    onConflict: GrantOnConflict
+  ): GrantMutationResponse
+
+  # insert data into the table: "grant_attachments"
+  insertGrantAttachments(
+    # the rows to be inserted
+    objects: [GrantAttachmentsInsertInput!]!
+
+    # upsert condition
+    onConflict: GrantAttachmentsOnConflict
+  ): GrantAttachmentsMutationResponse
+
+  # insert a single row into the table: "grant_attachments"
+  insertGrantAttachmentsOne(
+    # the row to be inserted
+    object: GrantAttachmentsInsertInput!
+
+    # upsert condition
+    onConflict: GrantAttachmentsOnConflict
+  ): GrantAttachments
+
+  # insert a single row into the table: "grant"
+  insertGrantOne(
+    # the row to be inserted
+    object: GrantInsertInput!
+
+    # upsert condition
+    onConflict: GrantOnConflict
+  ): Grant
+
+  # insert data into the table: "grant_unlock"
+  insertGrantUnlock(
+    # the rows to be inserted
+    objects: [GrantUnlockInsertInput!]!
+
+    # upsert condition
+    onConflict: GrantUnlockOnConflict
+  ): GrantUnlockMutationResponse
+
+  # insert data into the table: "grant_unlock_attachments"
+  insertGrantUnlockAttachments(
+    # the rows to be inserted
+    objects: [GrantUnlockAttachmentsInsertInput!]!
+
+    # upsert condition
+    onConflict: GrantUnlockAttachmentsOnConflict
+  ): GrantUnlockAttachmentsMutationResponse
+
+  # insert a single row into the table: "grant_unlock_attachments"
+  insertGrantUnlockAttachmentsOne(
+    # the row to be inserted
+    object: GrantUnlockAttachmentsInsertInput!
+
+    # upsert condition
+    onConflict: GrantUnlockAttachmentsOnConflict
+  ): GrantUnlockAttachments
+
+  # insert a single row into the table: "grant_unlock"
+  insertGrantUnlockOne(
+    # the row to be inserted
+    object: GrantUnlockInsertInput!
+
+    # upsert condition
+    onConflict: GrantUnlockOnConflict
+  ): GrantUnlock
 
   # insert data into the table: "individual"
   insertIndividual(
@@ -29869,6 +32490,118 @@ type Mutation {
     updates: [FormSubmissionUpdates!]!
   ): [FormSubmissionMutationResponse]
 
+  # update data of the table: "grant"
+  updateGrant(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantSetInput
+
+    # filter the rows which have to be updated
+    where: GrantBoolExp!
+  ): GrantMutationResponse
+
+  # update data of the table: "grant_attachments"
+  updateGrantAttachments(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantAttachmentsSetInput
+
+    # filter the rows which have to be updated
+    where: GrantAttachmentsBoolExp!
+  ): GrantAttachmentsMutationResponse
+
+  # update single row of the table: "grant_attachments"
+  updateGrantAttachmentsByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantAttachmentsSetInput
+    pkColumns: GrantAttachmentsPkColumnsInput!
+  ): GrantAttachments
+
+  # update multiples rows of table: "grant_attachments"
+  updateGrantAttachmentsMany(
+    # updates to execute, in order
+    updates: [GrantAttachmentsUpdates!]!
+  ): [GrantAttachmentsMutationResponse]
+
+  # update single row of the table: "grant"
+  updateGrantByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantSetInput
+    pkColumns: GrantPkColumnsInput!
+  ): Grant
+
+  # update multiples rows of table: "grant"
+  updateGrantMany(
+    # updates to execute, in order
+    updates: [GrantUpdates!]!
+  ): [GrantMutationResponse]
+
+  # update data of the table: "grant_unlock"
+  updateGrantUnlock(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantUnlockIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantUnlockSetInput
+
+    # filter the rows which have to be updated
+    where: GrantUnlockBoolExp!
+  ): GrantUnlockMutationResponse
+
+  # update data of the table: "grant_unlock_attachments"
+  updateGrantUnlockAttachments(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantUnlockAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantUnlockAttachmentsSetInput
+
+    # filter the rows which have to be updated
+    where: GrantUnlockAttachmentsBoolExp!
+  ): GrantUnlockAttachmentsMutationResponse
+
+  # update single row of the table: "grant_unlock_attachments"
+  updateGrantUnlockAttachmentsByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantUnlockAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantUnlockAttachmentsSetInput
+    pkColumns: GrantUnlockAttachmentsPkColumnsInput!
+  ): GrantUnlockAttachments
+
+  # update multiples rows of table: "grant_unlock_attachments"
+  updateGrantUnlockAttachmentsMany(
+    # updates to execute, in order
+    updates: [GrantUnlockAttachmentsUpdates!]!
+  ): [GrantUnlockAttachmentsMutationResponse]
+
+  # update single row of the table: "grant_unlock"
+  updateGrantUnlockByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: GrantUnlockIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: GrantUnlockSetInput
+    pkColumns: GrantUnlockPkColumnsInput!
+  ): GrantUnlock
+
+  # update multiples rows of table: "grant_unlock"
+  updateGrantUnlockMany(
+    # updates to execute, in order
+    updates: [GrantUnlockUpdates!]!
+  ): [GrantUnlockMutationResponse]
+
   # update data of the table: "individual"
   updateIndividual(
     # increments the numeric columns with given value of the filtered values
@@ -31518,6 +34251,10 @@ type Project {
     # filter the rows returned
     where: FinanceBoolExp
   ): FinanceAggregate!
+
+  # An object relationship
+  grant: Grant
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint!
   imageId: bigint
@@ -31758,6 +34495,7 @@ input ProjectArrRelInsertInput {
 type ProjectAvgFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -31768,6 +34506,7 @@ type ProjectAvgFields {
 input ProjectAvgOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -31792,6 +34531,8 @@ input ProjectBoolExp {
   fileUpload: FileUploadBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
+  grant: GrantBoolExp
+  grantId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   imageId: BigintComparisonExp
@@ -31825,6 +34566,7 @@ enum ProjectConstraint {
 input ProjectIncInput {
   budget: Float
   createdById: bigint
+  grantId: bigint
   id: bigint
   imageId: bigint
   teamId: bigint
@@ -31843,6 +34585,8 @@ input ProjectInsertInput {
   events: EventArrRelInsertInput
   fileUpload: FileUploadObjRelInsertInput
   finances: FinanceArrRelInsertInput
+  grant: GrantObjRelInsertInput
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
@@ -31870,6 +34614,7 @@ type ProjectMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
@@ -31888,6 +34633,7 @@ input ProjectMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   imageId: OrderBy
@@ -31906,6 +34652,7 @@ type ProjectMinFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
@@ -31924,6 +34671,7 @@ input ProjectMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   imageId: OrderBy
@@ -31970,6 +34718,8 @@ input ProjectOrderBy {
   eventsAggregate: EventAggregateOrderBy
   fileUpload: FileUploadOrderBy
   financesAggregate: FinanceAggregateOrderBy
+  grant: GrantOrderBy
+  grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   imageId: OrderBy
@@ -32013,6 +34763,9 @@ enum ProjectSelectColumn {
 
   # column name
   description
+
+  # column name
+  grantId
 
   # column name
   hiddenAt
@@ -32071,6 +34824,7 @@ input ProjectSetInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
@@ -32087,6 +34841,7 @@ input ProjectSetInput {
 type ProjectStddevFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32097,6 +34852,7 @@ type ProjectStddevFields {
 input ProjectStddevOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32107,6 +34863,7 @@ input ProjectStddevOrderBy {
 type ProjectStddevPopFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32117,6 +34874,7 @@ type ProjectStddevPopFields {
 input ProjectStddevPopOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32127,6 +34885,7 @@ input ProjectStddevPopOrderBy {
 type ProjectStddevSampFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32137,6 +34896,7 @@ type ProjectStddevSampFields {
 input ProjectStddevSampOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32160,6 +34920,7 @@ input ProjectStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
@@ -32176,6 +34937,7 @@ input ProjectStreamCursorValueInput {
 type ProjectSumFields {
   budget: Float
   createdById: bigint
+  grantId: bigint
   id: bigint
   imageId: bigint
   teamId: bigint
@@ -32186,6 +34948,7 @@ type ProjectSumFields {
 input ProjectSumOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32807,6 +35570,9 @@ enum ProjectUpdateColumn {
   description
 
   # column name
+  grantId
+
+  # column name
   hiddenAt
 
   # column name
@@ -32852,6 +35618,7 @@ input ProjectUpdates {
 type ProjectVarianceFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32862,6 +35629,7 @@ type ProjectVarianceFields {
 input ProjectVarianceOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32872,6 +35640,7 @@ input ProjectVarianceOrderBy {
 type ProjectVarPopFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32882,6 +35651,7 @@ type ProjectVarPopFields {
 input ProjectVarPopOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -32892,6 +35662,7 @@ input ProjectVarPopOrderBy {
 type ProjectVarSampFields {
   budget: Float
   createdById: Float
+  grantId: Float
   id: Float
   imageId: Float
   teamId: Float
@@ -32902,6 +35673,7 @@ type ProjectVarSampFields {
 input ProjectVarSampOrderBy {
   budget: OrderBy
   createdById: OrderBy
+  grantId: OrderBy
   id: OrderBy
   imageId: OrderBy
   teamId: OrderBy
@@ -34351,6 +37123,162 @@ type Query {
 
   # fetch data from the table: "form_submission" using primary key columns
   formSubmissionByPk(id: bigint!): FormSubmission
+
+  # fetch data from the table: "grant"
+  grant(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # fetch aggregated fields from the table: "grant"
+  grantAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
+
+  # An array relationship
+  grantAttachments(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): [GrantAttachments!]!
+
+  # An aggregate relationship
+  grantAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): GrantAttachmentsAggregate!
+
+  # fetch data from the table: "grant_attachments" using primary key columns
+  grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
+
+  # fetch data from the table: "grant" using primary key columns
+  grantByPk(id: bigint!): Grant
+
+  # fetch data from the table: "grant_unlock"
+  grantUnlock(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # fetch aggregated fields from the table: "grant_unlock"
+  grantUnlockAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grantUnlockAttachments(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): [GrantUnlockAttachments!]!
+
+  # An aggregate relationship
+  grantUnlockAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): GrantUnlockAttachmentsAggregate!
+
+  # fetch data from the table: "grant_unlock_attachments" using primary key columns
+  grantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
+
+  # fetch data from the table: "grant_unlock" using primary key columns
+  grantUnlockByPk(id: bigint!): GrantUnlock
 
   # fetch data from the table: "individual"
   individual(
@@ -41686,6 +44614,210 @@ type Subscription {
     where: FormSubmissionBoolExp
   ): [FormSubmission!]!
 
+  # fetch data from the table: "grant"
+  grant(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # fetch aggregated fields from the table: "grant"
+  grantAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
+
+  # An array relationship
+  grantAttachments(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): [GrantAttachments!]!
+
+  # An aggregate relationship
+  grantAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): GrantAttachmentsAggregate!
+
+  # fetch data from the table: "grant_attachments" using primary key columns
+  grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
+
+  # fetch data from the table in a streaming manner: "grant_attachments"
+  grantAttachmentsStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [GrantAttachmentsStreamCursorInput]!
+
+    # filter the rows returned
+    where: GrantAttachmentsBoolExp
+  ): [GrantAttachments!]!
+
+  # fetch data from the table: "grant" using primary key columns
+  grantByPk(id: bigint!): Grant
+
+  # fetch data from the table in a streaming manner: "grant"
+  grantStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [GrantStreamCursorInput]!
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # fetch data from the table: "grant_unlock"
+  grantUnlock(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # fetch aggregated fields from the table: "grant_unlock"
+  grantUnlockAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grantUnlockAttachments(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): [GrantUnlockAttachments!]!
+
+  # An aggregate relationship
+  grantUnlockAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): GrantUnlockAttachmentsAggregate!
+
+  # fetch data from the table: "grant_unlock_attachments" using primary key columns
+  grantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
+
+  # fetch data from the table in a streaming manner: "grant_unlock_attachments"
+  grantUnlockAttachmentsStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [GrantUnlockAttachmentsStreamCursorInput]!
+
+    # filter the rows returned
+    where: GrantUnlockAttachmentsBoolExp
+  ): [GrantUnlockAttachments!]!
+
+  # fetch data from the table: "grant_unlock" using primary key columns
+  grantUnlockByPk(id: bigint!): GrantUnlock
+
+  # fetch data from the table in a streaming manner: "grant_unlock"
+  grantUnlockStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [GrantUnlockStreamCursorInput]!
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
   # fetch data from the table: "individual"
   individual(
     # distinct select on columns
@@ -44281,6 +47413,42 @@ type Team {
 
   # An object relationship
   form: Form
+
+  # An array relationship
+  grants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  grantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -44713,6 +47881,8 @@ input TeamBoolExp {
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   form: FormBoolExp
+  grants: GrantBoolExp
+  grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -45097,6 +48267,7 @@ input TeamInsertInput {
   fileUpload: FileUploadObjRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
+  grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
@@ -47262,6 +50433,7 @@ input TeamOrderBy {
   fileUpload: FileUploadOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
+  grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
@@ -48742,6 +51914,78 @@ type Tenant {
     # filter the rows returned
     where: FormBoolExp
   ): FormAggregate!
+
+  # An array relationship
+  grantUnlocks(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): [GrantUnlock!]!
+
+  # An aggregate relationship
+  grantUnlocksAggregate(
+    # distinct select on columns
+    distinctOn: [GrantUnlockSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantUnlockOrderBy!]
+
+    # filter the rows returned
+    where: GrantUnlockBoolExp
+  ): GrantUnlockAggregate!
+
+  # An array relationship
+  grants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  grantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
   id: bigint!
 
   # An object relationship
@@ -49743,6 +52987,10 @@ input TenantBoolExp {
   formSubmissionsAggregate: FormSubmissionAggregateBoolExp
   forms: FormBoolExp
   formsAggregate: FormAggregateBoolExp
+  grantUnlocks: GrantUnlockBoolExp
+  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grants: GrantBoolExp
+  grantsAggregate: GrantAggregateBoolExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
   individuals: IndividualBoolExp
@@ -49863,6 +53111,8 @@ input TenantInsertInput {
   form: FormObjRelInsertInput
   formSubmissions: FormSubmissionArrRelInsertInput
   forms: FormArrRelInsertInput
+  grantUnlocks: GrantUnlockArrRelInsertInput
+  grants: GrantArrRelInsertInput
   id: bigint
   individual: IndividualObjRelInsertInput
   individuals: IndividualArrRelInsertInput
@@ -50037,6 +53287,8 @@ input TenantOrderBy {
   form: FormOrderBy
   formSubmissionsAggregate: FormSubmissionAggregateOrderBy
   formsAggregate: FormAggregateOrderBy
+  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantsAggregate: GrantAggregateOrderBy
   id: OrderBy
   individual: IndividualOrderBy
   individualsAggregate: IndividualAggregateOrderBy

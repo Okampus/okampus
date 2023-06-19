@@ -61,6 +61,8 @@ export * from './resources/team/expense/expense.props';
 export * from './resources/team/finance/finance-create.dto';
 export * from './resources/team/finance/finance-update.dto';
 export * from './resources/team/finance/finance.props';
+export * from './resources/team/grant-unlock/grant-unlock.props';
+export * from './resources/team/grant/grant.props';
 export * from './resources/team/mission-join/mission-join.props';
 export * from './resources/team/mission/mission.props';
 export * from './resources/team/pole/pole.props';

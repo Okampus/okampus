@@ -72,12 +72,54 @@ array_relationships:
         table:
           name: finance_attachments
           schema: public
+  - name: generatedDocumentGrantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: generated_document_id
+        table:
+          name: grant_unlock
+          schema: public
+  - name: grantAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: grant_attachments
+          schema: public
+  - name: grantUnlockAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: grant_unlock_attachments
+          schema: public
+  - name: grantUnlocks
+    using:
+      foreign_key_constraint_on:
+        column: signature_id
+        table:
+          name: grant_unlock
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: generated_document_id
+        table:
+          name: grant
+          schema: public
   - name: projects
     using:
       foreign_key_constraint_on:
         column: image_id
         table:
           name: project
+          schema: public
+  - name: signatureGrants
+    using:
+      foreign_key_constraint_on:
+        column: signature_id
+        table:
+          name: grant
           schema: public
   - name: tags
     using:

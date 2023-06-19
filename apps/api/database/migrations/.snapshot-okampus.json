@@ -3456,6 +3456,247 @@
           "default": "null",
           "mappedType": "datetime"
         },
+        "amount_asked": {
+          "name": "amount_asked",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "amount_given": {
+          "name": "amount_given",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Completed'",
+          "enumItems": [
+            "Canceled",
+            "Ongoing",
+            "Completed"
+          ],
+          "mappedType": "enum"
+        },
+        "validated_by_id": {
+          "name": "validated_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "validated_at": {
+          "name": "validated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "signature_id": {
+          "name": "signature_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "generated_document_id": {
+          "name": "generated_document_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_created_by_id_foreign": {
+          "constraintName": "grant_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_tenant_id_foreign": {
+          "constraintName": "grant_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "grant_validated_by_id_foreign": {
+          "constraintName": "grant_validated_by_id_foreign",
+          "columnNames": [
+            "validated_by_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_team_id_foreign": {
+          "constraintName": "grant_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "grant_signature_id_foreign": {
+          "constraintName": "grant_signature_id_foreign",
+          "columnNames": [
+            "signature_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_generated_document_id_foreign": {
+          "constraintName": "grant_generated_document_id_foreign",
+          "columnNames": [
+            "generated_document_id"
+          ],
+          "localTableName": "public.grant",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"id_generator\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -3583,6 +3824,16 @@
           "nullable": true,
           "default": "null",
           "mappedType": "bigint"
+        },
+        "grant_id": {
+          "name": "grant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
         }
       },
       "name": "project",
@@ -3647,7 +3898,20 @@
             "id"
           ],
           "referencedTableName": "public.file_upload",
-          "deleteRule": "cascade",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "project_grant_id_foreign": {
+          "constraintName": "project_grant_id_foreign",
+          "columnNames": [
+            "grant_id"
+          ],
+          "localTableName": "public.project",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -3777,6 +4041,71 @@
             "id"
           ],
           "referencedTableName": "public.team_member",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "grant_id": {
+          "name": "grant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant_attachments",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_attachments_pkey",
+          "columnNames": [
+            "grant_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_attachments_grant_id_foreign": {
+          "constraintName": "grant_attachments_grant_id_foreign",
+          "columnNames": [
+            "grant_id"
+          ],
+          "localTableName": "public.grant_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "grant_attachments_file_upload_id_foreign": {
+          "constraintName": "grant_attachments_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.grant_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -8955,6 +9284,8 @@
             "TeamJoin",
             "TeamMember",
             "TeamMetric",
+            "Grant",
+            "GrantUnlock",
             "Canteen",
             "CanteenFood",
             "CanteenMenu",
@@ -10873,6 +11204,335 @@
           ],
           "referencedTableName": "public.project",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"id_generator\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "amount_asked": {
+          "name": "amount_asked",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "amount_given": {
+          "name": "amount_given",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Completed'",
+          "enumItems": [
+            "Canceled",
+            "Ongoing",
+            "Completed"
+          ],
+          "mappedType": "enum"
+        },
+        "validated_by_id": {
+          "name": "validated_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "validated_at": {
+          "name": "validated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "grant_id": {
+          "name": "grant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "finance_id": {
+          "name": "finance_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "signature_id": {
+          "name": "signature_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "generated_document_id": {
+          "name": "generated_document_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant_unlock",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_unlock_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_unlock_created_by_id_foreign": {
+          "constraintName": "grant_unlock_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_tenant_id_foreign": {
+          "constraintName": "grant_unlock_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_validated_by_id_foreign": {
+          "constraintName": "grant_unlock_validated_by_id_foreign",
+          "columnNames": [
+            "validated_by_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_grant_id_foreign": {
+          "constraintName": "grant_unlock_grant_id_foreign",
+          "columnNames": [
+            "grant_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_finance_id_foreign": {
+          "constraintName": "grant_unlock_finance_id_foreign",
+          "columnNames": [
+            "finance_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.finance",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_signature_id_foreign": {
+          "constraintName": "grant_unlock_signature_id_foreign",
+          "columnNames": [
+            "signature_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_generated_document_id_foreign": {
+          "constraintName": "grant_unlock_generated_document_id_foreign",
+          "columnNames": [
+            "generated_document_id"
+          ],
+          "localTableName": "public.grant_unlock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "grant_unlock_id": {
+          "name": "grant_unlock_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant_unlock_attachments",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_unlock_attachments_pkey",
+          "columnNames": [
+            "grant_unlock_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_unlock_attachments_grant_unlock_id_foreign": {
+          "constraintName": "grant_unlock_attachments_grant_unlock_id_foreign",
+          "columnNames": [
+            "grant_unlock_id"
+          ],
+          "localTableName": "public.grant_unlock_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant_unlock",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "grant_unlock_attachments_file_upload_id_foreign": {
+          "constraintName": "grant_unlock_attachments_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.grant_unlock_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

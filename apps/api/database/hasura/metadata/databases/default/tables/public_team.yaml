@@ -80,6 +80,13 @@ array_relationships:
         table:
           name: finance
           schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: grant
+          schema: public
   - name: missions
     using:
       foreign_key_constraint_on:
