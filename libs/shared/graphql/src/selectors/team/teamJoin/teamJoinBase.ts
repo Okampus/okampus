@@ -10,7 +10,7 @@ export const teamJoinBaseInfo = Selector('TeamJoin')({
   ...entityBase,
   state: true,
   team: entityBase,
-  role: roleBaseInfo,
+  receivedRole: roleBaseInfo,
   formSubmission: formSubmissionBaseInfo,
   individual: individualBaseInfo,
   userInfo: userBaseInfo,

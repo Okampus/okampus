@@ -201,7 +201,7 @@ export function TeamJoinManageView() {
                       <div className="flex gap-12 px-1">
                         <div className="flex flex-col gap-2">
                           <div className="font-semibold text-2 text-lg">Rôle souhaité</div>
-                          <div className="font-semibold text-2 text-lg">{selectedTeamJoin.role?.name}</div>
+                          <div className="font-semibold text-2 text-lg">{selectedTeamJoin.receivedRole?.name}</div>
                         </div>
                         {selectedTeamJoin.state === ApprovalState.Approved && (
                           <div className="flex flex-col gap-2">
