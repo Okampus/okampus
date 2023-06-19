@@ -37,6 +37,20 @@ array_relationships:
         table:
           name: event_join
           schema: public
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: user_info_id
+        table:
+          name: event_supervisors
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: joiner_id
+        table:
+          name: mission_join
+          schema: public
   - name: sessions
     using:
       foreign_key_constraint_on:

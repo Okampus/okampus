@@ -1,3 +1,24 @@
 table:
   name: expense_item
   schema: public
+object_relationships:
+  - name: actorAddress
+    using:
+      foreign_key_constraint_on: address_id
+  - name: expense
+    using:
+      foreign_key_constraint_on: expense_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: expenseItemAttachments
+    using:
+      foreign_key_constraint_on:
+        column: expense_item_id
+        table:
+          name: expense_item_attachments
+          schema: public

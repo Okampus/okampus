@@ -138,12 +138,26 @@ array_relationships:
         table:
           name: event_join
           schema: public
+  - name: eventManages
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_manage
+          schema: public
   - name: events
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
           name: event
+          schema: public
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: expense_item
           schema: public
   - name: expenses
     using:
@@ -207,6 +221,27 @@ array_relationships:
         column: tenant_id
         table:
           name: issue
+          schema: public
+  - name: legalUnits
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: legal_unit
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: mission_join
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: mission
           schema: public
   - name: poles
     using:
@@ -305,6 +340,13 @@ array_relationships:
         column: tenant_id
         table:
           name: team
+          schema: public
+  - name: threads
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: thread
           schema: public
   - name: userInfos
     using:

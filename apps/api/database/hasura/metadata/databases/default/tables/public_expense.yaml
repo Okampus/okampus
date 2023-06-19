@@ -18,6 +18,17 @@ object_relationships:
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
+  - name: individualBySettledById
+    using:
+      foreign_key_constraint_on: settled_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: expense_id
+        table:
+          name: expense_item
+          schema: public

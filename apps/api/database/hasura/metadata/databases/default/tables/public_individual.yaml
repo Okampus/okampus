@@ -12,7 +12,7 @@ object_relationships:
   - name: botInfo
     using:
       foreign_key_constraint_on: bot_id
-  - name: individual
+  - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant
@@ -113,12 +113,33 @@ array_relationships:
         table:
           name: cohort
           schema: public
+  - name: completedSettledMissionJoins
+    using:
+      foreign_key_constraint_on:
+        column: completed_settled_by_id
+        table:
+          name: mission_join
+          schema: public
   - name: contents
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: content
+          schema: public
+  - name: createdEventJoins
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: createdTeamJoins
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_join
           schema: public
   - name: documents
     using:
@@ -155,12 +176,12 @@ array_relationships:
         table:
           name: event_approval
           schema: public
-  - name: eventJoins
+  - name: eventManages
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: event_join
+          name: event_manage
           schema: public
   - name: events
     using:
@@ -169,10 +190,24 @@ array_relationships:
         table:
           name: event
           schema: public
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: expense_item
+          schema: public
   - name: expenses
     using:
       foreign_key_constraint_on:
         column: created_by_id
+        table:
+          name: expense
+          schema: public
+  - name: expensesBySettledById
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
         table:
           name: expense
           schema: public
@@ -225,6 +260,13 @@ array_relationships:
         table:
           name: individual
           schema: public
+  - name: issueContributors
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: issue_contributors
+          schema: public
   - name: issues
     using:
       foreign_key_constraint_on:
@@ -232,12 +274,40 @@ array_relationships:
         table:
           name: issue
           schema: public
+  - name: legalUnits
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: legal_unit
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: mission_join
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: mission
+          schema: public
   - name: poles
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: pole
+          schema: public
+  - name: presenceSettledEventJoins
+    using:
+      foreign_key_constraint_on:
+        column: presence_settled_by_id
+        table:
+          name: event_join
           schema: public
   - name: projects
     using:
@@ -274,6 +344,27 @@ array_relationships:
         table:
           name: session
           schema: public
+  - name: settledActions
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: action
+          schema: public
+  - name: settledEventJoins
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: settledMissionJoins
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: mission_join
+          schema: public
   - name: shortcuts
     using:
       foreign_key_constraint_on:
@@ -305,7 +396,7 @@ array_relationships:
   - name: teamJoins
     using:
       foreign_key_constraint_on:
-        column: created_by_id
+        column: settled_by_id
         table:
           name: team_join
           schema: public
@@ -336,6 +427,20 @@ array_relationships:
         column: created_by_id
         table:
           name: tenant
+          schema: public
+  - name: threadContributors
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: thread_contributors
+          schema: public
+  - name: threads
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: thread
           schema: public
   - name: userInfos
     using:

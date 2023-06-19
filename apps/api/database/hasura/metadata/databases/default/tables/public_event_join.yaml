@@ -26,9 +26,16 @@ object_relationships:
   - name: individualBySettledById
     using:
       foreign_key_constraint_on: settled_by_id
-  - name: missionJoin
+  - name: linkedMissionJoin
     using:
       foreign_key_constraint_on: mission_join_id
+  - name: missionJoin
+    using:
+      foreign_key_constraint_on:
+        column: event_join_id
+        table:
+          name: mission_join
+          schema: public
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

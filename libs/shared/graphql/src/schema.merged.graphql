@@ -595,6 +595,7 @@ type Actor {
   id: bigint!
   individual: Individual
   individualId: bigint
+  legalUnit: LegalUnit
   legalUnitId: bigint
   name: String!
   reports(distinctOn: [ReportSelectColumn!], limit: Int, offset: Int, orderBy: [ReportOrderBy!], where: ReportBoolExp): [Report!]!
@@ -626,6 +627,8 @@ type ActorAddress {
   deletedAt: timestamptz
   events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
   eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
+  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
   fileUpload: FileUpload
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
@@ -748,6 +751,8 @@ input ActorAddressBoolExp {
   deletedAt: TimestamptzComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   fileUpload: FileUploadBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
@@ -795,6 +800,7 @@ input ActorAddressInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   events: EventArrRelInsertInput
+  expenseItems: ExpenseItemArrRelInsertInput
   fileUpload: FileUploadObjRelInsertInput
   finances: FinanceArrRelInsertInput
   hiddenAt: timestamptz
@@ -920,6 +926,7 @@ input ActorAddressOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventsAggregate: EventAggregateOrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   fileUpload: FileUploadOrderBy
   financesAggregate: FinanceAggregateOrderBy
   hiddenAt: OrderBy
@@ -1781,6 +1788,7 @@ input ActorBoolExp {
   id: BigintComparisonExp
   individual: IndividualBoolExp
   individualId: BigintComparisonExp
+  legalUnit: LegalUnitBoolExp
   legalUnitId: BigintComparisonExp
   name: StringComparisonExp
   reports: ReportBoolExp
@@ -2231,6 +2239,7 @@ input ActorInsertInput {
   id: bigint
   individual: IndividualObjRelInsertInput
   individualId: bigint
+  legalUnit: LegalUnitObjRelInsertInput
   legalUnitId: bigint
   name: String
   reports: ReportArrRelInsertInput
@@ -2357,6 +2366,7 @@ input ActorOrderBy {
   id: OrderBy
   individual: IndividualOrderBy
   individualId: OrderBy
+  legalUnit: LegalUnitOrderBy
   legalUnitId: OrderBy
   name: OrderBy
   reportsAggregate: ReportAggregateOrderBy
@@ -5836,17 +5846,22 @@ type Content {
   content: Content
   contentAttachments(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): [ContentAttachments!]!
   contentAttachmentsAggregate(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): ContentAttachmentsAggregate!
+  contentByReplyingToId: Content
   contents(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
   contentsAggregate(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): ContentAggregate!
+  contentsByReplyingToId(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
+  contentsByReplyingToIdAggregate(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): ContentAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  event: Event
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
   favoritesAggregate(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): FavoriteAggregate!
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
   isAnonymous: Boolean!
+  issue: Issue
   parentId: bigint
   reactions(distinctOn: [ReactionSelectColumn!], limit: Int, offset: Int, orderBy: [ReactionOrderBy!], where: ReactionBoolExp): [Reaction!]!
   reactionsAggregate(distinctOn: [ReactionSelectColumn!], limit: Int, offset: Int, orderBy: [ReactionOrderBy!], where: ReactionBoolExp): ReactionAggregate!
@@ -5858,6 +5873,7 @@ type Content {
   tenant: Tenant!
   tenantId: bigint!
   text: String!
+  thread: Thread
   validations(distinctOn: [ValidationSelectColumn!], limit: Int, offset: Int, orderBy: [ValidationOrderBy!], where: ValidationBoolExp): [Validation!]!
   validationsAggregate(distinctOn: [ValidationSelectColumn!], limit: Int, offset: Int, orderBy: [ValidationOrderBy!], where: ValidationBoolExp): ValidationAggregate!
   votes(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): [Vote!]!
@@ -6190,17 +6206,22 @@ input ContentBoolExp {
   content: ContentBoolExp
   contentAttachments: ContentAttachmentsBoolExp
   contentAttachmentsAggregate: ContentAttachmentsAggregateBoolExp
+  contentByReplyingToId: ContentBoolExp
   contents: ContentBoolExp
   contentsAggregate: ContentAggregateBoolExp
+  contentsByReplyingToId: ContentBoolExp
+  contentsByReplyingToIdAggregate: ContentAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  event: EventBoolExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
   isAnonymous: BooleanComparisonExp
+  issue: IssueBoolExp
   parentId: BigintComparisonExp
   reactions: ReactionBoolExp
   reactionsAggregate: ReactionAggregateBoolExp
@@ -6212,6 +6233,7 @@ input ContentBoolExp {
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   text: StringComparisonExp
+  thread: ThreadBoolExp
   validations: ValidationBoolExp
   validationsAggregate: ValidationAggregateBoolExp
   votes: VoteBoolExp
@@ -6234,15 +6256,19 @@ input ContentIncInput {
 input ContentInsertInput {
   content: ContentObjRelInsertInput
   contentAttachments: ContentAttachmentsArrRelInsertInput
+  contentByReplyingToId: ContentObjRelInsertInput
   contents: ContentArrRelInsertInput
+  contentsByReplyingToId: ContentArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  event: EventObjRelInsertInput
   favorites: FavoriteArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   isAnonymous: Boolean
+  issue: IssueObjRelInsertInput
   parentId: bigint
   reactions: ReactionArrRelInsertInput
   replyingToId: bigint
@@ -6252,6 +6278,7 @@ input ContentInsertInput {
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   text: String
+  thread: ThreadObjRelInsertInput
   validations: ValidationArrRelInsertInput
   votes: VoteArrRelInsertInput
 }
@@ -6327,15 +6354,19 @@ input ContentOnConflict {
 input ContentOrderBy {
   content: ContentOrderBy
   contentAttachmentsAggregate: ContentAttachmentsAggregateOrderBy
+  contentByReplyingToId: ContentOrderBy
   contentsAggregate: ContentAggregateOrderBy
+  contentsByReplyingToIdAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  event: EventOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   isAnonymous: OrderBy
+  issue: IssueOrderBy
   parentId: OrderBy
   reactionsAggregate: ReactionAggregateOrderBy
   replyingToId: OrderBy
@@ -6345,6 +6376,7 @@ input ContentOrderBy {
   tenant: TenantOrderBy
   tenantId: OrderBy
   text: OrderBy
+  thread: ThreadOrderBy
   validationsAggregate: ValidationAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
 }
@@ -7046,6 +7078,10 @@ type Event {
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
+  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
+  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   fileUpload: FileUpload
@@ -8473,6 +8509,10 @@ input EventBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
+  eventManages: EventManageBoolExp
+  eventManagesAggregate: EventManageAggregateBoolExp
+  eventSupervisors: EventSupervisorsBoolExp
+  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
   fileUpload: FileUploadBoolExp
@@ -8554,6 +8594,8 @@ input EventInsertInput {
   eventApprovalStep: EventApprovalStepObjRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
+  eventManages: EventManageArrRelInsertInput
+  eventSupervisors: EventSupervisorsArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   fileUpload: FileUploadObjRelInsertInput
   finances: FinanceArrRelInsertInput
@@ -8604,6 +8646,7 @@ type EventJoin {
   individualBySettledById: Individual
   joinedForId: bigint
   joinerId: bigint!
+  linkedMissionJoin: MissionJoin
   missionJoin: MissionJoin
   missionJoinId: bigint
   presence: Boolean
@@ -8738,6 +8781,7 @@ input EventJoinBoolExp {
   individualBySettledById: IndividualBoolExp
   joinedForId: BigintComparisonExp
   joinerId: BigintComparisonExp
+  linkedMissionJoin: MissionJoinBoolExp
   missionJoin: MissionJoinBoolExp
   missionJoinId: BigintComparisonExp
   presence: BooleanComparisonExp
@@ -8792,6 +8836,7 @@ input EventJoinInsertInput {
   individualBySettledById: IndividualObjRelInsertInput
   joinedForId: bigint
   joinerId: bigint
+  linkedMissionJoin: MissionJoinObjRelInsertInput
   missionJoin: MissionJoinObjRelInsertInput
   missionJoinId: bigint
   presence: Boolean
@@ -8931,6 +8976,7 @@ input EventJoinOrderBy {
   individualBySettledById: IndividualOrderBy
   joinedForId: OrderBy
   joinerId: OrderBy
+  linkedMissionJoin: MissionJoinOrderBy
   missionJoin: MissionJoinOrderBy
   missionJoinId: OrderBy
   presence: OrderBy
@@ -9276,16 +9322,35 @@ type EventManage {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  event: Event!
   eventId: bigint!
+  eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
+  eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
+  team: Team!
   teamId: bigint!
+  tenant: Tenant!
   tenantId: bigint!
 }
 
 type EventManageAggregate {
   aggregate: EventManageAggregateFields
   nodes: [EventManage!]!
+}
+
+input EventManageAggregateBoolExp {
+  count: eventManageAggregateBoolExpCount
+}
+
+input eventManageAggregateBoolExpCount {
+  arguments: [EventManageSelectColumn!]
+  distinct: Boolean
+  filter: EventManageBoolExp
+  predicate: IntComparisonExp!
 }
 
 type EventManageAggregateFields {
@@ -9302,12 +9367,39 @@ type EventManageAggregateFields {
   variance: EventManageVarianceFields
 }
 
+input EventManageAggregateOrderBy {
+  avg: EventManageAvgOrderBy
+  count: OrderBy
+  max: EventManageMaxOrderBy
+  min: EventManageMinOrderBy
+  stddev: EventManageStddevOrderBy
+  stddevPop: EventManageStddevPopOrderBy
+  stddevSamp: EventManageStddevSampOrderBy
+  sum: EventManageSumOrderBy
+  varPop: EventManageVarPopOrderBy
+  varSamp: EventManageVarSampOrderBy
+  variance: EventManageVarianceOrderBy
+}
+
+input EventManageArrRelInsertInput {
+  data: [EventManageInsertInput!]!
+  onConflict: EventManageOnConflict
+}
+
 type EventManageAvgFields {
   createdById: Float
   eventId: Float
   id: Float
   teamId: Float
   tenantId: Float
+}
+
+input EventManageAvgOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 input EventManageBoolExp {
@@ -9318,10 +9410,18 @@ input EventManageBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  event: EventBoolExp
   eventId: BigintComparisonExp
+  eventJoins: EventJoinBoolExp
+  eventJoinsAggregate: EventJoinAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
+  team: TeamBoolExp
   teamId: BigintComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
 
@@ -9342,10 +9442,16 @@ input EventManageInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  event: EventObjRelInsertInput
   eventId: bigint
+  eventJoins: EventJoinArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
+  missions: MissionArrRelInsertInput
+  team: TeamObjRelInsertInput
   teamId: bigint
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
@@ -9361,6 +9467,18 @@ type EventManageMaxFields {
   tenantId: bigint
 }
 
+input EventManageMaxOrderBy {
+  activities: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type EventManageMinFields {
   activities: String
   createdAt: timestamptz
@@ -9371,6 +9489,18 @@ type EventManageMinFields {
   id: bigint
   teamId: bigint
   tenantId: bigint
+}
+
+input EventManageMinOrderBy {
+  activities: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 type EventManageMutationResponse {
@@ -9394,10 +9524,16 @@ input EventManageOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  event: EventOrderBy
   eventId: OrderBy
+  eventJoinsAggregate: EventJoinAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individual: IndividualOrderBy
+  missionsAggregate: MissionAggregateOrderBy
+  team: TeamOrderBy
   teamId: OrderBy
+  tenant: TenantOrderBy
   tenantId: OrderBy
 }
 
@@ -9437,6 +9573,14 @@ type EventManageStddevFields {
   tenantId: Float
 }
 
+input EventManageStddevOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type EventManageStddevPopFields {
   createdById: Float
   eventId: Float
@@ -9445,12 +9589,28 @@ type EventManageStddevPopFields {
   tenantId: Float
 }
 
+input EventManageStddevPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type EventManageStddevSampFields {
   createdById: Float
   eventId: Float
   id: Float
   teamId: Float
   tenantId: Float
+}
+
+input EventManageStddevSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 input EventManageStreamCursorInput {
@@ -9476,6 +9636,14 @@ type EventManageSumFields {
   id: bigint
   teamId: bigint
   tenantId: bigint
+}
+
+input EventManageSumOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 enum EventManageUpdateColumn {
@@ -9504,6 +9672,14 @@ type EventManageVarianceFields {
   tenantId: Float
 }
 
+input EventManageVarianceOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type EventManageVarPopFields {
   createdById: Float
   eventId: Float
@@ -9512,12 +9688,28 @@ type EventManageVarPopFields {
   tenantId: Float
 }
 
+input EventManageVarPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type EventManageVarSampFields {
   createdById: Float
   eventId: Float
   id: Float
   teamId: Float
   tenantId: Float
+}
+
+input EventManageVarSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 type EventMaxFields {
@@ -9655,6 +9847,8 @@ input EventOrderBy {
   eventApprovalStep: EventApprovalStepOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
+  eventManagesAggregate: EventManageAggregateOrderBy
+  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   fileUpload: FileUploadOrderBy
   financesAggregate: FinanceAggregateOrderBy
@@ -9928,13 +10122,26 @@ input EventSumOrderBy {
 }
 
 type EventSupervisors {
+  event: Event!
   eventId: bigint!
+  userInfo: UserInfo!
   userInfoId: bigint!
 }
 
 type EventSupervisorsAggregate {
   aggregate: EventSupervisorsAggregateFields
   nodes: [EventSupervisors!]!
+}
+
+input EventSupervisorsAggregateBoolExp {
+  count: eventSupervisorsAggregateBoolExpCount
+}
+
+input eventSupervisorsAggregateBoolExpCount {
+  arguments: [EventSupervisorsSelectColumn!]
+  distinct: Boolean
+  filter: EventSupervisorsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type EventSupervisorsAggregateFields {
@@ -9951,16 +10158,42 @@ type EventSupervisorsAggregateFields {
   variance: EventSupervisorsVarianceFields
 }
 
+input EventSupervisorsAggregateOrderBy {
+  avg: EventSupervisorsAvgOrderBy
+  count: OrderBy
+  max: EventSupervisorsMaxOrderBy
+  min: EventSupervisorsMinOrderBy
+  stddev: EventSupervisorsStddevOrderBy
+  stddevPop: EventSupervisorsStddevPopOrderBy
+  stddevSamp: EventSupervisorsStddevSampOrderBy
+  sum: EventSupervisorsSumOrderBy
+  varPop: EventSupervisorsVarPopOrderBy
+  varSamp: EventSupervisorsVarSampOrderBy
+  variance: EventSupervisorsVarianceOrderBy
+}
+
+input EventSupervisorsArrRelInsertInput {
+  data: [EventSupervisorsInsertInput!]!
+  onConflict: EventSupervisorsOnConflict
+}
+
 type EventSupervisorsAvgFields {
   eventId: Float
   userInfoId: Float
+}
+
+input EventSupervisorsAvgOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
 }
 
 input EventSupervisorsBoolExp {
   _and: [EventSupervisorsBoolExp!]
   _not: EventSupervisorsBoolExp
   _or: [EventSupervisorsBoolExp!]
+  event: EventBoolExp
   eventId: BigintComparisonExp
+  userInfo: UserInfoBoolExp
   userInfoId: BigintComparisonExp
 }
 
@@ -9974,7 +10207,9 @@ input EventSupervisorsIncInput {
 }
 
 input EventSupervisorsInsertInput {
+  event: EventObjRelInsertInput
   eventId: bigint
+  userInfo: UserInfoObjRelInsertInput
   userInfoId: bigint
 }
 
@@ -9983,9 +10218,19 @@ type EventSupervisorsMaxFields {
   userInfoId: bigint
 }
 
+input EventSupervisorsMaxOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
+}
+
 type EventSupervisorsMinFields {
   eventId: bigint
   userInfoId: bigint
+}
+
+input EventSupervisorsMinOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
 }
 
 type EventSupervisorsMutationResponse {
@@ -10000,7 +10245,9 @@ input EventSupervisorsOnConflict {
 }
 
 input EventSupervisorsOrderBy {
+  event: EventOrderBy
   eventId: OrderBy
+  userInfo: UserInfoOrderBy
   userInfoId: OrderBy
 }
 
@@ -10024,14 +10271,29 @@ type EventSupervisorsStddevFields {
   userInfoId: Float
 }
 
+input EventSupervisorsStddevOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
+}
+
 type EventSupervisorsStddevPopFields {
   eventId: Float
   userInfoId: Float
 }
 
+input EventSupervisorsStddevPopOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
+}
+
 type EventSupervisorsStddevSampFields {
   eventId: Float
   userInfoId: Float
+}
+
+input EventSupervisorsStddevSampOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
 }
 
 input EventSupervisorsStreamCursorInput {
@@ -10047,6 +10309,11 @@ input EventSupervisorsStreamCursorValueInput {
 type EventSupervisorsSumFields {
   eventId: bigint
   userInfoId: bigint
+}
+
+input EventSupervisorsSumOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
 }
 
 enum EventSupervisorsUpdateColumn {
@@ -10065,14 +10332,29 @@ type EventSupervisorsVarianceFields {
   userInfoId: Float
 }
 
+input EventSupervisorsVarianceOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
+}
+
 type EventSupervisorsVarPopFields {
   eventId: Float
   userInfoId: Float
 }
 
+input EventSupervisorsVarPopOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
+}
+
 type EventSupervisorsVarSampFields {
   eventId: Float
   userInfoId: Float
+}
+
+input EventSupervisorsVarSampOrderBy {
+  eventId: OrderBy
+  userInfoId: OrderBy
 }
 
 type EventTags {
@@ -10455,12 +10737,15 @@ type Expense {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
+  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
   expenseReportId: bigint!
   fileUpload: FileUpload!
   finance: Finance
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
+  individualBySettledById: Individual
   lastNotifiedAt: timestamptz
   settledAt: timestamptz
   settledById: bigint
@@ -10546,12 +10831,15 @@ input ExpenseBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   expenseReportId: BigintComparisonExp
   fileUpload: FileUploadBoolExp
   finance: FinanceBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  individualBySettledById: IndividualBoolExp
   lastNotifiedAt: TimestamptzComparisonExp
   settledAt: TimestamptzComparisonExp
   settledById: BigintComparisonExp
@@ -10580,12 +10868,14 @@ input ExpenseInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expenseItems: ExpenseItemArrRelInsertInput
   expenseReportId: bigint
   fileUpload: FileUploadObjRelInsertInput
   finance: FinanceObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  individualBySettledById: IndividualObjRelInsertInput
   lastNotifiedAt: timestamptz
   settledAt: timestamptz
   settledById: bigint
@@ -10595,18 +10885,24 @@ input ExpenseInsertInput {
 }
 
 type ExpenseItem {
+  actorAddress: ActorAddress
   addressId: bigint
   category: String!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  expense: Expense
   expenseId: bigint
+  expenseItemAttachments(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): [ExpenseItemAttachments!]!
+  expenseItemAttachmentsAggregate(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): ExpenseItemAttachmentsAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
   name: String!
   payedAt: timestamptz
   quantity: smallint!
+  tenant: Tenant!
   tenantId: bigint!
   unitCost: Float!
 }
@@ -10614,6 +10910,17 @@ type ExpenseItem {
 type ExpenseItemAggregate {
   aggregate: ExpenseItemAggregateFields
   nodes: [ExpenseItem!]!
+}
+
+input ExpenseItemAggregateBoolExp {
+  count: expenseItemAggregateBoolExpCount
+}
+
+input expenseItemAggregateBoolExpCount {
+  arguments: [ExpenseItemSelectColumn!]
+  distinct: Boolean
+  filter: ExpenseItemBoolExp
+  predicate: IntComparisonExp!
 }
 
 type ExpenseItemAggregateFields {
@@ -10630,14 +10937,46 @@ type ExpenseItemAggregateFields {
   variance: ExpenseItemVarianceFields
 }
 
+input ExpenseItemAggregateOrderBy {
+  avg: ExpenseItemAvgOrderBy
+  count: OrderBy
+  max: ExpenseItemMaxOrderBy
+  min: ExpenseItemMinOrderBy
+  stddev: ExpenseItemStddevOrderBy
+  stddevPop: ExpenseItemStddevPopOrderBy
+  stddevSamp: ExpenseItemStddevSampOrderBy
+  sum: ExpenseItemSumOrderBy
+  varPop: ExpenseItemVarPopOrderBy
+  varSamp: ExpenseItemVarSampOrderBy
+  variance: ExpenseItemVarianceOrderBy
+}
+
+input ExpenseItemArrRelInsertInput {
+  data: [ExpenseItemInsertInput!]!
+  onConflict: ExpenseItemOnConflict
+}
+
 type ExpenseItemAttachments {
+  expenseItem: ExpenseItem!
   expenseItemId: bigint!
+  fileUpload: FileUpload!
   fileUploadId: bigint!
 }
 
 type ExpenseItemAttachmentsAggregate {
   aggregate: ExpenseItemAttachmentsAggregateFields
   nodes: [ExpenseItemAttachments!]!
+}
+
+input ExpenseItemAttachmentsAggregateBoolExp {
+  count: expenseItemAttachmentsAggregateBoolExpCount
+}
+
+input expenseItemAttachmentsAggregateBoolExpCount {
+  arguments: [ExpenseItemAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: ExpenseItemAttachmentsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type ExpenseItemAttachmentsAggregateFields {
@@ -10654,16 +10993,42 @@ type ExpenseItemAttachmentsAggregateFields {
   variance: ExpenseItemAttachmentsVarianceFields
 }
 
+input ExpenseItemAttachmentsAggregateOrderBy {
+  avg: ExpenseItemAttachmentsAvgOrderBy
+  count: OrderBy
+  max: ExpenseItemAttachmentsMaxOrderBy
+  min: ExpenseItemAttachmentsMinOrderBy
+  stddev: ExpenseItemAttachmentsStddevOrderBy
+  stddevPop: ExpenseItemAttachmentsStddevPopOrderBy
+  stddevSamp: ExpenseItemAttachmentsStddevSampOrderBy
+  sum: ExpenseItemAttachmentsSumOrderBy
+  varPop: ExpenseItemAttachmentsVarPopOrderBy
+  varSamp: ExpenseItemAttachmentsVarSampOrderBy
+  variance: ExpenseItemAttachmentsVarianceOrderBy
+}
+
+input ExpenseItemAttachmentsArrRelInsertInput {
+  data: [ExpenseItemAttachmentsInsertInput!]!
+  onConflict: ExpenseItemAttachmentsOnConflict
+}
+
 type ExpenseItemAttachmentsAvgFields {
   expenseItemId: Float
   fileUploadId: Float
+}
+
+input ExpenseItemAttachmentsAvgOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
 }
 
 input ExpenseItemAttachmentsBoolExp {
   _and: [ExpenseItemAttachmentsBoolExp!]
   _not: ExpenseItemAttachmentsBoolExp
   _or: [ExpenseItemAttachmentsBoolExp!]
+  expenseItem: ExpenseItemBoolExp
   expenseItemId: BigintComparisonExp
+  fileUpload: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
 }
 
@@ -10677,7 +11042,9 @@ input ExpenseItemAttachmentsIncInput {
 }
 
 input ExpenseItemAttachmentsInsertInput {
+  expenseItem: ExpenseItemObjRelInsertInput
   expenseItemId: bigint
+  fileUpload: FileUploadObjRelInsertInput
   fileUploadId: bigint
 }
 
@@ -10686,9 +11053,19 @@ type ExpenseItemAttachmentsMaxFields {
   fileUploadId: bigint
 }
 
+input ExpenseItemAttachmentsMaxOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
+}
+
 type ExpenseItemAttachmentsMinFields {
   expenseItemId: bigint
   fileUploadId: bigint
+}
+
+input ExpenseItemAttachmentsMinOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
 }
 
 type ExpenseItemAttachmentsMutationResponse {
@@ -10703,7 +11080,9 @@ input ExpenseItemAttachmentsOnConflict {
 }
 
 input ExpenseItemAttachmentsOrderBy {
+  expenseItem: ExpenseItemOrderBy
   expenseItemId: OrderBy
+  fileUpload: FileUploadOrderBy
   fileUploadId: OrderBy
 }
 
@@ -10727,14 +11106,29 @@ type ExpenseItemAttachmentsStddevFields {
   fileUploadId: Float
 }
 
+input ExpenseItemAttachmentsStddevOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
+}
+
 type ExpenseItemAttachmentsStddevPopFields {
   expenseItemId: Float
   fileUploadId: Float
 }
 
+input ExpenseItemAttachmentsStddevPopOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
+}
+
 type ExpenseItemAttachmentsStddevSampFields {
   expenseItemId: Float
   fileUploadId: Float
+}
+
+input ExpenseItemAttachmentsStddevSampOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
 }
 
 input ExpenseItemAttachmentsStreamCursorInput {
@@ -10750,6 +11144,11 @@ input ExpenseItemAttachmentsStreamCursorValueInput {
 type ExpenseItemAttachmentsSumFields {
   expenseItemId: bigint
   fileUploadId: bigint
+}
+
+input ExpenseItemAttachmentsSumOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
 }
 
 enum ExpenseItemAttachmentsUpdateColumn {
@@ -10768,14 +11167,29 @@ type ExpenseItemAttachmentsVarianceFields {
   fileUploadId: Float
 }
 
+input ExpenseItemAttachmentsVarianceOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
+}
+
 type ExpenseItemAttachmentsVarPopFields {
   expenseItemId: Float
   fileUploadId: Float
 }
 
+input ExpenseItemAttachmentsVarPopOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
+}
+
 type ExpenseItemAttachmentsVarSampFields {
   expenseItemId: Float
   fileUploadId: Float
+}
+
+input ExpenseItemAttachmentsVarSampOrderBy {
+  expenseItemId: OrderBy
+  fileUploadId: OrderBy
 }
 
 type ExpenseItemAvgFields {
@@ -10788,22 +11202,38 @@ type ExpenseItemAvgFields {
   unitCost: Float
 }
 
+input ExpenseItemAvgOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 input ExpenseItemBoolExp {
   _and: [ExpenseItemBoolExp!]
   _not: ExpenseItemBoolExp
   _or: [ExpenseItemBoolExp!]
+  actorAddress: ActorAddressBoolExp
   addressId: BigintComparisonExp
   category: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  expense: ExpenseBoolExp
   expenseId: BigintComparisonExp
+  expenseItemAttachments: ExpenseItemAttachmentsBoolExp
+  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
   quantity: SmallintComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   unitCost: FloatComparisonExp
 }
@@ -10823,18 +11253,23 @@ input ExpenseItemIncInput {
 }
 
 input ExpenseItemInsertInput {
+  actorAddress: ActorAddressObjRelInsertInput
   addressId: bigint
   category: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  expense: ExpenseObjRelInsertInput
   expenseId: bigint
+  expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
   name: String
   payedAt: timestamptz
   quantity: smallint
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
   unitCost: Float
 }
@@ -10856,6 +11291,23 @@ type ExpenseItemMaxFields {
   unitCost: Float
 }
 
+input ExpenseItemMaxOrderBy {
+  addressId: OrderBy
+  category: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  expenseId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  payedAt: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 type ExpenseItemMinFields {
   addressId: bigint
   category: String
@@ -10873,18 +11325,7 @@ type ExpenseItemMinFields {
   unitCost: Float
 }
 
-type ExpenseItemMutationResponse {
-  affectedRows: Int!
-  returning: [ExpenseItem!]!
-}
-
-input ExpenseItemOnConflict {
-  constraint: ExpenseItemConstraint!
-  updateColumns: [ExpenseItemUpdateColumn!]! = []
-  where: ExpenseItemBoolExp
-}
-
-input ExpenseItemOrderBy {
+input ExpenseItemMinOrderBy {
   addressId: OrderBy
   category: OrderBy
   createdAt: OrderBy
@@ -10897,6 +11338,44 @@ input ExpenseItemOrderBy {
   name: OrderBy
   payedAt: OrderBy
   quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
+type ExpenseItemMutationResponse {
+  affectedRows: Int!
+  returning: [ExpenseItem!]!
+}
+
+input ExpenseItemObjRelInsertInput {
+  data: ExpenseItemInsertInput!
+  onConflict: ExpenseItemOnConflict
+}
+
+input ExpenseItemOnConflict {
+  constraint: ExpenseItemConstraint!
+  updateColumns: [ExpenseItemUpdateColumn!]! = []
+  where: ExpenseItemBoolExp
+}
+
+input ExpenseItemOrderBy {
+  actorAddress: ActorAddressOrderBy
+  addressId: OrderBy
+  category: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  expense: ExpenseOrderBy
+  expenseId: OrderBy
+  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  name: OrderBy
+  payedAt: OrderBy
+  quantity: OrderBy
+  tenant: TenantOrderBy
   tenantId: OrderBy
   unitCost: OrderBy
 }
@@ -10949,6 +11428,16 @@ type ExpenseItemStddevFields {
   unitCost: Float
 }
 
+input ExpenseItemStddevOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 type ExpenseItemStddevPopFields {
   addressId: Float
   createdById: Float
@@ -10959,6 +11448,16 @@ type ExpenseItemStddevPopFields {
   unitCost: Float
 }
 
+input ExpenseItemStddevPopOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 type ExpenseItemStddevSampFields {
   addressId: Float
   createdById: Float
@@ -10967,6 +11466,16 @@ type ExpenseItemStddevSampFields {
   quantity: Float
   tenantId: Float
   unitCost: Float
+}
+
+input ExpenseItemStddevSampOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
 }
 
 input ExpenseItemStreamCursorInput {
@@ -10999,6 +11508,16 @@ type ExpenseItemSumFields {
   quantity: smallint
   tenantId: bigint
   unitCost: Float
+}
+
+input ExpenseItemSumOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
 }
 
 enum ExpenseItemUpdateColumn {
@@ -11034,6 +11553,16 @@ type ExpenseItemVarianceFields {
   unitCost: Float
 }
 
+input ExpenseItemVarianceOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 type ExpenseItemVarPopFields {
   addressId: Float
   createdById: Float
@@ -11044,6 +11573,16 @@ type ExpenseItemVarPopFields {
   unitCost: Float
 }
 
+input ExpenseItemVarPopOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
+}
+
 type ExpenseItemVarSampFields {
   addressId: Float
   createdById: Float
@@ -11052,6 +11591,16 @@ type ExpenseItemVarSampFields {
   quantity: Float
   tenantId: Float
   unitCost: Float
+}
+
+input ExpenseItemVarSampOrderBy {
+  addressId: OrderBy
+  createdById: OrderBy
+  expenseId: OrderBy
+  id: OrderBy
+  quantity: OrderBy
+  tenantId: OrderBy
+  unitCost: OrderBy
 }
 
 type ExpenseMaxFields {
@@ -11141,12 +11690,14 @@ input ExpenseOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   expenseReportId: OrderBy
   fileUpload: FileUploadOrderBy
   finance: FinanceOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  individualBySettledById: IndividualOrderBy
   lastNotifiedAt: OrderBy
   settledAt: OrderBy
   settledById: OrderBy
@@ -11749,6 +12300,10 @@ type FileUpload {
   document: Document
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
+  eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  expenseItemAttachments(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): [ExpenseItemAttachments!]!
+  expenseItemAttachmentsAggregate(distinctOn: [ExpenseItemAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemAttachmentsOrderBy!], where: ExpenseItemAttachmentsBoolExp): ExpenseItemAttachmentsAggregate!
   expenses(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
   fileLastModifiedAt: timestamptz!
@@ -11848,6 +12403,10 @@ input FileUploadBoolExp {
   document: DocumentBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
+  events: EventBoolExp
+  eventsAggregate: EventAggregateBoolExp
+  expenseItemAttachments: ExpenseItemAttachmentsBoolExp
+  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateBoolExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
   fileLastModifiedAt: TimestamptzComparisonExp
@@ -11890,6 +12449,8 @@ input FileUploadInsertInput {
   deletedAt: timestamptz
   document: DocumentObjRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
+  events: EventArrRelInsertInput
+  expenseItemAttachments: ExpenseItemAttachmentsArrRelInsertInput
   expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   financeAttachments: FinanceAttachmentsArrRelInsertInput
@@ -11988,6 +12549,8 @@ input FileUploadOrderBy {
   deletedAt: OrderBy
   document: DocumentOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
+  eventsAggregate: EventAggregateOrderBy
+  expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregateOrderBy
   expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
@@ -14281,10 +14844,17 @@ type Individual {
   classGroupsAggregate(distinctOn: [ClassGroupSelectColumn!], limit: Int, offset: Int, orderBy: [ClassGroupOrderBy!], where: ClassGroupBoolExp): ClassGroupAggregate!
   cohorts(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): [Cohort!]!
   cohortsAggregate(distinctOn: [CohortSelectColumn!], limit: Int, offset: Int, orderBy: [CohortOrderBy!], where: CohortBoolExp): CohortAggregate!
+  completedSettledMissionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  completedSettledMissionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   contents(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
   contentsAggregate(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): ContentAggregate!
   createdAt: timestamptz!
+  createdBy: Individual
   createdById: bigint
+  createdEventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
+  createdEventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  createdTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
+  createdTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   deletedAt: timestamptz
   documents(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   documentsAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
@@ -14296,12 +14866,16 @@ type Individual {
   eventApprovalStepsAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
   eventApprovals(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): [EventApproval!]!
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
-  eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
-  eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
+  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
   events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
   eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
+  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
   expenses(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
+  expensesBySettledById(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
+  expensesBySettledByIdAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
   favoritesAggregate(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): FavoriteAggregate!
   fileUploads(distinctOn: [FileUploadSelectColumn!], limit: Int, offset: Int, orderBy: [FileUploadOrderBy!], where: FileUploadBoolExp): [FileUpload!]!
@@ -14316,14 +14890,23 @@ type Individual {
   formsAggregate(distinctOn: [FormSelectColumn!], limit: Int, offset: Int, orderBy: [FormOrderBy!], where: FormBoolExp): FormAggregate!
   hiddenAt: timestamptz
   id: bigint!
-  individual: Individual
   individuals(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): [Individual!]!
   individualsAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
+  issueContributors(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): [IssueContributors!]!
+  issueContributorsAggregate(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): IssueContributorsAggregate!
   issues(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): [Issue!]!
   issuesAggregate(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): IssueAggregate!
+  legalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
+  legalUnitsAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   passwordHash: String
   poles(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): [Pole!]!
   polesAggregate(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): PoleAggregate!
+  presenceSettledEventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
+  presenceSettledEventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   reactions(distinctOn: [ReactionSelectColumn!], limit: Int, offset: Int, orderBy: [ReactionOrderBy!], where: ReactionBoolExp): [Reaction!]!
@@ -14335,6 +14918,12 @@ type Individual {
   scopeRole: String!
   sessions(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
   sessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
+  settledActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
+  settledActionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
+  settledEventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
+  settledEventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  settledMissionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  settledMissionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
   shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   socials(distinctOn: [SocialSelectColumn!], limit: Int, offset: Int, orderBy: [SocialOrderBy!], where: SocialBoolExp): [Social!]!
@@ -14355,6 +14944,10 @@ type Individual {
   tenantId: bigint!
   tenants(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): [Tenant!]!
   tenantsAggregate(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): TenantAggregate!
+  threadContributors(distinctOn: [ThreadContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadContributorsOrderBy!], where: ThreadContributorsBoolExp): [ThreadContributors!]!
+  threadContributorsAggregate(distinctOn: [ThreadContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadContributorsOrderBy!], where: ThreadContributorsBoolExp): ThreadContributorsAggregate!
+  threads(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
+  threadsAggregate(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): ThreadAggregate!
   userId: bigint
   userInfo: UserInfo
   userInfos(distinctOn: [UserInfoSelectColumn!], limit: Int, offset: Int, orderBy: [UserInfoOrderBy!], where: UserInfoBoolExp): [UserInfo!]!
@@ -14463,10 +15056,17 @@ input IndividualBoolExp {
   classGroupsAggregate: ClassGroupAggregateBoolExp
   cohorts: CohortBoolExp
   cohortsAggregate: CohortAggregateBoolExp
+  completedSettledMissionJoins: MissionJoinBoolExp
+  completedSettledMissionJoinsAggregate: MissionJoinAggregateBoolExp
   contents: ContentBoolExp
   contentsAggregate: ContentAggregateBoolExp
   createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
+  createdEventJoins: EventJoinBoolExp
+  createdEventJoinsAggregate: EventJoinAggregateBoolExp
+  createdTeamJoins: TeamJoinBoolExp
+  createdTeamJoinsAggregate: TeamJoinAggregateBoolExp
   deletedAt: TimestamptzComparisonExp
   documents: DocumentBoolExp
   documentsAggregate: DocumentAggregateBoolExp
@@ -14478,12 +15078,16 @@ input IndividualBoolExp {
   eventApprovalStepsAggregate: EventApprovalStepAggregateBoolExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
-  eventJoins: EventJoinBoolExp
-  eventJoinsAggregate: EventJoinAggregateBoolExp
+  eventManages: EventManageBoolExp
+  eventManagesAggregate: EventManageAggregateBoolExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
+  expensesBySettledById: ExpenseBoolExp
+  expensesBySettledByIdAggregate: ExpenseAggregateBoolExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   fileUploads: FileUploadBoolExp
@@ -14498,14 +15102,23 @@ input IndividualBoolExp {
   formsAggregate: FormAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  individual: IndividualBoolExp
   individuals: IndividualBoolExp
   individualsAggregate: IndividualAggregateBoolExp
+  issueContributors: IssueContributorsBoolExp
+  issueContributorsAggregate: IssueContributorsAggregateBoolExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
+  legalUnits: LegalUnitBoolExp
+  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
   passwordHash: StringComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
+  presenceSettledEventJoins: EventJoinBoolExp
+  presenceSettledEventJoinsAggregate: EventJoinAggregateBoolExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
   reactions: ReactionBoolExp
@@ -14517,6 +15130,12 @@ input IndividualBoolExp {
   scopeRole: StringComparisonExp
   sessions: SessionBoolExp
   sessionsAggregate: SessionAggregateBoolExp
+  settledActions: ActionBoolExp
+  settledActionsAggregate: ActionAggregateBoolExp
+  settledEventJoins: EventJoinBoolExp
+  settledEventJoinsAggregate: EventJoinAggregateBoolExp
+  settledMissionJoins: MissionJoinBoolExp
+  settledMissionJoinsAggregate: MissionJoinAggregateBoolExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
   socials: SocialBoolExp
@@ -14537,6 +15156,10 @@ input IndividualBoolExp {
   tenantId: BigintComparisonExp
   tenants: TenantBoolExp
   tenantsAggregate: TenantAggregateBoolExp
+  threadContributors: ThreadContributorsBoolExp
+  threadContributorsAggregate: ThreadContributorsAggregateBoolExp
+  threads: ThreadBoolExp
+  threadsAggregate: ThreadAggregateBoolExp
   userId: BigintComparisonExp
   userInfo: UserInfoBoolExp
   userInfos: UserInfoBoolExp
@@ -14578,18 +15201,24 @@ input IndividualInsertInput {
   classGroupTeachers: ClassGroupTeacherArrRelInsertInput
   classGroups: ClassGroupArrRelInsertInput
   cohorts: CohortArrRelInsertInput
+  completedSettledMissionJoins: MissionJoinArrRelInsertInput
   contents: ContentArrRelInsertInput
   createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
   createdById: bigint
+  createdEventJoins: EventJoinArrRelInsertInput
+  createdTeamJoins: TeamJoinArrRelInsertInput
   deletedAt: timestamptz
   documents: DocumentArrRelInsertInput
   eventApprovalStepNotifiees: EventApprovalStepNotifieesArrRelInsertInput
   eventApprovalStepValidators: EventApprovalStepValidatorsArrRelInsertInput
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
-  eventJoins: EventJoinArrRelInsertInput
+  eventManages: EventManageArrRelInsertInput
   events: EventArrRelInsertInput
+  expenseItems: ExpenseItemArrRelInsertInput
   expenses: ExpenseArrRelInsertInput
+  expensesBySettledById: ExpenseArrRelInsertInput
   favorites: FavoriteArrRelInsertInput
   fileUploads: FileUploadArrRelInsertInput
   finances: FinanceArrRelInsertInput
@@ -14598,17 +15227,24 @@ input IndividualInsertInput {
   forms: FormArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
-  individual: IndividualObjRelInsertInput
   individuals: IndividualArrRelInsertInput
+  issueContributors: IssueContributorsArrRelInsertInput
   issues: IssueArrRelInsertInput
+  legalUnits: LegalUnitArrRelInsertInput
+  missionJoins: MissionJoinArrRelInsertInput
+  missions: MissionArrRelInsertInput
   passwordHash: String
   poles: PoleArrRelInsertInput
+  presenceSettledEventJoins: EventJoinArrRelInsertInput
   projects: ProjectArrRelInsertInput
   reactions: ReactionArrRelInsertInput
   reports: ReportArrRelInsertInput
   roles: RoleArrRelInsertInput
   scopeRole: String
   sessions: SessionArrRelInsertInput
+  settledActions: ActionArrRelInsertInput
+  settledEventJoins: EventJoinArrRelInsertInput
+  settledMissionJoins: MissionJoinArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
   socials: SocialArrRelInsertInput
   subjects: SubjectArrRelInsertInput
@@ -14620,6 +15256,8 @@ input IndividualInsertInput {
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   tenants: TenantArrRelInsertInput
+  threadContributors: ThreadContributorsArrRelInsertInput
+  threads: ThreadArrRelInsertInput
   userId: bigint
   userInfo: UserInfoObjRelInsertInput
   userInfos: UserInfoArrRelInsertInput
@@ -14712,18 +15350,24 @@ input IndividualOrderBy {
   classGroupTeachersAggregate: ClassGroupTeacherAggregateOrderBy
   classGroupsAggregate: ClassGroupAggregateOrderBy
   cohortsAggregate: CohortAggregateOrderBy
+  completedSettledMissionJoinsAggregate: MissionJoinAggregateOrderBy
   contentsAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
+  createdBy: IndividualOrderBy
   createdById: OrderBy
+  createdEventJoinsAggregate: EventJoinAggregateOrderBy
+  createdTeamJoinsAggregate: TeamJoinAggregateOrderBy
   deletedAt: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
   eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregateOrderBy
   eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregateOrderBy
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
-  eventJoinsAggregate: EventJoinAggregateOrderBy
+  eventManagesAggregate: EventManageAggregateOrderBy
   eventsAggregate: EventAggregateOrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   expensesAggregate: ExpenseAggregateOrderBy
+  expensesBySettledByIdAggregate: ExpenseAggregateOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   fileUploadsAggregate: FileUploadAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
@@ -14732,17 +15376,24 @@ input IndividualOrderBy {
   formsAggregate: FormAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  individual: IndividualOrderBy
   individualsAggregate: IndividualAggregateOrderBy
+  issueContributorsAggregate: IssueContributorsAggregateOrderBy
   issuesAggregate: IssueAggregateOrderBy
+  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
+  missionsAggregate: MissionAggregateOrderBy
   passwordHash: OrderBy
   polesAggregate: PoleAggregateOrderBy
+  presenceSettledEventJoinsAggregate: EventJoinAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   reactionsAggregate: ReactionAggregateOrderBy
   reportsAggregate: ReportAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
   scopeRole: OrderBy
   sessionsAggregate: SessionAggregateOrderBy
+  settledActionsAggregate: ActionAggregateOrderBy
+  settledEventJoinsAggregate: EventJoinAggregateOrderBy
+  settledMissionJoinsAggregate: MissionJoinAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   socialsAggregate: SocialAggregateOrderBy
   subjectsAggregate: SubjectAggregateOrderBy
@@ -14754,6 +15405,8 @@ input IndividualOrderBy {
   tenant: TenantOrderBy
   tenantId: OrderBy
   tenantsAggregate: TenantAggregateOrderBy
+  threadContributorsAggregate: ThreadContributorsAggregateOrderBy
+  threadsAggregate: ThreadAggregateOrderBy
   userId: OrderBy
   userInfo: UserInfoOrderBy
   userInfosAggregate: UserInfoAggregateOrderBy
@@ -14953,6 +15606,7 @@ input IntComparisonExp {
 }
 
 type Issue {
+  content: Content!
   contentId: bigint!
   createdAt: timestamptz!
   createdById: bigint
@@ -14960,6 +15614,10 @@ type Issue {
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
+  issueContributors(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): [IssueContributors!]!
+  issueContributorsAggregate(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): IssueContributorsAggregate!
+  issueTags(distinctOn: [IssueTagsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueTagsOrderBy!], where: IssueTagsBoolExp): [IssueTags!]!
+  issueTagsAggregate(distinctOn: [IssueTagsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueTagsOrderBy!], where: IssueTagsBoolExp): IssueTagsAggregate!
   name: String!
   slug: String!
   tenant: Tenant!
@@ -15033,6 +15691,7 @@ input IssueBoolExp {
   _and: [IssueBoolExp!]
   _not: IssueBoolExp
   _or: [IssueBoolExp!]
+  content: ContentBoolExp
   contentId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
@@ -15040,6 +15699,10 @@ input IssueBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  issueContributors: IssueContributorsBoolExp
+  issueContributorsAggregate: IssueContributorsAggregateBoolExp
+  issueTags: IssueTagsBoolExp
+  issueTagsAggregate: IssueTagsAggregateBoolExp
   name: StringComparisonExp
   slug: StringComparisonExp
   tenant: TenantBoolExp
@@ -15052,13 +15715,26 @@ enum IssueConstraint {
 }
 
 type IssueContributors {
+  individual: Individual!
   individualId: bigint!
+  issue: Issue!
   issueId: bigint!
 }
 
 type IssueContributorsAggregate {
   aggregate: IssueContributorsAggregateFields
   nodes: [IssueContributors!]!
+}
+
+input IssueContributorsAggregateBoolExp {
+  count: issueContributorsAggregateBoolExpCount
+}
+
+input issueContributorsAggregateBoolExpCount {
+  arguments: [IssueContributorsSelectColumn!]
+  distinct: Boolean
+  filter: IssueContributorsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type IssueContributorsAggregateFields {
@@ -15075,16 +15751,42 @@ type IssueContributorsAggregateFields {
   variance: IssueContributorsVarianceFields
 }
 
+input IssueContributorsAggregateOrderBy {
+  avg: IssueContributorsAvgOrderBy
+  count: OrderBy
+  max: IssueContributorsMaxOrderBy
+  min: IssueContributorsMinOrderBy
+  stddev: IssueContributorsStddevOrderBy
+  stddevPop: IssueContributorsStddevPopOrderBy
+  stddevSamp: IssueContributorsStddevSampOrderBy
+  sum: IssueContributorsSumOrderBy
+  varPop: IssueContributorsVarPopOrderBy
+  varSamp: IssueContributorsVarSampOrderBy
+  variance: IssueContributorsVarianceOrderBy
+}
+
+input IssueContributorsArrRelInsertInput {
+  data: [IssueContributorsInsertInput!]!
+  onConflict: IssueContributorsOnConflict
+}
+
 type IssueContributorsAvgFields {
   individualId: Float
   issueId: Float
+}
+
+input IssueContributorsAvgOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
 }
 
 input IssueContributorsBoolExp {
   _and: [IssueContributorsBoolExp!]
   _not: IssueContributorsBoolExp
   _or: [IssueContributorsBoolExp!]
+  individual: IndividualBoolExp
   individualId: BigintComparisonExp
+  issue: IssueBoolExp
   issueId: BigintComparisonExp
 }
 
@@ -15098,7 +15800,9 @@ input IssueContributorsIncInput {
 }
 
 input IssueContributorsInsertInput {
+  individual: IndividualObjRelInsertInput
   individualId: bigint
+  issue: IssueObjRelInsertInput
   issueId: bigint
 }
 
@@ -15107,9 +15811,19 @@ type IssueContributorsMaxFields {
   issueId: bigint
 }
 
+input IssueContributorsMaxOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
+}
+
 type IssueContributorsMinFields {
   individualId: bigint
   issueId: bigint
+}
+
+input IssueContributorsMinOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
 }
 
 type IssueContributorsMutationResponse {
@@ -15124,7 +15838,9 @@ input IssueContributorsOnConflict {
 }
 
 input IssueContributorsOrderBy {
+  individual: IndividualOrderBy
   individualId: OrderBy
+  issue: IssueOrderBy
   issueId: OrderBy
 }
 
@@ -15148,14 +15864,29 @@ type IssueContributorsStddevFields {
   issueId: Float
 }
 
+input IssueContributorsStddevOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
+}
+
 type IssueContributorsStddevPopFields {
   individualId: Float
   issueId: Float
 }
 
+input IssueContributorsStddevPopOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
+}
+
 type IssueContributorsStddevSampFields {
   individualId: Float
   issueId: Float
+}
+
+input IssueContributorsStddevSampOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
 }
 
 input IssueContributorsStreamCursorInput {
@@ -15171,6 +15902,11 @@ input IssueContributorsStreamCursorValueInput {
 type IssueContributorsSumFields {
   individualId: bigint
   issueId: bigint
+}
+
+input IssueContributorsSumOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
 }
 
 enum IssueContributorsUpdateColumn {
@@ -15189,14 +15925,29 @@ type IssueContributorsVarianceFields {
   issueId: Float
 }
 
+input IssueContributorsVarianceOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
+}
+
 type IssueContributorsVarPopFields {
   individualId: Float
   issueId: Float
 }
 
+input IssueContributorsVarPopOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
+}
+
 type IssueContributorsVarSampFields {
   individualId: Float
   issueId: Float
+}
+
+input IssueContributorsVarSampOrderBy {
+  individualId: OrderBy
+  issueId: OrderBy
 }
 
 input IssueIncInput {
@@ -15207,6 +15958,7 @@ input IssueIncInput {
 }
 
 input IssueInsertInput {
+  content: ContentObjRelInsertInput
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -15214,6 +15966,8 @@ input IssueInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  issueContributors: IssueContributorsArrRelInsertInput
+  issueTags: IssueTagsArrRelInsertInput
   name: String
   slug: String
   tenant: TenantObjRelInsertInput
@@ -15273,6 +16027,11 @@ type IssueMutationResponse {
   returning: [Issue!]!
 }
 
+input IssueObjRelInsertInput {
+  data: IssueInsertInput!
+  onConflict: IssueOnConflict
+}
+
 input IssueOnConflict {
   constraint: IssueConstraint!
   updateColumns: [IssueUpdateColumn!]! = []
@@ -15280,6 +16039,7 @@ input IssueOnConflict {
 }
 
 input IssueOrderBy {
+  content: ContentOrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -15287,6 +16047,8 @@ input IssueOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  issueContributorsAggregate: IssueContributorsAggregateOrderBy
+  issueTagsAggregate: IssueTagsAggregateOrderBy
   name: OrderBy
   slug: OrderBy
   tenant: TenantOrderBy
@@ -15395,13 +16157,26 @@ input IssueSumOrderBy {
 }
 
 type IssueTags {
+  issue: Issue!
   issueId: bigint!
+  tag: Tag!
   tagId: bigint!
 }
 
 type IssueTagsAggregate {
   aggregate: IssueTagsAggregateFields
   nodes: [IssueTags!]!
+}
+
+input IssueTagsAggregateBoolExp {
+  count: issueTagsAggregateBoolExpCount
+}
+
+input issueTagsAggregateBoolExpCount {
+  arguments: [IssueTagsSelectColumn!]
+  distinct: Boolean
+  filter: IssueTagsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type IssueTagsAggregateFields {
@@ -15418,16 +16193,42 @@ type IssueTagsAggregateFields {
   variance: IssueTagsVarianceFields
 }
 
+input IssueTagsAggregateOrderBy {
+  avg: IssueTagsAvgOrderBy
+  count: OrderBy
+  max: IssueTagsMaxOrderBy
+  min: IssueTagsMinOrderBy
+  stddev: IssueTagsStddevOrderBy
+  stddevPop: IssueTagsStddevPopOrderBy
+  stddevSamp: IssueTagsStddevSampOrderBy
+  sum: IssueTagsSumOrderBy
+  varPop: IssueTagsVarPopOrderBy
+  varSamp: IssueTagsVarSampOrderBy
+  variance: IssueTagsVarianceOrderBy
+}
+
+input IssueTagsArrRelInsertInput {
+  data: [IssueTagsInsertInput!]!
+  onConflict: IssueTagsOnConflict
+}
+
 type IssueTagsAvgFields {
   issueId: Float
   tagId: Float
+}
+
+input IssueTagsAvgOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
 }
 
 input IssueTagsBoolExp {
   _and: [IssueTagsBoolExp!]
   _not: IssueTagsBoolExp
   _or: [IssueTagsBoolExp!]
+  issue: IssueBoolExp
   issueId: BigintComparisonExp
+  tag: TagBoolExp
   tagId: BigintComparisonExp
 }
 
@@ -15441,7 +16242,9 @@ input IssueTagsIncInput {
 }
 
 input IssueTagsInsertInput {
+  issue: IssueObjRelInsertInput
   issueId: bigint
+  tag: TagObjRelInsertInput
   tagId: bigint
 }
 
@@ -15450,9 +16253,19 @@ type IssueTagsMaxFields {
   tagId: bigint
 }
 
+input IssueTagsMaxOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
+}
+
 type IssueTagsMinFields {
   issueId: bigint
   tagId: bigint
+}
+
+input IssueTagsMinOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
 }
 
 type IssueTagsMutationResponse {
@@ -15467,7 +16280,9 @@ input IssueTagsOnConflict {
 }
 
 input IssueTagsOrderBy {
+  issue: IssueOrderBy
   issueId: OrderBy
+  tag: TagOrderBy
   tagId: OrderBy
 }
 
@@ -15491,14 +16306,29 @@ type IssueTagsStddevFields {
   tagId: Float
 }
 
+input IssueTagsStddevOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
+}
+
 type IssueTagsStddevPopFields {
   issueId: Float
   tagId: Float
 }
 
+input IssueTagsStddevPopOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
+}
+
 type IssueTagsStddevSampFields {
   issueId: Float
   tagId: Float
+}
+
+input IssueTagsStddevSampOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
 }
 
 input IssueTagsStreamCursorInput {
@@ -15514,6 +16344,11 @@ input IssueTagsStreamCursorValueInput {
 type IssueTagsSumFields {
   issueId: bigint
   tagId: bigint
+}
+
+input IssueTagsSumOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
 }
 
 enum IssueTagsUpdateColumn {
@@ -15532,14 +16367,29 @@ type IssueTagsVarianceFields {
   tagId: Float
 }
 
+input IssueTagsVarianceOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
+}
+
 type IssueTagsVarPopFields {
   issueId: Float
   tagId: Float
 }
 
+input IssueTagsVarPopOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
+}
+
 type IssueTagsVarSampFields {
   issueId: Float
   tagId: Float
+}
+
+input IssueTagsVarSampOrderBy {
+  issueId: OrderBy
+  tagId: OrderBy
 }
 
 enum IssueUpdateColumn {
@@ -15627,13 +16477,16 @@ input JsonbComparisonExp {
 }
 
 type LegalUnit {
+  actor: Actor
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
   order: smallint!
   pseudo: String!
+  tenant: Tenant!
   tenantId: bigint!
   type: String!
   url: String!
@@ -15642,6 +16495,17 @@ type LegalUnit {
 type LegalUnitAggregate {
   aggregate: LegalUnitAggregateFields
   nodes: [LegalUnit!]!
+}
+
+input LegalUnitAggregateBoolExp {
+  count: legalUnitAggregateBoolExpCount
+}
+
+input legalUnitAggregateBoolExpCount {
+  arguments: [LegalUnitSelectColumn!]
+  distinct: Boolean
+  filter: LegalUnitBoolExp
+  predicate: IntComparisonExp!
 }
 
 type LegalUnitAggregateFields {
@@ -15658,6 +16522,25 @@ type LegalUnitAggregateFields {
   variance: LegalUnitVarianceFields
 }
 
+input LegalUnitAggregateOrderBy {
+  avg: LegalUnitAvgOrderBy
+  count: OrderBy
+  max: LegalUnitMaxOrderBy
+  min: LegalUnitMinOrderBy
+  stddev: LegalUnitStddevOrderBy
+  stddevPop: LegalUnitStddevPopOrderBy
+  stddevSamp: LegalUnitStddevSampOrderBy
+  sum: LegalUnitSumOrderBy
+  varPop: LegalUnitVarPopOrderBy
+  varSamp: LegalUnitVarSampOrderBy
+  variance: LegalUnitVarianceOrderBy
+}
+
+input LegalUnitArrRelInsertInput {
+  data: [LegalUnitInsertInput!]!
+  onConflict: LegalUnitOnConflict
+}
+
 type LegalUnitAvgFields {
   createdById: Float
   id: Float
@@ -15665,17 +16548,27 @@ type LegalUnitAvgFields {
   tenantId: Float
 }
 
+input LegalUnitAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
+}
+
 input LegalUnitBoolExp {
   _and: [LegalUnitBoolExp!]
   _not: LegalUnitBoolExp
   _or: [LegalUnitBoolExp!]
+  actor: ActorBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
   order: SmallintComparisonExp
   pseudo: StringComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
   url: StringComparisonExp
@@ -15693,13 +16586,16 @@ input LegalUnitIncInput {
 }
 
 input LegalUnitInsertInput {
+  actor: ActorObjRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
   order: smallint
   pseudo: String
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
   url: String
@@ -15718,6 +16614,19 @@ type LegalUnitMaxFields {
   url: String
 }
 
+input LegalUnitMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  order: OrderBy
+  pseudo: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+  url: OrderBy
+}
+
 type LegalUnitMinFields {
   createdAt: timestamptz
   createdById: bigint
@@ -15731,9 +16640,27 @@ type LegalUnitMinFields {
   url: String
 }
 
+input LegalUnitMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  order: OrderBy
+  pseudo: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+  url: OrderBy
+}
+
 type LegalUnitMutationResponse {
   affectedRows: Int!
   returning: [LegalUnit!]!
+}
+
+input LegalUnitObjRelInsertInput {
+  data: LegalUnitInsertInput!
+  onConflict: LegalUnitOnConflict
 }
 
 input LegalUnitOnConflict {
@@ -15743,13 +16670,16 @@ input LegalUnitOnConflict {
 }
 
 input LegalUnitOrderBy {
+  actor: ActorOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individual: IndividualOrderBy
   order: OrderBy
   pseudo: OrderBy
+  tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
   url: OrderBy
@@ -15792,6 +16722,13 @@ type LegalUnitStddevFields {
   tenantId: Float
 }
 
+input LegalUnitStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
+}
+
 type LegalUnitStddevPopFields {
   createdById: Float
   id: Float
@@ -15799,11 +16736,25 @@ type LegalUnitStddevPopFields {
   tenantId: Float
 }
 
+input LegalUnitStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
+}
+
 type LegalUnitStddevSampFields {
   createdById: Float
   id: Float
   order: Float
   tenantId: Float
+}
+
+input LegalUnitStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
 }
 
 input LegalUnitStreamCursorInput {
@@ -15829,6 +16780,13 @@ type LegalUnitSumFields {
   id: bigint
   order: smallint
   tenantId: bigint
+}
+
+input LegalUnitSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
 }
 
 enum LegalUnitUpdateColumn {
@@ -15857,11 +16815,25 @@ type LegalUnitVarianceFields {
   tenantId: Float
 }
 
+input LegalUnitVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
+}
+
 type LegalUnitVarPopFields {
   createdById: Float
   id: Float
   order: Float
   tenantId: Float
+}
+
+input LegalUnitVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
 }
 
 type LegalUnitVarSampFields {
@@ -15871,6 +16843,13 @@ type LegalUnitVarSampFields {
   tenantId: Float
 }
 
+input LegalUnitVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  order: OrderBy
+  tenantId: OrderBy
+}
+
 type Mission {
   autoAcceptMember: Boolean!
   color: String!
@@ -15878,22 +16857,56 @@ type Mission {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  eventManage: EventManage
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
   isTemplate: Boolean!
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   name: String!
   pointsMaximum: smallint!
   pointsMinimum: smallint!
+  project: Project
   projectId: bigint
   quantity: smallint!
+  team: Team!
   teamId: bigint!
+  tenant: Tenant!
   tenantId: bigint!
 }
 
 type MissionAggregate {
   aggregate: MissionAggregateFields
   nodes: [Mission!]!
+}
+
+input MissionAggregateBoolExp {
+  bool_and: missionAggregateBoolExpBool_and
+  bool_or: missionAggregateBoolExpBool_or
+  count: missionAggregateBoolExpCount
+}
+
+input missionAggregateBoolExpBool_and {
+  arguments: MissionSelectColumnMissionAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: MissionBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input missionAggregateBoolExpBool_or {
+  arguments: MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: MissionBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input missionAggregateBoolExpCount {
+  arguments: [MissionSelectColumn!]
+  distinct: Boolean
+  filter: MissionBoolExp
+  predicate: IntComparisonExp!
 }
 
 type MissionAggregateFields {
@@ -15910,6 +16923,25 @@ type MissionAggregateFields {
   variance: MissionVarianceFields
 }
 
+input MissionAggregateOrderBy {
+  avg: MissionAvgOrderBy
+  count: OrderBy
+  max: MissionMaxOrderBy
+  min: MissionMinOrderBy
+  stddev: MissionStddevOrderBy
+  stddevPop: MissionStddevPopOrderBy
+  stddevSamp: MissionStddevSampOrderBy
+  sum: MissionSumOrderBy
+  varPop: MissionVarPopOrderBy
+  varSamp: MissionVarSampOrderBy
+  variance: MissionVarianceOrderBy
+}
+
+input MissionArrRelInsertInput {
+  data: [MissionInsertInput!]!
+  onConflict: MissionOnConflict
+}
+
 type MissionAvgFields {
   createdById: Float
   eventManageId: Float
@@ -15922,6 +16954,18 @@ type MissionAvgFields {
   tenantId: Float
 }
 
+input MissionAvgOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 input MissionBoolExp {
   _and: [MissionBoolExp!]
   _not: MissionBoolExp
@@ -15932,16 +16976,23 @@ input MissionBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  eventManage: EventManageBoolExp
   eventManageId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
   isTemplate: BooleanComparisonExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
   name: StringComparisonExp
   pointsMaximum: SmallintComparisonExp
   pointsMinimum: SmallintComparisonExp
+  project: ProjectBoolExp
   projectId: BigintComparisonExp
   quantity: SmallintComparisonExp
+  team: TeamBoolExp
   teamId: BigintComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
 
@@ -15968,42 +17019,85 @@ input MissionInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  eventManage: EventManageObjRelInsertInput
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
   isTemplate: Boolean
+  missionJoins: MissionJoinArrRelInsertInput
   name: String
   pointsMaximum: smallint
   pointsMinimum: smallint
+  project: ProjectObjRelInsertInput
   projectId: bigint
   quantity: smallint
+  team: TeamObjRelInsertInput
   teamId: bigint
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
 type MissionJoin {
   completed: Boolean
   completedSettledAt: timestamptz
+  completedSettledBy: Individual
   completedSettledById: bigint
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  eventJoin: EventJoin
   eventJoinId: bigint
+  eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
+  eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
+  individualBySettledById: Individual
   joinerId: bigint!
+  mission: Mission!
   missionId: bigint!
   points: smallint
+  project: Project
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
   state: String!
+  tenant: Tenant!
   tenantId: bigint!
+  userInfo: UserInfo!
 }
 
 type MissionJoinAggregate {
   aggregate: MissionJoinAggregateFields
   nodes: [MissionJoin!]!
+}
+
+input MissionJoinAggregateBoolExp {
+  bool_and: missionJoinAggregateBoolExpBool_and
+  bool_or: missionJoinAggregateBoolExpBool_or
+  count: missionJoinAggregateBoolExpCount
+}
+
+input missionJoinAggregateBoolExpBool_and {
+  arguments: MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: MissionJoinBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input missionJoinAggregateBoolExpBool_or {
+  arguments: MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: MissionJoinBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input missionJoinAggregateBoolExpCount {
+  arguments: [MissionJoinSelectColumn!]
+  distinct: Boolean
+  filter: MissionJoinBoolExp
+  predicate: IntComparisonExp!
 }
 
 type MissionJoinAggregateFields {
@@ -16020,6 +17114,25 @@ type MissionJoinAggregateFields {
   variance: MissionJoinVarianceFields
 }
 
+input MissionJoinAggregateOrderBy {
+  avg: MissionJoinAvgOrderBy
+  count: OrderBy
+  max: MissionJoinMaxOrderBy
+  min: MissionJoinMinOrderBy
+  stddev: MissionJoinStddevOrderBy
+  stddevPop: MissionJoinStddevPopOrderBy
+  stddevSamp: MissionJoinStddevSampOrderBy
+  sum: MissionJoinSumOrderBy
+  varPop: MissionJoinVarPopOrderBy
+  varSamp: MissionJoinVarSampOrderBy
+  variance: MissionJoinVarianceOrderBy
+}
+
+input MissionJoinArrRelInsertInput {
+  data: [MissionJoinInsertInput!]!
+  onConflict: MissionJoinOnConflict
+}
+
 type MissionJoinAvgFields {
   completedSettledById: Float
   createdById: Float
@@ -16033,27 +17146,50 @@ type MissionJoinAvgFields {
   tenantId: Float
 }
 
+input MissionJoinAvgOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
+}
+
 input MissionJoinBoolExp {
   _and: [MissionJoinBoolExp!]
   _not: MissionJoinBoolExp
   _or: [MissionJoinBoolExp!]
   completed: BooleanComparisonExp
   completedSettledAt: TimestamptzComparisonExp
+  completedSettledBy: IndividualBoolExp
   completedSettledById: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  eventJoin: EventJoinBoolExp
   eventJoinId: BigintComparisonExp
+  eventJoins: EventJoinBoolExp
+  eventJoinsAggregate: EventJoinAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
+  individualBySettledById: IndividualBoolExp
   joinerId: BigintComparisonExp
+  mission: MissionBoolExp
   missionId: BigintComparisonExp
   points: SmallintComparisonExp
+  project: ProjectBoolExp
   projectId: BigintComparisonExp
   settledAt: TimestamptzComparisonExp
   settledById: BigintComparisonExp
   state: StringComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  userInfo: UserInfoBoolExp
 }
 
 enum MissionJoinConstraint {
@@ -16077,21 +17213,30 @@ input MissionJoinIncInput {
 input MissionJoinInsertInput {
   completed: Boolean
   completedSettledAt: timestamptz
+  completedSettledBy: IndividualObjRelInsertInput
   completedSettledById: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventJoin: EventJoinObjRelInsertInput
   eventJoinId: bigint
+  eventJoins: EventJoinArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
+  individualBySettledById: IndividualObjRelInsertInput
   joinerId: bigint
+  mission: MissionObjRelInsertInput
   missionId: bigint
   points: smallint
+  project: ProjectObjRelInsertInput
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
   state: String
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
+  userInfo: UserInfoObjRelInsertInput
 }
 
 type MissionJoinMaxFields {
@@ -16113,6 +17258,25 @@ type MissionJoinMaxFields {
   tenantId: bigint
 }
 
+input MissionJoinMaxOrderBy {
+  completedSettledAt: OrderBy
+  completedSettledById: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventJoinId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledAt: OrderBy
+  settledById: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionJoinMinFields {
   completedSettledAt: timestamptz
   completedSettledById: bigint
@@ -16130,6 +17294,25 @@ type MissionJoinMinFields {
   settledById: bigint
   state: String
   tenantId: bigint
+}
+
+input MissionJoinMinOrderBy {
+  completedSettledAt: OrderBy
+  completedSettledById: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventJoinId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledAt: OrderBy
+  settledById: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
 }
 
 type MissionJoinMutationResponse {
@@ -16151,21 +17334,30 @@ input MissionJoinOnConflict {
 input MissionJoinOrderBy {
   completed: OrderBy
   completedSettledAt: OrderBy
+  completedSettledBy: IndividualOrderBy
   completedSettledById: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventJoin: EventJoinOrderBy
   eventJoinId: OrderBy
+  eventJoinsAggregate: EventJoinAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individual: IndividualOrderBy
+  individualBySettledById: IndividualOrderBy
   joinerId: OrderBy
+  mission: MissionOrderBy
   missionId: OrderBy
   points: OrderBy
+  project: ProjectOrderBy
   projectId: OrderBy
   settledAt: OrderBy
   settledById: OrderBy
   state: OrderBy
+  tenant: TenantOrderBy
   tenantId: OrderBy
+  userInfo: UserInfoOrderBy
 }
 
 input MissionJoinPkColumnsInput {
@@ -16190,6 +17382,14 @@ enum MissionJoinSelectColumn {
   settledById
   state
   tenantId
+}
+
+enum MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_andArgumentsColumns {
+  completed
+}
+
+enum MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_orArgumentsColumns {
+  completed
 }
 
 input MissionJoinSetInput {
@@ -16225,6 +17425,19 @@ type MissionJoinStddevFields {
   tenantId: Float
 }
 
+input MissionJoinStddevOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionJoinStddevPopFields {
   completedSettledById: Float
   createdById: Float
@@ -16238,6 +17451,19 @@ type MissionJoinStddevPopFields {
   tenantId: Float
 }
 
+input MissionJoinStddevPopOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionJoinStddevSampFields {
   completedSettledById: Float
   createdById: Float
@@ -16249,6 +17475,19 @@ type MissionJoinStddevSampFields {
   projectId: Float
   settledById: Float
   tenantId: Float
+}
+
+input MissionJoinStddevSampOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
 }
 
 input MissionJoinStreamCursorInput {
@@ -16287,6 +17526,19 @@ type MissionJoinSumFields {
   projectId: bigint
   settledById: bigint
   tenantId: bigint
+}
+
+input MissionJoinSumOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
 }
 
 enum MissionJoinUpdateColumn {
@@ -16328,6 +17580,19 @@ type MissionJoinVarianceFields {
   tenantId: Float
 }
 
+input MissionJoinVarianceOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionJoinVarPopFields {
   completedSettledById: Float
   createdById: Float
@@ -16341,6 +17606,19 @@ type MissionJoinVarPopFields {
   tenantId: Float
 }
 
+input MissionJoinVarPopOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionJoinVarSampFields {
   completedSettledById: Float
   createdById: Float
@@ -16352,6 +17630,19 @@ type MissionJoinVarSampFields {
   projectId: Float
   settledById: Float
   tenantId: Float
+}
+
+input MissionJoinVarSampOrderBy {
+  completedSettledById: OrderBy
+  createdById: OrderBy
+  eventJoinId: OrderBy
+  id: OrderBy
+  joinerId: OrderBy
+  missionId: OrderBy
+  points: OrderBy
+  projectId: OrderBy
+  settledById: OrderBy
+  tenantId: OrderBy
 }
 
 type MissionMaxFields {
@@ -16372,6 +17663,24 @@ type MissionMaxFields {
   tenantId: bigint
 }
 
+input MissionMaxOrderBy {
+  color: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventManageId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionMinFields {
   color: String
   createdAt: timestamptz
@@ -16390,9 +17699,32 @@ type MissionMinFields {
   tenantId: bigint
 }
 
+input MissionMinOrderBy {
+  color: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventManageId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionMutationResponse {
   affectedRows: Int!
   returning: [Mission!]!
+}
+
+input MissionObjRelInsertInput {
+  data: MissionInsertInput!
+  onConflict: MissionOnConflict
 }
 
 input MissionOnConflict {
@@ -16408,16 +17740,22 @@ input MissionOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  eventManage: EventManageOrderBy
   eventManageId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individual: IndividualOrderBy
   isTemplate: OrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
   name: OrderBy
   pointsMaximum: OrderBy
   pointsMinimum: OrderBy
+  project: ProjectOrderBy
   projectId: OrderBy
   quantity: OrderBy
+  team: TeamOrderBy
   teamId: OrderBy
+  tenant: TenantOrderBy
   tenantId: OrderBy
 }
 
@@ -16443,6 +17781,16 @@ enum MissionSelectColumn {
   quantity
   teamId
   tenantId
+}
+
+enum MissionSelectColumnMissionAggregateBoolExpBool_andArgumentsColumns {
+  autoAcceptMember
+  isTemplate
+}
+
+enum MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns {
+  autoAcceptMember
+  isTemplate
 }
 
 input MissionSetInput {
@@ -16477,6 +17825,18 @@ type MissionStddevFields {
   tenantId: Float
 }
 
+input MissionStddevOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionStddevPopFields {
   createdById: Float
   eventManageId: Float
@@ -16489,6 +17849,18 @@ type MissionStddevPopFields {
   tenantId: Float
 }
 
+input MissionStddevPopOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionStddevSampFields {
   createdById: Float
   eventManageId: Float
@@ -16499,6 +17871,18 @@ type MissionStddevSampFields {
   quantity: Float
   teamId: Float
   tenantId: Float
+}
+
+input MissionStddevSampOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 input MissionStreamCursorInput {
@@ -16536,6 +17920,18 @@ type MissionSumFields {
   quantity: smallint
   teamId: bigint
   tenantId: bigint
+}
+
+input MissionSumOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 enum MissionUpdateColumn {
@@ -16576,6 +17972,18 @@ type MissionVarianceFields {
   tenantId: Float
 }
 
+input MissionVarianceOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionVarPopFields {
   createdById: Float
   eventManageId: Float
@@ -16588,6 +17996,18 @@ type MissionVarPopFields {
   tenantId: Float
 }
 
+input MissionVarPopOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type MissionVarSampFields {
   createdById: Float
   eventManageId: Float
@@ -16598,6 +18018,18 @@ type MissionVarSampFields {
   quantity: Float
   teamId: Float
   tenantId: Float
+}
+
+input MissionVarSampOrderBy {
+  createdById: OrderBy
+  eventManageId: OrderBy
+  id: OrderBy
+  pointsMaximum: OrderBy
+  pointsMinimum: OrderBy
+  projectId: OrderBy
+  quantity: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 type Mutation {
@@ -17118,6 +18550,8 @@ type Pole {
   required: Boolean!
   team: Team!
   teamId: bigint!
+  teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
+  teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   tenant: Tenant!
   tenantId: bigint!
 }
@@ -17217,6 +18651,8 @@ input PoleBoolExp {
   required: BooleanComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
+  teamJoins: TeamJoinBoolExp
+  teamJoinsAggregate: TeamJoinAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -17245,6 +18681,7 @@ input PoleInsertInput {
   required: Boolean
   team: TeamObjRelInsertInput
   teamId: bigint
+  teamJoins: TeamJoinArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -17306,6 +18743,11 @@ type PoleMutationResponse {
   returning: [Pole!]!
 }
 
+input PoleObjRelInsertInput {
+  data: PoleInsertInput!
+  onConflict: PoleOnConflict
+}
+
 input PoleOnConflict {
   constraint: PoleConstraint!
   updateColumns: [PoleUpdateColumn!]! = []
@@ -17325,6 +18767,7 @@ input PoleOrderBy {
   required: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
+  teamJoinsAggregate: TeamJoinAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -17526,6 +18969,10 @@ type Project {
   individual: Individual
   isPrivate: Boolean!
   isTemplate: Boolean!
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   name: String!
   projectSupervisors(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
   projectSupervisorsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
@@ -17645,6 +19092,10 @@ input ProjectBoolExp {
   individual: IndividualBoolExp
   isPrivate: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
   projectSupervisors: ProjectSupervisorsBoolExp
   projectSupervisorsAggregate: ProjectSupervisorsAggregateBoolExp
@@ -17688,6 +19139,8 @@ input ProjectInsertInput {
   individual: IndividualObjRelInsertInput
   isPrivate: Boolean
   isTemplate: Boolean
+  missionJoins: MissionJoinArrRelInsertInput
+  missions: MissionArrRelInsertInput
   name: String
   projectSupervisors: ProjectSupervisorsArrRelInsertInput
   projectTags: ProjectTagsArrRelInsertInput
@@ -17800,6 +19253,8 @@ input ProjectOrderBy {
   individual: IndividualOrderBy
   isPrivate: OrderBy
   isTemplate: OrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
+  missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
   projectSupervisorsAggregate: ProjectSupervisorsAggregateOrderBy
   projectTagsAggregate: ProjectTagsAggregateOrderBy
@@ -19488,6 +20943,8 @@ input ReportVarSampOrderBy {
 }
 
 type Role {
+  askedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
+  askedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   category: String!
   createdAt: timestamptz!
   createdById: bigint
@@ -19594,6 +21051,8 @@ input RoleBoolExp {
   _and: [RoleBoolExp!]
   _not: RoleBoolExp
   _or: [RoleBoolExp!]
+  askedTeamJoins: TeamJoinBoolExp
+  askedTeamJoinsAggregate: TeamJoinAggregateBoolExp
   category: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
@@ -19628,6 +21087,7 @@ input RoleIncInput {
 }
 
 input RoleInsertInput {
+  askedTeamJoins: TeamJoinArrRelInsertInput
   category: String
   createdAt: timestamptz
   createdById: bigint
@@ -19720,6 +21180,7 @@ input RoleOnConflict {
 }
 
 input RoleOrderBy {
+  askedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   category: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -22149,12 +23610,16 @@ type Tag {
   id: bigint!
   imageId: bigint
   individual: Individual
+  issueTags(distinctOn: [IssueTagsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueTagsOrderBy!], where: IssueTagsBoolExp): [IssueTags!]!
+  issueTagsAggregate(distinctOn: [IssueTagsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueTagsOrderBy!], where: IssueTagsBoolExp): IssueTagsAggregate!
   name: String!
   projectTags(distinctOn: [ProjectTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectTagsOrderBy!], where: ProjectTagsBoolExp): [ProjectTags!]!
   projectTagsAggregate(distinctOn: [ProjectTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectTagsOrderBy!], where: ProjectTagsBoolExp): ProjectTagsAggregate!
   slug: String!
   tenant: Tenant!
   tenantId: bigint!
+  threadTags(distinctOn: [ThreadTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadTagsOrderBy!], where: ThreadTagsBoolExp): [ThreadTags!]!
+  threadTagsAggregate(distinctOn: [ThreadTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadTagsOrderBy!], where: ThreadTagsBoolExp): ThreadTagsAggregate!
   type: String!
 }
 
@@ -22239,12 +23704,16 @@ input TagBoolExp {
   id: BigintComparisonExp
   imageId: BigintComparisonExp
   individual: IndividualBoolExp
+  issueTags: IssueTagsBoolExp
+  issueTagsAggregate: IssueTagsAggregateBoolExp
   name: StringComparisonExp
   projectTags: ProjectTagsBoolExp
   projectTagsAggregate: ProjectTagsAggregateBoolExp
   slug: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  threadTags: ThreadTagsBoolExp
+  threadTagsAggregate: ThreadTagsAggregateBoolExp
   type: StringComparisonExp
 }
 
@@ -22272,11 +23741,13 @@ input TagInsertInput {
   id: bigint
   imageId: bigint
   individual: IndividualObjRelInsertInput
+  issueTags: IssueTagsArrRelInsertInput
   name: String
   projectTags: ProjectTagsArrRelInsertInput
   slug: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  threadTags: ThreadTagsArrRelInsertInput
   type: String
 }
 
@@ -22369,11 +23840,13 @@ input TagOrderBy {
   id: OrderBy
   imageId: OrderBy
   individual: IndividualOrderBy
+  issueTagsAggregate: IssueTagsAggregateOrderBy
   name: OrderBy
   projectTagsAggregate: ProjectTagsAggregateOrderBy
   slug: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  threadTagsAggregate: ThreadTagsAggregateOrderBy
   type: OrderBy
 }
 
@@ -22560,6 +24033,8 @@ type Team {
   classGroupId: bigint
   cohort: Cohort
   cohortId: bigint
+  contents(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): [Content!]!
+  contentsAggregate(distinctOn: [ContentSelectColumn!], limit: Int, offset: Int, orderBy: [ContentOrderBy!], where: ContentBoolExp): ContentAggregate!
   createdAt: timestamptz!
   createdById: bigint
   currentFinance: Float!
@@ -22567,6 +24042,8 @@ type Team {
   directorsCategoryName: String!
   documents(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   documentsAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
+  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
+  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
   fileUpload: FileUpload
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
@@ -22577,6 +24054,8 @@ type Team {
   managersCategoryName: String!
   membersCategoryName: String!
   membershipFees: Int!
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -22697,6 +24176,8 @@ input TeamBoolExp {
   classGroupId: BigintComparisonExp
   cohort: CohortBoolExp
   cohortId: BigintComparisonExp
+  contents: ContentBoolExp
+  contentsAggregate: ContentAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   currentFinance: FloatComparisonExp
@@ -22704,6 +24185,8 @@ input TeamBoolExp {
   directorsCategoryName: StringComparisonExp
   documents: DocumentBoolExp
   documentsAggregate: DocumentAggregateBoolExp
+  eventManages: EventManageBoolExp
+  eventManagesAggregate: EventManageAggregateBoolExp
   fileUpload: FileUploadBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
@@ -22714,6 +24197,8 @@ input TeamBoolExp {
   managersCategoryName: StringComparisonExp
   membersCategoryName: StringComparisonExp
   membershipFees: IntComparisonExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
   originalCreationDay: SmallintComparisonExp
   originalCreationMonth: SmallintComparisonExp
   originalCreationYear: SmallintComparisonExp
@@ -23008,12 +24493,14 @@ input TeamInsertInput {
   classGroupId: bigint
   cohort: CohortObjRelInsertInput
   cohortId: bigint
+  contents: ContentArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
+  eventManages: EventManageArrRelInsertInput
   fileUpload: FileUploadObjRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
@@ -23023,6 +24510,7 @@ input TeamInsertInput {
   managersCategoryName: String
   membersCategoryName: String
   membershipFees: Int
+  missions: MissionArrRelInsertInput
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -23043,6 +24531,7 @@ input TeamInsertInput {
 }
 
 type TeamJoin {
+  askedRole: Role!
   askedRoleId: bigint!
   createdAt: timestamptz!
   createdById: bigint
@@ -23052,11 +24541,12 @@ type TeamJoin {
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
+  individualBySettledById: Individual
   joinerId: bigint!
+  pole: Pole
   receivedPoleId: bigint
+  receivedRole: Role
   receivedRoleId: bigint
-  role: Role!
-  roleByReceivedRoleId: Role
   settledAt: timestamptz
   settledById: bigint
   state: String!
@@ -23146,6 +24636,7 @@ input TeamJoinBoolExp {
   _and: [TeamJoinBoolExp!]
   _not: TeamJoinBoolExp
   _or: [TeamJoinBoolExp!]
+  askedRole: RoleBoolExp
   askedRoleId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
@@ -23155,11 +24646,12 @@ input TeamJoinBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  individualBySettledById: IndividualBoolExp
   joinerId: BigintComparisonExp
+  pole: PoleBoolExp
   receivedPoleId: BigintComparisonExp
+  receivedRole: RoleBoolExp
   receivedRoleId: BigintComparisonExp
-  role: RoleBoolExp
-  roleByReceivedRoleId: RoleBoolExp
   settledAt: TimestamptzComparisonExp
   settledById: BigintComparisonExp
   state: StringComparisonExp
@@ -23188,6 +24680,7 @@ input TeamJoinIncInput {
 }
 
 input TeamJoinInsertInput {
+  askedRole: RoleObjRelInsertInput
   askedRoleId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -23197,11 +24690,12 @@ input TeamJoinInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  individualBySettledById: IndividualObjRelInsertInput
   joinerId: bigint
+  pole: PoleObjRelInsertInput
   receivedPoleId: bigint
+  receivedRole: RoleObjRelInsertInput
   receivedRoleId: bigint
-  role: RoleObjRelInsertInput
-  roleByReceivedRoleId: RoleObjRelInsertInput
   settledAt: timestamptz
   settledById: bigint
   state: String
@@ -23296,6 +24790,7 @@ input TeamJoinOnConflict {
 }
 
 input TeamJoinOrderBy {
+  askedRole: RoleOrderBy
   askedRoleId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -23305,11 +24800,12 @@ input TeamJoinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  individualBySettledById: IndividualOrderBy
   joinerId: OrderBy
+  pole: PoleOrderBy
   receivedPoleId: OrderBy
+  receivedRole: RoleOrderBy
   receivedRoleId: OrderBy
-  role: RoleOrderBy
-  roleByReceivedRoleId: RoleOrderBy
   settledAt: OrderBy
   settledById: OrderBy
   state: OrderBy
@@ -24702,12 +26198,14 @@ input TeamOrderBy {
   classGroupId: OrderBy
   cohort: CohortOrderBy
   cohortId: OrderBy
+  contentsAggregate: ContentAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   currentFinance: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
+  eventManagesAggregate: EventManageAggregateOrderBy
   fileUpload: FileUploadOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
@@ -24717,6 +26215,7 @@ input TeamOrderBy {
   managersCategoryName: OrderBy
   membersCategoryName: OrderBy
   membershipFees: OrderBy
+  missionsAggregate: MissionAggregateOrderBy
   originalCreationDay: OrderBy
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
@@ -25108,9 +26607,13 @@ type Tenant {
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
+  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
   eventValidationFormId: bigint
   events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
   eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
+  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
   expenses(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
   favorites(distinctOn: [FavoriteSelectColumn!], limit: Int, offset: Int, orderBy: [FavoriteOrderBy!], where: FavoriteBoolExp): [Favorite!]!
@@ -25132,6 +26635,12 @@ type Tenant {
   individualsAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
   issues(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): [Issue!]!
   issuesAggregate(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): IssueAggregate!
+  legalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
+  legalUnitsAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   name: String!
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -25171,6 +26680,8 @@ type Tenant {
   teamMetricsAggregate(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): TeamMetricAggregate!
   teams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   teamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
+  threads(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
+  threadsAggregate(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): ThreadAggregate!
   userInfos(distinctOn: [UserInfoSelectColumn!], limit: Int, offset: Int, orderBy: [UserInfoOrderBy!], where: UserInfoBoolExp): [UserInfo!]!
   userInfosAggregate(distinctOn: [UserInfoSelectColumn!], limit: Int, offset: Int, orderBy: [UserInfoOrderBy!], where: UserInfoBoolExp): UserInfoAggregate!
   validations(distinctOn: [ValidationSelectColumn!], limit: Int, offset: Int, orderBy: [ValidationOrderBy!], where: ValidationBoolExp): [Validation!]!
@@ -25302,9 +26813,13 @@ input TenantBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
+  eventManages: EventManageBoolExp
+  eventManagesAggregate: EventManageAggregateBoolExp
   eventValidationFormId: BigintComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
   favorites: FavoriteBoolExp
@@ -25326,6 +26841,12 @@ input TenantBoolExp {
   individualsAggregate: IndividualAggregateBoolExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
+  legalUnits: LegalUnitBoolExp
+  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
   oidcInfoOidcCallbackUri: StringComparisonExp
   oidcInfoOidcClientId: StringComparisonExp
@@ -25365,6 +26886,8 @@ input TenantBoolExp {
   teamMetricsAggregate: TeamMetricAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
+  threads: ThreadBoolExp
+  threadsAggregate: ThreadAggregateBoolExp
   userInfos: UserInfoBoolExp
   userInfosAggregate: UserInfoAggregateBoolExp
   validations: ValidationBoolExp
@@ -25410,8 +26933,10 @@ input TenantInsertInput {
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
+  eventManages: EventManageArrRelInsertInput
   eventValidationFormId: bigint
   events: EventArrRelInsertInput
+  expenseItems: ExpenseItemArrRelInsertInput
   expenses: ExpenseArrRelInsertInput
   favorites: FavoriteArrRelInsertInput
   fileUploads: FileUploadArrRelInsertInput
@@ -25424,6 +26949,9 @@ input TenantInsertInput {
   individual: IndividualObjRelInsertInput
   individuals: IndividualArrRelInsertInput
   issues: IssueArrRelInsertInput
+  legalUnits: LegalUnitArrRelInsertInput
+  missionJoins: MissionJoinArrRelInsertInput
+  missions: MissionArrRelInsertInput
   name: String
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
@@ -25449,6 +26977,7 @@ input TenantInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
+  threads: ThreadArrRelInsertInput
   userInfos: UserInfoArrRelInsertInput
   validations: ValidationArrRelInsertInput
   votes: VoteArrRelInsertInput
@@ -25565,8 +27094,10 @@ input TenantOrderBy {
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
+  eventManagesAggregate: EventManageAggregateOrderBy
   eventValidationFormId: OrderBy
   eventsAggregate: EventAggregateOrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   expensesAggregate: ExpenseAggregateOrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   fileUploadsAggregate: FileUploadAggregateOrderBy
@@ -25579,6 +27110,9 @@ input TenantOrderBy {
   individual: IndividualOrderBy
   individualsAggregate: IndividualAggregateOrderBy
   issuesAggregate: IssueAggregateOrderBy
+  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
+  missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
@@ -25604,6 +27138,7 @@ input TenantOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
+  threadsAggregate: ThreadAggregateOrderBy
   userInfosAggregate: UserInfoAggregateOrderBy
   validationsAggregate: ValidationAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
@@ -25807,20 +27342,38 @@ input TenantVarSampOrderBy {
 }
 
 type Thread {
+  content: Content!
   contentId: bigint!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
+  individual: Individual
   name: String!
   slug: String!
+  tenant: Tenant!
   tenantId: bigint!
+  threadContributors(distinctOn: [ThreadContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadContributorsOrderBy!], where: ThreadContributorsBoolExp): [ThreadContributors!]!
+  threadContributorsAggregate(distinctOn: [ThreadContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadContributorsOrderBy!], where: ThreadContributorsBoolExp): ThreadContributorsAggregate!
+  threadTags(distinctOn: [ThreadTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadTagsOrderBy!], where: ThreadTagsBoolExp): [ThreadTags!]!
+  threadTagsAggregate(distinctOn: [ThreadTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadTagsOrderBy!], where: ThreadTagsBoolExp): ThreadTagsAggregate!
 }
 
 type ThreadAggregate {
   aggregate: ThreadAggregateFields
   nodes: [Thread!]!
+}
+
+input ThreadAggregateBoolExp {
+  count: threadAggregateBoolExpCount
+}
+
+input threadAggregateBoolExpCount {
+  arguments: [ThreadSelectColumn!]
+  distinct: Boolean
+  filter: ThreadBoolExp
+  predicate: IntComparisonExp!
 }
 
 type ThreadAggregateFields {
@@ -25837,6 +27390,25 @@ type ThreadAggregateFields {
   variance: ThreadVarianceFields
 }
 
+input ThreadAggregateOrderBy {
+  avg: ThreadAvgOrderBy
+  count: OrderBy
+  max: ThreadMaxOrderBy
+  min: ThreadMinOrderBy
+  stddev: ThreadStddevOrderBy
+  stddevPop: ThreadStddevPopOrderBy
+  stddevSamp: ThreadStddevSampOrderBy
+  sum: ThreadSumOrderBy
+  varPop: ThreadVarPopOrderBy
+  varSamp: ThreadVarSampOrderBy
+  variance: ThreadVarianceOrderBy
+}
+
+input ThreadArrRelInsertInput {
+  data: [ThreadInsertInput!]!
+  onConflict: ThreadOnConflict
+}
+
 type ThreadAvgFields {
   contentId: Float
   createdById: Float
@@ -25844,19 +27416,33 @@ type ThreadAvgFields {
   tenantId: Float
 }
 
+input ThreadAvgOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 input ThreadBoolExp {
   _and: [ThreadBoolExp!]
   _not: ThreadBoolExp
   _or: [ThreadBoolExp!]
+  content: ContentBoolExp
   contentId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  individual: IndividualBoolExp
   name: StringComparisonExp
   slug: StringComparisonExp
+  tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  threadContributors: ThreadContributorsBoolExp
+  threadContributorsAggregate: ThreadContributorsAggregateBoolExp
+  threadTags: ThreadTagsBoolExp
+  threadTagsAggregate: ThreadTagsAggregateBoolExp
 }
 
 enum ThreadConstraint {
@@ -25865,13 +27451,26 @@ enum ThreadConstraint {
 }
 
 type ThreadContributors {
+  individual: Individual!
   individualId: bigint!
+  thread: Thread!
   threadId: bigint!
 }
 
 type ThreadContributorsAggregate {
   aggregate: ThreadContributorsAggregateFields
   nodes: [ThreadContributors!]!
+}
+
+input ThreadContributorsAggregateBoolExp {
+  count: threadContributorsAggregateBoolExpCount
+}
+
+input threadContributorsAggregateBoolExpCount {
+  arguments: [ThreadContributorsSelectColumn!]
+  distinct: Boolean
+  filter: ThreadContributorsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type ThreadContributorsAggregateFields {
@@ -25888,16 +27487,42 @@ type ThreadContributorsAggregateFields {
   variance: ThreadContributorsVarianceFields
 }
 
+input ThreadContributorsAggregateOrderBy {
+  avg: ThreadContributorsAvgOrderBy
+  count: OrderBy
+  max: ThreadContributorsMaxOrderBy
+  min: ThreadContributorsMinOrderBy
+  stddev: ThreadContributorsStddevOrderBy
+  stddevPop: ThreadContributorsStddevPopOrderBy
+  stddevSamp: ThreadContributorsStddevSampOrderBy
+  sum: ThreadContributorsSumOrderBy
+  varPop: ThreadContributorsVarPopOrderBy
+  varSamp: ThreadContributorsVarSampOrderBy
+  variance: ThreadContributorsVarianceOrderBy
+}
+
+input ThreadContributorsArrRelInsertInput {
+  data: [ThreadContributorsInsertInput!]!
+  onConflict: ThreadContributorsOnConflict
+}
+
 type ThreadContributorsAvgFields {
   individualId: Float
   threadId: Float
+}
+
+input ThreadContributorsAvgOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
 }
 
 input ThreadContributorsBoolExp {
   _and: [ThreadContributorsBoolExp!]
   _not: ThreadContributorsBoolExp
   _or: [ThreadContributorsBoolExp!]
+  individual: IndividualBoolExp
   individualId: BigintComparisonExp
+  thread: ThreadBoolExp
   threadId: BigintComparisonExp
 }
 
@@ -25911,7 +27536,9 @@ input ThreadContributorsIncInput {
 }
 
 input ThreadContributorsInsertInput {
+  individual: IndividualObjRelInsertInput
   individualId: bigint
+  thread: ThreadObjRelInsertInput
   threadId: bigint
 }
 
@@ -25920,9 +27547,19 @@ type ThreadContributorsMaxFields {
   threadId: bigint
 }
 
+input ThreadContributorsMaxOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadContributorsMinFields {
   individualId: bigint
   threadId: bigint
+}
+
+input ThreadContributorsMinOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
 }
 
 type ThreadContributorsMutationResponse {
@@ -25937,7 +27574,9 @@ input ThreadContributorsOnConflict {
 }
 
 input ThreadContributorsOrderBy {
+  individual: IndividualOrderBy
   individualId: OrderBy
+  thread: ThreadOrderBy
   threadId: OrderBy
 }
 
@@ -25961,14 +27600,29 @@ type ThreadContributorsStddevFields {
   threadId: Float
 }
 
+input ThreadContributorsStddevOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadContributorsStddevPopFields {
   individualId: Float
   threadId: Float
 }
 
+input ThreadContributorsStddevPopOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadContributorsStddevSampFields {
   individualId: Float
   threadId: Float
+}
+
+input ThreadContributorsStddevSampOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
 }
 
 input ThreadContributorsStreamCursorInput {
@@ -25984,6 +27638,11 @@ input ThreadContributorsStreamCursorValueInput {
 type ThreadContributorsSumFields {
   individualId: bigint
   threadId: bigint
+}
+
+input ThreadContributorsSumOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
 }
 
 enum ThreadContributorsUpdateColumn {
@@ -26002,14 +27661,29 @@ type ThreadContributorsVarianceFields {
   threadId: Float
 }
 
+input ThreadContributorsVarianceOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadContributorsVarPopFields {
   individualId: Float
   threadId: Float
 }
 
+input ThreadContributorsVarPopOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadContributorsVarSampFields {
   individualId: Float
   threadId: Float
+}
+
+input ThreadContributorsVarSampOrderBy {
+  individualId: OrderBy
+  threadId: OrderBy
 }
 
 input ThreadIncInput {
@@ -26020,15 +27694,20 @@ input ThreadIncInput {
 }
 
 input ThreadInsertInput {
+  content: ContentObjRelInsertInput
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individual: IndividualObjRelInsertInput
   name: String
   slug: String
+  tenant: TenantObjRelInsertInput
   tenantId: bigint
+  threadContributors: ThreadContributorsArrRelInsertInput
+  threadTags: ThreadTagsArrRelInsertInput
 }
 
 type ThreadMaxFields {
@@ -26043,6 +27722,18 @@ type ThreadMaxFields {
   tenantId: bigint
 }
 
+input ThreadMaxOrderBy {
+  contentId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  slug: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadMinFields {
   contentId: bigint
   createdAt: timestamptz
@@ -26055,18 +27746,7 @@ type ThreadMinFields {
   tenantId: bigint
 }
 
-type ThreadMutationResponse {
-  affectedRows: Int!
-  returning: [Thread!]!
-}
-
-input ThreadOnConflict {
-  constraint: ThreadConstraint!
-  updateColumns: [ThreadUpdateColumn!]! = []
-  where: ThreadBoolExp
-}
-
-input ThreadOrderBy {
+input ThreadMinOrderBy {
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -26076,6 +27756,39 @@ input ThreadOrderBy {
   name: OrderBy
   slug: OrderBy
   tenantId: OrderBy
+}
+
+type ThreadMutationResponse {
+  affectedRows: Int!
+  returning: [Thread!]!
+}
+
+input ThreadObjRelInsertInput {
+  data: ThreadInsertInput!
+  onConflict: ThreadOnConflict
+}
+
+input ThreadOnConflict {
+  constraint: ThreadConstraint!
+  updateColumns: [ThreadUpdateColumn!]! = []
+  where: ThreadBoolExp
+}
+
+input ThreadOrderBy {
+  content: ContentOrderBy
+  contentId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  name: OrderBy
+  slug: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  threadContributorsAggregate: ThreadContributorsAggregateOrderBy
+  threadTagsAggregate: ThreadTagsAggregateOrderBy
 }
 
 input ThreadPkColumnsInput {
@@ -26113,6 +27826,13 @@ type ThreadStddevFields {
   tenantId: Float
 }
 
+input ThreadStddevOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadStddevPopFields {
   contentId: Float
   createdById: Float
@@ -26120,11 +27840,25 @@ type ThreadStddevPopFields {
   tenantId: Float
 }
 
+input ThreadStddevPopOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadStddevSampFields {
   contentId: Float
   createdById: Float
   id: Float
   tenantId: Float
+}
+
+input ThreadStddevSampOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
 }
 
 input ThreadStreamCursorInput {
@@ -26151,14 +27885,34 @@ type ThreadSumFields {
   tenantId: bigint
 }
 
+input ThreadSumOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadTags {
+  tag: Tag!
   tagId: bigint!
+  thread: Thread!
   threadId: bigint!
 }
 
 type ThreadTagsAggregate {
   aggregate: ThreadTagsAggregateFields
   nodes: [ThreadTags!]!
+}
+
+input ThreadTagsAggregateBoolExp {
+  count: threadTagsAggregateBoolExpCount
+}
+
+input threadTagsAggregateBoolExpCount {
+  arguments: [ThreadTagsSelectColumn!]
+  distinct: Boolean
+  filter: ThreadTagsBoolExp
+  predicate: IntComparisonExp!
 }
 
 type ThreadTagsAggregateFields {
@@ -26175,16 +27929,42 @@ type ThreadTagsAggregateFields {
   variance: ThreadTagsVarianceFields
 }
 
+input ThreadTagsAggregateOrderBy {
+  avg: ThreadTagsAvgOrderBy
+  count: OrderBy
+  max: ThreadTagsMaxOrderBy
+  min: ThreadTagsMinOrderBy
+  stddev: ThreadTagsStddevOrderBy
+  stddevPop: ThreadTagsStddevPopOrderBy
+  stddevSamp: ThreadTagsStddevSampOrderBy
+  sum: ThreadTagsSumOrderBy
+  varPop: ThreadTagsVarPopOrderBy
+  varSamp: ThreadTagsVarSampOrderBy
+  variance: ThreadTagsVarianceOrderBy
+}
+
+input ThreadTagsArrRelInsertInput {
+  data: [ThreadTagsInsertInput!]!
+  onConflict: ThreadTagsOnConflict
+}
+
 type ThreadTagsAvgFields {
   tagId: Float
   threadId: Float
+}
+
+input ThreadTagsAvgOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
 }
 
 input ThreadTagsBoolExp {
   _and: [ThreadTagsBoolExp!]
   _not: ThreadTagsBoolExp
   _or: [ThreadTagsBoolExp!]
+  tag: TagBoolExp
   tagId: BigintComparisonExp
+  thread: ThreadBoolExp
   threadId: BigintComparisonExp
 }
 
@@ -26198,7 +27978,9 @@ input ThreadTagsIncInput {
 }
 
 input ThreadTagsInsertInput {
+  tag: TagObjRelInsertInput
   tagId: bigint
+  thread: ThreadObjRelInsertInput
   threadId: bigint
 }
 
@@ -26207,9 +27989,19 @@ type ThreadTagsMaxFields {
   threadId: bigint
 }
 
+input ThreadTagsMaxOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadTagsMinFields {
   tagId: bigint
   threadId: bigint
+}
+
+input ThreadTagsMinOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
 }
 
 type ThreadTagsMutationResponse {
@@ -26224,7 +28016,9 @@ input ThreadTagsOnConflict {
 }
 
 input ThreadTagsOrderBy {
+  tag: TagOrderBy
   tagId: OrderBy
+  thread: ThreadOrderBy
   threadId: OrderBy
 }
 
@@ -26248,14 +28042,29 @@ type ThreadTagsStddevFields {
   threadId: Float
 }
 
+input ThreadTagsStddevOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadTagsStddevPopFields {
   tagId: Float
   threadId: Float
 }
 
+input ThreadTagsStddevPopOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadTagsStddevSampFields {
   tagId: Float
   threadId: Float
+}
+
+input ThreadTagsStddevSampOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
 }
 
 input ThreadTagsStreamCursorInput {
@@ -26271,6 +28080,11 @@ input ThreadTagsStreamCursorValueInput {
 type ThreadTagsSumFields {
   tagId: bigint
   threadId: bigint
+}
+
+input ThreadTagsSumOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
 }
 
 enum ThreadTagsUpdateColumn {
@@ -26289,14 +28103,29 @@ type ThreadTagsVarianceFields {
   threadId: Float
 }
 
+input ThreadTagsVarianceOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadTagsVarPopFields {
   tagId: Float
   threadId: Float
 }
 
+input ThreadTagsVarPopOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
+}
+
 type ThreadTagsVarSampFields {
   tagId: Float
   threadId: Float
+}
+
+input ThreadTagsVarSampOrderBy {
+  tagId: OrderBy
+  threadId: OrderBy
 }
 
 enum ThreadUpdateColumn {
@@ -26324,6 +28153,13 @@ type ThreadVarianceFields {
   tenantId: Float
 }
 
+input ThreadVarianceOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadVarPopFields {
   contentId: Float
   createdById: Float
@@ -26331,11 +28167,25 @@ type ThreadVarPopFields {
   tenantId: Float
 }
 
+input ThreadVarPopOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 type ThreadVarSampFields {
   contentId: Float
   createdById: Float
   id: Float
   tenantId: Float
+}
+
+input ThreadVarSampOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
 }
 
 scalar timestamptz
@@ -26364,6 +28214,8 @@ type UserInfo {
   deletedAt: timestamptz
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
+  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
+  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
   finishedIntroduction: Boolean!
   finishedOnboarding: Boolean!
   firstName: String!
@@ -26373,6 +28225,8 @@ type UserInfo {
   individualById: Individual
   lastName: String!
   middleNames: _text!
+  missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
+  missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   notificationSettingsAdminEventValidationApproved: smallint!
   notificationSettingsAdminEventValidationRejected: smallint!
   notificationSettingsAdminEventValidationStarted: smallint!
@@ -26598,6 +28452,8 @@ input UserInfoBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
+  eventSupervisors: EventSupervisorsBoolExp
+  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   finishedIntroduction: BooleanComparisonExp
   finishedOnboarding: BooleanComparisonExp
   firstName: StringComparisonExp
@@ -26607,6 +28463,8 @@ input UserInfoBoolExp {
   individualById: IndividualBoolExp
   lastName: StringComparisonExp
   middleNames: _textComparisonExp
+  missionJoins: MissionJoinBoolExp
+  missionJoinsAggregate: MissionJoinAggregateBoolExp
   notificationSettingsAdminEventValidationApproved: SmallintComparisonExp
   notificationSettingsAdminEventValidationRejected: SmallintComparisonExp
   notificationSettingsAdminEventValidationStarted: SmallintComparisonExp
@@ -26721,6 +28579,7 @@ input UserInfoInsertInput {
   customizationSignature: String
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
+  eventSupervisors: EventSupervisorsArrRelInsertInput
   finishedIntroduction: Boolean
   finishedOnboarding: Boolean
   firstName: String
@@ -26730,6 +28589,7 @@ input UserInfoInsertInput {
   individualById: IndividualObjRelInsertInput
   lastName: String
   middleNames: _text
+  missionJoins: MissionJoinArrRelInsertInput
   notificationSettingsAdminEventValidationApproved: smallint
   notificationSettingsAdminEventValidationRejected: smallint
   notificationSettingsAdminEventValidationStarted: smallint
@@ -27028,6 +28888,7 @@ input UserInfoOrderBy {
   customizationSignature: OrderBy
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
+  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   finishedIntroduction: OrderBy
   finishedOnboarding: OrderBy
   firstName: OrderBy
@@ -27037,6 +28898,7 @@ input UserInfoOrderBy {
   individualById: IndividualOrderBy
   lastName: OrderBy
   middleNames: OrderBy
+  missionJoinsAggregate: MissionJoinAggregateOrderBy
   notificationSettingsAdminEventValidationApproved: OrderBy
   notificationSettingsAdminEventValidationRejected: OrderBy
   notificationSettingsAdminEventValidationStarted: OrderBy

@@ -8,6 +8,9 @@ object_relationships:
   - name: individual
     using:
       foreign_key_constraint_on: individual_id
+  - name: legalUnit
+    using:
+      foreign_key_constraint_on: legal_unit_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

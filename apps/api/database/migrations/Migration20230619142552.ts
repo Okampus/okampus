@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230619095523 extends Migration {
+export class Migration20230619142552 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "user_info" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "first_name" text not null, "middle_names" text[] not null, "last_name" text not null, "customization_color" text check ("customization_color" in (\'Blue\', \'DeepBlue\', \'DarkBlue\', \'LightBlue\', \'Green\', \'DeepGreen\', \'DarkGreen\', \'LightGreen\', \'Orange\', \'DeepOrange\', \'DarkOrange\', \'LightOrange\', \'Red\', \'DeepRed\', \'DarkRed\', \'LightRed\', \'Purple\', \'DeepPurple\', \'DarkPurple\', \'LightPurple\', \'Gray\', \'DeepGray\', \'DarkGray\', \'Turquoise\', \'Pink\', \'Cyan\', \'Brown\', \'Indigo\', \'Lime\', \'Teal\')) null default null, "customization_signature" text null default null, "stats_points" int not null, "stats_post_count" smallint not null, "stats_last_post_at" timestamptz(0) null default null, "stats_post_streak" smallint not null, "stats_reply_count" smallint not null, "stats_last_reply_at" timestamptz(0) null default null, "stats_reply_streak" smallint not null, "stats_comment_count" smallint not null, "stats_last_comment" timestamptz(0) null default null, "stats_upload_count" smallint not null, "stats_last_action_at" timestamptz(0) null default null, "stats_action_streak" smallint not null, "settings_dark_mode_activated" boolean not null, "settings_gdpr_end_of_life_export" boolean not null, "settings_gdpr_end_of_life_anonymize" boolean not null, "notification_settings_mentionned" smallint not null, "notification_settings_badge_unlocked" smallint not null, "notification_settings_blog_subscribed_updated" smallint not null, "notification_settings_content_removed" smallint not null, "notification_settings_admin_report_created" smallint not null, "notification_settings_event_created" smallint not null, "notification_settings_team_subscribed_event_created" smallint not null, "notification_settings_team_managed_form_updated" smallint not null, "notification_settings_team_managed_event_updated" smallint not null, "notification_settings_team_managed_membership_request_updated" smallint not null, "notification_settings_team_managed_member_role_updated" smallint not null, "notification_settings_admin_team_social_updated" smallint not null, "notification_settings_admin_team_legal_file_updated" smallint not null, "notification_settings_event_subscribed_updated" smallint not null, "notification_settings_event_managed_approved" smallint not null, "notification_settings_event_managed_rejected" smallint not null, "notification_settings_event_managed_registration_created" smallint not null, "notification_settings_admin_event_validation_started" smallint not null, "notification_settings_admin_event_validation_step" smallint not null, "notification_settings_admin_event_validation_approved" smallint not null, "notification_settings_admin_event_validation_rejected" smallint not null, "notification_settings_thread_subscribed_updated" smallint not null, "notification_settings_thread_subscribed_answered" smallint not null, "notification_settings_admin_thread_stale" smallint not null, "notification_settings_admin_thread_stale_threshold" int not null, "notification_settings_admin_thread_assigned_stale" smallint not null, "notification_settings_admin_thread_assigned_stale_threshold" int not null, "notification_settings_admin_thread_assigned" smallint not null, "notification_settings_role_updated" smallint not null, "notification_settings_admin_role_updated" smallint not null, "finished_introduction" boolean not null, "finished_onboarding" boolean not null, constraint "user_info_pkey" primary key ("id"));');
@@ -35,6 +35,8 @@ export class Migration20230619095523 extends Migration {
     this.addSql('create table "team_member_roles" ("team_member_id" bigint not null, "role_id" bigint not null, constraint "team_member_roles_pkey" primary key ("team_member_id", "role_id"));');
 
     this.addSql('create table "pole" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "team_id" bigint not null, "name" text not null, "description" text not null, "required" boolean not null, "category" text check ("category" in (\'Administration\', \'Communication\', \'Members\', \'Relations\', \'Activity\')) not null, constraint "pole_pkey" primary key ("id"));');
+
+    this.addSql('create table "legal_unit" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "order" smallint not null, "type" text check ("type" in (\'Company\', \'Association\', \'TenantGrantFund\')) not null, "pseudo" text not null, "url" text not null, constraint "legal_unit_pkey" primary key ("id"));');
 
     this.addSql('create table "form" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "team_id" bigint null, "schema" jsonb not null, "type" text check ("type" in (\'Event\', \'Team\', \'Internal\', \'Survey\')) not null, "is_enabled" boolean not null, "is_allowing_multiple_answers" boolean not null, "is_allowing_editing_answers" boolean not null, "is_required" boolean not null, constraint "form_pkey" primary key ("id"));');
     this.addSql('alter table "form" add constraint "form_team_id_unique" unique ("team_id");');
@@ -95,9 +97,10 @@ export class Migration20230619095523 extends Migration {
 
     this.addSql('create table "campus" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, constraint "campus_pkey" primary key ("id"));');
 
-    this.addSql('create table "actor" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "individual_id" bigint null, "team_id" bigint null, "slug" text not null, "name" text not null, "status" text not null default \'\', "bio" text not null default \'\', "email" text not null default \'\', "website" text not null default \'\', "ical" text not null, constraint "actor_pkey" primary key ("id"));');
+    this.addSql('create table "actor" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "individual_id" bigint null, "team_id" bigint null, "legal_unit_id" bigint null, "slug" text not null, "name" text not null, "status" text not null default \'\', "bio" text not null default \'\', "email" text not null default \'\', "website" text not null default \'\', "ical" text not null, constraint "actor_pkey" primary key ("id"));');
     this.addSql('alter table "actor" add constraint "actor_individual_id_unique" unique ("individual_id");');
     this.addSql('alter table "actor" add constraint "actor_team_id_unique" unique ("team_id");');
+    this.addSql('alter table "actor" add constraint "actor_legal_unit_id_unique" unique ("legal_unit_id");');
     this.addSql('alter table "actor" add constraint "actor_ical_unique" unique ("ical");');
 
     this.addSql('create table "social" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "order" smallint not null, "type" text check ("type" in (\'Discord\', \'GitHub\', \'TikTok\', \'LinkedIn\', \'Instagram\', \'Facebook\', \'YouTube\', \'Twitch\')) not null, "pseudo" text not null, "url" text not null, constraint "social_pkey" primary key ("id"));');
@@ -105,8 +108,6 @@ export class Migration20230619095523 extends Migration {
     this.addSql('create table "shortcut" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Team\', \'Project\', \'User\', \'Event\')) not null, "user_id" bigint not null, "target_actor_id" bigint not null, constraint "shortcut_pkey" primary key ("id"));');
 
     this.addSql('create table "report" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Harassment\', \'Spam\', \'Inappropriate\', \'Other\')) not null, "reason" text null default null, "last_active_date" timestamptz(0) null default null, "actor_id" bigint null default null, "content_id" bigint null default null, constraint "report_pkey" primary key ("id"));');
-
-    this.addSql('create table "legal_unit" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "order" smallint not null, "type" text check ("type" in (\'Company\', \'Association\', \'TenantGrantFund\')) not null, "pseudo" text not null, "url" text not null, constraint "legal_unit_pkey" primary key ("id"));');
 
     this.addSql('create table "follow" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "followed_actor_id" bigint not null, constraint "follow_pkey" primary key ("id"));');
 
@@ -219,6 +220,9 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "pole" add constraint "pole_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "pole" add constraint "pole_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade;');
 
+    this.addSql('alter table "legal_unit" add constraint "legal_unit_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "legal_unit" add constraint "legal_unit_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+
     this.addSql('alter table "form" add constraint "form_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "form" add constraint "form_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "form" add constraint "form_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete set null;');
@@ -328,6 +332,7 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "actor" add constraint "actor_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "actor" add constraint "actor_individual_id_foreign" foreign key ("individual_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "actor" add constraint "actor_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "actor" add constraint "actor_legal_unit_id_foreign" foreign key ("legal_unit_id") references "legal_unit" ("id") on update cascade on delete set null;');
 
     this.addSql('alter table "social" add constraint "social_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "social" add constraint "social_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
@@ -342,10 +347,6 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "report" add constraint "report_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "report" add constraint "report_actor_id_foreign" foreign key ("actor_id") references "actor" ("id") on update cascade on delete set null;');
     this.addSql('alter table "report" add constraint "report_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "legal_unit" add constraint "legal_unit_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "legal_unit" add constraint "legal_unit_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "legal_unit" add constraint "legal_unit_actor_id_foreign" foreign key ("actor_id") references "actor" ("id") on update cascade on delete CASCADE;');
 
     this.addSql('alter table "follow" add constraint "follow_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "follow" add constraint "follow_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
@@ -539,6 +540,8 @@ export class Migration20230619095523 extends Migration {
 
     this.addSql('alter table "pole" drop constraint "pole_tenant_id_foreign";');
 
+    this.addSql('alter table "legal_unit" drop constraint "legal_unit_tenant_id_foreign";');
+
     this.addSql('alter table "form" drop constraint "form_tenant_id_foreign";');
 
     this.addSql('alter table "file_upload" drop constraint "file_upload_tenant_id_foreign";');
@@ -580,8 +583,6 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "shortcut" drop constraint "shortcut_tenant_id_foreign";');
 
     this.addSql('alter table "report" drop constraint "report_tenant_id_foreign";');
-
-    this.addSql('alter table "legal_unit" drop constraint "legal_unit_tenant_id_foreign";');
 
     this.addSql('alter table "follow" drop constraint "follow_tenant_id_foreign";');
 
@@ -679,6 +680,8 @@ export class Migration20230619095523 extends Migration {
 
     this.addSql('alter table "pole" drop constraint "pole_created_by_id_foreign";');
 
+    this.addSql('alter table "legal_unit" drop constraint "legal_unit_created_by_id_foreign";');
+
     this.addSql('alter table "form" drop constraint "form_created_by_id_foreign";');
 
     this.addSql('alter table "file_upload" drop constraint "file_upload_created_by_id_foreign";');
@@ -732,8 +735,6 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "shortcut" drop constraint "shortcut_created_by_id_foreign";');
 
     this.addSql('alter table "report" drop constraint "report_created_by_id_foreign";');
-
-    this.addSql('alter table "legal_unit" drop constraint "legal_unit_created_by_id_foreign";');
 
     this.addSql('alter table "follow" drop constraint "follow_created_by_id_foreign";');
 
@@ -806,6 +807,8 @@ export class Migration20230619095523 extends Migration {
     this.addSql('alter table "team_join" drop constraint "team_join_received_role_id_foreign";');
 
     this.addSql('alter table "team_join" drop constraint "team_join_received_pole_id_foreign";');
+
+    this.addSql('alter table "actor" drop constraint "actor_legal_unit_id_foreign";');
 
     this.addSql('alter table "tenant" drop constraint "tenant_event_validation_form_id_foreign";');
 
@@ -923,8 +926,6 @@ export class Migration20230619095523 extends Migration {
 
     this.addSql('alter table "report" drop constraint "report_actor_id_foreign";');
 
-    this.addSql('alter table "legal_unit" drop constraint "legal_unit_actor_id_foreign";');
-
     this.addSql('alter table "follow" drop constraint "follow_followed_actor_id_foreign";');
 
     this.addSql('alter table "favorite" drop constraint "favorite_actor_id_foreign";');
@@ -1017,6 +1018,8 @@ export class Migration20230619095523 extends Migration {
 
     this.addSql('drop table if exists "pole" cascade;');
 
+    this.addSql('drop table if exists "legal_unit" cascade;');
+
     this.addSql('drop table if exists "form" cascade;');
 
     this.addSql('drop table if exists "file_upload" cascade;');
@@ -1078,8 +1081,6 @@ export class Migration20230619095523 extends Migration {
     this.addSql('drop table if exists "shortcut" cascade;');
 
     this.addSql('drop table if exists "report" cascade;');
-
-    this.addSql('drop table if exists "legal_unit" cascade;');
 
     this.addSql('drop table if exists "follow" cascade;');
 

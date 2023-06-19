@@ -1,3 +1,28 @@
 table:
   name: thread
   schema: public
+object_relationships:
+  - name: content
+    using:
+      foreign_key_constraint_on: content_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: threadContributors
+    using:
+      foreign_key_constraint_on:
+        column: thread_id
+        table:
+          name: thread_contributors
+          schema: public
+  - name: threadTags
+    using:
+      foreign_key_constraint_on:
+        column: thread_id
+        table:
+          name: thread_tags
+          schema: public

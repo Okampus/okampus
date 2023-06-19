@@ -12,10 +12,17 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_id
 array_relationships:
-  - name: teamJoins
+  - name: askedTeamJoins
     using:
       foreign_key_constraint_on:
         column: asked_role_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: received_role_id
         table:
           name: team_join
           schema: public

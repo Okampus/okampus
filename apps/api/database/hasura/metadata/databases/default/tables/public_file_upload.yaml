@@ -44,6 +44,20 @@ array_relationships:
         table:
           name: event_join
           schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: banner_id
+        table:
+          name: event
+          schema: public
+  - name: expenseItemAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: expense_item_attachments
+          schema: public
   - name: expenses
     using:
       foreign_key_constraint_on:

@@ -1,3 +1,10 @@
 table:
   name: expense_item_attachments
   schema: public
+object_relationships:
+  - name: expenseItem
+    using:
+      foreign_key_constraint_on: expense_item_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: file_upload_id

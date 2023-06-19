@@ -36,6 +36,20 @@ array_relationships:
         table:
           name: finance
           schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: mission_join
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: mission
+          schema: public
   - name: projectSupervisors
     using:
       foreign_key_constraint_on:
