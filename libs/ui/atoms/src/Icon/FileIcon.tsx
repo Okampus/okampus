@@ -1,38 +1,37 @@
-import { ReactComponent as GenericArchive } from '@okampus/assets/svg/typetypes/generic/generic-archive.svg';
-import { ReactComponent as GenericAudio } from '@okampus/assets/svg/typetypes/generic/generic-audio.svg';
-import { ReactComponent as GenericCode } from '@okampus/assets/svg/typetypes/generic/generic-code.svg';
-import { ReactComponent as GenericDocumentIcon } from '@okampus/assets/svg/typetypes/generic/generic-document.svg';
-import { ReactComponent as GenericExecutableIcon } from '@okampus/assets/svg/typetypes/generic/generic-executable.svg';
-import { ReactComponent as GenericImageIcon } from '@okampus/assets/svg/typetypes/generic/generic-image.svg';
-import { ReactComponent as GenericTabularIcon } from '@okampus/assets/svg/typetypes/generic/generic-tabular.svg';
-import { ReactComponent as GenericTextIcon } from '@okampus/assets/svg/typetypes/generic/generic-tabular.svg';
-import { ReactComponent as GenericVideoIcon } from '@okampus/assets/svg/typetypes/generic/generic-video.svg';
+import GenericArchive from '@okampus/assets/svg/mimetypes/generic/generic-archive.svg?url';
+import GenericAudio from '@okampus/assets/svg/mimetypes/generic/generic-audio.svg?url';
+import GenericCode from '@okampus/assets/svg/mimetypes/generic/generic-code.svg?url';
+import GenericDocumentIcon from '@okampus/assets/svg/mimetypes/generic/generic-document.svg?url';
+import GenericExecutableIcon from '@okampus/assets/svg/mimetypes/generic/generic-executable.svg?url';
+import GenericImageIcon from '@okampus/assets/svg/mimetypes/generic/generic-image.svg?url';
+import GenericTabularIcon from '@okampus/assets/svg/mimetypes/generic/generic-tabular.svg?url';
+import GenericTextIcon from '@okampus/assets/svg/mimetypes/generic/generic-tabular.svg?url';
+import GenericVideoIcon from '@okampus/assets/svg/mimetypes/generic/generic-video.svg?url';
 
-import { ReactComponent as PDFIcon } from '@okampus/assets/svg/typetypes/document/pdf.svg';
-import { ReactComponent as MarkdownIcon } from '@okampus/assets/svg/typetypes/document/md.svg';
+import PDFIcon from '@okampus/assets/svg/mimetypes/document/pdf.svg?url';
+import MarkdownIcon from '@okampus/assets/svg/mimetypes/document/md.svg?url';
 
-import { ReactComponent as RARIcon } from '@okampus/assets/svg/typetypes/archive/rar.svg';
-import { ReactComponent as ZIPicon } from '@okampus/assets/svg/typetypes/archive/zip.svg';
+import RARIcon from '@okampus/assets/svg/mimetypes/archive/rar.svg?url';
+import ZIPicon from '@okampus/assets/svg/mimetypes/archive/zip.svg?url';
 
-import { ReactComponent as SVGIcon } from '@okampus/assets/svg/typetypes/image/svg.svg';
+import SVGIcon from '@okampus/assets/svg/mimetypes/image/svg.svg?url';
 
-import { ReactComponent as TTFIcon } from '@okampus/assets/svg/typetypes/font/ttf.svg';
-import { ReactComponent as WOFFIcon } from '@okampus/assets/svg/typetypes/font/woff.svg';
+import TTFIcon from '@okampus/assets/svg/mimetypes/font/ttf.svg?url';
+import WOFFIcon from '@okampus/assets/svg/mimetypes/font/woff.svg?url';
 
-import { ReactComponent as WordIcon } from '@okampus/assets/svg/typetypes/office/x-office-document.svg';
-import { ReactComponent as PPTIcon } from '@okampus/assets/svg/typetypes/office/x-office-presentation.svg';
-import { ReactComponent as ExcelIcon } from '@okampus/assets/svg/typetypes/office/x-office-spreadsheet.svg';
+import WordIcon from '@okampus/assets/svg/mimetypes/office/x-office-document.svg?url';
+import PPTIcon from '@okampus/assets/svg/mimetypes/office/x-office-presentation.svg?url';
+import ExcelIcon from '@okampus/assets/svg/mimetypes/office/x-office-spreadsheet.svg?url';
 
-import { ReactComponent as GenericUnknownIcon } from '@okampus/assets/svg/typetypes/generic/generic-unknown.svg';
+import GenericUnknownIcon from '@okampus/assets/svg/mimetypes/generic/generic-unknown.svg?url';
 
 import { EXCEL_EXTS, POWERPOINT_EXTS, WORD_EXTS } from '@okampus/shared/consts';
 import { FileMimeCategory } from '@okampus/shared/enums';
 import { getExtension, parseFileMimeCategory } from '@okampus/shared/utils';
 
 import type { FileMimeCheckPayload } from '@okampus/shared/types';
-import type { SVGProps } from 'react';
 
-const fileTypeIcons: { [key in FileMimeCategory]: React.FC<SVGProps<SVGSVGElement>> } = {
+const fileTypeIcons: { [key in FileMimeCategory]: string } = {
   [FileMimeCategory.Archive]: GenericArchive,
   [FileMimeCategory.Audio]: GenericAudio,
   [FileMimeCategory.Code]: GenericCode,
@@ -62,9 +61,9 @@ const fileTypeIcons: { [key in FileMimeCategory]: React.FC<SVGProps<SVGSVGElemen
 
 export function getFileTypeIcon(file: FileMimeCheckPayload) {
   const ext = getExtension(file.name);
-  const typeCategory = parseFileMimeCategory(file);
+  const mimeCategory = parseFileMimeCategory(file);
 
-  switch (typeCategory) {
+  switch (mimeCategory) {
     case FileMimeCategory.Spreadsheet: {
       return EXCEL_EXTS.includes(ext) ? ExcelIcon : GenericDocumentIcon;
     }
@@ -75,7 +74,7 @@ export function getFileTypeIcon(file: FileMimeCheckPayload) {
       return WORD_EXTS.includes(ext) ? WordIcon : GenericDocumentIcon;
     }
     default: {
-      return fileTypeIcons[typeCategory];
+      return fileTypeIcons[mimeCategory];
     }
   }
 }
@@ -83,5 +82,5 @@ export function getFileTypeIcon(file: FileMimeCheckPayload) {
 export type FileIconProps = { file: FileMimeCheckPayload; className: string };
 export function FileIcon({ file, className }: FileIconProps) {
   const icon = getFileTypeIcon(file);
-  return icon({ className, style: { aspectRatio: '1/1', display: 'block' } });
+  return <img src={icon} className={className} style={{ aspectRatio: '1/1', display: 'block' }} />;
 }
