@@ -4,37 +4,24 @@ import { ProjectCard } from '@okampus/ui/molecules';
 import { BaseView } from '@okampus/ui/templates';
 
 export function ProjectList() {
-  const { data } = useTypedQuery({
-    project: [
-      {
-        where: {
-          _not: {
-            events: {
-              eventRoles: { userId: { _isNull: true } },
-            },
-          },
-        },
-      },
-      projectWithTeamInfo,
-    ],
-  });
-  const { data: helpWanted } = useTypedQuery({
-    project: [
-      {
-        where: {
-          events: {
-            eventRoles: { userId: { _isNull: true } },
-          },
-        },
-      },
-      projectWithTeamInfo,
-    ],
-  });
-  const helpWantedProjects = helpWanted?.project;
+  const { data } = useTypedQuery({ project: [{}, projectWithTeamInfo] });
+  // const { data: helpWanted } = useTypedQuery({
+  //   project: [
+  //     {
+  //       where: {
+  //         events: {
+  //           eventRoles: { userId: { _isNull: true } },
+  //         },
+  //       },
+  //     },
+  //     projectWithTeamInfo,
+  //   ],
+  // });
+  // const helpWantedProjects = helpWanted?.project;
   const otherProjects = data?.project;
 
   const sections = [
-    ['À la recherche de volontaires', helpWantedProjects],
+    // ['À la recherche de volontaires', helpWantedProjects],
     ['Projets futurs', otherProjects],
   ] as const;
 
@@ -42,7 +29,7 @@ export function ProjectList() {
     <BaseView topbar={<div className="title">Projets</div>}>
       <div className="large-heading">Projets</div>
       <div className="flex flex-col gap-10 pt-6">
-        {otherProjects && otherProjects.length === 0 && helpWantedProjects && helpWantedProjects.length === 0 ? (
+        {otherProjects && otherProjects.length === 0 ? (
           <div>Aucun projet pour le moment.</div>
         ) : (
           <>

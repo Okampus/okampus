@@ -23,13 +23,6 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: changeRoles
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: change_role
-          schema: public
   - name: classGroupTeachers
     using:
       foreign_key_constraint_on:
@@ -43,20 +36,6 @@ array_relationships:
         column: joiner_id
         table:
           name: event_join
-          schema: public
-  - name: eventRoles
-    using:
-      foreign_key_constraint_on:
-        column: user_id
-        table:
-          name: event_role
-          schema: public
-  - name: events
-    using:
-      foreign_key_constraint_on:
-        column: supervisor_id
-        table:
-          name: event
           schema: public
   - name: sessions
     using:

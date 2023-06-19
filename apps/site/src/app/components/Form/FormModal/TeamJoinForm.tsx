@@ -17,6 +17,8 @@ import type { TeamWithMembersInfo } from '@okampus/shared/graphql';
 export type TeamJoinFormProps = { team?: TeamWithMembersInfo };
 export function TeamJoinForm({ team }: TeamJoinFormProps) {
   const { hideOverlay, setNotification } = useContext(NavigationContext);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [createTeamJoin] = useMutation(insertTeamJoin);
 
   const { currentUser } = useCurrentUser();
@@ -40,34 +42,35 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
           if (role)
             createTeamJoin({
               variables: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 object: {
-                  teamId: team.id as string,
-                  createdById: currentUser?.individualById?.id as string,
+                  teamId: team.id,
+                  createdById: currentUser?.individualById?.id,
                   tenantId: team.tenantId,
                   askedRoleId: role,
                   joinerId: currentUser?.id,
                   state: ApprovalState.Pending,
                   formSubmission: {
                     data: {
-                      createdById: currentUser?.individualById?.id as string,
+                      formId: team.form?.id,
                       tenantId: team.tenantId,
-                      formEditId: team.form?.formEdits?.[0]?.id,
+                      createdById: currentUser?.individualById?.id,
                       submission: Object.entries(insertTeamJoin).map(([key, value]) => ({ slug: key, value })),
                     },
                   },
                 },
               },
               onCompleted: ({ insertTeamJoinOne: data }) => {
-                const id = currentUser?.id as string;
-                mergeCache({ __typename: 'UserInfo', id }, { fieldName: 'teamJoins', fragmentOn: 'TeamJoin', data });
+                if (!currentUser) return;
+                mergeCache(
+                  { __typename: 'UserInfo', id: currentUser.id },
+                  { fieldName: 'teamJoins', fragmentOn: 'TeamJoin', data }
+                );
                 setNotification({ type: ToastType.Success, message: `Demande d'adhésion envoyée!` });
                 hideOverlay();
               },
-              onError: (error) =>
-                setNotification({
-                  type: ToastType.Error,
-                  message: error.message,
-                }),
+              onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
             });
         },
       }}

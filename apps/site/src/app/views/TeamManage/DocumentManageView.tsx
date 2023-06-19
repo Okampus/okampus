@@ -42,7 +42,7 @@
 //         name: documentUpload.name,
 //         src: documentUpload.url,
 //         size: documentUpload.size,
-//         type: documentUpload.mime,
+//         type: documentUpload.type,
 //         lastModified: new Date(documentUpload.createdAt).getTime(),
 //       },
 //     },
@@ -58,7 +58,7 @@
 //     //       name: documentUpload.name,
 //     //       src: documentUpload.url,
 //     //       size: documentUpload.size,
-//     //       type: documentUpload.mime,
+//     //       type: documentUpload.type,
 //     //       lastModified: new Date(documentUpload.createdAt).getTime(),
 //     //     },
 //     //   };

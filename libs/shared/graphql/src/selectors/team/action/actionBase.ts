@@ -7,7 +7,7 @@ import type { GraphQLTypes, InputType } from '../../../zeus';
 export const actionBaseInfo = Selector('Action')({
   ...entityBase,
   description: true,
-  score: true,
+  points: true,
   state: true,
   name: true,
   individualByValidatedById: individualBaseInfo,

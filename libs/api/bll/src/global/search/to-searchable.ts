@@ -51,22 +51,22 @@ export function teamToSearchable(team: Team): BaseSearchable {
 }
 
 export function eventToSearchable(event: Event): BaseSearchable {
-  if (!event.contentMaster || !event.teams) throw new Error('Event is not fully loaded.');
+  if (!event.content || !event.teams) throw new Error('Event is not fully loaded.');
 
   const tags = load(event.tags).map((tag) => tag.name);
-  const orgs = load(event.teams).map((org) => org.actor.name);
+  const teams = load(event.teams).map((team) => team.actor.name);
 
   return {
-    slug: event.contentMaster.slug,
-    name: event.contentMaster.name,
-    thumbnail: event.image?.url ?? null,
-    description: event.contentMaster.rootContent.text,
+    slug: event.slug,
+    name: event.name,
+    thumbnail: event.banner?.url ?? null,
+    description: event.content.text,
     categories: [event.state, ...(event.address?.city ? [event.address.city] : [])],
     createdAt: event.createdAt.getTime(),
     // updatedAt: event.updatedAt.getTime(),
     individuals: [],
     events: [],
-    teams: orgs,
+    teams,
     tags,
   };
 }

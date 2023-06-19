@@ -1,7 +1,6 @@
-import { BaseRepository } from '../../shards/abstract/base/base.repository';
-
+import { EntityRepository } from '@mikro-orm/postgresql';
 import type { Log } from './log.entity';
 
-export class LogRepository extends BaseRepository<Log> {
+export class LogRepository extends EntityRepository<Log> {
   //
 }

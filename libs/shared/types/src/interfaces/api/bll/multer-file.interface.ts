@@ -4,7 +4,7 @@ export interface MulterFile {
   fieldname: string;
   originalname?: string;
   encoding?: string;
-  mimetype: string;
+  typetype: string;
   size: number;
   filename?: string;
   buffer: Buffer;

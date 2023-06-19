@@ -49,6 +49,8 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
   const { selected, showOverlay, setNotification } = useContext(NavigationContext);
   const { currentUser } = useCurrentUser();
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [insertFollow] = useMutation(insertFollowMutation);
 
   const isCurrentUserMember = currentUser?.teamMembers.some((teamMember) => teamMember.team?.id === team.id);
@@ -180,6 +182,8 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
               // isCurrentUserFollowing ?
               // :
               insertFollow({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 variables: { object: { followedActorId: team.actor?.id as string } },
                 onCompleted: ({ insertFollowOne: data }) => {
                   mergeCache(

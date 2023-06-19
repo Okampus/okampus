@@ -1,14 +1,18 @@
 type Log {
-  event: String!
+  createdAt: timestamptz!
+  createdBy: Individual
+  eventType: String!
   context: String!
   entityName: String!
   entityId: bigint!
   diff: jsonb!
   note: String!
   team: Team
-  contentMaster: ContentMaster
+  event: Event
+  individual: Individual
+  tenant: Tenant
 }
 
 type Query {
-  teamFinanceLogs(id: bigint, teamId: bigint): [Log!]!
+  financeLogs(id: bigint, teamId: bigint): [Log!]!
 }

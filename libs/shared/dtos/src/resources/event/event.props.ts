@@ -1,4 +1,4 @@
-import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
+import { Field, Float, GraphQLISODateTime, InputType, Int } from '@nestjs/graphql';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsObject, IsOptional } from 'class-validator';
 import { EventState } from '@okampus/shared/enums';
 import { GraphQLJSON } from 'graphql-scalars';
@@ -14,37 +14,58 @@ export class EventProps {
   @IsDate()
   end!: Date;
 
-  @Field(() => Float, { nullable: true })
+  @Field(() => String)
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  price?: number;
+  name!: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  slug?: string;
 
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
-  presenceReward?: number;
+  price?: number = 0;
 
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
-  budget: number | null = null;
+  pointsPresence?: number = 0;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  maxParticipants?: number | null = null;
 
   @Field(() => EventState)
   @IsEnum(EventState)
   state!: EventState;
 
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isPrivate?: boolean = false;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  autoAcceptJoins?: boolean = true;
+
   @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()
   @IsObject()
-  meta?: JSONObject;
+  meta?: JSONObject = {};
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  onlineMeetingPlace?: string | null = null;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  onlineMeetingLink?: string | null = null;
 
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
-  private?: boolean;
-
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  autoAcceptJoins?: boolean;
+  isTemplate?: boolean = false;
 }

@@ -29,13 +29,6 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: actionsByValidatedById
-    using:
-      foreign_key_constraint_on:
-        column: validated_by_id
-        table:
-          name: action
-          schema: public
   - name: actorAddresses
     using:
       foreign_key_constraint_on:
@@ -49,13 +42,6 @@ array_relationships:
         column: created_by_id
         table:
           name: actor_bank_info
-          schema: public
-  - name: actorFinances
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: actor_finance
           schema: public
   - name: actorImages
     using:
@@ -106,13 +92,6 @@ array_relationships:
         table:
           name: canteen
           schema: public
-  - name: changeRoles
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: change_role
-          schema: public
   - name: classGroupTeachers
     using:
       foreign_key_constraint_on:
@@ -134,33 +113,12 @@ array_relationships:
         table:
           name: cohort
           schema: public
-  - name: contentMasterContributors
-    using:
-      foreign_key_constraint_on:
-        column: individual_id
-        table:
-          name: content_master_contributors
-          schema: public
-  - name: contentMasters
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: content_master
-          schema: public
   - name: contents
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: content
-          schema: public
-  - name: documentEdits
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: document_edit
           schema: public
   - name: documents
     using:
@@ -197,33 +155,12 @@ array_relationships:
         table:
           name: event_approval
           schema: public
-  - name: eventAttendances
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: event_attendance
-          schema: public
-  - name: eventChangeRoles
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: event_change_role
-          schema: public
   - name: eventJoins
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: event_join
-          schema: public
-  - name: eventRoles
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: event_role
           schema: public
   - name: events
     using:
@@ -253,26 +190,19 @@ array_relationships:
         table:
           name: file_upload
           schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: finance
+          schema: public
   - name: follows
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: follow
-          schema: public
-  - name: formEdits
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: form_edit
-          schema: public
-  - name: formSubmissionEdits
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: form_submission_edit
           schema: public
   - name: formSubmissions
     using:
@@ -308,13 +238,6 @@ array_relationships:
         column: created_by_id
         table:
           name: pole
-          schema: public
-  - name: projectRoles
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: project_role
           schema: public
   - name: projects
     using:
@@ -378,13 +301,6 @@ array_relationships:
         column: created_by_id
         table:
           name: tag
-          schema: public
-  - name: teamFinances
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: team_finance
           schema: public
   - name: teamJoins
     using:

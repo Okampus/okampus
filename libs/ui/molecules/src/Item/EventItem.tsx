@@ -10,12 +10,12 @@ export type EventItemProps = { event: EventBaseInfo };
 export function EventItem({ event }: EventItemProps) {
   return (
     <div className="relative">
-      <Link to={EVENT_ROUTE(event.contentMaster?.slug)} className="absolute inset-0 z-10" />
+      <Link to={EVENT_ROUTE(event?.slug)} className="absolute inset-0 z-10" />
       <div className="flex items-center justify-between">
         <div className="flex items-start py-2 lg:px-3">
           <DateInfo start={event.start as string} end={event.end as string} className="pt-1 w-40 shrink-0" />
           <div className="flex flex-col line-clamp-1">
-            <div className="title-sm">{event.contentMaster?.name}</div>
+            <div className="title-sm">{event?.name}</div>
             <TextAddress address={event.actorAddress} className="line-clamp-1" />
             <div className="text-2 line-clamp-1">
               <span className="md:hidden text-0 font-medium pr-2">
@@ -23,14 +23,14 @@ export function EventItem({ event }: EventItemProps) {
               </span>{' '}
               {/* Volontaire(s) recherché(s): <span className="underline">1x reponsable de vestiaire</span> */}
             </div>
-            {/* <div className="text-2 font-medium line-clamp-2">{event.contentMaster?.content.text}</div> */}
+            {/* <div className="text-2 font-medium line-clamp-2">{event?.content.text}</div> */}
           </div>
         </div>
         <ActionButton
           className="w-40 md-max:!hidden"
           action={{
             type: ActionType.Action,
-            linkOrActionOrMenu: EVENT_ROUTE(event.contentMaster?.slug),
+            linkOrActionOrMenu: EVENT_ROUTE(event?.slug),
             label: event.price > 0 ? `${event.price}€` : 'Gratuit',
           }}
         />

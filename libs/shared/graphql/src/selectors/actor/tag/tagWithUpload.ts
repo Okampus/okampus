@@ -1,6 +1,6 @@
 import { tagBaseInfo } from './tagBase';
 import { Selector } from '../../../zeus';
-import { fileUploadBaseInfo } from '../../file-upload/fileUploadBase';
+import { fileUploadBaseInfo } from '../../fileUpload/fileUploadBase';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const tagWithUploadInfo = Selector('Tag')({

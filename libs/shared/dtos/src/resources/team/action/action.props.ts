@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { ApprovalState } from '@okampus/shared/enums';
-import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, Length } from 'class-validator';
 
 @InputType()
 export class ActionProps {
@@ -15,11 +15,12 @@ export class ActionProps {
   @IsString()
   description?: string | null = null;
 
-  @Field(() => ApprovalState)
-  @IsEnum(ApprovalState)
-  state!: ApprovalState;
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsNumber()
+  points?: number | null = null;
 
-  @Field(() => Int)
-  @IsInt()
-  score!: number;
+  @Field(() => ApprovalState, { nullable: true })
+  @IsEnum(ApprovalState)
+  state?: ApprovalState = ApprovalState.Pending;
 }

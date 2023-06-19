@@ -2,9 +2,6 @@ table:
   name: team_join
   schema: public
 object_relationships:
-  - name: changeRole
-    using:
-      foreign_key_constraint_on: change_role_id
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id
@@ -14,6 +11,9 @@ object_relationships:
   - name: role
     using:
       foreign_key_constraint_on: asked_role_id
+  - name: roleByReceivedRoleId
+    using:
+      foreign_key_constraint_on: received_role_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

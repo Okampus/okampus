@@ -1,6 +1,6 @@
 import { $ } from '../../zeus';
 import { typedGql } from '../../zeus/typedDocumentNode';
-import { fileUploadBaseInfo } from '../../selectors/file-upload/fileUploadBase';
+import { fileUploadBaseInfo } from '../../selectors/fileUpload/fileUploadBase';
 import type { ValueTypes } from '../../zeus';
 
 export const singleUploadMutation = typedGql('mutation')({

@@ -1,0 +1,3 @@
+table:
+  name: legal_unit
+  schema: public

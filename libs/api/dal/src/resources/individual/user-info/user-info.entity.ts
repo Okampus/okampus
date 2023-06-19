@@ -31,6 +31,7 @@ export class UserInfo extends TenantScopedEntity {
   sessions = new Collection<Session>(this);
 
   // @OneToMany('Interest', 'user')
+  // @TransformCollection()
   // interests = new Collection<Interest>(this);
 
   @Embedded(() => UserCustomization)

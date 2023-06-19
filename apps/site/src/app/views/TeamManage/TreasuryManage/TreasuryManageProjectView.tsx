@@ -4,27 +4,20 @@ import { formatCurrency, sum } from '@okampus/shared/utils';
 import { useState } from 'react';
 import clsx from 'clsx';
 
-import type { EventBaseInfo, ProjectWithFinanceInfo, TeamFinanceBaseInfo } from '@okampus/shared/graphql';
+import type { EventBaseInfo, ProjectWithFinanceInfo, FinanceBaseInfo } from '@okampus/shared/graphql';
 
-type GroupByFinances = [
-  TeamFinanceBaseInfo[],
-  Record<string, [TeamFinanceBaseInfo[], EventBaseInfo, number, number | null]>
-];
+type GroupByFinances = [FinanceBaseInfo[], Record<string, [FinanceBaseInfo[], EventBaseInfo, number, number | null]>];
 function projectFinancesGroupByEvent(project: ProjectWithFinanceInfo): GroupByFinances {
-  const otherFinances: TeamFinanceBaseInfo[] = [];
-  const eventsFinances: Record<string, [TeamFinanceBaseInfo[], EventBaseInfo, number, number | null]> = {};
+  const otherFinances: FinanceBaseInfo[] = [];
+  const eventsFinances: Record<string, [FinanceBaseInfo[], EventBaseInfo, number, number | null]> = {};
   // for (const event of project.events) {
-  for (const finance of project.teamFinances) {
-    const eventId = finance.event?.id as string;
+  for (const finance of project.finances) {
+    const eventId = finance.event?.id;
     if (eventId) {
       if (!eventsFinances[eventId]) {
         const event = project.events.find((e) => e.id === eventId);
-        eventsFinances[eventId] = [
-          [],
-          finance.event as EventBaseInfo,
-          event?.teamFinancesAggregate.aggregate?.sum?.amount || 0,
-          event?.budget ?? null,
-        ];
+        const sum = event?.financesAggregate.aggregate?.sum?.amount;
+        eventsFinances[eventId] = [[], finance.event as EventBaseInfo, sum || 0, null];
       }
       eventsFinances[eventId][0].push(finance);
     } else {
@@ -50,7 +43,7 @@ export function TreasuryManageProjectView({ project }: TreasuryManageProjectView
   const [otherFinances, eventsFinances] = projectFinancesGroupByEvent(project);
   const otherFinancesSpending = sum(otherFinances.map((value) => value.amount));
   const totalEventBudget = sum(Object.values(eventsFinances).map((value) => value[3] ?? 0));
-  const otherFinancesBudget = project.expectedBudget - totalEventBudget;
+  const otherFinancesBudget = project.budget - totalEventBudget;
 
   return (
     <div>
@@ -86,9 +79,7 @@ export function TreasuryManageProjectView({ project }: TreasuryManageProjectView
               </div>
               <div
                 className={clsx(
-                  project.expectedBudget + project.actualBudget
-                    ? 'dark:bg-green-800 bg-green-200'
-                    : 'dark:bg-red-800 bg-red-200',
+                  project.budget ? 'dark:bg-green-800 bg-green-200' : 'dark:bg-red-800 bg-red-200',
                   'dark:bg-gray-800 bg-gray-200 text-center py-3 w-36 text-1 font-medium text-[1.05rem]'
                 )}
               >
@@ -120,7 +111,7 @@ export function TreasuryManageProjectView({ project }: TreasuryManageProjectView
                       to={EVENT_ROUTE(eventInfo?.contentMaster?.slug)}
                       className="text-blue-400 cursor-pointer hover:underline"
                     > */}
-                    {eventInfo?.contentMaster?.name}
+                    {eventInfo?.name}
                     {/* </Link> */}
                   </div>
                   <div className="flex gap-2">
@@ -161,21 +152,19 @@ export function TreasuryManageProjectView({ project }: TreasuryManageProjectView
         <div className="flex gap-2">
           <div className="dark:bg-gray-800 bg-gray-200 text-center py-3 w-36 text-1 font-medium text-[1.05rem]">
             {/* <TextFinance amount={project.expectedBudget} textClass="text-white" /> */}
-            {formatCurrency(project.expectedBudget)}
+            {formatCurrency(project.budget)}
           </div>
           <div
             className={clsx(
-              project.expectedBudget + project.actualBudget > 0
-                ? 'dark:bg-green-800 bg-green-200'
-                : 'dark:bg-red-800 bg-red-200',
+              project.budget > 0 ? 'dark:bg-green-800 bg-green-200' : 'dark:bg-red-800 bg-red-200',
               'dark:bg-gray-800 bg-gray-200 text-center py-3 w-36 text-1 font-medium text-[1.05rem]'
             )}
           >
-            {formatCurrency(project.expectedBudget + project.actualBudget)}
+            {formatCurrency(project.budget)}
             {/* <TextFinance amount={project.expectedBudget - project.actualBudget} textClass="text-white" /> */}
           </div>
           <div className="dark:bg-gray-800 bg-gray-200 text-center py-3 w-36 text-1 font-medium text-[1.05rem]">
-            {formatCurrency(project.actualBudget)}
+            {formatCurrency(0)}
             {/* <TextFinance amount={project.actualBudget} textClass="text-white" /> */}
           </div>
         </div>

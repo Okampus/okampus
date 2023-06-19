@@ -20,15 +20,14 @@ export function UserView() {
   const projectActions = user.actions.filter((action) => action.project);
   const totalAttendances = sum(
     user.eventJoins.map((eventJoin) => {
-      const attendance = eventJoin.eventAttendances?.[0];
-      return attendance
-        ? attendance.participated
-          ? eventJoin.event.presenceReward + (eventJoin.action?.score || 0)
+      return eventJoin
+        ? eventJoin.presence
+          ? eventJoin.event.pointsPresence + (eventJoin.action?.points || 0)
           : -0.25
         : 0;
     })
   );
-  const totalActions = sum(projectActions.map((action) => action.score));
+  const totalActions = sum(projectActions.map((action) => action.points || 0));
 
   // const color = getColorHexFromData(user.individualById?.actor?.name);
   const menus = [
@@ -45,22 +44,21 @@ export function UserView() {
               <div className="subtitle">Présences à des événements</div>
               <div>
                 <Dashboard
+                  data={user.eventJoins}
                   columns={[
                     {
                       label: 'Événement',
-                      render: (eventJoin) => eventJoin.event?.contentMaster?.name,
+                      render: (eventJoin) => eventJoin.event?.name,
                     },
                     {
                       label: 'Points présence',
                       align: Align.Right,
                       render: (eventJoin) => {
-                        const attendance = eventJoin.eventAttendances?.[0];
-                        if (!attendance) return null;
-                        return attendance.participated ? (
+                        return eventJoin.presence ? (
                           <div className="text-green-500 font-semibold flex justify-between w-full">
                             <div>Présent</div>{' '}
                             <div>
-                              {eventJoin.event.presenceReward} {tenant?.pointName}
+                              {eventJoin.event.pointsPresence} {tenant?.pointName}
                             </div>
                           </div>
                         ) : (
@@ -74,14 +72,13 @@ export function UserView() {
                       label: 'Points action',
                       align: Align.Left,
                       render: (eventJoin) => {
-                        const attendance = eventJoin.eventAttendances[0];
-                        if (!attendance) return;
                         const action = eventJoin.action;
                         if (!action) return;
+
                         return (
                           <div className="flex gap-2 items-center text-lg font-semibold text-2">
                             <div className="text-green-500">
-                              +{action.score} {tenant?.pointName}
+                              +{action.points} {tenant?.pointName}
                             </div>{' '}
                             /
                             <CheckCircleIcon className="text-green-400 h-7 w-7 mb-0.5" />
@@ -94,7 +91,7 @@ export function UserView() {
                                   <div className="title">
                                     {action.name}{' '}
                                     <span className="text-green-400">
-                                      +{action.score} {tenant?.pointName}
+                                      +{action.points} {tenant?.pointName}
                                     </span>
                                   </div>
                                   <div className="text-lg text-2">{action.description}</div>
@@ -110,11 +107,9 @@ export function UserView() {
                       label: 'Total',
                       align: Align.Right,
                       render: (eventJoin) => {
-                        const attendance = eventJoin.eventAttendances?.[0];
-                        if (!attendance) return null;
-                        return attendance.participated ? (
+                        return eventJoin.presence ? (
                           <div className="text-green-500 font-semibold">
-                            +{eventJoin.event.presenceReward + (eventJoin.action?.score || 0)}
+                            +{eventJoin.event.pointsPresence + (eventJoin.action?.points || 0)}
                           </div>
                         ) : (
                           <div className="text-red-500 font-semibold">-0.25</div>
@@ -122,7 +117,6 @@ export function UserView() {
                       },
                     },
                   ]}
-                  data={user.eventJoins.filter((eventJoin) => eventJoin.eventAttendances?.[0])}
                 />
                 {/* {user.eventJoins.map((eventJoin) => (
                   <div>
@@ -154,7 +148,7 @@ export function UserView() {
                         return (
                           <div className="flex gap-2 items-center text-lg font-semibold text-2">
                             <div className="text-green-500">
-                              +{action.score} {tenant?.pointName}
+                              +{action.points} {tenant?.pointName}
                             </div>{' '}
                             /
                             <CheckCircleIcon className="text-green-400 h-7 w-7 mb-0.5" />
@@ -167,7 +161,7 @@ export function UserView() {
                                   <div className="title">
                                     {action.name}{' '}
                                     <span className="text-green-400">
-                                      +{action.score} {tenant?.pointName}
+                                      +{action.points} {tenant?.pointName}
                                     </span>
                                   </div>
                                   <div className="text-lg text-2">{action.description}</div>

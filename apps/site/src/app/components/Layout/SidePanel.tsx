@@ -96,7 +96,7 @@ export function SidePanel() {
   // } else if (event) {
   //   title = 'Événement';
   //   banner = event.fileUpload?.url;
-  //   name = event.contentMaster?.name;
+  //   name = event?.name;
   //   sidePanel = <EventSidePanel event={event} />;
   // } else if (eventManage) {
   //   banner = eventManage.fileUpload?.url;

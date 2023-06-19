@@ -6,8 +6,8 @@ import { useState } from 'react';
 export function EventList() {
   const [monthYear, setMonthYear] = useState<[number, number]>([new Date().getMonth(), new Date().getFullYear()]);
 
-  const _gte = new Date(monthYear[1], monthYear[0], 1);
-  const _lte = new Date(monthYear[1], monthYear[0] + 1, 0);
+  const _gte = new Date(monthYear[1], monthYear[0], 1).toISOString();
+  const _lte = new Date(monthYear[1], monthYear[0] + 1, 0).toISOString();
 
   const { data } = useTypedQuery({
     event: [

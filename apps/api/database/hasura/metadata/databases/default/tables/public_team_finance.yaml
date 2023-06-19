@@ -14,9 +14,6 @@ object_relationships:
   - name: expense
     using:
       foreign_key_constraint_on: expense_id
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: receipt_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id

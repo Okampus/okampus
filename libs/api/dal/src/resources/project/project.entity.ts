@@ -15,13 +15,14 @@ import {
 } from '@mikro-orm/core';
 
 import { Colors } from '@okampus/shared/enums';
-import type { ProjectRole } from './project-role/project-role.entity';
-import type { FileUpload } from '../file-upload/file-upload.entity';
+
+import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
 import type { Event } from '../event/event.entity';
+import type { Mission } from '../team/mission/mission.entity';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { ProjectOptions } from './project.options';
-import type { Tag } from '../actor/tag/tag.entity';
 
 @Entity({ customRepository: () => ProjectRepository })
 export class Project extends TenantScopedEntity {
@@ -39,17 +40,17 @@ export class Project extends TenantScopedEntity {
   @Enum({ items: () => Colors, type: EnumType, default: Colors.Blue })
   color: Colors = Colors.Blue;
 
-  @Property({ type: 'float' })
-  expectedBudget!: number;
-
   @Property({ type: 'float', default: 0 })
-  actualBudget = 0;
+  budget = 0;
 
   @Property({ type: 'boolean' })
   isPrivate = false;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  regularEventInterval: string | null = null; // TODO: use a custom interval type
+  @Property({ type: 'text', default: '' })
+  regularEventInterval = '';
+
+  @Property({ type: 'boolean', default: false })
+  isTemplate = false;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()
@@ -65,13 +66,13 @@ export class Project extends TenantScopedEntity {
   @TransformCollection()
   supervisors = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'ProjectRole', mappedBy: 'project' })
-  @TransformCollection()
-  roles = new Collection<ProjectRole>(this);
-
   @OneToMany({ type: 'Event', mappedBy: 'project' })
   @TransformCollection()
   events = new Collection<Event>(this);
+
+  @OneToMany({ type: 'Mission', mappedBy: 'project' })
+  @TransformCollection()
+  missions = new Collection<Mission>(this);
 
   constructor(options: ProjectOptions) {
     super(options);

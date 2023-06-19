@@ -8,31 +8,26 @@ import { Canteen } from './canteen/canteen.entity';
 import { ClassGroupTeacher } from './class-group/class-group-teacher/class-group-teacher.entity';
 import { ClassGroup } from './class-group/class-group.entity';
 import { Cohort } from './cohort/cohort.entity';
-import { ContentMaster } from './content-master/content-master.entity';
+import { Thread } from './thread/thread.entity';
 import { Content } from './content/content.entity';
 import { Favorite } from './content/favorite/favorite.entity';
 import { Reaction } from './content/reaction/reaction.entity';
 import { Report } from './content/report/report.entity';
 import { Validation } from './content/validation/validation.entity';
 import { Vote } from './content/vote/vote.entity';
-import { DocumentEdit } from './document/document-edit/document-edit.entity';
 import { Document } from './document/document.entity';
 import { Subject } from './class-group/subject/subject.entity';
 import { EventJoin } from './event/event-join/event-join.entity';
-import { EventRole } from './event/event-role/event-role.entity';
 import { Event } from './event/event.entity';
-import { FormSubmissionEdit } from './form-submission/form-submission-edit/form-submission-edit.entity';
 import { FormSubmission } from './form-submission/form-submission.entity';
-import { FormEdit } from './form/form-edit/form-edit.entity';
 import { Form } from './form/form.entity';
 import { Individual } from './individual/individual.entity';
 import { Session } from './individual/session/session.entity';
 import { Shortcut } from './individual/shortcut/shortcut.entity';
 import { UserInfo } from './individual/user-info/user-info.entity';
-import { ProjectRole } from './project/project-role/project-role.entity';
 import { Project } from './project/project.entity';
 import { Action } from './team/action/action.entity';
-import { TeamFinance } from './team/team-finance/team-finance.entity';
+import { Finance } from './team/finance/finance.entity';
 import { TeamJoin } from './team/team-join/team-join.entity';
 import { TeamMember } from './team/team-member/team-member.entity';
 import { TeamMetric } from './team/team-metric/team-metric.entity';
@@ -43,18 +38,19 @@ import { EventApproval } from './tenant/event-approval/event-approval.entity';
 import { Tenant } from './tenant/tenant.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
 import { BotInfo } from './individual/bot-info/bot-info.entity';
-import { ChangeRole } from './team/change-role/change-role.entity';
-import { EventChangeRole } from './event/event-change-role/event-change-role.entity';
 import { Pole } from './team/pole/pole.entity';
 import { ActorAddress } from './actor/actor-address/actor-address.entity';
 import { ActorBankInfo } from './actor/actor-bank-info/actor-bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
-import { ActorFinance } from './actor/actor-finance/actor-finance.entity';
-import { Issue } from './content-master/issue/issue.entity';
+import { ExpenseItem } from './team/expense-item/expense-item.entity';
 import { Campus } from './tenant/campus/campus.entity';
-import { EventAttendance } from './event/event-attendance/event-attendance.entity';
 import { Follow } from './actor/follow/follow.entity';
 import { Log } from './log/log.entity';
+import { Mission } from './team/mission/mission.entity';
+import { MissionJoin } from './team/mission-join/mission-join.entity';
+import { EventManage } from './event/event-manage/event-manage.entity';
+import { Issue } from './issue/issue.entity';
+import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 
 export const allEntities = [
   Log,
@@ -69,8 +65,8 @@ export const allEntities = [
   Actor,
   ActorBankInfo,
   ActorAddress,
-  ActorFinance,
   ActorImage,
+  LegalUnit,
   Social,
   Tag,
   Follow,
@@ -80,11 +76,16 @@ export const allEntities = [
 
   Team,
   Action,
+  Mission,
+  MissionJoin,
+
   Pole,
   Role,
-  ChangeRole,
+
   Expense,
-  TeamFinance,
+  ExpenseItem,
+
+  Finance,
   TeamJoin,
   TeamMember,
   TeamMetric,
@@ -99,13 +100,10 @@ export const allEntities = [
   Cohort,
 
   Project,
-  ProjectRole,
 
   Event,
-  EventAttendance,
+  EventManage,
   EventJoin,
-  EventRole,
-  EventChangeRole,
 
   FileUpload,
 
@@ -119,18 +117,14 @@ export const allEntities = [
   EventApprovalStep,
 
   Content,
-  ContentMaster,
+  Thread,
   Issue,
 
   Document,
-  DocumentEdit,
   Subject,
 
   Form,
-  FormEdit,
-
   FormSubmission,
-  FormSubmissionEdit,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

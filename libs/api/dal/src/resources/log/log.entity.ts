@@ -1,20 +1,33 @@
 import { LogRepository } from './log.repository';
-import { TenantScopedEntity } from '..';
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property, t } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, PrimaryKey, Property, t } from '@mikro-orm/core';
+
 import { EntityName, EventContext, EventType } from '@okampus/shared/enums';
+import { isIn } from '@okampus/shared/utils';
 
 import type { LogOptions } from './log.options';
+
+import type { Tenant } from '..';
 import type { Team } from '../team/team.entity';
-import type { ContentMaster } from '../content-master/content-master.entity';
-import type { LogDiff } from '@okampus/shared/types';
+import type { Event } from '../event/event.entity';
 import type { Individual } from '../individual/individual.entity';
 
+import type { LogDiff } from '@okampus/shared/types';
+
 @Entity({ customRepository: () => LogRepository })
-export class Log extends TenantScopedEntity {
+export class Log {
   [EntityRepositoryType]!: LogRepository;
 
+  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."id_generator"()', autoincrement: false })
+  id!: string;
+
+  @Property({ type: 'date', defaultRaw: 'current_timestamp' })
+  createdAt!: Date;
+
+  @ManyToOne({ type: 'Individual', nullable: true, default: null })
+  createdBy: Individual | null = null; // null for system
+
   @Enum({ items: () => EventType, type: EnumType })
-  event!: EventType;
+  eventType!: EventType;
 
   @Enum({ items: () => EventContext, type: EnumType })
   context!: EventContext;
@@ -34,14 +47,22 @@ export class Log extends TenantScopedEntity {
   @ManyToOne({ type: 'Team', nullable: true, default: null })
   team: Team | null = null;
 
-  @ManyToOne({ type: 'ContentMaster', nullable: true, default: null })
-  contentMaster: ContentMaster | null = null;
+  @ManyToOne({ type: 'Event', nullable: true, default: null })
+  event: Event | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   individual: Individual | null = null;
 
+  @ManyToOne({ type: 'Tenant', nullable: true, default: null })
+  tenant: Tenant | null = null;
+
+  protected assign<T extends object>(options: T): void {
+    for (const [key, value] of Object.entries(options)) {
+      if (value !== undefined && isIn(key, this)) this[key] = value;
+    }
+  }
+
   constructor(options: LogOptions) {
-    super(options);
     this.assign(options);
   }
 }

@@ -3,7 +3,7 @@ import { RequestContext } from '../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { BaseEntity, ContentMaster, Individual, Log, LogRepository, Team, TeamRepository } from '@okampus/api/dal';
+import { BaseEntity, Individual, Log, LogRepository, Team, TeamRepository, Event } from '@okampus/api/dal';
 
 import { Injectable } from '@nestjs/common';
 import { EntityName, EventContext, EventType } from '@okampus/shared/enums';
@@ -13,7 +13,7 @@ import { isIn } from '@okampus/shared/utils';
 import type { LogDiff } from '@okampus/shared/types';
 
 export type LogContext = {
-  contentMaster?: ContentMaster;
+  event?: Event;
   individual?: Individual;
   team?: Team;
 };
@@ -30,12 +30,12 @@ export class LogsService extends RequestContext {
 
   async createLog(entityName: EntityName, entity: BaseEntity, context: LogContext = {}) {
     const createLog = new Log({
-      event: EventType.Create,
+      eventType: EventType.Create,
       context: this.requester().bot ? EventContext.Bot : EventContext.User,
       entityName,
       entityId: entity.id,
       individual: context.individual || this.requester(),
-      contentMaster: context.contentMaster,
+      event: context.event,
       team: context.team,
       createdBy: this.requester(),
       tenant: this.tenant(),
@@ -45,12 +45,12 @@ export class LogsService extends RequestContext {
 
   async deleteLog(entityName: EntityName, entityId: string, context: LogContext = {}) {
     const deleteLog = new Log({
-      event: EventType.Delete,
+      eventType: EventType.Delete,
       context: this.requester().bot ? EventContext.Bot : EventContext.User,
       entityName,
       entityId,
       individual: context.individual || this.requester(),
-      contentMaster: context.contentMaster,
+      event: context.event,
       team: context.team,
       createdBy: this.requester(),
       tenant: this.tenant(),
@@ -106,12 +106,12 @@ export class LogsService extends RequestContext {
 
     if (Object.keys(diff).length > 0) {
       const updateLog = new Log({
-        event: EventType.Update,
+        eventType: EventType.Update,
         context: this.requester().bot ? EventContext.Bot : EventContext.User,
         entityName,
         entityId: entity.id,
         individual: context.individual || this.requester(),
-        contentMaster: context.contentMaster,
+        event: context.event,
         team: context.team,
         diff,
         createdBy: this.requester(),
@@ -121,12 +121,12 @@ export class LogsService extends RequestContext {
     }
   }
 
-  public async getTeamFinanceLogs(id: string, teamId: string) {
+  public async getFinanceLogs(id: string, teamId: string) {
     const team = await this.teamRepository.findOneOrFail(teamId);
     // TODO: check permissions
     return await this.logRepository.find({
       entityId: id,
-      entityName: EntityName.TeamFinance,
+      entityName: EntityName.Finance,
       team,
     });
   }

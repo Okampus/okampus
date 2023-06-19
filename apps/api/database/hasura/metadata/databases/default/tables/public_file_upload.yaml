@@ -30,26 +30,12 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_id
 array_relationships:
-  - name: actorFinances
-    using:
-      foreign_key_constraint_on:
-        column: receipt_id
-        table:
-          name: actor_finance
-          schema: public
   - name: contentAttachments
     using:
       foreign_key_constraint_on:
         column: file_upload_id
         table:
           name: content_attachments
-          schema: public
-  - name: documentEdits
-    using:
-      foreign_key_constraint_on:
-        column: new_version_id
-        table:
-          name: document_edit
           schema: public
   - name: eventJoins
     using:
@@ -58,19 +44,19 @@ array_relationships:
         table:
           name: event_join
           schema: public
-  - name: events
-    using:
-      foreign_key_constraint_on:
-        column: image_id
-        table:
-          name: event
-          schema: public
   - name: expenses
     using:
       foreign_key_constraint_on:
         column: expense_report_id
         table:
           name: expense
+          schema: public
+  - name: financeAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: finance_attachments
           schema: public
   - name: projects
     using:
@@ -85,13 +71,6 @@ array_relationships:
         column: image_id
         table:
           name: tag
-          schema: public
-  - name: teamFinances
-    using:
-      foreign_key_constraint_on:
-        column: receipt_id
-        table:
-          name: team_finance
           schema: public
   - name: teams
     using:

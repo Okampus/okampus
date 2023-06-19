@@ -1,4 +1,4 @@
-import { fileUploadBaseInfo } from '../../file-upload/fileUploadBase';
+import { fileUploadBaseInfo } from '../../fileUpload/fileUploadBase';
 import { Selector } from '../../../zeus';
 import { entityBase } from '../../entityBase';
 import type { GraphQLTypes, InputType } from '../../../zeus';

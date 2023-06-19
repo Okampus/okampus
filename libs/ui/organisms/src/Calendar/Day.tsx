@@ -29,10 +29,10 @@ export function Day({ day, isOtherMonth, events }: DayProps) {
             <PopoverTrigger>
               <div
                 className="px-2 py-0.5 mr-3 rounded line-clamp-1 text-start text-xs text-white"
-                style={{ backgroundColor: getColorHexFromData(event.contentMaster?.name) }}
+                style={{ backgroundColor: getColorHexFromData(event?.name) }}
               >
                 <span className="text-gray-200 font-medium mr-1">{formatHourSimple(event.start as string)}</span>
-                <span className="font-semibold">{event.contentMaster?.name}</span>
+                <span className="font-semibold">{event?.name}</span>
               </div>
             </PopoverTrigger>
             <PopoverContent>

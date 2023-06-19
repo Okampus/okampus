@@ -12,13 +12,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_id
 array_relationships:
-  - name: changeRoles
-    using:
-      foreign_key_constraint_on:
-        column: received_role_id
-        table:
-          name: change_role
-          schema: public
   - name: teamJoins
     using:
       foreign_key_constraint_on:

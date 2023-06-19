@@ -1,7 +1,7 @@
-import { TeamFinanceSidePanel } from '../SidePanel/TeamFinanceSidePanel';
+import { FinanceSidePanel } from '../SidePanel/FinanceSidePanel';
 
 import { Align } from '@okampus/shared/enums';
-import { formatDateDayOfWeekNoHour, getColorHexFromData } from '@okampus/shared/utils';
+import { formatDateDayOfWeekNoHour, getColorHexFromData, isNotNull } from '@okampus/shared/utils';
 
 import { TextAddress, TextBadge, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
@@ -12,9 +12,9 @@ import { getAvatar } from '@okampus/ui/utils';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 
-import type { TeamFinanceBaseInfo } from '@okampus/shared/graphql';
+import type { FinanceBaseInfo } from '@okampus/shared/graphql';
 
-export type FinanceDashboardProps = { finances?: TeamFinanceBaseInfo[] };
+export type FinanceDashboardProps = { finances?: FinanceBaseInfo[] };
 export function FinanceDashboard({ finances }: FinanceDashboardProps) {
   const {
     showSidePanel,
@@ -27,9 +27,9 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
   const columns = [
     {
       label: 'Transaction',
-      render: (value: TeamFinanceBaseInfo) => {
+      render: (value: FinanceBaseInfo) => {
         const projectLabel = value.project?.name ?? 'Dépense générale';
-        const eventLabel = value.event?.contentMaster?.name ?? value.category;
+        const eventLabel = value.event?.name ?? value.category;
 
         return (
           <div className="flex text-0 gap-4 items-center">
@@ -50,19 +50,19 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
     {
       label: 'Destinataire',
       align: Align.Left,
-      render: (value: TeamFinanceBaseInfo) => {
+      render: (value: FinanceBaseInfo) => {
         return value.actorAddress && <TextAddress className="text-left" address={value.actorAddress} />;
       },
     },
     {
       label: 'Méthode',
       align: Align.Left,
-      render: (value: TeamFinanceBaseInfo) => {
+      render: (value: FinanceBaseInfo) => {
         if (!value.actor) return <div className="text-1">{t(value.method)}</div>;
 
         const avatar = { src: getAvatar(value.actor.actorImages), size: 7 };
 
-        const userId = value.actor.individualByIndividualId?.userInfo?.id as string;
+        const userId = value.actor.individual?.userInfo?.id;
         if (userId) {
           return (
             <div className="flex flex-col gap-2">
@@ -88,7 +88,7 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
     },
     {
       label: 'Date',
-      render: (value: TeamFinanceBaseInfo) => {
+      render: (value: FinanceBaseInfo) => {
         const date = value.payedAt;
         if (!date) return null;
         return <div className="text-1 font-medium text-[1.05rem]">{formatDateDayOfWeekNoHour(date as string)}</div>;
@@ -96,18 +96,20 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
     },
     {
       label: 'Justificatif',
-      render: (value: TeamFinanceBaseInfo) => {
-        const receipt = value.fileUpload;
-        if (!receipt) return <TextBadge color="grey" label="Manquant" />;
-        return <FileGroup files={[{ name: value.name, size: receipt.size, type: receipt.mime, src: receipt.url }]} />;
+      render: (value: FinanceBaseInfo) => {
+        const attachments = value.financeAttachments
+          .map((attachment) => attachment.fileUpload)
+          .filter(isNotNull)
+          .map(({ name, size, type, url }) => ({ name, size, type, src: url }));
+
+        if (attachments.length === 0) return <TextBadge color="grey" label="Manquant" />;
+        return <FileGroup files={attachments} />;
       },
     },
     {
       align: Align.Right,
       label: 'Montant',
-      render: (value: TeamFinanceBaseInfo) => (
-        <TextFinance amount={(value.amount as number) ?? 0} className="text-lg" />
-      ),
+      render: (value: FinanceBaseInfo) => <TextFinance amount={value.amount ?? 0} className="text-lg" />,
     },
   ];
 
@@ -115,7 +117,7 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
     <Dashboard
       columns={columns}
       data={finances}
-      onElementClick={(data) => showSidePanel(<TeamFinanceSidePanel teamFinance={data} />)}
+      onElementClick={(data) => showSidePanel(<FinanceSidePanel finance={data} />)}
     />
   );
 }

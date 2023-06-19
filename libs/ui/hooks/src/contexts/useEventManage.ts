@@ -7,7 +7,7 @@ export function useEventManage() {
   const eventSlug = useParams()[EVENT_MANAGE_SLUG_PARAM];
   const [getEvent, { data, error }] = useTypedLazyQuery({
     event: [
-      { where: { contentMaster: { slug: { _eq: eventSlug } } }, limit: 1 },
+      { where: { slug: { _eq: eventSlug } }, limit: 1 },
       {
         ...eventManageDetailsInfo,
         form: formBaseInfo,

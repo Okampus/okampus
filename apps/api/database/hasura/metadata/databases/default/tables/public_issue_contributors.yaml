@@ -1,0 +1,3 @@
+table:
+  name: issue_contributors
+  schema: public

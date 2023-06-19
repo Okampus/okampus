@@ -1,5 +1,5 @@
 import { Selector } from '../../zeus';
-import { fileUploadBaseInfo } from '../file-upload/fileUploadBase';
+import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 import { entityBase } from '../entityBase';
 import type { InputType, GraphQLTypes } from '../../zeus';
 

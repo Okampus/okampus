@@ -38,7 +38,7 @@ function renderDocument(showFile: (file: FileLike) => void, document?: DocumentB
   const fileLike: FileLike = {
     name: document.name,
     src: document.fileUpload.url,
-    type: document.fileUpload.mime,
+    type: document.fileUpload.type as string,
     size: document.fileUpload.size,
   };
 

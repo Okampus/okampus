@@ -25,13 +25,6 @@ array_relationships:
         table:
           name: actor_bank_info
           schema: public
-  - name: actorFinances
-    using:
-      foreign_key_constraint_on:
-        column: address_id
-        table:
-          name: actor_finance
-          schema: public
   - name: events
     using:
       foreign_key_constraint_on:
@@ -39,10 +32,10 @@ array_relationships:
         table:
           name: event
           schema: public
-  - name: teamFinances
+  - name: finances
     using:
       foreign_key_constraint_on:
         column: address_id
         table:
-          name: team_finance
+          name: finance
           schema: public

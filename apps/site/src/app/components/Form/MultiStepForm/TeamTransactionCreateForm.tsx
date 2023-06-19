@@ -63,7 +63,7 @@
 //     options:
 //       projects?.flatMap((project) =>
 //         project.eventsAggregate.nodes.map((event) => ({
-//           label: event.contentMaster?.name ?? '',
+//           label: event?.name ?? '',
 //           value: event.id as string,
 //         }))
 //       ) ?? [],
@@ -74,7 +74,7 @@ import { teamTransactionCreateDefaultValues } from './TeamTransactionCreateFormS
 import { receiptUploadFormStep } from './TeamTransactionCreateFormStep/ReceiptUploadFormStep';
 import { TeamProjectCreateForm } from './TeamProjectCreateForm';
 import { FinanceState } from '@okampus/shared/enums';
-import { useTypedQuery, projectBaseInfo, insertTeamFinanceMutation } from '@okampus/shared/graphql';
+import { useTypedQuery, projectBaseInfo, insertFinanceMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { BannerImage } from '@okampus/ui/atoms';
 import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
@@ -87,7 +87,9 @@ import { useContext } from 'react';
 export function TeamTransactionCreateForm() {
   const { showOverlay, hideOverlay } = useContext(NavigationContext);
   const { teamManage } = useTeamManage();
-  const [insertTeamFinance] = useMutation(insertTeamFinanceMutation);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [insertFinance] = useMutation(insertFinanceMutation);
 
   const { data } = useTypedQuery({ project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo] });
   const projects = data?.project;
@@ -145,13 +147,9 @@ export function TeamTransactionCreateForm() {
                   items={[
                     { item: { label: 'Dépenses hors événement', value: null } },
                     ...events.map((event) => ({
-                      item: { label: event.contentMaster?.name, value: event.id as string },
+                      item: { label: event?.name, value: event.id as string },
                       prefix: (
-                        <BannerImage
-                          name={event.contentMaster?.name}
-                          src={event.fileUpload?.url}
-                          className="h-14 rounded-lg"
-                        />
+                        <BannerImage name={event?.name} src={event.fileUpload?.url} className="h-14 rounded-lg" />
                       ),
                     })),
                   ]}
@@ -182,13 +180,9 @@ export function TeamTransactionCreateForm() {
                   items={[
                     { item: { label: 'Dépenses hors événement', value: null } },
                     ...events.map((event) => ({
-                      item: { label: event.contentMaster?.name, value: event.id as string },
+                      item: { label: event?.name, value: event.id as string },
                       prefix: (
-                        <BannerImage
-                          name={event.contentMaster?.name}
-                          src={event.fileUpload?.url}
-                          className="h-14 rounded-lg"
-                        />
+                        <BannerImage name={event?.name} src={event.fileUpload?.url} className="h-14 rounded-lg" />
                       ),
                     })),
                   ]}
@@ -229,7 +223,7 @@ export function TeamTransactionCreateForm() {
       }) => {
         console.log(addressItem);
         if (teamManage) {
-          insertTeamFinance({
+          insertFinance({
             variables: {
               object: {
                 name,
@@ -264,9 +258,9 @@ export function TeamTransactionCreateForm() {
                 teamId: teamManage.id,
               },
             },
-            onCompleted: ({ insertTeamFinanceOne: data }) => {
+            onCompleted: ({ insertFinanceOne: data }) => {
               const id = teamManage.id as string;
-              mergeCache({ __typename: 'Team', id }, { fieldName: 'teamFinances', fragmentOn: 'TeamFinance', data });
+              mergeCache({ __typename: 'Team', id }, { fieldName: 'finances', fragmentOn: 'Finance', data });
               hideOverlay();
             },
           });

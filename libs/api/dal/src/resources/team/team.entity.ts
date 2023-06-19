@@ -26,7 +26,7 @@ import type { Document } from '../document/document.entity';
 import type { Event } from '../event/event.entity';
 import type { Searchable } from '../../types/search-entity.type';
 import type { Action } from './action/action.entity';
-import type { TeamFinance } from './team-finance/team-finance.entity';
+import type { Finance } from './finance/finance.entity';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
@@ -50,6 +50,7 @@ export class Team extends TenantScopedEntity implements Searchable {
   originalCreationYear: number | null = null;
 
   // @OneToMany('TeamHistory', 'team')
+  // @TransformCollection()
   // histories = new Collection<TeamHistory>(this);
 
   // TODO: long-term, convert to currency + amount + manage payments
@@ -105,9 +106,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   actions = new Collection<Action>(this);
 
-  @OneToMany({ type: 'TeamFinance', mappedBy: 'team' })
+  @OneToMany({ type: 'Finance', mappedBy: 'team' })
   @TransformCollection()
-  teamFinances = new Collection<TeamFinance>(this);
+  finances = new Collection<Finance>(this);
 
   @OneToMany({ type: 'TeamJoin', mappedBy: 'team' })
   @TransformCollection()

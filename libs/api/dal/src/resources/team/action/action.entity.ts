@@ -6,7 +6,6 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { ActionOptions } from './action.options';
 import type { Individual } from '../../individual/individual.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { Event } from '../../event/event.entity';
 import type { UserInfo } from '../../individual/user-info/user-info.entity';
 import type { Project } from '../../project/project.entity';
 import type { Team } from '../team.entity';
@@ -18,32 +17,32 @@ export class Action extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null;
+  @Property({ type: 'text', default: '' })
+  description = '';
+
+  @Property({ type: 'smallint', nullable: true, default: null })
+  points: number | null = null;
 
   @Enum({ items: () => ApprovalState, type: EnumType })
-  state!: ApprovalState;
+  state: ApprovalState = ApprovalState.Pending;
 
-  @Property({ type: 'int', default: 0 })
-  score!: number;
+  @ManyToOne({ type: 'Individual', nullable: true, default: null })
+  settledBy: Individual | null = null;
+
+  @Property({ type: 'Date', nullable: true, default: null })
+  settledAt: Date | null = null;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'Event', nullable: true, default: null })
-  event: Event | null = null;
-
   @ManyToOne({ type: 'UserInfo' })
   user!: UserInfo;
 
-  @ManyToOne({ type: 'EventJoin', inversedBy: 'action', nullable: true, default: null })
+  @ManyToOne({ type: 'EventJoin', nullable: true, default: null })
   eventJoin: EventJoin | null = null;
 
   @ManyToOne({ type: 'Project', nullable: true, default: null })
   project: Project | null = null;
-
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  validatedBy!: Individual | null;
 
   constructor(options: ActionOptions) {
     super(options);

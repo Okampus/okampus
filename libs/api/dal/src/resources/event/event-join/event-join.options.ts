@@ -1,21 +1,28 @@
-import type { ApprovalState } from '@okampus/shared/enums';
 import type { Action } from '../../team/action/action.entity';
 import type { FormSubmission } from '../../form-submission/form-submission.entity';
-import type { EventRole } from '../event-role/event-role.entity';
 import type { Event } from '../event.entity';
 import type { EventJoinProps } from '@okampus/shared/dtos';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { UserInfo } from '../../individual/user-info/user-info.entity';
-import type { EventChangeRole } from '../event-change-role/event-change-role.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { EventManage } from '../event-manage/event-manage.entity';
+import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
+import type { SettledVia } from '@okampus/shared/enums';
+import type { Individual } from '../../individual/individual.entity';
 
 export type EventJoinOptions = EventJoinProps &
   TenantScopedOptions & {
-    eventChangeRole?: EventChangeRole | null;
-    formSubmission?: FormSubmission | null;
-    joiner: UserInfo;
+    presence?: boolean | null;
+    settledBy?: Individual | null;
+    settledAt?: Date | null;
+    presenceSettledBy?: Individual | null;
+    presenceSettledAt?: Date | null;
+    presenceSettledVia?: SettledVia | null;
     event: Event;
-    participated?: boolean;
+    joiner: UserInfo;
+    joinedFor?: EventManage | null;
+    qrCode?: FileUpload | null;
+    missionJoin?: MissionJoin | null;
     action?: Action | null;
-    eventRole?: EventRole | null;
-    state?: ApprovalState;
+    formSubmission?: FormSubmission | null;
   };

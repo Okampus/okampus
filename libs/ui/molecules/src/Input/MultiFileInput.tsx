@@ -1,9 +1,6 @@
 import { FileItem } from '../Item/FileItem';
 import { ReactComponent as CloudIcon } from '@okampus/assets/svg/icons/cloud.svg';
 
-import { checkImage } from '@okampus/shared/utils';
-import { getFileTypeIcon } from '@okampus/ui/atoms';
-
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
@@ -37,19 +34,20 @@ export function MultiFileInput({ onFileAdd, onFileRemove, onFileClick }: DropFil
 
   const onFileDrop = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const updatedList = [
-        ...renderedFileList,
-        ...[...e.target.files].map((file) => {
-          const isImage = checkImage(file);
-          return {
-            file,
-            previewImageSrc: isImage ? URL.createObjectURL(file) : getFileTypeIcon(file),
-            isImage,
-          };
-        }),
-      ];
-      setRenderedFileList(updatedList);
-      onFileAdd?.(updatedList);
+      console.log('update file list', renderedFileList);
+      // const updatedList = [
+      //   ...renderedFileList,
+      //   ...[...e.target.files].map((file) => {
+      //     const isImage = checkImage(file);
+      //     return {
+      //       file,
+      //       isImage,
+      //       previewImageSrc: isImage ? URL.createObjectURL(file) : getFileTypeIcon(file),
+      //     };
+      //   }),
+      // ];
+      // setRenderedFileList(updatedList);
+      // onFileAdd?.(updatedList);
     }
   };
 

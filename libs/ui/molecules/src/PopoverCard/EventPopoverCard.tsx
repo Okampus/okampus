@@ -14,8 +14,8 @@ export type EventPopoverCardProps = { event: EventBaseInfo };
 export function EventPopoverCard({ event }: EventPopoverCardProps) {
   return (
     <div className="bg-0 rounded-xl flex flex-col gap-4 text-2 w-[30rem] p-6">
-      <Link to={EVENT_ROUTE(event.contentMaster?.slug)} className="title">
-        {event.contentMaster?.name}
+      <Link to={EVENT_ROUTE(event?.slug)} className="title">
+        {event?.name}
       </Link>
       <div className="flex gap-3 items-center">
         <TimeOutlinedIcon className="w-5 h-5 text-3 shrink-0" />
@@ -25,11 +25,11 @@ export function EventPopoverCard({ event }: EventPopoverCardProps) {
         <LocationOutlinedIcon className="w-5 h-5 text-3 shrink-0" />
         <TextAddress address={event.actorAddress} />
       </div>
-      <div className="line-clamp-4">{event.contentMaster?.content?.text}</div>
+      <div className="line-clamp-4">{event?.content?.text}</div>
       <ActionButton
         action={{
           label: 'Voir les détails',
-          linkOrActionOrMenu: EVENT_ROUTE(event.contentMaster?.slug),
+          linkOrActionOrMenu: EVENT_ROUTE(event?.slug),
         }}
       />
     </div>

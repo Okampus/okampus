@@ -23,7 +23,7 @@ export function EventCard({ event, link }: EventCardProps) {
       <div className="flex items-start justify-between">
         <div>
           <div className="text-0">
-            {event.contentMaster?.name}
+            {event.name}
             <LabeledTeam id={team.id as string} name={team.actor?.name} avatar={getAvatar(team?.actor?.actorImages)} />
           </div>
           <div className="text-2">{dateRange}</div>

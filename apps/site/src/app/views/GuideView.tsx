@@ -30,7 +30,7 @@ export function GuideView() {
   //                 previewFile({
   //                   name,
   //                   src: fileUpload.url,
-  //                   type: fileUpload.mime,
+  //                   type: fileUpload.type,
   //                 })
   //               }
   //               document={{
@@ -38,7 +38,7 @@ export function GuideView() {
   //                 name,
   //                 yearVersion: null,
   //                 url: fileUpload.url,
-  //                 type: fileUpload.mime,
+  //                 type: fileUpload.type,
   //                 size: fileUpload.size,
   //               }}
   //             />

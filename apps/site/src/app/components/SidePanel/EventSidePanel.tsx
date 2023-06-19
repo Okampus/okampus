@@ -10,18 +10,13 @@ export function EventSidePanel({ event }: EventSidePanelProps) {
     <div className="h-full flex flex-col items-center mb-10">
       <div className="w-full relative" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
         <DarkGradient>
-          <BannerImage aspectRatio={BANNER_ASPECT_RATIO} src={banner} name={event.contentMaster?.name} />
+          <BannerImage aspectRatio={BANNER_ASPECT_RATIO} src={banner} name={event?.name} />
           <div className="absolute top-4 px-6 font-semibold italic z-20 text-white text-lg">Événement</div>
         </DarkGradient>
-        <div className="absolute bottom-4 px-5 text-4xl font-bold text-white">{event.contentMaster?.name}</div>
+        <div className="absolute bottom-4 px-5 text-4xl font-bold text-white">{event?.name}</div>
       </div>
       <div className="p-4 w-full">
-        <ActionButton
-          action={{
-            label: 'Gérer',
-            linkOrActionOrMenu: EVENT_MANAGE_ROUTE(event.contentMaster?.slug),
-          }}
-        />
+        <ActionButton action={{ label: 'Gérer', linkOrActionOrMenu: EVENT_MANAGE_ROUTE(event?.slug) }} />
       </div>
     </div>
   );

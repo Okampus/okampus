@@ -1,5 +1,8 @@
 import { bytes, checkImage, downloadFile } from '@okampus/shared/utils';
-import { getFileTypeIcon, GradientImage } from '@okampus/ui/atoms';
+import {
+  // getFileTypeIcon,
+  GradientImage,
+} from '@okampus/ui/atoms';
 import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/close.svg';
 import { ReactComponent as DownloadIcon } from '@okampus/assets/svg/icons/download.svg';
 
@@ -17,7 +20,7 @@ export type FileCardPreviewProps = {
 
 export function FileItem({ file, isImage, previewImageSrc, onRemove, onClick }: FileCardPreviewProps) {
   isImage = isImage ?? checkImage(file);
-  previewImageSrc = previewImageSrc ?? (isImage ? URL.createObjectURL(file) : getFileTypeIcon(file));
+  // previewImageSrc = previewImageSrc ?? (isImage ? URL.createObjectURL(file) : getFileTypeIcon(file));
 
   return (
     <GradientImage

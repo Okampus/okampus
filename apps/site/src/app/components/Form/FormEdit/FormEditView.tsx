@@ -4,8 +4,8 @@ import { ReactComponent as FormOutlinedIcon } from '@okampus/assets/svg/icons/ma
 import { ReactComponent as PlusFilledIcon } from '@okampus/assets/svg/icons/material/filled/add.svg';
 
 import { ControlType } from '@okampus/shared/enums';
-import { formDetailsInfo, updateFormBase, useTypedQuery } from '@okampus/shared/graphql';
-import { ActionType, SelectItem } from '@okampus/shared/types';
+import { formBaseInfo, updateFormBase, useTypedQuery } from '@okampus/shared/graphql';
+import { ActionType } from '@okampus/shared/types';
 import { toSlug } from '@okampus/shared/utils';
 
 import { NavigationContext } from '@okampus/ui/hooks';
@@ -16,7 +16,7 @@ import { useKeyPressEvent } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMutation } from '@apollo/client';
 
-import type { FormField } from '@okampus/shared/types';
+import type { FormField, SelectItem } from '@okampus/shared/types';
 
 export type FormEditViewProps = { id: string };
 
@@ -64,7 +64,7 @@ export function FormEditView({ id }: FormEditViewProps) {
     { label: 'Cases à cocher', value: ControlType.MultiCheckbox },
   ];
 
-  const { data } = useTypedQuery({ form: [{ where: { id: { _eq: id } }, limit: 1 }, formDetailsInfo] });
+  const { data } = useTypedQuery({ form: [{ where: { id: { _eq: id } }, limit: 1 }, formBaseInfo] });
 
   const form = data?.form?.[0];
   const initialFields = (form?.schema ?? null) as FormField[] | null;

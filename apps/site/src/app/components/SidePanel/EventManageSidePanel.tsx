@@ -9,7 +9,7 @@ export function EventManageSidePanel({ event }: EventManageSidePanelProps) {
       <ActionButton
         action={{
           label: 'Vue publique',
-          linkOrActionOrMenu: EVENT_ROUTE(event.contentMaster?.slug),
+          linkOrActionOrMenu: EVENT_ROUTE(event?.slug),
         }}
       />
     </div>

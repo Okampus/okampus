@@ -17,6 +17,6 @@ export type ContentOptions = ContentProps &
     reports?: Report[];
     favorites?: Favorite[];
     reactions?: Reaction[];
-    teams?: Team[];
+    team?: Team | null;
     event?: Event | null;
   };

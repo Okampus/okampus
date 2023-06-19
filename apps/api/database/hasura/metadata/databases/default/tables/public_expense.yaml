@@ -8,27 +8,16 @@ object_relationships:
   - name: fileUpload
     using:
       foreign_key_constraint_on: expense_report_id
+  - name: finance
+    using:
+      foreign_key_constraint_on:
+        column: expense_id
+        table:
+          name: finance
+          schema: public
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id
-  - name: issue
-    using:
-      foreign_key_constraint_on: issue_id
-  - name: teamFinance
-    using:
-      foreign_key_constraint_on:
-        column: expense_id
-        table:
-          name: team_finance
-          schema: public
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-array_relationships:
-  - name: actorFinances
-    using:
-      foreign_key_constraint_on:
-        column: expense_id
-        table:
-          name: actor_finance
-          schema: public

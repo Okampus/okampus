@@ -8,7 +8,7 @@ import { getAvatar } from '@okampus/ui/utils';
 
 import { Link } from 'react-router-dom';
 
-import type { EventRoleBaseInfo, ProjectWithTeamInfo } from '@okampus/shared/graphql';
+import type { ProjectWithTeamInfo } from '@okampus/shared/graphql';
 
 export type ProjectCardProps = { project: ProjectWithTeamInfo };
 
@@ -18,32 +18,32 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const end =
     typeof project.eventsAggregate.aggregate?.max?.end === 'string' && project.eventsAggregate.aggregate?.max?.end;
 
-  const events = project.events;
-  const participantsCount = events.reduce(
-    (curr, event) => curr + (event?.eventJoinsAggregate.aggregate?.count || 0),
-    0
-  );
-  const supervisorsCount = project.projectSupervisors.length;
+  // const events = project.events;
+  // const participantsCount = events.reduce(
+  //   (curr, event) => curr + (event?.eventJoinsAggregate.aggregate?.count || 0),
+  //   0
+  // );
+  // const supervisorsCount = project.projectSupervisors.length;
 
-  const missingRoles: [string, EventRoleBaseInfo[]][] = [];
-  for (const event of events) {
-    for (const role of event.eventRoles) {
-      const id = role.projectRole.id as string;
-      const existing = missingRoles.find((r) => r[0] === id);
-      if (existing) {
-        existing[1].push(role);
-      } else {
-        missingRoles.push([id, [role]]);
-      }
-    }
-  }
+  // const missingRoles: [string, EventRoleBaseInfo[]][] = [];
+  // for (const event of events) {
+  //   for (const role of event.eventRoles) {
+  //     const id = role.projectRole.id as string;
+  //     const existing = missingRoles.find((r) => r[0] === id);
+  //     if (existing) {
+  //       existing[1].push(role);
+  //     } else {
+  //       missingRoles.push([id, [role]]);
+  //     }
+  //   }
+  // }
 
-  const missing = missingRoles.slice(0, 2);
-  const remaining = missingRoles.slice(3).reduce((curr, [, roles]) => curr + roles.length, 0);
+  // const missing = missingRoles.slice(0, 2);
+  // const remaining = missingRoles.slice(3).reduce((curr, [, roles]) => curr + roles.length, 0);
 
-  const helpWanted = missingRoles.length > 0;
+  // const helpWanted = missingRoles.length > 0;
   const createdAtDate = new Date(project.createdAt as string).getTime();
-  const isNew = createdAtDate > Date.now() - 1000 * 60 * 60 * 24 * 7;
+  // const isNew = createdAtDate > Date.now() - 1000 * 60 * 60 * 24 * 7;
 
   // const badges = [
   //   ...(isNew ? [<TextBadge key="new" prefix="🔥" label="Nouveau" />] : []),

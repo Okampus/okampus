@@ -60,7 +60,7 @@ export class UploadsService extends RequestContext {
       `${loadConfig<string>(this.configService, 'network.apiUrl')}/uploads/${bucket}/${key}`;
   }
 
-  public async upload(stream: Readable, mime: string, key: string, bucket: Buckets): Promise<HTTPResource> {
+  public async upload(stream: Readable, type: string, key: string, bucket: Buckets): Promise<HTTPResource> {
     if (!this.isEnabled) {
       const buffer = await streamToBuffer(stream);
       await promises.writeFile(`${this.uploadLocalPath}/${bucket}/${key}`, buffer);
@@ -71,7 +71,7 @@ export class UploadsService extends RequestContext {
     if (!this.minioClient) throw new BadRequestException('Minio client is not initialized');
     const bucketName = this.bucketNames[bucket];
 
-    const putOptions = { 'Content-Type': mime, 'X-AMZ-ACL': 'public-read' };
+    const putOptions = { 'Content-Type': type, 'X-AMZ-ACL': 'public-read' };
 
     this.logger.log(`Uploading ${key} to ${bucketName}..`);
     try {
@@ -96,25 +96,25 @@ export class UploadsService extends RequestContext {
     else throw new BadRequestException('File is not a stream or buffer');
 
     // TODO: support different file types differently and ensure coherence with expected types
-    // if (checkImage(mime)) {
+    // if (checkImage(type)) {
     //   // let meta = {};
-    //   // if (file.mimetype.startsWith('image/')) {
+    //   // if (file.typetype.startsWith('image/')) {
     //   //   const image = sharp(buffer);
     //   //   buffer = await image.resize(null, 600).webp({ effort: 3 }).toBuffer();
-    //   //   mimeType = 'image/webp';
+    //   //   typeType = 'image/webp';
     //   //   const metadata = await image.metadata();
     //   //   meta = { width: metadata.width, height: metadata.height };
     //   // }
     // }
 
-    const mime = file.mimetype ?? 'application/octet-stream';
+    const type = file.typetype ?? 'application/octet-stream';
     const key = `${nanoid(16)}.${toSlug(file.filename ?? file.fieldname)}.${toSlug(bucket)}.${nowString()}`;
-    const { url, size } = await this.upload(stream, mime, key, bucket);
+    const { url, size } = await this.upload(stream, type, key, bucket);
     const name = file.originalname ?? file.filename ?? key;
     const fileLastModifiedAt = file.fileLastModifiedAt?.toISOString() ?? new Date().toISOString();
 
     const fileInsert = {
-      mime,
+      type,
       name,
       size,
       fileLastModifiedAt,
@@ -133,7 +133,7 @@ export class UploadsService extends RequestContext {
     const qrBuffer = Buffer.from(qrCode.split(',')[1], 'base64');
     const buffer = await sharp(qrBuffer).webp({ quality: 80, effort: 3 }).toBuffer();
 
-    const file = { buffer, mimetype: 'image/webp', size: buffer.length, fileLastModifiedAt: new Date() };
+    const file = { buffer, typetype: 'image/webp', size: buffer.length, fileLastModifiedAt: new Date() };
     return this.createUpload({ ...file, filename: name, fieldname: 'qr' }, Buckets.QR, scopedOptions);
   }
 }

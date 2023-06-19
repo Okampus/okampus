@@ -1,0 +1,3 @@
+table:
+  name: mission
+  schema: public

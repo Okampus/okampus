@@ -5,15 +5,15 @@ object_relationships:
   - name: actorAddress
     using:
       foreign_key_constraint_on: address_id
-  - name: contentMaster
+  - name: content
     using:
-      foreign_key_constraint_on: content_master_id
+      foreign_key_constraint_on: content_id
   - name: eventApprovalStep
     using:
       foreign_key_constraint_on: last_event_approval_step_id
   - name: fileUpload
     using:
-      foreign_key_constraint_on: image_id
+      foreign_key_constraint_on: banner_id
   - name: form
     using:
       foreign_key_constraint_on: join_form_id
@@ -29,17 +29,7 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: userInfo
-    using:
-      foreign_key_constraint_on: supervisor_id
 array_relationships:
-  - name: actions
-    using:
-      foreign_key_constraint_on:
-        column: event_id
-        table:
-          name: action
-          schema: public
   - name: eventApprovals
     using:
       foreign_key_constraint_on:
@@ -54,13 +44,6 @@ array_relationships:
         table:
           name: event_join
           schema: public
-  - name: eventRoles
-    using:
-      foreign_key_constraint_on:
-        column: event_id
-        table:
-          name: event_role
-          schema: public
   - name: eventTags
     using:
       foreign_key_constraint_on:
@@ -68,17 +51,17 @@ array_relationships:
         table:
           name: event_tags
           schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: event_id
+        table:
+          name: finance
+          schema: public
   - name: teamEvents
     using:
       foreign_key_constraint_on:
         column: event_id
         table:
           name: team_events
-          schema: public
-  - name: teamFinances
-    using:
-      foreign_key_constraint_on:
-        column: event_id
-        table:
-          name: team_finance
           schema: public

@@ -26,6 +26,7 @@ import type { Individual } from '../individual/individual.entity';
 import type { Team } from '../team/team.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
+import type { LegalUnit } from './legal-unit/legal-unit.entity';
 
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
@@ -36,6 +37,9 @@ export class Actor extends TenantScopedEntity {
 
   @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true })
   team!: Team | null;
+
+  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true })
+  legalUnit!: LegalUnit | null;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()

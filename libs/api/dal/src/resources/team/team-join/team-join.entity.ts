@@ -1,14 +1,15 @@
 import { TeamJoinRepository } from './team-join.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { ChangeRole } from '../change-role/change-role.entity';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
 import type { FormSubmission } from '../../form-submission/form-submission.entity';
+import type { Pole } from '../pole/pole.entity';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';
 import type { TeamJoinOptions } from './team-join.options';
+import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { Individual } from '../../individual/individual.entity';
 
 @Entity({ customRepository: () => TeamJoinRepository })
 export class TeamJoin extends TenantScopedEntity {
@@ -20,6 +21,12 @@ export class TeamJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'UserInfo' })
   joiner!: UserInfo;
 
+  @ManyToOne({ type: 'Individual', nullable: true, default: null })
+  settledBy: Individual | null = null;
+
+  @Property({ type: 'Date', nullable: true, default: null })
+  settledAt: Date | null = null;
+
   @ManyToOne({ type: 'FormSubmission', nullable: true, default: null })
   formSubmission: FormSubmission | null = null;
 
@@ -29,8 +36,11 @@ export class TeamJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'Role' })
   askedRole!: Role;
 
-  @OneToOne({ type: 'ChangeRole', inversedBy: 'teamJoin', nullable: true })
-  changeRole: ChangeRole | null = null;
+  @ManyToOne({ type: 'Role', nullable: true, default: null })
+  receivedRole: Role | null = null;
+
+  @ManyToOne({ type: 'Pole', nullable: true, default: null })
+  receivedPole: Pole | null = null;
 
   constructor(options: TeamJoinOptions) {
     super(options);

@@ -13,19 +13,25 @@ export class ProjectProps {
   @IsString()
   description: string | null = null;
 
-  @Field(() => Float)
-  @IsNumber()
-  expectedBudget!: number;
-
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber()
-  actualBudget?: number | null = null;
+  budget?: number | null = null;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  regularEventInterval?: string = '';
 
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
-  isPrivate = false;
+  isPrivate?: boolean = false;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isTemplate?: boolean = false;
 
   @Field(() => Colors, { nullable: true })
   @IsEnum(Colors)
@@ -34,9 +40,4 @@ export class ProjectProps {
   @Field(() => String)
   @IsString()
   slug!: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  @IsString()
-  regularEventInterval?: string | null = null;
 }

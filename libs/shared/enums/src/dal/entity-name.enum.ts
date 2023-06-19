@@ -2,13 +2,15 @@ export enum EntityName {
   Individual = 'Individual',
   BotInfo = 'BotInfo',
   UserInfo = 'UserInfo',
+
   Tenant = 'Tenant',
   Campus = 'Campus',
+
   Actor = 'Actor',
   ActorBankInfo = 'ActorBankInfo',
   ActorAddress = 'ActorAddress',
-  ActorFinance = 'ActorFinance',
   ActorImage = 'ActorImage',
+  LegalUnit = 'LegalUnit',
   Social = 'Social',
   Tag = 'Tag',
   Follow = 'Follow',
@@ -18,11 +20,16 @@ export enum EntityName {
 
   Team = 'Team',
   Action = 'Action',
+  Mission = 'Mission',
+  MissionJoin = 'MissionJoin',
+
   Pole = 'Pole',
   Role = 'Role',
-  ChangeRole = 'ChangeRole',
+
   Expense = 'Expense',
-  TeamFinance = 'TeamFinance',
+  ExpenseItem = 'ExpenseItem',
+
+  Finance = 'Finance',
   TeamJoin = 'TeamJoin',
   TeamMember = 'TeamMember',
   TeamMetric = 'TeamMetric',
@@ -37,13 +44,10 @@ export enum EntityName {
   Cohort = 'Cohort',
 
   Project = 'Project',
-  ProjectRole = 'ProjectRole',
 
   Event = 'Event',
-  EventAttendance = 'EventAttendance',
+  EventManage = 'EventManage',
   EventJoin = 'EventJoin',
-  EventRole = 'EventRole',
-  EventChangeRole = 'EventChangeRole',
 
   FileUpload = 'FileUpload',
 
@@ -61,14 +65,10 @@ export enum EntityName {
   Issue = 'Issue',
 
   Document = 'Document',
-  DocumentEdit = 'DocumentEdit',
   Subject = 'Subject',
 
   Form = 'Form',
-  FormEdit = 'FormEdit',
-
   FormSubmission = 'FormSubmission',
-  FormSubmissionEdit = 'FormSubmissionEdit',
 }
 
 // TODO: add test to match all *.entity.ts files with this list (all entities except Log)

@@ -4,7 +4,6 @@ import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/
 import { ReactComponent as QRCodeIcon } from '@okampus/assets/svg/icons/material/filled/qr-code.svg';
 
 import { AVATAR_USER_ROUNDED, EVENT_MANAGE_ROUTES, EVENT_MANAGE_TAB_ROUTE, EVENT_ROUTE } from '@okampus/shared/consts';
-import { AttendanceStatus } from '@okampus/shared/enums';
 import {
   eventWithJoinInfo,
   insertEventJoinMutation,
@@ -35,31 +34,23 @@ import type { FormSchema } from '@okampus/shared/types';
 import type { ProjectDetailsInfo, UserBaseInfo, EventJoinBaseInfo, EventWithJoinInfo } from '@okampus/shared/graphql';
 
 // TODO: refactor this ugly CSS as table
-const PresenceCell = ({ status }: { status?: AttendanceStatus }) => {
+const PresenceCell = ({ presence }: { presence?: boolean }) => {
   let color = 'bg-transparent';
   let icon = null;
 
-  switch (status) {
-    case AttendanceStatus.Sure: {
-      color = 'dark:bg-green-800 bg-green-300';
-      icon = (
-        <>
-          <CheckIcon className="w-8 h-8 text-green-500" />
-          <div className="text-green-600 dark:text-green-400">Inscrit</div>
-        </>
-      );
-      break;
-    }
-    default: {
-      color = 'bg-2';
-      icon = (
-        <>
-          <CloseIcon className="w-8 h-8 text-4" />
-          Non-inscrit
-        </>
-      );
-      break;
-    }
+  if (presence !== undefined) {
+    color = presence ? 'dark:bg-green-800 bg-green-300' : 'bg-2';
+    icon = presence ? (
+      <>
+        <CheckIcon className="w-8 h-8 text-green-500" />
+        <div className="text-green-600 dark:text-green-400">Présent</div>
+      </>
+    ) : (
+      <>
+        <CloseIcon className="w-8 h-8 text-4" />
+        Absent
+      </>
+    );
   }
 
   return (
@@ -74,6 +65,8 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
   const { hideOverlay, showOverlay } = useContext(NavigationContext);
   const { currentUser } = useCurrentUser();
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [createEventJoin, { data: eventJoin }] = useMutation(insertEventJoinMutation);
 
   const { data } = useTypedQuery({
@@ -122,7 +115,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       showOverlay(
         <MultiStepForm
           defaultValues={getDefaultFormData(event.form.schema as FormSchema)}
-          // title={`${event.contentMaster?.name} / Inscription`}
+          // title={`${event?.name} / Inscription`}
           onClose={hideOverlay}
           initialStep={{
             header: "Veuillez remplir le formulaire d'inscription",
@@ -145,12 +138,9 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                 header: 'Voici votre ticket',
                 content: () => {
                   createEventJoin({
-                    variables: {
-                      object: {
-                        eventId: event.id,
-                        joinerId: currentUser?.id,
-                      },
-                    },
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    variables: { object: { eventId: event.id, joinerId: currentUser?.id } },
                     onCompleted: (data) => {
                       console.log('Data', data.insertEventJoinOne, data.insertEventJoinOne?.id);
                     },
@@ -161,7 +151,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                     <QRCodeImage
                       showLink={true}
                       text={`${SITE_URL}${EVENT_MANAGE_TAB_ROUTE({
-                        slug: eventJoin.insertEventJoinOne?.event.contentMaster?.slug,
+                        slug: eventJoin.insertEventJoinOne?.event?.slug,
                         tab: EVENT_MANAGE_ROUTES.CONFIRM_PRESENCE,
                       })}/${eventJoin.insertEventJoinOne?.id}`}
                     />
@@ -195,12 +185,9 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       );
     } else {
       createEventJoin({
-        variables: {
-          object: {
-            eventId: event.id,
-            joinerId: currentUser?.id,
-          },
-        },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        variables: { object: { eventId: event.id, joinerId: currentUser?.id } },
         onCompleted: (data) => {
           console.log('Data', data.insertEventJoinOne, data.insertEventJoinOne?.id);
         },
@@ -215,11 +202,11 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
         <div className="w-64 shrink-0 flex items-center justify-center header">Événement</div>
         {events.map((event) => (
           <Link
-            to={EVENT_ROUTE(event.contentMaster?.slug)}
+            to={EVENT_ROUTE(event?.slug)}
             className="min-w-[4rem] grow w-0 flex items-center justify-center text-0 font-semibold px-3 line-clamp-2 text-center text-lg"
-            key={event.id as string}
+            key={event.id}
           >
-            {event.contentMaster?.name}
+            {event?.name}
           </Link>
         ))}
       </div>
@@ -236,7 +223,8 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       </div>
       <div className="flex h-14 bg-1 w-fit min-w-full shrink-0">
         <div className="w-64 shrink-0 flex items-center justify-center header">Responsable</div>
-        {events.map((event) => {
+        {/* Show Supervisors */}
+        {/* {events.map((event) => {
           const avatar = {
             src: getAvatar(event.userInfo.individualById?.actor?.actorImages),
             name: event.userInfo.individualById?.actor?.name,
@@ -246,7 +234,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
           return (
             <div className="min-w-[4rem] grow w-0 flex items-center justify-center px-1.5">
               <LabeledUser
-                id={event.userInfo.id as string}
+                id={event.userInfo.id}
                 key={event.id as string}
                 avatar={avatar}
                 className="gap-2"
@@ -259,7 +247,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
           //   name={event.userInfo.individualById?.actor?.name}
           //   role={event.userInfo.teamMembers[0].teamMemberRoles[0].role.name}
           // />
-        })}
+        })} */}
       </div>
       <div className="flex h-14 border-b-2 border-color-2 bg-0 w-fit min-w-full shrink-0">
         <div className="w-64 shrink-0 flex items-center justify-center header">Participants</div>
@@ -298,7 +286,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                   <QRCodeImage
                     showLink={true}
                     text={`${SITE_URL}${EVENT_MANAGE_TAB_ROUTE({
-                      slug: event.contentMaster?.slug,
+                      slug: event?.slug,
                       tab: EVENT_MANAGE_ROUTES.CONFIRM_PRESENCE,
                     })}/${eventJoin.id}`}
                   />
@@ -341,7 +329,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
               </div>
               {events.map((event) => {
                 const eventJoin = eventJoins[event.id as string];
-                return <PresenceCell status={eventJoin?.attendanceStatus as AttendanceStatus} />;
+                return <PresenceCell presence={eventJoin?.presence} />;
                 // const color = !eventJoin?.attendanceStatus eventJoin?.attendanceStatus === RegistrationStatus.Sure ? 'bg-green-500' : 'bg-red-500';
                 // return (
                 //   <div className="w-64 shrink-0 h-16 flex items-center justify-center" key={event.id as string}>

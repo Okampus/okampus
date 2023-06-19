@@ -11,7 +11,7 @@ export class FileUpload extends TenantScopedEntity {
   size!: number;
 
   @Property({ type: 'text' })
-  mime!: string;
+  type!: string;
 
   @Property({ type: 'text' })
   url!: string;

@@ -29,12 +29,12 @@ array_relationships:
         table:
           name: event
           schema: public
-  - name: projectRoles
+  - name: finances
     using:
       foreign_key_constraint_on:
         column: project_id
         table:
-          name: project_role
+          name: finance
           schema: public
   - name: projectSupervisors
     using:
@@ -49,11 +49,4 @@ array_relationships:
         column: project_id
         table:
           name: project_tags
-          schema: public
-  - name: teamFinances
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          name: team_finance
           schema: public

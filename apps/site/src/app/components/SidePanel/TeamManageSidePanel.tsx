@@ -61,7 +61,9 @@ export function TeamManageSidePanel({ teamManage }: TeamManageSidePanelProps) {
                   type: ActionType.Action,
                   onSubmit: (data) => {
                     updateTeam({
-                      variables: { updateTeam: { id: teamManage.id, ...data } },
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      variables: { id: teamManage.id, update: data },
                       onCompleted: () => {
                         hideOverlay();
                         setNotification({

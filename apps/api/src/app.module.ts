@@ -24,12 +24,11 @@ import {
   EventsModule,
   loadConfig,
   TagsModule,
-  TeamFinancesModule,
+  FinancesModule,
   ProjectsModule,
   IndividualsModule,
   UserInfosModule,
   EventJoinsModule,
-  EventAttendancesModule,
   FormsModule,
   ActionsModule,
   TeamJoinsModule,
@@ -129,7 +128,6 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
 // import { SettingsModule } from '@api/uaa/settings/settings.module';
 // import { StatisticsModule } from '@api/uaa/statistics/statistics.module';
 // import { UsersModule } from '@api/uaa/users/users.module';
-// import { FilesModule } from '@api/upload/files.module';
 // import { AppController } from './app.controller';
 // import mikroOrmConfig from './common/configs/mikro-orm.config';
 // import { SubscribersModule } from './common/modules/subscribers/subscribers.module';
@@ -201,10 +199,8 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // ClassMembershipsModule,
     // ContentsModule,
     // FavoritesModule,
-    // FilesModule,
     HealthModule,
     EventsModule,
-    EventAttendancesModule,
     EventApprovalStepsModule,
     TenantsModule,
     ActorsModule,
@@ -214,7 +210,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     FormsModule,
     ProjectsModule,
     TagsModule,
-    TeamFinancesModule,
+    FinancesModule,
     TeamJoinsModule,
     TeamsModule,
     ActionsModule,

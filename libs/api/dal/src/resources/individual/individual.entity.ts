@@ -28,6 +28,7 @@ export class Individual extends TenantScopedEntity {
   scopeRole!: ScopeRole;
 
   // @OneToMany('BadgeUnlock', 'user')
+  // @TransformCollection()
   // badgesUnlocked = new Collection<BadgeUnlock>(this);
 
   constructor(options: IndividualOptions) {

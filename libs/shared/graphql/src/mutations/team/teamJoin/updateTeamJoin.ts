@@ -6,10 +6,7 @@ import type { ValueTypes } from '../../../zeus';
 
 export const updateTeamJoin = typedGql('mutation')({
   updateTeamJoinByPk: [
-    {
-      pkColumns: { id },
-      _set: $('update', 'TeamJoinSetInput!') as ValueTypes['TeamJoinSetInput'],
-    },
+    { pkColumns: { id }, _set: $('update', 'TeamJoinSetInput!') as ValueTypes['TeamJoinSetInput'] },
     teamJoinBaseInfo,
   ],
 });

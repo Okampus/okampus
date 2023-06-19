@@ -7,21 +7,17 @@ import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/
 // import { ReactComponent as PlusIcon } from '@okampus/assets/svg/icons/material/filled/add.svg';
 
 import { EVENT_MANAGE_ROUTE, EVENT_MANAGE_ROUTES } from '@okampus/shared/consts';
-import {
-  Align,
-  AttendanceConfirmedVia,
-  // ControlType
-} from '@okampus/shared/enums';
-import {
-  //  insertActionMutation,
-  insertEventAttendanceMutation,
-} from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
+import { Align, SettledVia } from '@okampus/shared/enums';
+// import { ActionType } from '@okampus/shared/types';
 import { formatDateStandard, formatHourSimple } from '@okampus/shared/utils';
 
 // import { Popover, PopoverContent, PopoverTrigger } from '@okampus/ui/atoms';
 import { NavigationContext, useEventManage } from '@okampus/ui/hooks';
-import { ActionButton, FormItem, LabeledUser } from '@okampus/ui/molecules';
+import {
+  // ActionButton,
+  FormItem,
+  LabeledUser,
+} from '@okampus/ui/molecules';
 import {
   Dashboard,
   // FormSchemaRender, MultiStepForm, getDefaultFormData
@@ -29,20 +25,16 @@ import {
 import { getAvatar } from '@okampus/ui/utils';
 
 // import { mergeCache } from '#site/app/utils/apollo/merge-cache';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 import clsx from 'clsx';
 import { useContext } from 'react';
 
 import type { FormBaseInfo } from '@okampus/shared/graphql';
 
 export function EventManageView() {
-  const {
-    // hideOverlay,
-    showOverlay,
-    tenant,
-  } = useContext(NavigationContext);
+  const { showOverlay, tenant } = useContext(NavigationContext);
   const { eventManage } = useEventManage();
-  const [insertEventAttendance] = useMutation(insertEventAttendanceMutation);
+  // const [insertEventAttendance] = useMutation(insertEventAttendanceMutation);
   // const [insertAction] = useMutation(insertActionMutation);
 
   if (!eventManage) return null;
@@ -78,7 +70,7 @@ export function EventManageView() {
       label: "Vue d'ensemble",
       element: () => (
         <div className="text-0">
-          <div className="title">{eventManage.contentMaster?.name}</div>
+          <div className="title">{eventManage?.name}</div>
           {eventManage.form && <FormItem onClick={editForm} form={eventManage.form} />}
           {/* <div>{eventManage.contentMaster?.content?.text}</div>
           <div className="mt-10">Responsable: {eventManage.userInfo.individualById?.actor?.name}</div> */}
@@ -216,13 +208,10 @@ export function EventManageView() {
               {
                 label: `${tenant?.pointName} Présence`,
                 render: (eventJoin) => {
-                  const attendance = eventJoin.eventAttendances[0];
-                  if (!attendance) return;
-
-                  const present = attendance.participated;
+                  const present = eventJoin.presence;
                   return (
                     <div className={clsx('text-lg font-medium', present ? 'text-green-400' : 'text-red-500')}>
-                      {present ? `+${eventManage.presenceReward}` : -0.25} {tenant?.pointName}
+                      {present ? `+${eventManage.pointsPresence}` : -0.25} {tenant?.pointName}
                     </div>
                   );
                 },
@@ -231,54 +220,54 @@ export function EventManageView() {
               {
                 label: 'Confirmation de présence / absence',
                 render: (eventJoin) => {
-                  const attendance = eventJoin.eventAttendances[0];
-                  if (!attendance)
+                  if (!eventJoin.presence)
                     return (
-                      <div className="flex gap-4">
-                        <ActionButton
-                          className="grow"
-                          action={{
-                            label: 'Noter présent',
-                            linkOrActionOrMenu: () =>
-                              insertEventAttendance({
-                                variables: {
-                                  object: {
-                                    eventJoinId: eventJoin.id,
-                                    participated: true,
-                                    confirmedVia: AttendanceConfirmedVia.Manual,
-                                  },
-                                },
-                              }),
-                            type: ActionType.Action,
-                          }}
-                        />
-                        <ActionButton
-                          className="grow"
-                          action={{
-                            label: 'Noter absent',
-                            linkOrActionOrMenu: () =>
-                              insertEventAttendance({
-                                variables: {
-                                  object: {
-                                    eventJoinId: eventJoin.id,
-                                    participated: false,
-                                    confirmedVia: AttendanceConfirmedVia.Manual,
-                                  },
-                                },
-                              }),
-                            type: ActionType.Danger,
-                          }}
-                        />
-                      </div>
+                      <div></div>
+                      // <div className="flex gap-4">
+                      //   <ActionButton
+                      //     className="grow"
+                      //     action={{
+                      //       label: 'Noter présent',
+                      //       linkOrActionOrMenu: () =>
+                      //         insertEventAttendance({
+                      //           variables: {
+                      //             object: {
+                      //               eventJoinId: eventJoin.id,
+                      //               participated: true,
+                      //               confirmedVia: AttendanceConfirmedVia.Manual,
+                      //             },
+                      //           },
+                      //         }),
+                      //       type: ActionType.Action,
+                      //     }}
+                      //   />
+                      //   <ActionButton
+                      //     className="grow"
+                      //     action={{
+                      //       label: 'Noter absent',
+                      //       linkOrActionOrMenu: () =>
+                      //         insertEventAttendance({
+                      //           variables: {
+                      //             object: {
+                      //               eventJoinId: eventJoin.id,
+                      //               participated: false,
+                      //               confirmedVia: AttendanceConfirmedVia.Manual,
+                      //             },
+                      //           },
+                      //         }),
+                      //       type: ActionType.Danger,
+                      //     }}
+                      //   />
+                      // </div>
                     );
 
-                  const present = attendance.participated;
-                  const date = formatDateStandard(attendance.createdAt as string);
-                  const time = formatHourSimple(attendance.createdAt as string);
+                  if (!eventJoin.presenceSettledAt) return;
 
-                  if (present) {
-                    const via =
-                      attendance.confirmedVia === AttendanceConfirmedVia.QR ? 'QR code validé' : 'Noté présent';
+                  const date = formatDateStandard(eventJoin.presenceSettledAt);
+                  const time = formatHourSimple(eventJoin.presenceSettledAt);
+
+                  if (eventJoin.presence) {
+                    const via = eventJoin.presenceSettledVia === SettledVia.QR ? 'QR code validé' : 'Noté présent';
                     return (
                       <div className="text-lg font-medium w-full flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900 py-3 px-4 rounded">
                         <CheckIcon className="w-8 h-8 text-green-500" />
@@ -297,8 +286,8 @@ export function EventManageView() {
                       </div>
                     );
                   }
-                  // const status = eventJoin.attendanceStatus;
-                  // if (status === AttendanceStatus.Absent) return <div className="text-red-500">Désinscrit</div>;
+
+                  // if (!eventJoin.presence) return <div className="text-red-500">Désinscrit</div>;
                   // return (
                   //   <ActionButton
                   //     className="w-full"
@@ -314,16 +303,14 @@ export function EventManageView() {
                 label: 'Confirmé par',
                 align: Align.Left,
                 render: (eventJoin) => {
-                  const attendance = eventJoin.eventAttendances[0];
-                  if (attendance) {
+                  // const attendance = eventJoin.eventAttendances[0];
+                  const actor = eventJoin.individualByPresenceSettledById?.actor;
+                  if (eventJoin.presenceSettledAt && actor?.individual?.userInfo) {
                     return (
                       <LabeledUser
-                        id={attendance.individual?.userInfo?.id as string}
-                        name={attendance.individual?.actor?.name ?? ''}
-                        avatar={{
-                          src: getAvatar(attendance.individual?.actor?.actorImages),
-                          size: 14,
-                        }}
+                        id={actor.individual.userInfo.id}
+                        name={actor.name}
+                        avatar={{ src: getAvatar(actor.actorImages), size: 14 }}
                       />
                     );
                   }
@@ -338,5 +325,5 @@ export function EventManageView() {
     },
   ];
 
-  return <TabsView menus={menus} basePath={EVENT_MANAGE_ROUTE(eventManage?.contentMaster?.slug)} />;
+  return <TabsView menus={menus} basePath={EVENT_MANAGE_ROUTE(eventManage?.slug)} />;
 }

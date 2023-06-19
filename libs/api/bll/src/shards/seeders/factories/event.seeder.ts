@@ -1,7 +1,7 @@
 import { Factory } from '@mikro-orm/seeder';
-import { ContentMasterType, ControlType, EventState, FormType } from '@okampus/shared/enums';
-import { pickOneFromArray, toSlug } from '@okampus/shared/utils';
-import { ActorAddress, Content, ContentMaster, Event, Form } from '@okampus/api/dal';
+import { ControlType, EventState, FormType } from '@okampus/shared/enums';
+import { pickOneFromArray } from '@okampus/shared/utils';
+import { ActorAddress, Content, Event, Form } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { faker } from '@faker-js/faker/locale/fr';
 import { randomInt } from 'node:crypto';
@@ -49,23 +49,16 @@ export class EventSeeder extends Factory<Event> {
     const isPayedEvent = Math.random() > 0.5;
 
     return {
-      contentMaster: new ContentMaster({
-        type: ContentMasterType.Event,
-        name,
-        rootContent: new Content({
-          teams: [this.team],
-          text: faker.lorem.paragraphs(3),
-          tenant: this.team.tenant,
-          createdBy: supervisor.individual,
-        }),
-        slug: toSlug(name),
+      name,
+      content: new Content({
+        team: this.team,
+        text: faker.lorem.paragraphs(3),
         tenant: this.team.tenant,
         createdBy: supervisor.individual,
       }),
       start,
       end,
-      budget: Math.random() > 0.5 ? Math.round((this.project.expectedBudget / 4 + randomInt(0, 100)) * 10) / 10 : null,
-      presenceReward: [0.25, 1][randomInt(2)],
+      pointsPresence: [0.25, 1][randomInt(2)],
       price: isPayedEvent ? randomInt(1, 50) : 0,
       project: this.project,
       address: new ActorAddress({
@@ -81,7 +74,7 @@ export class EventSeeder extends Factory<Event> {
         createdBy: null,
         tenant: this.team.tenant,
       }),
-      supervisor,
+      supervisors: [supervisor],
       state,
       lastEventApprovalStep: step,
       joinForm: isPayedEvent

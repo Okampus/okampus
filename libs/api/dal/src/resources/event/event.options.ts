@@ -10,21 +10,21 @@ import type { Form } from '../form/form.entity';
 import type { Project } from '../project/project.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { EventRole } from './event-role/event-role.entity';
-import type { ContentMaster } from '../content-master/content-master.entity';
+import type { EventManage } from './event-manage/event-manage.entity';
+import type { Content } from '../content/content.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    image?: FileUpload | null;
-    roles?: EventRole[];
-    address: ActorAddress;
-    supervisor: UserInfo;
-    contentMaster: ContentMaster;
-    tags?: Tag[];
+    supervisors?: UserInfo[];
+    content: Content;
+    address?: ActorAddress | null;
+    banner?: FileUpload | null;
     project?: Project | null;
     joinForm?: Form | null;
-    teams?: Team[];
     regularEvent?: Event | null;
     approvalSubmission?: FormSubmission | null;
     lastEventApprovalStep?: EventApprovalStep | null;
+    tags?: Tag[];
+    teams?: Team[];
+    eventManages?: EventManage[];
   };

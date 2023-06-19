@@ -157,7 +157,7 @@ export function TeamEventManageView() {
       </div>
       {/* {data?.event.map((event, idx) => (
         <div className="flex gap-4">
-          <EventCard key={idx} event={event} link={EVENT_MANAGE_ROUTE(event.contentMaster?.slug)} />
+          <EventCard key={idx} event={event} link={EVENT_MANAGE_ROUTE(event?.slug)} />
           {event.state === EventState.Approved ? (
             <ActionButton
               action={{

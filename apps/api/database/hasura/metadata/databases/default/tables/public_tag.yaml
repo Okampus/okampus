@@ -19,13 +19,6 @@ array_relationships:
         table:
           name: actor_tags
           schema: public
-  - name: contentMasterTags
-    using:
-      foreign_key_constraint_on:
-        column: tag_id
-        table:
-          name: content_master_tags
-          schema: public
   - name: eventTags
     using:
       foreign_key_constraint_on:

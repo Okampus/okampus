@@ -6,16 +6,14 @@ import { eventJoinDetailsInfo } from '../../../selectors/event/eventJoin/eventJo
 import { eventBaseInfo } from '../../../selectors/event/eventBase';
 import type { ValueTypes } from '../../../zeus';
 
-// @ts-expect-error - Zeus depth limit
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const insertEventJoinMutation = typedGql('mutation')({
   insertEventJoinOne: [
     { object: $('object', 'EventJoinInsertInput!') as ValueTypes['EventJoinInsertInput'] },
     {
       ...eventJoinDetailsInfo,
-      event: {
-        ...eventBaseInfo,
-        eventJoins: [{}, eventJoinBaseInfo],
-      },
+      event: { ...eventBaseInfo, eventJoins: [{}, eventJoinBaseInfo] },
     },
   ],
 });

@@ -1,6 +1,6 @@
 import { TreasuryManageProjectView } from './TreasuryManage/TreasuryManageProjectView';
 import { Align } from '@okampus/shared/enums';
-import { teamFinanceBaseInfo, projectWithFinanceInfo, useTypedQuery, teamBaseInfo } from '@okampus/shared/graphql';
+import { financeBaseInfo, projectWithFinanceInfo, useTypedQuery, teamBaseInfo } from '@okampus/shared/graphql';
 import { ReactComponent as UploadFilledIcon } from '@okampus/assets/svg/icons/material/filled/upload.svg';
 import { ReactComponent as TuneFilledIcon } from '@okampus/assets/svg/icons/material/filled/tune.svg';
 import { ReactComponent as SearchFilledIcon } from '@okampus/assets/svg/icons/material/filled/search.svg';
@@ -35,19 +35,19 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
   const { showOverlay } = useContext(NavigationContext);
   const [selectedTab, setSelectedTab] = useState<string | number>(HISTORY);
 
-  const { data: teamFinanceDetails } = useTypedQuery({
+  const { data: financeDetails } = useTypedQuery({
     team: [
       { where: { id: { _eq: teamManage.id } }, limit: 1 },
-      { ...teamBaseInfo, teamFinances: [{}, teamFinanceBaseInfo] },
+      { ...teamBaseInfo, finances: [{}, financeBaseInfo] },
     ],
-    // teamFinance: [{ where: { team: { id: { _eq: teamManage.id } } } }, teamFinanceBaseInfo],
+    // finance: [{ where: { team: { id: { _eq: teamManage.id } } } }, financeBaseInfo],
   });
 
   const { data } = useTypedQuery({
     project: [{ where: { team: { id: { _eq: teamManage.id } } } }, projectWithFinanceInfo],
   });
 
-  const teamFinances = teamFinanceDetails?.team[0].teamFinances ?? [];
+  const finances = financeDetails?.team[0].finances ?? [];
 
   const projects = data?.project ?? [];
   const balanceSheetColumns = [
@@ -78,7 +78,7 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
     {
       key: HISTORY,
       label: 'Historique',
-      element: () => <FinanceDashboard finances={teamFinances} />,
+      element: () => <FinanceDashboard finances={finances} />,
     },
     {
       key: BUDGET,
@@ -87,10 +87,10 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
         <Dashboard
           columns={balanceSheetColumns}
           data={projects.map((project) => ({
-            transaction: project.name,
             key: project.slug,
-            amountExpected: project.expectedBudget,
-            amountPayed: sum(project.teamFinances.map((finance) => finance.amount ?? 0)),
+            transaction: project.name,
+            amountExpected: project.budget,
+            amountPayed: sum(project.finances.map((finance) => finance.amount ?? 0)),
           }))}
         />
       ),
@@ -101,7 +101,7 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
       element: () => (
         <div>
           <div className="px-12 text-4xl text-0 font-bold mt-6 mb-12">Dépenses/recettes générales</div>
-          {teamFinances && <FinanceDashboard finances={teamFinances.filter((finance) => !finance.project)} />}
+          {finances && <FinanceDashboard finances={finances.filter((finance) => !finance.project)} />}
         </div>
       ),
       // onClick: () => setSelectedTab(GENERAL),
@@ -180,7 +180,7 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
             }}
           />
         </div>
-        {teamFinances && projects ? (
+        {finances && projects ? (
           <div>
             {tabs.find((tab) => tab.key === selectedTab)?.element()}
             {/* <Dashboard
@@ -191,7 +191,7 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
                     transaction: project.name,
                     key: project.slug,
                     amountExpected: project.expectedBudget,
-                    amountPayed: sum(project.teamFinances.map((finance) => finance.actorFinance?.amount ?? 0)),
+                    amountPayed: sum(project.finances.map((finance) => finance.actorFinance?.amount ?? 0)),
                   })),
                 ]}
               /> */}

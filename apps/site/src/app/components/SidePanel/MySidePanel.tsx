@@ -23,7 +23,7 @@ export function MySidePanel() {
       name: 'status',
       type: ControlType.Text,
       label: 'Statut',
-      default: currentUser?.individualById?.status,
+      default: currentUser?.individualById?.actor?.status,
       placeholder: 'En ligne',
     },
   ] as FormSchema;
@@ -55,7 +55,9 @@ export function MySidePanel() {
                   type: ActionType.Action,
                   onSubmit: (data) => {
                     updateUser({
-                      variables: { updateUser: { id: currentUser.id, ...data } },
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      variables: { update: { id: currentUser.id, ...data } },
                       onCompleted: () => {
                         hideOverlay();
                         setNotification({

@@ -1,15 +1,15 @@
-import { ReactComponent as CheckCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
-import { ReactComponent as CloseCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/close-circle.svg';
-import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
+// import { ReactComponent as CheckCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
+// import { ReactComponent as CloseCircleFilledIcon } from '@okampus/assets/svg/icons/material/filled/close-circle.svg';
+// import { ReactComponent as CanceledFilledIcon } from '@okampus/assets/svg/icons/material/filled/cancel.svg';
 import { ReactComponent as FilterFilledIcon } from '@okampus/assets/svg/icons/material/filled/filter.svg';
 
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
-import { insertChangeRole, updateTeamJoin } from '@okampus/shared/graphql';
+import { updateTeamJoin } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { formatDateDayOfWeek } from '@okampus/shared/utils';
 
 import { AvatarImage, Skeleton } from '@okampus/ui/atoms';
-import { NavigationContext, useCurrentUser, useTeamManage } from '@okampus/ui/hooks';
+import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
 import { ActionButton, LabeledTeamJoin } from '@okampus/ui/molecules';
 import { FormModal, FormSubmissionRender } from '@okampus/ui/organisms';
 import { getAvatar } from '@okampus/ui/utils';
@@ -21,7 +21,7 @@ import type { TeamJoinWithUserInfo } from '@okampus/shared/graphql';
 import type { FormField, Submission, FormSchema } from '@okampus/shared/types';
 
 export function TeamJoinManageView() {
-  const { currentUser } = useCurrentUser();
+  // const { currentUser } = useCurrentUser();
   const { teamManage } = useTeamManage();
 
   const ALL = 'All';
@@ -55,9 +55,9 @@ export function TeamJoinManageView() {
   const [selectedTeamJoin, setSelectedTeamJoin] = useState<TeamJoinWithUserInfo | null>(null);
 
   const [updateJoin] = useMutation(updateTeamJoin);
-  const [insertTeamChangeRole] = useMutation(insertChangeRole);
+  // const [insertTeamChangeRole] = useMutation(insertChangeRole);
 
-  const { showOverlay, hideOverlay, setNotification } = useContext(NavigationContext);
+  const { showOverlay, setNotification } = useContext(NavigationContext);
 
   // const teamJoinCards = {
   //   Team: {
@@ -194,7 +194,7 @@ export function TeamJoinManageView() {
                       </div>
                     </div>
                     <FormSubmissionRender
-                      schema={selectedTeamJoin.formSubmission?.formEdit.newVersion as FormField[]}
+                      schema={selectedTeamJoin.formSubmission?.form.schema as FormField[]}
                       submission={selectedTeamJoin.formSubmission?.submission as Submission<FormSchema>}
                     />
                     <div className="flex flex-col text-0 gap-6">
@@ -213,141 +213,142 @@ export function TeamJoinManageView() {
                         )}
                       </div>
                       <div className="flex gap-item">
-                        {selectedTeamJoin.state === ApprovalState.Pending ? (
-                          <>
-                            <ActionButton
-                              action={{
-                                label: 'Accepter la candidature',
-                                type: ActionType.Success,
-                                linkOrActionOrMenu: () =>
-                                  showOverlay(
-                                    <FormModal
-                                      title="Attribuer un rôle"
-                                      schema={
-                                        [
-                                          {
-                                            name: 'role',
-                                            label: 'Rôle attribué',
-                                            type: ControlType.Select,
-                                            options: teamManage.roles.map((role) => ({
-                                              label: role?.name as string,
-                                              value: role?.id as string,
-                                            })),
-                                            isRequired: true,
+                        {
+                          selectedTeamJoin.state === ApprovalState.Pending ? (
+                            <>
+                              <ActionButton
+                                action={{
+                                  label: 'Accepter la candidature',
+                                  type: ActionType.Success,
+                                  linkOrActionOrMenu: () =>
+                                    showOverlay(
+                                      <FormModal
+                                        title="Attribuer un rôle"
+                                        schema={
+                                          [
+                                            {
+                                              name: 'role',
+                                              label: 'Rôle attribué',
+                                              type: ControlType.Select,
+                                              options: teamManage.roles.map((role) => ({
+                                                label: role?.name as string,
+                                                value: role?.id as string,
+                                              })),
+                                              isRequired: true,
+                                            },
+                                          ] as const
+                                        }
+                                        submitOptions={{
+                                          label: 'Attribuer',
+                                          type: ActionType.Action,
+                                          onSubmit: (values) => {
+                                            console.log(values);
+                                            // insertTeamChangeRole({
+                                            //   variables: {
+                                            //     object: {
+                                            //       createdById: currentUser?.individualById?.id as string,
+                                            //       tenantId: teamManage.tenantId as string,
+                                            //       receivedPoleId: teamManage.poles?.[0]?.id as string,
+                                            //       receivedRoleId: values.role,
+                                            //       teamId: teamManage.id as string,
+                                            //       userId: selectedTeamJoin.userInfo.id as string,
+                                            //       note: '',
+                                            //     },
+                                            //   },
+                                            //   onCompleted: (data) => {
+                                            //     // updateJoin({
+                                            //     //   variables: {
+                                            //     //     id: selectedTeamJoin.id as string,
+                                            //     //     update: {
+                                            //     //       teamChangeRoleId: data.insertChangeRoleOne?.id as string,
+                                            //     //       state: ApprovalState.Approved,
+                                            //     //     },
+                                            //     //   },
+                                            //     //   onCompleted: () => {
+                                            //     //     setNotification({
+                                            //     //       type: ToastType.Success,
+                                            //     //       message: `${selectedTeamJoin.individual?.actor?.name} a rejoint l'équipe ${teamManage.actor?.name} !`,
+                                            //     //     });
+                                            //     //     setSelectedTeamJoin(null);
+                                            //     //     hideOverlay();
+                                            //     //   },
+                                            //     //   onError: (error) =>
+                                            //     //     setNotification({
+                                            //     //       type: ToastType.Error,
+                                            //     //       message: error.message,
+                                            //     //     }),
+                                            //     // });
+                                            //   },
+                                            // });
                                           },
-                                        ] as const
-                                      }
-                                      submitOptions={{
-                                        label: 'Attribuer',
-                                        type: ActionType.Action,
-                                        onSubmit: (values) => {
-                                          insertTeamChangeRole({
-                                            variables: {
-                                              object: {
-                                                createdById: currentUser?.individualById?.id as string,
-                                                tenantId: teamManage.tenantId as string,
-                                                receivedPoleId: teamManage.poles?.[0]?.id as string,
-                                                receivedRoleId: values.role,
-                                                teamId: teamManage.id as string,
-                                                userId: selectedTeamJoin.userInfo.id as string,
-                                                note: '',
-                                              },
-                                            },
-                                            onCompleted: (data) => {
-                                              updateJoin({
-                                                variables: {
-                                                  id: selectedTeamJoin.id as string,
-                                                  update: {
-                                                    teamChangeRoleId: data.insertChangeRoleOne?.id as string,
-                                                    state: ApprovalState.Approved,
-                                                  },
-                                                },
-                                                onCompleted: () => {
-                                                  setNotification({
-                                                    type: ToastType.Success,
-                                                    message: `${selectedTeamJoin.individual?.actor?.name} a rejoint l'équipe ${teamManage.actor?.name} !`,
-                                                  });
-                                                  setSelectedTeamJoin(null);
-                                                  hideOverlay();
-                                                },
-                                                onError: (error) =>
-                                                  setNotification({
-                                                    type: ToastType.Error,
-                                                    message: error.message,
-                                                  }),
-                                              });
-                                            },
-                                          });
-                                        },
-                                      }}
-                                    />
-                                  ),
-                                // {
-                                //   showButtonModal({
-                                //     title: `Adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name}`,
-                                //     content: (
-                                //       <ValidateTeamJoinForm
-                                //         teamJoin={selectedTeamJoin}
-                                //         onSuccess={() => setSelectedTeamJoin(null)}
-                                //       />
-                                //     ),
-                                //   });
-                                // },
-                              }}
-                            />
-                            <ActionButton
-                              action={{
-                                label: 'Refuser la candidature',
-                                type: ActionType.Danger,
-                                linkOrActionOrMenu: () =>
-                                  updateJoin({
-                                    variables: {
-                                      id: selectedTeamJoin.id as string,
-                                      update: {
-                                        state: ApprovalState.Rejected,
+                                        }}
+                                      />
+                                    ),
+                                  // {
+                                  //   showButtonModal({
+                                  //     title: `Adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name}`,
+                                  //     content: (
+                                  //       <ValidateTeamJoinForm
+                                  //         teamJoin={selectedTeamJoin}
+                                  //         onSuccess={() => setSelectedTeamJoin(null)}
+                                  //       />
+                                  //     ),
+                                  //   });
+                                  // },
+                                }}
+                              />
+                              <ActionButton
+                                action={{
+                                  label: 'Refuser la candidature',
+                                  type: ActionType.Danger,
+                                  linkOrActionOrMenu: () =>
+                                    updateJoin({
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
+                                      variables: { id: selectedTeamJoin.id, update: { state: ApprovalState.Rejected } },
+                                      onCompleted: () => {
+                                        setSelectedTeamJoin(null);
+                                        setNotification({
+                                          type: ToastType.Success,
+                                          message: `L'adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name} a été refusée !`,
+                                        });
                                       },
-                                    },
-                                    onCompleted: () => {
-                                      setSelectedTeamJoin(null);
-                                      setNotification({
-                                        type: ToastType.Success,
-                                        message: `L'adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name} a été refusée !`,
-                                      });
-                                    },
-                                    onError: (error) =>
-                                      setNotification({
-                                        type: ToastType.Error,
-                                        message: error.message,
-                                      }),
-                                  }),
-                              }}
-                            />
-                          </>
-                        ) : selectedTeamJoin.state === ApprovalState.Approved ? (
-                          <div className="text-[var(--success)] flex gap-2 text-3xl font-semibold">
-                            <CheckCircleFilledIcon className="h-8 w-8" />
-                            Candidature approuvée
-                            <span className="text-0 font-medium">
-                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
-                            </span>
-                          </div>
-                        ) : selectedTeamJoin.state === ApprovalState.Rejected ? (
-                          <div className="text-[var(--danger)] flex gap-2 text-3xl font-semibold">
-                            <CloseCircleFilledIcon className="h-8 w-8" />
-                            Candidature refusée
-                            <span className="text-0 font-medium">
-                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="text-gray-500 flex gap-2 text-3xl font-semibold">
-                            <CanceledFilledIcon className="h-8 w-8" />
-                            Candidature annulée
-                            <span className="text-0 font-medium">
-                              {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
-                            </span>
-                          </div>
-                        )}
+                                      onError: (error) =>
+                                        setNotification({
+                                          type: ToastType.Error,
+                                          message: error.message,
+                                        }),
+                                    }),
+                                }}
+                              />
+                            </>
+                          ) : null
+                          // selectedTeamJoin.state === ApprovalState.Approved ? (
+                          //   <div className="text-[var(--success)] flex gap-2 text-3xl font-semibold">
+                          //     <CheckCircleFilledIcon className="h-8 w-8" />
+                          //     Candidature approuvée
+                          //     <span className="text-0 font-medium">
+                          //       {formatDateDayOfWeek(selectedTeamJoin?.role?.createdAt as string)}
+                          //     </span>
+                          //   </div>
+                          // ) : selectedTeamJoin.state === ApprovalState.Rejected ? (
+                          //   <div className="text-[var(--danger)] flex gap-2 text-3xl font-semibold">
+                          //     <CloseCircleFilledIcon className="h-8 w-8" />
+                          //     Candidature refusée
+                          //     <span className="text-0 font-medium">
+                          //       {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
+                          //     </span>
+                          //   </div>
+                          // ) : (
+                          //   <div className="text-gray-500 flex gap-2 text-3xl font-semibold">
+                          //     <CanceledFilledIcon className="h-8 w-8" />
+                          //     Candidature annulée
+                          //     <span className="text-0 font-medium">
+                          //       {formatDateDayOfWeek(selectedTeamJoin?.changeRole?.createdAt as string)}
+                          //     </span>
+                          //   </div>
+                          // )
+                        }
                       </div>
                     </div>
                   </div>

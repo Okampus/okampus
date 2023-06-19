@@ -11,11 +11,3 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-array_relationships:
-  - name: changeRoles
-    using:
-      foreign_key_constraint_on:
-        column: received_pole_id
-        table:
-          name: change_role
-          schema: public

@@ -17,11 +17,3 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-array_relationships:
-  - name: documentEdits
-    using:
-      foreign_key_constraint_on:
-        column: document_id
-        table:
-          name: document_edit
-          schema: public

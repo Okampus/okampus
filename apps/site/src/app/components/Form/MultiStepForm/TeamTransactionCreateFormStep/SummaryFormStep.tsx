@@ -118,7 +118,7 @@ export function SummaryFormStep({ values, setValues }: SummaryFormStepProps) {
             items={[
               { label: 'Dépenses hors-événement', value: null },
               ...(selectedProject.eventsAggregate.nodes.map((item) => ({
-                label: item.contentMaster?.name,
+                label: item?.name,
                 value: item.id,
               })) ?? []),
             ]}

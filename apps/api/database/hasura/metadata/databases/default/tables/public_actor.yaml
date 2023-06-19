@@ -2,10 +2,10 @@ table:
   name: actor
   schema: public
 object_relationships:
-  - name: individual
+  - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: individualByIndividualId
+  - name: individual
     using:
       foreign_key_constraint_on: individual_id
   - name: team
@@ -28,13 +28,6 @@ array_relationships:
         column: actor_id
         table:
           name: actor_bank_info
-          schema: public
-  - name: actorFinances
-    using:
-      foreign_key_constraint_on:
-        column: payed_by_id
-        table:
-          name: actor_finance
           schema: public
   - name: actorImages
     using:
@@ -64,6 +57,13 @@ array_relationships:
         table:
           name: favorite
           schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: payed_by_id
+        table:
+          name: finance
+          schema: public
   - name: follows
     using:
       foreign_key_constraint_on:
@@ -91,11 +91,4 @@ array_relationships:
         column: actor_id
         table:
           name: social
-          schema: public
-  - name: teamFinances
-    using:
-      foreign_key_constraint_on:
-        column: payed_by_id
-        table:
-          name: team_finance
           schema: public

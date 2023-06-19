@@ -4,7 +4,6 @@ import type { ProjectProps } from '@okampus/shared/dtos';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { Team } from '../team/team.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
-import type { ProjectRole } from './project-role/project-role.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 
 export type ProjectOptions = ProjectProps &
@@ -14,5 +13,4 @@ export type ProjectOptions = ProjectProps &
     image?: FileUpload;
     events?: Event[];
     supervisors: TeamMember[];
-    roles?: ProjectRole[];
   };

@@ -8,7 +8,7 @@ import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const actorBaseInfo = Selector('Actor')({
   ...entityBase,
-  individualByIndividualId: { userInfo: { id: true } },
+  individual: { userInfo: { id: true } },
   team: { id: true },
   bio: true,
   name: true,

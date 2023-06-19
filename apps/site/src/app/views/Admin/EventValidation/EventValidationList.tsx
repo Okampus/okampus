@@ -20,6 +20,8 @@ export function EventValidationList() {
   const [selectedTab, setSelectedTab] = useState(VALIDATE);
 
   const id = currentUser?.id;
+
+  const now = new Date().toISOString();
   const where = useMemo(
     () =>
       selectedTab === VALIDATE
@@ -35,7 +37,7 @@ export function EventValidationList() {
               },
             ],
             state: { _eq: EventState.Submitted },
-            end: { _gte: new Date() },
+            end: { _gte: now },
           }
         : selectedTab === PENDING
         ? {
@@ -43,11 +45,12 @@ export function EventValidationList() {
               eventApprovalStepValidators: { _not: { individual: { userInfo: { id: { _eq: id } } } } },
             },
             state: { _eq: EventState.Submitted },
-            end: { _gte: new Date() },
+            end: { _gte: now },
           }
         : selectedTab === UPCOMING
-        ? { end: { _gte: new Date() }, state: { _eq: EventState.Published } }
-        : { end: { _lte: new Date() } },
+        ? { end: { _gte: now }, state: { _eq: EventState.Published } }
+        : { end: { _lte: now } },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedTab, id]
   );
 

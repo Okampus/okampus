@@ -1,5 +1,5 @@
 import { Selector } from '../../zeus';
-import { fileUploadBaseInfo } from '../file-upload/fileUploadBase';
+import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 
 import { teamMemberWithUserInfo } from '../team/teamMember/teamMemberWithUser';
 import { tagBaseInfo } from '../actor/tag/tagBase';

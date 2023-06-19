@@ -26,6 +26,9 @@ export class Content extends TenantScopedEntity {
   @ManyToOne({ type: 'Content', nullable: true, default: null })
   parent: Content | null = null;
 
+  @ManyToOne({ type: 'Content', nullable: true, default: null })
+  replyingTo: Content | null = null;
+
   @OneToMany({ type: 'Content', mappedBy: 'parent' })
   @TransformCollection()
   children = new Collection<Content>(this);
@@ -46,9 +49,9 @@ export class Content extends TenantScopedEntity {
   @TransformCollection()
   reactions = new Collection<Reaction>(this);
 
-  @ManyToMany({ type: 'Team' })
+  @ManyToOne({ type: 'Team' })
   @TransformCollection()
-  teams = new Collection<Team>(this);
+  team: Team | null = null;
 
   constructor(options: ContentOptions) {
     super(options);
