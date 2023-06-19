@@ -1,5 +1,15 @@
+import { ExpenseItemRepository } from './expense-item.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Collection, Entity, Enum, EnumType, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  Enum,
+  EnumType,
+  ManyToMany,
+  ManyToOne,
+  Property,
+} from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { FinanceCategory } from '@okampus/shared/enums';
@@ -9,8 +19,10 @@ import type { ActorAddress } from '../../actor/actor-address/actor-address.entit
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ExpenseItemOptions } from './expense-item.options';
 
-@Entity()
+@Entity({ customRepository: () => ExpenseItemRepository })
 export class ExpenseItem extends TenantScopedEntity {
+  [EntityRepositoryType]!: ExpenseItemRepository;
+
   @Property({ type: 'text' })
   name!: string;
 

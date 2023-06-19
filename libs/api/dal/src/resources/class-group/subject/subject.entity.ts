@@ -1,13 +1,16 @@
+import { SubjectRepository } from './subject.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { TransformCollection } from '@okampus/api/shards';
-import { Collection, Entity, Enum, EnumType, Index, ManyToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, Enum, EnumType, Index, ManyToMany, Property } from '@mikro-orm/core';
 import { SubjectType } from '@okampus/shared/enums';
 
 import type { ClassGroup } from '../class-group.entity';
 import type { SubjectOptions } from './subject.options';
 
-@Entity()
+@Entity({ customRepository: () => SubjectRepository })
 export class Subject extends TenantScopedEntity {
+  [EntityRepositoryType]!: SubjectRepository;
+
   @Property({ type: 'text' })
   name!: string;
 

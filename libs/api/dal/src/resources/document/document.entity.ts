@@ -1,5 +1,6 @@
+import { DocumentRepository } from './document.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
-import { Cascade, Entity, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Cascade, Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { DocumentType } from '@okampus/shared/enums';
 
 import type { Team } from '../team/team.entity';
@@ -7,8 +8,10 @@ import type { Subject } from '../class-group/subject/subject.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { DocumentOptions } from './document.options';
 
-@Entity()
+@Entity({ customRepository: () => DocumentRepository })
 export class Document extends TenantScopedEntity {
+  [EntityRepositoryType]!: DocumentRepository;
+
   @Property({ type: 'text' })
   name!: string;
 

@@ -1,6 +1,7 @@
+import { ContentRepository } from './content.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
 
-import { Collection, Entity, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
 import type { Team } from '../team/team.entity';
@@ -11,8 +12,10 @@ import type { Reaction } from './reaction/reaction.entity';
 import type { Report } from './report/report.entity';
 import type { Vote } from './vote/vote.entity';
 
-@Entity()
+@Entity({ customRepository: () => ContentRepository })
 export class Content extends TenantScopedEntity {
+  [EntityRepositoryType]!: ContentRepository;
+
   @Property({ type: 'text' })
   text!: string;
 

@@ -1,12 +1,15 @@
+import { RoleRepository } from './role.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Property, ManyToOne, Enum, EnumType } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Enum, EnumType, EntityRepositoryType } from '@mikro-orm/core';
 import { TeamPermissions, RoleCategory, TeamRoleType } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
 import type { RoleOptions } from './role.options';
 
-@Entity()
+@Entity({ customRepository: () => RoleRepository })
 export class Role extends TenantScopedEntity {
+  [EntityRepositoryType]!: RoleRepository;
+
   @Property({ type: 'text' })
   name!: string;
 

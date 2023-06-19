@@ -1,11 +1,14 @@
+import { TeamMetricRepository } from './team-metric.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Enum, EnumType, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, Property } from '@mikro-orm/core';
 import { TeamMetricType } from '@okampus/shared/enums';
 
 import type { TeamMetricOptions } from './team-metric.options';
 
-@Entity()
+@Entity({ customRepository: () => TeamMetricRepository })
 export class TeamMetric extends TenantScopedEntity {
+  [EntityRepositoryType]!: TeamMetricRepository;
+
   @Property({ type: 'text' })
   value!: string;
 

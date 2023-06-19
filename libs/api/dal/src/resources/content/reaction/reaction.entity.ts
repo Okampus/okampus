@@ -1,14 +1,17 @@
+import { ReactionRepository } from './reaction.repository';
 import { WithActive } from '../../../shards/filters/with-active';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Enum, EnumType, Index, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, Index, ManyToOne, Property } from '@mikro-orm/core';
 import { ReactionType } from '@okampus/shared/enums';
 
-import type { ReportOptions } from '../report/report.options';
 import type { Content } from '../content.entity';
+import type { ReportOptions } from '../report/report.options';
 
-@Entity()
+@Entity({ customRepository: () => ReactionRepository })
 @WithActive()
 export class Reaction extends TenantScopedEntity {
+  [EntityRepositoryType]!: ReactionRepository;
+
   @Index()
   @Enum({ items: () => ReactionType, type: EnumType })
   reactionType!: ReactionType;

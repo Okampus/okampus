@@ -1,13 +1,16 @@
+import { ReportRepository } from './report.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { ReportReason } from '@okampus/shared/enums';
 
 import type { Actor } from '../../actor/actor.entity';
-import type { ReportOptions } from './report.options';
 import type { Content } from '../content.entity';
+import type { ReportOptions } from './report.options';
 
-@Entity()
+@Entity({ customRepository: () => ReportRepository })
 export class Report extends TenantScopedEntity {
+  [EntityRepositoryType]!: ReportRepository;
+
   @Enum({ items: () => ReportReason, type: EnumType })
   type!: ReportReason;
 

@@ -1,14 +1,17 @@
+import { FavoriteRepository } from './favorite.repository';
 import { WithActive } from '../../../shards/filters/with-active';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
-import type { Actor } from '../../actor/actor.entity';
+import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
+import type { Actor } from '../../actor/actor.entity';
 import type { FavoriteOptions } from './favorite.options';
 import type { Content } from '../content.entity';
 
-@Entity()
+@Entity({ customRepository: () => FavoriteRepository })
 @WithActive()
 export class Favorite extends TenantScopedEntity {
+  [EntityRepositoryType]!: FavoriteRepository;
+
   @Property({ type: 'datetime', nullable: true, default: null })
   lastActiveDate: Date | null = null;
 

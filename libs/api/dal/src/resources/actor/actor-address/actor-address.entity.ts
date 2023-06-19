@@ -1,6 +1,7 @@
+import { ActorAddressRepository } from './actor-address.repository';
 import { TenantScopedEntity } from '../..';
 
-import { Entity, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { Countries } from '@okampus/shared/consts';
 
 import type { FileUpload } from '../../file-upload/file-upload.entity';
@@ -8,8 +9,10 @@ import type { Actor } from '../actor.entity';
 import type { ActorAddressOptions } from './actor-address.options';
 import type { Campus } from '../../tenant/campus/campus.entity';
 
-@Entity()
+@Entity({ customRepository: () => ActorAddressRepository })
 export class ActorAddress extends TenantScopedEntity {
+  [EntityRepositoryType]!: ActorAddressRepository;
+
   @ManyToOne({ type: 'Actor', onDelete: 'CASCADE' })
   actor!: Actor;
 

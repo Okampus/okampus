@@ -1,5 +1,16 @@
+import { ExpenseRepository } from './expense.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Collection, Entity, Enum, EnumType, ManyToOne, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  Enum,
+  EnumType,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  Property,
+} from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState } from '@okampus/shared/enums';
 
@@ -10,8 +21,10 @@ import type { Finance } from '../finance/finance.entity';
 import type { ExpenseOptions } from './expense.options';
 import type { Individual } from '../../individual/individual.entity';
 
-@Entity()
+@Entity({ customRepository: () => ExpenseRepository })
 export class Expense extends TenantScopedEntity {
+  [EntityRepositoryType]!: ExpenseRepository;
+
   @Property({ type: 'text' })
   description!: string;
 

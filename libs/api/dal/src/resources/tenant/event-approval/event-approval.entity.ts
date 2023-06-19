@@ -1,12 +1,15 @@
+import { EventApprovalRepository } from './event-approval.repository';
 import { TenantScopedEntity } from '../..';
-import { Cascade, Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Cascade, Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { Event } from '../../event/event.entity';
 import type { EventApprovalStep } from '../event-approval-step/event-approval-step.entity';
 import type { EventApprovalOptions } from './event-approval.options';
 
-@Entity()
+@Entity({ customRepository: () => EventApprovalRepository })
 export class EventApproval extends TenantScopedEntity {
+  [EntityRepositoryType]!: EventApprovalRepository;
+
   @Property({ type: 'text', nullable: true, default: null })
   message: string | null = null;
 

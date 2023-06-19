@@ -1,12 +1,16 @@
+import { FormSubmissionRepository } from './form-submission.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { FormSubmissionOptions } from './form-submission.options';
-import type { JSONObject } from '@okampus/shared/types';
 import type { Form } from '../form/form.entity';
 
-@Entity()
+import type { JSONObject } from '@okampus/shared/types';
+
+@Entity({ customRepository: () => FormSubmissionRepository })
 export class FormSubmission extends TenantScopedEntity {
+  [EntityRepositoryType]!: FormSubmissionRepository;
+
   @Property({ type: 'json' })
   submission!: JSONObject;
 

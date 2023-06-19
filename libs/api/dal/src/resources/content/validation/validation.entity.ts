@@ -1,14 +1,17 @@
+import { ValidationRepository } from './validation.repository';
 import { WithActive } from '../../../shards/filters/with-active';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { ValidationType } from '@okampus/shared/enums';
 import type { ValidationOptions } from './validation.options';
 import type { Content } from '../content.entity';
 
-@Entity()
+@Entity({ customRepository: () => ValidationRepository })
 @WithActive()
 export class Validation extends TenantScopedEntity {
+  [EntityRepositoryType]!: ValidationRepository;
+
   @Property()
   type!: ValidationType;
 

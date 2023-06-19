@@ -1,13 +1,16 @@
+import { ActorBankInfoRepository } from './actor-bank-info.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { Countries } from '@okampus/shared/consts';
 
 import type { Actor } from '../actor.entity';
 import type { ActorAddress } from '../actor-address/actor-address.entity';
 import type { ActorBankInfoOptions } from './actor-bank-info.options';
 
-@Entity()
+@Entity({ customRepository: () => ActorBankInfoRepository })
 export class ActorBankInfo extends TenantScopedEntity {
+  [EntityRepositoryType]!: ActorBankInfoRepository;
+
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
 
