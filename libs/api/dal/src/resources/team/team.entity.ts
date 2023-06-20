@@ -34,6 +34,7 @@ import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { Tenant } from '../tenant/tenant.entity';
+import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -85,6 +86,12 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @OneToOne({ type: 'Tenant', inversedBy: 'adminTeam', nullable: true, default: null })
   adminTeamTenant: Tenant | null = null;
+
+  @OneToOne({ type: 'LegalUnit', inversedBy: 'team', nullable: true, default: null })
+  legalUnit: LegalUnit | null = null;
+
+  @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
+  tenantGrantFund: LegalUnit | null = null;
 
   @OneToOne({ type: 'Form', mappedBy: 'team' })
   joinForm: Form;
