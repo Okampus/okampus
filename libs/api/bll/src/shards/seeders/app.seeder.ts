@@ -4,6 +4,8 @@ import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
 
+import { LegalUnitSeeder } from './factories/legal-unit.seeder';
+import { TagSeeder } from './factories/tag.seeder';
 import {
   clubDefaultRoles,
   Campus,
@@ -285,6 +287,9 @@ export class DatabaseSeeder extends Seeder {
     const admins = await new UserSeeder(em, tenant, ScopeRole.TenantAdmin, password).create(seedingConfig.N_ADMINS);
     const students = await new UserSeeder(em, tenant, ScopeRole.TenantUser, password).create(seedingConfig.N_STUDENTS);
 
+    const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
+    const companies = await new LegalUnitSeeder(em, tenant, tags).create(20);
+
     let restAdmins = admins;
     let stepAdmins: Individual[];
 
@@ -318,7 +323,6 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-    // const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
 
     const data = await loadTeamsFromYaml(tenant, categories);
     if (!data) throw new Error('No teams found');
@@ -365,31 +369,15 @@ export class DatabaseSeeder extends Seeder {
           method: PaymentMethod.Transfer,
           category: FinanceCategory.Subvention,
           payedBy: pickOneFromArray(admins).actor,
+          receivedBy: team.actor,
           createdBy: pickOneFromArray(admins),
           state: FinanceState.Completed,
           tenant,
         });
 
         team.finances.add(subvention);
-        // const subventionEdit = new FinanceEdit({
-        //   // TODO: automate from finance arg
-        //   finance: subvention,
-        //   amount: subvention.amount,
-        //   name: subvention.name,
-        //   payedAt: start,
-        //   state: FinanceState.Completed,
-        //   createdBy: subvention.createdBy,
-        //   addedPayedBy: subvention.payedBy,
-        //   addedAddress: subvention.address,
-        //   method: subvention.method,
-        //   payedByType: subvention.payedByType,
-        //   tenant,
-        // });
 
-        await em.persistAndFlush([
-          team,
-          // subventionEdit
-        ]);
+        await em.persistAndFlush([team]);
         return { team, parent: teamData.parent };
       })
     );
@@ -402,58 +390,6 @@ export class DatabaseSeeder extends Seeder {
       return team;
     });
 
-    // for (const _ of Array.from({ length: seedingConfig.N_TEAMS })) {
-    //   const name = faker.company.name();
-    //   // const joinForm = defaultTeamJoinForm(name, tenant, null); // TODO: find alternative to flushing in advance
-    //   // await em.persistAndFlush(joinForm);
-
-    //   createTeams.push(async () => {
-    //     // TODO: reuse TeamSeeder
-    //     const team = new Team({
-    //       name,
-    //       bio: faker.lorem.paragraph(randomInt(2, 12)),
-    //       tags: randomFromArray(categories, 1, 3),
-    //       currentFinance: 0,
-    //       email: `${toSlug(name)}@${tenant.domain}.fr`,
-    //       slug: toSlug(name),
-    //       tagline: faker.company.catchPhrase(),
-    //       type: TeamType.Club,
-    //       ...tenantOptions,
-    //     });
-
-    //     team.poles.add(
-    //       new Pole({
-    //         name: 'Bureau',
-    //         description: faker.lorem.paragraph(),
-    //         team: team,
-    //         required: true,
-    //         category: PoleCategory.Administration,
-    //         ...tenantOptions,
-    //       })
-    //     );
-
-    //     team.currentFinance = 4000;
-    //     team.finances.add(
-    //       new Finance({
-    //         team: team,
-    //         amount: 4000,
-    //         location: randomAddress(team.actor, tenant),
-    //         name: 'Subvention 2023',
-    //         payedAt: createdAt,
-    //         method: PaymentMethod.Transfer,
-    //         category: FinanceCategory.Other,
-    //         payedBy: pickOneFromArray(admins).actor,
-    //         createdBy: pickOneFromArray(admins),
-    //         state: FinanceState.Completed,
-    //         tenant,
-    //       })
-    //     );
-    //     await em.persistAndFlush(team);
-    //     return team;
-    //   });
-    // }
-
-    // const teams = await Promise.all(createTeams.map((createTeam) => createTeam()));
     this.logger.log('Teams created...');
     const teamPromises = [];
 
@@ -628,6 +564,7 @@ export class DatabaseSeeder extends Seeder {
                   method: randomEnum(PaymentMethod),
                   state: FinanceState.Completed,
                   tenant,
+                  receivedBy: pickOneFromArray(companies).actor,
                   attachments: upload ? [upload] : [],
                 });
 
