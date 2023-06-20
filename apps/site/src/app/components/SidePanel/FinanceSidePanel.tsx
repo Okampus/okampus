@@ -59,7 +59,7 @@ export function FinanceSidePanel({ finance }: FinanceSidePanelProps) {
         <div className="text-xl my-2 text-0">{finance.name}</div>
         <div className="text-xl text-1 my-8">{formatDateDayOfWeekNoHour(payedAt)}</div>
         {/* <LabeledUser
-          id={finance.actor?.individualByIndividualId?.userInfo?.id as string}
+          id={finance.actor?.individualByIndividualId?.user?.id as string}
           name={finance.actor?.name}
         /> */}
         {/* <SelectInput items={{

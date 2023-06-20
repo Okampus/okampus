@@ -1,15 +1,15 @@
 import { TenantScopedEntity } from '../..';
-import { BotInfoRepository } from '../bot-info/bot-info.repository';
+import { BotRepository } from '../bot/bot.repository';
 import { Entity, EntityRepositoryType, Enum, EnumType, JsonType, ManyToOne, Property } from '@mikro-orm/core';
 import { SessionClientType } from '@okampus/shared/enums';
 
 import type { JSONObject } from '@okampus/shared/types';
-import type { UserInfo } from '../user-info/user-info.entity';
+import type { User } from '../user/user.entity';
 import type { SessionOptions } from './session.options';
 
-@Entity({ customRepository: () => BotInfoRepository })
+@Entity({ customRepository: () => BotRepository })
 export class Session extends TenantScopedEntity {
-  [EntityRepositoryType]!: BotInfoRepository;
+  [EntityRepositoryType]!: BotRepository;
 
   @Property({ type: 'string' })
   ip!: string;
@@ -29,8 +29,8 @@ export class Session extends TenantScopedEntity {
   @Property({ type: 'string', hidden: true })
   tokenFamily!: string;
 
-  @ManyToOne({ type: 'UserInfo' })
-  user!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  user!: User;
 
   @Property({ type: 'date' })
   lastActivityAt: Date = new Date();

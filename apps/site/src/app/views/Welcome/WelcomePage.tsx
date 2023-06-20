@@ -123,6 +123,8 @@ export function WelcomePage() {
                 action={{
                   label: 'Se connecter',
                   iconOrSwitch: <ArrowRightIcon />,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   linkOrActionOrMenu: () => login({ variables: { dto: { username: username.trim(), password } } }),
                   type: ActionType.Action,
                 }}

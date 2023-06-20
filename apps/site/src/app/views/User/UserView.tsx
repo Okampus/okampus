@@ -2,7 +2,7 @@ import { ReactComponent as CheckCircleIcon } from '@okampus/assets/svg/icons/mat
 
 import { USER_ROUTE, USER_ROUTES } from '@okampus/shared/consts';
 import { Align } from '@okampus/shared/enums';
-import { sum } from '@okampus/shared/utils';
+import { isNotNull, sum } from '@okampus/shared/utils';
 
 import { Popover, PopoverTrigger, PopoverContent } from '@okampus/ui/atoms';
 import { NavigationContext, useUser } from '@okampus/ui/hooks';
@@ -15,21 +15,21 @@ export function UserView() {
   const { tenant } = useContext(NavigationContext);
   const { user } = useUser();
 
-  if (!user || !user.individualById?.actor) return null;
+  if (!user || !user.individual?.actor) return null;
 
   const projectActions = user.actions.filter((action) => action.project);
   const totalAttendances = sum(
     user.eventJoins.map((eventJoin) => {
       return eventJoin
         ? eventJoin.presence
-          ? eventJoin.event.pointsPresence + (eventJoin.action?.points || 0)
+          ? eventJoin.event.pointsPresence + sum(eventJoin.actions?.map((action) => action.points).filter(isNotNull))
           : -0.25
         : 0;
     })
   );
   const totalActions = sum(projectActions.map((action) => action.points || 0));
 
-  // const color = getColorHexFromData(user.individualById?.actor?.name);
+  // const color = getColorHexFromData(user.individual?.actor?.name);
   const menus = [
     {
       key: USER_ROUTES.PROFILE,
@@ -72,34 +72,36 @@ export function UserView() {
                       label: 'Points action',
                       align: Align.Left,
                       render: (eventJoin) => {
-                        const action = eventJoin.action;
-                        if (!action) return;
-
+                        const actions = eventJoin.actions;
                         return (
-                          <div className="flex gap-2 items-center text-lg font-semibold text-2">
-                            <div className="text-green-500">
-                              +{action.points} {tenant?.pointName}
-                            </div>{' '}
-                            /
-                            <CheckCircleIcon className="text-green-400 h-7 w-7 mb-0.5" />
-                            <Popover forcePlacement={true} placement="bottom-start" placementOffset={10}>
-                              <PopoverTrigger>
-                                <div className="hover:underline">{action.name}</div>
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <div className="card-md bg-4">
-                                  <div className="title">
-                                    {action.name}{' '}
-                                    <span className="text-green-400">
-                                      +{action.points} {tenant?.pointName}
-                                    </span>
-                                  </div>
-                                  <div className="text-lg text-2">{action.description}</div>
-                                </div>
-                              </PopoverContent>
-                            </Popover>
-                            {/* <ActionButton action={{}} /> */}
-                          </div>
+                          <>
+                            {actions.map((action) => (
+                              <div className="flex gap-2 items-center text-lg font-semibold text-2">
+                                <div className="text-green-500">
+                                  +{action.points} {tenant?.pointName}
+                                </div>{' '}
+                                /
+                                <CheckCircleIcon className="text-green-400 h-7 w-7 mb-0.5" />
+                                <Popover forcePlacement={true} placement="bottom-start" placementOffset={10}>
+                                  <PopoverTrigger>
+                                    <div className="hover:underline">{action.name}</div>
+                                  </PopoverTrigger>
+                                  <PopoverContent>
+                                    <div className="card-md bg-4">
+                                      <div className="title">
+                                        {action.name}{' '}
+                                        <span className="text-green-400">
+                                          +{action.points} {tenant?.pointName}
+                                        </span>
+                                      </div>
+                                      <div className="text-lg text-2">{action.description}</div>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                                {/* <ActionButton action={{}} /> */}
+                              </div>
+                            ))}
+                          </>
                         );
                       },
                     },
@@ -109,7 +111,9 @@ export function UserView() {
                       render: (eventJoin) => {
                         return eventJoin.presence ? (
                           <div className="text-green-500 font-semibold">
-                            +{eventJoin.event.pointsPresence + (eventJoin.action?.points || 0)}
+                            +
+                            {eventJoin.event.pointsPresence +
+                              sum(eventJoin.actions?.map((action) => action.points).filter(isNotNull))}
                           </div>
                         ) : (
                           <div className="text-red-500 font-semibold">-0.25</div>
@@ -197,5 +201,5 @@ export function UserView() {
     },
   ];
 
-  return <TabsTopbarView basePath={USER_ROUTE(user.individualById?.actor?.slug)} menus={menus} />;
+  return <TabsTopbarView basePath={USER_ROUTE(user.individual?.actor?.slug)} menus={menus} />;
 }

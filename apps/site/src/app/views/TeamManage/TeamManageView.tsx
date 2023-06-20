@@ -25,7 +25,7 @@ export function TeamManageView() {
   const { currentUser } = useCurrentUser();
 
   if (!teamManage || !teamManage.actor || !currentUser) return null;
-  if (!teamManage.teamMembers.some((member) => member.userInfo?.id === currentUser.id)) {
+  if (!teamManage.teamMembers.some((member) => member.user?.id === currentUser.id)) {
     setNotification({
       message: `Vous n'avez pas les permissions de gérer l'équipe ${teamManage.actor.name}`,
       type: ToastType.Error,

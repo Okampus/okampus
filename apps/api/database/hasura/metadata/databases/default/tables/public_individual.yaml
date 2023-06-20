@@ -9,7 +9,7 @@ object_relationships:
         table:
           name: actor
           schema: public
-  - name: botInfo
+  - name: bot
     using:
       foreign_key_constraint_on: bot_id
   - name: createdBy
@@ -18,16 +18,23 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: userInfo
+  - name: user
     using:
       foreign_key_constraint_on: user_id
 array_relationships:
-  - name: botInfos
+  - name: completedSettledMissionJoins
     using:
       foreign_key_constraint_on:
-        column: created_by_id
+        column: completed_settled_by_id
         table:
-          name: bot_info
+          name: mission_join
+          schema: public
+  - name: contributorIssues
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: issue_contributors
           schema: public
   - name: createdActions
     using:
@@ -63,6 +70,13 @@ array_relationships:
         column: created_by_id
         table:
           name: bank_info
+          schema: public
+  - name: createdBots
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: bot
           schema: public
   - name: createdCampuses
     using:
@@ -196,13 +210,6 @@ array_relationships:
         column: created_by_id
         table:
           name: finance
-          schema: public
-  - name: createdFollows
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: follow
           schema: public
   - name: createdFormSubmissions
     using:
@@ -379,6 +386,13 @@ array_relationships:
         table:
           name: thread
           schema: public
+  - name: createdUsers
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: user
+          schema: public
   - name: createdValidations
     using:
       foreign_key_constraint_on:
@@ -393,75 +407,26 @@ array_relationships:
         table:
           name: vote
           schema: public
-  - name: eventApprovalStepValidator
+  - name: following
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: created_by_id
         table:
-          name: event_approval_step_validators
+          name: follow
           schema: public
-  - name: eventApprovalStepsNotified
+  - name: notifieeEventApprovalSteps
     using:
       foreign_key_constraint_on:
         column: individual_id
         table:
           name: event_approval_step_notifiees
           schema: public
-  - name: eventJoinsPresenceSettled
+  - name: presenceSettledEventJoins
     using:
       foreign_key_constraint_on:
         column: presence_settled_by_id
         table:
           name: event_join
-          schema: public
-  - name: eventJoinsSettled
-    using:
-      foreign_key_constraint_on:
-        column: settled_by_id
-        table:
-          name: event_join
-          schema: public
-  - name: expensesSettled
-    using:
-      foreign_key_constraint_on:
-        column: settled_by_id
-        table:
-          name: expense
-          schema: public
-  - name: grantUnlocksValidated
-    using:
-      foreign_key_constraint_on:
-        column: validated_by_id
-        table:
-          name: grant_unlock
-          schema: public
-  - name: grantsValidated
-    using:
-      foreign_key_constraint_on:
-        column: validated_by_id
-        table:
-          name: grant
-          schema: public
-  - name: issuesContributor
-    using:
-      foreign_key_constraint_on:
-        column: individual_id
-        table:
-          name: issue_contributors
-          schema: public
-  - name: missionJoinsCompletedSettled
-    using:
-      foreign_key_constraint_on:
-        column: completed_settled_by_id
-        table:
-          name: mission_join
-          schema: public
-  - name: missionJoinsSettled
-    using:
-      foreign_key_constraint_on:
-        column: settled_by_id
-        table:
-          name: mission_join
           schema: public
   - name: settledActions
     using:
@@ -470,7 +435,28 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: teamJoinsSettled
+  - name: settledEventJoins
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: settledExpenses
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: expense
+          schema: public
+  - name: settledMissionJoins
+    using:
+      foreign_key_constraint_on:
+        column: settled_by_id
+        table:
+          name: mission_join
+          schema: public
+  - name: settledTeamJoins
     using:
       foreign_key_constraint_on:
         column: settled_by_id
@@ -484,10 +470,24 @@ array_relationships:
         table:
           name: thread_contributors
           schema: public
-  - name: userInfos
+  - name: validatedGrantUnlocks
     using:
       foreign_key_constraint_on:
-        column: created_by_id
+        column: validated_by_id
         table:
-          name: user_info
+          name: grant_unlock
+          schema: public
+  - name: validatedGrants
+    using:
+      foreign_key_constraint_on:
+        column: validated_by_id
+        table:
+          name: grant
+          schema: public
+  - name: validatorEventApprovalStep
+    using:
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: event_approval_step_validators
           schema: public

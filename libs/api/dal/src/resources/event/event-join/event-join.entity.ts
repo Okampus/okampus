@@ -5,7 +5,7 @@ import { ApprovalState, SettledVia } from '@okampus/shared/enums';
 
 import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 import type { Individual } from '../../individual/individual.entity';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { FormSubmission } from '../../form-submission/form-submission.entity';
 import type { EventJoinOptions } from './event-join.options';
 import type { Event } from '../event.entity';
@@ -41,8 +41,8 @@ export class EventJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'Event' })
   event!: Event;
 
-  @ManyToOne({ type: 'UserInfo' })
-  joiner!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  joiner!: User;
 
   @ManyToOne({ type: 'EventManage', nullable: true, default: null })
   joinedFor: EventManage | null = null;

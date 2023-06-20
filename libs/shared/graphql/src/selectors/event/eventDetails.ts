@@ -10,7 +10,7 @@ export const eventDetailsInfo = Selector('Event')({
     { where: { state: { _eq: ApprovalState.Approved } } },
     {
       aggregate: { count: [{}, true] },
-      nodes: { __typename: true, id: true, userInfo: userBaseInfo },
+      nodes: { __typename: true, id: true, joiner: userBaseInfo },
     },
   ],
 });

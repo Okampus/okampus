@@ -1,7 +1,7 @@
 export enum EntityName {
   Individual = 'Individual',
-  BotInfo = 'BotInfo',
-  UserInfo = 'UserInfo',
+  Bot = 'Bot',
+  User = 'User',
 
   Tenant = 'Tenant',
   Campus = 'Campus',

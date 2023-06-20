@@ -60,7 +60,7 @@ export class Project extends TenantScopedEntity {
   team!: Team;
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
-  image: FileUpload | null = null;
+  banner: FileUpload | null = null;
 
   @ManyToOne({ type: 'Grant', nullable: true, default: null })
   grant: Grant | null = null;

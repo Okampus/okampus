@@ -7,7 +7,7 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const eventJoinDetailsInfo = Selector('EventJoin')({
   ...eventJoinBaseInfo,
-  action: actionBaseInfo,
+  actions: [{}, actionBaseInfo],
   event: eventBaseInfo,
 });
 export type EventJoinDetailsInfo = InputType<GraphQLTypes['EventJoin'], typeof eventJoinDetailsInfo>;

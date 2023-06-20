@@ -32,7 +32,7 @@ import type { Searchable } from '../../types/search-entity.type';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { UserInfo } from '../individual/user-info/user-info.entity';
+import type { User } from '../individual/user/user.entity';
 import type { JSONObject } from '@okampus/shared/types';
 import type { EventManage } from './event-manage/event-manage.entity';
 import type { Content } from '../content/content.entity';
@@ -112,9 +112,9 @@ export class Event extends TenantScopedEntity implements Searchable {
   @ManyToOne({ type: 'EventApprovalStep', nullable: true, default: null })
   lastEventApprovalStep: EventApprovalStep | null = null;
 
-  @ManyToMany({ type: 'UserInfo' })
+  @ManyToMany({ type: 'User' })
   @TransformCollection()
-  supervisors = new Collection<UserInfo>(this);
+  supervisors = new Collection<User>(this);
 
   @ManyToMany({ type: 'Team', mappedBy: 'events' })
   @TransformCollection()

@@ -11,18 +11,12 @@ object_relationships:
   - name: eventManage
     using:
       foreign_key_constraint_on: joined_for_id
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: qr_code_id
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id
-  - name: individualByPresenceSettledById
+  - name: joiner
     using:
-      foreign_key_constraint_on: presence_settled_by_id
-  - name: individualBySettledById
-    using:
-      foreign_key_constraint_on: settled_by_id
+      foreign_key_constraint_on: joiner_id
   - name: linkedMissionJoin
     using:
       foreign_key_constraint_on: mission_join_id
@@ -33,12 +27,18 @@ object_relationships:
         table:
           name: mission_join
           schema: public
+  - name: presenceSettledBy
+    using:
+      foreign_key_constraint_on: presence_settled_by_id
+  - name: qrCode
+    using:
+      foreign_key_constraint_on: qr_code_id
+  - name: settledBy
+    using:
+      foreign_key_constraint_on: settled_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: userInfo
-    using:
-      foreign_key_constraint_on: joiner_id
 array_relationships:
   - name: actions
     using:

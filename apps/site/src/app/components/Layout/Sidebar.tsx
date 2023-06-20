@@ -123,7 +123,7 @@ export function Sidebar() {
   const [getTeamCategories, { data }] = useTypedLazyQuery({
     tag: [
       { where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.ASC }] },
-      { ...tagBaseInfo, fileUpload: fileUploadBaseInfo },
+      { ...tagBaseInfo, image: fileUploadBaseInfo },
     ],
   });
 
@@ -146,7 +146,7 @@ export function Sidebar() {
   const tenantActions = [
     {
       actions: [
-        ...(currentUser?.individualById?.scopeRole === ScopeRole.Admin
+        ...(currentUser?.individual?.scopeRole === ScopeRole.Admin
           ? [
               selected.viewType === ViewType.Admin
                 ? {
@@ -181,7 +181,7 @@ export function Sidebar() {
                 <>
                   <AvatarImage
                     name={tenant.name}
-                    src={getAvatar(tenant.team?.actor?.actorImages)}
+                    src={getAvatar(tenant.adminTeam?.actor?.actorImages)}
                     size={16}
                     type="tenant"
                   />
@@ -279,9 +279,9 @@ export function Sidebar() {
                         linkOrAction: link,
                         label: category.name,
                         icon: ({ className }) =>
-                          category.fileUpload ? (
+                          category.image ? (
                             <img
-                              src={category.fileUpload.url}
+                              src={category.image.url}
                               alt={category.name}
                               className={clsx(className, selected.menuId.startsWith(link) && 'shadow-primary')}
                               style={{

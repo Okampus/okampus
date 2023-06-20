@@ -18,20 +18,22 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
+
+import type { TeamOptions } from './team.options';
+import type { Action } from './action/action.entity';
 import type { ClassGroup } from '../class-group/class-group.entity';
 import type { Cohort } from '../cohort/cohort.entity';
 import type { Canteen } from '../canteen/canteen.entity';
-import type { Pole } from './pole/pole.entity';
 import type { Document } from '../document/document.entity';
 import type { Event } from '../event/event.entity';
+import type { FileUpload } from '../file-upload/file-upload.entity';
+import type { Pole } from './pole/pole.entity';
 import type { Searchable } from '../../types/search-entity.type';
-import type { Action } from './action/action.entity';
 import type { Finance } from './finance/finance.entity';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
-import type { TeamOptions } from './team.options';
-import type { FileUpload } from '../file-upload/file-upload.entity';
+import type { Tenant } from '../tenant/tenant.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -80,6 +82,9 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @OneToOne({ type: 'ClassGroup', inversedBy: 'team', nullable: true, default: null })
   classGroup: ClassGroup | null = null;
+
+  @OneToOne({ type: 'Tenant', inversedBy: 'adminTeam', nullable: true, default: null })
+  adminTeamTenant: Tenant | null = null;
 
   @OneToOne({ type: 'Form', mappedBy: 'team' })
   joinForm: Form;

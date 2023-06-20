@@ -7,10 +7,12 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const eventJoinBaseInfo = Selector('EventJoin')({
   ...entityBase,
-  userInfo: userBaseInfo,
+  joiner: userBaseInfo,
+  settledBy: individualBaseInfo,
+  settledAt: true,
   presenceSettledVia: true,
-  individualByPresenceSettledById: individualBaseInfo,
   presenceSettledAt: true,
+  presenceSettledBy: individualBaseInfo,
   presence: true,
   state: true,
 });

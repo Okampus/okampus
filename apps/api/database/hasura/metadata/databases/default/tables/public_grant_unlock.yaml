@@ -5,12 +5,12 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: generated_document_id
   - name: finance
     using:
       foreign_key_constraint_on: finance_id
+  - name: generatedDocument
+    using:
+      foreign_key_constraint_on: generated_document_id
   - name: grant
     using:
       foreign_key_constraint_on: grant_id

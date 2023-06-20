@@ -11,21 +11,21 @@ object_relationships:
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id
-  - name: individualBySettledById
+  - name: joiner
     using:
-      foreign_key_constraint_on: settled_by_id
-  - name: pole
+      foreign_key_constraint_on: joiner_id
+  - name: receivedPole
     using:
       foreign_key_constraint_on: received_pole_id
   - name: receivedRole
     using:
       foreign_key_constraint_on: received_role_id
+  - name: settledBy
+    using:
+      foreign_key_constraint_on: settled_by_id
   - name: team
     using:
       foreign_key_constraint_on: team_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: userInfo
-    using:
-      foreign_key_constraint_on: joiner_id

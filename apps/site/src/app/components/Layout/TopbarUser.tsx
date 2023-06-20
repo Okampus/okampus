@@ -43,8 +43,8 @@ export function TopbarUser({ theme, setTheme }: TopbarUserProps) {
     },
   ];
 
-  const avatar = getAvatar(currentUser?.individualById?.actor?.actorImages);
-  const name = currentUser?.individualById?.actor?.name;
+  const avatar = getAvatar(currentUser?.individual?.actor?.actorImages);
+  const name = currentUser?.individual?.actor?.name;
 
   return (
     <Popover forcePlacement={true} placement="bottom-end" placementOffset={20}>
@@ -59,7 +59,7 @@ export function TopbarUser({ theme, setTheme }: TopbarUserProps) {
                 <AvatarImage src={avatar} name={name} size={22} type="user" />
                 <div>
                   <div className="text-1 text-xl font-bold">{name}</div>
-                  <div className="text-2">{currentUser?.individualById?.actor?.email}</div>
+                  <div className="text-2">{currentUser?.individual?.actor?.email}</div>
                 </div>
               </div>
             </div>

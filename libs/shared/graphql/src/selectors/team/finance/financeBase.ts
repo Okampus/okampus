@@ -20,6 +20,6 @@ export const financeBaseInfo = Selector('Finance')({
   project: projectBaseInfo,
   event: eventBaseInfo,
   method: true,
-  individual: individualBaseInfo,
+  createdBy: individualBaseInfo,
 });
 export type FinanceBaseInfo = InputType<GraphQLTypes['Finance'], typeof financeBaseInfo>;

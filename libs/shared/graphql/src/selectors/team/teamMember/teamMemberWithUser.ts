@@ -3,8 +3,8 @@ import { Selector } from '../../../zeus';
 import { userBaseInfo } from '../../individual/userBase';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
-export const teamMemberWithUserInfo = Selector('TeamMember')({
+export const teamMemberWithUser = Selector('TeamMember')({
   ...teamMemberBaseInfo,
-  userInfo: userBaseInfo,
+  user: userBaseInfo,
 });
-export type TeamMemberWithUserInfo = InputType<GraphQLTypes['TeamMember'], typeof teamMemberWithUserInfo>;
+export type TeamMemberWithUser = InputType<GraphQLTypes['TeamMember'], typeof teamMemberWithUser>;

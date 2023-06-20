@@ -7,10 +7,10 @@ import { ApprovalState } from '@okampus/shared/enums';
 import { AvatarImage } from '@okampus/ui/atoms';
 import { getAvatar } from '@okampus/ui/utils';
 
-import type { TeamJoinWithUserInfo } from '@okampus/shared/graphql';
+import type { TeamJoinWithUser } from '@okampus/shared/graphql';
 
 export type LabeledTeamJoinProps = {
-  teamJoin: TeamJoinWithUserInfo;
+  teamJoin: TeamJoinWithUser;
   onClick: () => void;
 };
 
@@ -20,12 +20,12 @@ export function LabeledTeamJoin({ teamJoin, onClick }: LabeledTeamJoinProps) {
       <div className="flex gap-item">
         <AvatarImage
           size={22}
-          src={getAvatar(teamJoin.userInfo.individualById?.actor?.actorImages)}
-          name={teamJoin.userInfo.individualById?.actor?.name}
+          src={getAvatar(teamJoin.joiner.individual?.actor?.actorImages)}
+          name={teamJoin.joiner.individual?.actor?.name}
           type="user"
         />
         <div className="flex flex-col gap-0.5 font-heading">
-          <div className="text-1 font-bold text-lg line-clamp-1">{teamJoin.userInfo.individualById?.actor?.name}</div>
+          <div className="text-1 font-bold text-lg line-clamp-1">{teamJoin.joiner.individual?.actor?.name}</div>
           <div className="flex items-center gap-1 text-xs">Pour le rôle de {teamJoin.receivedRole?.name}</div>
         </div>
       </div>

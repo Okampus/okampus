@@ -18,9 +18,9 @@ import { mergeCache } from '#site/app/utils/apollo/merge-cache';
 import { useMutation } from '@apollo/client';
 import { useContext } from 'react';
 
-import type { TeamMemberWithUserInfo, TeamWithMembersInfo } from '@okampus/shared/graphql';
+import type { TeamMemberWithUser, TeamWithMembersInfo } from '@okampus/shared/graphql';
 
-const renderUsers = (memberships: TeamMemberWithUserInfo[]) =>
+const renderUsers = (memberships: TeamMemberWithUser[]) =>
   memberships
     .map((teamMember, idx) => (
       <li key={idx} className="w-full">
@@ -55,7 +55,7 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
 
   const isCurrentUserMember = currentUser?.teamMembers.some((teamMember) => teamMember.team?.id === team.id);
   const isCurrentUserJoining = currentUser?.teamJoins.some((teamJoin) => teamJoin.team?.id === team.id);
-  const isCurrentUserFollowing = currentUser?.individualById?.follows.some(
+  const isCurrentUserFollowing = currentUser?.individual?.following.some(
     (follow) => follow.actor?.id === team.actor?.id
   );
 
@@ -73,14 +73,14 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
   // TEAM_TAB_ROUTE({ slug: team.actor.slug, tab: TEAM_ROUTES.JOIN })
 
   // const myTeamJoin = currentUser.teamJoins.find((join) => join.team?.id === team.id);
-  // const myRoles = team.teamMembers.find((member) => member.userInfo?.id === currentUser.id)?.teamMemberRoles ?? [];
+  // const myRoles = team.teamMembers.find((member) => member.user?.id === currentUser.id)?.teamMemberRoles ?? [];
 
   // const isMember = myRoles.length;
   // const isManager = myRoles.some(({ role }) => canManage(role.permissions));
 
   // const buttonList = (
   //   <div className="flex items-center gap-8">
-  //     {isManager || currentUser.individualById?.scopeRole === ScopeRole.Admin ? (
+  //     {isManager || currentUser.individual?.scopeRole === ScopeRole.Admin ? (
   //       <ActionButton
   //         action={{
   //           iconOrSwitch: <AdminSettingsFilledIcon />,
@@ -187,7 +187,7 @@ export function TeamSidePanel({ team }: TeamSidePanelProps) {
                 variables: { object: { followedActorId: team.actor?.id as string } },
                 onCompleted: ({ insertFollowOne: data }) => {
                   mergeCache(
-                    { __typename: 'Individual', id: currentUser?.individualById?.id as string },
+                    { __typename: 'Individual', id: currentUser?.individual?.id as string },
                     { fieldName: 'follows', fragmentOn: 'Follow', data }
                   );
                   setNotification({

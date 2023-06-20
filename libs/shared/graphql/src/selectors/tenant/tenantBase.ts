@@ -8,6 +8,6 @@ export const tenantBaseInfo = Selector('Tenant')({
   ...entityBase,
   name: true,
   pointName: true,
-  team: teamBaseInfo,
+  adminTeam: teamBaseInfo,
 });
 export type TenantBaseInfo = InputType<GraphQLTypes['Tenant'], typeof tenantBaseInfo>;

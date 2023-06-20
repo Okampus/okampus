@@ -9,6 +9,9 @@ object_relationships:
         table:
           name: actor
           schema: public
+  - name: adminTeamTenant
+    using:
+      foreign_key_constraint_on: admin_team_tenant_id
   - name: canteen
     using:
       foreign_key_constraint_on: canteen_id
@@ -21,9 +24,6 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: video_id
   - name: form
     using:
       foreign_key_constraint_on:
@@ -37,13 +37,9 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: tenantById
+  - name: video
     using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: tenant
-          schema: public
+      foreign_key_constraint_on: video_id
 array_relationships:
   - name: actions
     using:

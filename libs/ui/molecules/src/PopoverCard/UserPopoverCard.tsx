@@ -18,24 +18,24 @@ export type UserPopoverCardProps = {
 const renderContent = (user?: UserWithMembershipsInfo) => {
   if (!user) return <CardSkeleton />;
 
-  const avatar = { src: getAvatar(user.individualById?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
-  const banner = { src: getBanner(user.individualById?.actor?.actorImages) };
+  const avatar = { src: getAvatar(user.individual?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
+  const banner = { src: getBanner(user.individual?.actor?.actorImages) };
 
   return (
     <PopoverCard
-      link={USER_ROUTE(user.individualById?.actor?.slug)}
-      name={user.individualById?.actor?.name}
+      link={USER_ROUTE(user.individual?.actor?.slug)}
+      name={user.individual?.actor?.name}
       avatar={avatar}
       banner={banner}
     >
-      {user.individualById?.actor?.bio && (
+      {user.individual?.actor?.bio && (
         <>
-          <div className="text-2">{user.individualById?.actor?.bio}</div>
+          <div className="text-2">{user.individual?.actor?.bio}</div>
           <hr className="my-2 border-color-3" />
         </>
       )}
       <div className="text-1 italic text-sm">
-        Actif depuis le {formatDateStandard(user.individualById?.actor?.createdAt as string)}
+        Actif depuis le {formatDateStandard(user.individual?.actor?.createdAt as string)}
       </div>
     </PopoverCard>
   );
@@ -43,7 +43,7 @@ const renderContent = (user?: UserWithMembershipsInfo) => {
 
 export function UserPopoverCard({ userId, triggerClassName, children }: UserPopoverCardProps) {
   const [getUser, { data }] = useTypedLazyQuery({
-    userInfo: [{ where: { id: { _eq: userId } }, limit: 1 }, userWithMembershipsInfo],
+    user: [{ where: { id: { _eq: userId } }, limit: 1 }, userWithMembershipsInfo],
   });
 
   return (
@@ -51,7 +51,7 @@ export function UserPopoverCard({ userId, triggerClassName, children }: UserPopo
       <PopoverTrigger className={triggerClassName} onClick={() => getUser()}>
         {children}
       </PopoverTrigger>
-      <PopoverContent popoverClassName="rounded-2xl bg-1">{renderContent(data?.userInfo?.[0])}</PopoverContent>
+      <PopoverContent popoverClassName="rounded-2xl bg-1">{renderContent(data?.user?.[0])}</PopoverContent>
     </Popover>
   );
 }

@@ -16,11 +16,11 @@ import { TokenExpiration, TokenType } from '@okampus/shared/enums';
 
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
-import type { Individual, UserInfo } from '@okampus/api/dal';
+import type { Individual, User } from '@okampus/api/dal';
 import type { ApiConfig } from '@okampus/shared/types';
 import type { GraphQLResolveInfo } from 'graphql';
 
-@Resolver('UserInfo')
+@Resolver('User')
 export class AuthResolver {
   constructor(
     private readonly configService: ConfigService,
@@ -34,7 +34,7 @@ export class AuthResolver {
     @Args('dto') dto: LoginDto,
     @Context() ctx: GQLContext,
     @Info() info: GraphQLResolveInfo
-  ): Promise<UserInfo> {
+  ): Promise<User> {
     return await this.authService.login(dto, getSelectionSet(info), ctx.req, ctx.reply);
   }
 
@@ -61,10 +61,10 @@ export class AuthResolver {
   }
 
   @Query()
-  public async me(@Requester() requester: Individual, @Info() info: GraphQLResolveInfo): Promise<UserInfo> {
+  public async me(@Requester() requester: Individual, @Info() info: GraphQLResolveInfo): Promise<User> {
     if (!requester.user) throw new BadRequestException('No user found');
-    const data = await this.hasuraService.findByPk('userInfoByPk', getSelectionSet(info), { id: requester.user.id });
-    return data.userInfoByPk;
+    const data = await this.hasuraService.findByPk('userByPk', getSelectionSet(info), { id: requester.user.id });
+    return data.userByPk;
   }
 
   // @TenantPublic()

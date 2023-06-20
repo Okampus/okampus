@@ -30,7 +30,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { JwtService } from '@nestjs/jwt';
 
-import { Individual, Session, Tenant, UserInfo } from '@okampus/api/dal';
+import { Individual, Session, Tenant, User } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains } from '@okampus/shared/utils';
@@ -251,7 +251,7 @@ export class AuthService extends RequestContext {
     tokenFamily: string,
     sub: string
   ): Promise<Session> {
-    const user = this.em.getReference(UserInfo, sub);
+    const user = this.em.getReference(User, sub);
     if (!user) throw new InternalServerErrorException('User info not found');
 
     const refreshTokenHash = await hash(token, { secret: this.pepper });
@@ -294,12 +294,7 @@ export class AuthService extends RequestContext {
     return session.user.individual;
   }
 
-  public async login(
-    body: LoginDto,
-    selectionSet: string[],
-    req: FastifyRequest,
-    res: FastifyReply
-  ): Promise<UserInfo> {
+  public async login(body: LoginDto, selectionSet: string[], req: FastifyRequest, res: FastifyReply): Promise<User> {
     const individual = await this.em.findOneOrFail(Individual, {
       actor: { $or: [{ slug: body.username }, { email: body.username }] },
       tenant: this.tenant(),
@@ -314,7 +309,7 @@ export class AuthService extends RequestContext {
     await this.refreshSession(req, res, individual.user.id);
 
     requestContext.set('individual', individual);
-    const data = await this.hasuraService.findByPk('userInfoByPk', selectionSet, { id: individual.user.id });
-    return data.userInfoByPk;
+    const data = await this.hasuraService.findByPk('userByPk', selectionSet, { id: individual.user.id });
+    return data.userByPk;
   }
 }

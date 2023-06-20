@@ -13,6 +13,6 @@ export const teamJoinBaseInfo = Selector('TeamJoin')({
   receivedRole: roleBaseInfo,
   formSubmission: formSubmissionBaseInfo,
   individual: individualBaseInfo,
-  userInfo: userBaseInfo,
+  joiner: userBaseInfo,
 });
 export type TeamJoinBaseInfo = InputType<GraphQLTypes['TeamJoin'], typeof teamJoinBaseInfo>;

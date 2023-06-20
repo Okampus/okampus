@@ -23,9 +23,9 @@ import type { FileLike } from '@okampus/shared/types';
 function getUserLabel(team: TeamDashboardInfo, roleType: TeamRoleType, label = 'N/A') {
   const user = team.teamMembersAggregate.nodes.find((member) =>
     member.teamMemberRoles.some(({ role }) => role.type === roleType)
-  )?.userInfo;
+  )?.user;
 
-  const actor = user?.individualById?.actor;
+  const actor = user?.individual?.actor;
   if (!user || !actor) return <TextBadge color="grey" label={label} />;
 
   return <LabeledUser id={user.id as string} avatar={{ src: getAvatar(actor.actorImages) }} name={actor.name} />;
@@ -87,11 +87,11 @@ export const TeamDashboard = () => {
       render: (value: TeamDashboardInfo) => {
         const members = value.teamMembersAggregate.nodes
           .map((member) => {
-            if (!member.userInfo || !member.userInfo.individualById?.actor) return null;
+            if (!member.user || !member.user.individual?.actor) return null;
             return {
-              id: member.userInfo.id as string,
-              name: member.userInfo.individualById.actor.name,
-              avatar: getAvatar(member.userInfo.individualById.actor.actorImages),
+              id: member.user.id as string,
+              name: member.user.individual.actor.name,
+              avatar: getAvatar(member.user.individual.actor.actorImages),
             };
           })
           .filter(isNotNull);

@@ -1,5 +1,5 @@
 import type { Address } from '../actor/address/address.entity';
-import type { UserInfo } from '../individual/user-info/user-info.entity';
+import type { User } from '../individual/user/user.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
 import type { Event } from './event.entity';
@@ -15,7 +15,7 @@ import type { Content } from '../content/content.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    supervisors?: UserInfo[];
+    supervisors?: User[];
     content: Content;
     address?: Address | null;
     banner?: FileUpload | null;

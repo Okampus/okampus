@@ -19,7 +19,7 @@ export const eventBaseInfo = Selector('Event')({
   state: true,
   price: true,
   pointsPresence: true,
-  fileUpload: fileUploadBaseInfo,
+  banner: fileUploadBaseInfo,
   isPrivate: true,
   project: projectMinimalInfo,
   teamEvents: [{}, { team: teamBaseInfo }],

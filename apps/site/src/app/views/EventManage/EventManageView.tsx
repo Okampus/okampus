@@ -73,7 +73,7 @@ export function EventManageView() {
           <div className="title">{eventManage?.name}</div>
           {eventManage.form && <FormItem onClick={editForm} form={eventManage.form} />}
           {/* <div>{eventManage.contentMaster?.content?.text}</div>
-          <div className="mt-10">Responsable: {eventManage.userInfo.individualById?.actor?.name}</div> */}
+          <div className="mt-10">Responsable: {eventManage.user.individual?.actor?.name}</div> */}
         </div>
       ),
     },
@@ -89,10 +89,10 @@ export function EventManageView() {
                 render: (eventJoin) => {
                   return (
                     <LabeledUser
-                      id={eventJoin.userInfo.id as string}
-                      name={eventJoin.userInfo.individualById?.actor?.name ?? ''}
+                      id={eventJoin.joiner.id as string}
+                      name={eventJoin.joiner.individual?.actor?.name ?? ''}
                       avatar={{
-                        src: getAvatar(eventJoin.userInfo.individualById?.actor?.actorImages),
+                        src: getAvatar(eventJoin.joiner.individual?.actor?.actorImages),
                         size: 14,
                       }}
                     />
@@ -156,7 +156,7 @@ export function EventManageView() {
               //     //         //   content: (
               //     //         //     <EventInsertAction
               //     //         //       eventJoinId={eventJoin.id}
-              //     //         //       userId={eventJoin.userInfo.id}
+              //     //         //       userId={eventJoin.joiner.id}
               //     //         //       teamId={eventManage.teamEvents[0].teamId}
               //     //         //     />
               //     //         //   ),
@@ -304,11 +304,11 @@ export function EventManageView() {
                 align: Align.Left,
                 render: (eventJoin) => {
                   // const attendance = eventJoin.eventAttendances[0];
-                  const actor = eventJoin.individualByPresenceSettledById?.actor;
-                  if (eventJoin.presenceSettledAt && actor?.individual?.userInfo) {
+                  const actor = eventJoin.settledBy?.actor;
+                  if (eventJoin.presenceSettledAt && actor?.individual?.user) {
                     return (
                       <LabeledUser
-                        id={actor.individual.userInfo.id}
+                        id={actor.individual.user.id}
                         name={actor.name}
                         avatar={{ src: getAvatar(actor.actorImages), size: 14 }}
                       />

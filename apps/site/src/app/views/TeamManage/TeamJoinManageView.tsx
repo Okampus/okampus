@@ -17,7 +17,7 @@ import { getAvatar } from '@okampus/ui/utils';
 import { useMutation } from '@apollo/client';
 import { useContext, useState } from 'react';
 
-import type { TeamJoinWithUserInfo } from '@okampus/shared/graphql';
+import type { TeamJoinWithUser } from '@okampus/shared/graphql';
 import type { FormField, Submission, FormSchema } from '@okampus/shared/types';
 
 export function TeamJoinManageView() {
@@ -52,7 +52,9 @@ export function TeamJoinManageView() {
     selectedTab,
     // setSelectedTab
   ] = useState<typeof tabs[number]>(tabs[0]);
-  const [selectedTeamJoin, setSelectedTeamJoin] = useState<TeamJoinWithUserInfo | null>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [selectedTeamJoin, setSelectedTeamJoin] = useState<TeamJoinWithUser | null>(null);
 
   const [updateJoin] = useMutation(updateTeamJoin);
   // const [insertTeamChangeRole] = useMutation(insertChangeRole);
@@ -176,13 +178,13 @@ export function TeamJoinManageView() {
                       <div className="flex gap-item items-center">
                         <AvatarImage
                           size={36}
-                          src={getAvatar(selectedTeamJoin.userInfo.individualById?.actor?.actorImages)}
-                          name={selectedTeamJoin.userInfo.individualById?.actor?.name}
+                          src={getAvatar(selectedTeamJoin.joiner.individual?.actor?.actorImages)}
+                          name={selectedTeamJoin.joiner.individual?.actor?.name}
                           type="user"
                         />
                         <div className="flex flex-col gap-1">
                           <div className="text-1 font-semibold text-4xl">
-                            {selectedTeamJoin.userInfo.individualById?.actor?.name}
+                            {selectedTeamJoin.joiner.individual?.actor?.name}
                           </div>
                           <div className="text-3 text-xl">
                             A candidaté{' '}
@@ -246,12 +248,12 @@ export function TeamJoinManageView() {
                                             // insertTeamChangeRole({
                                             //   variables: {
                                             //     object: {
-                                            //       createdById: currentUser?.individualById?.id as string,
+                                            //       createdById: currentUser?.individual?.id as string,
                                             //       tenantId: teamManage.tenantId as string,
                                             //       receivedPoleId: teamManage.poles?.[0]?.id as string,
                                             //       receivedRoleId: values.role,
                                             //       teamId: teamManage.id as string,
-                                            //       userId: selectedTeamJoin.userInfo.id as string,
+                                            //       userId: selectedTeamJoin.joiner.id as string,
                                             //       note: '',
                                             //     },
                                             //   },
@@ -286,7 +288,7 @@ export function TeamJoinManageView() {
                                     ),
                                   // {
                                   //   showButtonModal({
-                                  //     title: `Adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name}`,
+                                  //     title: `Adhésion de ${selectedTeamJoin.joiner.individual?.actor?.name}`,
                                   //     content: (
                                   //       <ValidateTeamJoinForm
                                   //         teamJoin={selectedTeamJoin}
@@ -310,7 +312,7 @@ export function TeamJoinManageView() {
                                         setSelectedTeamJoin(null);
                                         setNotification({
                                           type: ToastType.Success,
-                                          message: `L'adhésion de ${selectedTeamJoin.userInfo.individualById?.actor?.name} a été refusée !`,
+                                          message: `L'adhésion de ${selectedTeamJoin.joiner.individual?.actor?.name} a été refusée !`,
                                         });
                                       },
                                       onError: (error) =>

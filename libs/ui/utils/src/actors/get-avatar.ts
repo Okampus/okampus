@@ -8,13 +8,13 @@ export function getAvatar(actorImages?: ActorImageBaseInfo[]) {
     const darkAvatar = actorImages
       .filter((actorImage) => actorImage.type === ActorImageType.AvatarDarkMode)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-    if (darkAvatar) return darkAvatar.fileUpload.url;
+    if (darkAvatar) return darkAvatar.image.url;
   }
 
   const avatar = actorImages
     .filter((actorImage) => actorImage.type === ActorImageType.Avatar)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
 
-  if (avatar) return avatar.fileUpload.url;
+  if (avatar) return avatar.image.url;
   return;
 }

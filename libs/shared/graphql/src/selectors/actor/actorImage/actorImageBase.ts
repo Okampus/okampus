@@ -7,6 +7,6 @@ export const actorImageBaseInfo = Selector('ActorImage')({
   ...entityBase,
   type: true,
   lastActiveDate: true,
-  fileUpload: fileUploadBaseInfo,
+  image: fileUploadBaseInfo,
 });
 export type ActorImageBaseInfo = InputType<GraphQLTypes['ActorImage'], typeof actorImageBaseInfo>;

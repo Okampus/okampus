@@ -8,13 +8,13 @@ import { getAvatar } from '@okampus/ui/utils';
 export function MyView() {
   const { currentUser } = useCurrentUser();
 
-  if (!currentUser || !currentUser?.individualById || !currentUser?.individualById?.actor) return null;
+  if (!currentUser || !currentUser?.individual || !currentUser?.individual?.actor) return null;
 
   const avatar = {
-    src: getAvatar(currentUser.individualById.actor.actorImages),
+    src: getAvatar(currentUser.individual.actor.actorImages),
     rounded: AVATAR_USER_ROUNDED,
     size: 16,
-    name: currentUser.individualById.actor.name,
+    name: currentUser.individual.actor.name,
   };
 
   const menus = [
@@ -62,7 +62,7 @@ export function MyView() {
   //     }}
   //     color={color}
   //     tabs={menus}
-  //     name={currentUser.individualById.actor.name}
+  //     name={currentUser.individual.actor.name}
   //     avatar={avatar}
   //     banner={banner}
   //     details={details}

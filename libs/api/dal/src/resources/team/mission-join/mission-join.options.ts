@@ -1,4 +1,4 @@
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Individual } from '../../individual/individual.entity';
 import type { MissionJoinProps } from '@okampus/shared/dtos';
@@ -13,7 +13,7 @@ export type MissionJoinOptions = TenantScopedOptions &
     completedSettledBy?: Date | null;
     completedSettledAt?: Date | null;
     mission: Mission;
-    joiner: UserInfo;
+    joiner: User;
     eventJoin?: EventJoin | null;
     project?: Project | null;
   };

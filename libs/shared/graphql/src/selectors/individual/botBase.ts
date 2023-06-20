@@ -5,10 +5,10 @@ import { entityBase } from '../entityBase';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
-export const botBaseInfo = Selector('BotInfo')({
+export const botBaseInfo = Selector('Bot')({
   ...entityBase,
   deletedAt: true,
   actor: actorBaseInfo,
   individual: individualBaseInfo,
 });
-export type BotBaseInfo = InputType<GraphQLTypes['BotInfo'], typeof botBaseInfo>;
+export type BotBaseInfo = InputType<GraphQLTypes['Bot'], typeof botBaseInfo>;

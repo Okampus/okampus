@@ -29,7 +29,7 @@ export function UserSidePanel({ user }: UserSidePanelProps) {
         />
       )}
       <div className="label">À propos</div>
-      <div className="text-2">{user.individualById?.actor?.bio}</div>
+      <div className="text-2">{user.individual?.actor?.bio}</div>
     </div>
   );
 }

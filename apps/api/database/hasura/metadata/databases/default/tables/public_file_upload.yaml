@@ -110,7 +110,7 @@ array_relationships:
   - name: projects
     using:
       foreign_key_constraint_on:
-        column: image_id
+        column: banner_id
         table:
           name: project
           schema: public

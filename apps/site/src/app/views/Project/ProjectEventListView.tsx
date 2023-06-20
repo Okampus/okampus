@@ -74,7 +74,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       { where: { projectId: { _eq: project.id } } },
       {
         ...eventWithJoinInfo,
-        userInfo: {
+        user: {
           ...userBaseInfo,
           teamMembers: [{ where: { team: { projects: { id: { _eq: project.id } } } } }, teamMemberBaseInfo],
         },
@@ -88,8 +88,8 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
   if (!events) return null;
 
   const myAvatar = {
-    src: getAvatar(currentUser?.individualById?.actor?.actorImages),
-    name: currentUser?.individualById?.actor?.name,
+    src: getAvatar(currentUser?.individual?.actor?.actorImages),
+    name: currentUser?.individual?.actor?.name,
     size: 14,
     rounded: AVATAR_USER_ROUNDED,
   };
@@ -99,10 +99,10 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
   for (const event of events) {
     const eventId = event.id as string;
     for (const participant of event.eventJoins) {
-      const id = participant.userInfo.id as string;
+      const id = participant.joiner.id as string;
       if (id === currentUser?.id) myEventJoins[eventId] = participant;
       else if (allEventJoins[id]) allEventJoins[id].eventJoins[eventId] = participant;
-      else allEventJoins[id] = { user: participant.userInfo, eventJoins: { [eventId]: participant } };
+      else allEventJoins[id] = { user: participant.joiner, eventJoins: { [eventId]: participant } };
     }
   }
 
@@ -226,26 +226,26 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
         {/* Show Supervisors */}
         {/* {events.map((event) => {
           const avatar = {
-            src: getAvatar(event.userInfo.individualById?.actor?.actorImages),
-            name: event.userInfo.individualById?.actor?.name,
+            src: getAvatar(event.user.individual?.actor?.actorImages),
+            name: event.user.individual?.actor?.name,
             rounded: AVATAR_USER_ROUNDED,
             size: 12,
           };
           return (
             <div className="min-w-[4rem] grow w-0 flex items-center justify-center px-1.5">
               <LabeledUser
-                id={event.userInfo.id}
+                id={event.user.id}
                 key={event.id as string}
                 avatar={avatar}
                 className="gap-2"
-                name={event.userInfo.individualById?.actor?.name || ''}
+                name={event.user.individual?.actor?.name || ''}
               />
             </div>
           );
           // <LabeledMemberHorizontal
-          //   avatar={getAvatar(event.userInfo.individualById?.actor?.actorImages)}
-          //   name={event.userInfo.individualById?.actor?.name}
-          //   role={event.userInfo.teamMembers[0].teamMemberRoles[0].role.name}
+          //   avatar={getAvatar(event.user.individual?.actor?.actorImages)}
+          //   name={event.user.individual?.actor?.name}
+          //   role={event.user.teamMembers[0].teamMemberRoles[0].role.name}
           // />
         })} */}
       </div>
@@ -266,7 +266,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
           <LabeledUser
             key={currentUser?.id as string}
             id={currentUser?.id as string}
-            name={currentUser?.individualById?.actor?.name || ''}
+            name={currentUser?.individual?.actor?.name || ''}
             subtitle={<div className="text-3 text-sm">Vous</div>}
             avatar={myAvatar}
             className="gap-2"
@@ -311,8 +311,8 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       <div className="h-full overflow-y-scroll scrollbar w-fit min-w-full pb-2">
         {allEventJoinsEntries.map(([id, { user, eventJoins }]) => {
           const avatar = {
-            src: getAvatar(user.individualById?.actor?.actorImages),
-            name: user.individualById?.actor?.name,
+            src: getAvatar(user.individual?.actor?.actorImages),
+            name: user.individual?.actor?.name,
             rounded: AVATAR_USER_ROUNDED,
             size: 12,
           };
@@ -324,7 +324,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                   key={user.id as string}
                   avatar={avatar}
                   className="gap-2"
-                  name={user.individualById?.actor?.name || ''}
+                  name={user.individual?.actor?.name || ''}
                 />
               </div>
               {events.map((event) => {

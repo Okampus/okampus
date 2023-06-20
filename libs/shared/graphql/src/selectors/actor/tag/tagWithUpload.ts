@@ -5,6 +5,6 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const tagWithUploadInfo = Selector('Tag')({
   ...tagBaseInfo,
-  fileUpload: fileUploadBaseInfo,
+  image: fileUploadBaseInfo,
 });
 export type TagWithUploadInfo = InputType<GraphQLTypes['Tag'], typeof tagWithUploadInfo>;

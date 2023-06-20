@@ -8,7 +8,7 @@ import type { Pole } from '../pole/pole.entity';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';
 import type { TeamJoinOptions } from './team-join.options';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { Individual } from '../../individual/individual.entity';
 
 @Entity({ customRepository: () => TeamJoinRepository })
@@ -18,8 +18,8 @@ export class TeamJoin extends TenantScopedEntity {
   @Enum({ items: () => ApprovalState, type: EnumType, default: ApprovalState.Pending })
   state = ApprovalState.Pending;
 
-  @ManyToOne({ type: 'UserInfo' })
-  joiner!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  joiner!: User;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   settledBy: Individual | null = null;

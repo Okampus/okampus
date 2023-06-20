@@ -1,5 +1,5 @@
 import { teamBaseInfo } from './teamBase';
-import { teamMemberWithUserInfo } from './teamMember/teamMemberWithUser';
+import { teamMemberWithUser } from './teamMember/teamMemberWithUser';
 import { Selector, TeamMemberSelectColumn } from '../../zeus';
 import { documentBaseInfo } from '../document/documentBase';
 
@@ -10,7 +10,7 @@ export const teamDashboardInfo = Selector('Team')({
   currentFinance: true,
   teamMembersAggregate: [
     { limit: 3 },
-    { aggregate: { count: [{ columns: [TeamMemberSelectColumn.id] }, true] }, nodes: teamMemberWithUserInfo },
+    { aggregate: { count: [{ columns: [TeamMemberSelectColumn.id] }, true] }, nodes: teamMemberWithUser },
   ],
   documents: [{ limit: 3 }, documentBaseInfo],
 });

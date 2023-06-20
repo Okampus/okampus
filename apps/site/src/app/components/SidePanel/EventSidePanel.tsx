@@ -5,7 +5,7 @@ import type { EventDetailsInfo } from '@okampus/shared/graphql';
 
 export type EventSidePanelProps = { event: EventDetailsInfo };
 export function EventSidePanel({ event }: EventSidePanelProps) {
-  const banner = event.fileUpload?.url;
+  const banner = event.banner?.url;
   return (
     <div className="h-full flex flex-col items-center mb-10">
       <div className="w-full relative" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>

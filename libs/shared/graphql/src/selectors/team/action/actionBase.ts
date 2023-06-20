@@ -10,6 +10,6 @@ export const actionBaseInfo = Selector('Action')({
   points: true,
   state: true,
   name: true,
-  individualByValidatedById: individualBaseInfo,
+  settledBy: individualBaseInfo,
 });
 export type ActionBaseInfo = InputType<GraphQLTypes['Action'], typeof actionBaseInfo>;

@@ -49,7 +49,7 @@ export function ApprovalStepManageView() {
 
   const initialEdges =
     data?.eventApprovalStep.flatMap((step) => {
-      return step.eventApprovalSteps.map((nextStep) => ({
+      return step.nextSteps.map((nextStep) => ({
         id: `${step.id}->${nextStep.id}`,
         source: step.id as string,
         target: nextStep.id as string,

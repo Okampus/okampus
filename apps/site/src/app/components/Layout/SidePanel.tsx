@@ -22,7 +22,7 @@ import { DarkGradient, BannerImage, AvatarImage } from '@okampus/ui/atoms';
 
 // import { useLocation } from 'react-router-dom';
 
-// const renderUsers = (memberships: TeamMemberWithUserInfo[]) =>
+// const renderUsers = (memberships: TeamMemberWithUser[]) =>
 //   memberships
 //     .map((teamMember, idx) => (
 //       <li key={idx} className="w-full">
@@ -68,9 +68,9 @@ export function SidePanel() {
   // if (containsPath('/events')) {
   //   // name = 'Événements récents';
   // } else if (containsPath('/me')) {
-  //   avatar = { src: getAvatar(currentUser?.individualById?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
-  //   banner = getBanner(currentUser?.individualById?.actor?.actorImages);
-  //   name = currentUser?.individualById?.actor?.name;
+  //   avatar = { src: getAvatar(currentUser?.individual?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
+  //   banner = getBanner(currentUser?.individual?.actor?.actorImages);
+  //   name = currentUser?.individual?.actor?.name;
   //   sidePanel = <MySidePanel />;
   // } else if (team) {
   //   avatar = { src: getAvatar(team.actor?.actorImages), rounded: AVATAR_TEAM_ROUNDED };
@@ -84,18 +84,18 @@ export function SidePanel() {
   //   sidePanel = <TeamSidePanel team={teamManage} />;
   //   // sidePanel = <TeamManageSidePanel teamManage={teamManage} />;
   // } else if (user) {
-  //   avatar = { src: getAvatar(user.individualById?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
-  //   banner = getBanner(user.individualById?.actor?.actorImages);
-  //   name = user.individualById?.actor?.name;
+  //   avatar = { src: getAvatar(user.individual?.actor?.actorImages), rounded: AVATAR_USER_ROUNDED };
+  //   banner = getBanner(user.individual?.actor?.actorImages);
+  //   name = user.individual?.actor?.name;
   //   sidePanel = <UserSidePanel user={user} />;
   // } else if (project) {
   //   title = 'Projet';
-  //   banner = project.fileUpload?.url;
+  //   banner = project.banner?.url;
   //   name = project.name;
   //   sidePanel = <ProjectSidePanel project={project} />;
   // } else if (event) {
   //   title = 'Événement';
-  //   banner = event.fileUpload?.url;
+  //   banner = event.banner?.url;
   //   name = event?.name;
   //   sidePanel = <EventSidePanel event={event} />;
   // } else if (eventManage) {
@@ -148,7 +148,7 @@ export function SidePanel() {
   //     : selected.subSpace === SubspaceType.User
   //     ? user?.actor
   //     : selected.subSpace === SubspaceType.Me
-  //     ? currentUser?.individualById?.actor
+  //     ? currentUser?.individual?.actor
   //     : null;
 
   // const topbarTitle = () => {
@@ -212,7 +212,7 @@ export function SidePanel() {
   // const sidePanelDetails = () => {
   //   const currentTeam = team ?? teamManage;
   //   if ((selected.subSpace === SubspaceType.Org || selected.subSpace === SubspaceType.Manage) && currentTeam) {
-  //     const isMeMember = currentTeam.teamMembers.some(({ userInfo }) => userInfo.id === currentUser?.id);
+  //     const isMeMember = currentTeam.teamMembers.some(({ user }) => user.id === currentUser?.id);
 
   //     const directors: typeof currentTeam.teamMembers[number][] = [];
   //     const managers: typeof currentTeam.teamMembers[number][] = [];

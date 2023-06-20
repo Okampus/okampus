@@ -1,7 +1,7 @@
 import { Selector } from '../../zeus';
 import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 
-import { teamMemberWithUserInfo } from '../team/teamMember/teamMemberWithUser';
+import { teamMemberWithUser } from '../team/teamMember/teamMemberWithUser';
 import { tagBaseInfo } from '../actor/tag/tagBase';
 import { eventDetailsInfo } from '../event/eventDetails';
 import { entityBase } from '../entityBase';
@@ -15,8 +15,8 @@ export const projectBaseInfo = Selector('Project')({
   slug: true,
   description: true,
   eventsAggregate: [{}, { nodes: eventDetailsInfo, aggregate: { min: { start: true }, max: { end: true } } }],
-  fileUpload: fileUploadBaseInfo,
-  projectSupervisors: [{}, { teamMember: teamMemberWithUserInfo }],
+  banner: fileUploadBaseInfo,
+  projectSupervisors: [{}, { teamMember: teamMemberWithUser }],
   projectTags: [{}, { tag: tagBaseInfo }],
   isPrivate: true,
 });

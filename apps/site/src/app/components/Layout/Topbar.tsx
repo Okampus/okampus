@@ -24,7 +24,7 @@ export function Topbar({ color = 'var(--bg-main)', isSmall, opacity }: TopbarPro
   // const isLast =
   //   window.history.state?.idx === last?.idx || !history.some((route) => route.idx === window.history.state?.idx);
 
-  const currentIndividualId = currentUser?.individualById?.id as string | undefined;
+  const currentIndividualId = currentUser?.individual?.id as string | undefined;
   const novuAppId = import.meta.env.VITE_NOVU_APP_ID;
   return (
     <header className="shrink-0 relative bg-transparent h-[var(--topbar-height)] z-[51] flex items-center justify-between border-b border-color-2">
@@ -83,7 +83,7 @@ export function Topbar({ color = 'var(--bg-main)', isSmall, opacity }: TopbarPro
         <Popover forcePlacement={true} placement="bottom-end" placementOffset={20}>
           <PopoverTrigger>
             <AvatarImage
-              name={currentUser?.individualById?.actor?.name}
+              name={currentUser?.individual?.actor?.name}
               src={avatar}
               size={18}
               rounded={AVATAR_USER_ROUNDED}
@@ -96,13 +96,13 @@ export function Topbar({ color = 'var(--bg-main)', isSmall, opacity }: TopbarPro
                   <div className="flex items-center gap-4 px-8 py-5 bg-0 -m-2">
                     <AvatarImage
                       src={avatar}
-                      name={currentUser?.individualById?.actor?.name}
+                      name={currentUser?.individual?.actor?.name}
                       size={22}
                       rounded={AVATAR_USER_ROUNDED}
                     />
                     <div>
-                      <div className="text-1 text-xl font-semibold">{currentUser?.individualById?.actor?.name}</div>
-                      <div className="text-2">{currentUser?.individualById?.actor?.email}</div>
+                      <div className="text-1 text-xl font-semibold">{currentUser?.individual?.actor?.name}</div>
+                      <div className="text-2">{currentUser?.individual?.actor?.email}</div>
                     </div>
                   </div>
                 </div>

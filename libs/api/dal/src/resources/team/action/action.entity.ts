@@ -6,7 +6,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { ActionOptions } from './action.options';
 import type { Individual } from '../../individual/individual.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { Project } from '../../project/project.entity';
 import type { Team } from '../team.entity';
 
@@ -35,8 +35,8 @@ export class Action extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'UserInfo' })
-  user!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  user!: User;
 
   @ManyToOne({ type: 'EventJoin', nullable: true, default: null })
   eventJoin: EventJoin | null = null;

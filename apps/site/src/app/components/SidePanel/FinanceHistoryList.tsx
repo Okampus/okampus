@@ -15,7 +15,7 @@ export function FinanceHistoryList({ finance }: FinanceHistoryListProps) {
       <div className="flex gap-4">
         <CheckFilledIcon className="w-6 h-6 text-green-500" />
         <div className="text-1">
-          Créé par {finance.individual?.actor?.name} le {new Date(finance.createdAt as string).toLocaleDateString()}
+          Créé par {finance.createdBy?.actor?.name} le {new Date(finance.createdAt as string).toLocaleDateString()}
         </div>
         {/* {data?.financeEdit.map((edit) => (
           <div>{edit.amount}</div>

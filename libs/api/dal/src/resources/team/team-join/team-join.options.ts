@@ -1,5 +1,5 @@
 import type { ApprovalState } from '@okampus/shared/enums';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { FormSubmission } from '../../form-submission/form-submission.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Role } from '../role/role.entity';
@@ -13,7 +13,7 @@ export type TeamJoinOptions = TeamJoinProps &
     state: ApprovalState;
     settledAt?: Date | null;
     formSubmission?: FormSubmission | null;
-    joiner: UserInfo;
+    joiner: User;
     settledBy?: Individual | null;
     team: Team;
     askedRole: Role;

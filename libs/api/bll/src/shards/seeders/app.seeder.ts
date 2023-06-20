@@ -63,7 +63,7 @@ import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Individual, EventApprovalStep, UserInfo, BaseEntity, Actor } from '@okampus/api/dal';
+import type { Individual, EventApprovalStep, User, BaseEntity, Actor } from '@okampus/api/dal';
 import type { UploadsService } from '../../features/uploads/uploads.service.js';
 import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
@@ -272,13 +272,13 @@ export class DatabaseSeeder extends Seeder {
     const password = await hash('root', { secret: DatabaseSeeder.pepper });
 
     const domain = { domain: DatabaseSeeder.targetTenant };
-    const tenant = await em.findOneOrFail(Tenant, domain, { populate: ['team', 'team.actor'] });
+    const tenant = await em.findOneOrFail(Tenant, domain, { populate: ['adminTeam', 'adminTeam.actor'] });
 
     const scopedOptions = { tenant, createdBy: null };
     this.logger.log(`Seeding tenant ${tenant.name}`);
 
-    if (tenant.team) {
-      const address = randomAddress(tenant.team.actor, tenant);
+    if (tenant.adminTeam) {
+      const address = randomAddress(tenant.adminTeam.actor, tenant);
       tenant.campus.add(new Campus({ name: 'Campus de Paris', address, ...scopedOptions }));
     }
 
@@ -478,7 +478,7 @@ export class DatabaseSeeder extends Seeder {
       const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
 
       const membersMap: { [x: string]: TeamMember } = {};
-      const newMember = (user: UserInfo, i: number) =>
+      const newMember = (user: User, i: number) =>
         new TeamMember({
           user,
           startDate: new Date(),
@@ -495,13 +495,13 @@ export class DatabaseSeeder extends Seeder {
       const teamMembers = Object.values(membersMap);
 
       for (const member of teamMembers) {
-        const userInfo = member.user;
-        if (userInfo) {
-          userInfo.shortcuts.add(
+        const user = member.user;
+        if (user) {
+          user.shortcuts.add(
             new Shortcut({
               type: ShortcutType.Team,
               targetActor: team.actor,
-              userInfo,
+              user,
               createdBy: member.user.individual,
               tenant,
             })

@@ -109,7 +109,7 @@ export function FormEditView({ id }: FormEditViewProps) {
                     // insertFormEdit({
                     //   variables: {
                     //     object: {
-                    //       createdById: currentUser?.individualById?.id,
+                    //       createdById: currentUser?.individual?.id,
                     //       tenantId: currentUser?.tenantId,
                     //       formId: id,
                     //       newVersion: fields,

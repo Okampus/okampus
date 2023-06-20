@@ -50,8 +50,8 @@ export class Tenant extends BaseEntity {
   @TransformCollection()
   campus = new Collection<Campus>(this);
 
-  @OneToOne({ type: 'Team', nullable: true, default: null })
-  team: Team | null = null;
+  @OneToOne({ type: 'Team', mappedBy: 'adminTeamTenant', nullable: true, default: null })
+  adminTeam: Team | null = null;
 
   constructor(options: TenantOptions) {
     super();

@@ -8,6 +8,6 @@ export function getBanner(actorImages?: ActorImageBaseInfo[]) {
     .filter((actorImage) => actorImage.type === ActorImageType.Banner)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
 
-  if (banner) return banner.fileUpload.url;
+  if (banner) return banner.image.url;
   return;
 }

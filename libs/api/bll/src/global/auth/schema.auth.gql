@@ -4,10 +4,10 @@ input LoginInput {
 }
 
 type Query {
-  me: UserInfo
+  me: User
 }
 
 type Mutation {
-  login(dto: LoginInput!): UserInfo
+  login(dto: LoginInput!): User
   logout: Boolean!
 }

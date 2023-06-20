@@ -43,14 +43,14 @@ export function PayedByFormStep({ values, setValues }: PayedByFormProps) {
             teamManage?.teamMembers.map((teamMember) => ({
               label: (
                 <UserItem
-                  name={teamMember.userInfo.individualById?.actor?.name || ''}
+                  name={teamMember.user.individual?.actor?.name || ''}
                   avatar={{
-                    src: getAvatar(teamMember.userInfo.individualById?.actor?.actorImages),
+                    src: getAvatar(teamMember.user.individual?.actor?.actorImages),
                     size: 7,
                   }}
                 />
               ),
-              value: teamMember.userInfo.individualById?.actor?.id,
+              value: teamMember.user.individual?.actor?.id,
             })) || []
           }
           value={values.payedById}

@@ -5,15 +5,15 @@ import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, Proper
 
 import type { ClassGroup } from '../class-group.entity';
 import type { Subject } from '../subject/subject.entity';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { ClassGroupTeacherOptions } from './class-group-teacher.options';
 
 @Entity({ customRepository: () => ClassGroupTeacherRepository })
 export class ClassGroupTeacher extends TenantScopedEntity {
   [EntityRepositoryType]!: ClassGroupTeacherRepository;
 
-  @ManyToOne({ type: 'UserInfo' })
-  user!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  user!: User;
 
   @ManyToMany({ type: 'Subject' })
   @TransformCollection()

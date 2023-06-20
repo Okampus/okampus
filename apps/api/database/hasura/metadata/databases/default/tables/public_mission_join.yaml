@@ -11,6 +11,9 @@ object_relationships:
   - name: eventJoin
     using:
       foreign_key_constraint_on: event_join_id
+  - name: joiner
+    using:
+      foreign_key_constraint_on: joiner_id
   - name: mission
     using:
       foreign_key_constraint_on: mission_id
@@ -23,9 +26,6 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: userInfo
-    using:
-      foreign_key_constraint_on: joiner_id
 array_relationships:
   - name: eventJoins
     using:

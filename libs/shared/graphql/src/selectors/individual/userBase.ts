@@ -4,11 +4,11 @@ import { Selector } from '../../zeus';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
-export const userBaseInfo = Selector('UserInfo')({
+export const userBaseInfo = Selector('User')({
   ...entityBase,
   firstName: true,
   lastName: true,
-  individualById: individualBaseInfo,
+  individual: individualBaseInfo,
   tenantId: true,
 });
-export type UserBaseInfo = InputType<GraphQLTypes['UserInfo'], typeof userBaseInfo>;
+export type UserBaseInfo = InputType<GraphQLTypes['User'], typeof userBaseInfo>;

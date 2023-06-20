@@ -62,7 +62,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <div className="cursor-pointer text-1 p-4 bg-0">
       <div className="relative pb-6">
         <div className="flex xl-max:flex-col gap-8">
-          <BannerImage className="xl:h-[16rem] rounded-2xl" src={project.fileUpload?.url} name={project.name} />
+          <BannerImage className="xl:h-[16rem] rounded-2xl" src={project.banner?.url} name={project.name} />
           <div className="flex flex-col gap-1">
             <span className="title">
               <span>{project.name}</span>
@@ -108,7 +108,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   //     )}
   //     <Link to={PROJECT_ROUTE(project.slug)} className="card-link" />
   //     <div className="flex gap-6">
-  //       <Banner className="h-56 !w-fit" aspectRatio={1} src={project.fileUpload?.url} name={project.name} rounded={5} />
+  //       <Banner className="h-56 !w-fit" aspectRatio={1} src={project.banner?.url} name={project.name} rounded={5} />
   //       <div className="flex flex-col justify-between py-1">
   //         <div className="flex flex-col gap-2">
   //           <div className="flex flex-col gap-1">

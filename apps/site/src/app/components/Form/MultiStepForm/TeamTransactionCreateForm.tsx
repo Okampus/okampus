@@ -10,22 +10,22 @@
 //     name: 'payedById',
 //     type: ControlType.Select,
 //     label: 'Payé par',
-//     options: teamManage.teamMembers.map(({ userInfo }) => ({
+//     options: teamManage.teamMembers.map(({ user }) => ({
 //       label: (
 //         <div className="flex items-center gap-2">
 //           <AvatarImage
-//             name={userInfo.individualById?.actor?.name}
+//             name={user.individual?.actor?.name}
 //             size={7}
 //             rounded={AVATAR_USER_ROUNDED}
 //           />
-//           <div>{userInfo.individualById?.actor?.name}</div>
+//           <div>{user.individual?.actor?.name}</div>
 //         </div>
 //         // <LabeledUser
-//         //   name={userInfo.individualById?.actor?.name ??}
+//         //   name={user.individual?.actor?.name ??}
 //         //   // role={teamMemberRoles[0]?.role?.name}
 //         // />
 //       ),
-//       value: userInfo.individualById?.actor?.id as string,
+//       value: user.individual?.actor?.id as string,
 //     })),
 //     isRequired: true,
 //   },
@@ -108,7 +108,7 @@ export function TeamTransactionCreateForm() {
               { item: { label: 'Dépenses générales', value: null } },
               ...projects.map((project) => ({
                 item: { label: project.name, value: project.id as string },
-                prefix: <BannerImage name={project.name} src={project.fileUpload?.url} className="h-14 rounded-lg" />,
+                prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
               })),
             ]}
             onClick={(id) => {
@@ -148,9 +148,7 @@ export function TeamTransactionCreateForm() {
                     { item: { label: 'Dépenses hors événement', value: null } },
                     ...events.map((event) => ({
                       item: { label: event?.name, value: event.id as string },
-                      prefix: (
-                        <BannerImage name={event?.name} src={event.fileUpload?.url} className="h-14 rounded-lg" />
-                      ),
+                      prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
                     })),
                   ]}
                   onClick={(id) => {
@@ -181,9 +179,7 @@ export function TeamTransactionCreateForm() {
                     { item: { label: 'Dépenses hors événement', value: null } },
                     ...events.map((event) => ({
                       item: { label: event?.name, value: event.id as string },
-                      prefix: (
-                        <BannerImage name={event?.name} src={event.fileUpload?.url} className="h-14 rounded-lg" />
-                      ),
+                      prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
                     })),
                   ]}
                   onClick={(id) => {
@@ -225,6 +221,8 @@ export function TeamTransactionCreateForm() {
         if (teamManage) {
           insertFinance({
             variables: {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               object: {
                 name,
                 amount: -amount,

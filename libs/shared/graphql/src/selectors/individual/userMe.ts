@@ -9,14 +9,11 @@ import { entityBase } from '../entityBase';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
-export const userMeInfo = Selector('UserInfo')({
+export const userMeInfo = Selector('User')({
   ...userWithMembershipsInfo,
   teamJoins: [{}, teamJoinBaseInfo],
   shortcuts: [{}, { __typename: true, id: true, createdAt: true, type: true, actor: actorBaseInfo }],
+  individual: { ...individualBaseInfo, following: [{}, { ...entityBase, actor: actorBaseInfo }] },
   tenant: tenantDetailsInfo,
-  individualById: {
-    ...individualBaseInfo,
-    follows: [{}, { ...entityBase, actor: actorBaseInfo }],
-  },
 });
-export type UserMeInfo = InputType<GraphQLTypes['UserInfo'], typeof userMeInfo>;
+export type UserMeInfo = InputType<GraphQLTypes['User'], typeof userMeInfo>;

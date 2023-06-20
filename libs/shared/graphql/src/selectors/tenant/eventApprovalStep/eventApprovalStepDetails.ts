@@ -5,8 +5,8 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const eventApprovalStepDetailsInfo = Selector('EventApprovalStep')({
   ...eventApprovalStepBaseInfo,
-  eventApprovalStep: eventApprovalStepBaseInfo,
-  eventApprovalSteps: [{}, eventApprovalStepBaseInfo],
+  previousStep: eventApprovalStepBaseInfo,
+  nextSteps: [{}, eventApprovalStepBaseInfo],
   eventApprovalStepNotifiees: [{}, { individual: individualBaseInfo }],
   eventApprovalStepValidators: [{}, { individual: individualBaseInfo }],
 });

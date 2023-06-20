@@ -24,6 +24,8 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
   const { showSidePanel, hideSidePanel } = useContext(NavigationContext);
   const { currentUser } = useCurrentUser();
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [createEventJoin] = useMutation(insertEventJoinMutation);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,7 +48,7 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
 
   let amIRegistered = false;
   for (const participant of event.eventJoinsAggregate.nodes) {
-    if (participant.userInfo?.id === currentUser?.id) {
+    if (participant.joiner?.id === currentUser?.id) {
       amIRegistered = true;
       break;
     }
@@ -61,7 +63,7 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
       element: () => (
         <div className="flex flex-col gap-10">
           <div className="lg:mt-[var(--padding-vertical-view)] lg:px-16">
-            <BannerImage src={event.fileUpload?.url} name={event?.name} />
+            <BannerImage src={event.banner?.url} name={event?.name} />
           </div>
           <div className="flex flex-col gap-4 px-content">
             <div className="flex justify-between items-center">

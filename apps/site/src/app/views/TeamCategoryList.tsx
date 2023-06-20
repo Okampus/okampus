@@ -28,7 +28,7 @@ export function TeamCategoryList() {
                 link={CLUB_CATEGORY_ROUTE(category.slug)}
                 key={category.name}
                 name={category.name}
-                image={category.fileUpload?.url}
+                image={category.image?.url}
                 color={isIn(category.color, COLORS) ? COLORS[category.color] : category.color}
               />
             ))

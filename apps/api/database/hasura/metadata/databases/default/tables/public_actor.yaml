@@ -46,13 +46,6 @@ array_relationships:
         table:
           name: bank_info
           schema: public
-  - name: botInfos
-    using:
-      foreign_key_constraint_on:
-        column: owner_id
-        table:
-          name: bot_info
-          schema: public
   - name: favorites
     using:
       foreign_key_constraint_on:
@@ -60,19 +53,26 @@ array_relationships:
         table:
           name: favorite
           schema: public
-  - name: finances
-    using:
-      foreign_key_constraint_on:
-        column: payed_by_id
-        table:
-          name: finance
-          schema: public
   - name: follows
     using:
       foreign_key_constraint_on:
         column: followed_actor_id
         table:
           name: follow
+          schema: public
+  - name: ownedBots
+    using:
+      foreign_key_constraint_on:
+        column: owner_id
+        table:
+          name: bot
+          schema: public
+  - name: payedFinances
+    using:
+      foreign_key_constraint_on:
+        column: payed_by_id
+        table:
+          name: finance
           schema: public
   - name: reports
     using:

@@ -9,7 +9,6 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const teamBaseInfo = Selector('Team')({
   ...entityBase,
-  tenantId: true,
   type: true,
   actor: actorBaseInfo,
   directorsCategoryName: true,
@@ -18,5 +17,6 @@ export const teamBaseInfo = Selector('Team')({
   form: formBaseInfo,
   teamMembersAggregate: [{}, { aggregate: { count: [{}, true] } }],
   poles: [{}, poleBaseInfo],
+  tenantId: true,
 });
 export type TeamBaseInfo = InputType<GraphQLTypes['Team'], typeof teamBaseInfo>;

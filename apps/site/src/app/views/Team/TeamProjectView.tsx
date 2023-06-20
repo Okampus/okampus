@@ -42,7 +42,7 @@ export function TeamProjectViewWrapper({ team }: { team: TeamBaseInfo }) {
   //     <GradientDark>
   //       <Banner
   //         aspectRatio={BANNER_ASPECT_RATIO}
-  //         src={project.fileUpload?.url}
+  //         src={project.banner?.url}
   //         name={project.name}
   //         className="absolute inset-0"
   //       />

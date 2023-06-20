@@ -5,7 +5,7 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: eventApprovalStep
+  - name: previousStep
     using:
       foreign_key_constraint_on: previous_step_id
   - name: tenant
@@ -26,13 +26,6 @@ array_relationships:
         table:
           name: event_approval_step_validators
           schema: public
-  - name: eventApprovalSteps
-    using:
-      foreign_key_constraint_on:
-        column: previous_step_id
-        table:
-          name: event_approval_step
-          schema: public
   - name: eventApprovals
     using:
       foreign_key_constraint_on:
@@ -40,10 +33,17 @@ array_relationships:
         table:
           name: event_approval
           schema: public
-  - name: events
+  - name: lastStepEvents
     using:
       foreign_key_constraint_on:
         column: last_event_approval_step_id
         table:
           name: event
+          schema: public
+  - name: nextSteps
+    using:
+      foreign_key_constraint_on:
+        column: previous_step_id
+        table:
+          name: event_approval_step
           schema: public

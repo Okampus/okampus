@@ -24,7 +24,7 @@ import { Form } from './form/form.entity';
 import { Individual } from './individual/individual.entity';
 import { Session } from './individual/session/session.entity';
 import { Shortcut } from './individual/shortcut/shortcut.entity';
-import { UserInfo } from './individual/user-info/user-info.entity';
+import { User } from './individual/user/user.entity';
 import { Project } from './project/project.entity';
 import { Action } from './team/action/action.entity';
 import { Finance } from './team/finance/finance.entity';
@@ -37,7 +37,7 @@ import { EventApprovalStep } from './tenant/event-approval-step/event-approval-s
 import { EventApproval } from './tenant/event-approval/event-approval.entity';
 import { Tenant } from './tenant/tenant.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
-import { BotInfo } from './individual/bot-info/bot-info.entity';
+import { Bot } from './individual/bot/bot.entity';
 import { Pole } from './team/pole/pole.entity';
 import { Address } from './actor/address/address.entity';
 import { BankInfo } from './actor/bank-info/bank-info.entity';
@@ -58,8 +58,8 @@ export const allEntities = [
   Log,
 
   Individual,
-  BotInfo,
-  UserInfo,
+  Bot,
+  User,
 
   Tenant,
   Campus,

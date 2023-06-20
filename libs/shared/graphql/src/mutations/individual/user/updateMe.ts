@@ -5,8 +5,5 @@ import { id } from '../../id';
 import type { ValueTypes } from '../../../zeus';
 
 export const updateMe = typedGql('mutation')({
-  updateUserInfoByPk: [
-    { pkColumns: { id }, _set: $('update', 'UserInfoSetInput!') as ValueTypes['UserInfoSetInput'] },
-    userMeInfo,
-  ],
+  updateUserByPk: [{ pkColumns: { id }, _set: $('update', 'UserSetInput!') as ValueTypes['UserSetInput'] }, userMeInfo],
 });

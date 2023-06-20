@@ -62,7 +62,7 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
 
         const avatar = { src: getAvatar(value.actor.actorImages), size: 7 };
 
-        const userId = value.actor.individual?.userInfo?.id;
+        const userId = value.actor.individual?.user?.id;
         if (userId) {
           return (
             <div className="flex flex-col gap-2">

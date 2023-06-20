@@ -6,7 +6,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { MissionJoinOptions } from './mission-join.options';
 import type { Individual } from '../../individual/individual.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { UserInfo } from '../../individual/user-info/user-info.entity';
+import type { User } from '../../individual/user/user.entity';
 import type { Project } from '../../project/project.entity';
 import type { Mission } from '../mission/mission.entity';
 
@@ -38,8 +38,8 @@ export class MissionJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'Mission' })
   mission!: Mission;
 
-  @ManyToOne({ type: 'UserInfo' })
-  joiner!: UserInfo;
+  @ManyToOne({ type: 'User' })
+  joiner!: User;
 
   @OneToOne({ type: 'EventJoin', inversedBy: 'missionJoin', nullable: true, default: null })
   eventJoin: EventJoin | null = null;

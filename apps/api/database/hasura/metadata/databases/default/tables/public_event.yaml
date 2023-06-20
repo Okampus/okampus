@@ -5,6 +5,9 @@ object_relationships:
   - name: address
     using:
       foreign_key_constraint_on: address_id
+  - name: banner
+    using:
+      foreign_key_constraint_on: banner_id
   - name: content
     using:
       foreign_key_constraint_on: content_id
@@ -14,9 +17,6 @@ object_relationships:
   - name: eventApprovalStep
     using:
       foreign_key_constraint_on: last_event_approval_step_id
-  - name: fileUpload
-    using:
-      foreign_key_constraint_on: banner_id
   - name: form
     using:
       foreign_key_constraint_on: join_form_id

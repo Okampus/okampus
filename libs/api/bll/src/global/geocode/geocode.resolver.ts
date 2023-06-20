@@ -13,7 +13,7 @@ export class GeocodeResolver {
     console.log('query', query);
     return await this.geocodeService.searchLocation(query);
     // if (!requester.user) throw new BadRequestException('No user found');
-    // const data = await this.hasuraService.findByPk('userInfoByPk', getSelectionSet(info), { id: requester.user.id });
-    // return data.userInfoByPk;
+    // const data = await this.hasuraService.findByPk('userByPk', getSelectionSet(info), { id: requester.user.id });
+    // return data.userByPk;
   }
 }

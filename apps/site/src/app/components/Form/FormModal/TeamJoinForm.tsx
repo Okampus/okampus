@@ -46,7 +46,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
                 // @ts-ignore
                 object: {
                   teamId: team.id,
-                  createdById: currentUser?.individualById?.id,
+                  createdById: currentUser?.individual?.id,
                   tenantId: team.tenantId,
                   askedRoleId: role,
                   joinerId: currentUser?.id,
@@ -55,7 +55,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
                     data: {
                       formId: team.form?.id,
                       tenantId: team.tenantId,
-                      createdById: currentUser?.individualById?.id,
+                      createdById: currentUser?.individual?.id,
                       submission: Object.entries(insertTeamJoin).map(([key, value]) => ({ slug: key, value })),
                     },
                   },
@@ -64,7 +64,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
               onCompleted: ({ insertTeamJoinOne: data }) => {
                 if (!currentUser) return;
                 mergeCache(
-                  { __typename: 'UserInfo', id: currentUser.id },
+                  { __typename: 'User', id: currentUser.id },
                   { fieldName: 'teamJoins', fragmentOn: 'TeamJoin', data }
                 );
                 setNotification({ type: ToastType.Success, message: `Demande d'adhésion envoyée!` });

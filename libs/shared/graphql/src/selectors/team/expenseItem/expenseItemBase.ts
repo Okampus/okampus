@@ -13,6 +13,6 @@ export const expenseItemBaseInfo = Selector('ExpenseItem')({
   amount: true,
   name: true,
   category: true,
-  fileUpload: fileUploadBaseInfo,
+  expenseItemAttachments: [{}, { fileUpload: fileUploadBaseInfo }],
 });
 export type ActorFinanceBaseInfo = InputType<GraphQLTypes['ExpenseItem'], typeof expenseItemBaseInfo>;

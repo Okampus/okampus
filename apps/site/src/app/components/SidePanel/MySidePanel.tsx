@@ -23,12 +23,12 @@ export function MySidePanel() {
       name: 'status',
       type: ControlType.Text,
       label: 'Statut',
-      default: currentUser?.individualById?.actor?.status,
+      default: currentUser?.individual?.actor?.status,
       placeholder: 'En ligne',
     },
   ] as FormSchema;
 
-  if (!currentUser || !currentUser?.individualById?.actor) return null;
+  if (!currentUser || !currentUser?.individual?.actor) return null;
 
   return (
     <div className="grid gap-4 my-2 grid-cols-2 w-full">
@@ -37,7 +37,7 @@ export function MySidePanel() {
         action={{
           label: 'Voir mon profil public',
           type: ActionType.Action,
-          linkOrActionOrMenu: `${USER_ROUTE(currentUser.individualById.actor.slug)}`,
+          linkOrActionOrMenu: `${USER_ROUTE(currentUser.individual.actor.slug)}`,
         }}
       />
       <ActionButton

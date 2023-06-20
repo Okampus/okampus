@@ -10,13 +10,13 @@ import { TeamType } from '@okampus/shared/enums';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
-export const userWithMembershipsInfo = Selector('UserInfo')({
+export const userWithMembershipsInfo = Selector('User')({
   ...userBaseInfo,
   teamMembers: [
     { where: { endDate: { _isNull: true }, team: { type: { _eq: TeamType.Association } } } },
     teamMemberBaseInfo,
   ],
-  eventJoins: [{}, { ...entityBase, state: true, presence: true, action: actionBaseInfo, event: eventBaseInfo }],
+  eventJoins: [{}, { ...entityBase, state: true, presence: true, actions: [{}, actionBaseInfo], event: eventBaseInfo }],
   actions: [{}, { ...actionBaseInfo, project: projectBaseInfo }],
 });
-export type UserWithMembershipsInfo = InputType<GraphQLTypes['UserInfo'], typeof userWithMembershipsInfo>;
+export type UserWithMembershipsInfo = InputType<GraphQLTypes['User'], typeof userWithMembershipsInfo>;

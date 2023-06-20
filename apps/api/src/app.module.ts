@@ -27,7 +27,7 @@ import {
   FinancesModule,
   ProjectsModule,
   IndividualsModule,
-  UserInfosModule,
+  // UsersModule,
   EventJoinsModule,
   FormsModule,
   ActionsModule,
@@ -191,7 +191,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // // Custom modules
     // AnnouncementsModule,
     IndividualsModule,
-    UserInfosModule,
+    // UsersModule,
     // BadgesModule,
     // BlogsModule,
     // CafeteriaModule,
@@ -279,12 +279,12 @@ export class AppModule implements NestModule, OnModuleInit {
         tenant,
       });
 
-      tenant.team = administrationTeam;
+      tenant.adminTeam = administrationTeam;
 
       const anon = new Individual({
         slug: ANON_ACCOUNT_SLUG,
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
-        userInfo: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
+        user: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
         email: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         createdBy: null,
@@ -294,7 +294,7 @@ export class AppModule implements NestModule, OnModuleInit {
       admin = new Individual({
         slug: ADMIN_ACCOUNT_SLUG,
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
-        userInfo: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
+        user: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
         scopeRole: ScopeRole.Admin,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,

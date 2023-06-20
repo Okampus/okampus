@@ -14,8 +14,8 @@ export type EventApprovalStepNodeProps = {
 function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectable }: EventApprovalStepNodeProps) {
   const { t } = useTranslation();
 
-  const nextStepsCount = eventApprovalStep.eventApprovalSteps.length;
-  const nextHandles = eventApprovalStep.eventApprovalSteps.map((nextStep, i) => (
+  const nextStepsCount = eventApprovalStep.nextSteps.length;
+  const nextHandles = eventApprovalStep.nextSteps.map((nextStep, i) => (
     <Handle
       key={nextStep.id as string}
       id={nextStep.id as string}
@@ -35,7 +35,7 @@ function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectab
 
   return (
     <>
-      {eventApprovalStep.eventApprovalStep && (
+      {eventApprovalStep.previousStep && (
         <Handle
           type="target"
           position={Position.Top}
@@ -52,7 +52,7 @@ function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectab
             {t('validator', { count: validatorsCount })} • {t('notifiee', { count: notifieesCount })}
           </div>
         </div>
-        {eventApprovalStep.eventApprovalSteps.length === 0 && (
+        {eventApprovalStep.nextSteps.length === 0 && (
           <div className="rounded-full border flex items-center justify-center w-10 h-10 bg-0 z-20">
             <PlusFilledIcon className="h-full w-full text-0 p-1.5" />
           </div>

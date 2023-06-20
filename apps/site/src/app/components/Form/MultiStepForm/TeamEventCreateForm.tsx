@@ -45,7 +45,7 @@ export function TeamEventCreateForm() {
             <ChoiceList
               items={projects.map((project) => ({
                 item: { label: project.name, value: project.id as string },
-                prefix: <BannerImage name={project.name} src={project.fileUpload?.url} className="h-14 rounded-lg" />,
+                prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
               }))}
               onClick={(id) => {
                 const project = projects.find((project) => project.id === id);

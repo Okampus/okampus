@@ -29,7 +29,7 @@ export function EventValidationList() {
             _or: [
               {
                 eventApprovalStep: {
-                  eventApprovalStepValidators: { individual: { userInfo: { id: { _eq: id } } } },
+                  eventApprovalStepValidators: { individual: { user: { id: { _eq: id } } } },
                 },
               },
               {
@@ -42,7 +42,7 @@ export function EventValidationList() {
         : selectedTab === PENDING
         ? {
             eventApprovalStep: {
-              eventApprovalStepValidators: { _not: { individual: { userInfo: { id: { _eq: id } } } } },
+              eventApprovalStepValidators: { _not: { individual: { user: { id: { _eq: id } } } } },
             },
             state: { _eq: EventState.Submitted },
             end: { _gte: now },
