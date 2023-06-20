@@ -20,7 +20,7 @@ import { TransformCollection } from '@okampus/api/shards';
 import { EventState } from '@okampus/shared/enums';
 
 import { toSlug } from '@okampus/shared/utils';
-import type { ActorAddress } from '../actor/actor-address/actor-address.entity';
+import type { Address } from '../actor/address/address.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
 import type { EventOptions } from './event.options';
@@ -91,8 +91,8 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'boolean', default: false })
   isTemplate = false;
 
-  @ManyToOne({ type: 'ActorAddress', nullable: true, default: null })
-  address: ActorAddress | null = null;
+  @ManyToOne({ type: 'Address', nullable: true, default: null })
+  address: Address | null = null;
 
   @OneToOne({ type: 'Content', onDelete: 'CASCADE' })
   content!: Content; // Description

@@ -2,7 +2,7 @@ table:
   name: expense
   schema: public
 object_relationships:
-  - name: actorBankInfo
+  - name: bankInfo
     using:
       foreign_key_constraint_on: bank_info_id
   - name: fileUpload

@@ -7,8 +7,8 @@ export enum EntityName {
   Campus = 'Campus',
 
   Actor = 'Actor',
-  ActorBankInfo = 'ActorBankInfo',
-  ActorAddress = 'ActorAddress',
+  BankInfo = 'BankInfo',
+  Address = 'Address',
   ActorImage = 'ActorImage',
   LegalUnit = 'LegalUnit',
   Social = 'Social',

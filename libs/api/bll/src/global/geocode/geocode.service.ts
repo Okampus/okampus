@@ -39,7 +39,7 @@ export class GeocodeService {
     });
   }
 
-  // public async createAddressFromId(id: string): Promise<ActorAddress> {
+  // public async createAddressFromId(id: string): Promise<Address> {
   //   const url = `/search/searchbox/v1/retrieve/${encodeURIComponent(id)}`;
   //   const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url);
   // }

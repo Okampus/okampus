@@ -3,7 +3,7 @@ import { CampusRepository } from './campus.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, OneToOne, Property } from '@mikro-orm/core';
 
-import type { ActorAddress } from '../../actor/actor-address/actor-address.entity';
+import type { Address } from '../../actor/address/address.entity';
 import type { CampusOptions } from './campus.options';
 
 @Entity({ customRepository: () => CampusRepository })
@@ -13,8 +13,8 @@ export class Campus extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @OneToOne({ type: 'ActorAddress', mappedBy: 'campus' })
-  address!: ActorAddress;
+  @OneToOne({ type: 'Address', mappedBy: 'campus' })
+  address!: Address;
 
   // TODO: add campus pictures, etc.
 

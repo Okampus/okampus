@@ -18,20 +18,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_id
 array_relationships:
-  - name: actorAddresses
-    using:
-      foreign_key_constraint_on:
-        column: actor_id
-        table:
-          name: actor_address
-          schema: public
-  - name: actorBankInfos
-    using:
-      foreign_key_constraint_on:
-        column: actor_id
-        table:
-          name: actor_bank_info
-          schema: public
   - name: actorImages
     using:
       foreign_key_constraint_on:
@@ -45,6 +31,20 @@ array_relationships:
         column: actor_id
         table:
           name: actor_tags
+          schema: public
+  - name: addresses
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: address
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: bank_info
           schema: public
   - name: botInfos
     using:

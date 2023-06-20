@@ -39,8 +39,8 @@ import { Tenant } from './tenant/tenant.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
 import { BotInfo } from './individual/bot-info/bot-info.entity';
 import { Pole } from './team/pole/pole.entity';
-import { ActorAddress } from './actor/actor-address/actor-address.entity';
-import { ActorBankInfo } from './actor/actor-bank-info/actor-bank-info.entity';
+import { Address } from './actor/address/address.entity';
+import { BankInfo } from './actor/bank-info/bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
 import { ExpenseItem } from './team/expense-item/expense-item.entity';
 import { Campus } from './tenant/campus/campus.entity';
@@ -65,8 +65,8 @@ export const allEntities = [
   Campus,
 
   Actor,
-  ActorBankInfo,
-  ActorAddress,
+  BankInfo,
+  Address,
   ActorImage,
   LegalUnit,
   Social,

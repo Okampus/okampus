@@ -172,7 +172,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
         //       object: {
         //         contentMaster: { data: { name, slug: toSlug(name) } },
         //         teamEvents: { data: [{ teamId: teamManage?.id }] },
-        //         locationId: tenant?.campuses[0]?.actorAddress?.id,
+        //         locationId: tenant?.campuses[0]?.address?.id,
         //         projectId: project?.id,
         //         supervisorId: currentUser?.id,
         //         start,

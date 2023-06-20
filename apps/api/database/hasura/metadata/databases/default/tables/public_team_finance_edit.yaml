@@ -5,7 +5,7 @@ object_relationships:
   - name: actor
     using:
       foreign_key_constraint_on: added_payed_by_id
-  - name: actorAddress
+  - name: address
     using:
       foreign_key_constraint_on: added_address_id
   - name: event

@@ -17,7 +17,7 @@ import { toSlug } from '@okampus/shared/utils';
 
 import { nanoid } from 'nanoid';
 
-import type { ActorBankInfo } from './actor-bank-info/actor-bank-info.entity';
+import type { BankInfo } from './bank-info/bank-info.entity';
 import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
 import type { Report } from '../content/report/report.entity';
@@ -67,9 +67,9 @@ export class Actor extends TenantScopedEntity {
   @Unique()
   ical = nanoid(26);
 
-  @OneToMany({ type: 'ActorBankInfo', mappedBy: 'actor' })
+  @OneToMany({ type: 'BankInfo', mappedBy: 'actor' })
   @TransformCollection()
-  actorBankInfos = new Collection<ActorBankInfo>(this);
+  bankInfos = new Collection<BankInfo>(this);
 
   @OneToMany({ type: 'ActorImage', mappedBy: 'actor' })
   @TransformCollection()

@@ -1,8 +1,8 @@
 import type { CampusProps } from '@okampus/shared/dtos';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { ActorAddress } from '../../actor/actor-address/actor-address.entity';
+import type { Address } from '../../actor/address/address.entity';
 
 export type CampusOptions = CampusProps &
   TenantScopedOptions & {
-    address: ActorAddress;
+    address: Address;
   };

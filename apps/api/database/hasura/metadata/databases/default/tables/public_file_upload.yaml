@@ -2,19 +2,19 @@ table:
   name: file_upload
   schema: public
 object_relationships:
-  - name: actorAddress
-    using:
-      foreign_key_constraint_on:
-        column: image_id
-        table:
-          name: actor_address
-          schema: public
   - name: actorImage
     using:
       foreign_key_constraint_on:
         column: image_id
         table:
           name: actor_image
+          schema: public
+  - name: address
+    using:
+      foreign_key_constraint_on:
+        column: image_id
+        table:
+          name: address
           schema: public
   - name: document
     using:

@@ -29,20 +29,6 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: actorAddresses
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: actor_address
-          schema: public
-  - name: actorBankInfos
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: actor_bank_info
-          schema: public
   - name: actorImages
     using:
       foreign_key_constraint_on:
@@ -56,6 +42,20 @@ array_relationships:
         column: created_by_id
         table:
           name: actor
+          schema: public
+  - name: addresses
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: address
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: bank_info
           schema: public
   - name: botInfos
     using:

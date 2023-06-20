@@ -1,7 +1,7 @@
 import { Selector } from '../../zeus';
 import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 import { entityBase } from '../entityBase';
-import { actorAddressBaseInfo } from '../actor/actorAddress/actorAddressBase';
+import { addressBaseInfo } from '../actor/address/addressBase';
 import { teamBaseInfo } from '../team/teamBase';
 import { projectMinimalInfo } from '../project/projectMinimal';
 
@@ -15,7 +15,7 @@ export const eventBaseInfo = Selector('Event')({
   name: true,
   slug: true,
   content: contentBaseInfo,
-  actorAddress: actorAddressBaseInfo,
+  address: addressBaseInfo,
   state: true,
   price: true,
   pointsPresence: true,

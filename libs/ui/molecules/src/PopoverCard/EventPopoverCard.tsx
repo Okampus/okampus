@@ -23,7 +23,7 @@ export function EventPopoverCard({ event }: EventPopoverCardProps) {
       </div>
       <div className="flex gap-3 items-start">
         <LocationOutlinedIcon className="w-5 h-5 text-3 shrink-0" />
-        <TextAddress address={event.actorAddress} />
+        <TextAddress address={event.address} />
       </div>
       <div className="line-clamp-4">{event?.content?.text}</div>
       <ActionButton

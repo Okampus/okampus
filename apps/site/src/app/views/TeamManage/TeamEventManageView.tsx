@@ -142,7 +142,7 @@ export function TeamEventManageView() {
             //           state: EventState.Submitted,
             //           contentMaster: { data: { name, slug: toSlug(name ?? '') } },
             //           teamEvents: { data: [{ teamId: teamManage?.id }] },
-            //           addressId: tenant?.campuses[0]?.actorAddress?.id,
+            //           addressId: tenant?.campuses[0]?.address?.id,
             //           projectId: project?.id,
             //           supervisorId: currentUser?.id,
             //           start,

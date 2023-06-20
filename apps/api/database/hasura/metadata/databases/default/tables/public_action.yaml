@@ -23,11 +23,3 @@ object_relationships:
   - name: userInfo
     using:
       foreign_key_constraint_on: user_id
-array_relationships:
-  - name: eventJoins
-    using:
-      foreign_key_constraint_on:
-        column: action_id
-        table:
-          name: event_join
-          schema: public

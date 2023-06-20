@@ -51,7 +51,7 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
       label: 'Destinataire',
       align: Align.Left,
       render: (value: FinanceBaseInfo) => {
-        return value.actorAddress && <TextAddress className="text-left" address={value.actorAddress} />;
+        return value.address && <TextAddress className="text-left" address={value.address} />;
       },
     },
     {

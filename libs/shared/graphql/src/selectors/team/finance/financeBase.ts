@@ -2,7 +2,7 @@ import { Selector } from '../../../zeus';
 import { projectBaseInfo } from '../../project/projectBase';
 import { entityBase } from '../../entityBase';
 import { eventBaseInfo } from '../../event/eventBase';
-import { actorAddressBaseInfo } from '../../actor/actorAddress/actorAddressBase';
+import { addressBaseInfo } from '../../actor/address/addressBase';
 import { actorBaseInfo } from '../../actor/actorBase';
 import { fileUploadBaseInfo } from '../../fileUpload/fileUploadBase';
 import { individualBaseInfo } from '../../individual/individualBase';
@@ -12,7 +12,7 @@ export const financeBaseInfo = Selector('Finance')({
   ...entityBase,
   payedAt: true,
   actor: actorBaseInfo,
-  actorAddress: actorAddressBaseInfo,
+  address: addressBaseInfo,
   financeAttachments: [{}, { fileUpload: fileUploadBaseInfo }],
   amount: true,
   name: true,

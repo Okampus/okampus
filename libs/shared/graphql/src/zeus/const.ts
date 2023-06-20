@@ -323,25 +323,25 @@ export const AllTypesProps: Record<string, any> = {
     userId: 'OrderBy',
   },
   Actor: {
-    actorAddresses: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addresses: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressesAggregate: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addressesAggregate: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorBankInfos: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfos: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfosAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfosAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
     actorImages: {
       distinctOn: 'ActorImageSelectColumn',
@@ -434,16 +434,16 @@ export const AllTypesProps: Record<string, any> = {
       where: 'SocialBoolExp',
     },
   },
-  ActorAddress: {
-    actorBankInfos: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+  Address: {
+    bankInfos: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfosAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfosAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
     events: {
       distinctOn: 'EventSelectColumn',
@@ -476,49 +476,49 @@ export const AllTypesProps: Record<string, any> = {
       where: 'FinanceBoolExp',
     },
   },
-  ActorAddressAggregateBoolExp: {
-    bool_and: 'actorAddressAggregateBoolExpBool_and',
-    bool_or: 'actorAddressAggregateBoolExpBool_or',
-    count: 'actorAddressAggregateBoolExpCount',
+  AddressAggregateBoolExp: {
+    bool_and: 'addressAggregateBoolExpBool_and',
+    bool_or: 'addressAggregateBoolExpBool_or',
+    count: 'addressAggregateBoolExpCount',
   },
-  actorAddressAggregateBoolExpBool_and: {
-    arguments: 'ActorAddressSelectColumnActorAddressAggregateBoolExpBool_andArgumentsColumns',
-    filter: 'ActorAddressBoolExp',
+  addressAggregateBoolExpBool_and: {
+    arguments: 'AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns',
+    filter: 'AddressBoolExp',
     predicate: 'BooleanComparisonExp',
   },
-  actorAddressAggregateBoolExpBool_or: {
-    arguments: 'ActorAddressSelectColumnActorAddressAggregateBoolExpBool_orArgumentsColumns',
-    filter: 'ActorAddressBoolExp',
+  addressAggregateBoolExpBool_or: {
+    arguments: 'AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns',
+    filter: 'AddressBoolExp',
     predicate: 'BooleanComparisonExp',
   },
-  actorAddressAggregateBoolExpCount: {
-    arguments: 'ActorAddressSelectColumn',
-    filter: 'ActorAddressBoolExp',
+  addressAggregateBoolExpCount: {
+    arguments: 'AddressSelectColumn',
+    filter: 'AddressBoolExp',
     predicate: 'IntComparisonExp',
   },
-  ActorAddressAggregateFields: {
+  AddressAggregateFields: {
     count: {
-      columns: 'ActorAddressSelectColumn',
+      columns: 'AddressSelectColumn',
     },
   },
-  ActorAddressAggregateOrderBy: {
-    avg: 'ActorAddressAvgOrderBy',
+  AddressAggregateOrderBy: {
+    avg: 'AddressAvgOrderBy',
     count: 'OrderBy',
-    max: 'ActorAddressMaxOrderBy',
-    min: 'ActorAddressMinOrderBy',
-    stddev: 'ActorAddressStddevOrderBy',
-    stddevPop: 'ActorAddressStddevPopOrderBy',
-    stddevSamp: 'ActorAddressStddevSampOrderBy',
-    sum: 'ActorAddressSumOrderBy',
-    varPop: 'ActorAddressVarPopOrderBy',
-    varSamp: 'ActorAddressVarSampOrderBy',
-    variance: 'ActorAddressVarianceOrderBy',
+    max: 'AddressMaxOrderBy',
+    min: 'AddressMinOrderBy',
+    stddev: 'AddressStddevOrderBy',
+    stddevPop: 'AddressStddevPopOrderBy',
+    stddevSamp: 'AddressStddevSampOrderBy',
+    sum: 'AddressSumOrderBy',
+    varPop: 'AddressVarPopOrderBy',
+    varSamp: 'AddressVarSampOrderBy',
+    variance: 'AddressVarianceOrderBy',
   },
-  ActorAddressArrRelInsertInput: {
-    data: 'ActorAddressInsertInput',
-    onConflict: 'ActorAddressOnConflict',
+  AddressArrRelInsertInput: {
+    data: 'AddressInsertInput',
+    onConflict: 'AddressOnConflict',
   },
-  ActorAddressAvgOrderBy: {
+  AddressAvgOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -528,13 +528,13 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressBoolExp: {
-    _and: 'ActorAddressBoolExp',
-    _not: 'ActorAddressBoolExp',
-    _or: 'ActorAddressBoolExp',
+  AddressBoolExp: {
+    _and: 'AddressBoolExp',
+    _not: 'AddressBoolExp',
+    _or: 'AddressBoolExp',
     actor: 'ActorBoolExp',
-    actorBankInfos: 'ActorBankInfoBoolExp',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateBoolExp',
+    bankInfos: 'BankInfoBoolExp',
+    bankInfosAggregate: 'BankInfoAggregateBoolExp',
     actorId: 'BigintComparisonExp',
     campus: 'CampusBoolExp',
     campusId: 'BigintComparisonExp',
@@ -564,8 +564,8 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'BigintComparisonExp',
     zip: 'StringComparisonExp',
   },
-  ActorAddressConstraint: 'enum' as const,
-  ActorAddressIncInput: {
+  AddressConstraint: 'enum' as const,
+  AddressIncInput: {
     actorId: 'bigint',
     campusId: 'bigint',
     createdById: 'bigint',
@@ -573,9 +573,9 @@ export const AllTypesProps: Record<string, any> = {
     imageId: 'bigint',
     tenantId: 'bigint',
   },
-  ActorAddressInsertInput: {
+  AddressInsertInput: {
     actor: 'ActorObjRelInsertInput',
-    actorBankInfos: 'ActorBankInfoArrRelInsertInput',
+    bankInfos: 'BankInfoArrRelInsertInput',
     actorId: 'bigint',
     campus: 'CampusObjRelInsertInput',
     campusId: 'bigint',
@@ -593,7 +593,7 @@ export const AllTypesProps: Record<string, any> = {
     tenant: 'TenantObjRelInsertInput',
     tenantId: 'bigint',
   },
-  ActorAddressMaxOrderBy: {
+  AddressMaxOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     city: 'OrderBy',
@@ -612,7 +612,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'OrderBy',
     zip: 'OrderBy',
   },
-  ActorAddressMinOrderBy: {
+  AddressMinOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     city: 'OrderBy',
@@ -631,18 +631,18 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'OrderBy',
     zip: 'OrderBy',
   },
-  ActorAddressObjRelInsertInput: {
-    data: 'ActorAddressInsertInput',
-    onConflict: 'ActorAddressOnConflict',
+  AddressObjRelInsertInput: {
+    data: 'AddressInsertInput',
+    onConflict: 'AddressOnConflict',
   },
-  ActorAddressOnConflict: {
-    constraint: 'ActorAddressConstraint',
-    updateColumns: 'ActorAddressUpdateColumn',
-    where: 'ActorAddressBoolExp',
+  AddressOnConflict: {
+    constraint: 'AddressConstraint',
+    updateColumns: 'AddressUpdateColumn',
+    where: 'AddressBoolExp',
   },
-  ActorAddressOrderBy: {
+  AddressOrderBy: {
     actor: 'ActorOrderBy',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateOrderBy',
+    bankInfosAggregate: 'BankInfoAggregateOrderBy',
     actorId: 'OrderBy',
     campus: 'CampusOrderBy',
     campusId: 'OrderBy',
@@ -669,13 +669,13 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'OrderBy',
     zip: 'OrderBy',
   },
-  ActorAddressPkColumnsInput: {
+  AddressPkColumnsInput: {
     id: 'bigint',
   },
-  ActorAddressSelectColumn: 'enum' as const,
-  ActorAddressSelectColumnActorAddressAggregateBoolExpBool_andArgumentsColumns: 'enum' as const,
-  ActorAddressSelectColumnActorAddressAggregateBoolExpBool_orArgumentsColumns: 'enum' as const,
-  ActorAddressSetInput: {
+  AddressSelectColumn: 'enum' as const,
+  AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns: 'enum' as const,
+  AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns: 'enum' as const,
+  AddressSetInput: {
     actorId: 'bigint',
     campusId: 'bigint',
     createdAt: 'timestamptz',
@@ -686,7 +686,7 @@ export const AllTypesProps: Record<string, any> = {
     imageId: 'bigint',
     tenantId: 'bigint',
   },
-  ActorAddressStddevOrderBy: {
+  AddressStddevOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -696,7 +696,7 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressStddevPopOrderBy: {
+  AddressStddevPopOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -706,7 +706,7 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressStddevSampOrderBy: {
+  AddressStddevSampOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -716,11 +716,11 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressStreamCursorInput: {
-    initialValue: 'ActorAddressStreamCursorValueInput',
+  AddressStreamCursorInput: {
+    initialValue: 'AddressStreamCursorValueInput',
     ordering: 'CursorOrdering',
   },
-  ActorAddressStreamCursorValueInput: {
+  AddressStreamCursorValueInput: {
     actorId: 'bigint',
     campusId: 'bigint',
     createdAt: 'timestamptz',
@@ -731,7 +731,7 @@ export const AllTypesProps: Record<string, any> = {
     imageId: 'bigint',
     tenantId: 'bigint',
   },
-  ActorAddressSumOrderBy: {
+  AddressSumOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -741,13 +741,13 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressUpdateColumn: 'enum' as const,
-  ActorAddressUpdates: {
-    _inc: 'ActorAddressIncInput',
-    _set: 'ActorAddressSetInput',
-    where: 'ActorAddressBoolExp',
+  AddressUpdateColumn: 'enum' as const,
+  AddressUpdates: {
+    _inc: 'AddressIncInput',
+    _set: 'AddressSetInput',
+    where: 'AddressBoolExp',
   },
-  ActorAddressVarianceOrderBy: {
+  AddressVarianceOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -757,7 +757,7 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressVarPopOrderBy: {
+  AddressVarPopOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -767,7 +767,7 @@ export const AllTypesProps: Record<string, any> = {
     longitude: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorAddressVarSampOrderBy: {
+  AddressVarSampOrderBy: {
     actorId: 'OrderBy',
     campusId: 'OrderBy',
     createdById: 'OrderBy',
@@ -815,7 +815,7 @@ export const AllTypesProps: Record<string, any> = {
     teamId: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfo: {
+  BankInfo: {
     expenses: {
       distinctOn: 'ExpenseSelectColumn',
       orderBy: 'ExpenseOrderBy',
@@ -827,50 +827,50 @@ export const AllTypesProps: Record<string, any> = {
       where: 'ExpenseBoolExp',
     },
   },
-  ActorBankInfoAggregateBoolExp: {
-    count: 'actorBankInfoAggregateBoolExpCount',
+  BankInfoAggregateBoolExp: {
+    count: 'bankInfoAggregateBoolExpCount',
   },
-  actorBankInfoAggregateBoolExpCount: {
-    arguments: 'ActorBankInfoSelectColumn',
-    filter: 'ActorBankInfoBoolExp',
+  bankInfoAggregateBoolExpCount: {
+    arguments: 'BankInfoSelectColumn',
+    filter: 'BankInfoBoolExp',
     predicate: 'IntComparisonExp',
   },
-  ActorBankInfoAggregateFields: {
+  BankInfoAggregateFields: {
     count: {
-      columns: 'ActorBankInfoSelectColumn',
+      columns: 'BankInfoSelectColumn',
     },
   },
-  ActorBankInfoAggregateOrderBy: {
-    avg: 'ActorBankInfoAvgOrderBy',
+  BankInfoAggregateOrderBy: {
+    avg: 'BankInfoAvgOrderBy',
     count: 'OrderBy',
-    max: 'ActorBankInfoMaxOrderBy',
-    min: 'ActorBankInfoMinOrderBy',
-    stddev: 'ActorBankInfoStddevOrderBy',
-    stddevPop: 'ActorBankInfoStddevPopOrderBy',
-    stddevSamp: 'ActorBankInfoStddevSampOrderBy',
-    sum: 'ActorBankInfoSumOrderBy',
-    varPop: 'ActorBankInfoVarPopOrderBy',
-    varSamp: 'ActorBankInfoVarSampOrderBy',
-    variance: 'ActorBankInfoVarianceOrderBy',
+    max: 'BankInfoMaxOrderBy',
+    min: 'BankInfoMinOrderBy',
+    stddev: 'BankInfoStddevOrderBy',
+    stddevPop: 'BankInfoStddevPopOrderBy',
+    stddevSamp: 'BankInfoStddevSampOrderBy',
+    sum: 'BankInfoSumOrderBy',
+    varPop: 'BankInfoVarPopOrderBy',
+    varSamp: 'BankInfoVarSampOrderBy',
+    variance: 'BankInfoVarianceOrderBy',
   },
-  ActorBankInfoArrRelInsertInput: {
-    data: 'ActorBankInfoInsertInput',
-    onConflict: 'ActorBankInfoOnConflict',
+  BankInfoArrRelInsertInput: {
+    data: 'BankInfoInsertInput',
+    onConflict: 'BankInfoOnConflict',
   },
-  ActorBankInfoAvgOrderBy: {
+  BankInfoAvgOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoBoolExp: {
-    _and: 'ActorBankInfoBoolExp',
-    _not: 'ActorBankInfoBoolExp',
-    _or: 'ActorBankInfoBoolExp',
+  BankInfoBoolExp: {
+    _and: 'BankInfoBoolExp',
+    _not: 'BankInfoBoolExp',
+    _or: 'BankInfoBoolExp',
     accountCode: 'StringComparisonExp',
     actor: 'ActorBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     actorId: 'BigintComparisonExp',
     addressId: 'BigintComparisonExp',
     agencyCode: 'StringComparisonExp',
@@ -892,17 +892,17 @@ export const AllTypesProps: Record<string, any> = {
     tenant: 'TenantBoolExp',
     tenantId: 'BigintComparisonExp',
   },
-  ActorBankInfoConstraint: 'enum' as const,
-  ActorBankInfoIncInput: {
+  BankInfoConstraint: 'enum' as const,
+  BankInfoIncInput: {
     actorId: 'bigint',
     addressId: 'bigint',
     createdById: 'bigint',
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoInsertInput: {
+  BankInfoInsertInput: {
     actor: 'ActorObjRelInsertInput',
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     actorId: 'bigint',
     addressId: 'bigint',
     createdAt: 'timestamptz',
@@ -915,7 +915,7 @@ export const AllTypesProps: Record<string, any> = {
     tenant: 'TenantObjRelInsertInput',
     tenantId: 'bigint',
   },
-  ActorBankInfoMaxOrderBy: {
+  BankInfoMaxOrderBy: {
     accountCode: 'OrderBy',
     actorId: 'OrderBy',
     addressId: 'OrderBy',
@@ -934,7 +934,7 @@ export const AllTypesProps: Record<string, any> = {
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoMinOrderBy: {
+  BankInfoMinOrderBy: {
     accountCode: 'OrderBy',
     actorId: 'OrderBy',
     addressId: 'OrderBy',
@@ -953,19 +953,19 @@ export const AllTypesProps: Record<string, any> = {
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoObjRelInsertInput: {
-    data: 'ActorBankInfoInsertInput',
-    onConflict: 'ActorBankInfoOnConflict',
+  BankInfoObjRelInsertInput: {
+    data: 'BankInfoInsertInput',
+    onConflict: 'BankInfoOnConflict',
   },
-  ActorBankInfoOnConflict: {
-    constraint: 'ActorBankInfoConstraint',
-    updateColumns: 'ActorBankInfoUpdateColumn',
-    where: 'ActorBankInfoBoolExp',
+  BankInfoOnConflict: {
+    constraint: 'BankInfoConstraint',
+    updateColumns: 'BankInfoUpdateColumn',
+    where: 'BankInfoBoolExp',
   },
-  ActorBankInfoOrderBy: {
+  BankInfoOrderBy: {
     accountCode: 'OrderBy',
     actor: 'ActorOrderBy',
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     agencyCode: 'OrderBy',
@@ -986,11 +986,11 @@ export const AllTypesProps: Record<string, any> = {
     tenant: 'TenantOrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoPkColumnsInput: {
+  BankInfoPkColumnsInput: {
     id: 'bigint',
   },
-  ActorBankInfoSelectColumn: 'enum' as const,
-  ActorBankInfoSetInput: {
+  BankInfoSelectColumn: 'enum' as const,
+  BankInfoSetInput: {
     actorId: 'bigint',
     addressId: 'bigint',
     createdAt: 'timestamptz',
@@ -1000,32 +1000,32 @@ export const AllTypesProps: Record<string, any> = {
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoStddevOrderBy: {
+  BankInfoStddevOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoStddevPopOrderBy: {
+  BankInfoStddevPopOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoStddevSampOrderBy: {
+  BankInfoStddevSampOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoStreamCursorInput: {
-    initialValue: 'ActorBankInfoStreamCursorValueInput',
+  BankInfoStreamCursorInput: {
+    initialValue: 'BankInfoStreamCursorValueInput',
     ordering: 'CursorOrdering',
   },
-  ActorBankInfoStreamCursorValueInput: {
+  BankInfoStreamCursorValueInput: {
     actorId: 'bigint',
     addressId: 'bigint',
     createdAt: 'timestamptz',
@@ -1035,34 +1035,34 @@ export const AllTypesProps: Record<string, any> = {
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoSumOrderBy: {
+  BankInfoSumOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoUpdateColumn: 'enum' as const,
-  ActorBankInfoUpdates: {
-    _inc: 'ActorBankInfoIncInput',
-    _set: 'ActorBankInfoSetInput',
-    where: 'ActorBankInfoBoolExp',
+  BankInfoUpdateColumn: 'enum' as const,
+  BankInfoUpdates: {
+    _inc: 'BankInfoIncInput',
+    _set: 'BankInfoSetInput',
+    where: 'BankInfoBoolExp',
   },
-  ActorBankInfoVarianceOrderBy: {
+  BankInfoVarianceOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoVarPopOrderBy: {
+  BankInfoVarPopOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
     id: 'OrderBy',
     tenantId: 'OrderBy',
   },
-  ActorBankInfoVarSampOrderBy: {
+  BankInfoVarSampOrderBy: {
     actorId: 'OrderBy',
     addressId: 'OrderBy',
     createdById: 'OrderBy',
@@ -1073,10 +1073,10 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'ActorBoolExp',
     _not: 'ActorBoolExp',
     _or: 'ActorBoolExp',
-    actorAddresses: 'ActorAddressBoolExp',
-    actorAddressesAggregate: 'ActorAddressAggregateBoolExp',
-    actorBankInfos: 'ActorBankInfoBoolExp',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateBoolExp',
+    addresses: 'AddressBoolExp',
+    addressesAggregate: 'AddressAggregateBoolExp',
+    bankInfos: 'BankInfoBoolExp',
+    bankInfosAggregate: 'BankInfoAggregateBoolExp',
     actorImages: 'ActorImageBoolExp',
     actorImagesAggregate: 'ActorImageAggregateBoolExp',
     actorTags: 'ActorTagsBoolExp',
@@ -1340,8 +1340,8 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   ActorInsertInput: {
-    actorAddresses: 'ActorAddressArrRelInsertInput',
-    actorBankInfos: 'ActorBankInfoArrRelInsertInput',
+    addresses: 'AddressArrRelInsertInput',
+    bankInfos: 'BankInfoArrRelInsertInput',
     actorImages: 'ActorImageArrRelInsertInput',
     actorTags: 'ActorTagsArrRelInsertInput',
     botInfos: 'BotInfoArrRelInsertInput',
@@ -1412,8 +1412,8 @@ export const AllTypesProps: Record<string, any> = {
     where: 'ActorBoolExp',
   },
   ActorOrderBy: {
-    actorAddressesAggregate: 'ActorAddressAggregateOrderBy',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateOrderBy',
+    addressesAggregate: 'AddressAggregateOrderBy',
+    bankInfosAggregate: 'BankInfoAggregateOrderBy',
     actorImagesAggregate: 'ActorImageAggregateOrderBy',
     actorTagsAggregate: 'ActorTagsAggregateOrderBy',
     bio: 'OrderBy',
@@ -1898,7 +1898,7 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'CampusBoolExp',
     _not: 'CampusBoolExp',
     _or: 'CampusBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     createdAt: 'TimestamptzComparisonExp',
     createdById: 'BigintComparisonExp',
     deletedAt: 'TimestamptzComparisonExp',
@@ -1916,7 +1916,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   CampusInsertInput: {
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     createdAt: 'timestamptz',
     createdById: 'bigint',
     deletedAt: 'timestamptz',
@@ -1954,7 +1954,7 @@ export const AllTypesProps: Record<string, any> = {
     where: 'CampusBoolExp',
   },
   CampusOrderBy: {
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     createdAt: 'OrderBy',
     createdById: 'OrderBy',
     deletedAt: 'OrderBy',
@@ -4937,7 +4937,7 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'EventBoolExp',
     _not: 'EventBoolExp',
     _or: 'EventBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     addressId: 'BigintComparisonExp',
     approvalSubmissionId: 'BigintComparisonExp',
     autoAcceptJoins: 'BooleanComparisonExp',
@@ -5006,7 +5006,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   EventInsertInput: {
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     addressId: 'bigint',
     approvalSubmissionId: 'bigint',
     bannerId: 'bigint',
@@ -5728,7 +5728,7 @@ export const AllTypesProps: Record<string, any> = {
     where: 'EventBoolExp',
   },
   EventOrderBy: {
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     addressId: 'OrderBy',
     approvalSubmissionId: 'OrderBy',
     autoAcceptJoins: 'OrderBy',
@@ -6241,7 +6241,7 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'ExpenseBoolExp',
     _not: 'ExpenseBoolExp',
     _or: 'ExpenseBoolExp',
-    actorBankInfo: 'ActorBankInfoBoolExp',
+    bankInfo: 'BankInfoBoolExp',
     bankInfoId: 'BigintComparisonExp',
     createdAt: 'TimestamptzComparisonExp',
     createdById: 'BigintComparisonExp',
@@ -6273,7 +6273,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   ExpenseInsertInput: {
-    actorBankInfo: 'ActorBankInfoObjRelInsertInput',
+    bankInfo: 'BankInfoObjRelInsertInput',
     bankInfoId: 'bigint',
     createdAt: 'timestamptz',
     createdById: 'bigint',
@@ -6471,7 +6471,7 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'ExpenseItemBoolExp',
     _not: 'ExpenseItemBoolExp',
     _or: 'ExpenseItemBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     addressId: 'BigintComparisonExp',
     category: 'StringComparisonExp',
     createdAt: 'TimestamptzComparisonExp',
@@ -6502,7 +6502,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   ExpenseItemInsertInput: {
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     addressId: 'bigint',
     createdAt: 'timestamptz',
     createdById: 'bigint',
@@ -6560,7 +6560,7 @@ export const AllTypesProps: Record<string, any> = {
     where: 'ExpenseItemBoolExp',
   },
   ExpenseItemOrderBy: {
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     addressId: 'OrderBy',
     category: 'OrderBy',
     createdAt: 'OrderBy',
@@ -6721,7 +6721,7 @@ export const AllTypesProps: Record<string, any> = {
     where: 'ExpenseBoolExp',
   },
   ExpenseOrderBy: {
-    actorBankInfo: 'ActorBankInfoOrderBy',
+    bankInfo: 'BankInfoOrderBy',
     bankInfoId: 'OrderBy',
     createdAt: 'OrderBy',
     createdById: 'OrderBy',
@@ -7235,7 +7235,7 @@ export const AllTypesProps: Record<string, any> = {
     _and: 'FileUploadBoolExp',
     _not: 'FileUploadBoolExp',
     _or: 'FileUploadBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     actorImage: 'ActorImageBoolExp',
     contentAttachments: 'ContentAttachmentsBoolExp',
     contentAttachmentsAggregate: 'ContentAttachmentsAggregateBoolExp',
@@ -7289,7 +7289,7 @@ export const AllTypesProps: Record<string, any> = {
     tenantId: 'bigint',
   },
   FileUploadInsertInput: {
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     actorImage: 'ActorImageObjRelInsertInput',
     contentAttachments: 'ContentAttachmentsArrRelInsertInput',
     createdAt: 'timestamptz',
@@ -7353,7 +7353,7 @@ export const AllTypesProps: Record<string, any> = {
     where: 'FileUploadBoolExp',
   },
   FileUploadOrderBy: {
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     actorImage: 'ActorImageOrderBy',
     contentAttachmentsAggregate: 'ContentAttachmentsAggregateOrderBy',
     createdAt: 'OrderBy',
@@ -7652,7 +7652,7 @@ export const AllTypesProps: Record<string, any> = {
     _not: 'FinanceBoolExp',
     _or: 'FinanceBoolExp',
     actor: 'ActorBoolExp',
-    actorAddress: 'ActorAddressBoolExp',
+    address: 'AddressBoolExp',
     addressId: 'BigintComparisonExp',
     addressType: 'StringComparisonExp',
     amount: 'FloatComparisonExp',
@@ -7699,7 +7699,7 @@ export const AllTypesProps: Record<string, any> = {
   },
   FinanceInsertInput: {
     actor: 'ActorObjRelInsertInput',
-    actorAddress: 'ActorAddressObjRelInsertInput',
+    address: 'AddressObjRelInsertInput',
     addressId: 'bigint',
     createdAt: 'timestamptz',
     createdById: 'bigint',
@@ -7779,7 +7779,7 @@ export const AllTypesProps: Record<string, any> = {
   },
   FinanceOrderBy: {
     actor: 'ActorOrderBy',
-    actorAddress: 'ActorAddressOrderBy',
+    address: 'AddressOrderBy',
     addressId: 'OrderBy',
     addressType: 'OrderBy',
     amount: 'OrderBy',
@@ -9508,25 +9508,25 @@ export const AllTypesProps: Record<string, any> = {
       orderBy: 'ActionOrderBy',
       where: 'ActionBoolExp',
     },
-    actorAddresses: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addresses: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressesAggregate: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addressesAggregate: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorBankInfos: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfos: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfosAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfosAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
     actorImages: {
       distinctOn: 'ActorImageSelectColumn',
@@ -10213,10 +10213,10 @@ export const AllTypesProps: Record<string, any> = {
     actions: 'ActionBoolExp',
     actionsAggregate: 'ActionAggregateBoolExp',
     actor: 'ActorBoolExp',
-    actorAddresses: 'ActorAddressBoolExp',
-    actorAddressesAggregate: 'ActorAddressAggregateBoolExp',
-    actorBankInfos: 'ActorBankInfoBoolExp',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateBoolExp',
+    addresses: 'AddressBoolExp',
+    addressesAggregate: 'AddressAggregateBoolExp',
+    bankInfos: 'BankInfoBoolExp',
+    bankInfosAggregate: 'BankInfoAggregateBoolExp',
     actorImages: 'ActorImageBoolExp',
     actorImagesAggregate: 'ActorImageAggregateBoolExp',
     actors: 'ActorBoolExp',
@@ -10371,8 +10371,8 @@ export const AllTypesProps: Record<string, any> = {
   IndividualInsertInput: {
     actions: 'ActionArrRelInsertInput',
     actor: 'ActorObjRelInsertInput',
-    actorAddresses: 'ActorAddressArrRelInsertInput',
-    actorBankInfos: 'ActorBankInfoArrRelInsertInput',
+    addresses: 'AddressArrRelInsertInput',
+    bankInfos: 'BankInfoArrRelInsertInput',
     actorImages: 'ActorImageArrRelInsertInput',
     actors: 'ActorArrRelInsertInput',
     botId: 'bigint',
@@ -10486,8 +10486,8 @@ export const AllTypesProps: Record<string, any> = {
   IndividualOrderBy: {
     actionsAggregate: 'ActionAggregateOrderBy',
     actor: 'ActorOrderBy',
-    actorAddressesAggregate: 'ActorAddressAggregateOrderBy',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateOrderBy',
+    addressesAggregate: 'AddressAggregateOrderBy',
+    bankInfosAggregate: 'BankInfoAggregateOrderBy',
     actorImagesAggregate: 'ActorImageAggregateOrderBy',
     actorsAggregate: 'ActorAggregateOrderBy',
     botId: 'OrderBy',
@@ -12001,16 +12001,16 @@ export const AllTypesProps: Record<string, any> = {
     deleteActor: {
       where: 'ActorBoolExp',
     },
-    deleteActorAddress: {
-      where: 'ActorAddressBoolExp',
+    deleteAddress: {
+      where: 'AddressBoolExp',
     },
-    deleteActorAddressByPk: {
+    deleteAddressByPk: {
       id: 'bigint',
     },
-    deleteActorBankInfo: {
-      where: 'ActorBankInfoBoolExp',
+    deleteBankInfo: {
+      where: 'BankInfoBoolExp',
     },
-    deleteActorBankInfoByPk: {
+    deleteBankInfoByPk: {
       id: 'bigint',
     },
     deleteActorByPk: {
@@ -12468,21 +12468,21 @@ export const AllTypesProps: Record<string, any> = {
       objects: 'ActorInsertInput',
       onConflict: 'ActorOnConflict',
     },
-    insertActorAddress: {
-      objects: 'ActorAddressInsertInput',
-      onConflict: 'ActorAddressOnConflict',
+    insertAddress: {
+      objects: 'AddressInsertInput',
+      onConflict: 'AddressOnConflict',
     },
-    insertActorAddressOne: {
-      object: 'ActorAddressInsertInput',
-      onConflict: 'ActorAddressOnConflict',
+    insertAddressOne: {
+      object: 'AddressInsertInput',
+      onConflict: 'AddressOnConflict',
     },
-    insertActorBankInfo: {
-      objects: 'ActorBankInfoInsertInput',
-      onConflict: 'ActorBankInfoOnConflict',
+    insertBankInfo: {
+      objects: 'BankInfoInsertInput',
+      onConflict: 'BankInfoOnConflict',
     },
-    insertActorBankInfoOne: {
-      object: 'ActorBankInfoInsertInput',
-      onConflict: 'ActorBankInfoOnConflict',
+    insertBankInfoOne: {
+      object: 'BankInfoInsertInput',
+      onConflict: 'BankInfoOnConflict',
     },
     insertActorImage: {
       objects: 'ActorImageInsertInput',
@@ -13066,31 +13066,31 @@ export const AllTypesProps: Record<string, any> = {
       _set: 'ActorSetInput',
       where: 'ActorBoolExp',
     },
-    updateActorAddress: {
-      _inc: 'ActorAddressIncInput',
-      _set: 'ActorAddressSetInput',
-      where: 'ActorAddressBoolExp',
+    updateAddress: {
+      _inc: 'AddressIncInput',
+      _set: 'AddressSetInput',
+      where: 'AddressBoolExp',
     },
-    updateActorAddressByPk: {
-      _inc: 'ActorAddressIncInput',
-      _set: 'ActorAddressSetInput',
-      pkColumns: 'ActorAddressPkColumnsInput',
+    updateAddressByPk: {
+      _inc: 'AddressIncInput',
+      _set: 'AddressSetInput',
+      pkColumns: 'AddressPkColumnsInput',
     },
-    updateActorAddressMany: {
-      updates: 'ActorAddressUpdates',
+    updateAddressMany: {
+      updates: 'AddressUpdates',
     },
-    updateActorBankInfo: {
-      _inc: 'ActorBankInfoIncInput',
-      _set: 'ActorBankInfoSetInput',
-      where: 'ActorBankInfoBoolExp',
+    updateBankInfo: {
+      _inc: 'BankInfoIncInput',
+      _set: 'BankInfoSetInput',
+      where: 'BankInfoBoolExp',
     },
-    updateActorBankInfoByPk: {
-      _inc: 'ActorBankInfoIncInput',
-      _set: 'ActorBankInfoSetInput',
-      pkColumns: 'ActorBankInfoPkColumnsInput',
+    updateBankInfoByPk: {
+      _inc: 'BankInfoIncInput',
+      _set: 'BankInfoSetInput',
+      pkColumns: 'BankInfoPkColumnsInput',
     },
-    updateActorBankInfoMany: {
-      updates: 'ActorBankInfoUpdates',
+    updateBankInfoMany: {
+      updates: 'BankInfoUpdates',
     },
     updateActorByPk: {
       _inc: 'ActorIncInput',
@@ -14923,17 +14923,17 @@ export const AllTypesProps: Record<string, any> = {
       orderBy: 'ActorOrderBy',
       where: 'ActorBoolExp',
     },
-    actorAddress: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    address: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressAggregate: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addressAggregate: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressByPk: {
+    addressByPk: {
       id: 'bigint',
     },
     actorAggregate: {
@@ -14941,17 +14941,17 @@ export const AllTypesProps: Record<string, any> = {
       orderBy: 'ActorOrderBy',
       where: 'ActorBoolExp',
     },
-    actorBankInfo: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfo: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfoAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfoAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfoByPk: {
+    bankInfoByPk: {
       id: 'bigint',
     },
     actorByPk: {
@@ -17619,44 +17619,44 @@ export const AllTypesProps: Record<string, any> = {
       orderBy: 'ActorOrderBy',
       where: 'ActorBoolExp',
     },
-    actorAddress: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    address: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressAggregate: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addressAggregate: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressByPk: {
+    addressByPk: {
       id: 'bigint',
     },
-    actorAddressStream: {
-      cursor: 'ActorAddressStreamCursorInput',
-      where: 'ActorAddressBoolExp',
+    addressStream: {
+      cursor: 'AddressStreamCursorInput',
+      where: 'AddressBoolExp',
     },
     actorAggregate: {
       distinctOn: 'ActorSelectColumn',
       orderBy: 'ActorOrderBy',
       where: 'ActorBoolExp',
     },
-    actorBankInfo: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfo: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfoAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfoAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfoByPk: {
+    bankInfoByPk: {
       id: 'bigint',
     },
-    actorBankInfoStream: {
-      cursor: 'ActorBankInfoStreamCursorInput',
-      where: 'ActorBankInfoBoolExp',
+    bankInfoStream: {
+      cursor: 'BankInfoStreamCursorInput',
+      where: 'BankInfoBoolExp',
     },
     actorByPk: {
       id: 'bigint',
@@ -20694,25 +20694,25 @@ export const AllTypesProps: Record<string, any> = {
       orderBy: 'ActionOrderBy',
       where: 'ActionBoolExp',
     },
-    actorAddresses: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addresses: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorAddressesAggregate: {
-      distinctOn: 'ActorAddressSelectColumn',
-      orderBy: 'ActorAddressOrderBy',
-      where: 'ActorAddressBoolExp',
+    addressesAggregate: {
+      distinctOn: 'AddressSelectColumn',
+      orderBy: 'AddressOrderBy',
+      where: 'AddressBoolExp',
     },
-    actorBankInfos: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfos: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
-    actorBankInfosAggregate: {
-      distinctOn: 'ActorBankInfoSelectColumn',
-      orderBy: 'ActorBankInfoOrderBy',
-      where: 'ActorBankInfoBoolExp',
+    bankInfosAggregate: {
+      distinctOn: 'BankInfoSelectColumn',
+      orderBy: 'BankInfoOrderBy',
+      where: 'BankInfoBoolExp',
     },
     actorImages: {
       distinctOn: 'ActorImageSelectColumn',
@@ -21269,10 +21269,10 @@ export const AllTypesProps: Record<string, any> = {
     _or: 'TenantBoolExp',
     actions: 'ActionBoolExp',
     actionsAggregate: 'ActionAggregateBoolExp',
-    actorAddresses: 'ActorAddressBoolExp',
-    actorAddressesAggregate: 'ActorAddressAggregateBoolExp',
-    actorBankInfos: 'ActorBankInfoBoolExp',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateBoolExp',
+    addresses: 'AddressBoolExp',
+    addressesAggregate: 'AddressAggregateBoolExp',
+    bankInfos: 'BankInfoBoolExp',
+    bankInfosAggregate: 'BankInfoAggregateBoolExp',
     actorImages: 'ActorImageBoolExp',
     actorImagesAggregate: 'ActorImageAggregateBoolExp',
     actors: 'ActorBoolExp',
@@ -21402,8 +21402,8 @@ export const AllTypesProps: Record<string, any> = {
   },
   TenantInsertInput: {
     actions: 'ActionArrRelInsertInput',
-    actorAddresses: 'ActorAddressArrRelInsertInput',
-    actorBankInfos: 'ActorBankInfoArrRelInsertInput',
+    addresses: 'AddressArrRelInsertInput',
+    bankInfos: 'BankInfoArrRelInsertInput',
     actorImages: 'ActorImageArrRelInsertInput',
     actors: 'ActorArrRelInsertInput',
     botInfos: 'BotInfoArrRelInsertInput',
@@ -21509,8 +21509,8 @@ export const AllTypesProps: Record<string, any> = {
   },
   TenantOrderBy: {
     actionsAggregate: 'ActionAggregateOrderBy',
-    actorAddressesAggregate: 'ActorAddressAggregateOrderBy',
-    actorBankInfosAggregate: 'ActorBankInfoAggregateOrderBy',
+    addressesAggregate: 'AddressAggregateOrderBy',
+    bankInfosAggregate: 'BankInfoAggregateOrderBy',
     actorImagesAggregate: 'ActorImageAggregateOrderBy',
     actorsAggregate: 'ActorAggregateOrderBy',
     botInfosAggregate: 'BotInfoAggregateOrderBy',
@@ -23678,10 +23678,10 @@ export const ReturnTypes: Record<string, any> = {
     userId: 'Float',
   },
   Actor: {
-    actorAddresses: 'ActorAddress',
-    actorAddressesAggregate: 'ActorAddressAggregate',
-    actorBankInfos: 'ActorBankInfo',
-    actorBankInfosAggregate: 'ActorBankInfoAggregate',
+    addresses: 'Address',
+    addressesAggregate: 'AddressAggregate',
+    bankInfos: 'BankInfo',
+    bankInfosAggregate: 'BankInfoAggregate',
     actorImages: 'ActorImage',
     actorImagesAggregate: 'ActorImageAggregate',
     actorTags: 'ActorTags',
@@ -23722,10 +23722,10 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'bigint',
     website: 'String',
   },
-  ActorAddress: {
+  Address: {
     actor: 'Actor',
-    actorBankInfos: 'ActorBankInfo',
-    actorBankInfosAggregate: 'ActorBankInfoAggregate',
+    bankInfos: 'BankInfo',
+    bankInfosAggregate: 'BankInfoAggregate',
     actorId: 'bigint',
     campus: 'Campus',
     campusId: 'bigint',
@@ -23755,24 +23755,24 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'bigint',
     zip: 'String',
   },
-  ActorAddressAggregate: {
-    aggregate: 'ActorAddressAggregateFields',
-    nodes: 'ActorAddress',
+  AddressAggregate: {
+    aggregate: 'AddressAggregateFields',
+    nodes: 'Address',
   },
-  ActorAddressAggregateFields: {
-    avg: 'ActorAddressAvgFields',
+  AddressAggregateFields: {
+    avg: 'AddressAvgFields',
     count: 'Int',
-    max: 'ActorAddressMaxFields',
-    min: 'ActorAddressMinFields',
-    stddev: 'ActorAddressStddevFields',
-    stddevPop: 'ActorAddressStddevPopFields',
-    stddevSamp: 'ActorAddressStddevSampFields',
-    sum: 'ActorAddressSumFields',
-    varPop: 'ActorAddressVarPopFields',
-    varSamp: 'ActorAddressVarSampFields',
-    variance: 'ActorAddressVarianceFields',
+    max: 'AddressMaxFields',
+    min: 'AddressMinFields',
+    stddev: 'AddressStddevFields',
+    stddevPop: 'AddressStddevPopFields',
+    stddevSamp: 'AddressStddevSampFields',
+    sum: 'AddressSumFields',
+    varPop: 'AddressVarPopFields',
+    varSamp: 'AddressVarSampFields',
+    variance: 'AddressVarianceFields',
   },
-  ActorAddressAvgFields: {
+  AddressAvgFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23782,7 +23782,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressMaxFields: {
+  AddressMaxFields: {
     actorId: 'bigint',
     campusId: 'bigint',
     city: 'String',
@@ -23801,7 +23801,7 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'bigint',
     zip: 'String',
   },
-  ActorAddressMinFields: {
+  AddressMinFields: {
     actorId: 'bigint',
     campusId: 'bigint',
     city: 'String',
@@ -23820,11 +23820,11 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'bigint',
     zip: 'String',
   },
-  ActorAddressMutationResponse: {
+  AddressMutationResponse: {
     affectedRows: 'Int',
-    returning: 'ActorAddress',
+    returning: 'Address',
   },
-  ActorAddressStddevFields: {
+  AddressStddevFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23834,7 +23834,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressStddevPopFields: {
+  AddressStddevPopFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23844,7 +23844,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressStddevSampFields: {
+  AddressStddevSampFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23854,7 +23854,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressSumFields: {
+  AddressSumFields: {
     actorId: 'bigint',
     campusId: 'bigint',
     createdById: 'bigint',
@@ -23864,7 +23864,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'bigint',
   },
-  ActorAddressVarianceFields: {
+  AddressVarianceFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23874,7 +23874,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressVarPopFields: {
+  AddressVarPopFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23884,7 +23884,7 @@ export const ReturnTypes: Record<string, any> = {
     longitude: 'Float',
     tenantId: 'Float',
   },
-  ActorAddressVarSampFields: {
+  AddressVarSampFields: {
     actorId: 'Float',
     campusId: 'Float',
     createdById: 'Float',
@@ -23919,10 +23919,10 @@ export const ReturnTypes: Record<string, any> = {
     teamId: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfo: {
+  BankInfo: {
     accountCode: 'String',
     actor: 'Actor',
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     actorId: 'bigint',
     addressId: 'bigint',
     agencyCode: 'String',
@@ -23944,31 +23944,31 @@ export const ReturnTypes: Record<string, any> = {
     tenant: 'Tenant',
     tenantId: 'bigint',
   },
-  ActorBankInfoAggregate: {
-    aggregate: 'ActorBankInfoAggregateFields',
-    nodes: 'ActorBankInfo',
+  BankInfoAggregate: {
+    aggregate: 'BankInfoAggregateFields',
+    nodes: 'BankInfo',
   },
-  ActorBankInfoAggregateFields: {
-    avg: 'ActorBankInfoAvgFields',
+  BankInfoAggregateFields: {
+    avg: 'BankInfoAvgFields',
     count: 'Int',
-    max: 'ActorBankInfoMaxFields',
-    min: 'ActorBankInfoMinFields',
-    stddev: 'ActorBankInfoStddevFields',
-    stddevPop: 'ActorBankInfoStddevPopFields',
-    stddevSamp: 'ActorBankInfoStddevSampFields',
-    sum: 'ActorBankInfoSumFields',
-    varPop: 'ActorBankInfoVarPopFields',
-    varSamp: 'ActorBankInfoVarSampFields',
-    variance: 'ActorBankInfoVarianceFields',
+    max: 'BankInfoMaxFields',
+    min: 'BankInfoMinFields',
+    stddev: 'BankInfoStddevFields',
+    stddevPop: 'BankInfoStddevPopFields',
+    stddevSamp: 'BankInfoStddevSampFields',
+    sum: 'BankInfoSumFields',
+    varPop: 'BankInfoVarPopFields',
+    varSamp: 'BankInfoVarSampFields',
+    variance: 'BankInfoVarianceFields',
   },
-  ActorBankInfoAvgFields: {
+  BankInfoAvgFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoMaxFields: {
+  BankInfoMaxFields: {
     accountCode: 'String',
     actorId: 'bigint',
     addressId: 'bigint',
@@ -23987,7 +23987,7 @@ export const ReturnTypes: Record<string, any> = {
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoMinFields: {
+  BankInfoMinFields: {
     accountCode: 'String',
     actorId: 'bigint',
     addressId: 'bigint',
@@ -24006,53 +24006,53 @@ export const ReturnTypes: Record<string, any> = {
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoMutationResponse: {
+  BankInfoMutationResponse: {
     affectedRows: 'Int',
-    returning: 'ActorBankInfo',
+    returning: 'BankInfo',
   },
-  ActorBankInfoStddevFields: {
+  BankInfoStddevFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoStddevPopFields: {
+  BankInfoStddevPopFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoStddevSampFields: {
+  BankInfoStddevSampFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoSumFields: {
+  BankInfoSumFields: {
     actorId: 'bigint',
     addressId: 'bigint',
     createdById: 'bigint',
     id: 'bigint',
     tenantId: 'bigint',
   },
-  ActorBankInfoVarianceFields: {
+  BankInfoVarianceFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoVarPopFields: {
+  BankInfoVarPopFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
     id: 'Float',
     tenantId: 'Float',
   },
-  ActorBankInfoVarSampFields: {
+  BankInfoVarSampFields: {
     actorId: 'Float',
     addressId: 'Float',
     createdById: 'Float',
@@ -24441,7 +24441,7 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'Float',
   },
   Campus: {
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     createdAt: 'timestamptz',
     createdById: 'bigint',
     deletedAt: 'timestamptz',
@@ -25564,7 +25564,7 @@ export const ReturnTypes: Record<string, any> = {
     yearVersion: 'Float',
   },
   Event: {
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     addressId: 'bigint',
     approvalSubmissionId: 'bigint',
     autoAcceptJoins: 'Boolean',
@@ -26634,7 +26634,7 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'Float',
   },
   Expense: {
-    actorBankInfo: 'ActorBankInfo',
+    bankInfo: 'BankInfo',
     bankInfoId: 'bigint',
     createdAt: 'timestamptz',
     createdById: 'bigint',
@@ -26682,7 +26682,7 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'Float',
   },
   ExpenseItem: {
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     addressId: 'bigint',
     category: 'String',
     createdAt: 'timestamptz',
@@ -27100,7 +27100,7 @@ export const ReturnTypes: Record<string, any> = {
     tenantId: 'Float',
   },
   FileUpload: {
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     actorImage: 'ActorImage',
     contentAttachments: 'ContentAttachments',
     contentAttachmentsAggregate: 'ContentAttachmentsAggregate',
@@ -27244,7 +27244,7 @@ export const ReturnTypes: Record<string, any> = {
   },
   Finance: {
     actor: 'Actor',
-    actorAddress: 'ActorAddress',
+    address: 'Address',
     addressId: 'bigint',
     addressType: 'String',
     amount: 'Float',
@@ -28310,10 +28310,10 @@ export const ReturnTypes: Record<string, any> = {
     actions: 'Action',
     actionsAggregate: 'ActionAggregate',
     actor: 'Actor',
-    actorAddresses: 'ActorAddress',
-    actorAddressesAggregate: 'ActorAddressAggregate',
-    actorBankInfos: 'ActorBankInfo',
-    actorBankInfosAggregate: 'ActorBankInfoAggregate',
+    addresses: 'Address',
+    addressesAggregate: 'AddressAggregate',
+    bankInfos: 'BankInfo',
+    bankInfosAggregate: 'BankInfoAggregate',
     actorImages: 'ActorImage',
     actorImagesAggregate: 'ActorImageAggregate',
     actors: 'Actor',
@@ -29265,10 +29265,10 @@ export const ReturnTypes: Record<string, any> = {
     deleteAction: 'ActionMutationResponse',
     deleteActionByPk: 'Action',
     deleteActor: 'ActorMutationResponse',
-    deleteActorAddress: 'ActorAddressMutationResponse',
-    deleteActorAddressByPk: 'ActorAddress',
-    deleteActorBankInfo: 'ActorBankInfoMutationResponse',
-    deleteActorBankInfoByPk: 'ActorBankInfo',
+    deleteAddress: 'AddressMutationResponse',
+    deleteAddressByPk: 'Address',
+    deleteBankInfo: 'BankInfoMutationResponse',
+    deleteBankInfoByPk: 'BankInfo',
     deleteActorByPk: 'Actor',
     deleteActorImage: 'ActorImageMutationResponse',
     deleteActorImageByPk: 'ActorImage',
@@ -29413,10 +29413,10 @@ export const ReturnTypes: Record<string, any> = {
     insertAction: 'ActionMutationResponse',
     insertActionOne: 'Action',
     insertActor: 'ActorMutationResponse',
-    insertActorAddress: 'ActorAddressMutationResponse',
-    insertActorAddressOne: 'ActorAddress',
-    insertActorBankInfo: 'ActorBankInfoMutationResponse',
-    insertActorBankInfoOne: 'ActorBankInfo',
+    insertAddress: 'AddressMutationResponse',
+    insertAddressOne: 'Address',
+    insertBankInfo: 'BankInfoMutationResponse',
+    insertBankInfoOne: 'BankInfo',
     insertActorImage: 'ActorImageMutationResponse',
     insertActorImageOne: 'ActorImage',
     insertActorOne: 'Actor',
@@ -29562,12 +29562,12 @@ export const ReturnTypes: Record<string, any> = {
     updateActionByPk: 'Action',
     updateActionMany: 'ActionMutationResponse',
     updateActor: 'ActorMutationResponse',
-    updateActorAddress: 'ActorAddressMutationResponse',
-    updateActorAddressByPk: 'ActorAddress',
-    updateActorAddressMany: 'ActorAddressMutationResponse',
-    updateActorBankInfo: 'ActorBankInfoMutationResponse',
-    updateActorBankInfoByPk: 'ActorBankInfo',
-    updateActorBankInfoMany: 'ActorBankInfoMutationResponse',
+    updateAddress: 'AddressMutationResponse',
+    updateAddressByPk: 'Address',
+    updateAddressMany: 'AddressMutationResponse',
+    updateBankInfo: 'BankInfoMutationResponse',
+    updateBankInfoByPk: 'BankInfo',
+    updateBankInfoMany: 'BankInfoMutationResponse',
     updateActorByPk: 'Actor',
     updateActorImage: 'ActorImageMutationResponse',
     updateActorImageByPk: 'ActorImage',
@@ -30199,13 +30199,13 @@ export const ReturnTypes: Record<string, any> = {
     actionAggregate: 'ActionAggregate',
     actionByPk: 'Action',
     actor: 'Actor',
-    actorAddress: 'ActorAddress',
-    actorAddressAggregate: 'ActorAddressAggregate',
-    actorAddressByPk: 'ActorAddress',
+    address: 'Address',
+    addressAggregate: 'AddressAggregate',
+    addressByPk: 'Address',
     actorAggregate: 'ActorAggregate',
-    actorBankInfo: 'ActorBankInfo',
-    actorBankInfoAggregate: 'ActorBankInfoAggregate',
-    actorBankInfoByPk: 'ActorBankInfo',
+    bankInfo: 'BankInfo',
+    bankInfoAggregate: 'BankInfoAggregate',
+    bankInfoByPk: 'BankInfo',
     actorByPk: 'Actor',
     actorImage: 'ActorImage',
     actorImageAggregate: 'ActorImageAggregate',
@@ -31319,15 +31319,15 @@ export const ReturnTypes: Record<string, any> = {
     actionByPk: 'Action',
     actionStream: 'Action',
     actor: 'Actor',
-    actorAddress: 'ActorAddress',
-    actorAddressAggregate: 'ActorAddressAggregate',
-    actorAddressByPk: 'ActorAddress',
-    actorAddressStream: 'ActorAddress',
+    address: 'Address',
+    addressAggregate: 'AddressAggregate',
+    addressByPk: 'Address',
+    addressStream: 'Address',
     actorAggregate: 'ActorAggregate',
-    actorBankInfo: 'ActorBankInfo',
-    actorBankInfoAggregate: 'ActorBankInfoAggregate',
-    actorBankInfoByPk: 'ActorBankInfo',
-    actorBankInfoStream: 'ActorBankInfo',
+    bankInfo: 'BankInfo',
+    bankInfoAggregate: 'BankInfoAggregate',
+    bankInfoByPk: 'BankInfo',
+    bankInfoStream: 'BankInfo',
     actorByPk: 'Actor',
     actorImage: 'ActorImage',
     actorImageAggregate: 'ActorImageAggregate',
@@ -32519,10 +32519,10 @@ export const ReturnTypes: Record<string, any> = {
   Tenant: {
     actions: 'Action',
     actionsAggregate: 'ActionAggregate',
-    actorAddresses: 'ActorAddress',
-    actorAddressesAggregate: 'ActorAddressAggregate',
-    actorBankInfos: 'ActorBankInfo',
-    actorBankInfosAggregate: 'ActorBankInfoAggregate',
+    addresses: 'Address',
+    addressesAggregate: 'AddressAggregate',
+    bankInfos: 'BankInfo',
+    bankInfosAggregate: 'BankInfoAggregate',
     actorImages: 'ActorImage',
     actorImagesAggregate: 'ActorImageAggregate',
     actors: 'Actor',

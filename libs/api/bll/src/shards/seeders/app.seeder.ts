@@ -20,7 +20,7 @@ import {
   Tenant,
   Tag,
   Pole,
-  ActorAddress,
+  Address,
   Social,
   ActorImage,
   EventManage,
@@ -156,8 +156,8 @@ function randomMission(project: Project, tenant: Tenant): Mission {
   });
 }
 
-function randomAddress(actor: Actor, tenant: Tenant): ActorAddress {
-  return new ActorAddress({
+function randomAddress(actor: Actor, tenant: Tenant): Address {
+  return new Address({
     actor,
     city: faker.address.city(),
     country: Countries.France,

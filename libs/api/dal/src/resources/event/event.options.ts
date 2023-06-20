@@ -1,4 +1,4 @@
-import type { ActorAddress } from '../actor/actor-address/actor-address.entity';
+import type { Address } from '../actor/address/address.entity';
 import type { UserInfo } from '../individual/user-info/user-info.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
@@ -17,7 +17,7 @@ export type EventOptions = EventProps &
   TenantScopedOptions & {
     supervisors?: UserInfo[];
     content: Content;
-    address?: ActorAddress | null;
+    address?: Address | null;
     banner?: FileUpload | null;
     project?: Project | null;
     joinForm?: Form | null;

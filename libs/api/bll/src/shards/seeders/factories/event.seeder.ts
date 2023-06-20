@@ -1,7 +1,7 @@
 import { Factory } from '@mikro-orm/seeder';
 import { ControlType, EventState, FormType } from '@okampus/shared/enums';
 import { pickOneFromArray } from '@okampus/shared/utils';
-import { ActorAddress, Content, Event, Form } from '@okampus/api/dal';
+import { Address, Content, Event, Form } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { faker } from '@faker-js/faker/locale/fr';
 import { randomInt } from 'node:crypto';
@@ -61,7 +61,7 @@ export class EventSeeder extends Factory<Event> {
       pointsPresence: [0.25, 1][randomInt(2)],
       price: isPayedEvent ? randomInt(1, 50) : 0,
       project: this.project,
-      address: new ActorAddress({
+      address: new Address({
         actor: this.team.actor,
         city: faker.address.city(),
         country: Countries.France,

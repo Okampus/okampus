@@ -236,7 +236,7 @@ export function TeamTransactionCreateForm() {
                 payedById,
                 payedByType,
                 ...(addressItem?.value && {
-                  actorAddress: {
+                  address: {
                     data: {
                       actorId: teamManage.actor?.id as string,
                       name: addressItem.value.name,

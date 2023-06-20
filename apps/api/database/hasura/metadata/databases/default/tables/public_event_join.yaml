@@ -2,9 +2,6 @@ table:
   name: event_join
   schema: public
 object_relationships:
-  - name: action
-    using:
-      foreign_key_constraint_on: action_id
   - name: event
     using:
       foreign_key_constraint_on: event_id

@@ -2,12 +2,12 @@ table:
   name: campus
   schema: public
 object_relationships:
-  - name: actorAddress
+  - name: address
     using:
       foreign_key_constraint_on:
         column: campus_id
         table:
-          name: actor_address
+          name: address
           schema: public
   - name: individual
     using:

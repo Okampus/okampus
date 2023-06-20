@@ -2,7 +2,7 @@ table:
   name: event
   schema: public
 object_relationships:
-  - name: actorAddress
+  - name: address
     using:
       foreign_key_constraint_on: address_id
   - name: content
