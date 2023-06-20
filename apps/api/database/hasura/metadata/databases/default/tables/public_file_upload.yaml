@@ -16,6 +16,9 @@ object_relationships:
         table:
           name: address
           schema: public
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
   - name: document
     using:
       foreign_key_constraint_on:
@@ -23,9 +26,6 @@ object_relationships:
         table:
           name: document
           schema: public
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

@@ -9,7 +9,7 @@ object_relationships:
         table:
           name: actor
           schema: public
-  - name: individual
+  - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant

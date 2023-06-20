@@ -2,7 +2,7 @@ table:
   name: team_metric
   schema: public
 object_relationships:
-  - name: individual
+  - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant

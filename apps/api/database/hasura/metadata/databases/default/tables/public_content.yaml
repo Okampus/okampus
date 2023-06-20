@@ -2,12 +2,9 @@ table:
   name: content
   schema: public
 object_relationships:
-  - name: content
+  - name: createdBy
     using:
-      foreign_key_constraint_on: parent_id
-  - name: contentByReplyingToId
-    using:
-      foreign_key_constraint_on: replying_to_id
+      foreign_key_constraint_on: created_by_id
   - name: event
     using:
       foreign_key_constraint_on:
@@ -15,9 +12,6 @@ object_relationships:
         table:
           name: event
           schema: public
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
   - name: issue
     using:
       foreign_key_constraint_on:
@@ -25,6 +19,12 @@ object_relationships:
         table:
           name: issue
           schema: public
+  - name: parent
+    using:
+      foreign_key_constraint_on: parent_id
+  - name: replyingTo
+    using:
+      foreign_key_constraint_on: replying_to_id
   - name: team
     using:
       foreign_key_constraint_on: team_id
@@ -39,26 +39,19 @@ object_relationships:
           name: thread
           schema: public
 array_relationships:
-  - name: contentAttachments
-    using:
-      foreign_key_constraint_on:
-        column: content_id
-        table:
-          name: content_attachments
-          schema: public
-  - name: contents
+  - name: children
     using:
       foreign_key_constraint_on:
         column: parent_id
         table:
           name: content
           schema: public
-  - name: contentsByReplyingToId
+  - name: contentAttachments
     using:
       foreign_key_constraint_on:
-        column: replying_to_id
+        column: content_id
         table:
-          name: content
+          name: content_attachments
           schema: public
   - name: favorites
     using:
@@ -73,6 +66,13 @@ array_relationships:
         column: content_id
         table:
           name: reaction
+          schema: public
+  - name: replies
+    using:
+      foreign_key_constraint_on:
+        column: replying_to_id
+        table:
+          name: content
           schema: public
   - name: reports
     using:

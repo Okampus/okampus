@@ -5,6 +5,9 @@ object_relationships:
   - name: bankInfo
     using:
       foreign_key_constraint_on: bank_info_id
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
   - name: fileUpload
     using:
       foreign_key_constraint_on: expense_report_id
@@ -15,10 +18,7 @@ object_relationships:
         table:
           name: finance
           schema: public
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
-  - name: individualBySettledById
+  - name: settledBy
     using:
       foreign_key_constraint_on: settled_by_id
   - name: tenant

@@ -2,12 +2,12 @@ table:
   name: tenant
   schema: public
 object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
   - name: form
     using:
       foreign_key_constraint_on: event_validation_form_id
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

@@ -2,15 +2,15 @@ table:
   name: project
   schema: public
 object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
   - name: fileUpload
     using:
       foreign_key_constraint_on: image_id
   - name: grant
     using:
       foreign_key_constraint_on: grant_id
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
   - name: team
     using:
       foreign_key_constraint_on: team_id
