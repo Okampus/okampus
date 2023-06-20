@@ -13,6 +13,7 @@ export type FinanceOptions = FinanceProps &
     team: Team;
     address?: Address | null;
     payedBy?: Actor | null;
+    receivedBy: Actor;
     event?: Event | null;
     expense?: Expense | null;
     project?: Project | null;

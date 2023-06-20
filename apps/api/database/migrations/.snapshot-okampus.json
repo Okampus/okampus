@@ -10885,6 +10885,15 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "received_by_id": {
+          "name": "received_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
         "team_id": {
           "name": "team_id",
           "type": "bigint",
@@ -11009,6 +11018,18 @@
           ],
           "referencedTableName": "public.actor",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_received_by_id_foreign": {
+          "constraintName": "finance_received_by_id_foreign",
+          "columnNames": [
+            "received_by_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
         "finance_team_id_foreign": {

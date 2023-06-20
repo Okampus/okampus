@@ -31,6 +31,12 @@ object_relationships:
         table:
           name: form
           schema: public
+  - name: grantFund
+    using:
+      foreign_key_constraint_on: tenant_grant_fund_id
+  - name: legalUnit
+    using:
+      foreign_key_constraint_on: legal_unit_id
   - name: team
     using:
       foreign_key_constraint_on: parent_id

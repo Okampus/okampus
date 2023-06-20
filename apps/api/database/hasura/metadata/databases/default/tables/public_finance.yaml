@@ -2,9 +2,6 @@ table:
   name: finance
   schema: public
 object_relationships:
-  - name: actor
-    using:
-      foreign_key_constraint_on: payed_by_id
   - name: address
     using:
       foreign_key_constraint_on: address_id
@@ -17,9 +14,15 @@ object_relationships:
   - name: expense
     using:
       foreign_key_constraint_on: expense_id
+  - name: payedBy
+    using:
+      foreign_key_constraint_on: payed_by_id
   - name: project
     using:
       foreign_key_constraint_on: project_id
+  - name: receivedBy
+    using:
+      foreign_key_constraint_on: received_by_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

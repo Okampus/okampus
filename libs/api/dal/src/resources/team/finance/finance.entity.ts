@@ -55,6 +55,9 @@ export class Finance extends TenantScopedEntity {
   @Property({ type: 'datetime' })
   payedAt!: Date;
 
+  @ManyToOne({ type: 'Actor' })
+  receivedBy!: Actor;
+
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
