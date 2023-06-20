@@ -31,13 +31,13 @@ export class Expense extends TenantScopedEntity {
   @Enum({ items: () => ApprovalState, type: EnumType, default: ApprovalState.Pending })
   state = ApprovalState.Pending;
 
-  @Property({ type: 'Date', nullable: true, default: null })
+  @Property({ type: 'datetime', nullable: true, default: null })
   lastNotifiedAt: Date | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   settledBy: Individual | null = null;
 
-  @Property({ type: 'Date', nullable: true, default: null })
+  @Property({ type: 'datetime', nullable: true, default: null })
   settledAt: Date | null = null;
 
   @OneToOne({ type: 'Finance', mappedBy: 'expense' })

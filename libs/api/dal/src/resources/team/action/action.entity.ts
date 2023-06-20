@@ -29,7 +29,7 @@ export class Action extends TenantScopedEntity {
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   settledBy: Individual | null = null;
 
-  @Property({ type: 'Date', nullable: true, default: null })
+  @Property({ type: 'datetime', nullable: true, default: null })
   settledAt: Date | null = null;
 
   @ManyToOne({ type: 'Team' })

@@ -20,7 +20,7 @@ export class Log {
   @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."id_generator"()', autoincrement: false })
   id!: string;
 
-  @Property({ type: 'date', defaultRaw: 'current_timestamp' })
+  @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   createdAt!: Date;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
