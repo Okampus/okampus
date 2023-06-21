@@ -58,27 +58,32 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
       label: 'Méthode',
       align: Align.Left,
       render: (value: FinanceBaseInfo) => {
-        if (!value.actor) return <div className="text-1">{t(value.method)}</div>;
+        if (!value.payedBy) return <div className="text-1">{t(value.method)}</div>;
 
-        const avatar = { src: getAvatar(value.actor.actorImages), size: 7 };
+        const avatar = { src: getAvatar(value.payedBy.actorImages), size: 7 };
 
-        const userId = value.actor.individual?.user?.id;
+        const userId = value.payedBy.individual?.user?.id;
         if (userId) {
           return (
             <div className="flex flex-col gap-2">
               <div className="text-1 font-medium">{t(value.method)}</div>
-              <LabeledUser id={userId} name={value.actor.name} avatar={avatar} labelClassName="text-base font-medium" />
+              <LabeledUser
+                id={userId}
+                name={value.payedBy.name}
+                avatar={avatar}
+                labelClassName="text-base font-medium"
+              />
             </div>
           );
         }
 
-        const teamId = value.actor.team?.id as string;
+        const teamId = value.payedBy.team?.id as string;
         if (teamId) {
           return (
             <div>
               <div className="text-1 font-medium">{t(value.method)}</div>
-              <LabeledTeam id={teamId} name={value.actor.name} avatar={avatar.src} />
-              {/* <LabeledUser id={userId} name={value.actor.name} avatar={avatar} /> */}
+              <LabeledTeam id={teamId} name={value.payedBy.name} avatar={avatar.src} />
+              {/* <LabeledUser id={userId} name={value.payedBy.name} avatar={avatar} /> */}
             </div>
           );
         }

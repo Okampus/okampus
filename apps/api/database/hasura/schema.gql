@@ -883,7 +883,7 @@ type Actor {
   ): FavoriteAggregate!
 
   # An array relationship
-  follows(
+  followers(
     # distinct select on columns
     distinctOn: [FollowSelectColumn!]
 
@@ -901,7 +901,7 @@ type Actor {
   ): [Follow!]!
 
   # An aggregate relationship
-  followsAggregate(
+  followersAggregate(
     # distinct select on columns
     distinctOn: [FollowSelectColumn!]
 
@@ -986,6 +986,42 @@ type Actor {
 
   # An aggregate relationship
   payedFinancesAggregate(
+    # distinct select on columns
+    distinctOn: [FinanceSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FinanceOrderBy!]
+
+    # filter the rows returned
+    where: FinanceBoolExp
+  ): FinanceAggregate!
+
+  # An array relationship
+  receivedFinances(
+    # distinct select on columns
+    distinctOn: [FinanceSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FinanceOrderBy!]
+
+    # filter the rows returned
+    where: FinanceBoolExp
+  ): [Finance!]!
+
+  # An aggregate relationship
+  receivedFinancesAggregate(
     # distinct select on columns
     distinctOn: [FinanceSelectColumn!]
 
@@ -1218,8 +1254,8 @@ input ActorBoolExp {
   email: StringComparisonExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
-  follows: FollowBoolExp
-  followsAggregate: FollowAggregateBoolExp
+  followers: FollowBoolExp
+  followersAggregate: FollowAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   ical: StringComparisonExp
   id: BigintComparisonExp
@@ -1232,6 +1268,8 @@ input ActorBoolExp {
   ownedBotsAggregate: BotAggregateBoolExp
   payedFinances: FinanceBoolExp
   payedFinancesAggregate: FinanceAggregateBoolExp
+  receivedFinances: FinanceBoolExp
+  receivedFinancesAggregate: FinanceAggregateBoolExp
   reports: ReportBoolExp
   reportsAggregate: ReportAggregateBoolExp
   shortcuts: ShortcutBoolExp
@@ -1786,7 +1824,7 @@ input ActorInsertInput {
   deletedAt: timestamptz
   email: String
   favorites: FavoriteArrRelInsertInput
-  follows: FollowArrRelInsertInput
+  followers: FollowArrRelInsertInput
   hiddenAt: timestamptz
   ical: String
   id: bigint
@@ -1797,6 +1835,7 @@ input ActorInsertInput {
   name: String
   ownedBots: BotArrRelInsertInput
   payedFinances: FinanceArrRelInsertInput
+  receivedFinances: FinanceArrRelInsertInput
   reports: ReportArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
   slug: String
@@ -1926,7 +1965,7 @@ input ActorOrderBy {
   deletedAt: OrderBy
   email: OrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
-  followsAggregate: FollowAggregateOrderBy
+  followersAggregate: FollowAggregateOrderBy
   hiddenAt: OrderBy
   ical: OrderBy
   id: OrderBy
@@ -1937,6 +1976,7 @@ input ActorOrderBy {
   name: OrderBy
   ownedBotsAggregate: BotAggregateOrderBy
   payedFinancesAggregate: FinanceAggregateOrderBy
+  receivedFinancesAggregate: FinanceAggregateOrderBy
   reportsAggregate: ReportAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   slug: OrderBy
@@ -17976,9 +18016,6 @@ input FileUploadVarSampOrderBy {
 # columns and relationships of "finance"
 type Finance {
   # An object relationship
-  actor: Actor
-
-  # An object relationship
   address: Address
   addressId: bigint
   addressType: String!
@@ -18076,12 +18113,19 @@ type Finance {
   method: String!
   name: String!
   payedAt: timestamptz!
+
+  # An object relationship
+  payedBy: Actor
   payedById: bigint
   payedByType: String!
 
   # An object relationship
   project: Project
   projectId: bigint
+
+  # An object relationship
+  receivedBy: Actor!
+  receivedById: bigint!
   state: String!
 
   # An object relationship
@@ -18455,6 +18499,7 @@ type FinanceAvgFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -18469,6 +18514,7 @@ input FinanceAvgOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -18478,7 +18524,6 @@ input FinanceBoolExp {
   _and: [FinanceBoolExp!]
   _not: FinanceBoolExp
   _or: [FinanceBoolExp!]
-  actor: ActorBoolExp
   address: AddressBoolExp
   addressId: BigintComparisonExp
   addressType: StringComparisonExp
@@ -18502,10 +18547,13 @@ input FinanceBoolExp {
   method: StringComparisonExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
+  payedBy: ActorBoolExp
   payedById: BigintComparisonExp
   payedByType: StringComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
+  receivedBy: ActorBoolExp
+  receivedById: BigintComparisonExp
   state: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -18532,13 +18580,13 @@ input FinanceIncInput {
   id: bigint
   payedById: bigint
   projectId: bigint
+  receivedById: bigint
   teamId: bigint
   tenantId: bigint
 }
 
 # input type for inserting data into table "finance"
 input FinanceInsertInput {
-  actor: ActorObjRelInsertInput
   address: AddressObjRelInsertInput
   addressId: bigint
   addressType: String
@@ -18560,10 +18608,13 @@ input FinanceInsertInput {
   method: String
   name: String
   payedAt: timestamptz
+  payedBy: ActorObjRelInsertInput
   payedById: bigint
   payedByType: String
   project: ProjectObjRelInsertInput
   projectId: bigint
+  receivedBy: ActorObjRelInsertInput
+  receivedById: bigint
   state: String
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -18591,6 +18642,7 @@ type FinanceMaxFields {
   payedById: bigint
   payedByType: String
   projectId: bigint
+  receivedById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -18616,6 +18668,7 @@ input FinanceMaxOrderBy {
   payedById: OrderBy
   payedByType: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -18641,6 +18694,7 @@ type FinanceMinFields {
   payedById: bigint
   payedByType: String
   projectId: bigint
+  receivedById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -18666,6 +18720,7 @@ input FinanceMinOrderBy {
   payedById: OrderBy
   payedByType: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -18697,7 +18752,6 @@ input FinanceOnConflict {
 
 # Ordering options when selecting data from "finance".
 input FinanceOrderBy {
-  actor: ActorOrderBy
   address: AddressOrderBy
   addressId: OrderBy
   addressType: OrderBy
@@ -18719,10 +18773,13 @@ input FinanceOrderBy {
   method: OrderBy
   name: OrderBy
   payedAt: OrderBy
+  payedBy: ActorOrderBy
   payedById: OrderBy
   payedByType: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
+  receivedBy: ActorOrderBy
+  receivedById: OrderBy
   state: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -18792,6 +18849,9 @@ enum FinanceSelectColumn {
   projectId
 
   # column name
+  receivedById
+
+  # column name
   state
 
   # column name
@@ -18821,6 +18881,7 @@ input FinanceSetInput {
   payedById: bigint
   payedByType: String
   projectId: bigint
+  receivedById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -18836,6 +18897,7 @@ type FinanceStddevFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -18850,6 +18912,7 @@ input FinanceStddevOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -18864,6 +18927,7 @@ type FinanceStddevPopFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -18878,6 +18942,7 @@ input FinanceStddevPopOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -18892,6 +18957,7 @@ type FinanceStddevSampFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -18906,6 +18972,7 @@ input FinanceStddevSampOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -18939,6 +19006,7 @@ input FinanceStreamCursorValueInput {
   payedById: bigint
   payedByType: String
   projectId: bigint
+  receivedById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -18954,6 +19022,7 @@ type FinanceSumFields {
   id: bigint
   payedById: bigint
   projectId: bigint
+  receivedById: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -18968,6 +19037,7 @@ input FinanceSumOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -19029,6 +19099,9 @@ enum FinanceUpdateColumn {
   projectId
 
   # column name
+  receivedById
+
+  # column name
   state
 
   # column name
@@ -19059,6 +19132,7 @@ type FinanceVarianceFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -19073,6 +19147,7 @@ input FinanceVarianceOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -19087,6 +19162,7 @@ type FinanceVarPopFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -19101,6 +19177,7 @@ input FinanceVarPopOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -19115,6 +19192,7 @@ type FinanceVarSampFields {
   id: Float
   payedById: Float
   projectId: Float
+  receivedById: Float
   teamId: Float
   tenantId: Float
 }
@@ -19129,6 +19207,7 @@ input FinanceVarSampOrderBy {
   id: OrderBy
   payedById: OrderBy
   projectId: OrderBy
+  receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -27278,16 +27357,49 @@ type LegalUnit {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
+
+  # An array relationship
+  grandFundTeams(
+    # distinct select on columns
+    distinctOn: [TeamSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamOrderBy!]
+
+    # filter the rows returned
+    where: TeamBoolExp
+  ): [Team!]!
+
+  # An aggregate relationship
+  grandFundTeamsAggregate(
+    # distinct select on columns
+    distinctOn: [TeamSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamOrderBy!]
+
+    # filter the rows returned
+    where: TeamBoolExp
+  ): TeamAggregate!
   hiddenAt: timestamptz
   id: bigint!
-  order: smallint!
-  pseudo: String!
 
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
   type: String!
-  url: String!
 }
 
 # aggregated selection of "legal_unit"
@@ -27349,7 +27461,6 @@ input LegalUnitArrRelInsertInput {
 type LegalUnitAvgFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27357,7 +27468,6 @@ type LegalUnitAvgFields {
 input LegalUnitAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27371,14 +27481,13 @@ input LegalUnitBoolExp {
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  grandFundTeams: TeamBoolExp
+  grandFundTeamsAggregate: TeamAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  order: SmallintComparisonExp
-  pseudo: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
-  url: StringComparisonExp
 }
 
 # unique or primary key constraints on table "legal_unit"
@@ -27391,7 +27500,6 @@ enum LegalUnitConstraint {
 input LegalUnitIncInput {
   createdById: bigint
   id: bigint
-  order: smallint
   tenantId: bigint
 }
 
@@ -27402,14 +27510,12 @@ input LegalUnitInsertInput {
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  grandFundTeams: TeamArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
-  order: smallint
-  pseudo: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
-  url: String
 }
 
 # aggregate max on columns
@@ -27419,11 +27525,8 @@ type LegalUnitMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  order: smallint
-  pseudo: String
   tenantId: bigint
   type: String
-  url: String
 }
 
 # order by max() on columns of table "legal_unit"
@@ -27433,11 +27536,8 @@ input LegalUnitMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  order: OrderBy
-  pseudo: OrderBy
   tenantId: OrderBy
   type: OrderBy
-  url: OrderBy
 }
 
 # aggregate min on columns
@@ -27447,11 +27547,8 @@ type LegalUnitMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  order: smallint
-  pseudo: String
   tenantId: bigint
   type: String
-  url: String
 }
 
 # order by min() on columns of table "legal_unit"
@@ -27461,11 +27558,8 @@ input LegalUnitMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  order: OrderBy
-  pseudo: OrderBy
   tenantId: OrderBy
   type: OrderBy
-  url: OrderBy
 }
 
 # response of any mutation on the table "legal_unit"
@@ -27499,14 +27593,12 @@ input LegalUnitOrderBy {
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  grandFundTeamsAggregate: TeamAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  order: OrderBy
-  pseudo: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
-  url: OrderBy
 }
 
 # primary key columns input for table: legal_unit
@@ -27532,19 +27624,10 @@ enum LegalUnitSelectColumn {
   id
 
   # column name
-  order
-
-  # column name
-  pseudo
-
-  # column name
   tenantId
 
   # column name
   type
-
-  # column name
-  url
 }
 
 # input type for updating data in table "legal_unit"
@@ -27554,18 +27637,14 @@ input LegalUnitSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  order: smallint
-  pseudo: String
   tenantId: bigint
   type: String
-  url: String
 }
 
 # aggregate stddev on columns
 type LegalUnitStddevFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27573,7 +27652,6 @@ type LegalUnitStddevFields {
 input LegalUnitStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27581,7 +27659,6 @@ input LegalUnitStddevOrderBy {
 type LegalUnitStddevPopFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27589,7 +27666,6 @@ type LegalUnitStddevPopFields {
 input LegalUnitStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27597,7 +27673,6 @@ input LegalUnitStddevPopOrderBy {
 type LegalUnitStddevSampFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27605,7 +27680,6 @@ type LegalUnitStddevSampFields {
 input LegalUnitStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27625,18 +27699,14 @@ input LegalUnitStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  order: smallint
-  pseudo: String
   tenantId: bigint
   type: String
-  url: String
 }
 
 # aggregate sum on columns
 type LegalUnitSumFields {
   createdById: bigint
   id: bigint
-  order: smallint
   tenantId: bigint
 }
 
@@ -27644,7 +27714,6 @@ type LegalUnitSumFields {
 input LegalUnitSumOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27666,19 +27735,10 @@ enum LegalUnitUpdateColumn {
   id
 
   # column name
-  order
-
-  # column name
-  pseudo
-
-  # column name
   tenantId
 
   # column name
   type
-
-  # column name
-  url
 }
 
 input LegalUnitUpdates {
@@ -27696,7 +27756,6 @@ input LegalUnitUpdates {
 type LegalUnitVarianceFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27704,7 +27763,6 @@ type LegalUnitVarianceFields {
 input LegalUnitVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27712,7 +27770,6 @@ input LegalUnitVarianceOrderBy {
 type LegalUnitVarPopFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27720,7 +27777,6 @@ type LegalUnitVarPopFields {
 input LegalUnitVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -27728,7 +27784,6 @@ input LegalUnitVarPopOrderBy {
 type LegalUnitVarSampFields {
   createdById: Float
   id: Float
-  order: Float
   tenantId: Float
 }
 
@@ -27736,7 +27791,6 @@ type LegalUnitVarSampFields {
 input LegalUnitVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  order: OrderBy
   tenantId: OrderBy
 }
 
@@ -47332,6 +47386,9 @@ type Team {
   # An object relationship
   form: Form
 
+  # An object relationship
+  grantFund: LegalUnit
+
   # An array relationship
   grants(
     # distinct select on columns
@@ -47670,6 +47727,7 @@ type Team {
 
   # An object relationship
   tenant: Tenant!
+  tenantGrantFundId: bigint
   tenantId: bigint!
   type: String!
 
@@ -47747,6 +47805,7 @@ type TeamAvgFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -47765,6 +47824,7 @@ input TeamAvgOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -47800,6 +47860,7 @@ input TeamBoolExp {
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   form: FormBoolExp
+  grantFund: LegalUnitBoolExp
   grants: GrantBoolExp
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -47829,6 +47890,7 @@ input TeamBoolExp {
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
   tenant: TenantBoolExp
+  tenantGrantFundId: BigintComparisonExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
   video: FileUploadBoolExp
@@ -48164,6 +48226,7 @@ input TeamIncInput {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   videoId: bigint
 }
@@ -48191,6 +48254,7 @@ input TeamInsertInput {
   eventManages: EventManageArrRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
+  grantFund: LegalUnitObjRelInsertInput
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -48211,6 +48275,7 @@ input TeamInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teams: TeamArrRelInsertInput
   tenant: TenantObjRelInsertInput
+  tenantGrantFundId: bigint
   tenantId: bigint
   type: String
   video: FileUploadObjRelInsertInput
@@ -48919,6 +48984,7 @@ type TeamMaxFields {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   type: String
   videoId: bigint
@@ -48944,6 +49010,7 @@ input TeamMaxOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   type: OrderBy
   videoId: OrderBy
@@ -50285,6 +50352,7 @@ type TeamMinFields {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   type: String
   videoId: bigint
@@ -50310,6 +50378,7 @@ input TeamMinOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   type: OrderBy
   videoId: OrderBy
@@ -50362,6 +50431,7 @@ input TeamOrderBy {
   eventManagesAggregate: EventManageAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
+  grantFund: LegalUnitOrderBy
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -50382,6 +50452,7 @@ input TeamOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
   tenant: TenantOrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   type: OrderBy
   video: FileUploadOrderBy
@@ -50450,6 +50521,9 @@ enum TeamSelectColumn {
   parentId
 
   # column name
+  tenantGrantFundId
+
+  # column name
   tenantId
 
   # column name
@@ -50479,6 +50553,7 @@ input TeamSetInput {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   type: String
   videoId: bigint
@@ -50498,6 +50573,7 @@ type TeamStddevFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50516,6 +50592,7 @@ input TeamStddevOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50534,6 +50611,7 @@ type TeamStddevPopFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50552,6 +50630,7 @@ input TeamStddevPopOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50570,6 +50649,7 @@ type TeamStddevSampFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50588,6 +50668,7 @@ input TeamStddevSampOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50621,6 +50702,7 @@ input TeamStreamCursorValueInput {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   type: String
   videoId: bigint
@@ -50640,6 +50722,7 @@ type TeamSumFields {
   originalCreationMonth: smallint
   originalCreationYear: smallint
   parentId: bigint
+  tenantGrantFundId: bigint
   tenantId: bigint
   videoId: bigint
 }
@@ -50658,6 +50741,7 @@ input TeamSumOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50719,6 +50803,9 @@ enum TeamUpdateColumn {
   parentId
 
   # column name
+  tenantGrantFundId
+
+  # column name
   tenantId
 
   # column name
@@ -50753,6 +50840,7 @@ type TeamVarianceFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50771,6 +50859,7 @@ input TeamVarianceOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50789,6 +50878,7 @@ type TeamVarPopFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50807,6 +50897,7 @@ input TeamVarPopOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }
@@ -50825,6 +50916,7 @@ type TeamVarSampFields {
   originalCreationMonth: Float
   originalCreationYear: Float
   parentId: Float
+  tenantGrantFundId: Float
   tenantId: Float
   videoId: Float
 }
@@ -50843,6 +50935,7 @@ input TeamVarSampOrderBy {
   originalCreationMonth: OrderBy
   originalCreationYear: OrderBy
   parentId: OrderBy
+  tenantGrantFundId: OrderBy
   tenantId: OrderBy
   videoId: OrderBy
 }

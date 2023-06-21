@@ -46,16 +46,16 @@ export class Individual extends TenantScopedEntity {
       individual: this,
     });
 
-    if (options.user) {
+    if (options.userProps) {
       this.user = new User({
-        ...options.user,
+        ...options.userProps,
         individual: this,
         createdBy: options.createdBy,
         tenant: options.tenant,
       });
-    } else if (options.bot) {
+    } else if (options.botProps) {
       this.bot = new Bot({
-        ...options.bot,
+        ...options.botProps,
         individual: this,
         createdBy: options.createdBy,
         tenant: options.tenant,

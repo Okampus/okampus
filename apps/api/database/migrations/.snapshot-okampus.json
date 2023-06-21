@@ -813,6 +813,7 @@
           "enumItems": [
             "Association",
             "Canteen",
+            "Company",
             "Club",
             "Project",
             "Department",
@@ -935,16 +936,6 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "legal_unit_id": {
-          "name": "legal_unit_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
         "tenant_grant_fund_id": {
           "name": "tenant_grant_fund_id",
           "type": "bigint",
@@ -1012,15 +1003,6 @@
           ],
           "composite": false,
           "keyName": "team_admin_team_tenant_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "legal_unit_id"
-          ],
-          "composite": false,
-          "keyName": "team_legal_unit_id_unique",
           "primary": false,
           "unique": true
         },
@@ -1110,19 +1092,6 @@
             "id"
           ],
           "referencedTableName": "public.tenant",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_legal_unit_id_foreign": {
-          "constraintName": "team_legal_unit_id_foreign",
-          "columnNames": [
-            "legal_unit_id"
-          ],
-          "localTableName": "public.team",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.legal_unit",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -2791,15 +2760,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "order": {
-          "name": "order",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "smallint"
-        },
         "type": {
           "name": "type",
           "type": "text",
@@ -2813,24 +2773,6 @@
             "TenantGrantFund"
           ],
           "mappedType": "enum"
-        },
-        "pseudo": {
-          "name": "pseudo",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "url": {
-          "name": "url",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         }
       },
       "name": "legal_unit",

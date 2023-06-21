@@ -13,10 +13,9 @@ export class TenantProps {
   @IsString()
   pointName!: string;
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
+  @Field(() => String)
   @IsString()
-  domain?: string;
+  domain!: string;
 
   @Field(() => OidcInfo, { nullable: true })
   @IsOptional()

@@ -10,6 +10,6 @@ export type IndividualOptions = IndividualProps &
   TenantScopedOptions & {
     tags?: Tag[];
     passwordHash?: string;
-    user?: Omit<UserOptions, 'individual' | 'createdBy' | 'tenant'>;
-    bot?: Omit<BotOptions, 'individual' | 'createdBy' | 'tenant'>;
+    userProps?: Omit<UserOptions, 'individual' | 'createdBy' | 'tenant'>;
+    botProps?: Omit<BotOptions, 'individual' | 'createdBy' | 'tenant'>;
   };

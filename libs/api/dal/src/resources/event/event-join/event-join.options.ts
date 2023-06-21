@@ -23,6 +23,6 @@ export type EventJoinOptions = EventJoinProps &
     joinedFor?: EventManage | null;
     qrCode?: FileUpload | null;
     missionJoin?: MissionJoin | null;
-    action?: Action | null;
+    actions?: Action[];
     formSubmission?: FormSubmission | null;
   };

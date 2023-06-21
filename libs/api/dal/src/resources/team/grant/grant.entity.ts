@@ -50,7 +50,8 @@ export class Grant extends TenantScopedEntity {
   generatedDocument: FileUpload | null = null;
 
   @OneToMany({ type: 'Project', mappedBy: 'grant' })
-  projects: Project | null = null;
+  @TransformCollection()
+  projects = new Collection<Project>(this);
 
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()

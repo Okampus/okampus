@@ -268,10 +268,10 @@ export class DatabaseSeeder extends Seeder {
   private readonly logger = new ConsoleLogger('Seeder');
 
   public async run(em: EntityManager): Promise<void> {
+    this.logger.log(`Seeding launched for tenant ${DatabaseSeeder.targetTenant}...`);
+
     const createdAt = new Date();
     const start = new Date('2023-05-01T00:00:00.000Z');
-
-    const password = await hash('root', { secret: DatabaseSeeder.pepper });
 
     const domain = { domain: DatabaseSeeder.targetTenant };
     const tenant = await em.findOneOrFail(Tenant, domain, { populate: ['adminTeam', 'adminTeam.actor'] });
@@ -284,6 +284,7 @@ export class DatabaseSeeder extends Seeder {
       tenant.campus.add(new Campus({ name: 'Campus de Paris', address, ...scopedOptions }));
     }
 
+    const password = await hash('root', { secret: DatabaseSeeder.pepper });
     const admins = await new UserSeeder(em, tenant, ScopeRole.TenantAdmin, password).create(seedingConfig.N_ADMINS);
     const students = await new UserSeeder(em, tenant, ScopeRole.TenantUser, password).create(seedingConfig.N_STUDENTS);
 
@@ -292,6 +293,8 @@ export class DatabaseSeeder extends Seeder {
 
     let restAdmins = admins;
     let stepAdmins: Individual[];
+
+    this.logger.log('Seeding team categories..');
 
     const approvalSteps = [];
     for (let i = 0; i < seedingConfig.N_APPROVAL_STEPS; i++) {
@@ -323,9 +326,6 @@ export class DatabaseSeeder extends Seeder {
     );
 
     this.logger.log('Seeding teams..');
-
-    const data = await loadTeamsFromYaml(tenant, categories);
-    if (!data) throw new Error('No teams found');
 
     const teamsData = (await loadTeamsFromYaml(tenant, categories)) ?? fakeTeamsData(tenant, categories);
     const teamsWithParent = await Promise.all(
@@ -613,7 +613,7 @@ export class DatabaseSeeder extends Seeder {
                   }
 
                   const eventJoin = new EventJoin({
-                    action,
+                    actions: action ? [action] : [],
                     joiner: individual.user,
                     settledBy: pickOneFromArray(managers),
                     settledAt: createdAt,

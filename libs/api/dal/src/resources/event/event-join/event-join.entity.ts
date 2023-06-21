@@ -1,6 +1,17 @@
 import { EventJoinRepository } from './event-join.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  Enum,
+  EnumType,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from '@mikro-orm/core';
+
+import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState, SettledVia } from '@okampus/shared/enums';
 
 import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
@@ -54,7 +65,8 @@ export class EventJoin extends TenantScopedEntity {
   missionJoin: MissionJoin | null = null;
 
   @OneToMany({ type: 'Action', mappedBy: 'eventJoin' })
-  action: Action | null = null;
+  @TransformCollection()
+  actions = new Collection<Action>(this);
 
   @ManyToOne({ type: 'FormSubmission', nullable: true, default: null })
   formSubmission: FormSubmission | null = null;

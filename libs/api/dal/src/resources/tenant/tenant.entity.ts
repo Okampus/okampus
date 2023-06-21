@@ -15,11 +15,11 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { OidcInfo } from '@okampus/shared/dtos';
 
+import type { Team } from '../team/team.entity';
 import type { Campus } from './campus/campus.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
 import type { TenantOptions } from './tenant.options';
-import type { Team } from '../team/team.entity';
 
 // TODO: add official locations/addresses
 @Entity({ customRepository: () => TenantRepository })
@@ -50,8 +50,8 @@ export class Tenant extends BaseEntity {
   @TransformCollection()
   campus = new Collection<Campus>(this);
 
-  @OneToOne({ type: 'Team', mappedBy: 'adminTeamTenant', nullable: true, default: null })
-  adminTeam: Team | null = null;
+  @OneToOne({ type: 'Team', mappedBy: 'adminTeamTenant' })
+  adminTeam!: Team;
 
   constructor(options: TenantOptions) {
     super();

@@ -271,7 +271,7 @@ export class AppModule implements NestModule, OnModuleInit {
       // Init base tenant
       const tenant = new Tenant({ name: capitalize(BASE_TENANT), domain: BASE_TENANT, pointName: 'LXP' });
 
-      const administrationTeam = new Team({
+      tenant.adminTeam = new Team({
         name: "Équipe d'administration",
         slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
         type: TeamType.Tenant,
@@ -279,12 +279,10 @@ export class AppModule implements NestModule, OnModuleInit {
         tenant,
       });
 
-      tenant.adminTeam = administrationTeam;
-
       const anon = new Individual({
         slug: ANON_ACCOUNT_SLUG,
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
-        user: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
+        userProps: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
         email: ANON_ACCOUNT_EMAIL,
         scopeRole: ScopeRole.Admin,
         createdBy: null,
@@ -294,7 +292,7 @@ export class AppModule implements NestModule, OnModuleInit {
       admin = new Individual({
         slug: ADMIN_ACCOUNT_SLUG,
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
-        user: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
+        userProps: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
         scopeRole: ScopeRole.Admin,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,

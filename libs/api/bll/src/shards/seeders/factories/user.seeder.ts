@@ -27,7 +27,7 @@ export class UserSeeder extends Factory<Individual> {
     return {
       slug: toSlug(`${firstName}-${lastName}-${nanoid(4)}`),
       name: `${firstName} ${lastName}`,
-      user: { firstName, lastName },
+      userProps: { firstName, lastName },
       passwordHash: this.passwordHash,
       email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
       scopeRole: this.scopeRole,

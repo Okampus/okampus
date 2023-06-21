@@ -11,7 +11,7 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 export const financeBaseInfo = Selector('Finance')({
   ...entityBase,
   payedAt: true,
-  actor: actorBaseInfo,
+  payedBy: actorBaseInfo,
   address: addressBaseInfo,
   financeAttachments: [{}, { fileUpload: fileUploadBaseInfo }],
   amount: true,

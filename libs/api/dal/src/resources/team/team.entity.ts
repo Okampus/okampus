@@ -87,9 +87,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'Tenant', inversedBy: 'adminTeam', nullable: true, default: null })
   adminTeamTenant: Tenant | null = null;
 
-  @OneToOne({ type: 'LegalUnit', inversedBy: 'team', nullable: true, default: null })
-  legalUnit: LegalUnit | null = null;
-
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
