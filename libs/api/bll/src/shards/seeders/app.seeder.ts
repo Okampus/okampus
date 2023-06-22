@@ -348,7 +348,14 @@ export class DatabaseSeeder extends Seeder {
 
         const description = faker.lorem.paragraph();
         const category = PoleCategory.Administration;
-        const pole = new Pole({ name: 'Bureau', description, team: team, required: true, category, ...scopedOptions });
+        const pole = new Pole({
+          name: 'Bureau',
+          description,
+          team: team,
+          isRequired: true,
+          category,
+          ...scopedOptions,
+        });
         team.poles.add(pole);
 
         if (teamData.avatar) {
@@ -368,7 +375,7 @@ export class DatabaseSeeder extends Seeder {
           payedAt: start,
           method: PaymentMethod.Transfer,
           category: FinanceCategory.Subvention,
-          payedBy: pickOneFromArray(admins).actor,
+          payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : team.tenant.adminTeam.actor,
           receivedBy: team.actor,
           createdBy: pickOneFromArray(admins),
           state: FinanceState.Completed,
@@ -537,7 +544,12 @@ export class DatabaseSeeder extends Seeder {
               return event;
             });
 
-            team.events.add(events);
+            const eventManages = events.map((event) => {
+              const createdBy = event.supervisors.getItems()[0].individual;
+              return new EventManage({ team, event, createdBy, tenant });
+            });
+
+            team.eventManages.add(eventManages);
 
             const finances = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {

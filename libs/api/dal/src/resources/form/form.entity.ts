@@ -14,7 +14,7 @@ export class Form extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @OneToOne({ type: 'Team', inversedBy: 'joinForm', nullable: true })
+  @OneToOne({ type: 'Team', inversedBy: 'joinForm', nullable: true, default: null })
   team: Team | null = null;
 
   @Property({ type: 'json' })
@@ -23,16 +23,16 @@ export class Form extends TenantScopedEntity {
   @Enum({ items: () => FormType, type: EnumType })
   type!: FormType;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: true })
   isEnabled = true;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: false })
   isAllowingMultipleAnswers = false;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: true })
   isAllowingEditingAnswers = true;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: false })
   isRequired = false;
 
   constructor(options: FormOptions & { undeletable?: boolean }) {

@@ -10,5 +10,5 @@ export class EventApprovalProps {
 
   @Field(() => Boolean)
   @IsBoolean()
-  approved!: boolean;
+  isApproved!: boolean;
 }

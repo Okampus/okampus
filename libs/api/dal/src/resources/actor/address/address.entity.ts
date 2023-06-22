@@ -46,8 +46,8 @@ export class Address extends TenantScopedEntity {
   @OneToOne({ type: 'Campus', inversedBy: 'address', nullable: true, default: null })
   campus: Campus | null = null;
 
-  @Property({ type: 'boolean' })
-  public = false;
+  @Property({ type: 'boolean', default: false })
+  isPublic = false;
 
   constructor(options: AddressOptions) {
     super(options);

@@ -84,6 +84,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'{}'",
           "mappedType": "array"
         },
         "last_name": {
@@ -154,6 +155,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "integer"
         },
         "stats_post_count": {
@@ -163,6 +165,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
         "stats_last_post_at": {
@@ -183,6 +186,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
         "stats_reply_count": {
@@ -192,6 +196,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
         "stats_last_reply_at": {
@@ -212,6 +217,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
         "stats_comment_count": {
@@ -221,10 +227,11 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
-        "stats_last_comment": {
-          "name": "stats_last_comment",
+        "stats_last_comment_at": {
+          "name": "stats_last_comment_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -241,6 +248,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
         "stats_last_action_at": {
@@ -261,33 +269,37 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "smallint"
         },
-        "settings_dark_mode_activated": {
-          "name": "settings_dark_mode_activated",
+        "settings_is_dark_mode_activated": {
+          "name": "settings_is_dark_mode_activated",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
-        "settings_gdpr_end_of_life_export": {
-          "name": "settings_gdpr_end_of_life_export",
+        "settings_is_gdpr_exported_on_account_deactivation": {
+          "name": "settings_is_gdpr_exported_on_account_deactivation",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
-        "settings_gdpr_end_of_life_anonymize": {
-          "name": "settings_gdpr_end_of_life_anonymize",
+        "settings_is_gdpr_anonymized_on_account_deactivation": {
+          "name": "settings_is_gdpr_anonymized_on_account_deactivation",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "notification_settings_mentionned": {
@@ -513,6 +525,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "1209600",
           "mappedType": "integer"
         },
         "notification_settings_admin_thread_assigned_stale": {
@@ -531,6 +544,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "604800",
           "mappedType": "integer"
         },
         "notification_settings_admin_thread_assigned": {
@@ -560,22 +574,24 @@
           "nullable": false,
           "mappedType": "enum"
         },
-        "finished_introduction": {
-          "name": "finished_introduction",
+        "is_introduction_finished": {
+          "name": "is_introduction_finished",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
-        "finished_onboarding": {
-          "name": "finished_onboarding",
+        "is_onboarding_finished": {
+          "name": "is_onboarding_finished",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         }
       },
@@ -853,12 +869,13 @@
         },
         "membership_fees": {
           "name": "membership_fees",
-          "type": "int",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "default": "0",
+          "mappedType": "float"
         },
         "current_finance": {
           "name": "current_finance",
@@ -867,6 +884,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "float"
         },
         "directors_category_name": {
@@ -876,6 +894,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'Directors'",
           "mappedType": "text"
         },
         "managers_category_name": {
@@ -885,6 +904,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'Managers'",
           "mappedType": "text"
         },
         "members_category_name": {
@@ -894,6 +914,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'Members'",
           "mappedType": "text"
         },
         "canteen_id": {
@@ -1207,13 +1228,14 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "oidc_info_oidc_enabled": {
-          "name": "oidc_info_oidc_enabled",
+        "oidc_info_is_oidc_enabled": {
+          "name": "oidc_info_is_oidc_enabled",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
         "oidc_info_oidc_name": {
@@ -1419,6 +1441,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "bot_id": {
@@ -1428,6 +1451,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "password_hash": {
@@ -2185,6 +2209,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "current_timestamp",
           "mappedType": "datetime"
         },
         "last_issued_at": {
@@ -2195,6 +2220,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "current_timestamp",
           "mappedType": "datetime"
         },
         "revoked_at": {
@@ -2403,6 +2429,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         }
       },
@@ -2616,13 +2643,14 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "required": {
-          "name": "required",
+        "is_required": {
+          "name": "is_required",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "category": {
@@ -2897,6 +2925,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "schema": {
@@ -2930,6 +2959,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
         "is_allowing_multiple_answers": {
@@ -2939,6 +2969,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "is_allowing_editing_answers": {
@@ -2948,6 +2979,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
         "is_required": {
@@ -2957,6 +2989,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         }
       },
@@ -3132,6 +3165,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "current_timestamp",
           "mappedType": "datetime"
         }
       },
@@ -3781,6 +3815,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "regular_event_interval": {
@@ -5438,6 +5473,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "parent_id": {
@@ -5466,7 +5502,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         }
       },
@@ -5546,6 +5583,7 @@
             "id"
           ],
           "referencedTableName": "public.team",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -8372,13 +8410,14 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "public": {
-          "name": "public",
+        "is_public": {
+          "name": "is_public",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         }
       },
@@ -8641,8 +8680,8 @@
           "default": "false",
           "mappedType": "boolean"
         },
-        "auto_accept_joins": {
-          "name": "auto_accept_joins",
+        "is_auto_accepting_joins": {
+          "name": "is_auto_accepting_joins",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -8917,71 +8956,6 @@
           ],
           "referencedTableName": "public.event_approval_step",
           "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "team_events",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_events_pkey",
-          "columnNames": [
-            "team_id",
-            "event_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_events_team_id_foreign": {
-          "constraintName": "team_events_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_events",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "team_events_event_id_foreign": {
-          "constraintName": "team_events_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.team_events",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -9331,8 +9305,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "activities": {
-          "name": "activities",
+        "description": {
+          "name": "description",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -9537,8 +9511,8 @@
           "default": "1",
           "mappedType": "smallint"
         },
-        "auto_accept_member": {
-          "name": "auto_accept_member",
+        "is_auto_accepting_members": {
+          "name": "is_auto_accepting_members",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -9783,8 +9757,8 @@
           "default": "null",
           "mappedType": "text"
         },
-        "approved": {
-          "name": "approved",
+        "is_approved": {
+          "name": "is_approved",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -10877,6 +10851,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         },
         "event_id": {
@@ -11586,6 +11561,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "null",
           "mappedType": "bigint"
         }
       },

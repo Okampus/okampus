@@ -40,7 +40,7 @@ export class Mission extends TenantScopedEntity {
   quantity = 1;
 
   @Property({ type: 'boolean', default: false })
-  autoAcceptMember = false;
+  isAutoAcceptingMembers = false;
 
   @Property({ type: 'boolean', default: false })
   isTemplate = false;

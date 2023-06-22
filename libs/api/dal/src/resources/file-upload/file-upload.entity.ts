@@ -19,7 +19,7 @@ export class FileUpload extends TenantScopedEntity {
   @Property({ type: 'text' })
   url!: string;
 
-  @Property({ type: 'datetime' })
+  @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   fileLastModifiedAt = new Date();
 
   constructor(options: FileUploadOptions) {

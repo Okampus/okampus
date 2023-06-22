@@ -1775,10 +1775,10 @@ type Address {
   id: bigint!
   image: FileUpload
   imageId: bigint
+  isPublic: Boolean!
   latitude: Float
   longitude: Float
   name: String!
-  public: Boolean!
   state: String!
   street: String!
   tenant: Tenant!
@@ -1899,10 +1899,10 @@ input AddressBoolExp {
   id: BigintComparisonExp
   image: FileUploadBoolExp
   imageId: BigintComparisonExp
+  isPublic: BooleanComparisonExp
   latitude: FloatComparisonExp
   longitude: FloatComparisonExp
   name: StringComparisonExp
-  public: BooleanComparisonExp
   state: StringComparisonExp
   street: StringComparisonExp
   tenant: TenantBoolExp
@@ -1946,10 +1946,10 @@ input AddressInsertInput {
   id: bigint
   image: FileUploadObjRelInsertInput
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenant: TenantObjRelInsertInput
@@ -2072,10 +2072,10 @@ input AddressOrderBy {
   id: OrderBy
   image: FileUploadOrderBy
   imageId: OrderBy
+  isPublic: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
-  public: OrderBy
   state: OrderBy
   street: OrderBy
   tenant: TenantOrderBy
@@ -2098,10 +2098,10 @@ enum AddressSelectColumn {
   hiddenAt
   id
   imageId
+  isPublic
   latitude
   longitude
   name
-  public
   state
   street
   tenantId
@@ -2109,11 +2109,11 @@ enum AddressSelectColumn {
 }
 
 enum AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns {
-  public
+  isPublic
 }
 
 enum AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns {
-  public
+  isPublic
 }
 
 input AddressSetInput {
@@ -2127,10 +2127,10 @@ input AddressSetInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenantId: bigint
@@ -2219,10 +2219,10 @@ input AddressStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenantId: bigint
@@ -2262,10 +2262,10 @@ enum AddressUpdateColumn {
   hiddenAt
   id
   imageId
+  isPublic
   latitude
   longitude
   name
-  public
   state
   street
   tenantId
@@ -5863,8 +5863,8 @@ type Content {
   replyingToId: bigint
   reports(distinctOn: [ReportSelectColumn!], limit: Int, offset: Int, orderBy: [ReportOrderBy!], where: ReportBoolExp): [Report!]!
   reportsAggregate(distinctOn: [ReportSelectColumn!], limit: Int, offset: Int, orderBy: [ReportOrderBy!], where: ReportBoolExp): ReportAggregate!
-  team: Team!
-  teamId: bigint!
+  team: Team
+  teamId: bigint
   tenant: Tenant!
   tenantId: bigint!
   text: String!
@@ -7060,7 +7060,6 @@ type Event {
   address: Address
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean!
   banner: FileUpload
   bannerId: bigint
   content: Content!
@@ -7087,6 +7086,7 @@ type Event {
   formSubmission: FormSubmission
   hiddenAt: timestamptz
   id: bigint!
+  isAutoAcceptingJoins: Boolean!
   isPrivate: Boolean!
   isTemplate: Boolean!
   joinFormId: bigint
@@ -7103,8 +7103,6 @@ type Event {
   slug: String!
   start: timestamptz!
   state: String!
-  teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
-  teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
   tenant: Tenant!
   tenantId: bigint!
 }
@@ -7174,7 +7172,6 @@ input EventAppendInput {
 }
 
 type EventApproval {
-  approved: Boolean!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
@@ -7184,6 +7181,7 @@ type EventApproval {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint!
+  isApproved: Boolean!
   message: String
   stepId: bigint
   tenant: Tenant!
@@ -7275,7 +7273,6 @@ input EventApprovalBoolExp {
   _and: [EventApprovalBoolExp!]
   _not: EventApprovalBoolExp
   _or: [EventApprovalBoolExp!]
-  approved: BooleanComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -7285,6 +7282,7 @@ input EventApprovalBoolExp {
   eventId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isApproved: BooleanComparisonExp
   message: StringComparisonExp
   stepId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -7304,7 +7302,6 @@ input EventApprovalIncInput {
 }
 
 input EventApprovalInsertInput {
-  approved: Boolean
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -7314,6 +7311,7 @@ input EventApprovalInsertInput {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenant: TenantObjRelInsertInput
@@ -7380,7 +7378,6 @@ input EventApprovalOnConflict {
 }
 
 input EventApprovalOrderBy {
-  approved: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -7390,6 +7387,7 @@ input EventApprovalOrderBy {
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isApproved: OrderBy
   message: OrderBy
   stepId: OrderBy
   tenant: TenantOrderBy
@@ -7401,34 +7399,34 @@ input EventApprovalPkColumnsInput {
 }
 
 enum EventApprovalSelectColumn {
-  approved
   createdAt
   createdById
   deletedAt
   eventId
   hiddenAt
   id
+  isApproved
   message
   stepId
   tenantId
 }
 
 enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_andArgumentsColumns {
-  approved
+  isApproved
 }
 
 enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_orArgumentsColumns {
-  approved
+  isApproved
 }
 
 input EventApprovalSetInput {
-  approved: Boolean
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenantId: bigint
@@ -8352,13 +8350,13 @@ input EventApprovalStreamCursorInput {
 }
 
 input EventApprovalStreamCursorValueInput {
-  approved: Boolean
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenantId: bigint
@@ -8381,13 +8379,13 @@ input EventApprovalSumOrderBy {
 }
 
 enum EventApprovalUpdateColumn {
-  approved
   createdAt
   createdById
   deletedAt
   eventId
   hiddenAt
   id
+  isApproved
   message
   stepId
   tenantId
@@ -8491,7 +8489,6 @@ input EventBoolExp {
   address: AddressBoolExp
   addressId: BigintComparisonExp
   approvalSubmissionId: BigintComparisonExp
-  autoAcceptJoins: BooleanComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   content: ContentBoolExp
@@ -8518,6 +8515,7 @@ input EventBoolExp {
   formSubmission: FormSubmissionBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isAutoAcceptingJoins: BooleanComparisonExp
   isPrivate: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
   joinFormId: BigintComparisonExp
@@ -8534,8 +8532,6 @@ input EventBoolExp {
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
   state: StringComparisonExp
-  teamEvents: TeamEventsBoolExp
-  teamEventsAggregate: TeamEventsAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -8578,7 +8574,6 @@ input EventInsertInput {
   address: AddressObjRelInsertInput
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   content: ContentObjRelInsertInput
@@ -8599,6 +8594,7 @@ input EventInsertInput {
   formSubmission: FormSubmissionObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -8615,7 +8611,6 @@ input EventInsertInput {
   slug: String
   start: timestamptz
   state: String
-  teamEvents: TeamEventsArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -9280,11 +9275,11 @@ input EventJoinVarSampOrderBy {
 }
 
 type EventManage {
-  activities: String!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
+  description: String!
   event: Event!
   eventId: bigint!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
@@ -9368,11 +9363,11 @@ input EventManageBoolExp {
   _and: [EventManageBoolExp!]
   _not: EventManageBoolExp
   _or: [EventManageBoolExp!]
-  activities: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
   eventJoins: EventJoinBoolExp
@@ -9400,11 +9395,11 @@ input EventManageIncInput {
 }
 
 input EventManageInsertInput {
-  activities: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   event: EventObjRelInsertInput
   eventId: bigint
   eventJoins: EventJoinArrRelInsertInput
@@ -9418,10 +9413,10 @@ input EventManageInsertInput {
 }
 
 type EventManageMaxFields {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -9430,10 +9425,10 @@ type EventManageMaxFields {
 }
 
 input EventManageMaxOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -9442,10 +9437,10 @@ input EventManageMaxOrderBy {
 }
 
 type EventManageMinFields {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -9454,10 +9449,10 @@ type EventManageMinFields {
 }
 
 input EventManageMinOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -9482,11 +9477,11 @@ input EventManageOnConflict {
 }
 
 input EventManageOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
@@ -9504,10 +9499,10 @@ input EventManagePkColumnsInput {
 }
 
 enum EventManageSelectColumn {
-  activities
   createdAt
   createdById
   deletedAt
+  description
   eventId
   hiddenAt
   id
@@ -9516,10 +9511,10 @@ enum EventManageSelectColumn {
 }
 
 input EventManageSetInput {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -9581,10 +9576,10 @@ input EventManageStreamCursorInput {
 }
 
 input EventManageStreamCursorValueInput {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -9609,10 +9604,10 @@ input EventManageSumOrderBy {
 }
 
 enum EventManageUpdateColumn {
-  activities
   createdAt
   createdById
   deletedAt
+  description
   eventId
   hiddenAt
   id
@@ -9798,7 +9793,6 @@ input EventOrderBy {
   address: AddressOrderBy
   addressId: OrderBy
   approvalSubmissionId: OrderBy
-  autoAcceptJoins: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
   content: ContentOrderBy
@@ -9819,6 +9813,7 @@ input EventOrderBy {
   formSubmission: FormSubmissionOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isAutoAcceptingJoins: OrderBy
   isPrivate: OrderBy
   isTemplate: OrderBy
   joinFormId: OrderBy
@@ -9835,7 +9830,6 @@ input EventOrderBy {
   slug: OrderBy
   start: OrderBy
   state: OrderBy
-  teamEventsAggregate: TeamEventsAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -9851,7 +9845,6 @@ input EventPrependInput {
 enum EventSelectColumn {
   addressId
   approvalSubmissionId
-  autoAcceptJoins
   bannerId
   contentId
   createdAt
@@ -9860,6 +9853,7 @@ enum EventSelectColumn {
   end
   hiddenAt
   id
+  isAutoAcceptingJoins
   isPrivate
   isTemplate
   joinFormId
@@ -9879,13 +9873,13 @@ enum EventSelectColumn {
 }
 
 enum EventSelectColumnEventAggregateBoolExpBool_andArgumentsColumns {
-  autoAcceptJoins
+  isAutoAcceptingJoins
   isPrivate
   isTemplate
 }
 
 enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
-  autoAcceptJoins
+  isAutoAcceptingJoins
   isPrivate
   isTemplate
 }
@@ -9893,7 +9887,6 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 input EventSetInput {
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
@@ -9902,6 +9895,7 @@ input EventSetInput {
   end: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -10024,7 +10018,6 @@ input EventStreamCursorInput {
 input EventStreamCursorValueInput {
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
@@ -10033,6 +10026,7 @@ input EventStreamCursorValueInput {
   end: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -10558,7 +10552,6 @@ input EventTagsVarSampOrderBy {
 enum EventUpdateColumn {
   addressId
   approvalSubmissionId
-  autoAcceptJoins
   bannerId
   contentId
   createdAt
@@ -10567,6 +10560,7 @@ enum EventUpdateColumn {
   end
   hiddenAt
   id
+  isAutoAcceptingJoins
   isPrivate
   isTemplate
   joinFormId
@@ -18432,7 +18426,6 @@ input LegalUnitVarSampOrderBy {
 }
 
 type Mission {
-  autoAcceptMember: Boolean!
   color: String!
   createdAt: timestamptz!
   createdBy: Individual
@@ -18443,6 +18436,7 @@ type Mission {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint!
+  isAutoAcceptingMembers: Boolean!
   isTemplate: Boolean!
   missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
   missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
@@ -18551,7 +18545,6 @@ input MissionBoolExp {
   _and: [MissionBoolExp!]
   _not: MissionBoolExp
   _or: [MissionBoolExp!]
-  autoAcceptMember: BooleanComparisonExp
   color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -18562,6 +18555,7 @@ input MissionBoolExp {
   eventManageId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isAutoAcceptingMembers: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
@@ -18594,7 +18588,6 @@ input MissionIncInput {
 }
 
 input MissionInsertInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -18605,6 +18598,7 @@ input MissionInsertInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   missionJoins: MissionJoinArrRelInsertInput
   name: String
@@ -19315,7 +19309,6 @@ input MissionOnConflict {
 }
 
 input MissionOrderBy {
-  autoAcceptMember: OrderBy
   color: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -19326,6 +19319,7 @@ input MissionOrderBy {
   eventManageId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isAutoAcceptingMembers: OrderBy
   isTemplate: OrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   name: OrderBy
@@ -19345,7 +19339,6 @@ input MissionPkColumnsInput {
 }
 
 enum MissionSelectColumn {
-  autoAcceptMember
   color
   createdAt
   createdById
@@ -19354,6 +19347,7 @@ enum MissionSelectColumn {
   eventManageId
   hiddenAt
   id
+  isAutoAcceptingMembers
   isTemplate
   name
   pointsMaximum
@@ -19365,17 +19359,16 @@ enum MissionSelectColumn {
 }
 
 enum MissionSelectColumnMissionAggregateBoolExpBool_andArgumentsColumns {
-  autoAcceptMember
+  isAutoAcceptingMembers
   isTemplate
 }
 
 enum MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns {
-  autoAcceptMember
+  isAutoAcceptingMembers
   isTemplate
 }
 
 input MissionSetInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -19384,6 +19377,7 @@ input MissionSetInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   name: String
   pointsMaximum: smallint
@@ -19472,7 +19466,6 @@ input MissionStreamCursorInput {
 }
 
 input MissionStreamCursorValueInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -19481,6 +19474,7 @@ input MissionStreamCursorValueInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   name: String
   pointsMaximum: smallint
@@ -19516,7 +19510,6 @@ input MissionSumOrderBy {
 }
 
 enum MissionUpdateColumn {
-  autoAcceptMember
   color
   createdAt
   createdById
@@ -19525,6 +19518,7 @@ enum MissionUpdateColumn {
   eventManageId
   hiddenAt
   id
+  isAutoAcceptingMembers
   isTemplate
   name
   pointsMaximum
@@ -19738,8 +19732,6 @@ type Mutation {
   deleteTagByPk(id: bigint!): Tag
   deleteTeam(where: TeamBoolExp!): TeamMutationResponse
   deleteTeamByPk(id: bigint!): Team
-  deleteTeamEvents(where: TeamEventsBoolExp!): TeamEventsMutationResponse
-  deleteTeamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
   deleteTeamJoin(where: TeamJoinBoolExp!): TeamJoinMutationResponse
   deleteTeamJoinByPk(id: bigint!): TeamJoin
   deleteTeamMember(where: TeamMemberBoolExp!): TeamMemberMutationResponse
@@ -19885,8 +19877,6 @@ type Mutation {
   insertTag(objects: [TagInsertInput!]!, onConflict: TagOnConflict): TagMutationResponse
   insertTagOne(object: TagInsertInput!, onConflict: TagOnConflict): Tag
   insertTeam(objects: [TeamInsertInput!]!, onConflict: TeamOnConflict): TeamMutationResponse
-  insertTeamEvents(objects: [TeamEventsInsertInput!]!, onConflict: TeamEventsOnConflict): TeamEventsMutationResponse
-  insertTeamEventsOne(object: TeamEventsInsertInput!, onConflict: TeamEventsOnConflict): TeamEvents
   insertTeamJoin(objects: [TeamJoinInsertInput!]!, onConflict: TeamJoinOnConflict): TeamJoinMutationResponse
   insertTeamJoinOne(object: TeamJoinInsertInput!, onConflict: TeamJoinOnConflict): TeamJoin
   insertTeamMember(objects: [TeamMemberInsertInput!]!, onConflict: TeamMemberOnConflict): TeamMemberMutationResponse
@@ -20095,9 +20085,6 @@ type Mutation {
   updateTagMany(updates: [TagUpdates!]!): [TagMutationResponse]
   updateTeam(_inc: TeamIncInput, _set: TeamSetInput, where: TeamBoolExp!): TeamMutationResponse
   updateTeamByPk(_inc: TeamIncInput, _set: TeamSetInput, pkColumns: TeamPkColumnsInput!): Team
-  updateTeamEvents(_inc: TeamEventsIncInput, _set: TeamEventsSetInput, where: TeamEventsBoolExp!): TeamEventsMutationResponse
-  updateTeamEventsByPk(_inc: TeamEventsIncInput, _set: TeamEventsSetInput, pkColumns: TeamEventsPkColumnsInput!): TeamEvents
-  updateTeamEventsMany(updates: [TeamEventsUpdates!]!): [TeamEventsMutationResponse]
   updateTeamJoin(_inc: TeamJoinIncInput, _set: TeamJoinSetInput, where: TeamJoinBoolExp!): TeamJoinMutationResponse
   updateTeamJoinByPk(_inc: TeamJoinIncInput, _set: TeamJoinSetInput, pkColumns: TeamJoinPkColumnsInput!): TeamJoin
   updateTeamJoinMany(updates: [TeamJoinUpdates!]!): [TeamJoinMutationResponse]
@@ -20155,8 +20142,8 @@ type Pole {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
+  isRequired: Boolean!
   name: String!
-  required: Boolean!
   team: Team!
   teamId: bigint!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -20256,8 +20243,8 @@ input PoleBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isRequired: BooleanComparisonExp
   name: StringComparisonExp
-  required: BooleanComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
@@ -20286,8 +20273,8 @@ input PoleInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -20372,8 +20359,8 @@ input PoleOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isRequired: OrderBy
   name: OrderBy
-  required: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -20393,18 +20380,18 @@ enum PoleSelectColumn {
   description
   hiddenAt
   id
+  isRequired
   name
-  required
   teamId
   tenantId
 }
 
 enum PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns {
-  required
+  isRequired
 }
 
 enum PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns {
-  required
+  isRequired
 }
 
 input PoleSetInput {
@@ -20415,8 +20402,8 @@ input PoleSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   teamId: bigint
   tenantId: bigint
 }
@@ -20476,8 +20463,8 @@ input PoleStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   teamId: bigint
   tenantId: bigint
 }
@@ -20504,8 +20491,8 @@ enum PoleUpdateColumn {
   description
   hiddenAt
   id
+  isRequired
   name
-  required
   teamId
   tenantId
 }
@@ -21794,9 +21781,6 @@ type Query {
   team(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   teamAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
   teamByPk(id: bigint!): Team
-  teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
-  teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
-  teamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
   teamJoin(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamJoinByPk(id: bigint!): TeamJoin
@@ -25214,10 +25198,6 @@ type Subscription {
   team(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   teamAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
   teamByPk(id: bigint!): Team
-  teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
-  teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
-  teamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
-  teamEventsStream(batchSize: Int!, cursor: [TeamEventsStreamCursorInput]!, where: TeamEventsBoolExp): [TeamEvents!]!
   teamJoin(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamJoinByPk(id: bigint!): TeamJoin
@@ -25727,7 +25707,7 @@ type Team {
   id: bigint!
   managersCategoryName: String!
   membersCategoryName: String!
-  membershipFees: Int!
+  membershipFees: Float!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   originalCreationDay: smallint
@@ -25741,8 +25721,6 @@ type Team {
   roles(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): [Role!]!
   rolesAggregate(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): RoleAggregate!
   team: Team
-  teamEvents(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): [TeamEvents!]!
-  teamEventsAggregate(distinctOn: [TeamEventsSelectColumn!], limit: Int, offset: Int, orderBy: [TeamEventsOrderBy!], where: TeamEventsBoolExp): TeamEventsAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
   teamMembers(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
@@ -25879,7 +25857,7 @@ input TeamBoolExp {
   id: BigintComparisonExp
   managersCategoryName: StringComparisonExp
   membersCategoryName: StringComparisonExp
-  membershipFees: IntComparisonExp
+  membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   originalCreationDay: SmallintComparisonExp
@@ -25893,8 +25871,6 @@ input TeamBoolExp {
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
   team: TeamBoolExp
-  teamEvents: TeamEventsBoolExp
-  teamEventsAggregate: TeamEventsAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -25917,242 +25893,6 @@ enum TeamConstraint {
   team_pkey
 }
 
-type TeamEvents {
-  event: Event!
-  eventId: bigint!
-  team: Team!
-  teamId: bigint!
-}
-
-type TeamEventsAggregate {
-  aggregate: TeamEventsAggregateFields
-  nodes: [TeamEvents!]!
-}
-
-input TeamEventsAggregateBoolExp {
-  count: teamEventsAggregateBoolExpCount
-}
-
-input teamEventsAggregateBoolExpCount {
-  arguments: [TeamEventsSelectColumn!]
-  distinct: Boolean
-  filter: TeamEventsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type TeamEventsAggregateFields {
-  avg: TeamEventsAvgFields
-  count(columns: [TeamEventsSelectColumn!], distinct: Boolean): Int!
-  max: TeamEventsMaxFields
-  min: TeamEventsMinFields
-  stddev: TeamEventsStddevFields
-  stddevPop: TeamEventsStddevPopFields
-  stddevSamp: TeamEventsStddevSampFields
-  sum: TeamEventsSumFields
-  varPop: TeamEventsVarPopFields
-  varSamp: TeamEventsVarSampFields
-  variance: TeamEventsVarianceFields
-}
-
-input TeamEventsAggregateOrderBy {
-  avg: TeamEventsAvgOrderBy
-  count: OrderBy
-  max: TeamEventsMaxOrderBy
-  min: TeamEventsMinOrderBy
-  stddev: TeamEventsStddevOrderBy
-  stddevPop: TeamEventsStddevPopOrderBy
-  stddevSamp: TeamEventsStddevSampOrderBy
-  sum: TeamEventsSumOrderBy
-  varPop: TeamEventsVarPopOrderBy
-  varSamp: TeamEventsVarSampOrderBy
-  variance: TeamEventsVarianceOrderBy
-}
-
-input TeamEventsArrRelInsertInput {
-  data: [TeamEventsInsertInput!]!
-  onConflict: TeamEventsOnConflict
-}
-
-type TeamEventsAvgFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsAvgOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-input TeamEventsBoolExp {
-  _and: [TeamEventsBoolExp!]
-  _not: TeamEventsBoolExp
-  _or: [TeamEventsBoolExp!]
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-}
-
-enum TeamEventsConstraint {
-  team_events_pkey
-}
-
-input TeamEventsIncInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-input TeamEventsInsertInput {
-  event: EventObjRelInsertInput
-  eventId: bigint
-  team: TeamObjRelInsertInput
-  teamId: bigint
-}
-
-type TeamEventsMaxFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-input TeamEventsMaxOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsMinFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-input TeamEventsMinOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsMutationResponse {
-  affectedRows: Int!
-  returning: [TeamEvents!]!
-}
-
-input TeamEventsOnConflict {
-  constraint: TeamEventsConstraint!
-  updateColumns: [TeamEventsUpdateColumn!]! = []
-  where: TeamEventsBoolExp
-}
-
-input TeamEventsOrderBy {
-  event: EventOrderBy
-  eventId: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-}
-
-input TeamEventsPkColumnsInput {
-  eventId: bigint!
-  teamId: bigint!
-}
-
-enum TeamEventsSelectColumn {
-  eventId
-  teamId
-}
-
-input TeamEventsSetInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-type TeamEventsStddevFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsStddevOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsStddevPopFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsStddevPopOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsStddevSampFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsStddevSampOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-input TeamEventsStreamCursorInput {
-  initialValue: TeamEventsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input TeamEventsStreamCursorValueInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-type TeamEventsSumFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-input TeamEventsSumOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-enum TeamEventsUpdateColumn {
-  eventId
-  teamId
-}
-
-input TeamEventsUpdates {
-  _inc: TeamEventsIncInput
-  _set: TeamEventsSetInput
-  where: TeamEventsBoolExp!
-}
-
-type TeamEventsVarianceFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsVarianceOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsVarPopFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsVarPopOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-type TeamEventsVarSampFields {
-  eventId: Float
-  teamId: Float
-}
-
-input TeamEventsVarSampOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
 input TeamIncInput {
   adminTeamTenantId: bigint
   canteenId: bigint
@@ -26161,7 +25901,7 @@ input TeamIncInput {
   createdById: bigint
   currentFinance: Float
   id: bigint
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -26199,7 +25939,7 @@ input TeamInsertInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   missions: MissionArrRelInsertInput
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -26209,7 +25949,6 @@ input TeamInsertInput {
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
   team: TeamObjRelInsertInput
-  teamEvents: TeamEventsArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -26790,7 +26529,7 @@ type TeamMaxFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -27836,7 +27575,7 @@ type TeamMinFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -27926,7 +27665,6 @@ input TeamOrderBy {
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
   team: TeamOrderBy
-  teamEventsAggregate: TeamEventsAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
@@ -27981,7 +27719,7 @@ input TeamSetInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -28119,7 +27857,7 @@ input TeamStreamCursorValueInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -28138,7 +27876,7 @@ type TeamSumFields {
   createdById: bigint
   currentFinance: Float
   id: bigint
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -28386,11 +28124,11 @@ type Tenant {
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   name: String!
+  oidcInfoIsOidcEnabled: Boolean!
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean!
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String!
@@ -28593,11 +28331,11 @@ input TenantBoolExp {
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
+  oidcInfoIsOidcEnabled: BooleanComparisonExp
   oidcInfoOidcCallbackUri: StringComparisonExp
   oidcInfoOidcClientId: StringComparisonExp
   oidcInfoOidcClientSecret: StringComparisonExp
   oidcInfoOidcDiscoveryUrl: StringComparisonExp
-  oidcInfoOidcEnabled: BooleanComparisonExp
   oidcInfoOidcName: StringComparisonExp
   oidcInfoOidcScopes: StringComparisonExp
   pointName: StringComparisonExp
@@ -28697,11 +28435,11 @@ input TenantInsertInput {
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -28855,11 +28593,11 @@ input TenantOrderBy {
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
+  oidcInfoIsOidcEnabled: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
   oidcInfoOidcClientSecret: OrderBy
   oidcInfoOidcDiscoveryUrl: OrderBy
-  oidcInfoOidcEnabled: OrderBy
   oidcInfoOidcName: OrderBy
   oidcInfoOidcScopes: OrderBy
   pointName: OrderBy
@@ -28895,22 +28633,22 @@ enum TenantSelectColumn {
   eventValidationFormId
   id
   name
+  oidcInfoIsOidcEnabled
   oidcInfoOidcCallbackUri
   oidcInfoOidcClientId
   oidcInfoOidcClientSecret
   oidcInfoOidcDiscoveryUrl
-  oidcInfoOidcEnabled
   oidcInfoOidcName
   oidcInfoOidcScopes
   pointName
 }
 
 enum TenantSelectColumnTenantAggregateBoolExpBool_andArgumentsColumns {
-  oidcInfoOidcEnabled
+  oidcInfoIsOidcEnabled
 }
 
 enum TenantSelectColumnTenantAggregateBoolExpBool_orArgumentsColumns {
-  oidcInfoOidcEnabled
+  oidcInfoIsOidcEnabled
 }
 
 input TenantSetInput {
@@ -28921,11 +28659,11 @@ input TenantSetInput {
   eventValidationFormId: bigint
   id: bigint
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -28980,11 +28718,11 @@ input TenantStreamCursorValueInput {
   eventValidationFormId: bigint
   id: bigint
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -29010,11 +28748,11 @@ enum TenantUpdateColumn {
   eventValidationFormId
   id
   name
+  oidcInfoIsOidcEnabled
   oidcInfoOidcCallbackUri
   oidcInfoOidcClientId
   oidcInfoOidcClientSecret
   oidcInfoOidcDiscoveryUrl
-  oidcInfoOidcEnabled
   oidcInfoOidcName
   oidcInfoOidcScopes
   pointName
@@ -29938,12 +29676,12 @@ type User {
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
   eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
-  finishedIntroduction: Boolean!
-  finishedOnboarding: Boolean!
   firstName: String!
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
+  isIntroductionFinished: Boolean!
+  isOnboardingFinished: Boolean!
   lastName: String!
   middleNames: _text!
   missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
@@ -29980,15 +29718,15 @@ type User {
   notificationSettingsThreadSubscribedUpdated: smallint!
   sessions(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): [Session!]!
   sessionsAggregate(distinctOn: [SessionSelectColumn!], limit: Int, offset: Int, orderBy: [SessionOrderBy!], where: SessionBoolExp): SessionAggregate!
-  settingsDarkModeActivated: Boolean!
-  settingsGdprEndOfLifeAnonymize: Boolean!
-  settingsGdprEndOfLifeExport: Boolean!
+  settingsIsDarkModeActivated: Boolean!
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean!
+  settingsIsGdprExportedOnAccountDeactivation: Boolean!
   shortcuts(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): [Shortcut!]!
   shortcutsAggregate(distinctOn: [ShortcutSelectColumn!], limit: Int, offset: Int, orderBy: [ShortcutOrderBy!], where: ShortcutBoolExp): ShortcutAggregate!
   statsActionStreak: smallint!
   statsCommentCount: smallint!
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int!
@@ -30176,12 +29914,12 @@ input UserBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   eventSupervisors: EventSupervisorsBoolExp
   eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
-  finishedIntroduction: BooleanComparisonExp
-  finishedOnboarding: BooleanComparisonExp
   firstName: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  isIntroductionFinished: BooleanComparisonExp
+  isOnboardingFinished: BooleanComparisonExp
   lastName: StringComparisonExp
   middleNames: _textComparisonExp
   missionJoins: MissionJoinBoolExp
@@ -30218,15 +29956,15 @@ input UserBoolExp {
   notificationSettingsThreadSubscribedUpdated: SmallintComparisonExp
   sessions: SessionBoolExp
   sessionsAggregate: SessionAggregateBoolExp
-  settingsDarkModeActivated: BooleanComparisonExp
-  settingsGdprEndOfLifeAnonymize: BooleanComparisonExp
-  settingsGdprEndOfLifeExport: BooleanComparisonExp
+  settingsIsDarkModeActivated: BooleanComparisonExp
+  settingsIsGdprAnonymizedOnAccountDeactivation: BooleanComparisonExp
+  settingsIsGdprExportedOnAccountDeactivation: BooleanComparisonExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
   statsActionStreak: SmallintComparisonExp
   statsCommentCount: SmallintComparisonExp
   statsLastActionAt: TimestamptzComparisonExp
-  statsLastComment: TimestamptzComparisonExp
+  statsLastCommentAt: TimestamptzComparisonExp
   statsLastPostAt: TimestamptzComparisonExp
   statsLastReplyAt: TimestamptzComparisonExp
   statsPoints: IntComparisonExp
@@ -30302,12 +30040,12 @@ input UserInsertInput {
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
   eventSupervisors: EventSupervisorsArrRelInsertInput
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   missionJoins: MissionJoinArrRelInsertInput
@@ -30342,14 +30080,14 @@ input UserInsertInput {
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
   sessions: SessionArrRelInsertInput
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   shortcuts: ShortcutArrRelInsertInput
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -30407,7 +30145,7 @@ type UserMaxFields {
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -30462,7 +30200,7 @@ input UserMaxOrderBy {
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -30517,7 +30255,7 @@ type UserMinFields {
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -30572,7 +30310,7 @@ input UserMinOrderBy {
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -30611,12 +30349,12 @@ input UserOrderBy {
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
-  finishedIntroduction: OrderBy
-  finishedOnboarding: OrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  isIntroductionFinished: OrderBy
+  isOnboardingFinished: OrderBy
   lastName: OrderBy
   middleNames: OrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
@@ -30651,14 +30389,14 @@ input UserOrderBy {
   notificationSettingsThreadSubscribedAnswered: OrderBy
   notificationSettingsThreadSubscribedUpdated: OrderBy
   sessionsAggregate: SessionAggregateOrderBy
-  settingsDarkModeActivated: OrderBy
-  settingsGdprEndOfLifeAnonymize: OrderBy
-  settingsGdprEndOfLifeExport: OrderBy
+  settingsIsDarkModeActivated: OrderBy
+  settingsIsGdprAnonymizedOnAccountDeactivation: OrderBy
+  settingsIsGdprExportedOnAccountDeactivation: OrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -30683,11 +30421,11 @@ enum UserSelectColumn {
   customizationColor
   customizationSignature
   deletedAt
-  finishedIntroduction
-  finishedOnboarding
   firstName
   hiddenAt
   id
+  isIntroductionFinished
+  isOnboardingFinished
   lastName
   middleNames
   notificationSettingsAdminEventValidationApproved
@@ -30720,13 +30458,13 @@ enum UserSelectColumn {
   notificationSettingsTeamSubscribedEventCreated
   notificationSettingsThreadSubscribedAnswered
   notificationSettingsThreadSubscribedUpdated
-  settingsDarkModeActivated
-  settingsGdprEndOfLifeAnonymize
-  settingsGdprEndOfLifeExport
+  settingsIsDarkModeActivated
+  settingsIsGdprAnonymizedOnAccountDeactivation
+  settingsIsGdprExportedOnAccountDeactivation
   statsActionStreak
   statsCommentCount
   statsLastActionAt
-  statsLastComment
+  statsLastCommentAt
   statsLastPostAt
   statsLastReplyAt
   statsPoints
@@ -30739,19 +30477,19 @@ enum UserSelectColumn {
 }
 
 enum UserSelectColumnUserAggregateBoolExpBool_andArgumentsColumns {
-  finishedIntroduction
-  finishedOnboarding
-  settingsDarkModeActivated
-  settingsGdprEndOfLifeAnonymize
-  settingsGdprEndOfLifeExport
+  isIntroductionFinished
+  isOnboardingFinished
+  settingsIsDarkModeActivated
+  settingsIsGdprAnonymizedOnAccountDeactivation
+  settingsIsGdprExportedOnAccountDeactivation
 }
 
 enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
-  finishedIntroduction
-  finishedOnboarding
-  settingsDarkModeActivated
-  settingsGdprEndOfLifeAnonymize
-  settingsGdprEndOfLifeExport
+  isIntroductionFinished
+  isOnboardingFinished
+  settingsIsDarkModeActivated
+  settingsIsGdprAnonymizedOnAccountDeactivation
+  settingsIsGdprExportedOnAccountDeactivation
 }
 
 input UserSetInput {
@@ -30760,11 +30498,11 @@ input UserSetInput {
   customizationColor: String
   customizationSignature: String
   deletedAt: timestamptz
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   notificationSettingsAdminEventValidationApproved: smallint
@@ -30797,13 +30535,13 @@ input UserSetInput {
   notificationSettingsTeamSubscribedEventCreated: smallint
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -31090,11 +30828,11 @@ input UserStreamCursorValueInput {
   customizationColor: String
   customizationSignature: String
   deletedAt: timestamptz
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   notificationSettingsAdminEventValidationApproved: smallint
@@ -31127,13 +30865,13 @@ input UserStreamCursorValueInput {
   notificationSettingsTeamSubscribedEventCreated: smallint
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -31239,11 +30977,11 @@ enum UserUpdateColumn {
   customizationColor
   customizationSignature
   deletedAt
-  finishedIntroduction
-  finishedOnboarding
   firstName
   hiddenAt
   id
+  isIntroductionFinished
+  isOnboardingFinished
   lastName
   middleNames
   notificationSettingsAdminEventValidationApproved
@@ -31276,13 +31014,13 @@ enum UserUpdateColumn {
   notificationSettingsTeamSubscribedEventCreated
   notificationSettingsThreadSubscribedAnswered
   notificationSettingsThreadSubscribedUpdated
-  settingsDarkModeActivated
-  settingsGdprEndOfLifeAnonymize
-  settingsGdprEndOfLifeExport
+  settingsIsDarkModeActivated
+  settingsIsGdprAnonymizedOnAccountDeactivation
+  settingsIsGdprExportedOnAccountDeactivation
   statsActionStreak
   statsCommentCount
   statsLastActionAt
-  statsLastComment
+  statsLastCommentAt
   statsLastPostAt
   statsLastReplyAt
   statsPoints

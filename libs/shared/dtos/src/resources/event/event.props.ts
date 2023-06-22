@@ -49,7 +49,7 @@ export class EventProps {
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
-  autoAcceptJoins?: boolean = true;
+  isAutoAcceptingJoins?: boolean = true;
 
   @Field(() => GraphQLJSON, { nullable: true })
   @IsOptional()

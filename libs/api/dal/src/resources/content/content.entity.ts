@@ -19,7 +19,7 @@ export class Content extends TenantScopedEntity {
   @Property({ type: 'text' })
   text!: string;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: false })
   isAnonymous = false;
 
   @ManyToMany({ type: 'FileUpload' })
@@ -52,8 +52,7 @@ export class Content extends TenantScopedEntity {
   @TransformCollection()
   reactions = new Collection<Reaction>(this);
 
-  @ManyToOne({ type: 'Team' })
-  @TransformCollection()
+  @ManyToOne({ type: 'Team', nullable: true, default: null })
   team: Team | null = null;
 
   constructor(options: ContentOptions) {

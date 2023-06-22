@@ -2760,10 +2760,10 @@ type Address {
   # An object relationship
   image: FileUpload
   imageId: bigint
+  isPublic: Boolean!
   latitude: Float
   longitude: Float
   name: String!
-  public: Boolean!
   state: String!
   street: String!
 
@@ -2895,10 +2895,10 @@ input AddressBoolExp {
   id: BigintComparisonExp
   image: FileUploadBoolExp
   imageId: BigintComparisonExp
+  isPublic: BooleanComparisonExp
   latitude: FloatComparisonExp
   longitude: FloatComparisonExp
   name: StringComparisonExp
-  public: BooleanComparisonExp
   state: StringComparisonExp
   street: StringComparisonExp
   tenant: TenantBoolExp
@@ -2950,10 +2950,10 @@ input AddressInsertInput {
   id: bigint
   image: FileUploadObjRelInsertInput
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenant: TenantObjRelInsertInput
@@ -3089,10 +3089,10 @@ input AddressOrderBy {
   id: OrderBy
   image: FileUploadOrderBy
   imageId: OrderBy
+  isPublic: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
-  public: OrderBy
   state: OrderBy
   street: OrderBy
   tenant: TenantOrderBy
@@ -3138,6 +3138,9 @@ enum AddressSelectColumn {
   imageId
 
   # column name
+  isPublic
+
+  # column name
   latitude
 
   # column name
@@ -3145,9 +3148,6 @@ enum AddressSelectColumn {
 
   # column name
   name
-
-  # column name
-  public
 
   # column name
   state
@@ -3165,13 +3165,13 @@ enum AddressSelectColumn {
 # select "addressAggregateBoolExpBool_andArgumentsColumns" columns of table "address"
 enum AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  public
+  isPublic
 }
 
 # select "addressAggregateBoolExpBool_orArgumentsColumns" columns of table "address"
 enum AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  public
+  isPublic
 }
 
 # input type for updating data in table "address"
@@ -3186,10 +3186,10 @@ input AddressSetInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenantId: bigint
@@ -3289,10 +3289,10 @@ input AddressStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
+  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
-  public: Boolean
   state: String
   street: String
   tenantId: bigint
@@ -3356,6 +3356,9 @@ enum AddressUpdateColumn {
   imageId
 
   # column name
+  isPublic
+
+  # column name
   latitude
 
   # column name
@@ -3363,9 +3366,6 @@ enum AddressUpdateColumn {
 
   # column name
   name
-
-  # column name
-  public
 
   # column name
   state
@@ -8299,8 +8299,8 @@ type Content {
   ): ReportAggregate!
 
   # An object relationship
-  team: Team!
-  teamId: bigint!
+  team: Team
+  teamId: bigint
 
   # An object relationship
   tenant: Tenant!
@@ -9852,7 +9852,6 @@ type Event {
   address: Address
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean!
 
   # An object relationship
   banner: FileUpload
@@ -10095,6 +10094,7 @@ type Event {
   formSubmission: FormSubmission
   hiddenAt: timestamptz
   id: bigint!
+  isAutoAcceptingJoins: Boolean!
   isPrivate: Boolean!
   isTemplate: Boolean!
   joinFormId: bigint
@@ -10116,42 +10116,6 @@ type Event {
   slug: String!
   start: timestamptz!
   state: String!
-
-  # An array relationship
-  teamEvents(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): [TeamEvents!]!
-
-  # An aggregate relationship
-  teamEventsAggregate(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): TeamEventsAggregate!
 
   # An object relationship
   tenant: Tenant!
@@ -10228,7 +10192,6 @@ input EventAppendInput {
 
 # columns and relationships of "event_approval"
 type EventApproval {
-  approved: Boolean!
   createdAt: timestamptz!
 
   # An object relationship
@@ -10244,6 +10207,7 @@ type EventApproval {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint!
+  isApproved: Boolean!
   message: String
   stepId: bigint
 
@@ -10346,7 +10310,6 @@ input EventApprovalBoolExp {
   _and: [EventApprovalBoolExp!]
   _not: EventApprovalBoolExp
   _or: [EventApprovalBoolExp!]
-  approved: BooleanComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -10356,6 +10319,7 @@ input EventApprovalBoolExp {
   eventId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isApproved: BooleanComparisonExp
   message: StringComparisonExp
   stepId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -10379,7 +10343,6 @@ input EventApprovalIncInput {
 
 # input type for inserting data into table "event_approval"
 input EventApprovalInsertInput {
-  approved: Boolean
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -10389,6 +10352,7 @@ input EventApprovalInsertInput {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenant: TenantObjRelInsertInput
@@ -10465,7 +10429,6 @@ input EventApprovalOnConflict {
 
 # Ordering options when selecting data from "event_approval".
 input EventApprovalOrderBy {
-  approved: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -10475,6 +10438,7 @@ input EventApprovalOrderBy {
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isApproved: OrderBy
   message: OrderBy
   stepId: OrderBy
   tenant: TenantOrderBy
@@ -10488,9 +10452,6 @@ input EventApprovalPkColumnsInput {
 
 # select columns of table "event_approval"
 enum EventApprovalSelectColumn {
-  # column name
-  approved
-
   # column name
   createdAt
 
@@ -10510,6 +10471,9 @@ enum EventApprovalSelectColumn {
   id
 
   # column name
+  isApproved
+
+  # column name
   message
 
   # column name
@@ -10522,24 +10486,24 @@ enum EventApprovalSelectColumn {
 # select "eventApprovalAggregateBoolExpBool_andArgumentsColumns" columns of table "event_approval"
 enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  approved
+  isApproved
 }
 
 # select "eventApprovalAggregateBoolExpBool_orArgumentsColumns" columns of table "event_approval"
 enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  approved
+  isApproved
 }
 
 # input type for updating data in table "event_approval"
 input EventApprovalSetInput {
-  approved: Boolean
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenantId: bigint
@@ -11863,13 +11827,13 @@ input EventApprovalStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input EventApprovalStreamCursorValueInput {
-  approved: Boolean
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isApproved: Boolean
   message: String
   stepId: bigint
   tenantId: bigint
@@ -11896,9 +11860,6 @@ input EventApprovalSumOrderBy {
 # update columns of table "event_approval"
 enum EventApprovalUpdateColumn {
   # column name
-  approved
-
-  # column name
   createdAt
 
   # column name
@@ -11915,6 +11876,9 @@ enum EventApprovalUpdateColumn {
 
   # column name
   id
+
+  # column name
+  isApproved
 
   # column name
   message
@@ -12041,7 +12005,6 @@ input EventBoolExp {
   address: AddressBoolExp
   addressId: BigintComparisonExp
   approvalSubmissionId: BigintComparisonExp
-  autoAcceptJoins: BooleanComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   content: ContentBoolExp
@@ -12068,6 +12031,7 @@ input EventBoolExp {
   formSubmission: FormSubmissionBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isAutoAcceptingJoins: BooleanComparisonExp
   isPrivate: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
   joinFormId: BigintComparisonExp
@@ -12084,8 +12048,6 @@ input EventBoolExp {
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
   state: StringComparisonExp
-  teamEvents: TeamEventsBoolExp
-  teamEventsAggregate: TeamEventsAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -12140,7 +12102,6 @@ input EventInsertInput {
   address: AddressObjRelInsertInput
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   content: ContentObjRelInsertInput
@@ -12161,6 +12122,7 @@ input EventInsertInput {
   formSubmission: FormSubmissionObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -12177,7 +12139,6 @@ input EventInsertInput {
   slug: String
   start: timestamptz
   state: String
-  teamEvents: TeamEventsArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -13031,13 +12992,13 @@ input EventJoinVarSampOrderBy {
 
 # columns and relationships of "event_manage"
 type EventManage {
-  activities: String!
   createdAt: timestamptz!
 
   # An object relationship
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
+  description: String!
 
   # An object relationship
   event: Event!
@@ -13204,11 +13165,11 @@ input EventManageBoolExp {
   _and: [EventManageBoolExp!]
   _not: EventManageBoolExp
   _or: [EventManageBoolExp!]
-  activities: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
   eventJoins: EventJoinBoolExp
@@ -13240,11 +13201,11 @@ input EventManageIncInput {
 
 # input type for inserting data into table "event_manage"
 input EventManageInsertInput {
-  activities: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   event: EventObjRelInsertInput
   eventId: bigint
   eventJoins: EventJoinArrRelInsertInput
@@ -13259,10 +13220,10 @@ input EventManageInsertInput {
 
 # aggregate max on columns
 type EventManageMaxFields {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -13272,10 +13233,10 @@ type EventManageMaxFields {
 
 # order by max() on columns of table "event_manage"
 input EventManageMaxOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -13285,10 +13246,10 @@ input EventManageMaxOrderBy {
 
 # aggregate min on columns
 type EventManageMinFields {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -13298,10 +13259,10 @@ type EventManageMinFields {
 
 # order by min() on columns of table "event_manage"
 input EventManageMinOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -13335,11 +13296,11 @@ input EventManageOnConflict {
 
 # Ordering options when selecting data from "event_manage".
 input EventManageOrderBy {
-  activities: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
@@ -13360,9 +13321,6 @@ input EventManagePkColumnsInput {
 # select columns of table "event_manage"
 enum EventManageSelectColumn {
   # column name
-  activities
-
-  # column name
   createdAt
 
   # column name
@@ -13370,6 +13328,9 @@ enum EventManageSelectColumn {
 
   # column name
   deletedAt
+
+  # column name
+  description
 
   # column name
   eventId
@@ -13389,10 +13350,10 @@ enum EventManageSelectColumn {
 
 # input type for updating data in table "event_manage"
 input EventManageSetInput {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -13465,10 +13426,10 @@ input EventManageStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input EventManageStreamCursorValueInput {
-  activities: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  description: String
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -13497,9 +13458,6 @@ input EventManageSumOrderBy {
 # update columns of table "event_manage"
 enum EventManageUpdateColumn {
   # column name
-  activities
-
-  # column name
   createdAt
 
   # column name
@@ -13507,6 +13465,9 @@ enum EventManageUpdateColumn {
 
   # column name
   deletedAt
+
+  # column name
+  description
 
   # column name
   eventId
@@ -13726,7 +13687,6 @@ input EventOrderBy {
   address: AddressOrderBy
   addressId: OrderBy
   approvalSubmissionId: OrderBy
-  autoAcceptJoins: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
   content: ContentOrderBy
@@ -13747,6 +13707,7 @@ input EventOrderBy {
   formSubmission: FormSubmissionOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isAutoAcceptingJoins: OrderBy
   isPrivate: OrderBy
   isTemplate: OrderBy
   joinFormId: OrderBy
@@ -13763,7 +13724,6 @@ input EventOrderBy {
   slug: OrderBy
   start: OrderBy
   state: OrderBy
-  teamEventsAggregate: TeamEventsAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -13785,9 +13745,6 @@ enum EventSelectColumn {
 
   # column name
   approvalSubmissionId
-
-  # column name
-  autoAcceptJoins
 
   # column name
   bannerId
@@ -13812,6 +13769,9 @@ enum EventSelectColumn {
 
   # column name
   id
+
+  # column name
+  isAutoAcceptingJoins
 
   # column name
   isPrivate
@@ -13865,7 +13825,7 @@ enum EventSelectColumn {
 # select "eventAggregateBoolExpBool_andArgumentsColumns" columns of table "event"
 enum EventSelectColumnEventAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  autoAcceptJoins
+  isAutoAcceptingJoins
 
   # column name
   isPrivate
@@ -13877,7 +13837,7 @@ enum EventSelectColumnEventAggregateBoolExpBool_andArgumentsColumns {
 # select "eventAggregateBoolExpBool_orArgumentsColumns" columns of table "event"
 enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  autoAcceptJoins
+  isAutoAcceptingJoins
 
   # column name
   isPrivate
@@ -13890,7 +13850,6 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 input EventSetInput {
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
@@ -13899,6 +13858,7 @@ input EventSetInput {
   end: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -14032,7 +13992,6 @@ input EventStreamCursorInput {
 input EventStreamCursorValueInput {
   addressId: bigint
   approvalSubmissionId: bigint
-  autoAcceptJoins: Boolean
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
@@ -14041,6 +14000,7 @@ input EventStreamCursorValueInput {
   end: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
@@ -14696,9 +14656,6 @@ enum EventUpdateColumn {
   approvalSubmissionId
 
   # column name
-  autoAcceptJoins
-
-  # column name
   bannerId
 
   # column name
@@ -14721,6 +14678,9 @@ enum EventUpdateColumn {
 
   # column name
   id
+
+  # column name
+  isAutoAcceptingJoins
 
   # column name
   isPrivate
@@ -27796,7 +27756,6 @@ input LegalUnitVarSampOrderBy {
 
 # columns and relationships of "mission"
 type Mission {
-  autoAcceptMember: Boolean!
   color: String!
   createdAt: timestamptz!
 
@@ -27811,6 +27770,7 @@ type Mission {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint!
+  isAutoAcceptingMembers: Boolean!
   isTemplate: Boolean!
 
   # An array relationship
@@ -27968,7 +27928,6 @@ input MissionBoolExp {
   _and: [MissionBoolExp!]
   _not: MissionBoolExp
   _or: [MissionBoolExp!]
-  autoAcceptMember: BooleanComparisonExp
   color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -27979,6 +27938,7 @@ input MissionBoolExp {
   eventManageId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isAutoAcceptingMembers: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
@@ -28015,7 +27975,6 @@ input MissionIncInput {
 
 # input type for inserting data into table "mission"
 input MissionInsertInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -28026,6 +27985,7 @@ input MissionInsertInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   missionJoins: MissionJoinArrRelInsertInput
   name: String
@@ -28926,7 +28886,6 @@ input MissionOnConflict {
 
 # Ordering options when selecting data from "mission".
 input MissionOrderBy {
-  autoAcceptMember: OrderBy
   color: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -28937,6 +28896,7 @@ input MissionOrderBy {
   eventManageId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isAutoAcceptingMembers: OrderBy
   isTemplate: OrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   name: OrderBy
@@ -28958,9 +28918,6 @@ input MissionPkColumnsInput {
 
 # select columns of table "mission"
 enum MissionSelectColumn {
-  # column name
-  autoAcceptMember
-
   # column name
   color
 
@@ -28984,6 +28941,9 @@ enum MissionSelectColumn {
 
   # column name
   id
+
+  # column name
+  isAutoAcceptingMembers
 
   # column name
   isTemplate
@@ -29013,7 +28973,7 @@ enum MissionSelectColumn {
 # select "missionAggregateBoolExpBool_andArgumentsColumns" columns of table "mission"
 enum MissionSelectColumnMissionAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  autoAcceptMember
+  isAutoAcceptingMembers
 
   # column name
   isTemplate
@@ -29022,7 +28982,7 @@ enum MissionSelectColumnMissionAggregateBoolExpBool_andArgumentsColumns {
 # select "missionAggregateBoolExpBool_orArgumentsColumns" columns of table "mission"
 enum MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  autoAcceptMember
+  isAutoAcceptingMembers
 
   # column name
   isTemplate
@@ -29030,7 +28990,6 @@ enum MissionSelectColumnMissionAggregateBoolExpBool_orArgumentsColumns {
 
 # input type for updating data in table "mission"
 input MissionSetInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -29039,6 +28998,7 @@ input MissionSetInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   name: String
   pointsMaximum: smallint
@@ -29138,7 +29098,6 @@ input MissionStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input MissionStreamCursorValueInput {
-  autoAcceptMember: Boolean
   color: String
   createdAt: timestamptz
   createdById: bigint
@@ -29147,6 +29106,7 @@ input MissionStreamCursorValueInput {
   eventManageId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isAutoAcceptingMembers: Boolean
   isTemplate: Boolean
   name: String
   pointsMaximum: smallint
@@ -29186,9 +29146,6 @@ input MissionSumOrderBy {
 # update columns of table "mission"
 enum MissionUpdateColumn {
   # column name
-  autoAcceptMember
-
-  # column name
   color
 
   # column name
@@ -29211,6 +29168,9 @@ enum MissionUpdateColumn {
 
   # column name
   id
+
+  # column name
+  isAutoAcceptingMembers
 
   # column name
   isTemplate
@@ -29885,15 +29845,6 @@ type Mutation {
 
   # delete single row from the table: "team"
   deleteTeamByPk(id: bigint!): Team
-
-  # delete data from the table: "team_events"
-  deleteTeamEvents(
-    # filter the rows which have to be deleted
-    where: TeamEventsBoolExp!
-  ): TeamEventsMutationResponse
-
-  # delete single row from the table: "team_events"
-  deleteTeamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
 
   # delete data from the table: "team_join"
   deleteTeamJoin(
@@ -31100,24 +31051,6 @@ type Mutation {
     # upsert condition
     onConflict: TeamOnConflict
   ): TeamMutationResponse
-
-  # insert data into the table: "team_events"
-  insertTeamEvents(
-    # the rows to be inserted
-    objects: [TeamEventsInsertInput!]!
-
-    # upsert condition
-    onConflict: TeamEventsOnConflict
-  ): TeamEventsMutationResponse
-
-  # insert a single row into the table: "team_events"
-  insertTeamEventsOne(
-    # the row to be inserted
-    object: TeamEventsInsertInput!
-
-    # upsert condition
-    onConflict: TeamEventsOnConflict
-  ): TeamEvents
 
   # insert data into the table: "team_join"
   insertTeamJoin(
@@ -33184,34 +33117,6 @@ type Mutation {
     pkColumns: TeamPkColumnsInput!
   ): Team
 
-  # update data of the table: "team_events"
-  updateTeamEvents(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TeamEventsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TeamEventsSetInput
-
-    # filter the rows which have to be updated
-    where: TeamEventsBoolExp!
-  ): TeamEventsMutationResponse
-
-  # update single row of the table: "team_events"
-  updateTeamEventsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TeamEventsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TeamEventsSetInput
-    pkColumns: TeamEventsPkColumnsInput!
-  ): TeamEvents
-
-  # update multiples rows of table: "team_events"
-  updateTeamEventsMany(
-    # updates to execute, in order
-    updates: [TeamEventsUpdates!]!
-  ): [TeamEventsMutationResponse]
-
   # update data of the table: "team_join"
   updateTeamJoin(
     # increments the numeric columns with given value of the filtered values
@@ -33560,8 +33465,8 @@ type Pole {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
+  isRequired: Boolean!
   name: String!
-  required: Boolean!
 
   # An object relationship
   team: Team!
@@ -33708,8 +33613,8 @@ input PoleBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isRequired: BooleanComparisonExp
   name: StringComparisonExp
-  required: BooleanComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
@@ -33742,8 +33647,8 @@ input PoleInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -33841,8 +33746,8 @@ input PoleOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isRequired: OrderBy
   name: OrderBy
-  required: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
@@ -33879,10 +33784,10 @@ enum PoleSelectColumn {
   id
 
   # column name
-  name
+  isRequired
 
   # column name
-  required
+  name
 
   # column name
   teamId
@@ -33894,13 +33799,13 @@ enum PoleSelectColumn {
 # select "poleAggregateBoolExpBool_andArgumentsColumns" columns of table "pole"
 enum PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  required
+  isRequired
 }
 
 # select "poleAggregateBoolExpBool_orArgumentsColumns" columns of table "pole"
 enum PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  required
+  isRequired
 }
 
 # input type for updating data in table "pole"
@@ -33912,8 +33817,8 @@ input PoleSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   teamId: bigint
   tenantId: bigint
 }
@@ -33984,8 +33889,8 @@ input PoleStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
+  isRequired: Boolean
   name: String
-  required: Boolean
   teamId: bigint
   tenantId: bigint
 }
@@ -34030,10 +33935,10 @@ enum PoleUpdateColumn {
   id
 
   # column name
-  name
+  isRequired
 
   # column name
-  required
+  name
 
   # column name
   teamId
@@ -38066,45 +37971,6 @@ type Query {
 
   # fetch data from the table: "team" using primary key columns
   teamByPk(id: bigint!): Team
-
-  # An array relationship
-  teamEvents(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): [TeamEvents!]!
-
-  # An aggregate relationship
-  teamEventsAggregate(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): TeamEventsAggregate!
-
-  # fetch data from the table: "team_events" using primary key columns
-  teamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
 
   # fetch data from the table: "team_join"
   teamJoin(
@@ -45845,57 +45711,6 @@ type Subscription {
   # fetch data from the table: "team" using primary key columns
   teamByPk(id: bigint!): Team
 
-  # An array relationship
-  teamEvents(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): [TeamEvents!]!
-
-  # An aggregate relationship
-  teamEventsAggregate(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): TeamEventsAggregate!
-
-  # fetch data from the table: "team_events" using primary key columns
-  teamEventsByPk(eventId: bigint!, teamId: bigint!): TeamEvents
-
-  # fetch data from the table in a streaming manner: "team_events"
-  teamEventsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [TeamEventsStreamCursorInput]!
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): [TeamEvents!]!
-
   # fetch data from the table: "team_join"
   teamJoin(
     # distinct select on columns
@@ -47428,7 +47243,7 @@ type Team {
   id: bigint!
   managersCategoryName: String!
   membersCategoryName: String!
-  membershipFees: Int!
+  membershipFees: Float!
 
   # An array relationship
   missions(
@@ -47580,42 +47395,6 @@ type Team {
 
   # An object relationship
   team: Team
-
-  # An array relationship
-  teamEvents(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): [TeamEvents!]!
-
-  # An aggregate relationship
-  teamEventsAggregate(
-    # distinct select on columns
-    distinctOn: [TeamEventsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [TeamEventsOrderBy!]
-
-    # filter the rows returned
-    where: TeamEventsBoolExp
-  ): TeamEventsAggregate!
 
   # An array relationship
   teamJoins(
@@ -47867,7 +47646,7 @@ input TeamBoolExp {
   id: BigintComparisonExp
   managersCategoryName: StringComparisonExp
   membersCategoryName: StringComparisonExp
-  membershipFees: IntComparisonExp
+  membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   originalCreationDay: SmallintComparisonExp
@@ -47881,8 +47660,6 @@ input TeamBoolExp {
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
   team: TeamBoolExp
-  teamEvents: TeamEventsBoolExp
-  teamEventsAggregate: TeamEventsAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -47915,303 +47692,6 @@ enum TeamConstraint {
   team_pkey
 }
 
-# columns and relationships of "team_events"
-type TeamEvents {
-  # An object relationship
-  event: Event!
-  eventId: bigint!
-
-  # An object relationship
-  team: Team!
-  teamId: bigint!
-}
-
-# aggregated selection of "team_events"
-type TeamEventsAggregate {
-  aggregate: TeamEventsAggregateFields
-  nodes: [TeamEvents!]!
-}
-
-input TeamEventsAggregateBoolExp {
-  count: teamEventsAggregateBoolExpCount
-}
-
-input teamEventsAggregateBoolExpCount {
-  arguments: [TeamEventsSelectColumn!]
-  distinct: Boolean
-  filter: TeamEventsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "team_events"
-type TeamEventsAggregateFields {
-  avg: TeamEventsAvgFields
-  count(columns: [TeamEventsSelectColumn!], distinct: Boolean): Int!
-  max: TeamEventsMaxFields
-  min: TeamEventsMinFields
-  stddev: TeamEventsStddevFields
-  stddevPop: TeamEventsStddevPopFields
-  stddevSamp: TeamEventsStddevSampFields
-  sum: TeamEventsSumFields
-  varPop: TeamEventsVarPopFields
-  varSamp: TeamEventsVarSampFields
-  variance: TeamEventsVarianceFields
-}
-
-# order by aggregate values of table "team_events"
-input TeamEventsAggregateOrderBy {
-  avg: TeamEventsAvgOrderBy
-  count: OrderBy
-  max: TeamEventsMaxOrderBy
-  min: TeamEventsMinOrderBy
-  stddev: TeamEventsStddevOrderBy
-  stddevPop: TeamEventsStddevPopOrderBy
-  stddevSamp: TeamEventsStddevSampOrderBy
-  sum: TeamEventsSumOrderBy
-  varPop: TeamEventsVarPopOrderBy
-  varSamp: TeamEventsVarSampOrderBy
-  variance: TeamEventsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "team_events"
-input TeamEventsArrRelInsertInput {
-  data: [TeamEventsInsertInput!]!
-
-  # upsert condition
-  onConflict: TeamEventsOnConflict
-}
-
-# aggregate avg on columns
-type TeamEventsAvgFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by avg() on columns of table "team_events"
-input TeamEventsAvgOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "team_events". All fields are combined with a logical 'AND'.
-input TeamEventsBoolExp {
-  _and: [TeamEventsBoolExp!]
-  _not: TeamEventsBoolExp
-  _or: [TeamEventsBoolExp!]
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "team_events"
-enum TeamEventsConstraint {
-  # unique or primary key constraint on columns "event_id", "team_id"
-  team_events_pkey
-}
-
-# input type for incrementing numeric columns in table "team_events"
-input TeamEventsIncInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-# input type for inserting data into table "team_events"
-input TeamEventsInsertInput {
-  event: EventObjRelInsertInput
-  eventId: bigint
-  team: TeamObjRelInsertInput
-  teamId: bigint
-}
-
-# aggregate max on columns
-type TeamEventsMaxFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-# order by max() on columns of table "team_events"
-input TeamEventsMaxOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# aggregate min on columns
-type TeamEventsMinFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-# order by min() on columns of table "team_events"
-input TeamEventsMinOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# response of any mutation on the table "team_events"
-type TeamEventsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [TeamEvents!]!
-}
-
-# on_conflict condition type for table "team_events"
-input TeamEventsOnConflict {
-  constraint: TeamEventsConstraint!
-  updateColumns: [TeamEventsUpdateColumn!]! = []
-  where: TeamEventsBoolExp
-}
-
-# Ordering options when selecting data from "team_events".
-input TeamEventsOrderBy {
-  event: EventOrderBy
-  eventId: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-}
-
-# primary key columns input for table: team_events
-input TeamEventsPkColumnsInput {
-  eventId: bigint!
-  teamId: bigint!
-}
-
-# select columns of table "team_events"
-enum TeamEventsSelectColumn {
-  # column name
-  eventId
-
-  # column name
-  teamId
-}
-
-# input type for updating data in table "team_events"
-input TeamEventsSetInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-# aggregate stddev on columns
-type TeamEventsStddevFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by stddev() on columns of table "team_events"
-input TeamEventsStddevOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type TeamEventsStddevPopFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by stddevPop() on columns of table "team_events"
-input TeamEventsStddevPopOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type TeamEventsStddevSampFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by stddevSamp() on columns of table "team_events"
-input TeamEventsStddevSampOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# Streaming cursor of the table "team_events"
-input TeamEventsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: TeamEventsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input TeamEventsStreamCursorValueInput {
-  eventId: bigint
-  teamId: bigint
-}
-
-# aggregate sum on columns
-type TeamEventsSumFields {
-  eventId: bigint
-  teamId: bigint
-}
-
-# order by sum() on columns of table "team_events"
-input TeamEventsSumOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# update columns of table "team_events"
-enum TeamEventsUpdateColumn {
-  # column name
-  eventId
-
-  # column name
-  teamId
-}
-
-input TeamEventsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: TeamEventsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: TeamEventsSetInput
-
-  # filter the rows which have to be updated
-  where: TeamEventsBoolExp!
-}
-
-# aggregate variance on columns
-type TeamEventsVarianceFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by variance() on columns of table "team_events"
-input TeamEventsVarianceOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# aggregate varPop on columns
-type TeamEventsVarPopFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by varPop() on columns of table "team_events"
-input TeamEventsVarPopOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
-# aggregate varSamp on columns
-type TeamEventsVarSampFields {
-  eventId: Float
-  teamId: Float
-}
-
-# order by varSamp() on columns of table "team_events"
-input TeamEventsVarSampOrderBy {
-  eventId: OrderBy
-  teamId: OrderBy
-}
-
 # input type for incrementing numeric columns in table "team"
 input TeamIncInput {
   adminTeamTenantId: bigint
@@ -48221,7 +47701,7 @@ input TeamIncInput {
   createdById: bigint
   currentFinance: Float
   id: bigint
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -48260,7 +47740,7 @@ input TeamInsertInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   missions: MissionArrRelInsertInput
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -48270,7 +47750,6 @@ input TeamInsertInput {
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
   team: TeamObjRelInsertInput
-  teamEvents: TeamEventsArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -48979,7 +48458,7 @@ type TeamMaxFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -50347,7 +49826,7 @@ type TeamMinFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -50447,7 +49926,6 @@ input TeamOrderBy {
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
   team: TeamOrderBy
-  teamEventsAggregate: TeamEventsAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
@@ -50548,7 +50026,7 @@ input TeamSetInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -50697,7 +50175,7 @@ input TeamStreamCursorValueInput {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -50717,7 +50195,7 @@ type TeamSumFields {
   createdById: bigint
   currentFinance: Float
   id: bigint
-  membershipFees: Int
+  membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
   originalCreationYear: smallint
@@ -52217,11 +51695,11 @@ type Tenant {
     where: MissionBoolExp
   ): MissionAggregate!
   name: String!
+  oidcInfoIsOidcEnabled: Boolean!
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean!
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String!
@@ -53045,11 +52523,11 @@ input TenantBoolExp {
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
+  oidcInfoIsOidcEnabled: BooleanComparisonExp
   oidcInfoOidcCallbackUri: StringComparisonExp
   oidcInfoOidcClientId: StringComparisonExp
   oidcInfoOidcClientSecret: StringComparisonExp
   oidcInfoOidcDiscoveryUrl: StringComparisonExp
-  oidcInfoOidcEnabled: BooleanComparisonExp
   oidcInfoOidcName: StringComparisonExp
   oidcInfoOidcScopes: StringComparisonExp
   pointName: StringComparisonExp
@@ -53157,11 +52635,11 @@ input TenantInsertInput {
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -53328,11 +52806,11 @@ input TenantOrderBy {
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
+  oidcInfoIsOidcEnabled: OrderBy
   oidcInfoOidcCallbackUri: OrderBy
   oidcInfoOidcClientId: OrderBy
   oidcInfoOidcClientSecret: OrderBy
   oidcInfoOidcDiscoveryUrl: OrderBy
-  oidcInfoOidcEnabled: OrderBy
   oidcInfoOidcName: OrderBy
   oidcInfoOidcScopes: OrderBy
   pointName: OrderBy
@@ -53385,6 +52863,9 @@ enum TenantSelectColumn {
   name
 
   # column name
+  oidcInfoIsOidcEnabled
+
+  # column name
   oidcInfoOidcCallbackUri
 
   # column name
@@ -53395,9 +52876,6 @@ enum TenantSelectColumn {
 
   # column name
   oidcInfoOidcDiscoveryUrl
-
-  # column name
-  oidcInfoOidcEnabled
 
   # column name
   oidcInfoOidcName
@@ -53412,13 +52890,13 @@ enum TenantSelectColumn {
 # select "tenantAggregateBoolExpBool_andArgumentsColumns" columns of table "tenant"
 enum TenantSelectColumnTenantAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  oidcInfoOidcEnabled
+  oidcInfoIsOidcEnabled
 }
 
 # select "tenantAggregateBoolExpBool_orArgumentsColumns" columns of table "tenant"
 enum TenantSelectColumnTenantAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  oidcInfoOidcEnabled
+  oidcInfoIsOidcEnabled
 }
 
 # input type for updating data in table "tenant"
@@ -53430,11 +52908,11 @@ input TenantSetInput {
   eventValidationFormId: bigint
   id: bigint
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -53500,11 +52978,11 @@ input TenantStreamCursorValueInput {
   eventValidationFormId: bigint
   id: bigint
   name: String
+  oidcInfoIsOidcEnabled: Boolean
   oidcInfoOidcCallbackUri: String
   oidcInfoOidcClientId: String
   oidcInfoOidcClientSecret: String
   oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcEnabled: Boolean
   oidcInfoOidcName: String
   oidcInfoOidcScopes: String
   pointName: String
@@ -53548,6 +53026,9 @@ enum TenantUpdateColumn {
   name
 
   # column name
+  oidcInfoIsOidcEnabled
+
+  # column name
   oidcInfoOidcCallbackUri
 
   # column name
@@ -53558,9 +53039,6 @@ enum TenantUpdateColumn {
 
   # column name
   oidcInfoOidcDiscoveryUrl
-
-  # column name
-  oidcInfoOidcEnabled
 
   # column name
   oidcInfoOidcName
@@ -54926,14 +54404,14 @@ type User {
     # filter the rows returned
     where: EventSupervisorsBoolExp
   ): EventSupervisorsAggregate!
-  finishedIntroduction: Boolean!
-  finishedOnboarding: Boolean!
   firstName: String!
   hiddenAt: timestamptz
   id: bigint!
 
   # An object relationship
   individual: Individual
+  isIntroductionFinished: Boolean!
+  isOnboardingFinished: Boolean!
   lastName: String!
   middleNames: _text!
 
@@ -55038,9 +54516,9 @@ type User {
     # filter the rows returned
     where: SessionBoolExp
   ): SessionAggregate!
-  settingsDarkModeActivated: Boolean!
-  settingsGdprEndOfLifeAnonymize: Boolean!
-  settingsGdprEndOfLifeExport: Boolean!
+  settingsIsDarkModeActivated: Boolean!
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean!
+  settingsIsGdprExportedOnAccountDeactivation: Boolean!
 
   # An array relationship
   shortcuts(
@@ -55080,7 +54558,7 @@ type User {
   statsActionStreak: smallint!
   statsCommentCount: smallint!
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int!
@@ -55347,12 +54825,12 @@ input UserBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   eventSupervisors: EventSupervisorsBoolExp
   eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
-  finishedIntroduction: BooleanComparisonExp
-  finishedOnboarding: BooleanComparisonExp
   firstName: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  isIntroductionFinished: BooleanComparisonExp
+  isOnboardingFinished: BooleanComparisonExp
   lastName: StringComparisonExp
   middleNames: _textComparisonExp
   missionJoins: MissionJoinBoolExp
@@ -55389,15 +54867,15 @@ input UserBoolExp {
   notificationSettingsThreadSubscribedUpdated: SmallintComparisonExp
   sessions: SessionBoolExp
   sessionsAggregate: SessionAggregateBoolExp
-  settingsDarkModeActivated: BooleanComparisonExp
-  settingsGdprEndOfLifeAnonymize: BooleanComparisonExp
-  settingsGdprEndOfLifeExport: BooleanComparisonExp
+  settingsIsDarkModeActivated: BooleanComparisonExp
+  settingsIsGdprAnonymizedOnAccountDeactivation: BooleanComparisonExp
+  settingsIsGdprExportedOnAccountDeactivation: BooleanComparisonExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
   statsActionStreak: SmallintComparisonExp
   statsCommentCount: SmallintComparisonExp
   statsLastActionAt: TimestamptzComparisonExp
-  statsLastComment: TimestamptzComparisonExp
+  statsLastCommentAt: TimestamptzComparisonExp
   statsLastPostAt: TimestamptzComparisonExp
   statsLastReplyAt: TimestamptzComparisonExp
   statsPoints: IntComparisonExp
@@ -55477,12 +54955,12 @@ input UserInsertInput {
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
   eventSupervisors: EventSupervisorsArrRelInsertInput
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   missionJoins: MissionJoinArrRelInsertInput
@@ -55517,14 +54995,14 @@ input UserInsertInput {
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
   sessions: SessionArrRelInsertInput
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   shortcuts: ShortcutArrRelInsertInput
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -55583,7 +55061,7 @@ type UserMaxFields {
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -55639,7 +55117,7 @@ input UserMaxOrderBy {
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -55695,7 +55173,7 @@ type UserMinFields {
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -55751,7 +55229,7 @@ input UserMinOrderBy {
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -55799,12 +55277,12 @@ input UserOrderBy {
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
-  finishedIntroduction: OrderBy
-  finishedOnboarding: OrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  isIntroductionFinished: OrderBy
+  isOnboardingFinished: OrderBy
   lastName: OrderBy
   middleNames: OrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
@@ -55839,14 +55317,14 @@ input UserOrderBy {
   notificationSettingsThreadSubscribedAnswered: OrderBy
   notificationSettingsThreadSubscribedUpdated: OrderBy
   sessionsAggregate: SessionAggregateOrderBy
-  settingsDarkModeActivated: OrderBy
-  settingsGdprEndOfLifeAnonymize: OrderBy
-  settingsGdprEndOfLifeExport: OrderBy
+  settingsIsDarkModeActivated: OrderBy
+  settingsIsGdprAnonymizedOnAccountDeactivation: OrderBy
+  settingsIsGdprExportedOnAccountDeactivation: OrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
   statsActionStreak: OrderBy
   statsCommentCount: OrderBy
   statsLastActionAt: OrderBy
-  statsLastComment: OrderBy
+  statsLastCommentAt: OrderBy
   statsLastPostAt: OrderBy
   statsLastReplyAt: OrderBy
   statsPoints: OrderBy
@@ -55884,12 +55362,6 @@ enum UserSelectColumn {
   deletedAt
 
   # column name
-  finishedIntroduction
-
-  # column name
-  finishedOnboarding
-
-  # column name
   firstName
 
   # column name
@@ -55897,6 +55369,12 @@ enum UserSelectColumn {
 
   # column name
   id
+
+  # column name
+  isIntroductionFinished
+
+  # column name
+  isOnboardingFinished
 
   # column name
   lastName
@@ -55995,13 +55473,13 @@ enum UserSelectColumn {
   notificationSettingsThreadSubscribedUpdated
 
   # column name
-  settingsDarkModeActivated
+  settingsIsDarkModeActivated
 
   # column name
-  settingsGdprEndOfLifeAnonymize
+  settingsIsGdprAnonymizedOnAccountDeactivation
 
   # column name
-  settingsGdprEndOfLifeExport
+  settingsIsGdprExportedOnAccountDeactivation
 
   # column name
   statsActionStreak
@@ -56013,7 +55491,7 @@ enum UserSelectColumn {
   statsLastActionAt
 
   # column name
-  statsLastComment
+  statsLastCommentAt
 
   # column name
   statsLastPostAt
@@ -56046,37 +55524,37 @@ enum UserSelectColumn {
 # select "userAggregateBoolExpBool_andArgumentsColumns" columns of table "user"
 enum UserSelectColumnUserAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  finishedIntroduction
+  isIntroductionFinished
 
   # column name
-  finishedOnboarding
+  isOnboardingFinished
 
   # column name
-  settingsDarkModeActivated
+  settingsIsDarkModeActivated
 
   # column name
-  settingsGdprEndOfLifeAnonymize
+  settingsIsGdprAnonymizedOnAccountDeactivation
 
   # column name
-  settingsGdprEndOfLifeExport
+  settingsIsGdprExportedOnAccountDeactivation
 }
 
 # select "userAggregateBoolExpBool_orArgumentsColumns" columns of table "user"
 enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  finishedIntroduction
+  isIntroductionFinished
 
   # column name
-  finishedOnboarding
+  isOnboardingFinished
 
   # column name
-  settingsDarkModeActivated
+  settingsIsDarkModeActivated
 
   # column name
-  settingsGdprEndOfLifeAnonymize
+  settingsIsGdprAnonymizedOnAccountDeactivation
 
   # column name
-  settingsGdprEndOfLifeExport
+  settingsIsGdprExportedOnAccountDeactivation
 }
 
 # input type for updating data in table "user"
@@ -56086,11 +55564,11 @@ input UserSetInput {
   customizationColor: String
   customizationSignature: String
   deletedAt: timestamptz
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   notificationSettingsAdminEventValidationApproved: smallint
@@ -56123,13 +55601,13 @@ input UserSetInput {
   notificationSettingsTeamSubscribedEventCreated: smallint
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -56427,11 +55905,11 @@ input UserStreamCursorValueInput {
   customizationColor: String
   customizationSignature: String
   deletedAt: timestamptz
-  finishedIntroduction: Boolean
-  finishedOnboarding: Boolean
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isIntroductionFinished: Boolean
+  isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   notificationSettingsAdminEventValidationApproved: smallint
@@ -56464,13 +55942,13 @@ input UserStreamCursorValueInput {
   notificationSettingsTeamSubscribedEventCreated: smallint
   notificationSettingsThreadSubscribedAnswered: smallint
   notificationSettingsThreadSubscribedUpdated: smallint
-  settingsDarkModeActivated: Boolean
-  settingsGdprEndOfLifeAnonymize: Boolean
-  settingsGdprEndOfLifeExport: Boolean
+  settingsIsDarkModeActivated: Boolean
+  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
+  settingsIsGdprExportedOnAccountDeactivation: Boolean
   statsActionStreak: smallint
   statsCommentCount: smallint
   statsLastActionAt: timestamptz
-  statsLastComment: timestamptz
+  statsLastCommentAt: timestamptz
   statsLastPostAt: timestamptz
   statsLastReplyAt: timestamptz
   statsPoints: Int
@@ -56590,12 +56068,6 @@ enum UserUpdateColumn {
   deletedAt
 
   # column name
-  finishedIntroduction
-
-  # column name
-  finishedOnboarding
-
-  # column name
   firstName
 
   # column name
@@ -56603,6 +56075,12 @@ enum UserUpdateColumn {
 
   # column name
   id
+
+  # column name
+  isIntroductionFinished
+
+  # column name
+  isOnboardingFinished
 
   # column name
   lastName
@@ -56701,13 +56179,13 @@ enum UserUpdateColumn {
   notificationSettingsThreadSubscribedUpdated
 
   # column name
-  settingsDarkModeActivated
+  settingsIsDarkModeActivated
 
   # column name
-  settingsGdprEndOfLifeAnonymize
+  settingsIsGdprAnonymizedOnAccountDeactivation
 
   # column name
-  settingsGdprEndOfLifeExport
+  settingsIsGdprExportedOnAccountDeactivation
 
   # column name
   statsActionStreak
@@ -56719,7 +56197,7 @@ enum UserUpdateColumn {
   statsLastActionAt
 
   # column name
-  statsLastComment
+  statsLastCommentAt
 
   # column name
   statsLastPostAt

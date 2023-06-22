@@ -6,8 +6,8 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 @Embeddable()
 export class OidcInfo {
   @Field(() => Boolean)
-  @Property({ type: 'boolean' })
-  oidcEnabled = false;
+  @Property({ type: 'boolean', default: true })
+  isOidcEnabled = false;
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'text', nullable: true, default: null })

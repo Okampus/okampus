@@ -31,7 +31,7 @@ export class MissionProps {
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
-  autoAcceptMember?: boolean = false;
+  isAutoAcceptingMembers?: boolean = false;
 
   @Field(() => Boolean, { nullable: true })
   @IsOptional()

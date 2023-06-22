@@ -44,7 +44,7 @@ export class ExpenseItem extends TenantScopedEntity {
   @ManyToOne({ type: 'Address', nullable: true, default: null })
   address: Address | null = null;
 
-  @ManyToOne({ type: 'Expense', nullable: true })
+  @ManyToOne({ type: 'Expense', nullable: true, default: null })
   expense: Expense | null = null;
 
   @ManyToMany({ type: 'FileUpload' })

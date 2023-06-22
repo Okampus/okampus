@@ -19,8 +19,8 @@ export class Pole extends TenantScopedEntity {
   @Property({ type: 'text' })
   description!: string;
 
-  @Property({ type: 'boolean' })
-  required = false;
+  @Property({ type: 'boolean', default: false })
+  isRequired = false;
 
   @Enum({ items: () => PoleCategory, type: EnumType })
   category!: PoleCategory;

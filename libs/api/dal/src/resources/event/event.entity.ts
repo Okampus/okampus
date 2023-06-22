@@ -30,7 +30,6 @@ import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { Project } from '../project/project.entity';
 import type { Searchable } from '../../types/search-entity.type';
 import type { Tag } from '../actor/tag/tag.entity';
-import type { Team } from '../team/team.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { User } from '../individual/user/user.entity';
 import type { JSONObject } from '@okampus/shared/types';
@@ -77,7 +76,7 @@ export class Event extends TenantScopedEntity implements Searchable {
   isPrivate = false;
 
   @Property({ type: 'boolean', default: true })
-  autoAcceptJoins = true;
+  isAutoAcceptingJoins = true;
 
   @Property({ type: 'json', default: '{}' })
   meta: JSONObject = {};
@@ -115,10 +114,6 @@ export class Event extends TenantScopedEntity implements Searchable {
   @ManyToMany({ type: 'User' })
   @TransformCollection()
   supervisors = new Collection<User>(this);
-
-  @ManyToMany({ type: 'Team', mappedBy: 'events' })
-  @TransformCollection()
-  teams = new Collection<Team>(this);
 
   @OneToMany({ type: 'EventApproval', mappedBy: 'event' })
   @TransformCollection()

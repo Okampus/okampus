@@ -43,7 +43,7 @@ export class Project extends TenantScopedEntity {
   @Property({ type: 'float', default: 0 })
   budget = 0;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: false })
   isPrivate = false;
 
   @Property({ type: 'text', default: '' })

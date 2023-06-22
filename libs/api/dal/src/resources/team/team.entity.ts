@@ -12,7 +12,6 @@ import {
   EntityRepositoryType,
   Enum,
   EnumType,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -25,7 +24,6 @@ import type { ClassGroup } from '../class-group/class-group.entity';
 import type { Cohort } from '../cohort/cohort.entity';
 import type { Canteen } from '../canteen/canteen.entity';
 import type { Document } from '../document/document.entity';
-import type { Event } from '../event/event.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Pole } from './pole/pole.entity';
 import type { Searchable } from '../../types/search-entity.type';
@@ -35,6 +33,7 @@ import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { Tenant } from '../tenant/tenant.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
+import type { EventManage } from '../event/event-manage/event-manage.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -57,19 +56,19 @@ export class Team extends TenantScopedEntity implements Searchable {
   // histories = new Collection<TeamHistory>(this);
 
   // TODO: long-term, convert to currency + amount + manage payments
-  @Property({ type: 'int' })
+  @Property({ type: 'float', default: 0 })
   membershipFees = 0;
 
-  @Property({ type: 'float' })
+  @Property({ type: 'float', default: 0 })
   currentFinance = 0;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', default: RoleCategory.Directors })
   directorsCategoryName: string = RoleCategory.Directors;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', default: RoleCategory.Managers })
   managersCategoryName: string = RoleCategory.Managers;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', default: RoleCategory.Members })
   membersCategoryName: string = RoleCategory.Members;
 
   @OneToOne({ type: 'Actor', mappedBy: 'team' })
@@ -93,9 +92,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'Form', mappedBy: 'team' })
   joinForm: Form;
 
-  @ManyToMany({ type: 'Event', inversedBy: 'teams', owner: true })
+  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
   @TransformCollection()
-  events = new Collection<Event>(this);
+  eventManages = new Collection<EventManage>(this);
 
   @ManyToOne({ type: 'Team', nullable: true, default: null, cascade: [Cascade.ALL] })
   parent: Team | null = null;

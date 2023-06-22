@@ -28,8 +28,8 @@ export const tenantStrategyValidation =
 
     if (!oidcCache.strategies.has(domain)) {
       const oidc = tenant.oidcInfo;
-      const { oidcEnabled, oidcClientId, oidcClientSecret, oidcDiscoveryUrl, oidcScopes, oidcCallbackUri } = oidc;
-      if (!oidcEnabled || !oidcClientId || !oidcClientSecret || !oidcDiscoveryUrl || !oidcScopes || !oidcCallbackUri)
+      const { isOidcEnabled, oidcClientId, oidcClientSecret, oidcDiscoveryUrl, oidcScopes, oidcCallbackUri } = oidc;
+      if (!isOidcEnabled || !oidcClientId || !oidcClientSecret || !oidcDiscoveryUrl || !oidcScopes || !oidcCallbackUri)
         return false;
 
       const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);

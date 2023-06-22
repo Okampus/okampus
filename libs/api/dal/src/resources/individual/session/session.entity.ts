@@ -32,10 +32,10 @@ export class Session extends TenantScopedEntity {
   @ManyToOne({ type: 'User' })
   user!: User;
 
-  @Property({ type: 'datetime' })
+  @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   lastActivityAt: Date = new Date();
 
-  @Property({ type: 'datetime' })
+  @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   lastIssuedAt: Date = new Date();
 
   @Property({ type: 'datetime', nullable: true, default: null })

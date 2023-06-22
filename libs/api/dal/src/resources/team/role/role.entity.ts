@@ -25,7 +25,7 @@ export class Role extends TenantScopedEntity {
   @Enum({ items: () => TeamRoleType, type: EnumType, default: TeamRoleType.Member })
   type: TeamRoleType = TeamRoleType.Member;
 
-  @Property({ type: 'boolean' })
+  @Property({ type: 'boolean', default: true })
   isRequired = false;
 
   constructor(options: RoleOptions) {

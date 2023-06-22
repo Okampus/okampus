@@ -63,7 +63,7 @@ import { ScopeRole, TeamType } from '@okampus/shared/enums';
 import { capitalize } from '@okampus/shared/utils';
 
 import { CacheModule } from '@nestjs/cache-manager';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -241,6 +241,8 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
   controllers: [AppController],
 })
 export class AppModule implements NestModule, OnModuleInit {
+  logger = new Logger(AppModule.name);
+
   constructor(
     private readonly configService: ConfigService,
     private readonly uploadsService: UploadsService,
@@ -305,7 +307,7 @@ export class AppModule implements NestModule, OnModuleInit {
       if (novu) {
         let subscribers;
         do {
-          console.log('Deleting previous seeded subscribers...');
+          this.logger.log('Deleting previous seeded subscribers...');
           try {
             subscribers = await novu.subscribers.list(0);
           } catch {
@@ -325,7 +327,7 @@ export class AppModule implements NestModule, OnModuleInit {
         } while (subscribers.data.length > 0);
 
         const admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
-        console.log(`Adding admin (${admin.id}) subscriber to Novu...)`);
+        this.logger.log(`Adding admin (${admin.id}) subscriber to Novu...`);
         await novu.subscribers.identify(admin.id, {
           email: ADMIN_ACCOUNT_EMAIL,
           firstName: ADMIN_ACCOUNT_FIRST_NAME,
@@ -333,7 +335,7 @@ export class AppModule implements NestModule, OnModuleInit {
           locale: 'fr',
         });
       } else {
-        console.log('Novu is not configured, skipping subscribers seeding...');
+        this.logger.log('Novu is not configured, skipping subscribers seeding...');
       }
     }
 

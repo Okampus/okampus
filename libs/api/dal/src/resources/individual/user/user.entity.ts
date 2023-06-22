@@ -16,7 +16,7 @@ export class User extends TenantScopedEntity {
   @Property({ type: 'text' })
   firstName!: string;
 
-  @Property({ type: 'array' })
+  @Property({ type: 'array', default: [] })
   middleNames: string[] = [];
 
   @Property({ type: 'text' })
@@ -46,11 +46,11 @@ export class User extends TenantScopedEntity {
   @Embedded(() => UserNotificationSettings)
   notificationSettings = new UserNotificationSettings({});
 
-  @Property({ type: 'boolean' })
-  finishedIntroduction = false;
+  @Property({ type: 'boolean', default: false })
+  isIntroductionFinished = false;
 
-  @Property({ type: 'boolean' })
-  finishedOnboarding = false;
+  @Property({ type: 'boolean', default: false })
+  isOnboardingFinished = false;
 
   @OneToOne({ type: 'Individual', mappedBy: 'user' })
   individual!: Individual;

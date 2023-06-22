@@ -13,7 +13,7 @@ export class EventManage extends TenantScopedEntity {
   [EntityRepositoryType]!: EventManageRepository;
 
   @Property({ type: 'text', default: '' })
-  activities = '';
+  description = '';
 
   @ManyToOne({ type: 'Event' })
   event!: Event;

@@ -15,10 +15,10 @@ export class Individual extends TenantScopedEntity {
   @OneToOne({ type: 'Actor', mappedBy: 'individual' })
   actor!: Actor;
 
-  @OneToOne({ type: 'User', inversedBy: 'individual', nullable: true })
+  @OneToOne({ type: 'User', inversedBy: 'individual', nullable: true, default: null })
   user: User | null = null;
 
-  @OneToOne({ type: 'Bot', inversedBy: 'individual', nullable: true })
+  @OneToOne({ type: 'Bot', inversedBy: 'individual', nullable: true, default: null })
   bot: Bot | null = null;
 
   @Property({ type: 'text', hidden: true, nullable: true, default: null })

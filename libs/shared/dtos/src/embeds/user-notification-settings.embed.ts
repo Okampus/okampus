@@ -166,7 +166,7 @@ export class UserNotificationSettings {
 
   /** ADMIN: Time after which I am notified for threadStale if it is enabled */
   @Field(() => Int)
-  @Property({ type: 'int' })
+  @Property({ type: 'int', default: 2 * WEEK_DURATION_IN_SECONDS })
   adminThreadStaleThreshold: number = 2 * WEEK_DURATION_IN_SECONDS;
 
   /** ADMIN: A thread to which I am assigned is without a validated response and inactive for X time */
@@ -176,7 +176,7 @@ export class UserNotificationSettings {
 
   /** ADMIN: Time after which I am notified for adminThreadAssignedStale if it is enabled */
   @Field(() => Int)
-  @Property({ type: 'int' })
+  @Property({ type: 'int', default: WEEK_DURATION_IN_SECONDS })
   adminThreadAssignedStaleThreshold: number = WEEK_DURATION_IN_SECONDS;
 
   /** ADMIN: I have been assigned to a thread */

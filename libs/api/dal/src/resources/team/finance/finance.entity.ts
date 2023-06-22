@@ -67,7 +67,7 @@ export class Finance extends TenantScopedEntity {
   @Enum({ items: () => AddressType, default: AddressType.Known, type: EnumType })
   addressType: AddressType = AddressType.Known;
 
-  @OneToOne({ type: 'Expense', inversedBy: 'finance', nullable: true })
+  @OneToOne({ type: 'Expense', inversedBy: 'finance', nullable: true, default: null })
   expense: Expense | null = null;
 
   @ManyToOne({ type: 'Event', nullable: true, default: null })
