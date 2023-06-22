@@ -2,13 +2,6 @@ table:
   name: tenant
   schema: public
 object_relationships:
-  - name: adminTeam
-    using:
-      foreign_key_constraint_on:
-        column: admin_team_tenant_id
-        table:
-          name: team
-          schema: public
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -57,6 +50,13 @@ array_relationships:
         column: tenant_id
         table:
           name: bot
+          schema: public
+  - name: campusClusters
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: campus_cluster
           schema: public
   - name: campuses
     using:
@@ -358,6 +358,13 @@ array_relationships:
         column: tenant_id
         table:
           name: team
+          schema: public
+  - name: tenantManages
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: tenant_manage
           schema: public
   - name: threads
     using:

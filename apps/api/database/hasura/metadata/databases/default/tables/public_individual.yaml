@@ -78,6 +78,13 @@ array_relationships:
         table:
           name: bot
           schema: public
+  - name: createdCampusClusters
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: campus_cluster
+          schema: public
   - name: createdCampuses
     using:
       foreign_key_constraint_on:
@@ -371,6 +378,13 @@ array_relationships:
         column: created_by_id
         table:
           name: team
+          schema: public
+  - name: createdTenantManages
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: tenant_manage
           schema: public
   - name: createdTenants
     using:

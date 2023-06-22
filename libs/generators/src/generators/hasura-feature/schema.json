@@ -26,11 +26,11 @@
     },
     "expect-rels": {
       "type": "string",
-      "description": "Expected relationships for create"
+      "description": "Expected relationship paths required in insert (comma-separated)"
     },
     "expect-ids": {
       "type": "string",
-      "description": "Plural id relationships for create"
+      "description": "Expected id relationship paths required in insert (comma-separated)"
     },
     "tenant-scoped": {
       "type": "boolean",

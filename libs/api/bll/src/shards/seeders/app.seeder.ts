@@ -27,6 +27,8 @@ import {
   ActorImage,
   EventManage,
   MissionJoin,
+  CampusCluster,
+  TenantManage,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -274,15 +276,45 @@ export class DatabaseSeeder extends Seeder {
     const start = new Date('2023-05-01T00:00:00.000Z');
 
     const domain = { domain: DatabaseSeeder.targetTenant };
-    const tenant = await em.findOneOrFail(Tenant, domain, { populate: ['adminTeam', 'adminTeam.actor'] });
+    const tenant = await em.findOneOrFail(Tenant, domain, {
+      populate: ['tenantManages', 'tenantManages.team', 'tenantManages.team.actor'],
+    });
+
+    const adminManage = tenant.tenantManages
+      .getItems()
+      .find((manage) => manage.campusCluster === null && manage.team.type === TeamType.Tenant);
 
     const scopedOptions = { tenant, createdBy: null };
     this.logger.log(`Seeding tenant ${tenant.name}`);
 
-    if (tenant.adminTeam) {
-      const address = randomAddress(tenant.adminTeam.actor, tenant);
-      tenant.campus.add(new Campus({ name: 'Campus de Paris', address, ...scopedOptions }));
+    const adminPromises = [];
+    if (!adminManage) throw new Error('Tenant admin manage not found');
+
+    const campusClusters = [
+      new CampusCluster({ name: 'Paris', ...scopedOptions }),
+      new CampusCluster({ name: 'Bordeaux', ...scopedOptions }),
+    ];
+
+    for (const campusCluster of campusClusters) {
+      const campusClusterManageTeam = new Team({
+        name: `${tenant.name} - ${campusCluster.name}`,
+        type: TeamType.Department,
+        parent: adminManage.team,
+        ...scopedOptions,
+      });
+
+      for (const _ of Array.from({ length: randomInt(1, 3) })) {
+        const address = randomAddress(campusClusterManageTeam.actor, tenant);
+        campusCluster.campuses.add(
+          new Campus({ name: `Campus ${campusCluster.name}`, address, campusCluster, ...scopedOptions })
+        );
+      }
+
+      const tenantManage = new TenantManage({ campusCluster, team: campusClusterManageTeam, ...scopedOptions });
+      adminPromises.push(em.persistAndFlush([campusClusterManageTeam, campusCluster, tenantManage]));
     }
+
+    await Promise.all(adminPromises);
 
     const password = await hash('root', { secret: DatabaseSeeder.pepper });
     const admins = await new UserSeeder(em, tenant, ScopeRole.TenantAdmin, password).create(seedingConfig.N_ADMINS);
@@ -375,7 +407,7 @@ export class DatabaseSeeder extends Seeder {
           payedAt: start,
           method: PaymentMethod.Transfer,
           category: FinanceCategory.Subvention,
-          payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : team.tenant.adminTeam.actor,
+          payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminManage.team.actor,
           receivedBy: team.actor,
           createdBy: pickOneFromArray(admins),
           state: FinanceState.Completed,

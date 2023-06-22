@@ -16,7 +16,7 @@ type EventCardProps = {
 export function EventCard({ event, link }: EventCardProps) {
   const dateRange = formatDateRangeDayOfWeek(event.start as string, event.end as string);
 
-  const team = event.teamEvents[0].team;
+  const team = event.eventManages[0].team;
   return (
     <div className="w-[45rem] relative flex flex-col gap-2 border border-color-2 rounded-lg bg-2 py-2 px-4">
       <Link to={link} className="card-link" />

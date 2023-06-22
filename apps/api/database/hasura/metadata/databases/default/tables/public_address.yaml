@@ -25,6 +25,13 @@ array_relationships:
         table:
           name: bank_info
           schema: public
+  - name: campusClusters
+    using:
+      foreign_key_constraint_on:
+        column: approximate_address_id
+        table:
+          name: campus_cluster
+          schema: public
   - name: events
     using:
       foreign_key_constraint_on:

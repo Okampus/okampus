@@ -17,6 +17,7 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
+import type { TenantManage } from '../tenant/tenant-manage/tenant-manage.entity';
 
 import type { TeamOptions } from './team.options';
 import type { Action } from './action/action.entity';
@@ -31,7 +32,6 @@ import type { Finance } from './finance/finance.entity';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
-import type { Tenant } from '../tenant/tenant.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventManage } from '../event/event-manage/event-manage.entity';
 
@@ -83,9 +83,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'ClassGroup', inversedBy: 'team', nullable: true, default: null })
   classGroup: ClassGroup | null = null;
 
-  @OneToOne({ type: 'Tenant', inversedBy: 'adminTeam', nullable: true, default: null })
-  adminTeamTenant: Tenant | null = null;
-
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
@@ -125,6 +122,10 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'TeamMember', mappedBy: 'team' })
   @TransformCollection()
   teamMembers = new Collection<TeamMember>(this);
+
+  @OneToMany({ type: 'TenantManage', mappedBy: 'team' })
+  @TransformCollection()
+  tenantManages = new Collection<TenantManage>(this);
 
   @OneToMany({ type: 'Role', mappedBy: 'team' })
   @TransformCollection()

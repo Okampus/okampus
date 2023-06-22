@@ -73,6 +73,7 @@ export * from './resources/team/team-member/team-member.props';
 export * from './resources/team/team-metric/team-metric.props';
 export * from './resources/team/team-update.dto';
 export * from './resources/team/team.props';
+export * from './resources/tenant/campus-cluster/campus-cluster.props';
 export * from './resources/tenant/campus/campus.props';
 export * from './resources/tenant/event-approval-step/event-approval-step-create.dto';
 export * from './resources/tenant/event-approval-step/event-approval-step-update.dto';

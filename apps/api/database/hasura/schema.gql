@@ -2637,6 +2637,42 @@ type Address {
 
   # An object relationship
   campus: Campus
+
+  # An array relationship
+  campusClusters(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
+
+  # An aggregate relationship
+  campusClustersAggregate(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): CampusClusterAggregate!
   campusId: bigint
   city: String!
   country: String!
@@ -2878,6 +2914,8 @@ input AddressBoolExp {
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   campus: CampusBoolExp
+  campusClusters: CampusClusterBoolExp
+  campusClustersAggregate: CampusClusterAggregateBoolExp
   campusId: BigintComparisonExp
   city: StringComparisonExp
   country: StringComparisonExp
@@ -2936,6 +2974,7 @@ input AddressInsertInput {
   actorId: bigint
   bankInfos: BankInfoArrRelInsertInput
   campus: CampusObjRelInsertInput
+  campusClusters: CampusClusterArrRelInsertInput
   campusId: bigint
   city: String
   country: String
@@ -3075,6 +3114,7 @@ input AddressOrderBy {
   actorId: OrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   campus: CampusOrderBy
+  campusClustersAggregate: CampusClusterAggregateOrderBy
   campusId: OrderBy
   city: OrderBy
   country: OrderBy
@@ -4574,6 +4614,10 @@ input BotVarSampOrderBy {
 type Campus {
   # An object relationship
   address: Address
+
+  # An object relationship
+  campusCluster: CampusCluster!
+  campusClusterId: bigint!
   createdAt: timestamptz!
 
   # An object relationship
@@ -4646,6 +4690,7 @@ input CampusArrRelInsertInput {
 
 # aggregate avg on columns
 type CampusAvgFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4653,6 +4698,7 @@ type CampusAvgFields {
 
 # order by avg() on columns of table "campus"
 input CampusAvgOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4664,6 +4710,8 @@ input CampusBoolExp {
   _not: CampusBoolExp
   _or: [CampusBoolExp!]
   address: AddressBoolExp
+  campusCluster: CampusClusterBoolExp
+  campusClusterId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -4675,6 +4723,526 @@ input CampusBoolExp {
   tenantId: BigintComparisonExp
 }
 
+# columns and relationships of "campus_cluster"
+type CampusCluster {
+  # An object relationship
+  approximateAddress: Address
+  approximateAddressId: bigint
+
+  # An array relationship
+  campuses(
+    # distinct select on columns
+    distinctOn: [CampusSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusOrderBy!]
+
+    # filter the rows returned
+    where: CampusBoolExp
+  ): [Campus!]!
+
+  # An aggregate relationship
+  campusesAggregate(
+    # distinct select on columns
+    distinctOn: [CampusSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusOrderBy!]
+
+    # filter the rows returned
+    where: CampusBoolExp
+  ): CampusAggregate!
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+  name: String!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+
+  # An array relationship
+  tenantManages(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # An aggregate relationship
+  tenantManagesAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
+}
+
+# aggregated selection of "campus_cluster"
+type CampusClusterAggregate {
+  aggregate: CampusClusterAggregateFields
+  nodes: [CampusCluster!]!
+}
+
+input CampusClusterAggregateBoolExp {
+  count: campusClusterAggregateBoolExpCount
+}
+
+input campusClusterAggregateBoolExpCount {
+  arguments: [CampusClusterSelectColumn!]
+  distinct: Boolean
+  filter: CampusClusterBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "campus_cluster"
+type CampusClusterAggregateFields {
+  avg: CampusClusterAvgFields
+  count(columns: [CampusClusterSelectColumn!], distinct: Boolean): Int!
+  max: CampusClusterMaxFields
+  min: CampusClusterMinFields
+  stddev: CampusClusterStddevFields
+  stddevPop: CampusClusterStddevPopFields
+  stddevSamp: CampusClusterStddevSampFields
+  sum: CampusClusterSumFields
+  varPop: CampusClusterVarPopFields
+  varSamp: CampusClusterVarSampFields
+  variance: CampusClusterVarianceFields
+}
+
+# order by aggregate values of table "campus_cluster"
+input CampusClusterAggregateOrderBy {
+  avg: CampusClusterAvgOrderBy
+  count: OrderBy
+  max: CampusClusterMaxOrderBy
+  min: CampusClusterMinOrderBy
+  stddev: CampusClusterStddevOrderBy
+  stddevPop: CampusClusterStddevPopOrderBy
+  stddevSamp: CampusClusterStddevSampOrderBy
+  sum: CampusClusterSumOrderBy
+  varPop: CampusClusterVarPopOrderBy
+  varSamp: CampusClusterVarSampOrderBy
+  variance: CampusClusterVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "campus_cluster"
+input CampusClusterArrRelInsertInput {
+  data: [CampusClusterInsertInput!]!
+
+  # upsert condition
+  onConflict: CampusClusterOnConflict
+}
+
+# aggregate avg on columns
+type CampusClusterAvgFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "campus_cluster"
+input CampusClusterAvgOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "campus_cluster". All fields are combined with a logical 'AND'.
+input CampusClusterBoolExp {
+  _and: [CampusClusterBoolExp!]
+  _not: CampusClusterBoolExp
+  _or: [CampusClusterBoolExp!]
+  approximateAddress: AddressBoolExp
+  approximateAddressId: BigintComparisonExp
+  campuses: CampusBoolExp
+  campusesAggregate: CampusAggregateBoolExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  name: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  tenantManages: TenantManageBoolExp
+  tenantManagesAggregate: TenantManageAggregateBoolExp
+}
+
+# unique or primary key constraints on table "campus_cluster"
+enum CampusClusterConstraint {
+  # unique or primary key constraint on columns "id"
+  campus_cluster_pkey
+}
+
+# input type for incrementing numeric columns in table "campus_cluster"
+input CampusClusterIncInput {
+  approximateAddressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "campus_cluster"
+input CampusClusterInsertInput {
+  approximateAddress: AddressObjRelInsertInput
+  approximateAddressId: bigint
+  campuses: CampusArrRelInsertInput
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  tenantManages: TenantManageArrRelInsertInput
+}
+
+# aggregate max on columns
+type CampusClusterMaxFields {
+  approximateAddressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  tenantId: bigint
+}
+
+# order by max() on columns of table "campus_cluster"
+input CampusClusterMaxOrderBy {
+  approximateAddressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type CampusClusterMinFields {
+  approximateAddressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  tenantId: bigint
+}
+
+# order by min() on columns of table "campus_cluster"
+input CampusClusterMinOrderBy {
+  approximateAddressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "campus_cluster"
+type CampusClusterMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [CampusCluster!]!
+}
+
+# input type for inserting object relation for remote table "campus_cluster"
+input CampusClusterObjRelInsertInput {
+  data: CampusClusterInsertInput!
+
+  # upsert condition
+  onConflict: CampusClusterOnConflict
+}
+
+# on_conflict condition type for table "campus_cluster"
+input CampusClusterOnConflict {
+  constraint: CampusClusterConstraint!
+  updateColumns: [CampusClusterUpdateColumn!]! = []
+  where: CampusClusterBoolExp
+}
+
+# Ordering options when selecting data from "campus_cluster".
+input CampusClusterOrderBy {
+  approximateAddress: AddressOrderBy
+  approximateAddressId: OrderBy
+  campusesAggregate: CampusAggregateOrderBy
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  tenantManagesAggregate: TenantManageAggregateOrderBy
+}
+
+# primary key columns input for table: campus_cluster
+input CampusClusterPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "campus_cluster"
+enum CampusClusterSelectColumn {
+  # column name
+  approximateAddressId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "campus_cluster"
+input CampusClusterSetInput {
+  approximateAddressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type CampusClusterStddevFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "campus_cluster"
+input CampusClusterStddevOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type CampusClusterStddevPopFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "campus_cluster"
+input CampusClusterStddevPopOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type CampusClusterStddevSampFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "campus_cluster"
+input CampusClusterStddevSampOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "campus_cluster"
+input CampusClusterStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: CampusClusterStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input CampusClusterStreamCursorValueInput {
+  approximateAddressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type CampusClusterSumFields {
+  approximateAddressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "campus_cluster"
+input CampusClusterSumOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "campus_cluster"
+enum CampusClusterUpdateColumn {
+  # column name
+  approximateAddressId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  tenantId
+}
+
+input CampusClusterUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: CampusClusterIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: CampusClusterSetInput
+
+  # filter the rows which have to be updated
+  where: CampusClusterBoolExp!
+}
+
+# aggregate variance on columns
+type CampusClusterVarianceFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "campus_cluster"
+input CampusClusterVarianceOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type CampusClusterVarPopFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "campus_cluster"
+input CampusClusterVarPopOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type CampusClusterVarSampFields {
+  approximateAddressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "campus_cluster"
+input CampusClusterVarSampOrderBy {
+  approximateAddressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 # unique or primary key constraints on table "campus"
 enum CampusConstraint {
   # unique or primary key constraint on columns "id"
@@ -4683,6 +5251,7 @@ enum CampusConstraint {
 
 # input type for incrementing numeric columns in table "campus"
 input CampusIncInput {
+  campusClusterId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -4691,6 +5260,8 @@ input CampusIncInput {
 # input type for inserting data into table "campus"
 input CampusInsertInput {
   address: AddressObjRelInsertInput
+  campusCluster: CampusClusterObjRelInsertInput
+  campusClusterId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -4704,6 +5275,7 @@ input CampusInsertInput {
 
 # aggregate max on columns
 type CampusMaxFields {
+  campusClusterId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4715,6 +5287,7 @@ type CampusMaxFields {
 
 # order by max() on columns of table "campus"
 input CampusMaxOrderBy {
+  campusClusterId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -4726,6 +5299,7 @@ input CampusMaxOrderBy {
 
 # aggregate min on columns
 type CampusMinFields {
+  campusClusterId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4737,6 +5311,7 @@ type CampusMinFields {
 
 # order by min() on columns of table "campus"
 input CampusMinOrderBy {
+  campusClusterId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -4773,6 +5348,8 @@ input CampusOnConflict {
 # Ordering options when selecting data from "campus".
 input CampusOrderBy {
   address: AddressOrderBy
+  campusCluster: CampusClusterOrderBy
+  campusClusterId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -4791,6 +5368,9 @@ input CampusPkColumnsInput {
 
 # select columns of table "campus"
 enum CampusSelectColumn {
+  # column name
+  campusClusterId
+
   # column name
   createdAt
 
@@ -4815,6 +5395,7 @@ enum CampusSelectColumn {
 
 # input type for updating data in table "campus"
 input CampusSetInput {
+  campusClusterId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4826,6 +5407,7 @@ input CampusSetInput {
 
 # aggregate stddev on columns
 type CampusStddevFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4833,6 +5415,7 @@ type CampusStddevFields {
 
 # order by stddev() on columns of table "campus"
 input CampusStddevOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4840,6 +5423,7 @@ input CampusStddevOrderBy {
 
 # aggregate stddevPop on columns
 type CampusStddevPopFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4847,6 +5431,7 @@ type CampusStddevPopFields {
 
 # order by stddevPop() on columns of table "campus"
 input CampusStddevPopOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4854,6 +5439,7 @@ input CampusStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type CampusStddevSampFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4861,6 +5447,7 @@ type CampusStddevSampFields {
 
 # order by stddevSamp() on columns of table "campus"
 input CampusStddevSampOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4877,6 +5464,7 @@ input CampusStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input CampusStreamCursorValueInput {
+  campusClusterId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4888,6 +5476,7 @@ input CampusStreamCursorValueInput {
 
 # aggregate sum on columns
 type CampusSumFields {
+  campusClusterId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -4895,6 +5484,7 @@ type CampusSumFields {
 
 # order by sum() on columns of table "campus"
 input CampusSumOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4902,6 +5492,9 @@ input CampusSumOrderBy {
 
 # update columns of table "campus"
 enum CampusUpdateColumn {
+  # column name
+  campusClusterId
+
   # column name
   createdAt
 
@@ -4937,6 +5530,7 @@ input CampusUpdates {
 
 # aggregate variance on columns
 type CampusVarianceFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4944,6 +5538,7 @@ type CampusVarianceFields {
 
 # order by variance() on columns of table "campus"
 input CampusVarianceOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4951,6 +5546,7 @@ input CampusVarianceOrderBy {
 
 # aggregate varPop on columns
 type CampusVarPopFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4958,6 +5554,7 @@ type CampusVarPopFields {
 
 # order by varPop() on columns of table "campus"
 input CampusVarPopOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4965,6 +5562,7 @@ input CampusVarPopOrderBy {
 
 # aggregate varSamp on columns
 type CampusVarSampFields {
+  campusClusterId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4972,6 +5570,7 @@ type CampusVarSampFields {
 
 # order by varSamp() on columns of table "campus"
 input CampusVarSampOrderBy {
+  campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -23242,6 +23841,42 @@ type Individual {
   createdById: bigint
 
   # An array relationship
+  createdCampusClusters(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
+
+  # An aggregate relationship
+  createdCampusClustersAggregate(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): CampusClusterAggregate!
+
+  # An array relationship
   createdCampuses(
     # distinct select on columns
     distinctOn: [CampusSelectColumn!]
@@ -24754,6 +25389,42 @@ type Individual {
   ): TeamAggregate!
 
   # An array relationship
+  createdTenantManages(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # An aggregate relationship
+  createdTenantManagesAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
+
+  # An array relationship
   createdTenants(
     # distinct select on columns
     distinctOn: [TenantSelectColumn!]
@@ -25479,6 +26150,8 @@ input IndividualBoolExp {
   createdBotsAggregate: BotAggregateBoolExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
+  createdCampusClusters: CampusClusterBoolExp
+  createdCampusClustersAggregate: CampusClusterAggregateBoolExp
   createdCampuses: CampusBoolExp
   createdCampusesAggregate: CampusAggregateBoolExp
   createdCanteenFoods: CanteenFoodBoolExp
@@ -25563,6 +26236,8 @@ input IndividualBoolExp {
   createdTeamMetricsAggregate: TeamMetricAggregateBoolExp
   createdTeams: TeamBoolExp
   createdTeamsAggregate: TeamAggregateBoolExp
+  createdTenantManages: TenantManageBoolExp
+  createdTenantManagesAggregate: TenantManageAggregateBoolExp
   createdTenants: TenantBoolExp
   createdTenantsAggregate: TenantAggregateBoolExp
   createdThreads: ThreadBoolExp
@@ -25645,6 +26320,7 @@ input IndividualInsertInput {
   createdBots: BotArrRelInsertInput
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
+  createdCampusClusters: CampusClusterArrRelInsertInput
   createdCampuses: CampusArrRelInsertInput
   createdCanteenFoods: CanteenFoodArrRelInsertInput
   createdCanteenMenus: CanteenMenuArrRelInsertInput
@@ -25687,6 +26363,7 @@ input IndividualInsertInput {
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
+  createdTenantManages: TenantManageArrRelInsertInput
   createdTenants: TenantArrRelInsertInput
   createdThreads: ThreadArrRelInsertInput
   createdUsers: UserArrRelInsertInput
@@ -25811,6 +26488,7 @@ input IndividualOrderBy {
   createdBotsAggregate: BotAggregateOrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
+  createdCampusClustersAggregate: CampusClusterAggregateOrderBy
   createdCampusesAggregate: CampusAggregateOrderBy
   createdCanteenFoodsAggregate: CanteenFoodAggregateOrderBy
   createdCanteenMenusAggregate: CanteenMenuAggregateOrderBy
@@ -25853,6 +26531,7 @@ input IndividualOrderBy {
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
+  createdTenantManagesAggregate: TenantManageAggregateOrderBy
   createdTenantsAggregate: TenantAggregateOrderBy
   createdThreadsAggregate: ThreadAggregateOrderBy
   createdUsersAggregate: UserAggregateOrderBy
@@ -29360,6 +30039,15 @@ type Mutation {
   # delete single row from the table: "campus"
   deleteCampusByPk(id: bigint!): Campus
 
+  # delete data from the table: "campus_cluster"
+  deleteCampusCluster(
+    # filter the rows which have to be deleted
+    where: CampusClusterBoolExp!
+  ): CampusClusterMutationResponse
+
+  # delete single row from the table: "campus_cluster"
+  deleteCampusClusterByPk(id: bigint!): CampusCluster
+
   # delete data from the table: "canteen"
   deleteCanteen(
     # filter the rows which have to be deleted
@@ -29891,6 +30579,15 @@ type Mutation {
   # delete single row from the table: "tenant"
   deleteTenantByPk(id: bigint!): Tenant
 
+  # delete data from the table: "tenant_manage"
+  deleteTenantManage(
+    # filter the rows which have to be deleted
+    where: TenantManageBoolExp!
+  ): TenantManageMutationResponse
+
+  # delete single row from the table: "tenant_manage"
+  deleteTenantManageByPk(id: bigint!): TenantManage
+
   # delete data from the table: "thread"
   deleteThread(
     # filter the rows which have to be deleted
@@ -30079,6 +30776,24 @@ type Mutation {
     # upsert condition
     onConflict: CampusOnConflict
   ): CampusMutationResponse
+
+  # insert data into the table: "campus_cluster"
+  insertCampusCluster(
+    # the rows to be inserted
+    objects: [CampusClusterInsertInput!]!
+
+    # upsert condition
+    onConflict: CampusClusterOnConflict
+  ): CampusClusterMutationResponse
+
+  # insert a single row into the table: "campus_cluster"
+  insertCampusClusterOne(
+    # the row to be inserted
+    object: CampusClusterInsertInput!
+
+    # upsert condition
+    onConflict: CampusClusterOnConflict
+  ): CampusCluster
 
   # insert a single row into the table: "campus"
   insertCampusOne(
@@ -31142,6 +31857,24 @@ type Mutation {
     onConflict: TenantOnConflict
   ): TenantMutationResponse
 
+  # insert data into the table: "tenant_manage"
+  insertTenantManage(
+    # the rows to be inserted
+    objects: [TenantManageInsertInput!]!
+
+    # upsert condition
+    onConflict: TenantManageOnConflict
+  ): TenantManageMutationResponse
+
+  # insert a single row into the table: "tenant_manage"
+  insertTenantManageOne(
+    # the row to be inserted
+    object: TenantManageInsertInput!
+
+    # upsert condition
+    onConflict: TenantManageOnConflict
+  ): TenantManage
+
   # insert a single row into the table: "tenant"
   insertTenantOne(
     # the row to be inserted
@@ -31476,6 +32209,34 @@ type Mutation {
     _set: CampusSetInput
     pkColumns: CampusPkColumnsInput!
   ): Campus
+
+  # update data of the table: "campus_cluster"
+  updateCampusCluster(
+    # increments the numeric columns with given value of the filtered values
+    _inc: CampusClusterIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: CampusClusterSetInput
+
+    # filter the rows which have to be updated
+    where: CampusClusterBoolExp!
+  ): CampusClusterMutationResponse
+
+  # update single row of the table: "campus_cluster"
+  updateCampusClusterByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: CampusClusterIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: CampusClusterSetInput
+    pkColumns: CampusClusterPkColumnsInput!
+  ): CampusCluster
+
+  # update multiples rows of table: "campus_cluster"
+  updateCampusClusterMany(
+    # updates to execute, in order
+    updates: [CampusClusterUpdates!]!
+  ): [CampusClusterMutationResponse]
 
   # update multiples rows of table: "campus"
   updateCampusMany(
@@ -33256,6 +34017,34 @@ type Mutation {
     _set: TenantSetInput
     pkColumns: TenantPkColumnsInput!
   ): Tenant
+
+  # update data of the table: "tenant_manage"
+  updateTenantManage(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TenantManageIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TenantManageSetInput
+
+    # filter the rows which have to be updated
+    where: TenantManageBoolExp!
+  ): TenantManageMutationResponse
+
+  # update single row of the table: "tenant_manage"
+  updateTenantManageByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TenantManageIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TenantManageSetInput
+    pkColumns: TenantManagePkColumnsInput!
+  ): TenantManage
+
+  # update multiples rows of table: "tenant_manage"
+  updateTenantManageMany(
+    # updates to execute, in order
+    updates: [TenantManageUpdates!]!
+  ): [TenantManageMutationResponse]
 
   # update multiples rows of table: "tenant"
   updateTenantMany(
@@ -35866,6 +36655,45 @@ type Query {
   # fetch data from the table: "campus" using primary key columns
   campusByPk(id: bigint!): Campus
 
+  # fetch data from the table: "campus_cluster"
+  campusCluster(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
+
+  # fetch aggregated fields from the table: "campus_cluster"
+  campusClusterAggregate(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): CampusClusterAggregate!
+
+  # fetch data from the table: "campus_cluster" using primary key columns
+  campusClusterByPk(id: bigint!): CampusCluster
+
   # fetch data from the table: "canteen"
   canteen(
     # distinct select on columns
@@ -38167,6 +38995,45 @@ type Query {
   # fetch data from the table: "tenant" using primary key columns
   tenantByPk(id: bigint!): Tenant
 
+  # fetch data from the table: "tenant_manage"
+  tenantManage(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # fetch aggregated fields from the table: "tenant_manage"
+  tenantManageAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
+
+  # fetch data from the table: "tenant_manage" using primary key columns
+  tenantManageByPk(id: bigint!): TenantManage
+
   # fetch data from the table: "thread"
   thread(
     # distinct select on columns
@@ -39401,7 +40268,7 @@ type Role {
   id: bigint!
   isRequired: Boolean!
   name: String!
-  permissions: Int!
+  permissions: _text!
 
   # An object relationship
   team: Team!
@@ -39560,7 +40427,6 @@ input RoleArrRelInsertInput {
 type RoleAvgFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39569,7 +40435,6 @@ type RoleAvgFields {
 input RoleAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39590,7 +40455,7 @@ input RoleBoolExp {
   id: BigintComparisonExp
   isRequired: BooleanComparisonExp
   name: StringComparisonExp
-  permissions: IntComparisonExp
+  permissions: _textComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
@@ -39612,7 +40477,6 @@ enum RoleConstraint {
 input RoleIncInput {
   createdById: bigint
   id: bigint
-  permissions: Int
   teamId: bigint
   tenantId: bigint
 }
@@ -39629,7 +40493,7 @@ input RoleInsertInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: Int
+  permissions: _text
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -39648,7 +40512,6 @@ type RoleMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: Int
   teamId: bigint
   tenantId: bigint
   type: String
@@ -39663,7 +40526,6 @@ input RoleMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -39678,7 +40540,6 @@ type RoleMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
-  permissions: Int
   teamId: bigint
   tenantId: bigint
   type: String
@@ -39693,7 +40554,6 @@ input RoleMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -39811,7 +40671,7 @@ input RoleSetInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: Int
+  permissions: _text
   teamId: bigint
   tenantId: bigint
   type: String
@@ -39821,7 +40681,6 @@ input RoleSetInput {
 type RoleStddevFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39830,7 +40689,6 @@ type RoleStddevFields {
 input RoleStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39839,7 +40697,6 @@ input RoleStddevOrderBy {
 type RoleStddevPopFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39848,7 +40705,6 @@ type RoleStddevPopFields {
 input RoleStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39857,7 +40713,6 @@ input RoleStddevPopOrderBy {
 type RoleStddevSampFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39866,7 +40721,6 @@ type RoleStddevSampFields {
 input RoleStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39890,7 +40744,7 @@ input RoleStreamCursorValueInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: Int
+  permissions: _text
   teamId: bigint
   tenantId: bigint
   type: String
@@ -39900,7 +40754,6 @@ input RoleStreamCursorValueInput {
 type RoleSumFields {
   createdById: bigint
   id: bigint
-  permissions: Int
   teamId: bigint
   tenantId: bigint
 }
@@ -39909,7 +40762,6 @@ type RoleSumFields {
 input RoleSumOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39968,7 +40820,6 @@ input RoleUpdates {
 type RoleVarianceFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39977,7 +40828,6 @@ type RoleVarianceFields {
 input RoleVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -39986,7 +40836,6 @@ input RoleVarianceOrderBy {
 type RoleVarPopFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -39995,7 +40844,6 @@ type RoleVarPopFields {
 input RoleVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -40004,7 +40852,6 @@ input RoleVarPopOrderBy {
 type RoleVarSampFields {
   createdById: Float
   id: Float
-  permissions: Float
   teamId: Float
   tenantId: Float
 }
@@ -40013,7 +40860,6 @@ type RoleVarSampFields {
 input RoleVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -41706,7 +42552,7 @@ type Subject {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  description: String
+  description: String!
 
   # An array relationship
   documents(
@@ -41743,7 +42589,7 @@ type Subject {
     # filter the rows returned
     where: DocumentBoolExp
   ): DocumentAggregate!
-  englishName: String
+  englishName: String!
   hiddenAt: timestamptz
   id: bigint!
   lastActiveDate: timestamptz
@@ -42956,6 +43802,57 @@ type Subscription {
 
   # fetch data from the table: "campus" using primary key columns
   campusByPk(id: bigint!): Campus
+
+  # fetch data from the table: "campus_cluster"
+  campusCluster(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
+
+  # fetch aggregated fields from the table: "campus_cluster"
+  campusClusterAggregate(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): CampusClusterAggregate!
+
+  # fetch data from the table: "campus_cluster" using primary key columns
+  campusClusterByPk(id: bigint!): CampusCluster
+
+  # fetch data from the table in a streaming manner: "campus_cluster"
+  campusClusterStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [CampusClusterStreamCursorInput]!
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
 
   # fetch data from the table in a streaming manner: "campus"
   campusStream(
@@ -45966,6 +46863,57 @@ type Subscription {
   # fetch data from the table: "tenant" using primary key columns
   tenantByPk(id: bigint!): Tenant
 
+  # fetch data from the table: "tenant_manage"
+  tenantManage(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # fetch aggregated fields from the table: "tenant_manage"
+  tenantManageAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
+
+  # fetch data from the table: "tenant_manage" using primary key columns
+  tenantManageByPk(id: bigint!): TenantManage
+
+  # fetch data from the table in a streaming manner: "tenant_manage"
+  tenantManageStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [TenantManageStreamCursorInput]!
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
   # fetch data from the table in a streaming manner: "tenant"
   tenantStream(
     # maximum number of rows returned in a single batch
@@ -47031,10 +47979,6 @@ type Team {
   actor: Actor
 
   # An object relationship
-  adminTeamTenant: Tenant
-  adminTeamTenantId: bigint
-
-  # An object relationship
   canteen: Canteen
   canteenId: bigint
 
@@ -47508,6 +48452,42 @@ type Team {
   tenant: Tenant!
   tenantGrantFundId: bigint
   tenantId: bigint!
+
+  # An array relationship
+  tenantManages(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # An aggregate relationship
+  tenantManagesAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
   type: String!
 
   # An object relationship
@@ -47572,7 +48552,6 @@ input TeamArrRelInsertInput {
 
 # aggregate avg on columns
 type TeamAvgFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -47591,7 +48570,6 @@ type TeamAvgFields {
 
 # order by avg() on columns of table "team"
 input TeamAvgOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -47616,8 +48594,6 @@ input TeamBoolExp {
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
-  adminTeamTenant: TenantBoolExp
-  adminTeamTenantId: BigintComparisonExp
   canteen: CanteenBoolExp
   canteenId: BigintComparisonExp
   classGroup: ClassGroupBoolExp
@@ -47669,6 +48645,8 @@ input TeamBoolExp {
   tenant: TenantBoolExp
   tenantGrantFundId: BigintComparisonExp
   tenantId: BigintComparisonExp
+  tenantManages: TenantManageBoolExp
+  tenantManagesAggregate: TenantManageAggregateBoolExp
   type: StringComparisonExp
   video: FileUploadBoolExp
   videoId: BigintComparisonExp
@@ -47676,9 +48654,6 @@ input TeamBoolExp {
 
 # unique or primary key constraints on table "team"
 enum TeamConstraint {
-  # unique or primary key constraint on columns "admin_team_tenant_id"
-  team_admin_team_tenant_id_unique
-
   # unique or primary key constraint on columns "canteen_id"
   team_canteen_id_unique
 
@@ -47694,7 +48669,6 @@ enum TeamConstraint {
 
 # input type for incrementing numeric columns in table "team"
 input TeamIncInput {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -47715,8 +48689,6 @@ input TeamIncInput {
 input TeamInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
-  adminTeamTenant: TenantObjRelInsertInput
-  adminTeamTenantId: bigint
   canteen: CanteenObjRelInsertInput
   canteenId: bigint
   classGroup: ClassGroupObjRelInsertInput
@@ -47756,6 +48728,7 @@ input TeamInsertInput {
   tenant: TenantObjRelInsertInput
   tenantGrantFundId: bigint
   tenantId: bigint
+  tenantManages: TenantManageArrRelInsertInput
   type: String
   video: FileUploadObjRelInsertInput
   videoId: bigint
@@ -48445,7 +49418,6 @@ input TeamJoinVarSampOrderBy {
 
 # aggregate max on columns
 type TeamMaxFields {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -48471,7 +49443,6 @@ type TeamMaxFields {
 
 # order by max() on columns of table "team"
 input TeamMaxOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -49813,7 +50784,6 @@ input TeamMetricVarSampOrderBy {
 
 # aggregate min on columns
 type TeamMinFields {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -49839,7 +50809,6 @@ type TeamMinFields {
 
 # order by min() on columns of table "team"
 input TeamMinOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -49891,8 +50860,6 @@ input TeamOnConflict {
 input TeamOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
-  adminTeamTenant: TenantOrderBy
-  adminTeamTenantId: OrderBy
   canteen: CanteenOrderBy
   canteenId: OrderBy
   classGroup: ClassGroupOrderBy
@@ -49932,6 +50899,7 @@ input TeamOrderBy {
   tenant: TenantOrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
+  tenantManagesAggregate: TenantManageAggregateOrderBy
   type: OrderBy
   video: FileUploadOrderBy
   videoId: OrderBy
@@ -49944,9 +50912,6 @@ input TeamPkColumnsInput {
 
 # select columns of table "team"
 enum TeamSelectColumn {
-  # column name
-  adminTeamTenantId
-
   # column name
   canteenId
 
@@ -50013,7 +50978,6 @@ enum TeamSelectColumn {
 
 # input type for updating data in table "team"
 input TeamSetInput {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -50039,7 +51003,6 @@ input TeamSetInput {
 
 # aggregate stddev on columns
 type TeamStddevFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50058,7 +51021,6 @@ type TeamStddevFields {
 
 # order by stddev() on columns of table "team"
 input TeamStddevOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50077,7 +51039,6 @@ input TeamStddevOrderBy {
 
 # aggregate stddevPop on columns
 type TeamStddevPopFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50096,7 +51057,6 @@ type TeamStddevPopFields {
 
 # order by stddevPop() on columns of table "team"
 input TeamStddevPopOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50115,7 +51075,6 @@ input TeamStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type TeamStddevSampFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50134,7 +51093,6 @@ type TeamStddevSampFields {
 
 # order by stddevSamp() on columns of table "team"
 input TeamStddevSampOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50162,7 +51120,6 @@ input TeamStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input TeamStreamCursorValueInput {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -50188,7 +51145,6 @@ input TeamStreamCursorValueInput {
 
 # aggregate sum on columns
 type TeamSumFields {
-  adminTeamTenantId: bigint
   canteenId: bigint
   classGroupId: bigint
   cohortId: bigint
@@ -50207,7 +51163,6 @@ type TeamSumFields {
 
 # order by sum() on columns of table "team"
 input TeamSumOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50226,9 +51181,6 @@ input TeamSumOrderBy {
 
 # update columns of table "team"
 enum TeamUpdateColumn {
-  # column name
-  adminTeamTenantId
-
   # column name
   canteenId
 
@@ -50306,7 +51258,6 @@ input TeamUpdates {
 
 # aggregate variance on columns
 type TeamVarianceFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50325,7 +51276,6 @@ type TeamVarianceFields {
 
 # order by variance() on columns of table "team"
 input TeamVarianceOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50344,7 +51294,6 @@ input TeamVarianceOrderBy {
 
 # aggregate varPop on columns
 type TeamVarPopFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50363,7 +51312,6 @@ type TeamVarPopFields {
 
 # order by varPop() on columns of table "team"
 input TeamVarPopOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50382,7 +51330,6 @@ input TeamVarPopOrderBy {
 
 # aggregate varSamp on columns
 type TeamVarSampFields {
-  adminTeamTenantId: Float
   canteenId: Float
   classGroupId: Float
   cohortId: Float
@@ -50401,7 +51348,6 @@ type TeamVarSampFields {
 
 # order by varSamp() on columns of table "team"
 input TeamVarSampOrderBy {
-  adminTeamTenantId: OrderBy
   canteenId: OrderBy
   classGroupId: OrderBy
   cohortId: OrderBy
@@ -50564,9 +51510,6 @@ type Tenant {
     where: AddressBoolExp
   ): AddressAggregate!
 
-  # An object relationship
-  adminTeam: Team
-
   # An array relationship
   bankInfos(
     # distinct select on columns
@@ -50638,6 +51581,42 @@ type Tenant {
     # filter the rows returned
     where: BotBoolExp
   ): BotAggregate!
+
+  # An array relationship
+  campusClusters(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): [CampusCluster!]!
+
+  # An aggregate relationship
+  campusClustersAggregate(
+    # distinct select on columns
+    distinctOn: [CampusClusterSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusClusterOrderBy!]
+
+    # filter the rows returned
+    where: CampusClusterBoolExp
+  ): CampusClusterAggregate!
 
   # An array relationship
   campuses(
@@ -52209,6 +53188,42 @@ type Tenant {
   ): TeamAggregate!
 
   # An array relationship
+  tenantManages(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): [TenantManage!]!
+
+  # An aggregate relationship
+  tenantManagesAggregate(
+    # distinct select on columns
+    distinctOn: [TenantManageSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TenantManageOrderBy!]
+
+    # filter the rows returned
+    where: TenantManageBoolExp
+  ): TenantManageAggregate!
+
+  # An array relationship
   threads(
     # distinct select on columns
     distinctOn: [ThreadSelectColumn!]
@@ -52451,11 +53466,12 @@ input TenantBoolExp {
   actorsAggregate: ActorAggregateBoolExp
   addresses: AddressBoolExp
   addressesAggregate: AddressAggregateBoolExp
-  adminTeam: TeamBoolExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bots: BotBoolExp
   botsAggregate: BotAggregateBoolExp
+  campusClusters: CampusClusterBoolExp
+  campusClustersAggregate: CampusClusterAggregateBoolExp
   campuses: CampusBoolExp
   campusesAggregate: CampusAggregateBoolExp
   canteenFoods: CanteenFoodBoolExp
@@ -52559,6 +53575,8 @@ input TenantBoolExp {
   teamMetricsAggregate: TeamMetricAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
+  tenantManages: TenantManageBoolExp
+  tenantManagesAggregate: TenantManageAggregateBoolExp
   threads: ThreadBoolExp
   threadsAggregate: ThreadAggregateBoolExp
   users: UserBoolExp
@@ -52594,9 +53612,9 @@ input TenantInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
   addresses: AddressArrRelInsertInput
-  adminTeam: TeamObjRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   bots: BotArrRelInsertInput
+  campusClusters: CampusClusterArrRelInsertInput
   campuses: CampusArrRelInsertInput
   canteenFoods: CanteenFoodArrRelInsertInput
   canteenMenus: CanteenMenuArrRelInsertInput
@@ -52657,10 +53675,466 @@ input TenantInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
+  tenantManages: TenantManageArrRelInsertInput
   threads: ThreadArrRelInsertInput
   users: UserArrRelInsertInput
   validations: ValidationArrRelInsertInput
   votes: VoteArrRelInsertInput
+}
+
+# columns and relationships of "tenant_manage"
+type TenantManage {
+  # An object relationship
+  campusCluster: CampusCluster
+  campusClusterId: bigint
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+# aggregated selection of "tenant_manage"
+type TenantManageAggregate {
+  aggregate: TenantManageAggregateFields
+  nodes: [TenantManage!]!
+}
+
+input TenantManageAggregateBoolExp {
+  count: tenantManageAggregateBoolExpCount
+}
+
+input tenantManageAggregateBoolExpCount {
+  arguments: [TenantManageSelectColumn!]
+  distinct: Boolean
+  filter: TenantManageBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "tenant_manage"
+type TenantManageAggregateFields {
+  avg: TenantManageAvgFields
+  count(columns: [TenantManageSelectColumn!], distinct: Boolean): Int!
+  max: TenantManageMaxFields
+  min: TenantManageMinFields
+  stddev: TenantManageStddevFields
+  stddevPop: TenantManageStddevPopFields
+  stddevSamp: TenantManageStddevSampFields
+  sum: TenantManageSumFields
+  varPop: TenantManageVarPopFields
+  varSamp: TenantManageVarSampFields
+  variance: TenantManageVarianceFields
+}
+
+# order by aggregate values of table "tenant_manage"
+input TenantManageAggregateOrderBy {
+  avg: TenantManageAvgOrderBy
+  count: OrderBy
+  max: TenantManageMaxOrderBy
+  min: TenantManageMinOrderBy
+  stddev: TenantManageStddevOrderBy
+  stddevPop: TenantManageStddevPopOrderBy
+  stddevSamp: TenantManageStddevSampOrderBy
+  sum: TenantManageSumOrderBy
+  varPop: TenantManageVarPopOrderBy
+  varSamp: TenantManageVarSampOrderBy
+  variance: TenantManageVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "tenant_manage"
+input TenantManageArrRelInsertInput {
+  data: [TenantManageInsertInput!]!
+
+  # upsert condition
+  onConflict: TenantManageOnConflict
+}
+
+# aggregate avg on columns
+type TenantManageAvgFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "tenant_manage"
+input TenantManageAvgOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "tenant_manage". All fields are combined with a logical 'AND'.
+input TenantManageBoolExp {
+  _and: [TenantManageBoolExp!]
+  _not: TenantManageBoolExp
+  _or: [TenantManageBoolExp!]
+  campusCluster: CampusClusterBoolExp
+  campusClusterId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "tenant_manage"
+enum TenantManageConstraint {
+  # unique or primary key constraint on columns "id"
+  tenant_manage_pkey
+}
+
+# input type for incrementing numeric columns in table "tenant_manage"
+input TenantManageIncInput {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "tenant_manage"
+input TenantManageInsertInput {
+  campusCluster: CampusClusterObjRelInsertInput
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+# aggregate max on columns
+type TenantManageMaxFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by max() on columns of table "tenant_manage"
+input TenantManageMaxOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type TenantManageMinFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by min() on columns of table "tenant_manage"
+input TenantManageMinOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "tenant_manage"
+type TenantManageMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [TenantManage!]!
+}
+
+# on_conflict condition type for table "tenant_manage"
+input TenantManageOnConflict {
+  constraint: TenantManageConstraint!
+  updateColumns: [TenantManageUpdateColumn!]! = []
+  where: TenantManageBoolExp
+}
+
+# Ordering options when selecting data from "tenant_manage".
+input TenantManageOrderBy {
+  campusCluster: CampusClusterOrderBy
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# primary key columns input for table: tenant_manage
+input TenantManagePkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "tenant_manage"
+enum TenantManageSelectColumn {
+  # column name
+  campusClusterId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "tenant_manage"
+input TenantManageSetInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type TenantManageStddevFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "tenant_manage"
+input TenantManageStddevOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type TenantManageStddevPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "tenant_manage"
+input TenantManageStddevPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type TenantManageStddevSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "tenant_manage"
+input TenantManageStddevSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "tenant_manage"
+input TenantManageStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: TenantManageStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input TenantManageStreamCursorValueInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type TenantManageSumFields {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "tenant_manage"
+input TenantManageSumOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "tenant_manage"
+enum TenantManageUpdateColumn {
+  # column name
+  campusClusterId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+input TenantManageUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: TenantManageIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: TenantManageSetInput
+
+  # filter the rows which have to be updated
+  where: TenantManageBoolExp!
+}
+
+# aggregate variance on columns
+type TenantManageVarianceFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "tenant_manage"
+input TenantManageVarianceOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type TenantManageVarPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "tenant_manage"
+input TenantManageVarPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type TenantManageVarSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "tenant_manage"
+input TenantManageVarSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate max on columns
@@ -52765,9 +54239,9 @@ input TenantOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
   addressesAggregate: AddressAggregateOrderBy
-  adminTeam: TeamOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
+  campusClustersAggregate: CampusClusterAggregateOrderBy
   campusesAggregate: CampusAggregateOrderBy
   canteenFoodsAggregate: CanteenFoodAggregateOrderBy
   canteenMenusAggregate: CanteenMenuAggregateOrderBy
@@ -52828,6 +54302,7 @@ input TenantOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
+  tenantManagesAggregate: TenantManageAggregateOrderBy
   threadsAggregate: ThreadAggregateOrderBy
   usersAggregate: UserAggregateOrderBy
   validationsAggregate: ValidationAggregateOrderBy

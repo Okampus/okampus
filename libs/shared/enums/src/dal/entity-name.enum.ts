@@ -4,7 +4,9 @@ export enum EntityName {
   User = 'User',
 
   Tenant = 'Tenant',
+  TenantManage = 'TenantManage',
   Campus = 'Campus',
+  CampusCluster = 'CampusCluster',
 
   Actor = 'Actor',
   BankInfo = 'BankInfo',

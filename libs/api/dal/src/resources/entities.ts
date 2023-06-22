@@ -53,6 +53,8 @@ import { Issue } from './issue/issue.entity';
 import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 import { Grant } from './team/grant/grant.entity';
 import { GrantUnlock } from './team/grant-unlock/grant-unlock.entity';
+import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
+import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
 
 export const allEntities = [
   Log,
@@ -62,7 +64,9 @@ export const allEntities = [
   User,
 
   Tenant,
+  TenantManage,
   Campus,
+  CampusCluster,
 
   Actor,
   BankInfo,

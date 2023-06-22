@@ -22,7 +22,7 @@ import {
   TEAM_MANAGE_ROUTE,
   WELCOME_ROUTE,
 } from '@okampus/shared/consts';
-import { ScopeRole, TagType, ViewType } from '@okampus/shared/enums';
+import { ScopeRole, TagType, TeamType, ViewType } from '@okampus/shared/enums';
 import { fileUploadBaseInfo, OrderBy, tagBaseInfo, useTypedLazyQuery, logoutMutation } from '@okampus/shared/graphql';
 import { isIn, isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 import { AvatarImage, Popover, PopoverContent, PopoverTrigger, Skeleton } from '@okampus/ui/atoms';
@@ -170,6 +170,10 @@ export function Sidebar() {
     },
   ];
 
+  const adminTeam = tenant?.tenantManages.find(
+    (manage) => !manage.campusCluster && manage.team.type === TeamType.Tenant
+  )?.team;
+
   return (
     <nav className="h-screen flex flex-col w-sidebar bg-main shrink-0 bg-1">
       {/* Subspace name */}
@@ -181,7 +185,7 @@ export function Sidebar() {
                 <>
                   <AvatarImage
                     name={tenant.name}
-                    src={getAvatar(tenant.adminTeam?.actor?.actorImages)}
+                    src={getAvatar(adminTeam?.actor?.actorImages)}
                     size={16}
                     type="tenant"
                   />

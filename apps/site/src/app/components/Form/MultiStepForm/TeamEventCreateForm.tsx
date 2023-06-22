@@ -26,6 +26,8 @@ export function TeamEventCreateForm() {
   const { tenant, showOverlay } = useContext(NavigationContext);
   const { teamManage } = useTeamManage();
   const { currentUser } = useCurrentUser();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const [insertEvent] = useMutation(insertEventMutation);
 
   const { data } = useTypedQuery({ project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo] });
@@ -140,11 +142,13 @@ export function TeamEventCreateForm() {
 
         insertEvent({
           variables: {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             object: {
               state: EventState.Submitted,
               contentMaster: { data: { name, slug: toSlug(name ?? '') } },
               teamEvents: { data: [{ teamId: teamManage?.id }] },
-              addressId: tenant?.campuses[0]?.address?.id,
+              addressId: tenant?.campusClusters[0].campuses[0].address,
               projectId: project?.id,
               supervisorId: currentUser?.id,
               start,

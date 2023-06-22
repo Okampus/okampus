@@ -22,6 +22,6 @@ export const eventBaseInfo = Selector('Event')({
   banner: fileUploadBaseInfo,
   isPrivate: true,
   project: projectMinimalInfo,
-  teamEvents: [{}, { team: teamBaseInfo }],
+  eventManages: [{}, { team: teamBaseInfo }],
 });
 export type EventBaseInfo = InputType<GraphQLTypes['Event'], typeof eventBaseInfo>;

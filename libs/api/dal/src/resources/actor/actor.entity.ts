@@ -32,14 +32,14 @@ import type { LegalUnit } from './legal-unit/legal-unit.entity';
 export class Actor extends TenantScopedEntity {
   [EntityRepositoryType]!: ActorRepository;
 
-  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true })
-  individual!: Individual | null;
+  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true, default: null })
+  individual: Individual | null = null;
 
-  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true })
-  team!: Team | null;
+  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true, default: null })
+  team: Team | null = null;
 
-  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true })
-  legalUnit!: LegalUnit | null;
+  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true, default: null })
+  legalUnit: LegalUnit | null = null;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()

@@ -9,9 +9,6 @@ object_relationships:
         table:
           name: actor
           schema: public
-  - name: adminTeamTenant
-    using:
-      foreign_key_constraint_on: admin_team_tenant_id
   - name: canteen
     using:
       foreign_key_constraint_on: canteen_id
@@ -134,4 +131,11 @@ array_relationships:
         column: parent_id
         table:
           name: team
+          schema: public
+  - name: tenantManages
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: tenant_manage
           schema: public

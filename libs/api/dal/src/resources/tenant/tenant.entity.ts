@@ -15,11 +15,11 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { OidcInfo } from '@okampus/shared/dtos';
 
-import type { Team } from '../team/team.entity';
-import type { Campus } from './campus/campus.entity';
+import type { TenantOptions } from './tenant.options';
+import type { TenantManage } from './tenant-manage/tenant-manage.entity';
+import type { CampusCluster } from './campus-cluster/campus-cluster.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
-import type { TenantOptions } from './tenant.options';
 
 // TODO: add official locations/addresses
 @Entity({ customRepository: () => TenantRepository })
@@ -46,12 +46,13 @@ export class Tenant extends BaseEntity {
   @OneToOne({ type: 'Form', nullable: true, default: null, cascade: [Cascade.ALL] })
   eventValidationForm: Form | null = null;
 
-  @OneToMany({ type: 'Campus', mappedBy: 'tenant' })
+  @OneToMany({ type: 'CampusCluster', mappedBy: 'tenant' })
   @TransformCollection()
-  campus = new Collection<Campus>(this);
+  campusClusters = new Collection<CampusCluster>(this);
 
-  @OneToOne({ type: 'Team', mappedBy: 'adminTeamTenant' })
-  adminTeam!: Team;
+  @OneToMany({ type: 'TenantManage', mappedBy: 'tenant' })
+  @TransformCollection()
+  tenantManages = new Collection<TenantManage>(this);
 
   constructor(options: TenantOptions) {
     super();

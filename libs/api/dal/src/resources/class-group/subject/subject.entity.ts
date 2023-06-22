@@ -14,11 +14,11 @@ export class Subject extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', nullable: true, default: null })
+  @Property({ type: 'text', default: '' })
   englishName!: string;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null;
+  @Property({ type: 'text', default: '' })
+  description!: string;
 
   @Index() // TODO: implement unique by tenant
   @Property({ type: 'text' })

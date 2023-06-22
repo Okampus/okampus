@@ -27,7 +27,8 @@ import {
   FinancesModule,
   ProjectsModule,
   IndividualsModule,
-  // UsersModule,
+  BotsModule,
+  UsersModule,
   EventJoinsModule,
   FormsModule,
   ActionsModule,
@@ -44,7 +45,7 @@ import {
   ActorsModule,
   SocialsModule,
 } from '@okampus/api/bll';
-import { Individual, Team, Tenant } from '@okampus/api/dal';
+import { Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -191,7 +192,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // // Custom modules
     // AnnouncementsModule,
     IndividualsModule,
-    // UsersModule,
+    UsersModule,
     // BadgesModule,
     // BlogsModule,
     // CafeteriaModule,
@@ -199,6 +200,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // ClassMembershipsModule,
     // ContentsModule,
     // FavoritesModule,
+    BotsModule,
     HealthModule,
     EventsModule,
     EventApprovalStepsModule,
@@ -272,14 +274,7 @@ export class AppModule implements NestModule, OnModuleInit {
     } else {
       // Init base tenant
       const tenant = new Tenant({ name: capitalize(BASE_TENANT), domain: BASE_TENANT, pointName: 'LXP' });
-
-      tenant.adminTeam = new Team({
-        name: "Équipe d'administration",
-        slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
-        type: TeamType.Tenant,
-        createdBy: null,
-        tenant,
-      });
+      await this.em.persistAndFlush(tenant);
 
       const anon = new Individual({
         slug: ANON_ACCOUNT_SLUG,
@@ -300,8 +295,20 @@ export class AppModule implements NestModule, OnModuleInit {
         createdBy: null,
         tenant,
       });
+
       admin.passwordHash = await hash(adminAccountPassword, { secret: secret });
-      await this.em.persistAndFlush([tenant, admin, anon]); // Tenant cascade persisted
+      await this.em.persistAndFlush([admin, anon]);
+
+      const adminTeam = new Team({
+        name: "Équipe d'administration",
+        slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
+        type: TeamType.Tenant,
+        createdBy: admin,
+        tenant,
+      });
+
+      const tenantManage = new TenantManage({ tenant, team: adminTeam, createdBy: admin });
+      await this.em.persistAndFlush([adminTeam, tenantManage]);
 
       const novu = this.notificationsService.novu;
       if (novu) {
