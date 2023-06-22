@@ -37,6 +37,9 @@ const MANAGE_CAMPUS = 131_072;
 const MANAGE_APPROVAL_STEPS = 262_144;
 const MANAGE_EVENT_APPROVALS = 524_288;
 
+const TENANT_ADMIN =
+  VIEW_HIDDEN | MANAGE_HIDDEN | CREATE_TEAM | MANAGE_CAMPUS | MANAGE_APPROVAL_STEPS | MANAGE_EVENT_APPROVALS;
+
 export enum TeamPermissions {
   Default = DEFAULT,
   ViewTreasury = VIEW_TREASURY,
@@ -63,4 +66,5 @@ export enum TenantPermissions {
   ManageCampus = MANAGE_CAMPUS,
   ManageApprovalSteps = MANAGE_APPROVAL_STEPS,
   ManageEventApprovals = MANAGE_EVENT_APPROVALS,
+  Admin = TENANT_ADMIN,
 }

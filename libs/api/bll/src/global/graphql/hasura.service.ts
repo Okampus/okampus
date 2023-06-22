@@ -19,6 +19,7 @@ import { TeamMemberRepository } from '@okampus/api/dal';
 import { GraphQLEnum, isNonNullObject } from '@okampus/shared/utils';
 
 import axios from 'axios';
+import type { TeamPermissions, TenantPermissions } from '@okampus/shared/enums';
 import type { AxiosInstance } from 'axios';
 
 type Obj = Record<string, unknown>;
@@ -192,7 +193,7 @@ export class HasuraService extends RequestContext {
     return data;
   }
 
-  async checkTeamPermissions(teamId: string, permissions: number) {
+  async checkTeamPermissions(teamId: string, permission: TeamPermissions | TenantPermissions) {
     const individual = this.requester();
     if (!individual.user) throw new InternalServerErrorException('No user found in individual.');
 
@@ -204,9 +205,9 @@ export class HasuraService extends RequestContext {
     if (!teamMember)
       throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
 
-    if (!teamMember.roles.getItems().some((role) => (permissions & role.permissions) === permissions))
+    if (!teamMember.roles.getItems().some((role) => role.permissions.includes(permission)))
       throw new ForbiddenException(
-        `You do not have the required permissions (${permissions}) in the required team (${teamId}) to perform this query.`
+        `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`
       );
   }
 

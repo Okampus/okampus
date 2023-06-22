@@ -13,8 +13,8 @@ export class Role extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'int', default: TeamPermissions.Default })
-  permissions: number = TeamPermissions.Default;
+  @Property({ type: 'array', default: [TeamPermissions.Default] })
+  permissions: number[] = [TeamPermissions.Default];
 
   @ManyToOne({ type: 'Team', inversedBy: 'roles' })
   team!: Team;
