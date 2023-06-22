@@ -55,8 +55,8 @@ export class TagsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['TagSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class TagsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TagInsertInput']) {
     // Custom logic
+
     return true;
   }
 

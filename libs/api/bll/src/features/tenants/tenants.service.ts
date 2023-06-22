@@ -62,6 +62,7 @@ export class TenantsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TenantInsertInput']) {
     // Custom logic
+
     return true;
   }
 

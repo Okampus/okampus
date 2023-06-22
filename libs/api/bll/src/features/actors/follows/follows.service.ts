@@ -55,8 +55,8 @@ export class FollowsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['FollowSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class FollowsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['FollowInsertInput']) {
     // Custom logic
+
     return true;
   }
 

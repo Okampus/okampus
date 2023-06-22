@@ -55,8 +55,8 @@ export class IndividualsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['IndividualSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class IndividualsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['IndividualInsertInput']) {
     // Custom logic
+
     return true;
   }
 

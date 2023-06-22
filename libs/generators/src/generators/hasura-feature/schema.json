@@ -24,6 +24,19 @@
       "type": "string",
       "description": "Plural name of the feature"
     },
+    "expect-rels": {
+      "type": "string",
+      "description": "Expected relationships for create"
+    },
+    "expect-ids": {
+      "type": "string",
+      "description": "Plural id relationships for create"
+    },
+    "tenant-scoped": {
+      "type": "boolean",
+      "description": "Whether the feature entity is tenant-scoped",
+      "default": true
+    },
     "pkColumns": {
       "type": "array",
       "description": "Primary key columns",

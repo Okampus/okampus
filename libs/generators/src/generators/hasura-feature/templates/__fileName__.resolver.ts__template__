@@ -64,7 +64,7 @@ export class <%= pluralClassName %>QueryResolver {
     );
     return await this.<%= pluralPropertyName %>Service.find<%= className %>(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
-
+  
 
   @Mutation()
   async insert<%= className %>One(@Info() info: GraphQLResolveInfo) {

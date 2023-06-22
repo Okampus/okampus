@@ -55,8 +55,8 @@ export class FormsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['FormSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class FormsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['FormInsertInput']) {
     // Custom logic
+
     return true;
   }
 

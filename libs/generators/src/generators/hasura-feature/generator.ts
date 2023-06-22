@@ -10,12 +10,22 @@ function pluralize(str: string) {
 
 export default async function (
   tree: Tree,
-  schema: { name: string; subfolder?: string; pkColumns?: string[]; folder?: string }
+  schema: {
+    name: string;
+    subfolder?: string;
+    pkColumns?: string[];
+    expectRels?: string;
+    expectIds?: string;
+    tenantScoped?: boolean;
+    folder?: string;
+  }
 ) {
   const { className, propertyName } = names(schema.name);
   const { fileName, className: pluralClassName, propertyName: pluralPropertyName } = names(pluralize(schema.name));
 
   const subfolderPath = schema.subfolder ? `${schema.subfolder}/` : '';
+  const expectedRels = schema.expectRels?.split(',').map((string) => string.trim()) || [];
+  const expectedIds = schema.expectIds?.split(',').map((string) => string.trim()) || [];
 
   const substitutions = {
     template: '',
@@ -25,6 +35,9 @@ export default async function (
     pluralClassName,
     pluralPropertyName,
     pkColumns: schema.pkColumns || ['id'],
+    expectedRels,
+    expectedIds,
+    tenantScoped: schema.tenantScoped,
     subfolder: subfolderPath,
   };
   generateFiles(

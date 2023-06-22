@@ -55,8 +55,8 @@ export class TeamJoinsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['TeamJoinSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class TeamJoinsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TeamJoinInsertInput']) {
     // Custom logic
+
     return true;
   }
 

@@ -45,7 +45,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
-    if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');
+    <% if (!tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');<% } %>
 
     if (this.requester().scopeRole === ScopeRole.Admin) return true;
 
@@ -55,15 +55,19 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['<%= className %>SetInput']) {
     this.hasuraService.checkForbiddenFields(props);
+    <% if (!tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
 
-    props.tenantId = this.tenant().id
-    props.createdById = this.requester().id
+    props.createdById = this.requester().id;
     // Custom logic
     return true;
   }
 
   checkCreateRelationships(props: ValueTypes['<%= className %>InsertInput']) {
     // Custom logic
+
+    <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { %>{ path: '<%= rel %>' }, <% } %> ]);<% } %>
+    <% if (expectedIds.length > 0) { %>this.hasuraService.expectIdRelationships(props, [ <% for(const id of expectedIds) { %>'<%= id %>', <% } %> ]);<% } %>
+
     return true;
   }
 

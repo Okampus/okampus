@@ -58,8 +58,8 @@ export class EventApprovalStepsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['EventApprovalStepSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -67,6 +67,7 @@ export class EventApprovalStepsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['EventApprovalStepInsertInput']) {
     // Custom logic
+
     return true;
   }
 

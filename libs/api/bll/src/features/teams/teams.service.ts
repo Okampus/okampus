@@ -55,8 +55,8 @@ export class TeamsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['TeamSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-
     props.tenantId = this.tenant().id;
+
     props.createdById = this.requester().id;
     // Custom logic
     return true;
@@ -64,6 +64,7 @@ export class TeamsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TeamInsertInput']) {
     // Custom logic
+
     return true;
   }
 
