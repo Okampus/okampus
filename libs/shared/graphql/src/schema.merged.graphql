@@ -14,6 +14,831 @@ input _textComparisonExp {
   _nin: [_text!]
 }
 
+type Account {
+  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  balance: Float!
+  bankInfo: BankInfo
+  bankInfoId: bigint
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+  individual: Individual
+  name: String!
+  team: Team!
+  teamId: bigint!
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+type AccountAggregate {
+  aggregate: AccountAggregateFields
+  nodes: [Account!]!
+}
+
+input AccountAggregateBoolExp {
+  count: accountAggregateBoolExpCount
+}
+
+input accountAggregateBoolExpCount {
+  arguments: [AccountSelectColumn!]
+  distinct: Boolean
+  filter: AccountBoolExp
+  predicate: IntComparisonExp!
+}
+
+type AccountAggregateFields {
+  avg: AccountAvgFields
+  count(columns: [AccountSelectColumn!], distinct: Boolean): Int!
+  max: AccountMaxFields
+  min: AccountMinFields
+  stddev: AccountStddevFields
+  stddevPop: AccountStddevPopFields
+  stddevSamp: AccountStddevSampFields
+  sum: AccountSumFields
+  varPop: AccountVarPopFields
+  varSamp: AccountVarSampFields
+  variance: AccountVarianceFields
+}
+
+input AccountAggregateOrderBy {
+  avg: AccountAvgOrderBy
+  count: OrderBy
+  max: AccountMaxOrderBy
+  min: AccountMinOrderBy
+  stddev: AccountStddevOrderBy
+  stddevPop: AccountStddevPopOrderBy
+  stddevSamp: AccountStddevSampOrderBy
+  sum: AccountSumOrderBy
+  varPop: AccountVarPopOrderBy
+  varSamp: AccountVarSampOrderBy
+  variance: AccountVarianceOrderBy
+}
+
+type AccountAllocate {
+  account: Account!
+  accountId: bigint!
+  balance: Float!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+  individual: Individual
+  team: Team!
+  teamId: bigint!
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+type AccountAllocateAggregate {
+  aggregate: AccountAllocateAggregateFields
+  nodes: [AccountAllocate!]!
+}
+
+input AccountAllocateAggregateBoolExp {
+  count: accountAllocateAggregateBoolExpCount
+}
+
+input accountAllocateAggregateBoolExpCount {
+  arguments: [AccountAllocateSelectColumn!]
+  distinct: Boolean
+  filter: AccountAllocateBoolExp
+  predicate: IntComparisonExp!
+}
+
+type AccountAllocateAggregateFields {
+  avg: AccountAllocateAvgFields
+  count(columns: [AccountAllocateSelectColumn!], distinct: Boolean): Int!
+  max: AccountAllocateMaxFields
+  min: AccountAllocateMinFields
+  stddev: AccountAllocateStddevFields
+  stddevPop: AccountAllocateStddevPopFields
+  stddevSamp: AccountAllocateStddevSampFields
+  sum: AccountAllocateSumFields
+  varPop: AccountAllocateVarPopFields
+  varSamp: AccountAllocateVarSampFields
+  variance: AccountAllocateVarianceFields
+}
+
+input AccountAllocateAggregateOrderBy {
+  avg: AccountAllocateAvgOrderBy
+  count: OrderBy
+  max: AccountAllocateMaxOrderBy
+  min: AccountAllocateMinOrderBy
+  stddev: AccountAllocateStddevOrderBy
+  stddevPop: AccountAllocateStddevPopOrderBy
+  stddevSamp: AccountAllocateStddevSampOrderBy
+  sum: AccountAllocateSumOrderBy
+  varPop: AccountAllocateVarPopOrderBy
+  varSamp: AccountAllocateVarSampOrderBy
+  variance: AccountAllocateVarianceOrderBy
+}
+
+input AccountAllocateArrRelInsertInput {
+  data: [AccountAllocateInsertInput!]!
+  onConflict: AccountAllocateOnConflict
+}
+
+type AccountAllocateAvgFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateAvgOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input AccountAllocateBoolExp {
+  _and: [AccountAllocateBoolExp!]
+  _not: AccountAllocateBoolExp
+  _or: [AccountAllocateBoolExp!]
+  account: AccountBoolExp
+  accountId: BigintComparisonExp
+  balance: FloatComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+enum AccountAllocateConstraint {
+  account_allocate_pkey
+}
+
+input AccountAllocateIncInput {
+  accountId: bigint
+  balance: Float
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountAllocateInsertInput {
+  account: AccountObjRelInsertInput
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+type AccountAllocateMaxFields {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountAllocateMaxOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateMinFields {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountAllocateMinOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateMutationResponse {
+  affectedRows: Int!
+  returning: [AccountAllocate!]!
+}
+
+input AccountAllocateOnConflict {
+  constraint: AccountAllocateConstraint!
+  updateColumns: [AccountAllocateUpdateColumn!]! = []
+  where: AccountAllocateBoolExp
+}
+
+input AccountAllocateOrderBy {
+  account: AccountOrderBy
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+input AccountAllocatePkColumnsInput {
+  id: bigint!
+}
+
+enum AccountAllocateSelectColumn {
+  accountId
+  balance
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  teamId
+  tenantId
+}
+
+input AccountAllocateSetInput {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+type AccountAllocateStddevFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateStddevOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateStddevPopFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateStddevPopOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateStddevSampFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateStddevSampOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input AccountAllocateStreamCursorInput {
+  initialValue: AccountAllocateStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input AccountAllocateStreamCursorValueInput {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+type AccountAllocateSumFields {
+  accountId: bigint
+  balance: Float
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountAllocateSumOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+enum AccountAllocateUpdateColumn {
+  accountId
+  balance
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  teamId
+  tenantId
+}
+
+input AccountAllocateUpdates {
+  _inc: AccountAllocateIncInput
+  _set: AccountAllocateSetInput
+  where: AccountAllocateBoolExp!
+}
+
+type AccountAllocateVarianceFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateVarianceOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateVarPopFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateVarPopOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountAllocateVarSampFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAllocateVarSampOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input AccountArrRelInsertInput {
+  data: [AccountInsertInput!]!
+  onConflict: AccountOnConflict
+}
+
+type AccountAvgFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountAvgOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input AccountBoolExp {
+  _and: [AccountBoolExp!]
+  _not: AccountBoolExp
+  _or: [AccountBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  balance: FloatComparisonExp
+  bankInfo: BankInfoBoolExp
+  bankInfoId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  name: StringComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+enum AccountConstraint {
+  account_pkey
+}
+
+input AccountIncInput {
+  balance: Float
+  bankInfoId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  balance: Float
+  bankInfo: BankInfoObjRelInsertInput
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  name: String
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+type AccountMaxFields {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+input AccountMaxOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type AccountMinFields {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+input AccountMinOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type AccountMutationResponse {
+  affectedRows: Int!
+  returning: [Account!]!
+}
+
+input AccountObjRelInsertInput {
+  data: AccountInsertInput!
+  onConflict: AccountOnConflict
+}
+
+input AccountOnConflict {
+  constraint: AccountConstraint!
+  updateColumns: [AccountUpdateColumn!]! = []
+  where: AccountBoolExp
+}
+
+input AccountOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  balance: OrderBy
+  bankInfo: BankInfoOrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  name: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+input AccountPkColumnsInput {
+  id: bigint!
+}
+
+enum AccountSelectColumn {
+  balance
+  bankInfoId
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  name
+  teamId
+  tenantId
+  type
+}
+
+input AccountSetInput {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+type AccountStddevFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountStddevOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountStddevPopFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountStddevPopOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountStddevSampFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountStddevSampOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input AccountStreamCursorInput {
+  initialValue: AccountStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input AccountStreamCursorValueInput {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+type AccountSumFields {
+  balance: Float
+  bankInfoId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input AccountSumOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+enum AccountUpdateColumn {
+  balance
+  bankInfoId
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  name
+  teamId
+  tenantId
+  type
+}
+
+input AccountUpdates {
+  _inc: AccountIncInput
+  _set: AccountSetInput
+  where: AccountBoolExp!
+}
+
+type AccountVarianceFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountVarianceOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountVarPopFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountVarPopOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type AccountVarSampFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input AccountVarSampOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 type Action {
   createdAt: timestamptz!
   createdBy: Individual
@@ -2352,13 +3177,17 @@ input AddressVarSampOrderBy {
 
 type BankInfo {
   accountCode: String!
+  accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actor: Actor!
   actorId: bigint!
   address: Address!
   addressId: bigint!
   agencyCode: String!
+  bank: LegalUnit
   bankCode: String!
   bankCodeBic: String!
+  bankId: bigint
   checksum: String!
   country: String!
   countryCode: String!
@@ -2428,6 +3257,7 @@ input BankInfoArrRelInsertInput {
 type BankInfoAvgFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2436,6 +3266,7 @@ type BankInfoAvgFields {
 input BankInfoAvgOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2446,13 +3277,17 @@ input BankInfoBoolExp {
   _not: BankInfoBoolExp
   _or: [BankInfoBoolExp!]
   accountCode: StringComparisonExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   address: AddressBoolExp
   addressId: BigintComparisonExp
   agencyCode: StringComparisonExp
+  bank: LegalUnitBoolExp
   bankCode: StringComparisonExp
   bankCodeBic: StringComparisonExp
+  bankId: BigintComparisonExp
   checksum: StringComparisonExp
   country: StringComparisonExp
   countryCode: StringComparisonExp
@@ -2477,6 +3312,7 @@ enum BankInfoConstraint {
 input BankInfoIncInput {
   actorId: bigint
   addressId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -2484,13 +3320,16 @@ input BankInfoIncInput {
 
 input BankInfoInsertInput {
   accountCode: String
+  accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
   address: AddressObjRelInsertInput
   addressId: bigint
   agencyCode: String
+  bank: LegalUnitObjRelInsertInput
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -2514,6 +3353,7 @@ type BankInfoMaxFields {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -2534,6 +3374,7 @@ input BankInfoMaxOrderBy {
   agencyCode: OrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -2554,6 +3395,7 @@ type BankInfoMinFields {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -2574,6 +3416,7 @@ input BankInfoMinOrderBy {
   agencyCode: OrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -2605,13 +3448,16 @@ input BankInfoOnConflict {
 
 input BankInfoOrderBy {
   accountCode: OrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
   address: AddressOrderBy
   addressId: OrderBy
   agencyCode: OrderBy
+  bank: LegalUnitOrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -2639,6 +3485,7 @@ enum BankInfoSelectColumn {
   agencyCode
   bankCode
   bankCodeBic
+  bankId
   checksum
   country
   countryCode
@@ -2659,6 +3506,7 @@ input BankInfoSetInput {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -2675,6 +3523,7 @@ input BankInfoSetInput {
 type BankInfoStddevFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2683,6 +3532,7 @@ type BankInfoStddevFields {
 input BankInfoStddevOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2691,6 +3541,7 @@ input BankInfoStddevOrderBy {
 type BankInfoStddevPopFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2699,6 +3550,7 @@ type BankInfoStddevPopFields {
 input BankInfoStddevPopOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2707,6 +3559,7 @@ input BankInfoStddevPopOrderBy {
 type BankInfoStddevSampFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2715,6 +3568,7 @@ type BankInfoStddevSampFields {
 input BankInfoStddevSampOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2732,6 +3586,7 @@ input BankInfoStreamCursorValueInput {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -2748,6 +3603,7 @@ input BankInfoStreamCursorValueInput {
 type BankInfoSumFields {
   actorId: bigint
   addressId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -2756,6 +3612,7 @@ type BankInfoSumFields {
 input BankInfoSumOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2768,6 +3625,7 @@ enum BankInfoUpdateColumn {
   agencyCode
   bankCode
   bankCodeBic
+  bankId
   checksum
   country
   countryCode
@@ -2790,6 +3648,7 @@ input BankInfoUpdates {
 type BankInfoVarianceFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2798,6 +3657,7 @@ type BankInfoVarianceFields {
 input BankInfoVarianceOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2806,6 +3666,7 @@ input BankInfoVarianceOrderBy {
 type BankInfoVarPopFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2814,6 +3675,7 @@ type BankInfoVarPopFields {
 input BankInfoVarPopOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -2822,6 +3684,7 @@ input BankInfoVarPopOrderBy {
 type BankInfoVarSampFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -2830,6 +3693,7 @@ type BankInfoVarSampFields {
 input BankInfoVarSampOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -16819,6 +17683,10 @@ type Individual {
   botId: bigint
   contributorIssues(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): [IssueContributors!]!
   contributorIssuesAggregate(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): IssueContributorsAggregate!
+  createdAccountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  createdAccountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  createdAccounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  createdAccountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   createdActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   createdActionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   createdActorImages(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): [ActorImage!]!
@@ -17045,6 +17913,10 @@ input IndividualBoolExp {
   botId: BigintComparisonExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
+  createdAccountAllocates: AccountAllocateBoolExp
+  createdAccountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  createdAccounts: AccountBoolExp
+  createdAccountsAggregate: AccountAggregateBoolExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -17216,6 +18088,8 @@ input IndividualInsertInput {
   bot: BotObjRelInsertInput
   botId: bigint
   contributorIssues: IssueContributorsArrRelInsertInput
+  createdAccountAllocates: AccountAllocateArrRelInsertInput
+  createdAccounts: AccountArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -17372,6 +18246,8 @@ input IndividualOrderBy {
   bot: BotOrderBy
   botId: OrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
+  createdAccountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  createdAccountsAggregate: AccountAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -18519,6 +19395,8 @@ input JsonbComparisonExp {
 
 type LegalUnit {
   actor: Actor
+  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
+  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
@@ -18598,6 +19476,8 @@ input LegalUnitBoolExp {
   _not: LegalUnitBoolExp
   _or: [LegalUnitBoolExp!]
   actor: ActorBoolExp
+  bankInfos: BankInfoBoolExp
+  bankInfosAggregate: BankInfoAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -18623,6 +19503,7 @@ input LegalUnitIncInput {
 
 input LegalUnitInsertInput {
   actor: ActorObjRelInsertInput
+  bankInfos: BankInfoArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -18693,6 +19574,7 @@ input LegalUnitOnConflict {
 
 input LegalUnitOrderBy {
   actor: ActorOrderBy
+  bankInfosAggregate: BankInfoAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -19995,6 +20877,10 @@ input MissionVarSampOrderBy {
 }
 
 type Mutation {
+  deleteAccount(where: AccountBoolExp!): AccountMutationResponse
+  deleteAccountAllocate(where: AccountAllocateBoolExp!): AccountAllocateMutationResponse
+  deleteAccountAllocateByPk(id: bigint!): AccountAllocate
+  deleteAccountByPk(id: bigint!): Account
   deleteAction(where: ActionBoolExp!): ActionMutationResponse
   deleteActionByPk(id: bigint!): Action
   deleteActor(where: ActorBoolExp!): ActorMutationResponse
@@ -20147,6 +21033,10 @@ type Mutation {
   deleteValidationByPk(id: bigint!): Validation
   deleteVote(where: VoteBoolExp!): VoteMutationResponse
   deleteVoteByPk(id: bigint!): Vote
+  insertAccount(objects: [AccountInsertInput!]!, onConflict: AccountOnConflict): AccountMutationResponse
+  insertAccountAllocate(objects: [AccountAllocateInsertInput!]!, onConflict: AccountAllocateOnConflict): AccountAllocateMutationResponse
+  insertAccountAllocateOne(object: AccountAllocateInsertInput!, onConflict: AccountAllocateOnConflict): AccountAllocate
+  insertAccountOne(object: AccountInsertInput!, onConflict: AccountOnConflict): Account
   insertAction(objects: [ActionInsertInput!]!, onConflict: ActionOnConflict): ActionMutationResponse
   insertActionOne(object: ActionInsertInput!, onConflict: ActionOnConflict): Action
   insertActor(objects: [ActorInsertInput!]!, onConflict: ActorOnConflict): ActorMutationResponse
@@ -20299,6 +21189,12 @@ type Mutation {
   insertValidationOne(object: ValidationInsertInput!, onConflict: ValidationOnConflict): Validation
   insertVote(objects: [VoteInsertInput!]!, onConflict: VoteOnConflict): VoteMutationResponse
   insertVoteOne(object: VoteInsertInput!, onConflict: VoteOnConflict): Vote
+  updateAccount(_inc: AccountIncInput, _set: AccountSetInput, where: AccountBoolExp!): AccountMutationResponse
+  updateAccountAllocate(_inc: AccountAllocateIncInput, _set: AccountAllocateSetInput, where: AccountAllocateBoolExp!): AccountAllocateMutationResponse
+  updateAccountAllocateByPk(_inc: AccountAllocateIncInput, _set: AccountAllocateSetInput, pkColumns: AccountAllocatePkColumnsInput!): AccountAllocate
+  updateAccountAllocateMany(updates: [AccountAllocateUpdates!]!): [AccountAllocateMutationResponse]
+  updateAccountByPk(_inc: AccountIncInput, _set: AccountSetInput, pkColumns: AccountPkColumnsInput!): Account
+  updateAccountMany(updates: [AccountUpdates!]!): [AccountMutationResponse]
   updateAction(_inc: ActionIncInput, _set: ActionSetInput, where: ActionBoolExp!): ActionMutationResponse
   updateActionByPk(_inc: ActionIncInput, _set: ActionSetInput, pkColumns: ActionPkColumnsInput!): Action
   updateActionMany(updates: [ActionUpdates!]!): [ActionMutationResponse]
@@ -22003,6 +22899,12 @@ input ProjectVarSampOrderBy {
 }
 
 type Query {
+  account(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  accountAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
+  accountAllocate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountAllocateAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  accountAllocateByPk(id: bigint!): AccountAllocate
+  accountByPk(id: bigint!): Account
   action(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actionByPk(id: bigint!): Action
@@ -25347,6 +26249,14 @@ input SubjectVarSampOrderBy {
 }
 
 type Subscription {
+  account(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  accountAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
+  accountAllocate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountAllocateAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  accountAllocateByPk(id: bigint!): AccountAllocate
+  accountAllocateStream(batchSize: Int!, cursor: [AccountAllocateStreamCursorInput]!, where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountByPk(id: bigint!): Account
+  accountStream(batchSize: Int!, cursor: [AccountStreamCursorInput]!, where: AccountBoolExp): [Account!]!
   action(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actionByPk(id: bigint!): Action
@@ -26082,6 +26992,10 @@ input TagVarSampOrderBy {
 }
 
 type Team {
+  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actor: Actor
@@ -26118,9 +27032,6 @@ type Team {
   membershipFees: Float!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   poles(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): [Pole!]!
   polesAggregate(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): PoleAggregate!
@@ -26220,9 +27131,6 @@ type TeamAvgFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -26237,9 +27145,6 @@ input TeamAvgOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -26250,6 +27155,10 @@ input TeamBoolExp {
   _and: [TeamBoolExp!]
   _not: TeamBoolExp
   _or: [TeamBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
@@ -26286,9 +27195,6 @@ input TeamBoolExp {
   membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
-  originalCreationDay: SmallintComparisonExp
-  originalCreationMonth: SmallintComparisonExp
-  originalCreationYear: SmallintComparisonExp
   parentId: BigintComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
@@ -26699,9 +27605,6 @@ input TeamIncInput {
   currentFinance: Float
   id: bigint
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -26709,6 +27612,8 @@ input TeamIncInput {
 }
 
 input TeamInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   canteen: CanteenObjRelInsertInput
@@ -26738,9 +27643,6 @@ input TeamInsertInput {
   membershipDuration: String
   membershipFees: Float
   missions: MissionArrRelInsertInput
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
@@ -27329,9 +28231,6 @@ type TeamMaxFields {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -27354,9 +28253,6 @@ input TeamMaxOrderBy {
   membersCategoryName: OrderBy
   membershipDuration: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28375,9 +29271,6 @@ type TeamMinFields {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -28400,9 +29293,6 @@ input TeamMinOrderBy {
   membersCategoryName: OrderBy
   membershipDuration: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28427,6 +29317,8 @@ input TeamOnConflict {
 }
 
 input TeamOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   canteen: CanteenOrderBy
@@ -28456,9 +29348,6 @@ input TeamOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   missionsAggregate: MissionAggregateOrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
@@ -28497,9 +29386,6 @@ enum TeamSelectColumn {
   membersCategoryName
   membershipDuration
   membershipFees
-  originalCreationDay
-  originalCreationMonth
-  originalCreationYear
   parentId
   tenantGrantFundId
   tenantId
@@ -28531,9 +29417,6 @@ input TeamSetInput {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -28549,9 +29432,6 @@ type TeamStddevFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28566,9 +29446,6 @@ input TeamStddevOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28583,9 +29460,6 @@ type TeamStddevPopFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28600,9 +29474,6 @@ input TeamStddevPopOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28617,9 +29488,6 @@ type TeamStddevSampFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28634,9 +29502,6 @@ input TeamStddevSampOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28664,9 +29529,6 @@ input TeamStreamCursorValueInput {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -28682,9 +29544,6 @@ type TeamSumFields {
   currentFinance: Float
   id: bigint
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -28699,9 +29558,6 @@ input TeamSumOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28724,9 +29580,6 @@ enum TeamUpdateColumn {
   membersCategoryName
   membershipDuration
   membershipFees
-  originalCreationDay
-  originalCreationMonth
-  originalCreationYear
   parentId
   tenantGrantFundId
   tenantId
@@ -28748,9 +29601,6 @@ type TeamVarianceFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28765,9 +29615,6 @@ input TeamVarianceOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28782,9 +29629,6 @@ type TeamVarPopFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28799,9 +29643,6 @@ input TeamVarPopOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28816,9 +29657,6 @@ type TeamVarSampFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -28833,9 +29671,6 @@ input TeamVarSampOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -28843,6 +29678,10 @@ input TeamVarSampOrderBy {
 }
 
 type Tenant {
+  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
+  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
+  accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actorImages(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): [ActorImage!]!
@@ -29055,6 +29894,10 @@ input TenantBoolExp {
   _and: [TenantBoolExp!]
   _not: TenantBoolExp
   _or: [TenantBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actorImages: ActorImageBoolExp
@@ -29199,6 +30042,8 @@ input TenantIncInput {
 }
 
 input TenantInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
@@ -29725,6 +30570,8 @@ input TenantOnConflict {
 }
 
 input TenantOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy

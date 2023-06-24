@@ -9,6 +9,20 @@ object_relationships:
     using:
       foreign_key_constraint_on: event_validation_form_id
 array_relationships:
+  - name: accountAllocates
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: account_allocate
+          schema: public
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: account
+          schema: public
   - name: actions
     using:
       foreign_key_constraint_on:

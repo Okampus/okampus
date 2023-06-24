@@ -8,6 +8,9 @@ object_relationships:
   - name: address
     using:
       foreign_key_constraint_on: address_id
+  - name: bank
+    using:
+      foreign_key_constraint_on: bank_id
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -15,6 +18,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: tenant_id
 array_relationships:
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: bank_info_id
+        table:
+          name: account
+          schema: public
   - name: expenses
     using:
       foreign_key_constraint_on:

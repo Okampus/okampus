@@ -22,6 +22,1062 @@ input _textComparisonExp {
   _nin: [_text!]
 }
 
+# columns and relationships of "account"
+type Account {
+  # An array relationship
+  accountAllocates(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # An aggregate relationship
+  accountAllocatesAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+  balance: Float!
+
+  # An object relationship
+  bankInfo: BankInfo
+  bankInfoId: bigint
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+  name: String!
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+# aggregated selection of "account"
+type AccountAggregate {
+  aggregate: AccountAggregateFields
+  nodes: [Account!]!
+}
+
+input AccountAggregateBoolExp {
+  count: accountAggregateBoolExpCount
+}
+
+input accountAggregateBoolExpCount {
+  arguments: [AccountSelectColumn!]
+  distinct: Boolean
+  filter: AccountBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "account"
+type AccountAggregateFields {
+  avg: AccountAvgFields
+  count(columns: [AccountSelectColumn!], distinct: Boolean): Int!
+  max: AccountMaxFields
+  min: AccountMinFields
+  stddev: AccountStddevFields
+  stddevPop: AccountStddevPopFields
+  stddevSamp: AccountStddevSampFields
+  sum: AccountSumFields
+  varPop: AccountVarPopFields
+  varSamp: AccountVarSampFields
+  variance: AccountVarianceFields
+}
+
+# order by aggregate values of table "account"
+input AccountAggregateOrderBy {
+  avg: AccountAvgOrderBy
+  count: OrderBy
+  max: AccountMaxOrderBy
+  min: AccountMinOrderBy
+  stddev: AccountStddevOrderBy
+  stddevPop: AccountStddevPopOrderBy
+  stddevSamp: AccountStddevSampOrderBy
+  sum: AccountSumOrderBy
+  varPop: AccountVarPopOrderBy
+  varSamp: AccountVarSampOrderBy
+  variance: AccountVarianceOrderBy
+}
+
+# columns and relationships of "account_allocate"
+type AccountAllocate {
+  # An object relationship
+  account: Account!
+  accountId: bigint!
+  balance: Float!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+# aggregated selection of "account_allocate"
+type AccountAllocateAggregate {
+  aggregate: AccountAllocateAggregateFields
+  nodes: [AccountAllocate!]!
+}
+
+input AccountAllocateAggregateBoolExp {
+  count: accountAllocateAggregateBoolExpCount
+}
+
+input accountAllocateAggregateBoolExpCount {
+  arguments: [AccountAllocateSelectColumn!]
+  distinct: Boolean
+  filter: AccountAllocateBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "account_allocate"
+type AccountAllocateAggregateFields {
+  avg: AccountAllocateAvgFields
+  count(columns: [AccountAllocateSelectColumn!], distinct: Boolean): Int!
+  max: AccountAllocateMaxFields
+  min: AccountAllocateMinFields
+  stddev: AccountAllocateStddevFields
+  stddevPop: AccountAllocateStddevPopFields
+  stddevSamp: AccountAllocateStddevSampFields
+  sum: AccountAllocateSumFields
+  varPop: AccountAllocateVarPopFields
+  varSamp: AccountAllocateVarSampFields
+  variance: AccountAllocateVarianceFields
+}
+
+# order by aggregate values of table "account_allocate"
+input AccountAllocateAggregateOrderBy {
+  avg: AccountAllocateAvgOrderBy
+  count: OrderBy
+  max: AccountAllocateMaxOrderBy
+  min: AccountAllocateMinOrderBy
+  stddev: AccountAllocateStddevOrderBy
+  stddevPop: AccountAllocateStddevPopOrderBy
+  stddevSamp: AccountAllocateStddevSampOrderBy
+  sum: AccountAllocateSumOrderBy
+  varPop: AccountAllocateVarPopOrderBy
+  varSamp: AccountAllocateVarSampOrderBy
+  variance: AccountAllocateVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "account_allocate"
+input AccountAllocateArrRelInsertInput {
+  data: [AccountAllocateInsertInput!]!
+
+  # upsert condition
+  onConflict: AccountAllocateOnConflict
+}
+
+# aggregate avg on columns
+type AccountAllocateAvgFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "account_allocate"
+input AccountAllocateAvgOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "account_allocate". All fields are combined with a logical 'AND'.
+input AccountAllocateBoolExp {
+  _and: [AccountAllocateBoolExp!]
+  _not: AccountAllocateBoolExp
+  _or: [AccountAllocateBoolExp!]
+  account: AccountBoolExp
+  accountId: BigintComparisonExp
+  balance: FloatComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "account_allocate"
+enum AccountAllocateConstraint {
+  # unique or primary key constraint on columns "id"
+  account_allocate_pkey
+}
+
+# input type for incrementing numeric columns in table "account_allocate"
+input AccountAllocateIncInput {
+  accountId: bigint
+  balance: Float
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "account_allocate"
+input AccountAllocateInsertInput {
+  account: AccountObjRelInsertInput
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+# aggregate max on columns
+type AccountAllocateMaxFields {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by max() on columns of table "account_allocate"
+input AccountAllocateMaxOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type AccountAllocateMinFields {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by min() on columns of table "account_allocate"
+input AccountAllocateMinOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "account_allocate"
+type AccountAllocateMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [AccountAllocate!]!
+}
+
+# on_conflict condition type for table "account_allocate"
+input AccountAllocateOnConflict {
+  constraint: AccountAllocateConstraint!
+  updateColumns: [AccountAllocateUpdateColumn!]! = []
+  where: AccountAllocateBoolExp
+}
+
+# Ordering options when selecting data from "account_allocate".
+input AccountAllocateOrderBy {
+  account: AccountOrderBy
+  accountId: OrderBy
+  balance: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# primary key columns input for table: account_allocate
+input AccountAllocatePkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "account_allocate"
+enum AccountAllocateSelectColumn {
+  # column name
+  accountId
+
+  # column name
+  balance
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "account_allocate"
+input AccountAllocateSetInput {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type AccountAllocateStddevFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "account_allocate"
+input AccountAllocateStddevOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type AccountAllocateStddevPopFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "account_allocate"
+input AccountAllocateStddevPopOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type AccountAllocateStddevSampFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "account_allocate"
+input AccountAllocateStddevSampOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "account_allocate"
+input AccountAllocateStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: AccountAllocateStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input AccountAllocateStreamCursorValueInput {
+  accountId: bigint
+  balance: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type AccountAllocateSumFields {
+  accountId: bigint
+  balance: Float
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "account_allocate"
+input AccountAllocateSumOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "account_allocate"
+enum AccountAllocateUpdateColumn {
+  # column name
+  accountId
+
+  # column name
+  balance
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+input AccountAllocateUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: AccountAllocateIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: AccountAllocateSetInput
+
+  # filter the rows which have to be updated
+  where: AccountAllocateBoolExp!
+}
+
+# aggregate variance on columns
+type AccountAllocateVarianceFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "account_allocate"
+input AccountAllocateVarianceOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type AccountAllocateVarPopFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "account_allocate"
+input AccountAllocateVarPopOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type AccountAllocateVarSampFields {
+  accountId: Float
+  balance: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "account_allocate"
+input AccountAllocateVarSampOrderBy {
+  accountId: OrderBy
+  balance: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# input type for inserting array relation for remote table "account"
+input AccountArrRelInsertInput {
+  data: [AccountInsertInput!]!
+
+  # upsert condition
+  onConflict: AccountOnConflict
+}
+
+# aggregate avg on columns
+type AccountAvgFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "account"
+input AccountAvgOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'.
+input AccountBoolExp {
+  _and: [AccountBoolExp!]
+  _not: AccountBoolExp
+  _or: [AccountBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  balance: FloatComparisonExp
+  bankInfo: BankInfoBoolExp
+  bankInfoId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  name: StringComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+# unique or primary key constraints on table "account"
+enum AccountConstraint {
+  # unique or primary key constraint on columns "id"
+  account_pkey
+}
+
+# input type for incrementing numeric columns in table "account"
+input AccountIncInput {
+  balance: Float
+  bankInfoId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "account"
+input AccountInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  balance: Float
+  bankInfo: BankInfoObjRelInsertInput
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  name: String
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+# aggregate max on columns
+type AccountMaxFields {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# order by max() on columns of table "account"
+input AccountMaxOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# aggregate min on columns
+type AccountMinFields {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# order by min() on columns of table "account"
+input AccountMinOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# response of any mutation on the table "account"
+type AccountMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [Account!]!
+}
+
+# input type for inserting object relation for remote table "account"
+input AccountObjRelInsertInput {
+  data: AccountInsertInput!
+
+  # upsert condition
+  onConflict: AccountOnConflict
+}
+
+# on_conflict condition type for table "account"
+input AccountOnConflict {
+  constraint: AccountConstraint!
+  updateColumns: [AccountUpdateColumn!]! = []
+  where: AccountBoolExp
+}
+
+# Ordering options when selecting data from "account".
+input AccountOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  balance: OrderBy
+  bankInfo: BankInfoOrderBy
+  bankInfoId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  name: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# primary key columns input for table: account
+input AccountPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "account"
+enum AccountSelectColumn {
+  # column name
+  balance
+
+  # column name
+  bankInfoId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+# input type for updating data in table "account"
+input AccountSetInput {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# aggregate stddev on columns
+type AccountStddevFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "account"
+input AccountStddevOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type AccountStddevPopFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "account"
+input AccountStddevPopOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type AccountStddevSampFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "account"
+input AccountStddevSampOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "account"
+input AccountStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: AccountStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input AccountStreamCursorValueInput {
+  balance: Float
+  bankInfoId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# aggregate sum on columns
+type AccountSumFields {
+  balance: Float
+  bankInfoId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "account"
+input AccountSumOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "account"
+enum AccountUpdateColumn {
+  # column name
+  balance
+
+  # column name
+  bankInfoId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+input AccountUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: AccountIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: AccountSetInput
+
+  # filter the rows which have to be updated
+  where: AccountBoolExp!
+}
+
+# aggregate variance on columns
+type AccountVarianceFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "account"
+input AccountVarianceOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type AccountVarPopFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "account"
+input AccountVarPopOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type AccountVarSampFields {
+  balance: Float
+  bankInfoId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "account"
+input AccountVarSampOrderBy {
+  balance: OrderBy
+  bankInfoId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
 # columns and relationships of "action"
 type Action {
   createdAt: timestamptz!
@@ -3507,6 +4563,42 @@ input AddressVarSampOrderBy {
 type BankInfo {
   accountCode: String!
 
+  # An array relationship
+  accounts(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # An aggregate relationship
+  accountsAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
   # An object relationship
   actor: Actor!
   actorId: bigint!
@@ -3515,8 +4607,12 @@ type BankInfo {
   address: Address!
   addressId: bigint!
   agencyCode: String!
+
+  # An object relationship
+  bank: LegalUnit
   bankCode: String!
   bankCodeBic: String!
+  bankId: bigint
   checksum: String!
   country: String!
   countryCode: String!
@@ -3631,6 +4727,7 @@ input BankInfoArrRelInsertInput {
 type BankInfoAvgFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -3640,6 +4737,7 @@ type BankInfoAvgFields {
 input BankInfoAvgOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -3651,13 +4749,17 @@ input BankInfoBoolExp {
   _not: BankInfoBoolExp
   _or: [BankInfoBoolExp!]
   accountCode: StringComparisonExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   address: AddressBoolExp
   addressId: BigintComparisonExp
   agencyCode: StringComparisonExp
+  bank: LegalUnitBoolExp
   bankCode: StringComparisonExp
   bankCodeBic: StringComparisonExp
+  bankId: BigintComparisonExp
   checksum: StringComparisonExp
   country: StringComparisonExp
   countryCode: StringComparisonExp
@@ -3685,6 +4787,7 @@ enum BankInfoConstraint {
 input BankInfoIncInput {
   actorId: bigint
   addressId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -3693,13 +4796,16 @@ input BankInfoIncInput {
 # input type for inserting data into table "bank_info"
 input BankInfoInsertInput {
   accountCode: String
+  accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
   address: AddressObjRelInsertInput
   addressId: bigint
   agencyCode: String
+  bank: LegalUnitObjRelInsertInput
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -3724,6 +4830,7 @@ type BankInfoMaxFields {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -3745,6 +4852,7 @@ input BankInfoMaxOrderBy {
   agencyCode: OrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3766,6 +4874,7 @@ type BankInfoMinFields {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -3787,6 +4896,7 @@ input BankInfoMinOrderBy {
   agencyCode: OrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3827,13 +4937,16 @@ input BankInfoOnConflict {
 # Ordering options when selecting data from "bank_info".
 input BankInfoOrderBy {
   accountCode: OrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
   address: AddressOrderBy
   addressId: OrderBy
   agencyCode: OrderBy
+  bank: LegalUnitOrderBy
   bankCode: OrderBy
   bankCodeBic: OrderBy
+  bankId: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3874,6 +4987,9 @@ enum BankInfoSelectColumn {
 
   # column name
   bankCodeBic
+
+  # column name
+  bankId
 
   # column name
   checksum
@@ -3917,6 +5033,7 @@ input BankInfoSetInput {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -3934,6 +5051,7 @@ input BankInfoSetInput {
 type BankInfoStddevFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -3943,6 +5061,7 @@ type BankInfoStddevFields {
 input BankInfoStddevOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -3952,6 +5071,7 @@ input BankInfoStddevOrderBy {
 type BankInfoStddevPopFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -3961,6 +5081,7 @@ type BankInfoStddevPopFields {
 input BankInfoStddevPopOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -3970,6 +5091,7 @@ input BankInfoStddevPopOrderBy {
 type BankInfoStddevSampFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -3979,6 +5101,7 @@ type BankInfoStddevSampFields {
 input BankInfoStddevSampOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4001,6 +5124,7 @@ input BankInfoStreamCursorValueInput {
   agencyCode: String
   bankCode: String
   bankCodeBic: String
+  bankId: bigint
   checksum: String
   country: String
   countryCode: String
@@ -4018,6 +5142,7 @@ input BankInfoStreamCursorValueInput {
 type BankInfoSumFields {
   actorId: bigint
   addressId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -4027,6 +5152,7 @@ type BankInfoSumFields {
 input BankInfoSumOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4051,6 +5177,9 @@ enum BankInfoUpdateColumn {
 
   # column name
   bankCodeBic
+
+  # column name
+  bankId
 
   # column name
   checksum
@@ -4101,6 +5230,7 @@ input BankInfoUpdates {
 type BankInfoVarianceFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4110,6 +5240,7 @@ type BankInfoVarianceFields {
 input BankInfoVarianceOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4119,6 +5250,7 @@ input BankInfoVarianceOrderBy {
 type BankInfoVarPopFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4128,6 +5260,7 @@ type BankInfoVarPopFields {
 input BankInfoVarPopOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4137,6 +5270,7 @@ input BankInfoVarPopOrderBy {
 type BankInfoVarSampFields {
   actorId: Float
   addressId: Float
+  bankId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -4146,6 +5280,7 @@ type BankInfoVarSampFields {
 input BankInfoVarSampOrderBy {
   actorId: OrderBy
   addressId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -23584,6 +24719,78 @@ type Individual {
   ): IssueContributorsAggregate!
 
   # An array relationship
+  createdAccountAllocates(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # An aggregate relationship
+  createdAccountAllocatesAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+
+  # An array relationship
+  createdAccounts(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # An aggregate relationship
+  createdAccountsAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
+  # An array relationship
   createdActions(
     # distinct select on columns
     distinctOn: [ActionSelectColumn!]
@@ -26169,6 +27376,10 @@ input IndividualBoolExp {
   botId: BigintComparisonExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
+  createdAccountAllocates: AccountAllocateBoolExp
+  createdAccountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  createdAccounts: AccountBoolExp
+  createdAccountsAggregate: AccountAggregateBoolExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -26348,6 +27559,8 @@ input IndividualInsertInput {
   bot: BotObjRelInsertInput
   botId: bigint
   contributorIssues: IssueContributorsArrRelInsertInput
+  createdAccountAllocates: AccountAllocateArrRelInsertInput
+  createdAccounts: AccountArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -26517,6 +27730,8 @@ input IndividualOrderBy {
   bot: BotOrderBy
   botId: OrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
+  createdAccountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  createdAccountsAggregate: AccountAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -28030,6 +29245,42 @@ input JsonbComparisonExp {
 type LegalUnit {
   # An object relationship
   actor: Actor
+
+  # An array relationship
+  bankInfos(
+    # distinct select on columns
+    distinctOn: [BankInfoSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [BankInfoOrderBy!]
+
+    # filter the rows returned
+    where: BankInfoBoolExp
+  ): [BankInfo!]!
+
+  # An aggregate relationship
+  bankInfosAggregate(
+    # distinct select on columns
+    distinctOn: [BankInfoSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [BankInfoOrderBy!]
+
+    # filter the rows returned
+    where: BankInfoBoolExp
+  ): BankInfoAggregate!
   createdAt: timestamptz!
 
   # An object relationship
@@ -28156,6 +29407,8 @@ input LegalUnitBoolExp {
   _not: LegalUnitBoolExp
   _or: [LegalUnitBoolExp!]
   actor: ActorBoolExp
+  bankInfos: BankInfoBoolExp
+  bankInfosAggregate: BankInfoAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -28185,6 +29438,7 @@ input LegalUnitIncInput {
 # input type for inserting data into table "legal_unit"
 input LegalUnitInsertInput {
   actor: ActorObjRelInsertInput
+  bankInfos: BankInfoArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -28268,6 +29522,7 @@ input LegalUnitOnConflict {
 # Ordering options when selecting data from "legal_unit".
 input LegalUnitOrderBy {
   actor: ActorOrderBy
+  bankInfosAggregate: BankInfoAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -29967,6 +31222,24 @@ input MissionVarSampOrderBy {
 
 # mutation root
 type Mutation {
+  # delete data from the table: "account"
+  deleteAccount(
+    # filter the rows which have to be deleted
+    where: AccountBoolExp!
+  ): AccountMutationResponse
+
+  # delete data from the table: "account_allocate"
+  deleteAccountAllocate(
+    # filter the rows which have to be deleted
+    where: AccountAllocateBoolExp!
+  ): AccountAllocateMutationResponse
+
+  # delete single row from the table: "account_allocate"
+  deleteAccountAllocateByPk(id: bigint!): AccountAllocate
+
+  # delete single row from the table: "account"
+  deleteAccountByPk(id: bigint!): Account
+
   # delete data from the table: "action"
   deleteAction(
     # filter the rows which have to be deleted
@@ -30650,6 +31923,42 @@ type Mutation {
 
   # delete single row from the table: "vote"
   deleteVoteByPk(id: bigint!): Vote
+
+  # insert data into the table: "account"
+  insertAccount(
+    # the rows to be inserted
+    objects: [AccountInsertInput!]!
+
+    # upsert condition
+    onConflict: AccountOnConflict
+  ): AccountMutationResponse
+
+  # insert data into the table: "account_allocate"
+  insertAccountAllocate(
+    # the rows to be inserted
+    objects: [AccountAllocateInsertInput!]!
+
+    # upsert condition
+    onConflict: AccountAllocateOnConflict
+  ): AccountAllocateMutationResponse
+
+  # insert a single row into the table: "account_allocate"
+  insertAccountAllocateOne(
+    # the row to be inserted
+    object: AccountAllocateInsertInput!
+
+    # upsert condition
+    onConflict: AccountAllocateOnConflict
+  ): AccountAllocate
+
+  # insert a single row into the table: "account"
+  insertAccountOne(
+    # the row to be inserted
+    object: AccountInsertInput!
+
+    # upsert condition
+    onConflict: AccountOnConflict
+  ): Account
 
   # insert data into the table: "action"
   insertAction(
@@ -32018,6 +33327,62 @@ type Mutation {
     # upsert condition
     onConflict: VoteOnConflict
   ): Vote
+
+  # update data of the table: "account"
+  updateAccount(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AccountIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AccountSetInput
+
+    # filter the rows which have to be updated
+    where: AccountBoolExp!
+  ): AccountMutationResponse
+
+  # update data of the table: "account_allocate"
+  updateAccountAllocate(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AccountAllocateIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AccountAllocateSetInput
+
+    # filter the rows which have to be updated
+    where: AccountAllocateBoolExp!
+  ): AccountAllocateMutationResponse
+
+  # update single row of the table: "account_allocate"
+  updateAccountAllocateByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AccountAllocateIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AccountAllocateSetInput
+    pkColumns: AccountAllocatePkColumnsInput!
+  ): AccountAllocate
+
+  # update multiples rows of table: "account_allocate"
+  updateAccountAllocateMany(
+    # updates to execute, in order
+    updates: [AccountAllocateUpdates!]!
+  ): [AccountAllocateMutationResponse]
+
+  # update single row of the table: "account"
+  updateAccountByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: AccountIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: AccountSetInput
+    pkColumns: AccountPkColumnsInput!
+  ): Account
+
+  # update multiples rows of table: "account"
+  updateAccountMany(
+    # updates to execute, in order
+    updates: [AccountUpdates!]!
+  ): [AccountMutationResponse]
 
   # update data of the table: "action"
   updateAction(
@@ -36398,6 +37763,84 @@ input ProjectVarSampOrderBy {
 }
 
 type Query {
+  # fetch data from the table: "account"
+  account(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # fetch aggregated fields from the table: "account"
+  accountAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
+  # fetch data from the table: "account_allocate"
+  accountAllocate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # fetch aggregated fields from the table: "account_allocate"
+  accountAllocateAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+
+  # fetch data from the table: "account_allocate" using primary key columns
+  accountAllocateByPk(id: bigint!): AccountAllocate
+
+  # fetch data from the table: "account" using primary key columns
+  accountByPk(id: bigint!): Account
+
   # fetch data from the table: "action"
   action(
     # distinct select on columns
@@ -43501,6 +44944,108 @@ input SubjectVarSampOrderBy {
 }
 
 type Subscription {
+  # fetch data from the table: "account"
+  account(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # fetch aggregated fields from the table: "account"
+  accountAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
+  # fetch data from the table: "account_allocate"
+  accountAllocate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # fetch aggregated fields from the table: "account_allocate"
+  accountAllocateAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+
+  # fetch data from the table: "account_allocate" using primary key columns
+  accountAllocateByPk(id: bigint!): AccountAllocate
+
+  # fetch data from the table in a streaming manner: "account_allocate"
+  accountAllocateStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [AccountAllocateStreamCursorInput]!
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # fetch data from the table: "account" using primary key columns
+  accountByPk(id: bigint!): Account
+
+  # fetch data from the table in a streaming manner: "account"
+  accountStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [AccountStreamCursorInput]!
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
   # fetch data from the table: "action"
   action(
     # distinct select on columns
@@ -48085,6 +49630,78 @@ input TagVarSampOrderBy {
 # columns and relationships of "team"
 type Team {
   # An array relationship
+  accountAllocates(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # An aggregate relationship
+  accountAllocatesAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+
+  # An array relationship
+  accounts(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # An aggregate relationship
+  accountsAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
+  # An array relationship
   actions(
     # distinct select on columns
     distinctOn: [ActionSelectColumn!]
@@ -48371,9 +49988,6 @@ type Team {
     # filter the rows returned
     where: MissionBoolExp
   ): MissionAggregate!
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
 
   # An array relationship
@@ -48758,9 +50372,6 @@ type TeamAvgFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -48776,9 +50387,6 @@ input TeamAvgOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -48790,6 +50398,10 @@ input TeamBoolExp {
   _and: [TeamBoolExp!]
   _not: TeamBoolExp
   _or: [TeamBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
@@ -48826,9 +50438,6 @@ input TeamBoolExp {
   membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
-  originalCreationDay: SmallintComparisonExp
-  originalCreationMonth: SmallintComparisonExp
-  originalCreationYear: SmallintComparisonExp
   parentId: BigintComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
@@ -49344,9 +50953,6 @@ input TeamIncInput {
   currentFinance: Float
   id: bigint
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -49355,6 +50961,8 @@ input TeamIncInput {
 
 # input type for inserting data into table "team"
 input TeamInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   canteen: CanteenObjRelInsertInput
@@ -49384,9 +50992,6 @@ input TeamInsertInput {
   membershipDuration: String
   membershipFees: Float
   missions: MissionArrRelInsertInput
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
@@ -50103,9 +51708,6 @@ type TeamMaxFields {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -50129,9 +51731,6 @@ input TeamMaxOrderBy {
   membersCategoryName: OrderBy
   membershipDuration: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51471,9 +53070,6 @@ type TeamMinFields {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -51497,9 +53093,6 @@ input TeamMinOrderBy {
   membersCategoryName: OrderBy
   membershipDuration: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51533,6 +53126,8 @@ input TeamOnConflict {
 
 # Ordering options when selecting data from "team".
 input TeamOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   canteen: CanteenOrderBy
@@ -51562,9 +53157,6 @@ input TeamOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   missionsAggregate: MissionAggregateOrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
@@ -51636,15 +53228,6 @@ enum TeamSelectColumn {
   membershipFees
 
   # column name
-  originalCreationDay
-
-  # column name
-  originalCreationMonth
-
-  # column name
-  originalCreationYear
-
-  # column name
   parentId
 
   # column name
@@ -51689,9 +53272,6 @@ input TeamSetInput {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -51708,9 +53288,6 @@ type TeamStddevFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -51726,9 +53303,6 @@ input TeamStddevOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51744,9 +53318,6 @@ type TeamStddevPopFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -51762,9 +53333,6 @@ input TeamStddevPopOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51780,9 +53348,6 @@ type TeamStddevSampFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -51798,9 +53363,6 @@ input TeamStddevSampOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51833,9 +53395,6 @@ input TeamStreamCursorValueInput {
   membersCategoryName: String
   membershipDuration: String
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -51852,9 +53411,6 @@ type TeamSumFields {
   currentFinance: Float
   id: bigint
   membershipFees: Float
-  originalCreationDay: smallint
-  originalCreationMonth: smallint
-  originalCreationYear: smallint
   parentId: bigint
   tenantGrantFundId: bigint
   tenantId: bigint
@@ -51870,9 +53426,6 @@ input TeamSumOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -51927,15 +53480,6 @@ enum TeamUpdateColumn {
   membershipFees
 
   # column name
-  originalCreationDay
-
-  # column name
-  originalCreationMonth
-
-  # column name
-  originalCreationYear
-
-  # column name
   parentId
 
   # column name
@@ -51971,9 +53515,6 @@ type TeamVarianceFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -51989,9 +53530,6 @@ input TeamVarianceOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -52007,9 +53545,6 @@ type TeamVarPopFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -52025,9 +53560,6 @@ input TeamVarPopOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -52043,9 +53575,6 @@ type TeamVarSampFields {
   currentFinance: Float
   id: Float
   membershipFees: Float
-  originalCreationDay: Float
-  originalCreationMonth: Float
-  originalCreationYear: Float
   parentId: Float
   tenantGrantFundId: Float
   tenantId: Float
@@ -52061,9 +53590,6 @@ input TeamVarSampOrderBy {
   currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
-  originalCreationDay: OrderBy
-  originalCreationMonth: OrderBy
-  originalCreationYear: OrderBy
   parentId: OrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
@@ -52072,6 +53598,78 @@ input TeamVarSampOrderBy {
 
 # columns and relationships of "tenant"
 type Tenant {
+  # An array relationship
+  accountAllocates(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): [AccountAllocate!]!
+
+  # An aggregate relationship
+  accountAllocatesAggregate(
+    # distinct select on columns
+    distinctOn: [AccountAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountAllocateOrderBy!]
+
+    # filter the rows returned
+    where: AccountAllocateBoolExp
+  ): AccountAllocateAggregate!
+
+  # An array relationship
+  accounts(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): [Account!]!
+
+  # An aggregate relationship
+  accountsAggregate(
+    # distinct select on columns
+    distinctOn: [AccountSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [AccountOrderBy!]
+
+    # filter the rows returned
+    where: AccountBoolExp
+  ): AccountAggregate!
+
   # An array relationship
   actions(
     # distinct select on columns
@@ -54200,6 +55798,10 @@ input TenantBoolExp {
   _and: [TenantBoolExp!]
   _not: TenantBoolExp
   _or: [TenantBoolExp!]
+  accountAllocates: AccountAllocateBoolExp
+  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
+  accounts: AccountBoolExp
+  accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actorImages: ActorImageBoolExp
@@ -54352,6 +55954,8 @@ input TenantIncInput {
 
 # input type for inserting data into table "tenant"
 input TenantInsertInput {
+  accountAllocates: AccountAllocateArrRelInsertInput
+  accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
@@ -54980,6 +56584,8 @@ input TenantOnConflict {
 
 # Ordering options when selecting data from "tenant".
 input TenantOrderBy {
+  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
+  accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
