@@ -27,10 +27,10 @@ export class Action extends TenantScopedEntity {
   state: ApprovalState = ApprovalState.Pending;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  settledBy: Individual | null = null;
+  pointsSettledBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  settledAt: Date | null = null;
+  pointsSettledAt: Date | null = null;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;

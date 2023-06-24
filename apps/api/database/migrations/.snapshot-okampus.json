@@ -748,8 +748,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "oidc_info_is_oidc_enabled": {
-          "name": "oidc_info_is_oidc_enabled",
+        "is_oidc_enabled": {
+          "name": "is_oidc_enabled",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -758,8 +758,8 @@
           "default": "true",
           "mappedType": "boolean"
         },
-        "oidc_info_oidc_name": {
-          "name": "oidc_info_oidc_name",
+        "oidc_name": {
+          "name": "oidc_name",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -768,8 +768,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "oidc_info_oidc_client_id": {
-          "name": "oidc_info_oidc_client_id",
+        "oidc_client_id": {
+          "name": "oidc_client_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -778,8 +778,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "oidc_info_oidc_client_secret": {
-          "name": "oidc_info_oidc_client_secret",
+        "oidc_client_secret": {
+          "name": "oidc_client_secret",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -788,8 +788,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "oidc_info_oidc_discovery_url": {
-          "name": "oidc_info_oidc_discovery_url",
+        "oidc_discovery_url": {
+          "name": "oidc_discovery_url",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -798,8 +798,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "oidc_info_oidc_scopes": {
-          "name": "oidc_info_oidc_scopes",
+        "oidc_scopes": {
+          "name": "oidc_scopes",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -808,8 +808,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "oidc_info_oidc_callback_uri": {
-          "name": "oidc_info_oidc_callback_uri",
+        "oidc_callback_uri": {
+          "name": "oidc_callback_uri",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -13396,8 +13396,8 @@
           ],
           "mappedType": "enum"
         },
-        "settled_by_id": {
-          "name": "settled_by_id",
+        "points_settled_by_id": {
+          "name": "points_settled_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -13406,8 +13406,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "settled_at": {
-          "name": "settled_at",
+        "points_settled_at": {
+          "name": "points_settled_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -13496,10 +13496,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "action_settled_by_id_foreign": {
-          "constraintName": "action_settled_by_id_foreign",
+        "action_points_settled_by_id_foreign": {
+          "constraintName": "action_points_settled_by_id_foreign",
           "columnNames": [
-            "settled_by_id"
+            "points_settled_by_id"
           ],
           "localTableName": "public.action",
           "referencedColumnNames": [

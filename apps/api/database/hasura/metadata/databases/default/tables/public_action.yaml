@@ -8,12 +8,12 @@ object_relationships:
   - name: eventJoin
     using:
       foreign_key_constraint_on: event_join_id
+  - name: pointsSettledBy
+    using:
+      foreign_key_constraint_on: points_settled_by_id
   - name: project
     using:
       foreign_key_constraint_on: project_id
-  - name: settledBy
-    using:
-      foreign_key_constraint_on: settled_by_id
   - name: team
     using:
       foreign_key_constraint_on: team_id

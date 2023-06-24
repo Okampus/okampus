@@ -449,6 +449,13 @@ array_relationships:
         table:
           name: event_approval_step_notifiees
           schema: public
+  - name: pointsSettledActions
+    using:
+      foreign_key_constraint_on:
+        column: points_settled_by_id
+        table:
+          name: action
+          schema: public
   - name: pointsSettledMissionJoins
     using:
       foreign_key_constraint_on:
@@ -462,13 +469,6 @@ array_relationships:
         column: presence_settled_by_id
         table:
           name: event_join
-          schema: public
-  - name: settledActions
-    using:
-      foreign_key_constraint_on:
-        column: settled_by_id
-        table:
-          name: action
           schema: public
   - name: settledEventJoins
     using:

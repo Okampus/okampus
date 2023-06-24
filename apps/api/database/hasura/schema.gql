@@ -1095,15 +1095,15 @@ type Action {
   id: bigint!
   name: String!
   points: smallint
+  pointsSettledAt: timestamptz
+
+  # An object relationship
+  pointsSettledBy: Individual
+  pointsSettledById: bigint
 
   # An object relationship
   project: Project
   projectId: bigint
-  settledAt: timestamptz
-
-  # An object relationship
-  settledBy: Individual
-  settledById: bigint
   state: String!
 
   # An object relationship
@@ -1180,8 +1180,8 @@ type ActionAvgFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1193,8 +1193,8 @@ input ActionAvgOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1216,11 +1216,11 @@ input ActionBoolExp {
   id: BigintComparisonExp
   name: StringComparisonExp
   points: SmallintComparisonExp
+  pointsSettledAt: TimestamptzComparisonExp
+  pointsSettledBy: IndividualBoolExp
+  pointsSettledById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  settledAt: TimestamptzComparisonExp
-  settledBy: IndividualBoolExp
-  settledById: BigintComparisonExp
   state: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -1242,8 +1242,8 @@ input ActionIncInput {
   eventJoinId: bigint
   id: bigint
   points: smallint
+  pointsSettledById: bigint
   projectId: bigint
-  settledById: bigint
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -1262,11 +1262,11 @@ input ActionInsertInput {
   id: bigint
   name: String
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledBy: IndividualObjRelInsertInput
+  pointsSettledById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  settledAt: timestamptz
-  settledBy: IndividualObjRelInsertInput
-  settledById: bigint
   state: String
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -1287,9 +1287,9 @@ type ActionMaxFields {
   id: bigint
   name: String
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -1307,9 +1307,9 @@ input ActionMaxOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1327,9 +1327,9 @@ type ActionMinFields {
   id: bigint
   name: String
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -1347,9 +1347,9 @@ input ActionMinOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1385,11 +1385,11 @@ input ActionOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledBy: IndividualOrderBy
+  pointsSettledById: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledBy: IndividualOrderBy
-  settledById: OrderBy
   state: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -1434,13 +1434,13 @@ enum ActionSelectColumn {
   points
 
   # column name
+  pointsSettledAt
+
+  # column name
+  pointsSettledById
+
+  # column name
   projectId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -1466,9 +1466,9 @@ input ActionSetInput {
   id: bigint
   name: String
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -1481,8 +1481,8 @@ type ActionStddevFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1494,8 +1494,8 @@ input ActionStddevOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1507,8 +1507,8 @@ type ActionStddevPopFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1520,8 +1520,8 @@ input ActionStddevPopOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1533,8 +1533,8 @@ type ActionStddevSampFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1546,8 +1546,8 @@ input ActionStddevSampOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1573,9 +1573,9 @@ input ActionStreamCursorValueInput {
   id: bigint
   name: String
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -1588,8 +1588,8 @@ type ActionSumFields {
   eventJoinId: bigint
   id: bigint
   points: smallint
+  pointsSettledById: bigint
   projectId: bigint
-  settledById: bigint
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -1601,8 +1601,8 @@ input ActionSumOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1638,13 +1638,13 @@ enum ActionUpdateColumn {
   points
 
   # column name
+  pointsSettledAt
+
+  # column name
+  pointsSettledById
+
+  # column name
   projectId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -1676,8 +1676,8 @@ type ActionVarianceFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1689,8 +1689,8 @@ input ActionVarianceOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1702,8 +1702,8 @@ type ActionVarPopFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1715,8 +1715,8 @@ input ActionVarPopOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -1728,8 +1728,8 @@ type ActionVarSampFields {
   eventJoinId: Float
   id: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
   userId: Float
@@ -1741,8 +1741,8 @@ input ActionVarSampOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -26889,6 +26889,42 @@ type Individual {
   passwordHash: String
 
   # An array relationship
+  pointsSettledActions(
+    # distinct select on columns
+    distinctOn: [ActionSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ActionOrderBy!]
+
+    # filter the rows returned
+    where: ActionBoolExp
+  ): [Action!]!
+
+  # An aggregate relationship
+  pointsSettledActionsAggregate(
+    # distinct select on columns
+    distinctOn: [ActionSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ActionOrderBy!]
+
+    # filter the rows returned
+    where: ActionBoolExp
+  ): ActionAggregate!
+
+  # An array relationship
   pointsSettledMissionJoins(
     # distinct select on columns
     distinctOn: [MissionJoinSelectColumn!]
@@ -26960,42 +26996,6 @@ type Individual {
     where: EventJoinBoolExp
   ): EventJoinAggregate!
   scopeRole: String!
-
-  # An array relationship
-  settledActions(
-    # distinct select on columns
-    distinctOn: [ActionSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ActionOrderBy!]
-
-    # filter the rows returned
-    where: ActionBoolExp
-  ): [Action!]!
-
-  # An aggregate relationship
-  settledActionsAggregate(
-    # distinct select on columns
-    distinctOn: [ActionSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ActionOrderBy!]
-
-    # filter the rows returned
-    where: ActionBoolExp
-  ): ActionAggregate!
 
   # An array relationship
   settledEventJoins(
@@ -27505,13 +27505,13 @@ input IndividualBoolExp {
   notifieeEventApprovalSteps: EventApprovalStepNotifieesBoolExp
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateBoolExp
   passwordHash: StringComparisonExp
+  pointsSettledActions: ActionBoolExp
+  pointsSettledActionsAggregate: ActionAggregateBoolExp
   pointsSettledMissionJoins: MissionJoinBoolExp
   pointsSettledMissionJoinsAggregate: MissionJoinAggregateBoolExp
   presenceSettledEventJoins: EventJoinBoolExp
   presenceSettledEventJoinsAggregate: EventJoinAggregateBoolExp
   scopeRole: StringComparisonExp
-  settledActions: ActionBoolExp
-  settledActionsAggregate: ActionAggregateBoolExp
   settledEventJoins: EventJoinBoolExp
   settledEventJoinsAggregate: EventJoinAggregateBoolExp
   settledExpenses: ExpenseBoolExp
@@ -27629,10 +27629,10 @@ input IndividualInsertInput {
   id: bigint
   notifieeEventApprovalSteps: EventApprovalStepNotifieesArrRelInsertInput
   passwordHash: String
+  pointsSettledActions: ActionArrRelInsertInput
   pointsSettledMissionJoins: MissionJoinArrRelInsertInput
   presenceSettledEventJoins: EventJoinArrRelInsertInput
   scopeRole: String
-  settledActions: ActionArrRelInsertInput
   settledEventJoins: EventJoinArrRelInsertInput
   settledExpenses: ExpenseArrRelInsertInput
   settledMissionJoins: MissionJoinArrRelInsertInput
@@ -27805,10 +27805,10 @@ input IndividualOrderBy {
   id: OrderBy
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateOrderBy
   passwordHash: OrderBy
+  pointsSettledActionsAggregate: ActionAggregateOrderBy
   pointsSettledMissionJoinsAggregate: MissionJoinAggregateOrderBy
   presenceSettledEventJoinsAggregate: EventJoinAggregateOrderBy
   scopeRole: OrderBy
-  settledActionsAggregate: ActionAggregateOrderBy
   settledEventJoinsAggregate: EventJoinAggregateOrderBy
   settledExpensesAggregate: ExpenseAggregateOrderBy
   settledMissionJoinsAggregate: MissionJoinAggregateOrderBy
@@ -54849,6 +54849,7 @@ type Tenant {
     # filter the rows returned
     where: IndividualBoolExp
   ): IndividualAggregate!
+  isOidcEnabled: Boolean!
 
   # An array relationship
   issues(
@@ -54994,13 +54995,12 @@ type Tenant {
     where: MissionBoolExp
   ): MissionAggregate!
   name: String!
-  oidcInfoIsOidcEnabled: Boolean!
-  oidcInfoOidcCallbackUri: String!
-  oidcInfoOidcClientId: String!
-  oidcInfoOidcClientSecret: String!
-  oidcInfoOidcDiscoveryUrl: String!
-  oidcInfoOidcName: String!
-  oidcInfoOidcScopes: String!
+  oidcCallbackUri: String!
+  oidcClientId: String!
+  oidcClientSecret: String!
+  oidcDiscoveryUrl: String!
+  oidcName: String!
+  oidcScopes: String!
   pointName: String!
 
   # An array relationship
@@ -55890,6 +55890,7 @@ input TenantBoolExp {
   id: BigintComparisonExp
   individuals: IndividualBoolExp
   individualsAggregate: IndividualAggregateBoolExp
+  isOidcEnabled: BooleanComparisonExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
   legalUnits: LegalUnitBoolExp
@@ -55899,13 +55900,12 @@ input TenantBoolExp {
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
   name: StringComparisonExp
-  oidcInfoIsOidcEnabled: BooleanComparisonExp
-  oidcInfoOidcCallbackUri: StringComparisonExp
-  oidcInfoOidcClientId: StringComparisonExp
-  oidcInfoOidcClientSecret: StringComparisonExp
-  oidcInfoOidcDiscoveryUrl: StringComparisonExp
-  oidcInfoOidcName: StringComparisonExp
-  oidcInfoOidcScopes: StringComparisonExp
+  oidcCallbackUri: StringComparisonExp
+  oidcClientId: StringComparisonExp
+  oidcClientSecret: StringComparisonExp
+  oidcDiscoveryUrl: StringComparisonExp
+  oidcName: StringComparisonExp
+  oidcScopes: StringComparisonExp
   pointName: StringComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
@@ -56012,18 +56012,18 @@ input TenantInsertInput {
   grants: GrantArrRelInsertInput
   id: bigint
   individuals: IndividualArrRelInsertInput
+  isOidcEnabled: Boolean
   issues: IssueArrRelInsertInput
   legalUnits: LegalUnitArrRelInsertInput
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
-  oidcInfoIsOidcEnabled: Boolean
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcName: String
+  oidcScopes: String
   pointName: String
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
@@ -56511,12 +56511,12 @@ type TenantMaxFields {
   eventValidationFormId: bigint
   id: bigint
   name: String
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcName: String
+  oidcScopes: String
   pointName: String
 }
 
@@ -56529,12 +56529,12 @@ input TenantMaxOrderBy {
   eventValidationFormId: OrderBy
   id: OrderBy
   name: OrderBy
-  oidcInfoOidcCallbackUri: OrderBy
-  oidcInfoOidcClientId: OrderBy
-  oidcInfoOidcClientSecret: OrderBy
-  oidcInfoOidcDiscoveryUrl: OrderBy
-  oidcInfoOidcName: OrderBy
-  oidcInfoOidcScopes: OrderBy
+  oidcCallbackUri: OrderBy
+  oidcClientId: OrderBy
+  oidcClientSecret: OrderBy
+  oidcDiscoveryUrl: OrderBy
+  oidcName: OrderBy
+  oidcScopes: OrderBy
   pointName: OrderBy
 }
 
@@ -56547,12 +56547,12 @@ type TenantMinFields {
   eventValidationFormId: bigint
   id: bigint
   name: String
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcName: String
+  oidcScopes: String
   pointName: String
 }
 
@@ -56565,12 +56565,12 @@ input TenantMinOrderBy {
   eventValidationFormId: OrderBy
   id: OrderBy
   name: OrderBy
-  oidcInfoOidcCallbackUri: OrderBy
-  oidcInfoOidcClientId: OrderBy
-  oidcInfoOidcClientSecret: OrderBy
-  oidcInfoOidcDiscoveryUrl: OrderBy
-  oidcInfoOidcName: OrderBy
-  oidcInfoOidcScopes: OrderBy
+  oidcCallbackUri: OrderBy
+  oidcClientId: OrderBy
+  oidcClientSecret: OrderBy
+  oidcDiscoveryUrl: OrderBy
+  oidcName: OrderBy
+  oidcScopes: OrderBy
   pointName: OrderBy
 }
 
@@ -56642,18 +56642,18 @@ input TenantOrderBy {
   grantsAggregate: GrantAggregateOrderBy
   id: OrderBy
   individualsAggregate: IndividualAggregateOrderBy
+  isOidcEnabled: OrderBy
   issuesAggregate: IssueAggregateOrderBy
   legalUnitsAggregate: LegalUnitAggregateOrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
-  oidcInfoIsOidcEnabled: OrderBy
-  oidcInfoOidcCallbackUri: OrderBy
-  oidcInfoOidcClientId: OrderBy
-  oidcInfoOidcClientSecret: OrderBy
-  oidcInfoOidcDiscoveryUrl: OrderBy
-  oidcInfoOidcName: OrderBy
-  oidcInfoOidcScopes: OrderBy
+  oidcCallbackUri: OrderBy
+  oidcClientId: OrderBy
+  oidcClientSecret: OrderBy
+  oidcDiscoveryUrl: OrderBy
+  oidcName: OrderBy
+  oidcScopes: OrderBy
   pointName: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
@@ -56703,28 +56703,28 @@ enum TenantSelectColumn {
   id
 
   # column name
+  isOidcEnabled
+
+  # column name
   name
 
   # column name
-  oidcInfoIsOidcEnabled
+  oidcCallbackUri
 
   # column name
-  oidcInfoOidcCallbackUri
+  oidcClientId
 
   # column name
-  oidcInfoOidcClientId
+  oidcClientSecret
 
   # column name
-  oidcInfoOidcClientSecret
+  oidcDiscoveryUrl
 
   # column name
-  oidcInfoOidcDiscoveryUrl
+  oidcName
 
   # column name
-  oidcInfoOidcName
-
-  # column name
-  oidcInfoOidcScopes
+  oidcScopes
 
   # column name
   pointName
@@ -56733,13 +56733,13 @@ enum TenantSelectColumn {
 # select "tenantAggregateBoolExpBool_andArgumentsColumns" columns of table "tenant"
 enum TenantSelectColumnTenantAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  oidcInfoIsOidcEnabled
+  isOidcEnabled
 }
 
 # select "tenantAggregateBoolExpBool_orArgumentsColumns" columns of table "tenant"
 enum TenantSelectColumnTenantAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  oidcInfoIsOidcEnabled
+  isOidcEnabled
 }
 
 # input type for updating data in table "tenant"
@@ -56750,14 +56750,14 @@ input TenantSetInput {
   domain: String
   eventValidationFormId: bigint
   id: bigint
+  isOidcEnabled: Boolean
   name: String
-  oidcInfoIsOidcEnabled: Boolean
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcName: String
+  oidcScopes: String
   pointName: String
 }
 
@@ -56820,14 +56820,14 @@ input TenantStreamCursorValueInput {
   domain: String
   eventValidationFormId: bigint
   id: bigint
+  isOidcEnabled: Boolean
   name: String
-  oidcInfoIsOidcEnabled: Boolean
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcCallbackUri: String
+  oidcClientId: String
+  oidcClientSecret: String
+  oidcDiscoveryUrl: String
+  oidcName: String
+  oidcScopes: String
   pointName: String
 }
 
@@ -56866,28 +56866,28 @@ enum TenantUpdateColumn {
   id
 
   # column name
+  isOidcEnabled
+
+  # column name
   name
 
   # column name
-  oidcInfoIsOidcEnabled
+  oidcCallbackUri
 
   # column name
-  oidcInfoOidcCallbackUri
+  oidcClientId
 
   # column name
-  oidcInfoOidcClientId
+  oidcClientSecret
 
   # column name
-  oidcInfoOidcClientSecret
+  oidcDiscoveryUrl
 
   # column name
-  oidcInfoOidcDiscoveryUrl
+  oidcName
 
   # column name
-  oidcInfoOidcName
-
-  # column name
-  oidcInfoOidcScopes
+  oidcScopes
 
   # column name
   pointName
