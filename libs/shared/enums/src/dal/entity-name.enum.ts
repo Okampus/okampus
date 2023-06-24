@@ -21,6 +21,7 @@ export enum EntityName {
   Shortcut = 'Shortcut',
 
   Team = 'Team',
+  TeamHistory = 'TeamHistory',
   Action = 'Action',
   Mission = 'Mission',
   MissionJoin = 'MissionJoin',
