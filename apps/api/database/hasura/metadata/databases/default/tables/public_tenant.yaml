@@ -226,12 +226,12 @@ array_relationships:
         table:
           name: form
           schema: public
-  - name: grantUnlocks
+  - name: grantAllocates
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
-          name: grant_unlock
+          name: grant_allocate
           schema: public
   - name: grants
     using:

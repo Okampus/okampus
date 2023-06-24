@@ -72,12 +72,19 @@ array_relationships:
         table:
           name: finance_attachments
           schema: public
-  - name: generatedDocumentGrantUnlocks
+  - name: grantAllocateAttachments
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: grant_allocate_attachments
+          schema: public
+  - name: grantAllocates
     using:
       foreign_key_constraint_on:
         column: generated_document_id
         table:
-          name: grant_unlock
+          name: grant_allocate
           schema: public
   - name: grantAttachments
     using:
@@ -85,20 +92,6 @@ array_relationships:
         column: file_upload_id
         table:
           name: grant_attachments
-          schema: public
-  - name: grantUnlockAttachments
-    using:
-      foreign_key_constraint_on:
-        column: file_upload_id
-        table:
-          name: grant_unlock_attachments
-          schema: public
-  - name: grantUnlocks
-    using:
-      foreign_key_constraint_on:
-        column: signature_id
-        table:
-          name: grant_unlock
           schema: public
   - name: grants
     using:
@@ -120,6 +113,13 @@ array_relationships:
         column: signature_id
         table:
           name: grant
+          schema: public
+  - name: signedGrantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: signature_id
+        table:
+          name: grant_allocate
           schema: public
   - name: tags
     using:

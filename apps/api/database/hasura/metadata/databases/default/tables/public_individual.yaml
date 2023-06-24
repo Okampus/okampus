@@ -239,12 +239,12 @@ array_relationships:
         table:
           name: form
           schema: public
-  - name: createdGrantUnlocks
+  - name: createdGrantAllocates
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: grant_unlock
+          name: grant_allocate
           schema: public
   - name: createdGrants
     using:
@@ -505,12 +505,12 @@ array_relationships:
         table:
           name: thread_contributors
           schema: public
-  - name: validatedGrantUnlocks
+  - name: validatedGrantAllocates
     using:
       foreign_key_constraint_on:
         column: validated_by_id
         table:
-          name: grant_unlock
+          name: grant_allocate
           schema: public
   - name: validatedGrants
     using:

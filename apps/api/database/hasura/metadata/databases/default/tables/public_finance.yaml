@@ -37,10 +37,10 @@ array_relationships:
         table:
           name: finance_attachments
           schema: public
-  - name: grantUnlocks
+  - name: grantAllocates
     using:
       foreign_key_constraint_on:
         column: finance_id
         table:
-          name: grant_unlock
+          name: grant_allocate
           schema: public

@@ -11221,11 +11221,11 @@
           "mappedType": "bigint"
         }
       },
-      "name": "grant_unlock",
+      "name": "grant_allocate",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "grant_unlock_pkey",
+          "keyName": "grant_allocate_pkey",
           "columnNames": [
             "id"
           ],
@@ -11236,12 +11236,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "grant_unlock_created_by_id_foreign": {
-          "constraintName": "grant_unlock_created_by_id_foreign",
+        "grant_allocate_created_by_id_foreign": {
+          "constraintName": "grant_allocate_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
@@ -11249,24 +11249,24 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "grant_unlock_tenant_id_foreign": {
-          "constraintName": "grant_unlock_tenant_id_foreign",
+        "grant_allocate_tenant_id_foreign": {
+          "constraintName": "grant_allocate_tenant_id_foreign",
           "columnNames": [
             "tenant_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "grant_unlock_validated_by_id_foreign": {
-          "constraintName": "grant_unlock_validated_by_id_foreign",
+        "grant_allocate_validated_by_id_foreign": {
+          "constraintName": "grant_allocate_validated_by_id_foreign",
           "columnNames": [
             "validated_by_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
@@ -11274,24 +11274,24 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "grant_unlock_grant_id_foreign": {
-          "constraintName": "grant_unlock_grant_id_foreign",
+        "grant_allocate_grant_id_foreign": {
+          "constraintName": "grant_allocate_grant_id_foreign",
           "columnNames": [
             "grant_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.grant",
           "updateRule": "cascade"
         },
-        "grant_unlock_finance_id_foreign": {
-          "constraintName": "grant_unlock_finance_id_foreign",
+        "grant_allocate_finance_id_foreign": {
+          "constraintName": "grant_allocate_finance_id_foreign",
           "columnNames": [
             "finance_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
@@ -11299,12 +11299,12 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "grant_unlock_signature_id_foreign": {
-          "constraintName": "grant_unlock_signature_id_foreign",
+        "grant_allocate_signature_id_foreign": {
+          "constraintName": "grant_allocate_signature_id_foreign",
           "columnNames": [
             "signature_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
@@ -11312,12 +11312,12 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "grant_unlock_generated_document_id_foreign": {
-          "constraintName": "grant_unlock_generated_document_id_foreign",
+        "grant_allocate_generated_document_id_foreign": {
+          "constraintName": "grant_allocate_generated_document_id_foreign",
           "columnNames": [
             "generated_document_id"
           ],
-          "localTableName": "public.grant_unlock",
+          "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
             "id"
           ],
@@ -11329,8 +11329,8 @@
     },
     {
       "columns": {
-        "grant_unlock_id": {
-          "name": "grant_unlock_id",
+        "grant_allocate_id": {
+          "name": "grant_allocate_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -11348,13 +11348,13 @@
           "mappedType": "bigint"
         }
       },
-      "name": "grant_unlock_attachments",
+      "name": "grant_allocate_attachments",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "grant_unlock_attachments_pkey",
+          "keyName": "grant_allocate_attachments_pkey",
           "columnNames": [
-            "grant_unlock_id",
+            "grant_allocate_id",
             "file_upload_id"
           ],
           "composite": true,
@@ -11364,25 +11364,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "grant_unlock_attachments_grant_unlock_id_foreign": {
-          "constraintName": "grant_unlock_attachments_grant_unlock_id_foreign",
+        "grant_allocate_attachments_grant_allocate_id_foreign": {
+          "constraintName": "grant_allocate_attachments_grant_allocate_id_foreign",
           "columnNames": [
-            "grant_unlock_id"
+            "grant_allocate_id"
           ],
-          "localTableName": "public.grant_unlock_attachments",
+          "localTableName": "public.grant_allocate_attachments",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.grant_unlock",
+          "referencedTableName": "public.grant_allocate",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "grant_unlock_attachments_file_upload_id_foreign": {
-          "constraintName": "grant_unlock_attachments_file_upload_id_foreign",
+        "grant_allocate_attachments_file_upload_id_foreign": {
+          "constraintName": "grant_allocate_attachments_file_upload_id_foreign",
           "columnNames": [
             "file_upload_id"
           ],
-          "localTableName": "public.grant_unlock_attachments",
+          "localTableName": "public.grant_allocate_attachments",
           "referencedColumnNames": [
             "id"
           ],

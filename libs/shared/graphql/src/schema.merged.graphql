@@ -13531,14 +13531,12 @@ type FileUpload {
   fileLastModifiedAt: timestamptz!
   financeAttachments(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): [FinanceAttachments!]!
   financeAttachmentsAggregate(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): FinanceAttachmentsAggregate!
-  generatedDocumentGrantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  generatedDocumentGrantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
+  grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
+  grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
+  grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   grantAttachments(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantAttachmentsAggregate(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): GrantAttachmentsAggregate!
-  grantUnlockAttachments(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): [GrantUnlockAttachments!]!
-  grantUnlockAttachmentsAggregate(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): GrantUnlockAttachmentsAggregate!
-  grantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
   grants(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   grantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   hiddenAt: timestamptz
@@ -13548,6 +13546,8 @@ type FileUpload {
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   signatureGrants(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   signatureGrantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
+  signedGrantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  signedGrantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   size: Int!
   tags(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): [Tag!]!
   tagsAggregate(distinctOn: [TagSelectColumn!], limit: Int, offset: Int, orderBy: [TagOrderBy!], where: TagBoolExp): TagAggregate!
@@ -13646,14 +13646,12 @@ input FileUploadBoolExp {
   fileLastModifiedAt: TimestamptzComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
-  generatedDocumentGrantUnlocks: GrantUnlockBoolExp
-  generatedDocumentGrantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
+  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
+  grantAllocates: GrantAllocateBoolExp
+  grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   grantAttachments: GrantAttachmentsBoolExp
   grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
-  grantUnlockAttachments: GrantUnlockAttachmentsBoolExp
-  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateBoolExp
-  grantUnlocks: GrantUnlockBoolExp
-  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
   grants: GrantBoolExp
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -13663,6 +13661,8 @@ input FileUploadBoolExp {
   projectsAggregate: ProjectAggregateBoolExp
   signatureGrants: GrantBoolExp
   signatureGrantsAggregate: GrantAggregateBoolExp
+  signedGrantAllocates: GrantAllocateBoolExp
+  signedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
   size: IntComparisonExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
@@ -13700,16 +13700,16 @@ input FileUploadInsertInput {
   expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   financeAttachments: FinanceAttachmentsArrRelInsertInput
-  generatedDocumentGrantUnlocks: GrantUnlockArrRelInsertInput
+  grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
+  grantAllocates: GrantAllocateArrRelInsertInput
   grantAttachments: GrantAttachmentsArrRelInsertInput
-  grantUnlockAttachments: GrantUnlockAttachmentsArrRelInsertInput
-  grantUnlocks: GrantUnlockArrRelInsertInput
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   name: String
   projects: ProjectArrRelInsertInput
   signatureGrants: GrantArrRelInsertInput
+  signedGrantAllocates: GrantAllocateArrRelInsertInput
   size: Int
   tags: TagArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -13806,16 +13806,16 @@ input FileUploadOrderBy {
   expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
-  generatedDocumentGrantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
+  grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
-  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateOrderBy
-  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
   signatureGrantsAggregate: GrantAggregateOrderBy
+  signedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   size: OrderBy
   tagsAggregate: TagAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
@@ -14011,8 +14011,8 @@ type Finance {
   expenseId: bigint
   financeAttachments(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): [FinanceAttachments!]!
   financeAttachmentsAggregate(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): FinanceAttachmentsAggregate!
-  grantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
+  grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   hiddenAt: timestamptz
   id: bigint!
   method: String!
@@ -14365,8 +14365,8 @@ input FinanceBoolExp {
   expenseId: BigintComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
-  grantUnlocks: GrantUnlockBoolExp
-  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grantAllocates: GrantAllocateBoolExp
+  grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   method: StringComparisonExp
@@ -14421,7 +14421,7 @@ input FinanceInsertInput {
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
   financeAttachments: FinanceAttachmentsArrRelInsertInput
-  grantUnlocks: GrantUnlockArrRelInsertInput
+  grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   method: String
@@ -14573,7 +14573,7 @@ input FinanceOrderBy {
   expense: ExpenseOrderBy
   expenseId: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
-  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   method: OrderBy
@@ -16119,10 +16119,10 @@ type Grant {
   deletedAt: timestamptz
   generatedDocument: FileUpload
   generatedDocumentId: bigint
+  grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   grantAttachments(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantAttachmentsAggregate(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): GrantAttachmentsAggregate!
-  grantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
   hiddenAt: timestamptz
   id: bigint!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
@@ -16181,6 +16181,800 @@ input GrantAggregateOrderBy {
   varPop: GrantVarPopOrderBy
   varSamp: GrantVarSampOrderBy
   variance: GrantVarianceOrderBy
+}
+
+type GrantAllocate {
+  amountAsked: Float!
+  amountGiven: Float!
+  createdAt: timestamptz!
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  fileUpload: FileUpload
+  finance: Finance
+  financeId: bigint
+  generatedDocumentId: bigint
+  grant: Grant!
+  grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
+  grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
+  grantId: bigint!
+  hiddenAt: timestamptz
+  id: bigint!
+  signature: FileUpload
+  signatureId: bigint
+  state: String!
+  tenant: Tenant!
+  tenantId: bigint!
+  validatedAt: timestamptz
+  validatedBy: Individual
+  validatedById: bigint
+}
+
+type GrantAllocateAggregate {
+  aggregate: GrantAllocateAggregateFields
+  nodes: [GrantAllocate!]!
+}
+
+input GrantAllocateAggregateBoolExp {
+  count: grantAllocateAggregateBoolExpCount
+}
+
+input grantAllocateAggregateBoolExpCount {
+  arguments: [GrantAllocateSelectColumn!]
+  distinct: Boolean
+  filter: GrantAllocateBoolExp
+  predicate: IntComparisonExp!
+}
+
+type GrantAllocateAggregateFields {
+  avg: GrantAllocateAvgFields
+  count(columns: [GrantAllocateSelectColumn!], distinct: Boolean): Int!
+  max: GrantAllocateMaxFields
+  min: GrantAllocateMinFields
+  stddev: GrantAllocateStddevFields
+  stddevPop: GrantAllocateStddevPopFields
+  stddevSamp: GrantAllocateStddevSampFields
+  sum: GrantAllocateSumFields
+  varPop: GrantAllocateVarPopFields
+  varSamp: GrantAllocateVarSampFields
+  variance: GrantAllocateVarianceFields
+}
+
+input GrantAllocateAggregateOrderBy {
+  avg: GrantAllocateAvgOrderBy
+  count: OrderBy
+  max: GrantAllocateMaxOrderBy
+  min: GrantAllocateMinOrderBy
+  stddev: GrantAllocateStddevOrderBy
+  stddevPop: GrantAllocateStddevPopOrderBy
+  stddevSamp: GrantAllocateStddevSampOrderBy
+  sum: GrantAllocateSumOrderBy
+  varPop: GrantAllocateVarPopOrderBy
+  varSamp: GrantAllocateVarSampOrderBy
+  variance: GrantAllocateVarianceOrderBy
+}
+
+input GrantAllocateArrRelInsertInput {
+  data: [GrantAllocateInsertInput!]!
+  onConflict: GrantAllocateOnConflict
+}
+
+type GrantAllocateAttachments {
+  fileUpload: FileUpload!
+  fileUploadId: bigint!
+  grantAllocate: GrantAllocate!
+  grantAllocateId: bigint!
+}
+
+type GrantAllocateAttachmentsAggregate {
+  aggregate: GrantAllocateAttachmentsAggregateFields
+  nodes: [GrantAllocateAttachments!]!
+}
+
+input GrantAllocateAttachmentsAggregateBoolExp {
+  count: grantAllocateAttachmentsAggregateBoolExpCount
+}
+
+input grantAllocateAttachmentsAggregateBoolExpCount {
+  arguments: [GrantAllocateAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: GrantAllocateAttachmentsBoolExp
+  predicate: IntComparisonExp!
+}
+
+type GrantAllocateAttachmentsAggregateFields {
+  avg: GrantAllocateAttachmentsAvgFields
+  count(columns: [GrantAllocateAttachmentsSelectColumn!], distinct: Boolean): Int!
+  max: GrantAllocateAttachmentsMaxFields
+  min: GrantAllocateAttachmentsMinFields
+  stddev: GrantAllocateAttachmentsStddevFields
+  stddevPop: GrantAllocateAttachmentsStddevPopFields
+  stddevSamp: GrantAllocateAttachmentsStddevSampFields
+  sum: GrantAllocateAttachmentsSumFields
+  varPop: GrantAllocateAttachmentsVarPopFields
+  varSamp: GrantAllocateAttachmentsVarSampFields
+  variance: GrantAllocateAttachmentsVarianceFields
+}
+
+input GrantAllocateAttachmentsAggregateOrderBy {
+  avg: GrantAllocateAttachmentsAvgOrderBy
+  count: OrderBy
+  max: GrantAllocateAttachmentsMaxOrderBy
+  min: GrantAllocateAttachmentsMinOrderBy
+  stddev: GrantAllocateAttachmentsStddevOrderBy
+  stddevPop: GrantAllocateAttachmentsStddevPopOrderBy
+  stddevSamp: GrantAllocateAttachmentsStddevSampOrderBy
+  sum: GrantAllocateAttachmentsSumOrderBy
+  varPop: GrantAllocateAttachmentsVarPopOrderBy
+  varSamp: GrantAllocateAttachmentsVarSampOrderBy
+  variance: GrantAllocateAttachmentsVarianceOrderBy
+}
+
+input GrantAllocateAttachmentsArrRelInsertInput {
+  data: [GrantAllocateAttachmentsInsertInput!]!
+  onConflict: GrantAllocateAttachmentsOnConflict
+}
+
+type GrantAllocateAttachmentsAvgFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsAvgOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+input GrantAllocateAttachmentsBoolExp {
+  _and: [GrantAllocateAttachmentsBoolExp!]
+  _not: GrantAllocateAttachmentsBoolExp
+  _or: [GrantAllocateAttachmentsBoolExp!]
+  fileUpload: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  grantAllocate: GrantAllocateBoolExp
+  grantAllocateId: BigintComparisonExp
+}
+
+enum GrantAllocateAttachmentsConstraint {
+  grant_allocate_attachments_pkey
+}
+
+input GrantAllocateAttachmentsIncInput {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+input GrantAllocateAttachmentsInsertInput {
+  fileUpload: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  grantAllocate: GrantAllocateObjRelInsertInput
+  grantAllocateId: bigint
+}
+
+type GrantAllocateAttachmentsMaxFields {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+input GrantAllocateAttachmentsMaxOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsMinFields {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+input GrantAllocateAttachmentsMinOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsMutationResponse {
+  affectedRows: Int!
+  returning: [GrantAllocateAttachments!]!
+}
+
+input GrantAllocateAttachmentsOnConflict {
+  constraint: GrantAllocateAttachmentsConstraint!
+  updateColumns: [GrantAllocateAttachmentsUpdateColumn!]! = []
+  where: GrantAllocateAttachmentsBoolExp
+}
+
+input GrantAllocateAttachmentsOrderBy {
+  fileUpload: FileUploadOrderBy
+  fileUploadId: OrderBy
+  grantAllocate: GrantAllocateOrderBy
+  grantAllocateId: OrderBy
+}
+
+input GrantAllocateAttachmentsPkColumnsInput {
+  fileUploadId: bigint!
+  grantAllocateId: bigint!
+}
+
+enum GrantAllocateAttachmentsSelectColumn {
+  fileUploadId
+  grantAllocateId
+}
+
+input GrantAllocateAttachmentsSetInput {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+type GrantAllocateAttachmentsStddevFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsStddevOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsStddevPopFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsStddevPopOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsStddevSampFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsStddevSampOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+input GrantAllocateAttachmentsStreamCursorInput {
+  initialValue: GrantAllocateAttachmentsStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input GrantAllocateAttachmentsStreamCursorValueInput {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+type GrantAllocateAttachmentsSumFields {
+  fileUploadId: bigint
+  grantAllocateId: bigint
+}
+
+input GrantAllocateAttachmentsSumOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+enum GrantAllocateAttachmentsUpdateColumn {
+  fileUploadId
+  grantAllocateId
+}
+
+input GrantAllocateAttachmentsUpdates {
+  _inc: GrantAllocateAttachmentsIncInput
+  _set: GrantAllocateAttachmentsSetInput
+  where: GrantAllocateAttachmentsBoolExp!
+}
+
+type GrantAllocateAttachmentsVarianceFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsVarianceOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsVarPopFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsVarPopOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAttachmentsVarSampFields {
+  fileUploadId: Float
+  grantAllocateId: Float
+}
+
+input GrantAllocateAttachmentsVarSampOrderBy {
+  fileUploadId: OrderBy
+  grantAllocateId: OrderBy
+}
+
+type GrantAllocateAvgFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateAvgOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+input GrantAllocateBoolExp {
+  _and: [GrantAllocateBoolExp!]
+  _not: GrantAllocateBoolExp
+  _or: [GrantAllocateBoolExp!]
+  amountAsked: FloatComparisonExp
+  amountGiven: FloatComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  fileUpload: FileUploadBoolExp
+  finance: FinanceBoolExp
+  financeId: BigintComparisonExp
+  generatedDocumentId: BigintComparisonExp
+  grant: GrantBoolExp
+  grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
+  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
+  grantId: BigintComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  signature: FileUploadBoolExp
+  signatureId: BigintComparisonExp
+  state: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  validatedAt: TimestamptzComparisonExp
+  validatedBy: IndividualBoolExp
+  validatedById: BigintComparisonExp
+}
+
+enum GrantAllocateConstraint {
+  grant_allocate_pkey
+}
+
+input GrantAllocateIncInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  id: bigint
+  signatureId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+input GrantAllocateInsertInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  fileUpload: FileUploadObjRelInsertInput
+  finance: FinanceObjRelInsertInput
+  financeId: bigint
+  generatedDocumentId: bigint
+  grant: GrantObjRelInsertInput
+  grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signature: FileUploadObjRelInsertInput
+  signatureId: bigint
+  state: String
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedBy: IndividualObjRelInsertInput
+  validatedById: bigint
+}
+
+type GrantAllocateMaxFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+input GrantAllocateMaxOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateMinFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+input GrantAllocateMinOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateMutationResponse {
+  affectedRows: Int!
+  returning: [GrantAllocate!]!
+}
+
+input GrantAllocateObjRelInsertInput {
+  data: GrantAllocateInsertInput!
+  onConflict: GrantAllocateOnConflict
+}
+
+input GrantAllocateOnConflict {
+  constraint: GrantAllocateConstraint!
+  updateColumns: [GrantAllocateUpdateColumn!]! = []
+  where: GrantAllocateBoolExp
+}
+
+input GrantAllocateOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  fileUpload: FileUploadOrderBy
+  finance: FinanceOrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grant: GrantOrderBy
+  grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
+  grantId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  signature: FileUploadOrderBy
+  signatureId: OrderBy
+  state: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  validatedAt: OrderBy
+  validatedBy: IndividualOrderBy
+  validatedById: OrderBy
+}
+
+input GrantAllocatePkColumnsInput {
+  id: bigint!
+}
+
+enum GrantAllocateSelectColumn {
+  amountAsked
+  amountGiven
+  createdAt
+  createdById
+  deletedAt
+  financeId
+  generatedDocumentId
+  grantId
+  hiddenAt
+  id
+  signatureId
+  state
+  tenantId
+  validatedAt
+  validatedById
+}
+
+input GrantAllocateSetInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+type GrantAllocateStddevFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateStddevOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateStddevPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateStddevPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateStddevSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateStddevSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+input GrantAllocateStreamCursorInput {
+  initialValue: GrantAllocateStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input GrantAllocateStreamCursorValueInput {
+  amountAsked: Float
+  amountGiven: Float
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  signatureId: bigint
+  state: String
+  tenantId: bigint
+  validatedAt: timestamptz
+  validatedById: bigint
+}
+
+type GrantAllocateSumFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: bigint
+  financeId: bigint
+  generatedDocumentId: bigint
+  grantId: bigint
+  id: bigint
+  signatureId: bigint
+  tenantId: bigint
+  validatedById: bigint
+}
+
+input GrantAllocateSumOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+enum GrantAllocateUpdateColumn {
+  amountAsked
+  amountGiven
+  createdAt
+  createdById
+  deletedAt
+  financeId
+  generatedDocumentId
+  grantId
+  hiddenAt
+  id
+  signatureId
+  state
+  tenantId
+  validatedAt
+  validatedById
+}
+
+input GrantAllocateUpdates {
+  _inc: GrantAllocateIncInput
+  _set: GrantAllocateSetInput
+  where: GrantAllocateBoolExp!
+}
+
+type GrantAllocateVarianceFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateVarianceOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateVarPopFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateVarPopOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
+}
+
+type GrantAllocateVarSampFields {
+  amountAsked: Float
+  amountGiven: Float
+  createdById: Float
+  financeId: Float
+  generatedDocumentId: Float
+  grantId: Float
+  id: Float
+  signatureId: Float
+  tenantId: Float
+  validatedById: Float
+}
+
+input GrantAllocateVarSampOrderBy {
+  amountAsked: OrderBy
+  amountGiven: OrderBy
+  createdById: OrderBy
+  financeId: OrderBy
+  generatedDocumentId: OrderBy
+  grantId: OrderBy
+  id: OrderBy
+  signatureId: OrderBy
+  tenantId: OrderBy
+  validatedById: OrderBy
 }
 
 input GrantArrRelInsertInput {
@@ -16460,10 +17254,10 @@ input GrantBoolExp {
   deletedAt: TimestamptzComparisonExp
   generatedDocument: FileUploadBoolExp
   generatedDocumentId: BigintComparisonExp
+  grantAllocates: GrantAllocateBoolExp
+  grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   grantAttachments: GrantAttachmentsBoolExp
   grantAttachmentsAggregate: GrantAttachmentsAggregateBoolExp
-  grantUnlocks: GrantUnlockBoolExp
-  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   projects: ProjectBoolExp
@@ -16505,8 +17299,8 @@ input GrantInsertInput {
   deletedAt: timestamptz
   generatedDocument: FileUploadObjRelInsertInput
   generatedDocumentId: bigint
+  grantAllocates: GrantAllocateArrRelInsertInput
   grantAttachments: GrantAttachmentsArrRelInsertInput
-  grantUnlocks: GrantUnlockArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   projects: ProjectArrRelInsertInput
@@ -16615,8 +17409,8 @@ input GrantOrderBy {
   deletedAt: OrderBy
   generatedDocument: FileUploadOrderBy
   generatedDocumentId: OrderBy
+  grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
-  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
@@ -16788,800 +17582,6 @@ input GrantSumOrderBy {
   validatedById: OrderBy
 }
 
-type GrantUnlock {
-  amountAsked: Float!
-  amountGiven: Float!
-  createdAt: timestamptz!
-  createdBy: Individual
-  createdById: bigint
-  deletedAt: timestamptz
-  finance: Finance
-  financeId: bigint
-  generatedDocument: FileUpload
-  generatedDocumentId: bigint
-  grant: Grant!
-  grantId: bigint!
-  grantUnlockAttachments(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): [GrantUnlockAttachments!]!
-  grantUnlockAttachmentsAggregate(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): GrantUnlockAttachmentsAggregate!
-  hiddenAt: timestamptz
-  id: bigint!
-  signature: FileUpload
-  signatureId: bigint
-  state: String!
-  tenant: Tenant!
-  tenantId: bigint!
-  validatedAt: timestamptz
-  validatedBy: Individual
-  validatedById: bigint
-}
-
-type GrantUnlockAggregate {
-  aggregate: GrantUnlockAggregateFields
-  nodes: [GrantUnlock!]!
-}
-
-input GrantUnlockAggregateBoolExp {
-  count: grantUnlockAggregateBoolExpCount
-}
-
-input grantUnlockAggregateBoolExpCount {
-  arguments: [GrantUnlockSelectColumn!]
-  distinct: Boolean
-  filter: GrantUnlockBoolExp
-  predicate: IntComparisonExp!
-}
-
-type GrantUnlockAggregateFields {
-  avg: GrantUnlockAvgFields
-  count(columns: [GrantUnlockSelectColumn!], distinct: Boolean): Int!
-  max: GrantUnlockMaxFields
-  min: GrantUnlockMinFields
-  stddev: GrantUnlockStddevFields
-  stddevPop: GrantUnlockStddevPopFields
-  stddevSamp: GrantUnlockStddevSampFields
-  sum: GrantUnlockSumFields
-  varPop: GrantUnlockVarPopFields
-  varSamp: GrantUnlockVarSampFields
-  variance: GrantUnlockVarianceFields
-}
-
-input GrantUnlockAggregateOrderBy {
-  avg: GrantUnlockAvgOrderBy
-  count: OrderBy
-  max: GrantUnlockMaxOrderBy
-  min: GrantUnlockMinOrderBy
-  stddev: GrantUnlockStddevOrderBy
-  stddevPop: GrantUnlockStddevPopOrderBy
-  stddevSamp: GrantUnlockStddevSampOrderBy
-  sum: GrantUnlockSumOrderBy
-  varPop: GrantUnlockVarPopOrderBy
-  varSamp: GrantUnlockVarSampOrderBy
-  variance: GrantUnlockVarianceOrderBy
-}
-
-input GrantUnlockArrRelInsertInput {
-  data: [GrantUnlockInsertInput!]!
-  onConflict: GrantUnlockOnConflict
-}
-
-type GrantUnlockAttachments {
-  fileUpload: FileUpload!
-  fileUploadId: bigint!
-  grantUnlock: GrantUnlock!
-  grantUnlockId: bigint!
-}
-
-type GrantUnlockAttachmentsAggregate {
-  aggregate: GrantUnlockAttachmentsAggregateFields
-  nodes: [GrantUnlockAttachments!]!
-}
-
-input GrantUnlockAttachmentsAggregateBoolExp {
-  count: grantUnlockAttachmentsAggregateBoolExpCount
-}
-
-input grantUnlockAttachmentsAggregateBoolExpCount {
-  arguments: [GrantUnlockAttachmentsSelectColumn!]
-  distinct: Boolean
-  filter: GrantUnlockAttachmentsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type GrantUnlockAttachmentsAggregateFields {
-  avg: GrantUnlockAttachmentsAvgFields
-  count(columns: [GrantUnlockAttachmentsSelectColumn!], distinct: Boolean): Int!
-  max: GrantUnlockAttachmentsMaxFields
-  min: GrantUnlockAttachmentsMinFields
-  stddev: GrantUnlockAttachmentsStddevFields
-  stddevPop: GrantUnlockAttachmentsStddevPopFields
-  stddevSamp: GrantUnlockAttachmentsStddevSampFields
-  sum: GrantUnlockAttachmentsSumFields
-  varPop: GrantUnlockAttachmentsVarPopFields
-  varSamp: GrantUnlockAttachmentsVarSampFields
-  variance: GrantUnlockAttachmentsVarianceFields
-}
-
-input GrantUnlockAttachmentsAggregateOrderBy {
-  avg: GrantUnlockAttachmentsAvgOrderBy
-  count: OrderBy
-  max: GrantUnlockAttachmentsMaxOrderBy
-  min: GrantUnlockAttachmentsMinOrderBy
-  stddev: GrantUnlockAttachmentsStddevOrderBy
-  stddevPop: GrantUnlockAttachmentsStddevPopOrderBy
-  stddevSamp: GrantUnlockAttachmentsStddevSampOrderBy
-  sum: GrantUnlockAttachmentsSumOrderBy
-  varPop: GrantUnlockAttachmentsVarPopOrderBy
-  varSamp: GrantUnlockAttachmentsVarSampOrderBy
-  variance: GrantUnlockAttachmentsVarianceOrderBy
-}
-
-input GrantUnlockAttachmentsArrRelInsertInput {
-  data: [GrantUnlockAttachmentsInsertInput!]!
-  onConflict: GrantUnlockAttachmentsOnConflict
-}
-
-type GrantUnlockAttachmentsAvgFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsAvgOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-input GrantUnlockAttachmentsBoolExp {
-  _and: [GrantUnlockAttachmentsBoolExp!]
-  _not: GrantUnlockAttachmentsBoolExp
-  _or: [GrantUnlockAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
-  fileUploadId: BigintComparisonExp
-  grantUnlock: GrantUnlockBoolExp
-  grantUnlockId: BigintComparisonExp
-}
-
-enum GrantUnlockAttachmentsConstraint {
-  grant_unlock_attachments_pkey
-}
-
-input GrantUnlockAttachmentsIncInput {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-input GrantUnlockAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
-  fileUploadId: bigint
-  grantUnlock: GrantUnlockObjRelInsertInput
-  grantUnlockId: bigint
-}
-
-type GrantUnlockAttachmentsMaxFields {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-input GrantUnlockAttachmentsMaxOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsMinFields {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-input GrantUnlockAttachmentsMinOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsMutationResponse {
-  affectedRows: Int!
-  returning: [GrantUnlockAttachments!]!
-}
-
-input GrantUnlockAttachmentsOnConflict {
-  constraint: GrantUnlockAttachmentsConstraint!
-  updateColumns: [GrantUnlockAttachmentsUpdateColumn!]! = []
-  where: GrantUnlockAttachmentsBoolExp
-}
-
-input GrantUnlockAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
-  fileUploadId: OrderBy
-  grantUnlock: GrantUnlockOrderBy
-  grantUnlockId: OrderBy
-}
-
-input GrantUnlockAttachmentsPkColumnsInput {
-  fileUploadId: bigint!
-  grantUnlockId: bigint!
-}
-
-enum GrantUnlockAttachmentsSelectColumn {
-  fileUploadId
-  grantUnlockId
-}
-
-input GrantUnlockAttachmentsSetInput {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-type GrantUnlockAttachmentsStddevFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsStddevOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsStddevPopFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsStddevPopOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsStddevSampFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsStddevSampOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-input GrantUnlockAttachmentsStreamCursorInput {
-  initialValue: GrantUnlockAttachmentsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input GrantUnlockAttachmentsStreamCursorValueInput {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-type GrantUnlockAttachmentsSumFields {
-  fileUploadId: bigint
-  grantUnlockId: bigint
-}
-
-input GrantUnlockAttachmentsSumOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-enum GrantUnlockAttachmentsUpdateColumn {
-  fileUploadId
-  grantUnlockId
-}
-
-input GrantUnlockAttachmentsUpdates {
-  _inc: GrantUnlockAttachmentsIncInput
-  _set: GrantUnlockAttachmentsSetInput
-  where: GrantUnlockAttachmentsBoolExp!
-}
-
-type GrantUnlockAttachmentsVarianceFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsVarianceOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsVarPopFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsVarPopOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAttachmentsVarSampFields {
-  fileUploadId: Float
-  grantUnlockId: Float
-}
-
-input GrantUnlockAttachmentsVarSampOrderBy {
-  fileUploadId: OrderBy
-  grantUnlockId: OrderBy
-}
-
-type GrantUnlockAvgFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockAvgOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-input GrantUnlockBoolExp {
-  _and: [GrantUnlockBoolExp!]
-  _not: GrantUnlockBoolExp
-  _or: [GrantUnlockBoolExp!]
-  amountAsked: FloatComparisonExp
-  amountGiven: FloatComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: IndividualBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  finance: FinanceBoolExp
-  financeId: BigintComparisonExp
-  generatedDocument: FileUploadBoolExp
-  generatedDocumentId: BigintComparisonExp
-  grant: GrantBoolExp
-  grantId: BigintComparisonExp
-  grantUnlockAttachments: GrantUnlockAttachmentsBoolExp
-  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  signature: FileUploadBoolExp
-  signatureId: BigintComparisonExp
-  state: StringComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  validatedAt: TimestamptzComparisonExp
-  validatedBy: IndividualBoolExp
-  validatedById: BigintComparisonExp
-}
-
-enum GrantUnlockConstraint {
-  grant_unlock_pkey
-}
-
-input GrantUnlockIncInput {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: bigint
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  id: bigint
-  signatureId: bigint
-  tenantId: bigint
-  validatedById: bigint
-}
-
-input GrantUnlockInsertInput {
-  amountAsked: Float
-  amountGiven: Float
-  createdAt: timestamptz
-  createdBy: IndividualObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  finance: FinanceObjRelInsertInput
-  financeId: bigint
-  generatedDocument: FileUploadObjRelInsertInput
-  generatedDocumentId: bigint
-  grant: GrantObjRelInsertInput
-  grantId: bigint
-  grantUnlockAttachments: GrantUnlockAttachmentsArrRelInsertInput
-  hiddenAt: timestamptz
-  id: bigint
-  signature: FileUploadObjRelInsertInput
-  signatureId: bigint
-  state: String
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  validatedAt: timestamptz
-  validatedBy: IndividualObjRelInsertInput
-  validatedById: bigint
-}
-
-type GrantUnlockMaxFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  signatureId: bigint
-  state: String
-  tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
-}
-
-input GrantUnlockMaxOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  state: OrderBy
-  tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockMinFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  signatureId: bigint
-  state: String
-  tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
-}
-
-input GrantUnlockMinOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  state: OrderBy
-  tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockMutationResponse {
-  affectedRows: Int!
-  returning: [GrantUnlock!]!
-}
-
-input GrantUnlockObjRelInsertInput {
-  data: GrantUnlockInsertInput!
-  onConflict: GrantUnlockOnConflict
-}
-
-input GrantUnlockOnConflict {
-  constraint: GrantUnlockConstraint!
-  updateColumns: [GrantUnlockUpdateColumn!]! = []
-  where: GrantUnlockBoolExp
-}
-
-input GrantUnlockOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdAt: OrderBy
-  createdBy: IndividualOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  finance: FinanceOrderBy
-  financeId: OrderBy
-  generatedDocument: FileUploadOrderBy
-  generatedDocumentId: OrderBy
-  grant: GrantOrderBy
-  grantId: OrderBy
-  grantUnlockAttachmentsAggregate: GrantUnlockAttachmentsAggregateOrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  signature: FileUploadOrderBy
-  signatureId: OrderBy
-  state: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedBy: IndividualOrderBy
-  validatedById: OrderBy
-}
-
-input GrantUnlockPkColumnsInput {
-  id: bigint!
-}
-
-enum GrantUnlockSelectColumn {
-  amountAsked
-  amountGiven
-  createdAt
-  createdById
-  deletedAt
-  financeId
-  generatedDocumentId
-  grantId
-  hiddenAt
-  id
-  signatureId
-  state
-  tenantId
-  validatedAt
-  validatedById
-}
-
-input GrantUnlockSetInput {
-  amountAsked: Float
-  amountGiven: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  signatureId: bigint
-  state: String
-  tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
-}
-
-type GrantUnlockStddevFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockStddevOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockStddevPopFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockStddevPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockStddevSampFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockStddevSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-input GrantUnlockStreamCursorInput {
-  initialValue: GrantUnlockStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input GrantUnlockStreamCursorValueInput {
-  amountAsked: Float
-  amountGiven: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  signatureId: bigint
-  state: String
-  tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
-}
-
-type GrantUnlockSumFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: bigint
-  financeId: bigint
-  generatedDocumentId: bigint
-  grantId: bigint
-  id: bigint
-  signatureId: bigint
-  tenantId: bigint
-  validatedById: bigint
-}
-
-input GrantUnlockSumOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-enum GrantUnlockUpdateColumn {
-  amountAsked
-  amountGiven
-  createdAt
-  createdById
-  deletedAt
-  financeId
-  generatedDocumentId
-  grantId
-  hiddenAt
-  id
-  signatureId
-  state
-  tenantId
-  validatedAt
-  validatedById
-}
-
-input GrantUnlockUpdates {
-  _inc: GrantUnlockIncInput
-  _set: GrantUnlockSetInput
-  where: GrantUnlockBoolExp!
-}
-
-type GrantUnlockVarianceFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockVarianceOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockVarPopFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockVarPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
-type GrantUnlockVarSampFields {
-  amountAsked: Float
-  amountGiven: Float
-  createdById: Float
-  financeId: Float
-  generatedDocumentId: Float
-  grantId: Float
-  id: Float
-  signatureId: Float
-  tenantId: Float
-  validatedById: Float
-}
-
-input GrantUnlockVarSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
-  createdById: OrderBy
-  financeId: OrderBy
-  generatedDocumentId: OrderBy
-  grantId: OrderBy
-  id: OrderBy
-  signatureId: OrderBy
-  tenantId: OrderBy
-  validatedById: OrderBy
-}
-
 enum GrantUpdateColumn {
   amountAsked
   amountGiven
@@ -17747,8 +17747,8 @@ type Individual {
   createdFormSubmissionsAggregate(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): FormSubmissionAggregate!
   createdForms(distinctOn: [FormSelectColumn!], limit: Int, offset: Int, orderBy: [FormOrderBy!], where: FormBoolExp): [Form!]!
   createdFormsAggregate(distinctOn: [FormSelectColumn!], limit: Int, offset: Int, orderBy: [FormOrderBy!], where: FormBoolExp): FormAggregate!
-  createdGrantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  createdGrantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
+  createdGrantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  createdGrantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   createdGrants(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   createdGrantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   createdIndividuals(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): [Individual!]!
@@ -17832,8 +17832,8 @@ type Individual {
   threadContributorsAggregate(distinctOn: [ThreadContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadContributorsOrderBy!], where: ThreadContributorsBoolExp): ThreadContributorsAggregate!
   user: User
   userId: bigint
-  validatedGrantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  validatedGrantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
+  validatedGrantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  validatedGrantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   validatedGrants(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   validatedGrantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   validatorEventApprovalStep(distinctOn: [EventApprovalStepValidatorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepValidatorsOrderBy!], where: EventApprovalStepValidatorsBoolExp): [EventApprovalStepValidators!]!
@@ -17978,8 +17978,8 @@ input IndividualBoolExp {
   createdFormSubmissionsAggregate: FormSubmissionAggregateBoolExp
   createdForms: FormBoolExp
   createdFormsAggregate: FormAggregateBoolExp
-  createdGrantUnlocks: GrantUnlockBoolExp
-  createdGrantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  createdGrantAllocates: GrantAllocateBoolExp
+  createdGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
   createdGrants: GrantBoolExp
   createdGrantsAggregate: GrantAggregateBoolExp
   createdIndividuals: IndividualBoolExp
@@ -18063,8 +18063,8 @@ input IndividualBoolExp {
   threadContributorsAggregate: ThreadContributorsAggregateBoolExp
   user: UserBoolExp
   userId: BigintComparisonExp
-  validatedGrantUnlocks: GrantUnlockBoolExp
-  validatedGrantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  validatedGrantAllocates: GrantAllocateBoolExp
+  validatedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
   validatedGrants: GrantBoolExp
   validatedGrantsAggregate: GrantAggregateBoolExp
   validatorEventApprovalStep: EventApprovalStepValidatorsBoolExp
@@ -18124,7 +18124,7 @@ input IndividualInsertInput {
   createdFinances: FinanceArrRelInsertInput
   createdFormSubmissions: FormSubmissionArrRelInsertInput
   createdForms: FormArrRelInsertInput
-  createdGrantUnlocks: GrantUnlockArrRelInsertInput
+  createdGrantAllocates: GrantAllocateArrRelInsertInput
   createdGrants: GrantArrRelInsertInput
   createdIndividuals: IndividualArrRelInsertInput
   createdIssues: IssueArrRelInsertInput
@@ -18171,7 +18171,7 @@ input IndividualInsertInput {
   threadContributors: ThreadContributorsArrRelInsertInput
   user: UserObjRelInsertInput
   userId: bigint
-  validatedGrantUnlocks: GrantUnlockArrRelInsertInput
+  validatedGrantAllocates: GrantAllocateArrRelInsertInput
   validatedGrants: GrantArrRelInsertInput
   validatorEventApprovalStep: EventApprovalStepValidatorsArrRelInsertInput
 }
@@ -18287,7 +18287,7 @@ input IndividualOrderBy {
   createdFinancesAggregate: FinanceAggregateOrderBy
   createdFormSubmissionsAggregate: FormSubmissionAggregateOrderBy
   createdFormsAggregate: FormAggregateOrderBy
-  createdGrantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  createdGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   createdGrantsAggregate: GrantAggregateOrderBy
   createdIndividualsAggregate: IndividualAggregateOrderBy
   createdIssuesAggregate: IssueAggregateOrderBy
@@ -18334,7 +18334,7 @@ input IndividualOrderBy {
   threadContributorsAggregate: ThreadContributorsAggregateOrderBy
   user: UserOrderBy
   userId: OrderBy
-  validatedGrantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  validatedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   validatedGrantsAggregate: GrantAggregateOrderBy
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateOrderBy
 }
@@ -20970,13 +20970,13 @@ type Mutation {
   deleteFormSubmission(where: FormSubmissionBoolExp!): FormSubmissionMutationResponse
   deleteFormSubmissionByPk(id: bigint!): FormSubmission
   deleteGrant(where: GrantBoolExp!): GrantMutationResponse
+  deleteGrantAllocate(where: GrantAllocateBoolExp!): GrantAllocateMutationResponse
+  deleteGrantAllocateAttachments(where: GrantAllocateAttachmentsBoolExp!): GrantAllocateAttachmentsMutationResponse
+  deleteGrantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
+  deleteGrantAllocateByPk(id: bigint!): GrantAllocate
   deleteGrantAttachments(where: GrantAttachmentsBoolExp!): GrantAttachmentsMutationResponse
   deleteGrantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
   deleteGrantByPk(id: bigint!): Grant
-  deleteGrantUnlock(where: GrantUnlockBoolExp!): GrantUnlockMutationResponse
-  deleteGrantUnlockAttachments(where: GrantUnlockAttachmentsBoolExp!): GrantUnlockAttachmentsMutationResponse
-  deleteGrantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
-  deleteGrantUnlockByPk(id: bigint!): GrantUnlock
   deleteIndividual(where: IndividualBoolExp!): IndividualMutationResponse
   deleteIndividualByPk(id: bigint!): Individual
   deleteIssue(where: IssueBoolExp!): IssueMutationResponse
@@ -21126,13 +21126,13 @@ type Mutation {
   insertFormSubmission(objects: [FormSubmissionInsertInput!]!, onConflict: FormSubmissionOnConflict): FormSubmissionMutationResponse
   insertFormSubmissionOne(object: FormSubmissionInsertInput!, onConflict: FormSubmissionOnConflict): FormSubmission
   insertGrant(objects: [GrantInsertInput!]!, onConflict: GrantOnConflict): GrantMutationResponse
+  insertGrantAllocate(objects: [GrantAllocateInsertInput!]!, onConflict: GrantAllocateOnConflict): GrantAllocateMutationResponse
+  insertGrantAllocateAttachments(objects: [GrantAllocateAttachmentsInsertInput!]!, onConflict: GrantAllocateAttachmentsOnConflict): GrantAllocateAttachmentsMutationResponse
+  insertGrantAllocateAttachmentsOne(object: GrantAllocateAttachmentsInsertInput!, onConflict: GrantAllocateAttachmentsOnConflict): GrantAllocateAttachments
+  insertGrantAllocateOne(object: GrantAllocateInsertInput!, onConflict: GrantAllocateOnConflict): GrantAllocate
   insertGrantAttachments(objects: [GrantAttachmentsInsertInput!]!, onConflict: GrantAttachmentsOnConflict): GrantAttachmentsMutationResponse
   insertGrantAttachmentsOne(object: GrantAttachmentsInsertInput!, onConflict: GrantAttachmentsOnConflict): GrantAttachments
   insertGrantOne(object: GrantInsertInput!, onConflict: GrantOnConflict): Grant
-  insertGrantUnlock(objects: [GrantUnlockInsertInput!]!, onConflict: GrantUnlockOnConflict): GrantUnlockMutationResponse
-  insertGrantUnlockAttachments(objects: [GrantUnlockAttachmentsInsertInput!]!, onConflict: GrantUnlockAttachmentsOnConflict): GrantUnlockAttachmentsMutationResponse
-  insertGrantUnlockAttachmentsOne(object: GrantUnlockAttachmentsInsertInput!, onConflict: GrantUnlockAttachmentsOnConflict): GrantUnlockAttachments
-  insertGrantUnlockOne(object: GrantUnlockInsertInput!, onConflict: GrantUnlockOnConflict): GrantUnlock
   insertIndividual(objects: [IndividualInsertInput!]!, onConflict: IndividualOnConflict): IndividualMutationResponse
   insertIndividualOne(object: IndividualInsertInput!, onConflict: IndividualOnConflict): Individual
   insertIssue(objects: [IssueInsertInput!]!, onConflict: IssueOnConflict): IssueMutationResponse
@@ -21322,17 +21322,17 @@ type Mutation {
   updateFormSubmissionByPk(_append: FormSubmissionAppendInput, _deleteAtPath: FormSubmissionDeleteAtPathInput, _deleteElem: FormSubmissionDeleteElemInput, _deleteKey: FormSubmissionDeleteKeyInput, _inc: FormSubmissionIncInput, _prepend: FormSubmissionPrependInput, _set: FormSubmissionSetInput, pkColumns: FormSubmissionPkColumnsInput!): FormSubmission
   updateFormSubmissionMany(updates: [FormSubmissionUpdates!]!): [FormSubmissionMutationResponse]
   updateGrant(_inc: GrantIncInput, _set: GrantSetInput, where: GrantBoolExp!): GrantMutationResponse
+  updateGrantAllocate(_inc: GrantAllocateIncInput, _set: GrantAllocateSetInput, where: GrantAllocateBoolExp!): GrantAllocateMutationResponse
+  updateGrantAllocateAttachments(_inc: GrantAllocateAttachmentsIncInput, _set: GrantAllocateAttachmentsSetInput, where: GrantAllocateAttachmentsBoolExp!): GrantAllocateAttachmentsMutationResponse
+  updateGrantAllocateAttachmentsByPk(_inc: GrantAllocateAttachmentsIncInput, _set: GrantAllocateAttachmentsSetInput, pkColumns: GrantAllocateAttachmentsPkColumnsInput!): GrantAllocateAttachments
+  updateGrantAllocateAttachmentsMany(updates: [GrantAllocateAttachmentsUpdates!]!): [GrantAllocateAttachmentsMutationResponse]
+  updateGrantAllocateByPk(_inc: GrantAllocateIncInput, _set: GrantAllocateSetInput, pkColumns: GrantAllocatePkColumnsInput!): GrantAllocate
+  updateGrantAllocateMany(updates: [GrantAllocateUpdates!]!): [GrantAllocateMutationResponse]
   updateGrantAttachments(_inc: GrantAttachmentsIncInput, _set: GrantAttachmentsSetInput, where: GrantAttachmentsBoolExp!): GrantAttachmentsMutationResponse
   updateGrantAttachmentsByPk(_inc: GrantAttachmentsIncInput, _set: GrantAttachmentsSetInput, pkColumns: GrantAttachmentsPkColumnsInput!): GrantAttachments
   updateGrantAttachmentsMany(updates: [GrantAttachmentsUpdates!]!): [GrantAttachmentsMutationResponse]
   updateGrantByPk(_inc: GrantIncInput, _set: GrantSetInput, pkColumns: GrantPkColumnsInput!): Grant
   updateGrantMany(updates: [GrantUpdates!]!): [GrantMutationResponse]
-  updateGrantUnlock(_inc: GrantUnlockIncInput, _set: GrantUnlockSetInput, where: GrantUnlockBoolExp!): GrantUnlockMutationResponse
-  updateGrantUnlockAttachments(_inc: GrantUnlockAttachmentsIncInput, _set: GrantUnlockAttachmentsSetInput, where: GrantUnlockAttachmentsBoolExp!): GrantUnlockAttachmentsMutationResponse
-  updateGrantUnlockAttachmentsByPk(_inc: GrantUnlockAttachmentsIncInput, _set: GrantUnlockAttachmentsSetInput, pkColumns: GrantUnlockAttachmentsPkColumnsInput!): GrantUnlockAttachments
-  updateGrantUnlockAttachmentsMany(updates: [GrantUnlockAttachmentsUpdates!]!): [GrantUnlockAttachmentsMutationResponse]
-  updateGrantUnlockByPk(_inc: GrantUnlockIncInput, _set: GrantUnlockSetInput, pkColumns: GrantUnlockPkColumnsInput!): GrantUnlock
-  updateGrantUnlockMany(updates: [GrantUnlockUpdates!]!): [GrantUnlockMutationResponse]
   updateIndividual(_inc: IndividualIncInput, _set: IndividualSetInput, where: IndividualBoolExp!): IndividualMutationResponse
   updateIndividualByPk(_inc: IndividualIncInput, _set: IndividualSetInput, pkColumns: IndividualPkColumnsInput!): Individual
   updateIndividualMany(updates: [IndividualUpdates!]!): [IndividualMutationResponse]
@@ -23033,16 +23033,16 @@ type Query {
   formSubmissionByPk(id: bigint!): FormSubmission
   grant(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   grantAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
+  grantAllocate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocateAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
+  grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
+  grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
+  grantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
+  grantAllocateByPk(id: bigint!): GrantAllocate
   grantAttachments(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantAttachmentsAggregate(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): GrantAttachmentsAggregate!
   grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
   grantByPk(id: bigint!): Grant
-  grantUnlock(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlockAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
-  grantUnlockAttachments(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): [GrantUnlockAttachments!]!
-  grantUnlockAttachmentsAggregate(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): GrantUnlockAttachmentsAggregate!
-  grantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
-  grantUnlockByPk(id: bigint!): GrantUnlock
   individual(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): [Individual!]!
   individualAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
   individualByPk(id: bigint!): Individual
@@ -26423,20 +26423,20 @@ type Subscription {
   formSubmissionStream(batchSize: Int!, cursor: [FormSubmissionStreamCursorInput]!, where: FormSubmissionBoolExp): [FormSubmission!]!
   grant(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   grantAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
+  grantAllocate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocateAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
+  grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
+  grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
+  grantAllocateAttachmentsByPk(fileUploadId: bigint!, grantAllocateId: bigint!): GrantAllocateAttachments
+  grantAllocateAttachmentsStream(batchSize: Int!, cursor: [GrantAllocateAttachmentsStreamCursorInput]!, where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
+  grantAllocateByPk(id: bigint!): GrantAllocate
+  grantAllocateStream(batchSize: Int!, cursor: [GrantAllocateStreamCursorInput]!, where: GrantAllocateBoolExp): [GrantAllocate!]!
   grantAttachments(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantAttachmentsAggregate(distinctOn: [GrantAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAttachmentsOrderBy!], where: GrantAttachmentsBoolExp): GrantAttachmentsAggregate!
   grantAttachmentsByPk(fileUploadId: bigint!, grantId: bigint!): GrantAttachments
   grantAttachmentsStream(batchSize: Int!, cursor: [GrantAttachmentsStreamCursorInput]!, where: GrantAttachmentsBoolExp): [GrantAttachments!]!
   grantByPk(id: bigint!): Grant
   grantStream(batchSize: Int!, cursor: [GrantStreamCursorInput]!, where: GrantBoolExp): [Grant!]!
-  grantUnlock(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlockAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
-  grantUnlockAttachments(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): [GrantUnlockAttachments!]!
-  grantUnlockAttachmentsAggregate(distinctOn: [GrantUnlockAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockAttachmentsOrderBy!], where: GrantUnlockAttachmentsBoolExp): GrantUnlockAttachmentsAggregate!
-  grantUnlockAttachmentsByPk(fileUploadId: bigint!, grantUnlockId: bigint!): GrantUnlockAttachments
-  grantUnlockAttachmentsStream(batchSize: Int!, cursor: [GrantUnlockAttachmentsStreamCursorInput]!, where: GrantUnlockAttachmentsBoolExp): [GrantUnlockAttachments!]!
-  grantUnlockByPk(id: bigint!): GrantUnlock
-  grantUnlockStream(batchSize: Int!, cursor: [GrantUnlockStreamCursorInput]!, where: GrantUnlockBoolExp): [GrantUnlock!]!
   individual(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): [Individual!]!
   individualAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
   individualByPk(id: bigint!): Individual
@@ -29759,8 +29759,8 @@ type Tenant {
   formSubmissionsAggregate(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): FormSubmissionAggregate!
   forms(distinctOn: [FormSelectColumn!], limit: Int, offset: Int, orderBy: [FormOrderBy!], where: FormBoolExp): [Form!]!
   formsAggregate(distinctOn: [FormSelectColumn!], limit: Int, offset: Int, orderBy: [FormOrderBy!], where: FormBoolExp): FormAggregate!
-  grantUnlocks(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): [GrantUnlock!]!
-  grantUnlocksAggregate(distinctOn: [GrantUnlockSelectColumn!], limit: Int, offset: Int, orderBy: [GrantUnlockOrderBy!], where: GrantUnlockBoolExp): GrantUnlockAggregate!
+  grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
+  grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   grants(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   grantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   id: bigint!
@@ -29975,8 +29975,8 @@ input TenantBoolExp {
   formSubmissionsAggregate: FormSubmissionAggregateBoolExp
   forms: FormBoolExp
   formsAggregate: FormAggregateBoolExp
-  grantUnlocks: GrantUnlockBoolExp
-  grantUnlocksAggregate: GrantUnlockAggregateBoolExp
+  grantAllocates: GrantAllocateBoolExp
+  grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   grants: GrantBoolExp
   grantsAggregate: GrantAggregateBoolExp
   id: BigintComparisonExp
@@ -30092,7 +30092,7 @@ input TenantInsertInput {
   follows: FollowArrRelInsertInput
   formSubmissions: FormSubmissionArrRelInsertInput
   forms: FormArrRelInsertInput
-  grantUnlocks: GrantUnlockArrRelInsertInput
+  grantAllocates: GrantAllocateArrRelInsertInput
   grants: GrantArrRelInsertInput
   id: bigint
   individuals: IndividualArrRelInsertInput
@@ -30620,7 +30620,7 @@ input TenantOrderBy {
   followsAggregate: FollowAggregateOrderBy
   formSubmissionsAggregate: FormSubmissionAggregateOrderBy
   formsAggregate: FormAggregateOrderBy
-  grantUnlocksAggregate: GrantUnlockAggregateOrderBy
+  grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantsAggregate: GrantAggregateOrderBy
   id: OrderBy
   individualsAggregate: IndividualAggregateOrderBy

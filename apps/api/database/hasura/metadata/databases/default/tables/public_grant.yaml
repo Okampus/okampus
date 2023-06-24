@@ -21,19 +21,19 @@ object_relationships:
     using:
       foreign_key_constraint_on: validated_by_id
 array_relationships:
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: grant_id
+        table:
+          name: grant_allocate
+          schema: public
   - name: grantAttachments
     using:
       foreign_key_constraint_on:
         column: grant_id
         table:
           name: grant_attachments
-          schema: public
-  - name: grantUnlocks
-    using:
-      foreign_key_constraint_on:
-        column: grant_id
-        table:
-          name: grant_unlock
           schema: public
   - name: projects
     using:

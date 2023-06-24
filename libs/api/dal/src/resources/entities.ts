@@ -52,7 +52,7 @@ import { EventManage } from './event/event-manage/event-manage.entity';
 import { Issue } from './issue/issue.entity';
 import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 import { Grant } from './team/grant/grant.entity';
-import { GrantUnlock } from './team/grant-unlock/grant-unlock.entity';
+import { GrantAllocate } from './team/grant-allocate/grant-allocate.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
 import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
@@ -103,7 +103,7 @@ export const allEntities = [
   TeamMetric,
 
   Grant,
-  GrantUnlock,
+  GrantAllocate,
 
   Canteen,
   CanteenFood,
