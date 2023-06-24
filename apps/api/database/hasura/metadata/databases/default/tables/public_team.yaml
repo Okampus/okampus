@@ -111,6 +111,13 @@ array_relationships:
         table:
           name: role
           schema: public
+  - name: teamHistories
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: team_history
+          schema: public
   - name: teamJoins
     using:
       foreign_key_constraint_on:

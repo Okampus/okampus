@@ -23548,42 +23548,6 @@ type Individual {
   botId: bigint
 
   # An array relationship
-  completedSettledMissionJoins(
-    # distinct select on columns
-    distinctOn: [MissionJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [MissionJoinOrderBy!]
-
-    # filter the rows returned
-    where: MissionJoinBoolExp
-  ): [MissionJoin!]!
-
-  # An aggregate relationship
-  completedSettledMissionJoinsAggregate(
-    # distinct select on columns
-    distinctOn: [MissionJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [MissionJoinOrderBy!]
-
-    # filter the rows returned
-    where: MissionJoinBoolExp
-  ): MissionJoinAggregate!
-
-  # An array relationship
   contributorIssues(
     # distinct select on columns
     distinctOn: [IssueContributorsSelectColumn!]
@@ -25245,6 +25209,42 @@ type Individual {
   ): TagAggregate!
 
   # An array relationship
+  createdTeamHistories(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
+  # An aggregate relationship
+  createdTeamHistoriesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): TeamHistoryAggregate!
+
+  # An array relationship
   createdTeamJoins(
     # distinct select on columns
     distinctOn: [TeamJoinSelectColumn!]
@@ -25679,6 +25679,42 @@ type Individual {
     where: EventApprovalStepNotifieesBoolExp
   ): EventApprovalStepNotifieesAggregate!
   passwordHash: String
+
+  # An array relationship
+  pointsSettledMissionJoins(
+    # distinct select on columns
+    distinctOn: [MissionJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionJoinOrderBy!]
+
+    # filter the rows returned
+    where: MissionJoinBoolExp
+  ): [MissionJoin!]!
+
+  # An aggregate relationship
+  pointsSettledMissionJoinsAggregate(
+    # distinct select on columns
+    distinctOn: [MissionJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionJoinOrderBy!]
+
+    # filter the rows returned
+    where: MissionJoinBoolExp
+  ): MissionJoinAggregate!
 
   # An array relationship
   presenceSettledEventJoins(
@@ -26131,8 +26167,6 @@ input IndividualBoolExp {
   actor: ActorBoolExp
   bot: BotBoolExp
   botId: BigintComparisonExp
-  completedSettledMissionJoins: MissionJoinBoolExp
-  completedSettledMissionJoinsAggregate: MissionJoinAggregateBoolExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
   createdActions: ActionBoolExp
@@ -26228,6 +26262,8 @@ input IndividualBoolExp {
   createdSubjectsAggregate: SubjectAggregateBoolExp
   createdTags: TagBoolExp
   createdTagsAggregate: TagAggregateBoolExp
+  createdTeamHistories: TeamHistoryBoolExp
+  createdTeamHistoriesAggregate: TeamHistoryAggregateBoolExp
   createdTeamJoins: TeamJoinBoolExp
   createdTeamJoinsAggregate: TeamJoinAggregateBoolExp
   createdTeamMembers: TeamMemberBoolExp
@@ -26256,6 +26292,8 @@ input IndividualBoolExp {
   notifieeEventApprovalSteps: EventApprovalStepNotifieesBoolExp
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateBoolExp
   passwordHash: StringComparisonExp
+  pointsSettledMissionJoins: MissionJoinBoolExp
+  pointsSettledMissionJoinsAggregate: MissionJoinAggregateBoolExp
   presenceSettledEventJoins: EventJoinBoolExp
   presenceSettledEventJoinsAggregate: EventJoinAggregateBoolExp
   scopeRole: StringComparisonExp
@@ -26309,7 +26347,6 @@ input IndividualInsertInput {
   actor: ActorObjRelInsertInput
   bot: BotObjRelInsertInput
   botId: bigint
-  completedSettledMissionJoins: MissionJoinArrRelInsertInput
   contributorIssues: IssueContributorsArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
@@ -26359,6 +26396,7 @@ input IndividualInsertInput {
   createdSocials: SocialArrRelInsertInput
   createdSubjects: SubjectArrRelInsertInput
   createdTags: TagArrRelInsertInput
+  createdTeamHistories: TeamHistoryArrRelInsertInput
   createdTeamJoins: TeamJoinArrRelInsertInput
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
@@ -26375,6 +26413,7 @@ input IndividualInsertInput {
   id: bigint
   notifieeEventApprovalSteps: EventApprovalStepNotifieesArrRelInsertInput
   passwordHash: String
+  pointsSettledMissionJoins: MissionJoinArrRelInsertInput
   presenceSettledEventJoins: EventJoinArrRelInsertInput
   scopeRole: String
   settledActions: ActionArrRelInsertInput
@@ -26477,7 +26516,6 @@ input IndividualOrderBy {
   actor: ActorOrderBy
   bot: BotOrderBy
   botId: OrderBy
-  completedSettledMissionJoinsAggregate: MissionJoinAggregateOrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
@@ -26527,6 +26565,7 @@ input IndividualOrderBy {
   createdSocialsAggregate: SocialAggregateOrderBy
   createdSubjectsAggregate: SubjectAggregateOrderBy
   createdTagsAggregate: TagAggregateOrderBy
+  createdTeamHistoriesAggregate: TeamHistoryAggregateOrderBy
   createdTeamJoinsAggregate: TeamJoinAggregateOrderBy
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
@@ -26543,6 +26582,7 @@ input IndividualOrderBy {
   id: OrderBy
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateOrderBy
   passwordHash: OrderBy
+  pointsSettledMissionJoinsAggregate: MissionJoinAggregateOrderBy
   presenceSettledEventJoinsAggregate: EventJoinAggregateOrderBy
   scopeRole: OrderBy
   settledActionsAggregate: ActionAggregateOrderBy
@@ -28681,12 +28721,6 @@ input MissionInsertInput {
 
 # columns and relationships of "mission_join"
 type MissionJoin {
-  completed: Boolean
-  completedSettledAt: timestamptz
-
-  # An object relationship
-  completedSettledBy: Individual
-  completedSettledById: bigint
   createdAt: timestamptz!
 
   # An object relationship
@@ -28744,6 +28778,11 @@ type MissionJoin {
   mission: Mission!
   missionId: bigint!
   points: smallint
+  pointsSettledAt: timestamptz
+
+  # An object relationship
+  pointsSettledBy: Individual
+  pointsSettledById: bigint
 
   # An object relationship
   project: Project
@@ -28767,23 +28806,7 @@ type MissionJoinAggregate {
 }
 
 input MissionJoinAggregateBoolExp {
-  bool_and: missionJoinAggregateBoolExpBool_and
-  bool_or: missionJoinAggregateBoolExpBool_or
   count: missionJoinAggregateBoolExpCount
-}
-
-input missionJoinAggregateBoolExpBool_and {
-  arguments: MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: MissionJoinBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input missionJoinAggregateBoolExpBool_or {
-  arguments: MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: MissionJoinBoolExp
-  predicate: BooleanComparisonExp!
 }
 
 input missionJoinAggregateBoolExpCount {
@@ -28833,13 +28856,13 @@ input MissionJoinArrRelInsertInput {
 
 # aggregate avg on columns
 type MissionJoinAvgFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -28847,13 +28870,13 @@ type MissionJoinAvgFields {
 
 # order by avg() on columns of table "mission_join"
 input MissionJoinAvgOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -28864,10 +28887,6 @@ input MissionJoinBoolExp {
   _and: [MissionJoinBoolExp!]
   _not: MissionJoinBoolExp
   _or: [MissionJoinBoolExp!]
-  completed: BooleanComparisonExp
-  completedSettledAt: TimestamptzComparisonExp
-  completedSettledBy: IndividualBoolExp
-  completedSettledById: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -28883,6 +28902,9 @@ input MissionJoinBoolExp {
   mission: MissionBoolExp
   missionId: BigintComparisonExp
   points: SmallintComparisonExp
+  pointsSettledAt: TimestamptzComparisonExp
+  pointsSettledBy: IndividualBoolExp
+  pointsSettledById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
   settledAt: TimestamptzComparisonExp
@@ -28904,13 +28926,13 @@ enum MissionJoinConstraint {
 
 # input type for incrementing numeric columns in table "mission_join"
 input MissionJoinIncInput {
-  completedSettledById: bigint
   createdById: bigint
   eventJoinId: bigint
   id: bigint
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledById: bigint
   projectId: bigint
   settledById: bigint
   tenantId: bigint
@@ -28918,10 +28940,6 @@ input MissionJoinIncInput {
 
 # input type for inserting data into table "mission_join"
 input MissionJoinInsertInput {
-  completed: Boolean
-  completedSettledAt: timestamptz
-  completedSettledBy: IndividualObjRelInsertInput
-  completedSettledById: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -28936,6 +28954,9 @@ input MissionJoinInsertInput {
   mission: MissionObjRelInsertInput
   missionId: bigint
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledBy: IndividualObjRelInsertInput
+  pointsSettledById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
   settledAt: timestamptz
@@ -28948,8 +28969,6 @@ input MissionJoinInsertInput {
 
 # aggregate max on columns
 type MissionJoinMaxFields {
-  completedSettledAt: timestamptz
-  completedSettledById: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -28959,6 +28978,8 @@ type MissionJoinMaxFields {
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
@@ -28968,8 +28989,6 @@ type MissionJoinMaxFields {
 
 # order by max() on columns of table "mission_join"
 input MissionJoinMaxOrderBy {
-  completedSettledAt: OrderBy
-  completedSettledById: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -28979,6 +28998,8 @@ input MissionJoinMaxOrderBy {
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledAt: OrderBy
   settledById: OrderBy
@@ -28988,8 +29009,6 @@ input MissionJoinMaxOrderBy {
 
 # aggregate min on columns
 type MissionJoinMinFields {
-  completedSettledAt: timestamptz
-  completedSettledById: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -28999,6 +29018,8 @@ type MissionJoinMinFields {
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
@@ -29008,8 +29029,6 @@ type MissionJoinMinFields {
 
 # order by min() on columns of table "mission_join"
 input MissionJoinMinOrderBy {
-  completedSettledAt: OrderBy
-  completedSettledById: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -29019,6 +29038,8 @@ input MissionJoinMinOrderBy {
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledAt: OrderBy
   settledById: OrderBy
@@ -29052,10 +29073,6 @@ input MissionJoinOnConflict {
 
 # Ordering options when selecting data from "mission_join".
 input MissionJoinOrderBy {
-  completed: OrderBy
-  completedSettledAt: OrderBy
-  completedSettledBy: IndividualOrderBy
-  completedSettledById: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -29070,6 +29087,9 @@ input MissionJoinOrderBy {
   mission: MissionOrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledAt: OrderBy
+  pointsSettledBy: IndividualOrderBy
+  pointsSettledById: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
   settledAt: OrderBy
@@ -29088,15 +29108,6 @@ input MissionJoinPkColumnsInput {
 # select columns of table "mission_join"
 enum MissionJoinSelectColumn {
   # column name
-  completed
-
-  # column name
-  completedSettledAt
-
-  # column name
-  completedSettledById
-
-  # column name
   createdAt
 
   # column name
@@ -29122,6 +29133,12 @@ enum MissionJoinSelectColumn {
 
   # column name
   points
+
+  # column name
+  pointsSettledAt
+
+  # column name
+  pointsSettledById
 
   # column name
   projectId
@@ -29139,23 +29156,8 @@ enum MissionJoinSelectColumn {
   tenantId
 }
 
-# select "missionJoinAggregateBoolExpBool_andArgumentsColumns" columns of table "mission_join"
-enum MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_andArgumentsColumns {
-  # column name
-  completed
-}
-
-# select "missionJoinAggregateBoolExpBool_orArgumentsColumns" columns of table "mission_join"
-enum MissionJoinSelectColumnMissionJoinAggregateBoolExpBool_orArgumentsColumns {
-  # column name
-  completed
-}
-
 # input type for updating data in table "mission_join"
 input MissionJoinSetInput {
-  completed: Boolean
-  completedSettledAt: timestamptz
-  completedSettledById: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -29165,6 +29167,8 @@ input MissionJoinSetInput {
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
@@ -29174,13 +29178,13 @@ input MissionJoinSetInput {
 
 # aggregate stddev on columns
 type MissionJoinStddevFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29188,13 +29192,13 @@ type MissionJoinStddevFields {
 
 # order by stddev() on columns of table "mission_join"
 input MissionJoinStddevOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29202,13 +29206,13 @@ input MissionJoinStddevOrderBy {
 
 # aggregate stddevPop on columns
 type MissionJoinStddevPopFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29216,13 +29220,13 @@ type MissionJoinStddevPopFields {
 
 # order by stddevPop() on columns of table "mission_join"
 input MissionJoinStddevPopOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29230,13 +29234,13 @@ input MissionJoinStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type MissionJoinStddevSampFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29244,13 +29248,13 @@ type MissionJoinStddevSampFields {
 
 # order by stddevSamp() on columns of table "mission_join"
 input MissionJoinStddevSampOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29267,9 +29271,6 @@ input MissionJoinStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input MissionJoinStreamCursorValueInput {
-  completed: Boolean
-  completedSettledAt: timestamptz
-  completedSettledById: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -29279,6 +29280,8 @@ input MissionJoinStreamCursorValueInput {
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledAt: timestamptz
+  pointsSettledById: bigint
   projectId: bigint
   settledAt: timestamptz
   settledById: bigint
@@ -29288,13 +29291,13 @@ input MissionJoinStreamCursorValueInput {
 
 # aggregate sum on columns
 type MissionJoinSumFields {
-  completedSettledById: bigint
   createdById: bigint
   eventJoinId: bigint
   id: bigint
   joinerId: bigint
   missionId: bigint
   points: smallint
+  pointsSettledById: bigint
   projectId: bigint
   settledById: bigint
   tenantId: bigint
@@ -29302,13 +29305,13 @@ type MissionJoinSumFields {
 
 # order by sum() on columns of table "mission_join"
 input MissionJoinSumOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29316,15 +29319,6 @@ input MissionJoinSumOrderBy {
 
 # update columns of table "mission_join"
 enum MissionJoinUpdateColumn {
-  # column name
-  completed
-
-  # column name
-  completedSettledAt
-
-  # column name
-  completedSettledById
-
   # column name
   createdAt
 
@@ -29351,6 +29345,12 @@ enum MissionJoinUpdateColumn {
 
   # column name
   points
+
+  # column name
+  pointsSettledAt
+
+  # column name
+  pointsSettledById
 
   # column name
   projectId
@@ -29381,13 +29381,13 @@ input MissionJoinUpdates {
 
 # aggregate variance on columns
 type MissionJoinVarianceFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29395,13 +29395,13 @@ type MissionJoinVarianceFields {
 
 # order by variance() on columns of table "mission_join"
 input MissionJoinVarianceOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29409,13 +29409,13 @@ input MissionJoinVarianceOrderBy {
 
 # aggregate varPop on columns
 type MissionJoinVarPopFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29423,13 +29423,13 @@ type MissionJoinVarPopFields {
 
 # order by varPop() on columns of table "mission_join"
 input MissionJoinVarPopOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -29437,13 +29437,13 @@ input MissionJoinVarPopOrderBy {
 
 # aggregate varSamp on columns
 type MissionJoinVarSampFields {
-  completedSettledById: Float
   createdById: Float
   eventJoinId: Float
   id: Float
   joinerId: Float
   missionId: Float
   points: Float
+  pointsSettledById: Float
   projectId: Float
   settledById: Float
   tenantId: Float
@@ -29451,13 +29451,13 @@ type MissionJoinVarSampFields {
 
 # order by varSamp() on columns of table "mission_join"
 input MissionJoinVarSampOrderBy {
-  completedSettledById: OrderBy
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
   joinerId: OrderBy
   missionId: OrderBy
   points: OrderBy
+  pointsSettledById: OrderBy
   projectId: OrderBy
   settledById: OrderBy
   tenantId: OrderBy
@@ -30533,6 +30533,15 @@ type Mutation {
 
   # delete single row from the table: "team"
   deleteTeamByPk(id: bigint!): Team
+
+  # delete data from the table: "team_history"
+  deleteTeamHistory(
+    # filter the rows which have to be deleted
+    where: TeamHistoryBoolExp!
+  ): TeamHistoryMutationResponse
+
+  # delete single row from the table: "team_history"
+  deleteTeamHistoryByPk(id: bigint!): TeamHistory
 
   # delete data from the table: "team_join"
   deleteTeamJoin(
@@ -31766,6 +31775,24 @@ type Mutation {
     # upsert condition
     onConflict: TeamOnConflict
   ): TeamMutationResponse
+
+  # insert data into the table: "team_history"
+  insertTeamHistory(
+    # the rows to be inserted
+    objects: [TeamHistoryInsertInput!]!
+
+    # upsert condition
+    onConflict: TeamHistoryOnConflict
+  ): TeamHistoryMutationResponse
+
+  # insert a single row into the table: "team_history"
+  insertTeamHistoryOne(
+    # the row to be inserted
+    object: TeamHistoryInsertInput!
+
+    # upsert condition
+    onConflict: TeamHistoryOnConflict
+  ): TeamHistory
 
   # insert data into the table: "team_join"
   insertTeamJoin(
@@ -33877,6 +33904,34 @@ type Mutation {
     _set: TeamSetInput
     pkColumns: TeamPkColumnsInput!
   ): Team
+
+  # update data of the table: "team_history"
+  updateTeamHistory(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TeamHistoryIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TeamHistorySetInput
+
+    # filter the rows which have to be updated
+    where: TeamHistoryBoolExp!
+  ): TeamHistoryMutationResponse
+
+  # update single row of the table: "team_history"
+  updateTeamHistoryByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TeamHistoryIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TeamHistorySetInput
+    pkColumns: TeamHistoryPkColumnsInput!
+  ): TeamHistory
+
+  # update multiples rows of table: "team_history"
+  updateTeamHistoryMany(
+    # updates to execute, in order
+    updates: [TeamHistoryUpdates!]!
+  ): [TeamHistoryMutationResponse]
 
   # update data of the table: "team_join"
   updateTeamJoin(
@@ -38799,6 +38854,45 @@ type Query {
 
   # fetch data from the table: "team" using primary key columns
   teamByPk(id: bigint!): Team
+
+  # fetch data from the table: "team_history"
+  teamHistory(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
+  # fetch aggregated fields from the table: "team_history"
+  teamHistoryAggregate(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): TeamHistoryAggregate!
+
+  # fetch data from the table: "team_history" using primary key columns
+  teamHistoryByPk(id: bigint!): TeamHistory
 
   # fetch data from the table: "team_join"
   teamJoin(
@@ -46608,6 +46702,57 @@ type Subscription {
   # fetch data from the table: "team" using primary key columns
   teamByPk(id: bigint!): Team
 
+  # fetch data from the table: "team_history"
+  teamHistory(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
+  # fetch aggregated fields from the table: "team_history"
+  teamHistoryAggregate(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): TeamHistoryAggregate!
+
+  # fetch data from the table: "team_history" using primary key columns
+  teamHistoryByPk(id: bigint!): TeamHistory
+
+  # fetch data from the table in a streaming manner: "team_history"
+  teamHistoryStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [TeamHistoryStreamCursorInput]!
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
   # fetch data from the table: "team_join"
   teamJoin(
     # distinct select on columns
@@ -48185,8 +48330,10 @@ type Team {
   ): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  isJoinFormActive: Boolean!
   managersCategoryName: String!
   membersCategoryName: String!
+  membershipDuration: String!
   membershipFees: Float!
 
   # An array relationship
@@ -48339,6 +48486,42 @@ type Team {
 
   # An object relationship
   team: Team
+
+  # An array relationship
+  teamHistories(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
+  # An aggregate relationship
+  teamHistoriesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): TeamHistoryAggregate!
 
   # An array relationship
   teamJoins(
@@ -48502,7 +48685,23 @@ type TeamAggregate {
 }
 
 input TeamAggregateBoolExp {
+  bool_and: teamAggregateBoolExpBool_and
+  bool_or: teamAggregateBoolExpBool_or
   count: teamAggregateBoolExpCount
+}
+
+input teamAggregateBoolExpBool_and {
+  arguments: TeamSelectColumnTeamAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: TeamBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input teamAggregateBoolExpBool_or {
+  arguments: TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: TeamBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input teamAggregateBoolExpCount {
@@ -48620,8 +48819,10 @@ input TeamBoolExp {
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isJoinFormActive: BooleanComparisonExp
   managersCategoryName: StringComparisonExp
   membersCategoryName: StringComparisonExp
+  membershipDuration: StringComparisonExp
   membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
@@ -48636,6 +48837,8 @@ input TeamBoolExp {
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
   team: TeamBoolExp
+  teamHistories: TeamHistoryBoolExp
+  teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -48665,6 +48868,471 @@ enum TeamConstraint {
 
   # unique or primary key constraint on columns "id"
   team_pkey
+}
+
+# columns and relationships of "team_history"
+type TeamHistory {
+  approximateDate: String!
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz!
+  eventType: String!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+# aggregated selection of "team_history"
+type TeamHistoryAggregate {
+  aggregate: TeamHistoryAggregateFields
+  nodes: [TeamHistory!]!
+}
+
+input TeamHistoryAggregateBoolExp {
+  count: teamHistoryAggregateBoolExpCount
+}
+
+input teamHistoryAggregateBoolExpCount {
+  arguments: [TeamHistorySelectColumn!]
+  distinct: Boolean
+  filter: TeamHistoryBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "team_history"
+type TeamHistoryAggregateFields {
+  avg: TeamHistoryAvgFields
+  count(columns: [TeamHistorySelectColumn!], distinct: Boolean): Int!
+  max: TeamHistoryMaxFields
+  min: TeamHistoryMinFields
+  stddev: TeamHistoryStddevFields
+  stddevPop: TeamHistoryStddevPopFields
+  stddevSamp: TeamHistoryStddevSampFields
+  sum: TeamHistorySumFields
+  varPop: TeamHistoryVarPopFields
+  varSamp: TeamHistoryVarSampFields
+  variance: TeamHistoryVarianceFields
+}
+
+# order by aggregate values of table "team_history"
+input TeamHistoryAggregateOrderBy {
+  avg: TeamHistoryAvgOrderBy
+  count: OrderBy
+  max: TeamHistoryMaxOrderBy
+  min: TeamHistoryMinOrderBy
+  stddev: TeamHistoryStddevOrderBy
+  stddevPop: TeamHistoryStddevPopOrderBy
+  stddevSamp: TeamHistoryStddevSampOrderBy
+  sum: TeamHistorySumOrderBy
+  varPop: TeamHistoryVarPopOrderBy
+  varSamp: TeamHistoryVarSampOrderBy
+  variance: TeamHistoryVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "team_history"
+input TeamHistoryArrRelInsertInput {
+  data: [TeamHistoryInsertInput!]!
+
+  # upsert condition
+  onConflict: TeamHistoryOnConflict
+}
+
+# aggregate avg on columns
+type TeamHistoryAvgFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "team_history"
+input TeamHistoryAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "team_history". All fields are combined with a logical 'AND'.
+input TeamHistoryBoolExp {
+  _and: [TeamHistoryBoolExp!]
+  _not: TeamHistoryBoolExp
+  _or: [TeamHistoryBoolExp!]
+  approximateDate: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  eventDate: TimestamptzComparisonExp
+  eventType: StringComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "team_history"
+enum TeamHistoryConstraint {
+  # unique or primary key constraint on columns "id"
+  team_history_pkey
+}
+
+# input type for incrementing numeric columns in table "team_history"
+input TeamHistoryIncInput {
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "team_history"
+input TeamHistoryInsertInput {
+  approximateDate: String
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz
+  eventType: String
+  hiddenAt: timestamptz
+  id: bigint
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+# aggregate max on columns
+type TeamHistoryMaxFields {
+  approximateDate: String
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz
+  eventType: String
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by max() on columns of table "team_history"
+input TeamHistoryMaxOrderBy {
+  approximateDate: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventDate: OrderBy
+  eventType: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type TeamHistoryMinFields {
+  approximateDate: String
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz
+  eventType: String
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by min() on columns of table "team_history"
+input TeamHistoryMinOrderBy {
+  approximateDate: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventDate: OrderBy
+  eventType: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "team_history"
+type TeamHistoryMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [TeamHistory!]!
+}
+
+# on_conflict condition type for table "team_history"
+input TeamHistoryOnConflict {
+  constraint: TeamHistoryConstraint!
+  updateColumns: [TeamHistoryUpdateColumn!]! = []
+  where: TeamHistoryBoolExp
+}
+
+# Ordering options when selecting data from "team_history".
+input TeamHistoryOrderBy {
+  approximateDate: OrderBy
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventDate: OrderBy
+  eventType: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# primary key columns input for table: team_history
+input TeamHistoryPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "team_history"
+enum TeamHistorySelectColumn {
+  # column name
+  approximateDate
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  eventDate
+
+  # column name
+  eventType
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "team_history"
+input TeamHistorySetInput {
+  approximateDate: String
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz
+  eventType: String
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type TeamHistoryStddevFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "team_history"
+input TeamHistoryStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type TeamHistoryStddevPopFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "team_history"
+input TeamHistoryStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type TeamHistoryStddevSampFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "team_history"
+input TeamHistoryStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "team_history"
+input TeamHistoryStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: TeamHistoryStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input TeamHistoryStreamCursorValueInput {
+  approximateDate: String
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventDate: timestamptz
+  eventType: String
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type TeamHistorySumFields {
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "team_history"
+input TeamHistorySumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "team_history"
+enum TeamHistoryUpdateColumn {
+  # column name
+  approximateDate
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  eventDate
+
+  # column name
+  eventType
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+input TeamHistoryUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: TeamHistoryIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: TeamHistorySetInput
+
+  # filter the rows which have to be updated
+  where: TeamHistoryBoolExp!
+}
+
+# aggregate variance on columns
+type TeamHistoryVarianceFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "team_history"
+input TeamHistoryVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type TeamHistoryVarPopFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "team_history"
+input TeamHistoryVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type TeamHistoryVarSampFields {
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "team_history"
+input TeamHistoryVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 # input type for incrementing numeric columns in table "team"
@@ -48710,8 +49378,10 @@ input TeamInsertInput {
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  isJoinFormActive: Boolean
   managersCategoryName: String
   membersCategoryName: String
+  membershipDuration: String
   membershipFees: Float
   missions: MissionArrRelInsertInput
   originalCreationDay: smallint
@@ -48722,6 +49392,7 @@ input TeamInsertInput {
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
   team: TeamObjRelInsertInput
+  teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -49430,6 +50101,7 @@ type TeamMaxFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
+  membershipDuration: String
   membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -49455,6 +50127,7 @@ input TeamMaxOrderBy {
   id: OrderBy
   managersCategoryName: OrderBy
   membersCategoryName: OrderBy
+  membershipDuration: OrderBy
   membershipFees: OrderBy
   originalCreationDay: OrderBy
   originalCreationMonth: OrderBy
@@ -50796,6 +51469,7 @@ type TeamMinFields {
   id: bigint
   managersCategoryName: String
   membersCategoryName: String
+  membershipDuration: String
   membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -50821,6 +51495,7 @@ input TeamMinOrderBy {
   id: OrderBy
   managersCategoryName: OrderBy
   membersCategoryName: OrderBy
+  membershipDuration: OrderBy
   membershipFees: OrderBy
   originalCreationDay: OrderBy
   originalCreationMonth: OrderBy
@@ -50881,8 +51556,10 @@ input TeamOrderBy {
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isJoinFormActive: OrderBy
   managersCategoryName: OrderBy
   membersCategoryName: OrderBy
+  membershipDuration: OrderBy
   membershipFees: OrderBy
   missionsAggregate: MissionAggregateOrderBy
   originalCreationDay: OrderBy
@@ -50893,6 +51570,7 @@ input TeamOrderBy {
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
   team: TeamOrderBy
+  teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
@@ -50943,10 +51621,16 @@ enum TeamSelectColumn {
   id
 
   # column name
+  isJoinFormActive
+
+  # column name
   managersCategoryName
 
   # column name
   membersCategoryName
+
+  # column name
+  membershipDuration
 
   # column name
   membershipFees
@@ -50976,6 +51660,18 @@ enum TeamSelectColumn {
   videoId
 }
 
+# select "teamAggregateBoolExpBool_andArgumentsColumns" columns of table "team"
+enum TeamSelectColumnTeamAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  isJoinFormActive
+}
+
+# select "teamAggregateBoolExpBool_orArgumentsColumns" columns of table "team"
+enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  isJoinFormActive
+}
+
 # input type for updating data in table "team"
 input TeamSetInput {
   canteenId: bigint
@@ -50988,8 +51684,10 @@ input TeamSetInput {
   directorsCategoryName: String
   hiddenAt: timestamptz
   id: bigint
+  isJoinFormActive: Boolean
   managersCategoryName: String
   membersCategoryName: String
+  membershipDuration: String
   membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -51130,8 +51828,10 @@ input TeamStreamCursorValueInput {
   directorsCategoryName: String
   hiddenAt: timestamptz
   id: bigint
+  isJoinFormActive: Boolean
   managersCategoryName: String
   membersCategoryName: String
+  membershipDuration: String
   membershipFees: Float
   originalCreationDay: smallint
   originalCreationMonth: smallint
@@ -51212,10 +51912,16 @@ enum TeamUpdateColumn {
   id
 
   # column name
+  isJoinFormActive
+
+  # column name
   managersCategoryName
 
   # column name
   membersCategoryName
+
+  # column name
+  membershipDuration
 
   # column name
   membershipFees
@@ -53044,6 +53750,42 @@ type Tenant {
   ): TagAggregate!
 
   # An array relationship
+  teamHistories(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): [TeamHistory!]!
+
+  # An aggregate relationship
+  teamHistoriesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamHistorySelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamHistoryOrderBy!]
+
+    # filter the rows returned
+    where: TeamHistoryBoolExp
+  ): TeamHistoryAggregate!
+
+  # An array relationship
   teamJoins(
     # distinct select on columns
     distinctOn: [TeamJoinSelectColumn!]
@@ -53567,6 +54309,8 @@ input TenantBoolExp {
   subjectsAggregate: SubjectAggregateBoolExp
   tags: TagBoolExp
   tagsAggregate: TagAggregateBoolExp
+  teamHistories: TeamHistoryBoolExp
+  teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -53671,6 +54415,7 @@ input TenantInsertInput {
   socials: SocialArrRelInsertInput
   subjects: SubjectArrRelInsertInput
   tags: TagArrRelInsertInput
+  teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
@@ -54298,6 +55043,7 @@ input TenantOrderBy {
   socialsAggregate: SocialAggregateOrderBy
   subjectsAggregate: SubjectAggregateOrderBy
   tagsAggregate: TagAggregateOrderBy
+  teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy

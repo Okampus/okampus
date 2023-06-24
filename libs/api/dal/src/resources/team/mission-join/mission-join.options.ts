@@ -10,8 +10,8 @@ export type MissionJoinOptions = TenantScopedOptions &
   MissionJoinProps & {
     settledBy?: Individual | null;
     settledAt?: Date | null;
-    completedSettledBy?: Date | null;
-    completedSettledAt?: Date | null;
+    pointsSettledBy?: Individual | null;
+    pointsSettledAt?: Date | null;
     mission: Mission;
     joiner: User;
     eventJoin?: EventJoin | null;

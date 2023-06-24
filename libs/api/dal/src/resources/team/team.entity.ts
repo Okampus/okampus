@@ -17,6 +17,7 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
+import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantManage } from '../tenant/tenant-manage/tenant-manage.entity';
 
 import type { TeamOptions } from './team.options';
@@ -59,6 +60,10 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Property({ type: 'float', default: 0 })
   membershipFees = 0;
 
+  // ISO 8601 duration format (PnYnMnDTnHnMnS) / '' if forever
+  @Property({ type: 'text', default: '' })
+  membershipDuration = '';
+
   @Property({ type: 'float', default: 0 })
   currentFinance = 0;
 
@@ -70,6 +75,12 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @Property({ type: 'text', default: RoleCategory.Members })
   membersCategoryName: string = RoleCategory.Members;
+
+  @Property({ type: 'boolean', default: true })
+  isJoinFormActive = true;
+
+  @OneToOne({ type: 'Form', mappedBy: 'team' })
+  joinForm: Form;
 
   @OneToOne({ type: 'Actor', mappedBy: 'team' })
   actor!: Actor;
@@ -86,18 +97,19 @@ export class Team extends TenantScopedEntity implements Searchable {
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
-  @OneToOne({ type: 'Form', mappedBy: 'team' })
-  joinForm: Form;
-
-  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
-  @TransformCollection()
-  eventManages = new Collection<EventManage>(this);
-
   @ManyToOne({ type: 'Team', nullable: true, default: null, cascade: [Cascade.ALL] })
   parent: Team | null = null;
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   video: FileUpload | null = null;
+
+  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
+  @TransformCollection()
+  eventManages = new Collection<EventManage>(this);
+
+  @OneToMany({ type: 'TeamHistory', mappedBy: 'team' })
+  @TransformCollection()
+  history = new Collection<TeamHistory>(this);
 
   @OneToMany({ type: 'Team', mappedBy: 'parent' })
   @TransformCollection()

@@ -55,6 +55,7 @@ import { Grant } from './team/grant/grant.entity';
 import { GrantUnlock } from './team/grant-unlock/grant-unlock.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
 import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
+import { TeamHistory } from './team/team-history/team-history.entity';
 
 export const allEntities = [
   Log,
@@ -81,6 +82,7 @@ export const allEntities = [
   Shortcut,
 
   Team,
+  TeamHistory,
   Action,
   Mission,
   MissionJoin,

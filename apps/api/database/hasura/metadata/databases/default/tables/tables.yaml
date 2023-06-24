@@ -61,6 +61,7 @@
 - "!include public_subject_class_groups.yaml"
 - "!include public_tag.yaml"
 - "!include public_team.yaml"
+- "!include public_team_history.yaml"
 - "!include public_team_join.yaml"
 - "!include public_team_member.yaml"
 - "!include public_team_member_roles.yaml"

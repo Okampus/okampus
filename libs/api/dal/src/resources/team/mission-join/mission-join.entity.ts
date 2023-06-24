@@ -14,14 +14,11 @@ import type { Mission } from '../mission/mission.entity';
 export class MissionJoin extends TenantScopedEntity {
   [EntityRepositoryType]!: MissionJoinRepository;
 
-  @Property({ type: 'smallint', nullable: true, default: null })
-  points: number | null = null;
-
   @Enum({ items: () => ApprovalState, type: EnumType, default: ApprovalState.Pending })
   state = ApprovalState.Pending;
 
-  @Property({ type: 'boolean', nullable: true, default: null })
-  completed: boolean | null = null;
+  @Property({ type: 'smallint', nullable: true, default: null })
+  points: number | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   settledBy: Individual | null = null;
@@ -30,10 +27,10 @@ export class MissionJoin extends TenantScopedEntity {
   settledAt: Date | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  completedSettledBy: Individual | null = null;
+  pointsSettledBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  completedSettledAt: Date | null = null;
+  pointsSettledAt: Date | null = null;
 
   @ManyToOne({ type: 'Mission' })
   mission!: Mission;

@@ -2,9 +2,6 @@ table:
   name: mission_join
   schema: public
 object_relationships:
-  - name: completedSettledBy
-    using:
-      foreign_key_constraint_on: completed_settled_by_id
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -17,6 +14,9 @@ object_relationships:
   - name: mission
     using:
       foreign_key_constraint_on: mission_id
+  - name: pointsSettledBy
+    using:
+      foreign_key_constraint_on: points_settled_by_id
   - name: project
     using:
       foreign_key_constraint_on: project_id

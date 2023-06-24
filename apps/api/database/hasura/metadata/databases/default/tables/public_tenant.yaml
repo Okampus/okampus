@@ -331,6 +331,13 @@ array_relationships:
         table:
           name: tag
           schema: public
+  - name: teamHistories
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_history
+          schema: public
   - name: teamJoins
     using:
       foreign_key_constraint_on:

@@ -22,13 +22,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: user_id
 array_relationships:
-  - name: completedSettledMissionJoins
-    using:
-      foreign_key_constraint_on:
-        column: completed_settled_by_id
-        table:
-          name: mission_join
-          schema: public
   - name: contributorIssues
     using:
       foreign_key_constraint_on:
@@ -351,6 +344,13 @@ array_relationships:
         table:
           name: tag
           schema: public
+  - name: createdTeamHistories
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_history
+          schema: public
   - name: createdTeamJoins
     using:
       foreign_key_constraint_on:
@@ -434,6 +434,13 @@ array_relationships:
         column: individual_id
         table:
           name: event_approval_step_notifiees
+          schema: public
+  - name: pointsSettledMissionJoins
+    using:
+      foreign_key_constraint_on:
+        column: points_settled_by_id
+        table:
+          name: mission_join
           schema: public
   - name: presenceSettledEventJoins
     using:

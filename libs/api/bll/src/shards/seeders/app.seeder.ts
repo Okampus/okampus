@@ -29,6 +29,7 @@ import {
   MissionJoin,
   CampusCluster,
   TenantManage,
+  TeamHistory,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -45,6 +46,8 @@ import {
   PoleCategory,
   SettledVia,
   ActorImageType,
+  TeamHistoryEventType,
+  ApproximateDate,
 } from '@okampus/shared/enums';
 import {
   pickOneFromArray,
@@ -214,6 +217,9 @@ type TeamData = {
   slug?: string;
   avatar?: Buffer | null;
   parent?: string;
+  originalCreationDay?: number;
+  originalCreationMonth?: number;
+  originalCreationYear?: number;
 };
 function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
   return Array.from({ length: seedingConfig.N_TEAMS }).map(() => {
@@ -246,16 +252,35 @@ async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<Tea
       const slug = typeof team.slug === 'string' && team.slug.length > 0 ? team.slug : toSlug(team.name);
       const avatar = await readFile(`${seederFolder}/custom/avatars/${team.name}.webp`);
 
+      const originalCreationDay = team.originalCreationDay;
+      const originalCreationMonth = team.originalCreationMonth;
+      const originalCreationYear = team.originalCreationYear;
+
       const categorySlugs = team.categories && Array.isArray(team.categories) ? team.categories : [];
       const tags = categorySlugs.map((slug) => categories.find((category) => category.slug === slug)).filter(Boolean);
       const status = team.status ?? '';
       const website = team.website ?? '';
       const bio = team.bio ?? '';
-      const email = team.email ?? `${slug}@${tenant.domain}.fr`;
+      const email = team.email;
       const socials = team.socials ?? [];
       const type = team.parent ? TeamType.Club : TeamType.Association;
 
-      return { name: team.name, email, avatar, bio, tags, slug, status, website, parent: team.parent, socials, type };
+      return {
+        name: team.name,
+        email,
+        avatar,
+        bio,
+        tags,
+        slug,
+        status,
+        website,
+        parent: team.parent,
+        socials,
+        type,
+        originalCreationDay,
+        originalCreationMonth,
+        originalCreationYear,
+      };
     })
   );
 }
@@ -371,6 +396,37 @@ export class DatabaseSeeder extends Seeder {
           parent: null,
           ...scopedOptions,
         });
+
+        if (teamData.originalCreationYear) {
+          const originalCreationDate = new Date(
+            teamData.originalCreationYear,
+            teamData.originalCreationMonth || 0,
+            teamData.originalCreationDay || 0
+          );
+          const approximateDate = teamData.originalCreationDay
+            ? ApproximateDate.Day
+            : teamData.originalCreationMonth
+            ? ApproximateDate.Month
+            : ApproximateDate.Year;
+
+          const creation = new TeamHistory({
+            team,
+            tenant,
+            eventType: TeamHistoryEventType.Start,
+            approximateDate,
+            eventDate: originalCreationDate,
+            createdBy: null,
+          });
+
+          team.history.add(creation);
+        }
+
+        const eventType = TeamHistoryEventType.OkampusStart;
+        const approximateDate = ApproximateDate.Exact;
+        team.history.add(
+          new TeamHistory({ team, tenant, eventType, approximateDate, eventDate: createdAt, createdBy: null })
+        );
+
         team.actor.socials.add(
           teamData.socials.map((social, i) => {
             const teamSocial = new Social({ actor: team.actor, order: i, ...social, ...scopedOptions });
@@ -472,14 +528,9 @@ export class DatabaseSeeder extends Seeder {
       for (const member of teamMembers) {
         const user = member.user;
         if (user) {
+          const createdBy = member.user.individual;
           user.shortcuts.add(
-            new Shortcut({
-              type: ShortcutType.Team,
-              targetActor: team.actor,
-              user,
-              createdBy: member.user.individual,
-              tenant,
-            })
+            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user, createdBy, tenant })
           );
         }
       }
@@ -691,6 +742,8 @@ export class DatabaseSeeder extends Seeder {
                         ? ApprovalState.Approved
                         : Math.random() > 0.5
                         ? ApprovalState.Pending
+                        : Math.random() > 0.5
+                        ? ApprovalState.Rejected
                         : ApprovalState.Approved;
 
                       mission[1]--;
@@ -700,10 +753,11 @@ export class DatabaseSeeder extends Seeder {
                           state,
                           joiner: individual.user,
                           mission: mission[0],
-                          points: randomInt(1, 3),
-                          settledBy: state === ApprovalState.Pending ? null : pickOneFromArray(managers),
+                          settledBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
                           settledAt: createdAt,
-                          ...(completed ? { completed, missionSettledBy: pickOneFromArray(managers) } : {}),
+                          ...(completed
+                            ? { points: randomInt(1, 3), pointsSettledBy: pickOneFromArray(managers) }
+                            : {}),
                           createdBy: individual,
                           tenant,
                         })

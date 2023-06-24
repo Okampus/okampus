@@ -877,6 +877,16 @@
           "default": "0",
           "mappedType": "float"
         },
+        "membership_duration": {
+          "name": "membership_duration",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
         "current_finance": {
           "name": "current_finance",
           "type": "real",
@@ -916,6 +926,16 @@
           "nullable": false,
           "default": "'Members'",
           "mappedType": "text"
+        },
+        "is_join_form_active": {
+          "name": "is_join_form_active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
         },
         "canteen_id": {
           "name": "canteen_id",
@@ -1852,6 +1872,181 @@
             "id"
           ],
           "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"id_generator\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "approximate_date": {
+          "name": "approximate_date",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Exact",
+            "Year",
+            "Month",
+            "Day",
+            "Time"
+          ],
+          "mappedType": "enum"
+        },
+        "event_date": {
+          "name": "event_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "event_type": {
+          "name": "event_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Defunct",
+            "Restart",
+            "End",
+            "Start",
+            "LegalStart",
+            "LegalEnd",
+            "RegularAssembly",
+            "ExtraordinaryAssembly",
+            "OkampusEnd",
+            "OkampusStart"
+          ],
+          "mappedType": "enum"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "team_history",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_history_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_history_created_by_id_foreign": {
+          "constraintName": "team_history_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_history",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_history_tenant_id_foreign": {
+          "constraintName": "team_history_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.team_history",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "team_history_team_id_foreign": {
+          "constraintName": "team_history_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_history",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
           "updateRule": "cascade"
         }
       }
@@ -8915,6 +9110,7 @@
             "Session",
             "Shortcut",
             "Team",
+            "TeamHistory",
             "Action",
             "Mission",
             "MissionJoin",
@@ -12647,16 +12843,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "points": {
-          "name": "points",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "smallint"
-        },
         "state": {
           "name": "state",
           "type": "text",
@@ -12673,15 +12859,15 @@
           ],
           "mappedType": "enum"
         },
-        "completed": {
-          "name": "completed",
-          "type": "boolean",
+        "points": {
+          "name": "points",
+          "type": "smallint",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "null",
-          "mappedType": "boolean"
+          "mappedType": "smallint"
         },
         "settled_by_id": {
           "name": "settled_by_id",
@@ -12704,8 +12890,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "completed_settled_by_id": {
-          "name": "completed_settled_by_id",
+        "points_settled_by_id": {
+          "name": "points_settled_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12714,8 +12900,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "completed_settled_at": {
-          "name": "completed_settled_at",
+        "points_settled_at": {
+          "name": "points_settled_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -12826,10 +13012,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "mission_join_completed_settled_by_id_foreign": {
-          "constraintName": "mission_join_completed_settled_by_id_foreign",
+        "mission_join_points_settled_by_id_foreign": {
+          "constraintName": "mission_join_points_settled_by_id_foreign",
           "columnNames": [
-            "completed_settled_by_id"
+            "points_settled_by_id"
           ],
           "localTableName": "public.mission_join",
           "referencedColumnNames": [
