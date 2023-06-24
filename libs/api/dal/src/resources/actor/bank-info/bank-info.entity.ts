@@ -3,13 +3,16 @@ import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { Countries } from '@okampus/shared/consts';
 
+import type { BankInfoOptions } from './bank-info.options';
 import type { Actor } from '../actor.entity';
 import type { Address } from '../address/address.entity';
-import type { BankInfoOptions } from './bank-info.options';
+import type { LegalUnit } from '../legal-unit/legal-unit.entity';
 
 @Entity({ customRepository: () => BankInfoRepository })
 export class BankInfo extends TenantScopedEntity {
   [EntityRepositoryType]!: BankInfoRepository;
+
+  // TODO: add holder address?
 
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
@@ -17,8 +20,11 @@ export class BankInfo extends TenantScopedEntity {
   @ManyToOne({ type: 'Address' })
   address!: Address;
 
-  @Property({ type: 'text' })
-  holderName!: string;
+  @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
+  bank: LegalUnit | null = null;
+
+  @Property({ type: 'text', default: '' })
+  holderName = '';
 
   @Property({ type: 'text' })
   bankCodeBic!: string;
