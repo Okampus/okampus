@@ -3,5 +3,5 @@ import { Selector } from '../../../zeus';
 import { userBaseInfo } from '../../individual/userBase';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
-export const teamJoinWithUser = Selector('TeamJoin')({ ...teamJoinBaseInfo, user: userBaseInfo });
+export const teamJoinWithUser = Selector('TeamJoin')({ ...teamJoinBaseInfo, joiner: userBaseInfo });
 export type TeamJoinWithUser = InputType<GraphQLTypes['TeamJoin'], typeof teamJoinWithUser>;

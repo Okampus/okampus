@@ -104,11 +104,12 @@ export function TeamJoinManageView() {
   //   },
   // };
 
-  const filteredJoins = teamManage
-    ? selectedTab.value === ALL
-      ? teamManage.teamJoins
-      : teamManage.teamJoins.filter((join) => join.state === selectedTab.value)
-    : [];
+  const filteredJoins: TeamJoinWithUser[] = [];
+  // const filteredJoins = teamManage
+  //   ? selectedTab.value === ALL
+  //     ? teamManage.teamJoins
+  //     : teamManage.teamJoins.filter((join) => join.state === selectedTab.value)
+  //   : [];
 
   return (
     <div className="flex w-full gap-10">

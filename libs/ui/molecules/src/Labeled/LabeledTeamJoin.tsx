@@ -16,7 +16,7 @@ export type LabeledTeamJoinProps = {
 
 export function LabeledTeamJoin({ teamJoin, onClick }: LabeledTeamJoinProps) {
   return (
-    <div className="flex justify-between text-0 p-3 rounded-lg bg-1-hover cursor-pointer " onClick={onClick}>
+    <div className="flex justify-between text-0 p-3 rounded-lg bg-1-hover cursor-pointer" onClick={onClick}>
       <div className="flex gap-item">
         <AvatarImage
           size={22}

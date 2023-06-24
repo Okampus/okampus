@@ -8,6 +8,6 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 export const followBaseInfo = Selector('Follow')({
   ...entityBase,
   actor: actorBaseInfo,
-  individual: individualBaseInfo,
+  createdBy: individualBaseInfo,
 });
 export type FollowBaseInfo = InputType<GraphQLTypes['Follow'], typeof followBaseInfo>;

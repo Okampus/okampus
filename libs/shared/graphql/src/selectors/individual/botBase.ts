@@ -8,7 +8,7 @@ import type { InputType, GraphQLTypes } from '../../zeus';
 export const botBaseInfo = Selector('Bot')({
   ...entityBase,
   deletedAt: true,
-  actor: actorBaseInfo,
-  individual: individualBaseInfo,
+  owner: actorBaseInfo,
+  createdBy: individualBaseInfo,
 });
 export type BotBaseInfo = InputType<GraphQLTypes['Bot'], typeof botBaseInfo>;
