@@ -96,184 +96,18 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "customization_color": {
-          "name": "customization_color",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "enumItems": [
-            "Blue",
-            "DeepBlue",
-            "DarkBlue",
-            "LightBlue",
-            "Green",
-            "DeepGreen",
-            "DarkGreen",
-            "LightGreen",
-            "Orange",
-            "DeepOrange",
-            "DarkOrange",
-            "LightOrange",
-            "Red",
-            "DeepRed",
-            "DarkRed",
-            "LightRed",
-            "Purple",
-            "DeepPurple",
-            "DarkPurple",
-            "LightPurple",
-            "Gray",
-            "DeepGray",
-            "DarkGray",
-            "Turquoise",
-            "Pink",
-            "Cyan",
-            "Brown",
-            "Indigo",
-            "Lime",
-            "Teal"
-          ],
-          "mappedType": "enum"
-        },
-        "customization_signature": {
-          "name": "customization_signature",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "text"
-        },
-        "stats_points": {
-          "name": "stats_points",
-          "type": "int",
+        "points": {
+          "name": "points",
+          "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "default": "0",
-          "mappedType": "integer"
+          "mappedType": "float"
         },
-        "stats_post_count": {
-          "name": "stats_post_count",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_last_post_at": {
-          "name": "stats_last_post_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "stats_post_streak": {
-          "name": "stats_post_streak",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_reply_count": {
-          "name": "stats_reply_count",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_last_reply_at": {
-          "name": "stats_last_reply_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "stats_reply_streak": {
-          "name": "stats_reply_streak",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_comment_count": {
-          "name": "stats_comment_count",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_last_comment_at": {
-          "name": "stats_last_comment_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "stats_upload_count": {
-          "name": "stats_upload_count",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "stats_last_action_at": {
-          "name": "stats_last_action_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "stats_action_streak": {
-          "name": "stats_action_streak",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "smallint"
-        },
-        "settings_is_dark_mode_activated": {
-          "name": "settings_is_dark_mode_activated",
+        "is_onboarding_finished": {
+          "name": "is_onboarding_finished",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -281,298 +115,6 @@
           "nullable": false,
           "default": "false",
           "mappedType": "boolean"
-        },
-        "settings_is_gdpr_exported_on_account_deactivation": {
-          "name": "settings_is_gdpr_exported_on_account_deactivation",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
-        },
-        "settings_is_gdpr_anonymized_on_account_deactivation": {
-          "name": "settings_is_gdpr_anonymized_on_account_deactivation",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "notification_settings_mentionned": {
-          "name": "notification_settings_mentionned",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_badge_unlocked": {
-          "name": "notification_settings_badge_unlocked",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_blog_subscribed_updated": {
-          "name": "notification_settings_blog_subscribed_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_content_removed": {
-          "name": "notification_settings_content_removed",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_report_created": {
-          "name": "notification_settings_admin_report_created",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_event_created": {
-          "name": "notification_settings_event_created",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_team_subscribed_event_created": {
-          "name": "notification_settings_team_subscribed_event_created",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_team_managed_form_updated": {
-          "name": "notification_settings_team_managed_form_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_team_managed_event_updated": {
-          "name": "notification_settings_team_managed_event_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_team_managed_membership_request_updated": {
-          "name": "notification_settings_team_managed_membership_request_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_team_managed_member_role_updated": {
-          "name": "notification_settings_team_managed_member_role_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_team_social_updated": {
-          "name": "notification_settings_admin_team_social_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_team_legal_file_updated": {
-          "name": "notification_settings_admin_team_legal_file_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_event_subscribed_updated": {
-          "name": "notification_settings_event_subscribed_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_event_managed_approved": {
-          "name": "notification_settings_event_managed_approved",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_event_managed_rejected": {
-          "name": "notification_settings_event_managed_rejected",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_event_managed_registration_created": {
-          "name": "notification_settings_event_managed_registration_created",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_event_validation_started": {
-          "name": "notification_settings_admin_event_validation_started",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_event_validation_step": {
-          "name": "notification_settings_admin_event_validation_step",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_event_validation_approved": {
-          "name": "notification_settings_admin_event_validation_approved",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_event_validation_rejected": {
-          "name": "notification_settings_admin_event_validation_rejected",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_thread_subscribed_updated": {
-          "name": "notification_settings_thread_subscribed_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_thread_subscribed_answered": {
-          "name": "notification_settings_thread_subscribed_answered",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_thread_stale": {
-          "name": "notification_settings_admin_thread_stale",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_thread_stale_threshold": {
-          "name": "notification_settings_admin_thread_stale_threshold",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "1209600",
-          "mappedType": "integer"
-        },
-        "notification_settings_admin_thread_assigned_stale": {
-          "name": "notification_settings_admin_thread_assigned_stale",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_thread_assigned_stale_threshold": {
-          "name": "notification_settings_admin_thread_assigned_stale_threshold",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "604800",
-          "mappedType": "integer"
-        },
-        "notification_settings_admin_thread_assigned": {
-          "name": "notification_settings_admin_thread_assigned",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_role_updated": {
-          "name": "notification_settings_role_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
-        },
-        "notification_settings_admin_role_updated": {
-          "name": "notification_settings_admin_role_updated",
-          "type": "smallint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "enum"
         },
         "is_introduction_finished": {
           "name": "is_introduction_finished",
@@ -584,8 +126,28 @@
           "default": "false",
           "mappedType": "boolean"
         },
-        "is_onboarding_finished": {
-          "name": "is_onboarding_finished",
+        "is_dark_mode_preferred": {
+          "name": "is_dark_mode_preferred",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_data_exported_on_deactivation": {
+          "name": "is_data_exported_on_deactivation",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_data_anonymized_on_deactivation": {
+          "name": "is_data_anonymized_on_deactivation",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -707,8 +269,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         }
       },
@@ -1202,8 +764,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "oidc_info_oidc_client_id": {
@@ -1212,8 +774,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "oidc_info_oidc_client_secret": {
@@ -1222,8 +784,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "oidc_info_oidc_discovery_url": {
@@ -1232,8 +794,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "oidc_info_oidc_scopes": {
@@ -1242,8 +804,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "oidc_info_oidc_callback_uri": {
@@ -1252,8 +814,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "event_validation_form_id": {
@@ -1392,6 +954,41 @@
           "default": "null",
           "mappedType": "datetime"
         },
+        "scope_role": {
+          "name": "scope_role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "tenant_user",
+            "tenant_teacher",
+            "tenant_admin",
+            "admin"
+          ],
+          "mappedType": "enum"
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "content_signature": {
+          "name": "content_signature",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
         "user_id": {
           "name": "user_id",
           "type": "bigint",
@@ -1411,31 +1008,6 @@
           "nullable": true,
           "default": "null",
           "mappedType": "bigint"
-        },
-        "password_hash": {
-          "name": "password_hash",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "text"
-        },
-        "scope_role": {
-          "name": "scope_role",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "tenant_user",
-            "tenant_teacher",
-            "tenant_admin",
-            "admin"
-          ],
-          "mappedType": "enum"
         }
       },
       "name": "individual",
@@ -3876,8 +3448,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "slug": {
@@ -3941,16 +3513,6 @@
           "default": "0",
           "mappedType": "float"
         },
-        "is_private": {
-          "name": "is_private",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
         "regular_event_interval": {
           "name": "regular_event_interval",
           "type": "text",
@@ -3960,6 +3522,16 @@
           "nullable": false,
           "default": "''",
           "mappedType": "text"
+        },
+        "is_private": {
+          "name": "is_private",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         },
         "is_template": {
           "name": "is_template",
@@ -4741,8 +4313,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "type": {
@@ -6848,36 +6420,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "individual_id": {
-          "name": "individual_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "legal_unit_id": {
-          "name": "legal_unit_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
         "slug": {
           "name": "slug",
           "type": "text",
@@ -6944,11 +6486,50 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "individual_id": {
+          "name": "individual_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "legal_unit_id": {
+          "name": "legal_unit_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
         }
       },
       "name": "actor",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "ical"
+          ],
+          "composite": false,
+          "keyName": "actor_ical_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "individual_id"
@@ -6973,15 +6554,6 @@
           ],
           "composite": false,
           "keyName": "actor_legal_unit_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "ical"
-          ],
-          "composite": false,
-          "keyName": "actor_ical_unique",
           "primary": false,
           "unique": true
         },
@@ -7487,8 +7059,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "last_active_date": {
@@ -9778,8 +9350,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
+          "default": "''",
           "mappedType": "text"
         },
         "is_approved": {
@@ -9800,8 +9372,8 @@
           "nullable": true,
           "mappedType": "bigint"
         },
-        "step_id": {
-          "name": "step_id",
+        "event_approval_step_id": {
+          "name": "event_approval_step_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -9863,10 +9435,10 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "event_approval_step_id_foreign": {
-          "constraintName": "event_approval_step_id_foreign",
+        "event_approval_event_approval_step_id_foreign": {
+          "constraintName": "event_approval_event_approval_step_id_foreign",
           "columnNames": [
-            "step_id"
+            "event_approval_step_id"
           ],
           "localTableName": "public.event_approval",
           "referencedColumnNames": [

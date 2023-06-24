@@ -31,8 +31,8 @@ export class Project extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null;
+  @Property({ type: 'text', default: '' })
+  description = '';
 
   @Property({ type: 'text' })
   slug!: string;
@@ -43,11 +43,11 @@ export class Project extends TenantScopedEntity {
   @Property({ type: 'float', default: 0 })
   budget = 0;
 
-  @Property({ type: 'boolean', default: false })
-  isPrivate = false;
-
   @Property({ type: 'text', default: '' })
   regularEventInterval = '';
+
+  @Property({ type: 'boolean', default: false })
+  isPrivate = false;
 
   @Property({ type: 'boolean', default: false })
   isTemplate = false;

@@ -10,8 +10,8 @@ import type { EventApprovalOptions } from './event-approval.options';
 export class EventApproval extends TenantScopedEntity {
   [EntityRepositoryType]!: EventApprovalRepository;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  message: string | null = null;
+  @Property({ type: 'text', default: '' })
+  message = '';
 
   @Property({ type: 'boolean' })
   isApproved!: boolean;
@@ -20,7 +20,7 @@ export class EventApproval extends TenantScopedEntity {
   event!: Event;
 
   @ManyToOne({ type: 'EventApprovalStep', cascade: [Cascade.ALL] })
-  step!: EventApprovalStep;
+  eventApprovalStep!: EventApprovalStep;
 
   constructor(options: EventApprovalOptions) {
     super(options);

@@ -12,6 +12,15 @@ import type { IndividualOptions } from './individual.options';
 export class Individual extends TenantScopedEntity {
   [EntityRepositoryType]!: IndividualRepository;
 
+  @Enum({ items: () => ScopeRole, type: EnumType })
+  scopeRole!: ScopeRole;
+
+  @Property({ type: 'text', nullable: true, default: null, hidden: true })
+  passwordHash: string | null = null;
+
+  @Property({ type: 'text', default: '' })
+  contentSignature = '';
+
   @OneToOne({ type: 'Actor', mappedBy: 'individual' })
   actor!: Actor;
 
@@ -20,12 +29,6 @@ export class Individual extends TenantScopedEntity {
 
   @OneToOne({ type: 'Bot', inversedBy: 'individual', nullable: true, default: null })
   bot: Bot | null = null;
-
-  @Property({ type: 'text', hidden: true, nullable: true, default: null })
-  passwordHash: string | null = null;
-
-  @Enum({ items: () => ScopeRole, type: EnumType })
-  scopeRole!: ScopeRole;
 
   // @OneToMany('BadgeUnlock', 'user')
   // @TransformCollection()

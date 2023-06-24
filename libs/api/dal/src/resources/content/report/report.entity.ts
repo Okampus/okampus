@@ -14,8 +14,8 @@ export class Report extends TenantScopedEntity {
   @Enum({ items: () => ReportReason, type: EnumType })
   type!: ReportReason;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  reason: string | null = null;
+  @Property({ type: 'text', default: '' })
+  reason = '';
 
   @Property({ type: 'datetime', nullable: true, default: null })
   lastActiveDate: Date | null = null;

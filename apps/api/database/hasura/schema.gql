@@ -6790,7 +6790,7 @@ type Canteen {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  description: String
+  description: String!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -8073,7 +8073,7 @@ type ClassGroup {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  description: String
+  description: String!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -11938,12 +11938,12 @@ type EventApproval {
 
   # An object relationship
   eventApprovalStep: EventApprovalStep
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint!
   isApproved: Boolean!
-  message: String
-  stepId: bigint
+  message: String!
 
   # An object relationship
   tenant: Tenant!
@@ -12024,18 +12024,18 @@ input EventApprovalArrRelInsertInput {
 # aggregate avg on columns
 type EventApprovalAvgFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by avg() on columns of table "event_approval"
 input EventApprovalAvgOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -12050,12 +12050,12 @@ input EventApprovalBoolExp {
   deletedAt: TimestamptzComparisonExp
   event: EventBoolExp
   eventApprovalStep: EventApprovalStepBoolExp
+  eventApprovalStepId: BigintComparisonExp
   eventId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isApproved: BooleanComparisonExp
   message: StringComparisonExp
-  stepId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -12069,9 +12069,9 @@ enum EventApprovalConstraint {
 # input type for incrementing numeric columns in table "event_approval"
 input EventApprovalIncInput {
   createdById: bigint
+  eventApprovalStepId: bigint
   eventId: bigint
   id: bigint
-  stepId: bigint
   tenantId: bigint
 }
 
@@ -12083,12 +12083,12 @@ input EventApprovalInsertInput {
   deletedAt: timestamptz
   event: EventObjRelInsertInput
   eventApprovalStep: EventApprovalStepObjRelInsertInput
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isApproved: Boolean
   message: String
-  stepId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
@@ -12098,11 +12098,11 @@ type EventApprovalMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   message: String
-  stepId: bigint
   tenantId: bigint
 }
 
@@ -12111,11 +12111,11 @@ input EventApprovalMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   message: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -12124,11 +12124,11 @@ type EventApprovalMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   message: String
-  stepId: bigint
   tenantId: bigint
 }
 
@@ -12137,11 +12137,11 @@ input EventApprovalMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   message: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -12169,12 +12169,12 @@ input EventApprovalOrderBy {
   deletedAt: OrderBy
   event: EventOrderBy
   eventApprovalStep: EventApprovalStepOrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isApproved: OrderBy
   message: OrderBy
-  stepId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -12196,6 +12196,9 @@ enum EventApprovalSelectColumn {
   deletedAt
 
   # column name
+  eventApprovalStepId
+
+  # column name
   eventId
 
   # column name
@@ -12209,9 +12212,6 @@ enum EventApprovalSelectColumn {
 
   # column name
   message
-
-  # column name
-  stepId
 
   # column name
   tenantId
@@ -12234,66 +12234,66 @@ input EventApprovalSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isApproved: Boolean
   message: String
-  stepId: bigint
   tenantId: bigint
 }
 
 # aggregate stddev on columns
 type EventApprovalStddevFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by stddev() on columns of table "event_approval"
 input EventApprovalStddevOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate stddevPop on columns
 type EventApprovalStddevPopFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by stddevPop() on columns of table "event_approval"
 input EventApprovalStddevPopOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type EventApprovalStddevSampFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by stddevSamp() on columns of table "event_approval"
 input EventApprovalStddevSampOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -13564,30 +13564,30 @@ input EventApprovalStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventApprovalStepId: bigint
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isApproved: Boolean
   message: String
-  stepId: bigint
   tenantId: bigint
 }
 
 # aggregate sum on columns
 type EventApprovalSumFields {
   createdById: bigint
+  eventApprovalStepId: bigint
   eventId: bigint
   id: bigint
-  stepId: bigint
   tenantId: bigint
 }
 
 # order by sum() on columns of table "event_approval"
 input EventApprovalSumOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -13603,6 +13603,9 @@ enum EventApprovalUpdateColumn {
   deletedAt
 
   # column name
+  eventApprovalStepId
+
+  # column name
   eventId
 
   # column name
@@ -13616,9 +13619,6 @@ enum EventApprovalUpdateColumn {
 
   # column name
   message
-
-  # column name
-  stepId
 
   # column name
   tenantId
@@ -13638,54 +13638,54 @@ input EventApprovalUpdates {
 # aggregate variance on columns
 type EventApprovalVarianceFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by variance() on columns of table "event_approval"
 input EventApprovalVarianceOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varPop on columns
 type EventApprovalVarPopFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by varPop() on columns of table "event_approval"
 input EventApprovalVarPopOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varSamp on columns
 type EventApprovalVarSampFields {
   createdById: Float
+  eventApprovalStepId: Float
   eventId: Float
   id: Float
-  stepId: Float
   tenantId: Float
 }
 
 # order by varSamp() on columns of table "event_approval"
 input EventApprovalVarSampOrderBy {
   createdById: OrderBy
+  eventApprovalStepId: OrderBy
   eventId: OrderBy
   id: OrderBy
-  stepId: OrderBy
   tenantId: OrderBy
 }
 
@@ -24681,6 +24681,7 @@ type Individual {
   # An object relationship
   bot: Bot
   botId: bigint
+  contentSignature: String!
 
   # An array relationship
   contributorIssues(
@@ -27374,6 +27375,7 @@ input IndividualBoolExp {
   actor: ActorBoolExp
   bot: BotBoolExp
   botId: BigintComparisonExp
+  contentSignature: StringComparisonExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
   createdAccountAllocates: AccountAllocateBoolExp
@@ -27558,6 +27560,7 @@ input IndividualInsertInput {
   actor: ActorObjRelInsertInput
   bot: BotObjRelInsertInput
   botId: bigint
+  contentSignature: String
   contributorIssues: IssueContributorsArrRelInsertInput
   createdAccountAllocates: AccountAllocateArrRelInsertInput
   createdAccounts: AccountArrRelInsertInput
@@ -27647,6 +27650,7 @@ input IndividualInsertInput {
 # aggregate max on columns
 type IndividualMaxFields {
   botId: bigint
+  contentSignature: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -27661,6 +27665,7 @@ type IndividualMaxFields {
 # order by max() on columns of table "individual"
 input IndividualMaxOrderBy {
   botId: OrderBy
+  contentSignature: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -27675,6 +27680,7 @@ input IndividualMaxOrderBy {
 # aggregate min on columns
 type IndividualMinFields {
   botId: bigint
+  contentSignature: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -27689,6 +27695,7 @@ type IndividualMinFields {
 # order by min() on columns of table "individual"
 input IndividualMinOrderBy {
   botId: OrderBy
+  contentSignature: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -27729,6 +27736,7 @@ input IndividualOrderBy {
   actor: ActorOrderBy
   bot: BotOrderBy
   botId: OrderBy
+  contentSignature: OrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
   createdAccountAllocatesAggregate: AccountAllocateAggregateOrderBy
   createdAccountsAggregate: AccountAggregateOrderBy
@@ -27826,6 +27834,9 @@ enum IndividualSelectColumn {
   botId
 
   # column name
+  contentSignature
+
+  # column name
   createdAt
 
   # column name
@@ -27856,6 +27867,7 @@ enum IndividualSelectColumn {
 # input type for updating data in table "individual"
 input IndividualSetInput {
   botId: bigint
+  contentSignature: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -27933,6 +27945,7 @@ input IndividualStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input IndividualStreamCursorValueInput {
   botId: bigint
+  contentSignature: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -27966,6 +27979,9 @@ input IndividualSumOrderBy {
 enum IndividualUpdateColumn {
   # column name
   botId
+
+  # column name
+  contentSignature
 
   # column name
   createdAt
@@ -36264,7 +36280,7 @@ type Project {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  description: String
+  description: String!
 
   # An array relationship
   events(
@@ -41272,7 +41288,7 @@ type Report {
   hiddenAt: timestamptz
   id: bigint!
   lastActiveDate: timestamptz
-  reason: String
+  reason: String!
 
   # An object relationship
   tenant: Tenant!
@@ -54979,12 +54995,12 @@ type Tenant {
   ): MissionAggregate!
   name: String!
   oidcInfoIsOidcEnabled: Boolean!
-  oidcInfoOidcCallbackUri: String
-  oidcInfoOidcClientId: String
-  oidcInfoOidcClientSecret: String
-  oidcInfoOidcDiscoveryUrl: String
-  oidcInfoOidcName: String
-  oidcInfoOidcScopes: String
+  oidcInfoOidcCallbackUri: String!
+  oidcInfoOidcClientId: String!
+  oidcInfoOidcClientSecret: String!
+  oidcInfoOidcDiscoveryUrl: String!
+  oidcInfoOidcName: String!
+  oidcInfoOidcScopes: String!
   pointName: String!
 
   # An array relationship
@@ -58156,8 +58172,6 @@ type User {
   # An object relationship
   createdBy: Individual
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
 
   # An array relationship
@@ -58237,6 +58251,9 @@ type User {
 
   # An object relationship
   individual: Individual
+  isDarkModePreferred: Boolean!
+  isDataAnonymizedOnDeactivation: Boolean!
+  isDataExportedOnDeactivation: Boolean!
   isIntroductionFinished: Boolean!
   isOnboardingFinished: Boolean!
   lastName: String!
@@ -58277,36 +58294,7 @@ type User {
     # filter the rows returned
     where: MissionJoinBoolExp
   ): MissionJoinAggregate!
-  notificationSettingsAdminEventValidationApproved: smallint!
-  notificationSettingsAdminEventValidationRejected: smallint!
-  notificationSettingsAdminEventValidationStarted: smallint!
-  notificationSettingsAdminEventValidationStep: smallint!
-  notificationSettingsAdminReportCreated: smallint!
-  notificationSettingsAdminRoleUpdated: smallint!
-  notificationSettingsAdminTeamLegalFileUpdated: smallint!
-  notificationSettingsAdminTeamSocialUpdated: smallint!
-  notificationSettingsAdminThreadAssigned: smallint!
-  notificationSettingsAdminThreadAssignedStale: smallint!
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int!
-  notificationSettingsAdminThreadStale: smallint!
-  notificationSettingsAdminThreadStaleThreshold: Int!
-  notificationSettingsBadgeUnlocked: smallint!
-  notificationSettingsBlogSubscribedUpdated: smallint!
-  notificationSettingsContentRemoved: smallint!
-  notificationSettingsEventCreated: smallint!
-  notificationSettingsEventManagedApproved: smallint!
-  notificationSettingsEventManagedRegistrationCreated: smallint!
-  notificationSettingsEventManagedRejected: smallint!
-  notificationSettingsEventSubscribedUpdated: smallint!
-  notificationSettingsMentionned: smallint!
-  notificationSettingsRoleUpdated: smallint!
-  notificationSettingsTeamManagedEventUpdated: smallint!
-  notificationSettingsTeamManagedFormUpdated: smallint!
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint!
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint!
-  notificationSettingsTeamSubscribedEventCreated: smallint!
-  notificationSettingsThreadSubscribedAnswered: smallint!
-  notificationSettingsThreadSubscribedUpdated: smallint!
+  points: Float!
 
   # An array relationship
   sessions(
@@ -58343,9 +58331,6 @@ type User {
     # filter the rows returned
     where: SessionBoolExp
   ): SessionAggregate!
-  settingsIsDarkModeActivated: Boolean!
-  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean!
-  settingsIsGdprExportedOnAccountDeactivation: Boolean!
 
   # An array relationship
   shortcuts(
@@ -58382,18 +58367,6 @@ type User {
     # filter the rows returned
     where: ShortcutBoolExp
   ): ShortcutAggregate!
-  statsActionStreak: smallint!
-  statsCommentCount: smallint!
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int!
-  statsPostCount: smallint!
-  statsPostStreak: smallint!
-  statsReplyCount: smallint!
-  statsReplyStreak: smallint!
-  statsUploadCount: smallint!
 
   # An array relationship
   teamJoins(
@@ -58547,44 +58520,7 @@ input UserArrRelInsertInput {
 type UserAvgFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -58592,44 +58528,7 @@ type UserAvgFields {
 input UserAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -58645,8 +58544,6 @@ input UserBoolExp {
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
-  customizationColor: StringComparisonExp
-  customizationSignature: StringComparisonExp
   deletedAt: TimestamptzComparisonExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
@@ -58656,61 +58553,20 @@ input UserBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  isDarkModePreferred: BooleanComparisonExp
+  isDataAnonymizedOnDeactivation: BooleanComparisonExp
+  isDataExportedOnDeactivation: BooleanComparisonExp
   isIntroductionFinished: BooleanComparisonExp
   isOnboardingFinished: BooleanComparisonExp
   lastName: StringComparisonExp
   middleNames: _textComparisonExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
-  notificationSettingsAdminEventValidationApproved: SmallintComparisonExp
-  notificationSettingsAdminEventValidationRejected: SmallintComparisonExp
-  notificationSettingsAdminEventValidationStarted: SmallintComparisonExp
-  notificationSettingsAdminEventValidationStep: SmallintComparisonExp
-  notificationSettingsAdminReportCreated: SmallintComparisonExp
-  notificationSettingsAdminRoleUpdated: SmallintComparisonExp
-  notificationSettingsAdminTeamLegalFileUpdated: SmallintComparisonExp
-  notificationSettingsAdminTeamSocialUpdated: SmallintComparisonExp
-  notificationSettingsAdminThreadAssigned: SmallintComparisonExp
-  notificationSettingsAdminThreadAssignedStale: SmallintComparisonExp
-  notificationSettingsAdminThreadAssignedStaleThreshold: IntComparisonExp
-  notificationSettingsAdminThreadStale: SmallintComparisonExp
-  notificationSettingsAdminThreadStaleThreshold: IntComparisonExp
-  notificationSettingsBadgeUnlocked: SmallintComparisonExp
-  notificationSettingsBlogSubscribedUpdated: SmallintComparisonExp
-  notificationSettingsContentRemoved: SmallintComparisonExp
-  notificationSettingsEventCreated: SmallintComparisonExp
-  notificationSettingsEventManagedApproved: SmallintComparisonExp
-  notificationSettingsEventManagedRegistrationCreated: SmallintComparisonExp
-  notificationSettingsEventManagedRejected: SmallintComparisonExp
-  notificationSettingsEventSubscribedUpdated: SmallintComparisonExp
-  notificationSettingsMentionned: SmallintComparisonExp
-  notificationSettingsRoleUpdated: SmallintComparisonExp
-  notificationSettingsTeamManagedEventUpdated: SmallintComparisonExp
-  notificationSettingsTeamManagedFormUpdated: SmallintComparisonExp
-  notificationSettingsTeamManagedMemberRoleUpdated: SmallintComparisonExp
-  notificationSettingsTeamManagedMembershipRequestUpdated: SmallintComparisonExp
-  notificationSettingsTeamSubscribedEventCreated: SmallintComparisonExp
-  notificationSettingsThreadSubscribedAnswered: SmallintComparisonExp
-  notificationSettingsThreadSubscribedUpdated: SmallintComparisonExp
+  points: FloatComparisonExp
   sessions: SessionBoolExp
   sessionsAggregate: SessionAggregateBoolExp
-  settingsIsDarkModeActivated: BooleanComparisonExp
-  settingsIsGdprAnonymizedOnAccountDeactivation: BooleanComparisonExp
-  settingsIsGdprExportedOnAccountDeactivation: BooleanComparisonExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
-  statsActionStreak: SmallintComparisonExp
-  statsCommentCount: SmallintComparisonExp
-  statsLastActionAt: TimestamptzComparisonExp
-  statsLastCommentAt: TimestamptzComparisonExp
-  statsLastPostAt: TimestamptzComparisonExp
-  statsLastReplyAt: TimestamptzComparisonExp
-  statsPoints: IntComparisonExp
-  statsPostCount: SmallintComparisonExp
-  statsPostStreak: SmallintComparisonExp
-  statsReplyCount: SmallintComparisonExp
-  statsReplyStreak: SmallintComparisonExp
-  statsUploadCount: SmallintComparisonExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -58729,44 +58585,7 @@ enum UserConstraint {
 input UserIncInput {
   createdById: bigint
   id: bigint
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -58777,8 +58596,6 @@ input UserInsertInput {
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
   eventSupervisors: EventSupervisorsArrRelInsertInput
@@ -58786,58 +58603,17 @@ input UserInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  isDarkModePreferred: Boolean
+  isDataAnonymizedOnDeactivation: Boolean
+  isDataExportedOnDeactivation: Boolean
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
   missionJoins: MissionJoinArrRelInsertInput
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
+  points: Float
   sessions: SessionArrRelInsertInput
-  settingsIsDarkModeActivated: Boolean
-  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
-  settingsIsGdprExportedOnAccountDeactivation: Boolean
   shortcuts: ShortcutArrRelInsertInput
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   tenant: TenantObjRelInsertInput
@@ -58848,55 +58624,12 @@ input UserInsertInput {
 type UserMaxFields {
   createdAt: timestamptz
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
   firstName: String
   hiddenAt: timestamptz
   id: bigint
   lastName: String
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -58904,55 +58637,12 @@ type UserMaxFields {
 input UserMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
-  customizationColor: OrderBy
-  customizationSignature: OrderBy
   deletedAt: OrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   lastName: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsLastActionAt: OrderBy
-  statsLastCommentAt: OrderBy
-  statsLastPostAt: OrderBy
-  statsLastReplyAt: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -58960,55 +58650,12 @@ input UserMaxOrderBy {
 type UserMinFields {
   createdAt: timestamptz
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
   firstName: String
   hiddenAt: timestamptz
   id: bigint
   lastName: String
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -59016,55 +58663,12 @@ type UserMinFields {
 input UserMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
-  customizationColor: OrderBy
-  customizationSignature: OrderBy
   deletedAt: OrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   lastName: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsLastActionAt: OrderBy
-  statsLastCommentAt: OrderBy
-  statsLastPostAt: OrderBy
-  statsLastReplyAt: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -59099,8 +58703,6 @@ input UserOrderBy {
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
-  customizationColor: OrderBy
-  customizationSignature: OrderBy
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
@@ -59108,58 +58710,17 @@ input UserOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  isDarkModePreferred: OrderBy
+  isDataAnonymizedOnDeactivation: OrderBy
+  isDataExportedOnDeactivation: OrderBy
   isIntroductionFinished: OrderBy
   isOnboardingFinished: OrderBy
   lastName: OrderBy
   middleNames: OrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
+  points: OrderBy
   sessionsAggregate: SessionAggregateOrderBy
-  settingsIsDarkModeActivated: OrderBy
-  settingsIsGdprAnonymizedOnAccountDeactivation: OrderBy
-  settingsIsGdprExportedOnAccountDeactivation: OrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsLastActionAt: OrderBy
-  statsLastCommentAt: OrderBy
-  statsLastPostAt: OrderBy
-  statsLastReplyAt: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   tenant: TenantOrderBy
@@ -59180,12 +58741,6 @@ enum UserSelectColumn {
   createdById
 
   # column name
-  customizationColor
-
-  # column name
-  customizationSignature
-
-  # column name
   deletedAt
 
   # column name
@@ -59196,6 +58751,15 @@ enum UserSelectColumn {
 
   # column name
   id
+
+  # column name
+  isDarkModePreferred
+
+  # column name
+  isDataAnonymizedOnDeactivation
+
+  # column name
+  isDataExportedOnDeactivation
 
   # column name
   isIntroductionFinished
@@ -59210,139 +58774,7 @@ enum UserSelectColumn {
   middleNames
 
   # column name
-  notificationSettingsAdminEventValidationApproved
-
-  # column name
-  notificationSettingsAdminEventValidationRejected
-
-  # column name
-  notificationSettingsAdminEventValidationStarted
-
-  # column name
-  notificationSettingsAdminEventValidationStep
-
-  # column name
-  notificationSettingsAdminReportCreated
-
-  # column name
-  notificationSettingsAdminRoleUpdated
-
-  # column name
-  notificationSettingsAdminTeamLegalFileUpdated
-
-  # column name
-  notificationSettingsAdminTeamSocialUpdated
-
-  # column name
-  notificationSettingsAdminThreadAssigned
-
-  # column name
-  notificationSettingsAdminThreadAssignedStale
-
-  # column name
-  notificationSettingsAdminThreadAssignedStaleThreshold
-
-  # column name
-  notificationSettingsAdminThreadStale
-
-  # column name
-  notificationSettingsAdminThreadStaleThreshold
-
-  # column name
-  notificationSettingsBadgeUnlocked
-
-  # column name
-  notificationSettingsBlogSubscribedUpdated
-
-  # column name
-  notificationSettingsContentRemoved
-
-  # column name
-  notificationSettingsEventCreated
-
-  # column name
-  notificationSettingsEventManagedApproved
-
-  # column name
-  notificationSettingsEventManagedRegistrationCreated
-
-  # column name
-  notificationSettingsEventManagedRejected
-
-  # column name
-  notificationSettingsEventSubscribedUpdated
-
-  # column name
-  notificationSettingsMentionned
-
-  # column name
-  notificationSettingsRoleUpdated
-
-  # column name
-  notificationSettingsTeamManagedEventUpdated
-
-  # column name
-  notificationSettingsTeamManagedFormUpdated
-
-  # column name
-  notificationSettingsTeamManagedMemberRoleUpdated
-
-  # column name
-  notificationSettingsTeamManagedMembershipRequestUpdated
-
-  # column name
-  notificationSettingsTeamSubscribedEventCreated
-
-  # column name
-  notificationSettingsThreadSubscribedAnswered
-
-  # column name
-  notificationSettingsThreadSubscribedUpdated
-
-  # column name
-  settingsIsDarkModeActivated
-
-  # column name
-  settingsIsGdprAnonymizedOnAccountDeactivation
-
-  # column name
-  settingsIsGdprExportedOnAccountDeactivation
-
-  # column name
-  statsActionStreak
-
-  # column name
-  statsCommentCount
-
-  # column name
-  statsLastActionAt
-
-  # column name
-  statsLastCommentAt
-
-  # column name
-  statsLastPostAt
-
-  # column name
-  statsLastReplyAt
-
-  # column name
-  statsPoints
-
-  # column name
-  statsPostCount
-
-  # column name
-  statsPostStreak
-
-  # column name
-  statsReplyCount
-
-  # column name
-  statsReplyStreak
-
-  # column name
-  statsUploadCount
+  points
 
   # column name
   tenantId
@@ -59351,98 +58783,55 @@ enum UserSelectColumn {
 # select "userAggregateBoolExpBool_andArgumentsColumns" columns of table "user"
 enum UserSelectColumnUserAggregateBoolExpBool_andArgumentsColumns {
   # column name
+  isDarkModePreferred
+
+  # column name
+  isDataAnonymizedOnDeactivation
+
+  # column name
+  isDataExportedOnDeactivation
+
+  # column name
   isIntroductionFinished
 
   # column name
   isOnboardingFinished
-
-  # column name
-  settingsIsDarkModeActivated
-
-  # column name
-  settingsIsGdprAnonymizedOnAccountDeactivation
-
-  # column name
-  settingsIsGdprExportedOnAccountDeactivation
 }
 
 # select "userAggregateBoolExpBool_orArgumentsColumns" columns of table "user"
 enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
   # column name
+  isDarkModePreferred
+
+  # column name
+  isDataAnonymizedOnDeactivation
+
+  # column name
+  isDataExportedOnDeactivation
+
+  # column name
   isIntroductionFinished
 
   # column name
   isOnboardingFinished
-
-  # column name
-  settingsIsDarkModeActivated
-
-  # column name
-  settingsIsGdprAnonymizedOnAccountDeactivation
-
-  # column name
-  settingsIsGdprExportedOnAccountDeactivation
 }
 
 # input type for updating data in table "user"
 input UserSetInput {
   createdAt: timestamptz
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isDarkModePreferred: Boolean
+  isDataAnonymizedOnDeactivation: Boolean
+  isDataExportedOnDeactivation: Boolean
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  settingsIsDarkModeActivated: Boolean
-  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
-  settingsIsGdprExportedOnAccountDeactivation: Boolean
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -59450,44 +58839,7 @@ input UserSetInput {
 type UserStddevFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -59495,44 +58847,7 @@ type UserStddevFields {
 input UserStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -59540,44 +58855,7 @@ input UserStddevOrderBy {
 type UserStddevPopFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -59585,44 +58863,7 @@ type UserStddevPopFields {
 input UserStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -59630,44 +58871,7 @@ input UserStddevPopOrderBy {
 type UserStddevSampFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -59675,44 +58879,7 @@ type UserStddevSampFields {
 input UserStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -59729,61 +58896,18 @@ input UserStreamCursorInput {
 input UserStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
-  customizationColor: String
-  customizationSignature: String
   deletedAt: timestamptz
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  isDarkModePreferred: Boolean
+  isDataAnonymizedOnDeactivation: Boolean
+  isDataExportedOnDeactivation: Boolean
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
   middleNames: _text
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  settingsIsDarkModeActivated: Boolean
-  settingsIsGdprAnonymizedOnAccountDeactivation: Boolean
-  settingsIsGdprExportedOnAccountDeactivation: Boolean
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsLastActionAt: timestamptz
-  statsLastCommentAt: timestamptz
-  statsLastPostAt: timestamptz
-  statsLastReplyAt: timestamptz
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -59791,44 +58915,7 @@ input UserStreamCursorValueInput {
 type UserSumFields {
   createdById: bigint
   id: bigint
-  notificationSettingsAdminEventValidationApproved: smallint
-  notificationSettingsAdminEventValidationRejected: smallint
-  notificationSettingsAdminEventValidationStarted: smallint
-  notificationSettingsAdminEventValidationStep: smallint
-  notificationSettingsAdminReportCreated: smallint
-  notificationSettingsAdminRoleUpdated: smallint
-  notificationSettingsAdminTeamLegalFileUpdated: smallint
-  notificationSettingsAdminTeamSocialUpdated: smallint
-  notificationSettingsAdminThreadAssigned: smallint
-  notificationSettingsAdminThreadAssignedStale: smallint
-  notificationSettingsAdminThreadAssignedStaleThreshold: Int
-  notificationSettingsAdminThreadStale: smallint
-  notificationSettingsAdminThreadStaleThreshold: Int
-  notificationSettingsBadgeUnlocked: smallint
-  notificationSettingsBlogSubscribedUpdated: smallint
-  notificationSettingsContentRemoved: smallint
-  notificationSettingsEventCreated: smallint
-  notificationSettingsEventManagedApproved: smallint
-  notificationSettingsEventManagedRegistrationCreated: smallint
-  notificationSettingsEventManagedRejected: smallint
-  notificationSettingsEventSubscribedUpdated: smallint
-  notificationSettingsMentionned: smallint
-  notificationSettingsRoleUpdated: smallint
-  notificationSettingsTeamManagedEventUpdated: smallint
-  notificationSettingsTeamManagedFormUpdated: smallint
-  notificationSettingsTeamManagedMemberRoleUpdated: smallint
-  notificationSettingsTeamManagedMembershipRequestUpdated: smallint
-  notificationSettingsTeamSubscribedEventCreated: smallint
-  notificationSettingsThreadSubscribedAnswered: smallint
-  notificationSettingsThreadSubscribedUpdated: smallint
-  statsActionStreak: smallint
-  statsCommentCount: smallint
-  statsPoints: Int
-  statsPostCount: smallint
-  statsPostStreak: smallint
-  statsReplyCount: smallint
-  statsReplyStreak: smallint
-  statsUploadCount: smallint
+  points: Float
   tenantId: bigint
 }
 
@@ -59836,44 +58923,7 @@ type UserSumFields {
 input UserSumOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -59884,12 +58934,6 @@ enum UserUpdateColumn {
 
   # column name
   createdById
-
-  # column name
-  customizationColor
-
-  # column name
-  customizationSignature
 
   # column name
   deletedAt
@@ -59904,6 +58948,15 @@ enum UserUpdateColumn {
   id
 
   # column name
+  isDarkModePreferred
+
+  # column name
+  isDataAnonymizedOnDeactivation
+
+  # column name
+  isDataExportedOnDeactivation
+
+  # column name
   isIntroductionFinished
 
   # column name
@@ -59916,139 +58969,7 @@ enum UserUpdateColumn {
   middleNames
 
   # column name
-  notificationSettingsAdminEventValidationApproved
-
-  # column name
-  notificationSettingsAdminEventValidationRejected
-
-  # column name
-  notificationSettingsAdminEventValidationStarted
-
-  # column name
-  notificationSettingsAdminEventValidationStep
-
-  # column name
-  notificationSettingsAdminReportCreated
-
-  # column name
-  notificationSettingsAdminRoleUpdated
-
-  # column name
-  notificationSettingsAdminTeamLegalFileUpdated
-
-  # column name
-  notificationSettingsAdminTeamSocialUpdated
-
-  # column name
-  notificationSettingsAdminThreadAssigned
-
-  # column name
-  notificationSettingsAdminThreadAssignedStale
-
-  # column name
-  notificationSettingsAdminThreadAssignedStaleThreshold
-
-  # column name
-  notificationSettingsAdminThreadStale
-
-  # column name
-  notificationSettingsAdminThreadStaleThreshold
-
-  # column name
-  notificationSettingsBadgeUnlocked
-
-  # column name
-  notificationSettingsBlogSubscribedUpdated
-
-  # column name
-  notificationSettingsContentRemoved
-
-  # column name
-  notificationSettingsEventCreated
-
-  # column name
-  notificationSettingsEventManagedApproved
-
-  # column name
-  notificationSettingsEventManagedRegistrationCreated
-
-  # column name
-  notificationSettingsEventManagedRejected
-
-  # column name
-  notificationSettingsEventSubscribedUpdated
-
-  # column name
-  notificationSettingsMentionned
-
-  # column name
-  notificationSettingsRoleUpdated
-
-  # column name
-  notificationSettingsTeamManagedEventUpdated
-
-  # column name
-  notificationSettingsTeamManagedFormUpdated
-
-  # column name
-  notificationSettingsTeamManagedMemberRoleUpdated
-
-  # column name
-  notificationSettingsTeamManagedMembershipRequestUpdated
-
-  # column name
-  notificationSettingsTeamSubscribedEventCreated
-
-  # column name
-  notificationSettingsThreadSubscribedAnswered
-
-  # column name
-  notificationSettingsThreadSubscribedUpdated
-
-  # column name
-  settingsIsDarkModeActivated
-
-  # column name
-  settingsIsGdprAnonymizedOnAccountDeactivation
-
-  # column name
-  settingsIsGdprExportedOnAccountDeactivation
-
-  # column name
-  statsActionStreak
-
-  # column name
-  statsCommentCount
-
-  # column name
-  statsLastActionAt
-
-  # column name
-  statsLastCommentAt
-
-  # column name
-  statsLastPostAt
-
-  # column name
-  statsLastReplyAt
-
-  # column name
-  statsPoints
-
-  # column name
-  statsPostCount
-
-  # column name
-  statsPostStreak
-
-  # column name
-  statsReplyCount
-
-  # column name
-  statsReplyStreak
-
-  # column name
-  statsUploadCount
+  points
 
   # column name
   tenantId
@@ -60069,44 +58990,7 @@ input UserUpdates {
 type UserVarianceFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -60114,44 +58998,7 @@ type UserVarianceFields {
 input UserVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -60159,44 +59006,7 @@ input UserVarianceOrderBy {
 type UserVarPopFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -60204,44 +59014,7 @@ type UserVarPopFields {
 input UserVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 
@@ -60249,44 +59022,7 @@ input UserVarPopOrderBy {
 type UserVarSampFields {
   createdById: Float
   id: Float
-  notificationSettingsAdminEventValidationApproved: Float
-  notificationSettingsAdminEventValidationRejected: Float
-  notificationSettingsAdminEventValidationStarted: Float
-  notificationSettingsAdminEventValidationStep: Float
-  notificationSettingsAdminReportCreated: Float
-  notificationSettingsAdminRoleUpdated: Float
-  notificationSettingsAdminTeamLegalFileUpdated: Float
-  notificationSettingsAdminTeamSocialUpdated: Float
-  notificationSettingsAdminThreadAssigned: Float
-  notificationSettingsAdminThreadAssignedStale: Float
-  notificationSettingsAdminThreadAssignedStaleThreshold: Float
-  notificationSettingsAdminThreadStale: Float
-  notificationSettingsAdminThreadStaleThreshold: Float
-  notificationSettingsBadgeUnlocked: Float
-  notificationSettingsBlogSubscribedUpdated: Float
-  notificationSettingsContentRemoved: Float
-  notificationSettingsEventCreated: Float
-  notificationSettingsEventManagedApproved: Float
-  notificationSettingsEventManagedRegistrationCreated: Float
-  notificationSettingsEventManagedRejected: Float
-  notificationSettingsEventSubscribedUpdated: Float
-  notificationSettingsMentionned: Float
-  notificationSettingsRoleUpdated: Float
-  notificationSettingsTeamManagedEventUpdated: Float
-  notificationSettingsTeamManagedFormUpdated: Float
-  notificationSettingsTeamManagedMemberRoleUpdated: Float
-  notificationSettingsTeamManagedMembershipRequestUpdated: Float
-  notificationSettingsTeamSubscribedEventCreated: Float
-  notificationSettingsThreadSubscribedAnswered: Float
-  notificationSettingsThreadSubscribedUpdated: Float
-  statsActionStreak: Float
-  statsCommentCount: Float
-  statsPoints: Float
-  statsPostCount: Float
-  statsPostStreak: Float
-  statsReplyCount: Float
-  statsReplyStreak: Float
-  statsUploadCount: Float
+  points: Float
   tenantId: Float
 }
 
@@ -60294,44 +59030,7 @@ type UserVarSampFields {
 input UserVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
-  notificationSettingsAdminEventValidationApproved: OrderBy
-  notificationSettingsAdminEventValidationRejected: OrderBy
-  notificationSettingsAdminEventValidationStarted: OrderBy
-  notificationSettingsAdminEventValidationStep: OrderBy
-  notificationSettingsAdminReportCreated: OrderBy
-  notificationSettingsAdminRoleUpdated: OrderBy
-  notificationSettingsAdminTeamLegalFileUpdated: OrderBy
-  notificationSettingsAdminTeamSocialUpdated: OrderBy
-  notificationSettingsAdminThreadAssigned: OrderBy
-  notificationSettingsAdminThreadAssignedStale: OrderBy
-  notificationSettingsAdminThreadAssignedStaleThreshold: OrderBy
-  notificationSettingsAdminThreadStale: OrderBy
-  notificationSettingsAdminThreadStaleThreshold: OrderBy
-  notificationSettingsBadgeUnlocked: OrderBy
-  notificationSettingsBlogSubscribedUpdated: OrderBy
-  notificationSettingsContentRemoved: OrderBy
-  notificationSettingsEventCreated: OrderBy
-  notificationSettingsEventManagedApproved: OrderBy
-  notificationSettingsEventManagedRegistrationCreated: OrderBy
-  notificationSettingsEventManagedRejected: OrderBy
-  notificationSettingsEventSubscribedUpdated: OrderBy
-  notificationSettingsMentionned: OrderBy
-  notificationSettingsRoleUpdated: OrderBy
-  notificationSettingsTeamManagedEventUpdated: OrderBy
-  notificationSettingsTeamManagedFormUpdated: OrderBy
-  notificationSettingsTeamManagedMemberRoleUpdated: OrderBy
-  notificationSettingsTeamManagedMembershipRequestUpdated: OrderBy
-  notificationSettingsTeamSubscribedEventCreated: OrderBy
-  notificationSettingsThreadSubscribedAnswered: OrderBy
-  notificationSettingsThreadSubscribedUpdated: OrderBy
-  statsActionStreak: OrderBy
-  statsCommentCount: OrderBy
-  statsPoints: OrderBy
-  statsPostCount: OrderBy
-  statsPostStreak: OrderBy
-  statsReplyCount: OrderBy
-  statsReplyStreak: OrderBy
-  statsUploadCount: OrderBy
+  points: OrderBy
   tenantId: OrderBy
 }
 

@@ -6,5 +6,5 @@ import type { Event } from '../../event/event.entity';
 export type EventApprovalOptions = EventApprovalProps &
   TenantScopedOptions & {
     event: Event;
-    step: EventApprovalStep;
+    eventApprovalStep: EventApprovalStep;
   };

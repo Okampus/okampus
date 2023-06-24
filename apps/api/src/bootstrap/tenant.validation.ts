@@ -27,14 +27,19 @@ export const tenantStrategyValidation =
     if (!tenant) return false;
 
     if (!oidcCache.strategies.has(domain)) {
-      const oidc = tenant.oidcInfo;
-      const { isOidcEnabled, oidcClientId, oidcClientSecret, oidcDiscoveryUrl, oidcScopes, oidcCallbackUri } = oidc;
-      if (!isOidcEnabled || !oidcClientId || !oidcClientSecret || !oidcDiscoveryUrl || !oidcScopes || !oidcCallbackUri)
+      if (
+        !tenant.isOidcEnabled ||
+        !tenant.oidcClientId ||
+        !tenant.oidcClientSecret ||
+        !tenant.oidcDiscoveryUrl ||
+        !tenant.oidcScopes ||
+        !tenant.oidcCallbackUri
+      )
         return false;
 
-      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);
-      const client = new TrustIssuer.Client({ client_id: oidcClientId, client_secret: oidcClientSecret });
-      const oidcConfig = { redirect_uri: oidcCallbackUri, scope: oidcScopes };
+      const TrustIssuer = await Issuer.discover(tenant.oidcDiscoveryUrl);
+      const client = new TrustIssuer.Client({ client_id: tenant.oidcClientId, client_secret: tenant.oidcClientSecret });
+      const oidcConfig = { redirect_uri: tenant.oidcCallbackUri, scope: tenant.oidcScopes };
       const strategy = tenantStrategyFactory({ authService, tenantSlug: domain, oidcConfig, client });
       oidcCache.strategies.set(domain, strategy);
     }

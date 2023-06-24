@@ -31,20 +31,6 @@ import type { LegalUnit } from './legal-unit/legal-unit.entity';
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
   [EntityRepositoryType]!: ActorRepository;
-
-  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true, default: null })
-  individual: Individual | null = null;
-
-  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true, default: null })
-  team: Team | null = null;
-
-  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true, default: null })
-  legalUnit: LegalUnit | null = null;
-
-  @ManyToMany({ type: 'Tag' })
-  @TransformCollection()
-  tags = new Collection<Tag>(this);
-
   @Property({ type: 'text' }) // TODO: implement unique by tenant
   slug!: string;
 
@@ -66,6 +52,19 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text' })
   @Unique()
   ical = nanoid(26);
+
+  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true, default: null })
+  individual: Individual | null = null;
+
+  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true, default: null })
+  team: Team | null = null;
+
+  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true, default: null })
+  legalUnit: LegalUnit | null = null;
+
+  @ManyToMany({ type: 'Tag' })
+  @TransformCollection()
+  tags = new Collection<Tag>(this);
 
   @OneToMany({ type: 'BankInfo', mappedBy: 'actor' })
   @TransformCollection()

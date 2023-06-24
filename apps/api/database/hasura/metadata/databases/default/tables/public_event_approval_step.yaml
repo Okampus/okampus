@@ -29,7 +29,7 @@ array_relationships:
   - name: eventApprovals
     using:
       foreign_key_constraint_on:
-        column: step_id
+        column: event_approval_step_id
         table:
           name: event_approval
           schema: public

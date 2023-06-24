@@ -1,7 +1,5 @@
-import { OidcInfo } from '../../embeds/oidc.embed';
 import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-import { IsString, IsOptional, IsObject } from 'class-validator';
+import { IsString, IsBoolean } from 'class-validator';
 
 @InputType()
 export class TenantProps {
@@ -17,9 +15,31 @@ export class TenantProps {
   @IsString()
   domain!: string;
 
-  @Field(() => OidcInfo, { nullable: true })
-  @IsOptional()
-  @IsObject()
-  @Type(() => OidcInfo)
-  oidcInfo?: OidcInfo;
+  @Field(() => Boolean, { nullable: true })
+  @IsBoolean()
+  isOidcEnabled?: boolean = false;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcName?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcClientId?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcClientSecret?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcDiscoveryUrl?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcScopes?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  oidcCallbackUri?: string = '';
 }

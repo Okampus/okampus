@@ -9,8 +9,8 @@ import type { CanteenOptions } from './canteen.options';
 export class Canteen extends TenantScopedEntity {
   [EntityRepositoryType]!: CanteenRepository;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null;
+  @Property({ type: 'text', default: '' })
+  description = '';
 
   @OneToOne({ type: 'Team', mappedBy: 'canteen' })
   team!: Team;

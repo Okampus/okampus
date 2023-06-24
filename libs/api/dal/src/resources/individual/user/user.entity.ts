@@ -1,8 +1,7 @@
 import { UserRepository } from './user.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Collection, Embedded, Entity, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
-import { UserCustomization, UserStats, UserSettings, UserNotificationSettings } from '@okampus/shared/dtos';
 
 import type { UserOptions } from './user.options';
 import type { Individual } from '../individual.entity';
@@ -22,35 +21,31 @@ export class User extends TenantScopedEntity {
   @Property({ type: 'text' })
   lastName!: string;
 
-  @OneToMany({ type: 'Shortcut', mappedBy: 'user' })
-  @TransformCollection()
-  shortcuts = new Collection<Shortcut>(this);
-
-  @OneToMany({ type: 'Session', mappedBy: 'user' })
-  @TransformCollection()
-  sessions = new Collection<Session>(this);
+  @Property({ type: 'float', default: 0 })
+  points = 0;
 
   // @OneToMany('Interest', 'user')
   // @TransformCollection()
   // interests = new Collection<Interest>(this);
 
-  @Embedded(() => UserCustomization)
-  customization = new UserCustomization({});
-
-  @Embedded(() => UserStats)
-  stats = new UserStats({});
-
-  @Embedded(() => UserSettings)
-  settings = new UserSettings({});
-
-  @Embedded(() => UserNotificationSettings)
-  notificationSettings = new UserNotificationSettings({});
+  //// User session settings
+  @Property({ type: 'boolean', default: false })
+  isOnboardingFinished = false;
 
   @Property({ type: 'boolean', default: false })
   isIntroductionFinished = false;
 
   @Property({ type: 'boolean', default: false })
-  isOnboardingFinished = false;
+  isDarkModePreferred = false;
+
+  /** Export my data via the main email when my account is deactivated */
+  @Property({ type: 'boolean', default: true })
+  isDataExportedOnDeactivation = true;
+
+  /** Anonymize my data when my account is deactivated */
+  @Property({ type: 'boolean', default: false })
+  isDataAnonymizedOnDeactivation = false;
+  ////
 
   @OneToOne({ type: 'Individual', mappedBy: 'user' })
   individual!: Individual;
@@ -62,6 +57,14 @@ export class User extends TenantScopedEntity {
   @OneToMany({ type: 'TeamJoin', mappedBy: 'joiner' })
   @TransformCollection()
   teamJoins = new Collection<TeamJoin>(this);
+
+  @OneToMany({ type: 'Shortcut', mappedBy: 'user' })
+  @TransformCollection()
+  shortcuts = new Collection<Shortcut>(this);
+
+  @OneToMany({ type: 'Session', mappedBy: 'user' })
+  @TransformCollection()
+  sessions = new Collection<Session>(this);
 
   constructor(options: UserOptions) {
     super(options);

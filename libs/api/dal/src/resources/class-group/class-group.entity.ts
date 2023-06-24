@@ -10,8 +10,8 @@ import type { ClassGroupOptions } from './class-group.options';
 export class ClassGroup extends TenantScopedEntity {
   [EntityRepositoryType]!: ClassGroupRepository;
 
-  @Property({ type: 'text', nullable: true, default: null })
-  description: string | null = null;
+  @Property({ type: 'text', default: '' })
+  description = '';
 
   @Enum({ items: () => ClassGroupType, type: EnumType })
   type!: ClassGroupType;

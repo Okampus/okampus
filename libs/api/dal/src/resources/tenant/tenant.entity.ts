@@ -4,7 +4,6 @@ import { BaseEntity } from '..';
 import {
   Cascade,
   Collection,
-  Embedded,
   Entity,
   EntityRepositoryType,
   OneToMany,
@@ -13,7 +12,6 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
-import { OidcInfo } from '@okampus/shared/dtos';
 
 import type { TenantOptions } from './tenant.options';
 import type { TenantManage } from './tenant-manage/tenant-manage.entity';
@@ -36,8 +34,26 @@ export class Tenant extends BaseEntity {
   @Property({ type: 'text' })
   pointName!: string;
 
-  @Embedded(() => OidcInfo)
-  oidcInfo = new OidcInfo({});
+  @Property({ type: 'boolean', default: true })
+  isOidcEnabled = false;
+
+  @Property({ type: 'text', default: '' })
+  oidcName = '';
+
+  @Property({ type: 'text', default: '' })
+  oidcClientId = '';
+
+  @Property({ type: 'text', default: '', hidden: true })
+  oidcClientSecret = '';
+
+  @Property({ type: 'text', default: '' })
+  oidcDiscoveryUrl = '';
+
+  @Property({ type: 'text', default: '' })
+  oidcScopes = '';
+
+  @Property({ type: 'text', default: '' })
+  oidcCallbackUri = '';
 
   @OneToMany({ type: 'EventApprovalStep', mappedBy: 'tenant' })
   @TransformCollection()

@@ -1,9 +1,4 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
-export * from './embeds/oidc.embed';
-export * from './embeds/user-customization.embed';
-export * from './embeds/user-notification-settings.embed';
-export * from './embeds/user-settings.embed';
-export * from './embeds/user-stats.embed';
 export * from './resources/actor/actor-image/actor-image.props';
 export * from './resources/actor/actor.props';
 export * from './resources/actor/address/address.props';
