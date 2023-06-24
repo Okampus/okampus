@@ -56,6 +56,8 @@ import { GrantUnlock } from './team/grant-unlock/grant-unlock.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
 import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
+import { Account } from './team/account/account.entity';
+import { AccountAllocate } from './team/account-allocate/account-allocate.entity';
 
 export const allEntities = [
   Log,
@@ -90,6 +92,8 @@ export const allEntities = [
   Pole,
   Role,
 
+  Account,
+  AccountAllocate,
   Expense,
   ExpenseItem,
 

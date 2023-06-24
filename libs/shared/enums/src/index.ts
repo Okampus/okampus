@@ -58,6 +58,7 @@ export * from './dal/log/event-type.enum';
 export * from './dal/metric/team-metric-type.enum';
 export * from './dal/s3/buckets.enum';
 export * from './dal/s3/resource-type.enum';
+export * from './dal/team/account-type.enum';
 export * from './dal/team/pole-category.enum';
 export * from './dal/team/team-history-event-type.enum';
 export * from './dal/team/team-image-type.enum';

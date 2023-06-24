@@ -29,6 +29,8 @@ export enum EntityName {
   Pole = 'Pole',
   Role = 'Role',
 
+  Account = 'Account',
+  AccountAllocate = 'AccountAllocate',
   Expense = 'Expense',
   ExpenseItem = 'ExpenseItem',
 
