@@ -92,10 +92,13 @@ const forbiddenFields = [
 
 export type ExpectNestedRelation = {
   path: string;
+  optional?: boolean;
   defaultProps?: Record<string, unknown>;
   overwrite?: Record<string, unknown>;
   checkTransform?: (value: Record<string, unknown>) => Record<string, unknown>;
 };
+
+export type ExpectIdRelation = { path: string; optional?: boolean };
 
 @Injectable()
 export class HasuraService extends RequestContext {
@@ -119,9 +122,9 @@ export class HasuraService extends RequestContext {
 
   async makeOperation(operation: string) {
     const headers = { 'X-Hasura-Role': 'admin' };
-    this.logger.log(`Request - ${JSON.stringify(operation)}`);
+    this.logger.log(`Request — ${JSON.stringify(operation)}`);
     const response = await this.axiosInstance.request({ data: { query: operation }, headers });
-    this.logger.log(`Response - ${JSON.stringify(response.data)}`);
+    this.logger.log(`Response — ${JSON.stringify(response.data)}`);
 
     if (response.data.errors) throw new BadRequestException(response.data.errors);
     return response.data.data;
@@ -254,56 +257,77 @@ export class HasuraService extends RequestContext {
       const pathSegments = relationship.path.split('.');
       const lastPathKey = pathSegments.pop();
 
-      let propsString = 'props';
-      deepProps = props;
       if (!lastPathKey) throw new InternalServerErrorException('Invalid arguments: no relationship path provided.');
-
-      for (const dataKey of pathSegments) {
-        if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
-
-        propsString += `.${dataKey}`;
-
-        deepProps[dataKey] = typeof deepProps[dataKey] === 'object' ? deepProps[dataKey] : {};
-        if (isNonNullObject(deepProps[dataKey])) deepProps = deepProps[dataKey];
-      }
-
-      if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
-      const dataValue = deepProps[lastPathKey];
-      if (!isNonNullObject(dataValue) || !('data' in dataValue) || !isNonNullObject(dataValue.data))
-        throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);
-
-      const data = relationship.checkTransform
-        ? relationship.checkTransform(this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite))
-        : this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite);
-
-      deepProps[lastPathKey] = { data };
-    }
-
-    return true;
-  }
-
-  expectIdRelationships(props: unknown, relationships: Array<string>) {
-    for (const relationship of relationships) {
-      let deepProps = props;
-
-      const pathSegments = relationship.split('.');
-      const lastPathKey = pathSegments.pop();
 
       let propsString = 'props';
       deepProps = props;
-      if (!lastPathKey) throw new InternalServerErrorException('Invalid arguments: no relationship path provided.');
 
+      let missingDeepProps = false;
       for (const idKey of pathSegments) {
-        if (!isNonNullObject(deepProps) || deepProps[idKey] === undefined)
-          throw new BadRequestException(`Expected ${propsString} to be an object.`);
+        if (!isNonNullObject(deepProps) || deepProps[idKey] === undefined) {
+          missingDeepProps = true;
+          break;
+        }
 
         deepProps = deepProps[idKey];
         propsString += `.${idKey}`;
       }
 
-      if (!isNonNullObject(deepProps)) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+      if (!isNonNullObject(deepProps) || missingDeepProps) {
+        if (!relationship.optional) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+        continue;
+      }
+
+      const idRelationship = `${lastPathKey}Id`;
+      if (deepProps[idRelationship])
+        throw new BadRequestException(`Expected ${JSON.stringify(props)} to not contain ${idRelationship}.`);
+
+      const dataValue = deepProps[lastPathKey];
+
+      if (isNonNullObject(dataValue) && 'data' in dataValue && isNonNullObject(dataValue.data)) {
+        const data = this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite);
+        deepProps[lastPathKey] = { data: relationship.checkTransform ? relationship.checkTransform(data) : data };
+      } else if (!relationship.optional) {
+        throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);
+      }
+    }
+
+    return true;
+  }
+
+  expectIdRelationships(props: unknown, relationships: Array<ExpectIdRelation>) {
+    for (const relationship of relationships) {
+      let deepProps = props;
+
+      const pathSegments = relationship.path.split('.');
+      const lastPathKey = pathSegments.pop();
+      if (!lastPathKey) throw new InternalServerErrorException('Invalid arguments: no relationship path provided.');
+
+      let propsString = 'props';
+      deepProps = props;
+
+      let missingDeepProps = false;
+      for (const idKey of pathSegments) {
+        if (!isNonNullObject(deepProps) || deepProps[idKey] === undefined) {
+          missingDeepProps = true;
+          break;
+        }
+
+        deepProps = deepProps[idKey];
+        propsString += `.${idKey}`;
+      }
+
+      if (!isNonNullObject(deepProps) || missingDeepProps) {
+        if (!relationship.optional) throw new BadRequestException(`Expected ${propsString} to be an object.`);
+        continue;
+      }
+
+      const nestedRelationship = lastPathKey.replace('Id', '');
+      if (deepProps[nestedRelationship])
+        throw new BadRequestException(`Expected ${JSON.stringify(props)} to not contain ${nestedRelationship}.`);
+
       const idProps = deepProps[lastPathKey];
-      if (!idProps || typeof idProps !== 'string')
+      if (!relationship.optional && (!idProps || typeof idProps !== 'string'))
         throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be a Snowflake.`);
     }
 
