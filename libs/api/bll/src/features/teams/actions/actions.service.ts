@@ -56,8 +56,8 @@ export class ActionsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['ActionSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
     props.tenantId = this.tenant().id;
-
     props.createdById = this.requester().id;
+
     // Custom logic
     return true;
   }

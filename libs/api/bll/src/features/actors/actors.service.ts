@@ -56,8 +56,8 @@ export class ActorsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['ActorSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
     props.tenantId = this.tenant().id;
-
     props.createdById = this.requester().id;
+
     // Custom logic
     return true;
   }

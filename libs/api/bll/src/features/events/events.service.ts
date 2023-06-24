@@ -56,8 +56,8 @@ export class EventsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['EventSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
     props.tenantId = this.tenant().id;
-
     props.createdById = this.requester().id;
+
     // Custom logic
     return true;
   }
@@ -66,7 +66,7 @@ export class EventsService extends RequestContext {
     // Custom logic
 
     this.hasuraService.expectNestedRelationship(props, [{ path: 'content' }]);
-    this.hasuraService.expectIdRelationships(props, ['teamId']);
+    this.hasuraService.expectIdRelationships(props, [{ path: 'teamId' }]);
 
     return true;
   }

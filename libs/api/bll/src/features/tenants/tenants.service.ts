@@ -56,6 +56,7 @@ export class TenantsService extends RequestContext {
     this.hasuraService.checkForbiddenFields(props);
 
     props.createdById = this.requester().id;
+
     // Custom logic
     return true;
   }

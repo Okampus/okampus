@@ -32,6 +32,10 @@
       "type": "string",
       "description": "Expected id relationship paths required in insert (comma-separated)"
     },
+    "settles": {
+      "type": "string",
+      "description": "Explicit cases of settled join entities"
+    },
     "tenant-scoped": {
       "type": "boolean",
       "description": "Whether the feature entity is tenant-scoped",

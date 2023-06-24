@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamJoinRepository, TeamJoin } from '@okampus/api/dal';
-import { EntityName, ScopeRole } from '@okampus/shared/enums';
+import { EntityName, ScopeRole, ApprovalState } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -56,8 +56,16 @@ export class TeamJoinsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['TeamJoinSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
     props.tenantId = this.tenant().id;
-
     props.createdById = this.requester().id;
+
+    if (props.settledById) throw new BadRequestException('Cannot update settledById directly.');
+    if (props.settledAt) throw new BadRequestException('Cannot update settledAt directly.');
+
+    if (props.state === ApprovalState.Rejected || (props.state === ApprovalState.Approved && props.receivedRoleId)) {
+      props.settledById = this.requester().id;
+      props.settledAt = new Date().toISOString();
+    }
+
     // Custom logic
     return true;
   }
