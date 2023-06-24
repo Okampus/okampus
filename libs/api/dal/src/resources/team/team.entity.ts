@@ -17,9 +17,10 @@ import {
   OneToOne,
   Property,
 } from '@mikro-orm/core';
+
+import type { Account } from './account/account.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantManage } from '../tenant/tenant-manage/tenant-manage.entity';
-
 import type { TeamOptions } from './team.options';
 import type { Action } from './action/action.entity';
 import type { ClassGroup } from '../class-group/class-group.entity';
@@ -35,6 +36,7 @@ import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventManage } from '../event/event-manage/event-manage.entity';
+import type { AccountAllocate } from './account-allocate/account-allocate.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -42,19 +44,6 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @Enum({ items: () => TeamType, type: EnumType, default: TeamType.Club })
   type = TeamType.Club;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationDay: number | null = null;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationMonth: number | null = null;
-
-  @Property({ type: 'smallint', nullable: true, default: null })
-  originalCreationYear: number | null = null;
-
-  // @OneToMany('TeamHistory', 'team')
-  // @TransformCollection()
-  // histories = new Collection<TeamHistory>(this);
 
   // TODO: long-term, convert to currency + amount + manage payments
   @Property({ type: 'float', default: 0 })
@@ -103,14 +92,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   video: FileUpload | null = null;
 
-  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
-  @TransformCollection()
-  eventManages = new Collection<EventManage>(this);
-
-  @OneToMany({ type: 'TeamHistory', mappedBy: 'team' })
-  @TransformCollection()
-  history = new Collection<TeamHistory>(this);
-
   @OneToMany({ type: 'Team', mappedBy: 'parent' })
   @TransformCollection()
   children = new Collection<Team>(this);
@@ -122,6 +103,22 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Action', mappedBy: 'team' })
   @TransformCollection()
   actions = new Collection<Action>(this);
+
+  @OneToMany({ type: 'Account', mappedBy: 'team' })
+  @TransformCollection()
+  accounts = new Collection<Account>(this);
+
+  @OneToMany({ type: 'AccountAllocate', mappedBy: 'team' })
+  @TransformCollection()
+  accountAllocates = new Collection<AccountAllocate>(this);
+
+  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
+  @TransformCollection()
+  eventManages = new Collection<EventManage>(this);
+
+  @OneToMany({ type: 'TeamHistory', mappedBy: 'team' })
+  @TransformCollection()
+  history = new Collection<TeamHistory>(this);
 
   @OneToMany({ type: 'Finance', mappedBy: 'team' })
   @TransformCollection()
