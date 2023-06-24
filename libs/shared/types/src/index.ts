@@ -24,6 +24,7 @@ export * from './interfaces/ui/props/route.props';
 export * from './interfaces/ui/props/toast.props';
 export * from './interfaces/ui/select-item.interface';
 export * from './interfaces/ui/selected-menu.interface';
+export * from './interfaces/ui/tab.interface';
 export * from './types/abstract-constructor.type';
 export * from './types/array.type';
 export * from './types/cast.type';
