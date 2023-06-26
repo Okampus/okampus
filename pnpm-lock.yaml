@@ -170,6 +170,9 @@ dependencies:
   embla-carousel-react:
     specifier: ^7.1.0
     version: 7.1.0(react@18.2.0)
+  fast-iban:
+    specifier: ^1.2.0
+    version: 1.2.0
   fastify:
     specifier: ^4.17.0
     version: 4.17.0
@@ -14508,6 +14511,12 @@ packages:
       merge2: 1.4.1
       micromatch: 4.0.5
 
+  /fast-iban@1.2.0:
+    resolution: {integrity: sha512-b8Ul29Ff308m0OYYm2dKERgmY/Prvww+3uSDL+VZJBPVH7GhfKrQ2apbShQrCJwQjOnpe+d1b72A//u2/Hr9xw==}
+    dependencies:
+      iso-7064: 1.1.0
+    dev: false
+
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
@@ -16698,6 +16707,10 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  /iso-7064@1.1.0:
+    resolution: {integrity: sha512-GO1bR+qa1AtWIBUoE59suIc6y4yn/1Ho8PEMmhHg0TXpEPzwxm0Z4/+Ps6JfrbYjSDu7yzIoIlQJJh3EHCpvoQ==}
+    dev: false
 
   /isobject@2.1.0:
     resolution: {integrity: sha512-+OUdGJlgjOBZDfxnDjYYG6zp487z0JGNQq3cYQYg5f5hKR+syHMsaztzGeml/4kGG55CSpKSpWTY+jYGgsHLgA==}

@@ -67,6 +67,7 @@
     "diff": "^5.1.0",
     "dotenv": "^16.0.0",
     "embla-carousel-react": "^7.1.0",
+    "fast-iban": "^1.2.0",
     "fastify": "^4.17.0",
     "fastify-multer": "^2.0.0",
     "framer-motion": "^10.12.0",
