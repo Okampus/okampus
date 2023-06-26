@@ -11,8 +11,11 @@ export enum EntityName {
   Actor = 'Actor',
   BankInfo = 'BankInfo',
   Address = 'Address',
+  Location = 'Location',
   ActorImage = 'ActorImage',
   LegalUnit = 'LegalUnit',
+  LegalUnitLocation = 'LegalUnitLocation',
+
   Social = 'Social',
   Tag = 'Tag',
   Follow = 'Follow',

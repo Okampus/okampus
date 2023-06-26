@@ -1,6 +1,6 @@
 import { useTypedLazyQuery } from '@okampus/shared/graphql';
 import { useLazyEffect } from '@okampus/ui/hooks';
-import { CollapsibleItem, SearchInput } from '@okampus/ui/molecules';
+import { CollapsibleItem } from '@okampus/ui/molecules';
 // import { DateInput, RadioInput, SearchInput, SingleFileInput, TextInput } from '@okampus/ui/molecules';
 import { useState } from 'react';
 
@@ -109,14 +109,14 @@ export const WIP = () => {
       /> */}
       {/* <DocumentInput onChange={(file) => setFileId(file || '')} /> */}
       {/* <div className="text-0">{processedJson?.processReceipt}</div> */}
-      <SearchInput
+      {/* <SearchInput
         options={{ label: 'Location', name: 'location' }}
         items={(data?.searchLocation ?? []).map((item) => ({ label: item.street, value: item.id || '' }))}
         value={value}
         onChangeValue={setValue}
         query={query}
         onChangeQuery={setQuery}
-      />
+      /> */}
       {/* <MultiCheckboxInput
         items={[
           { label: 'Pria', value: 'pria' },

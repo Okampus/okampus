@@ -1,11 +1,11 @@
 import { Selector } from '../../zeus';
 import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 import { entityBase } from '../entityBase';
-import { addressBaseInfo } from '../actor/address/addressBase';
 import { teamBaseInfo } from '../team/teamBase';
 import { projectMinimalInfo } from '../project/projectMinimal';
-
 import { contentBaseInfo } from '../content/contentBase';
+import { locationBaseInfo } from '../actor/location/locationBase';
+
 import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const eventBaseInfo = Selector('Event')({
@@ -15,7 +15,7 @@ export const eventBaseInfo = Selector('Event')({
   name: true,
   slug: true,
   content: contentBaseInfo,
-  address: addressBaseInfo,
+  location: locationBaseInfo,
   state: true,
   price: true,
   pointsPresence: true,

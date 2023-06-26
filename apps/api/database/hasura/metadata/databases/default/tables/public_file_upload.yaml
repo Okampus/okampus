@@ -9,13 +9,6 @@ object_relationships:
         table:
           name: actor_image
           schema: public
-  - name: address
-    using:
-      foreign_key_constraint_on:
-        column: image_id
-        table:
-          name: address
-          schema: public
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -99,6 +92,13 @@ array_relationships:
         column: generated_document_id
         table:
           name: grant
+          schema: public
+  - name: locationImages
+    using:
+      foreign_key_constraint_on:
+        column: file_upload_id
+        table:
+          name: location_images
           schema: public
   - name: projects
     using:

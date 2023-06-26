@@ -6,7 +6,6 @@ import { TransformCollection } from '@okampus/api/shards';
 import { RoleCategory, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
 import {
-  Cascade,
   Collection,
   Entity,
   EntityRepositoryType,
@@ -86,17 +85,17 @@ export class Team extends TenantScopedEntity implements Searchable {
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
-  @ManyToOne({ type: 'Team', nullable: true, default: null, cascade: [Cascade.ALL] })
-  parent: Team | null = null;
-
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   video: FileUpload | null = null;
+
+  @ManyToOne({ type: 'Team', nullable: true, default: null })
+  parent: Team | null = null;
 
   @OneToMany({ type: 'Team', mappedBy: 'parent' })
   @TransformCollection()
   children = new Collection<Team>(this);
 
-  @OneToMany({ type: 'Document', mappedBy: 'team', cascade: [Cascade.ALL] })
+  @OneToMany({ type: 'Document', mappedBy: 'team' })
   @TransformCollection()
   documents = new Collection<Document>(this);
 

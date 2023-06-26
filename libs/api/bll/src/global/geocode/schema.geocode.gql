@@ -1,27 +1,17 @@
-type Point {
+type LocationInfo {
   latitude: Float!
   longitude: Float!
-}
-
-type Location {
-  id: String
+  category: String!
   name: String!
-  city: String!
-  zip: String!
-  state: String!
+  streetNumber: String!
   street: String!
-  country: String!
-  coordinates: Point!
-}
-
-type AddressInfo {
-  streetNumber: Int
-  streetType: String!
-  streetName: String!
+  zip: String!
   city: String!
-  cityCode: String!
+  state: String!
+  country: String!
+  geoapifyId: String!
 }
 
 type Query {
-  searchLocation(query: String!): [Location!]!
+  searchLocation(query: String!): [LocationInfo!]!
 }

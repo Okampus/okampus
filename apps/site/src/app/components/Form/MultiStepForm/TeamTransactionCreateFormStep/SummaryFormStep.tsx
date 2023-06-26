@@ -1,9 +1,9 @@
 import { payedByLabel } from './PayedByFormStep';
 
-import { DateInput, NumberInput, SearchInput, SelectInput, TextInput, UserItem } from '@okampus/ui/molecules';
+import { DateInput, NumberInput, SelectInput, TextInput, UserItem } from '@okampus/ui/molecules';
 import { projectBaseInfo, useTypedLazyQuery, useTypedQuery } from '@okampus/shared/graphql';
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
-import { TextAddress } from '@okampus/ui/atoms';
+// import { TextAddress } from '@okampus/ui/atoms';
 import { useTeamManage } from '@okampus/ui/hooks';
 import { getAvatar } from '@okampus/ui/utils';
 
@@ -133,7 +133,7 @@ export function SummaryFormStep({ values, setValues }: SummaryFormStepProps) {
           value={values.category}
           onChange={(category) => setValues({ ...values, category })}
         />
-        <SearchInput
+        {/* <SearchInput
           options={{ label: 'Lieu de la dépense', name: 'location' }}
           items={(data?.searchLocation ?? []).map((item) => ({
             label: <TextAddress address={item} />,
@@ -143,7 +143,7 @@ export function SummaryFormStep({ values, setValues }: SummaryFormStepProps) {
           onChangeValue={(addressItem) => setValues({ ...values, addressItem })}
           query={values.addressQuery}
           onChangeQuery={(query) => setValues({ ...values, addressQuery: query })}
-        />
+        /> */}
         <textarea
           value={values.description}
           onChange={(e) => setValues({ ...values, description: e.target.value })}

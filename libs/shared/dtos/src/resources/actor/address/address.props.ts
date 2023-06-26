@@ -2,28 +2,44 @@ import { Property } from '@mikro-orm/core';
 import { Field, Float, InputType } from '@nestjs/graphql';
 import { Countries } from '@okampus/shared/consts';
 
-import { IsEnum, IsString, Length } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class AddressProps {
-  @Field(() => String)
-  @Length(3, 150)
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
-  name?: string;
+  name?: string = '';
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  category?: string = '';
 
   @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber()
   latitude: number | null = null;
 
   @Field(() => Float, { nullable: true })
+  @IsOptional()
+  @IsNumber()
   longitude: number | null = null;
 
   @Field(() => String)
+  @IsString()
+  streetNumber!: string;
+
+  @Field(() => String)
+  @IsString()
   street!: string;
 
   @Field(() => String)
+  @IsString()
   city!: string;
 
   @Field(() => String)
+  @IsString()
   zip!: string;
 
   @Field(() => String)

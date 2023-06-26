@@ -58,6 +58,8 @@ import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
 import { Account } from './team/account/account.entity';
 import { AccountAllocate } from './team/account-allocate/account-allocate.entity';
+import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
+import { Location } from './actor/location/location.entity';
 
 export const allEntities = [
   Log,
@@ -74,8 +76,11 @@ export const allEntities = [
   Actor,
   BankInfo,
   Address,
+  Location,
   ActorImage,
   LegalUnit,
+  LegalUnitLocation,
+
   Social,
   Tag,
   Follow,

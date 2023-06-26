@@ -14,8 +14,8 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { FinanceCategory } from '@okampus/shared/enums';
 
+import type { LegalUnit } from '../../actor/legal-unit/legal-unit.entity';
 import type { Expense } from '../expense/expense.entity';
-import type { Address } from '../../actor/address/address.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ExpenseItemOptions } from './expense-item.options';
 
@@ -41,8 +41,8 @@ export class ExpenseItem extends TenantScopedEntity {
   @Property({ type: 'datetime', nullable: true, default: null })
   payedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Address', nullable: true, default: null })
-  address: Address | null = null;
+  @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
+  company: LegalUnit | null = null;
 
   @ManyToOne({ type: 'Expense', nullable: true, default: null })
   expense: Expense | null = null;

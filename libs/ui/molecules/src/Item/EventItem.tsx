@@ -1,6 +1,6 @@
 import { DateInfo } from '../Content/DateInfo';
 import { ActionButton } from '../Button/ActionButton';
-import { TextAddress } from '@okampus/ui/atoms';
+import { TextLocation } from '@okampus/ui/atoms';
 import { EVENT_ROUTE } from '@okampus/shared/consts';
 import { Link } from 'react-router-dom';
 import { ActionType } from '@okampus/shared/types';
@@ -16,7 +16,7 @@ export function EventItem({ event }: EventItemProps) {
           <DateInfo start={event.start as string} end={event.end as string} className="pt-1 w-40 shrink-0" />
           <div className="flex flex-col line-clamp-1">
             <div className="title-sm">{event?.name}</div>
-            <TextAddress address={event.address} className="line-clamp-1" />
+            <TextLocation location={event.location} className="line-clamp-1" />
             <div className="text-2 line-clamp-1">
               <span className="md:hidden text-0 font-medium pr-2">
                 {event.price > 0 ? `${event.price}€` : 'Gratuit'}

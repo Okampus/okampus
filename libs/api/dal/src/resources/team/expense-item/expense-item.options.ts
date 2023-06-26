@@ -1,10 +1,12 @@
+import type { Expense } from '../expense/expense.entity';
+import type { LegalUnit } from '../../actor/legal-unit/legal-unit.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { ExpenseItemProps } from '@okampus/shared/dtos';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { Address } from '../../actor/address/address.entity';
 
 export type ExpenseItemOptions = ExpenseItemProps &
   TenantScopedOptions & {
-    address: Address | null;
+    company?: LegalUnit | null;
+    expense?: Expense | null;
     attachments?: FileUpload[];
   };

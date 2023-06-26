@@ -1386,8 +1386,6 @@ type Actor {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actorTags(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): [ActorTags!]!
   actorTagsAggregate(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): ActorTagsAggregate!
-  addresses(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
-  addressesAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
   bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
   bio: String!
@@ -1407,6 +1405,10 @@ type Actor {
   individualId: bigint
   legalUnit: LegalUnit
   legalUnitId: bigint
+  legalUnitLocation: LegalUnitLocation
+  legalUnitLocationId: bigint
+  locations(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  locationsAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
   name: String!
   ownedBots(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
   ownedBotsAggregate(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): BotAggregate!
@@ -1483,6 +1485,7 @@ type ActorAvgFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -1492,6 +1495,7 @@ input ActorAvgOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -1504,8 +1508,6 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
-  addresses: AddressBoolExp
-  addressesAggregate: AddressAggregateBoolExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bio: StringComparisonExp
@@ -1525,6 +1527,10 @@ input ActorBoolExp {
   individualId: BigintComparisonExp
   legalUnit: LegalUnitBoolExp
   legalUnitId: BigintComparisonExp
+  legalUnitLocation: LegalUnitLocationBoolExp
+  legalUnitLocationId: BigintComparisonExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   name: StringComparisonExp
   ownedBots: BotBoolExp
   ownedBotsAggregate: BotAggregateBoolExp
@@ -1551,7 +1557,9 @@ enum ActorConstraint {
   actor_ical_unique
   actor_individual_id_unique
   actor_legal_unit_id_unique
+  actor_legal_unit_location_id_unique
   actor_pkey
+  actor_slug_unique
   actor_team_id_unique
 }
 
@@ -1956,6 +1964,7 @@ input ActorIncInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -1963,7 +1972,6 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
-  addresses: AddressArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   bio: String
   createdAt: timestamptz
@@ -1980,6 +1988,9 @@ input ActorInsertInput {
   individualId: bigint
   legalUnit: LegalUnitObjRelInsertInput
   legalUnitId: bigint
+  legalUnitLocation: LegalUnitLocationObjRelInsertInput
+  legalUnitLocationId: bigint
+  locations: LocationArrRelInsertInput
   name: String
   ownedBots: BotArrRelInsertInput
   payedFinances: FinanceArrRelInsertInput
@@ -2007,6 +2018,7 @@ type ActorMaxFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2026,6 +2038,7 @@ input ActorMaxOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   name: OrderBy
   slug: OrderBy
   status: OrderBy
@@ -2045,6 +2058,7 @@ type ActorMinFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2064,6 +2078,7 @@ input ActorMinOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   name: OrderBy
   slug: OrderBy
   status: OrderBy
@@ -2091,7 +2106,6 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
-  addressesAggregate: AddressAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   bio: OrderBy
   createdAt: OrderBy
@@ -2108,6 +2122,9 @@ input ActorOrderBy {
   individualId: OrderBy
   legalUnit: LegalUnitOrderBy
   legalUnitId: OrderBy
+  legalUnitLocation: LegalUnitLocationOrderBy
+  legalUnitLocationId: OrderBy
+  locationsAggregate: LocationAggregateOrderBy
   name: OrderBy
   ownedBotsAggregate: BotAggregateOrderBy
   payedFinancesAggregate: FinanceAggregateOrderBy
@@ -2139,6 +2156,7 @@ enum ActorSelectColumn {
   id
   individualId
   legalUnitId
+  legalUnitLocationId
   name
   slug
   status
@@ -2158,6 +2176,7 @@ input ActorSetInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2171,6 +2190,7 @@ type ActorStddevFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2180,6 +2200,7 @@ input ActorStddevOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2189,6 +2210,7 @@ type ActorStddevPopFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2198,6 +2220,7 @@ input ActorStddevPopOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2207,6 +2230,7 @@ type ActorStddevSampFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2216,6 +2240,7 @@ input ActorStddevSampOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2236,6 +2261,7 @@ input ActorStreamCursorValueInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2249,6 +2275,7 @@ type ActorSumFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -2258,6 +2285,7 @@ input ActorSumOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2509,6 +2537,7 @@ enum ActorUpdateColumn {
   id
   individualId
   legalUnitId
+  legalUnitLocationId
   name
   slug
   status
@@ -2528,6 +2557,7 @@ type ActorVarianceFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2537,6 +2567,7 @@ input ActorVarianceOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2546,6 +2577,7 @@ type ActorVarPopFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2555,6 +2587,7 @@ input ActorVarPopOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2564,6 +2597,7 @@ type ActorVarSampFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2573,43 +2607,29 @@ input ActorVarSampOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 type Address {
-  actor: Actor!
-  actorId: bigint!
-  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
-  campus: Campus
-  campusClusters(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): [CampusCluster!]!
-  campusClustersAggregate(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): CampusClusterAggregate!
-  campusId: bigint
+  category: String!
   city: String!
   country: String!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
-  eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
-  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
-  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
-  finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
-  financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint!
-  image: FileUpload
-  imageId: bigint
-  isPublic: Boolean!
   latitude: Float
+  locations(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  locationsAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
   longitude: Float
   name: String!
   state: String!
   street: String!
-  tenant: Tenant!
-  tenantId: bigint!
+  streetNumber: String!
   zip: String!
 }
 
@@ -2619,23 +2639,7 @@ type AddressAggregate {
 }
 
 input AddressAggregateBoolExp {
-  bool_and: addressAggregateBoolExpBool_and
-  bool_or: addressAggregateBoolExpBool_or
   count: addressAggregateBoolExpCount
-}
-
-input addressAggregateBoolExpBool_and {
-  arguments: AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: AddressBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input addressAggregateBoolExpBool_or {
-  arguments: AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: AddressBoolExp
-  predicate: BooleanComparisonExp!
 }
 
 input addressAggregateBoolExpCount {
@@ -2679,191 +2683,143 @@ input AddressArrRelInsertInput {
 }
 
 type AddressAvgFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressAvgOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 input AddressBoolExp {
   _and: [AddressBoolExp!]
   _not: AddressBoolExp
   _or: [AddressBoolExp!]
-  actor: ActorBoolExp
-  actorId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
-  campus: CampusBoolExp
-  campusClusters: CampusClusterBoolExp
-  campusClustersAggregate: CampusClusterAggregateBoolExp
-  campusId: BigintComparisonExp
+  category: StringComparisonExp
   city: StringComparisonExp
   country: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  events: EventBoolExp
-  eventsAggregate: EventAggregateBoolExp
-  expenseItems: ExpenseItemBoolExp
-  expenseItemsAggregate: ExpenseItemAggregateBoolExp
-  finances: FinanceBoolExp
-  financesAggregate: FinanceAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
+  geoapifyId: StringComparisonExp
   id: BigintComparisonExp
-  image: FileUploadBoolExp
-  imageId: BigintComparisonExp
-  isPublic: BooleanComparisonExp
   latitude: FloatComparisonExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   longitude: FloatComparisonExp
   name: StringComparisonExp
   state: StringComparisonExp
   street: StringComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
+  streetNumber: StringComparisonExp
   zip: StringComparisonExp
 }
 
 enum AddressConstraint {
-  address_campus_id_unique
-  address_image_id_unique
   address_pkey
 }
 
 input AddressIncInput {
-  actorId: bigint
-  campusId: bigint
   createdById: bigint
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
-  tenantId: bigint
 }
 
 input AddressInsertInput {
-  actor: ActorObjRelInsertInput
-  actorId: bigint
-  bankInfos: BankInfoArrRelInsertInput
-  campus: CampusObjRelInsertInput
-  campusClusters: CampusClusterArrRelInsertInput
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  events: EventArrRelInsertInput
-  expenseItems: ExpenseItemArrRelInsertInput
-  finances: FinanceArrRelInsertInput
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  image: FileUploadObjRelInsertInput
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
+  locations: LocationArrRelInsertInput
   longitude: Float
   name: String
   state: String
   street: String
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 type AddressMaxFields {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 input AddressMaxOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
 type AddressMinFields {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 input AddressMinOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
@@ -2884,33 +2840,22 @@ input AddressOnConflict {
 }
 
 input AddressOrderBy {
-  actor: ActorOrderBy
-  actorId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
-  campus: CampusOrderBy
-  campusClustersAggregate: CampusClusterAggregateOrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventsAggregate: EventAggregateOrderBy
-  expenseItemsAggregate: ExpenseItemAggregateOrderBy
-  financesAggregate: FinanceAggregateOrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  image: FileUploadOrderBy
-  imageId: OrderBy
-  isPublic: OrderBy
   latitude: OrderBy
+  locationsAggregate: LocationAggregateOrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
@@ -2919,119 +2864,81 @@ input AddressPkColumnsInput {
 }
 
 enum AddressSelectColumn {
-  actorId
-  campusId
+  category
   city
   country
   createdAt
   createdById
   deletedAt
-  hiddenAt
+  geoapifyId
   id
-  imageId
-  isPublic
   latitude
   longitude
   name
   state
   street
-  tenantId
+  streetNumber
   zip
 }
 
-enum AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns {
-  isPublic
-}
-
-enum AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns {
-  isPublic
-}
-
 input AddressSetInput {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 type AddressStddevFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressStddevOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 type AddressStddevPopFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressStddevPopOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 type AddressStddevSampFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressStddevSampOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 input AddressStreamCursorInput {
@@ -3040,66 +2947,52 @@ input AddressStreamCursorInput {
 }
 
 input AddressStreamCursorValueInput {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 type AddressSumFields {
-  actorId: bigint
-  campusId: bigint
   createdById: bigint
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
-  tenantId: bigint
 }
 
 input AddressSumOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 enum AddressUpdateColumn {
-  actorId
-  campusId
+  category
   city
   country
   createdAt
   createdById
   deletedAt
-  hiddenAt
+  geoapifyId
   id
-  imageId
-  isPublic
   latitude
   longitude
   name
   state
   street
-  tenantId
+  streetNumber
   zip
 }
 
@@ -3110,69 +3003,45 @@ input AddressUpdates {
 }
 
 type AddressVarianceFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressVarianceOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 type AddressVarPopFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressVarPopOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 type AddressVarSampFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 input AddressVarSampOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 type BankInfo {
@@ -3181,13 +3050,11 @@ type BankInfo {
   accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actor: Actor!
   actorId: bigint!
-  address: Address!
-  addressId: bigint!
   agencyCode: String!
-  bank: LegalUnit
+  bank: LegalUnitLocation
   bankCode: String!
-  bankCodeBic: String!
   bankId: bigint
+  bicSwift: String!
   checksum: String!
   country: String!
   countryCode: String!
@@ -3256,7 +3123,6 @@ input BankInfoArrRelInsertInput {
 
 type BankInfoAvgFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3265,7 +3131,6 @@ type BankInfoAvgFields {
 
 input BankInfoAvgOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3281,13 +3146,11 @@ input BankInfoBoolExp {
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   agencyCode: StringComparisonExp
-  bank: LegalUnitBoolExp
+  bank: LegalUnitLocationBoolExp
   bankCode: StringComparisonExp
-  bankCodeBic: StringComparisonExp
   bankId: BigintComparisonExp
+  bicSwift: StringComparisonExp
   checksum: StringComparisonExp
   country: StringComparisonExp
   countryCode: StringComparisonExp
@@ -3311,7 +3174,6 @@ enum BankInfoConstraint {
 
 input BankInfoIncInput {
   actorId: bigint
-  addressId: bigint
   bankId: bigint
   createdById: bigint
   id: bigint
@@ -3323,13 +3185,11 @@ input BankInfoInsertInput {
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  address: AddressObjRelInsertInput
-  addressId: bigint
   agencyCode: String
-  bank: LegalUnitObjRelInsertInput
+  bank: LegalUnitLocationObjRelInsertInput
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -3349,11 +3209,10 @@ input BankInfoInsertInput {
 type BankInfoMaxFields {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -3370,11 +3229,10 @@ type BankInfoMaxFields {
 input BankInfoMaxOrderBy {
   accountCode: OrderBy
   actorId: OrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3391,11 +3249,10 @@ input BankInfoMaxOrderBy {
 type BankInfoMinFields {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -3412,11 +3269,10 @@ type BankInfoMinFields {
 input BankInfoMinOrderBy {
   accountCode: OrderBy
   actorId: OrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3451,13 +3307,11 @@ input BankInfoOrderBy {
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  address: AddressOrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
-  bank: LegalUnitOrderBy
+  bank: LegalUnitLocationOrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -3481,11 +3335,10 @@ input BankInfoPkColumnsInput {
 enum BankInfoSelectColumn {
   accountCode
   actorId
-  addressId
   agencyCode
   bankCode
-  bankCodeBic
   bankId
+  bicSwift
   checksum
   country
   countryCode
@@ -3502,11 +3355,10 @@ enum BankInfoSelectColumn {
 input BankInfoSetInput {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -3522,7 +3374,6 @@ input BankInfoSetInput {
 
 type BankInfoStddevFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3531,7 +3382,6 @@ type BankInfoStddevFields {
 
 input BankInfoStddevOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3540,7 +3390,6 @@ input BankInfoStddevOrderBy {
 
 type BankInfoStddevPopFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3549,7 +3398,6 @@ type BankInfoStddevPopFields {
 
 input BankInfoStddevPopOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3558,7 +3406,6 @@ input BankInfoStddevPopOrderBy {
 
 type BankInfoStddevSampFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3567,7 +3414,6 @@ type BankInfoStddevSampFields {
 
 input BankInfoStddevSampOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3582,11 +3428,10 @@ input BankInfoStreamCursorInput {
 input BankInfoStreamCursorValueInput {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -3602,7 +3447,6 @@ input BankInfoStreamCursorValueInput {
 
 type BankInfoSumFields {
   actorId: bigint
-  addressId: bigint
   bankId: bigint
   createdById: bigint
   id: bigint
@@ -3611,7 +3455,6 @@ type BankInfoSumFields {
 
 input BankInfoSumOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3621,11 +3464,10 @@ input BankInfoSumOrderBy {
 enum BankInfoUpdateColumn {
   accountCode
   actorId
-  addressId
   agencyCode
   bankCode
-  bankCodeBic
   bankId
+  bicSwift
   checksum
   country
   countryCode
@@ -3647,7 +3489,6 @@ input BankInfoUpdates {
 
 type BankInfoVarianceFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3656,7 +3497,6 @@ type BankInfoVarianceFields {
 
 input BankInfoVarianceOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3665,7 +3505,6 @@ input BankInfoVarianceOrderBy {
 
 type BankInfoVarPopFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3674,7 +3513,6 @@ type BankInfoVarPopFields {
 
 input BankInfoVarPopOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -3683,7 +3521,6 @@ input BankInfoVarPopOrderBy {
 
 type BankInfoVarSampFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -3692,7 +3529,6 @@ type BankInfoVarSampFields {
 
 input BankInfoVarSampOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -4068,7 +3904,6 @@ input BotVarSampOrderBy {
 }
 
 type Campus {
-  address: Address
   campusCluster: CampusCluster!
   campusClusterId: bigint!
   createdAt: timestamptz!
@@ -4077,6 +3912,8 @@ type Campus {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
+  location: Location!
+  locationId: bigint!
   name: String!
   tenant: Tenant!
   tenantId: bigint!
@@ -4135,6 +3972,7 @@ type CampusAvgFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4142,6 +3980,7 @@ input CampusAvgOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4149,7 +3988,6 @@ input CampusBoolExp {
   _and: [CampusBoolExp!]
   _not: CampusBoolExp
   _or: [CampusBoolExp!]
-  address: AddressBoolExp
   campusCluster: CampusClusterBoolExp
   campusClusterId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -4158,14 +3996,14 @@ input CampusBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
   name: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
 
 type CampusCluster {
-  approximateAddress: Address
-  approximateAddressId: bigint
   campuses(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): [Campus!]!
   campusesAggregate(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): CampusAggregate!
   createdAt: timestamptz!
@@ -4231,14 +4069,12 @@ input CampusClusterArrRelInsertInput {
 }
 
 type CampusClusterAvgFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterAvgOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4248,8 +4084,6 @@ input CampusClusterBoolExp {
   _and: [CampusClusterBoolExp!]
   _not: CampusClusterBoolExp
   _or: [CampusClusterBoolExp!]
-  approximateAddress: AddressBoolExp
-  approximateAddressId: BigintComparisonExp
   campuses: CampusBoolExp
   campusesAggregate: CampusAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -4270,15 +4104,12 @@ enum CampusClusterConstraint {
 }
 
 input CampusClusterIncInput {
-  approximateAddressId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
 }
 
 input CampusClusterInsertInput {
-  approximateAddress: AddressObjRelInsertInput
-  approximateAddressId: bigint
   campuses: CampusArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -4293,7 +4124,6 @@ input CampusClusterInsertInput {
 }
 
 type CampusClusterMaxFields {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4304,7 +4134,6 @@ type CampusClusterMaxFields {
 }
 
 input CampusClusterMaxOrderBy {
-  approximateAddressId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -4315,7 +4144,6 @@ input CampusClusterMaxOrderBy {
 }
 
 type CampusClusterMinFields {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4326,7 +4154,6 @@ type CampusClusterMinFields {
 }
 
 input CampusClusterMinOrderBy {
-  approximateAddressId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -4353,8 +4180,6 @@ input CampusClusterOnConflict {
 }
 
 input CampusClusterOrderBy {
-  approximateAddress: AddressOrderBy
-  approximateAddressId: OrderBy
   campusesAggregate: CampusAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -4373,7 +4198,6 @@ input CampusClusterPkColumnsInput {
 }
 
 enum CampusClusterSelectColumn {
-  approximateAddressId
   createdAt
   createdById
   deletedAt
@@ -4384,7 +4208,6 @@ enum CampusClusterSelectColumn {
 }
 
 input CampusClusterSetInput {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4395,42 +4218,36 @@ input CampusClusterSetInput {
 }
 
 type CampusClusterStddevFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterStddevOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 type CampusClusterStddevPopFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterStddevPopOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 type CampusClusterStddevSampFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterStddevSampOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4442,7 +4259,6 @@ input CampusClusterStreamCursorInput {
 }
 
 input CampusClusterStreamCursorValueInput {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -4453,21 +4269,18 @@ input CampusClusterStreamCursorValueInput {
 }
 
 type CampusClusterSumFields {
-  approximateAddressId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
 }
 
 input CampusClusterSumOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 enum CampusClusterUpdateColumn {
-  approximateAddressId
   createdAt
   createdById
   deletedAt
@@ -4484,42 +4297,36 @@ input CampusClusterUpdates {
 }
 
 type CampusClusterVarianceFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterVarianceOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 type CampusClusterVarPopFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterVarPopOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 type CampusClusterVarSampFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
 input CampusClusterVarSampOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -4533,11 +4340,11 @@ input CampusIncInput {
   campusClusterId: bigint
   createdById: bigint
   id: bigint
+  locationId: bigint
   tenantId: bigint
 }
 
 input CampusInsertInput {
-  address: AddressObjRelInsertInput
   campusCluster: CampusClusterObjRelInsertInput
   campusClusterId: bigint
   createdAt: timestamptz
@@ -4546,6 +4353,8 @@ input CampusInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
   name: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -4558,6 +4367,7 @@ type CampusMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -4569,6 +4379,7 @@ input CampusMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationId: OrderBy
   name: OrderBy
   tenantId: OrderBy
 }
@@ -4580,6 +4391,7 @@ type CampusMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -4591,6 +4403,7 @@ input CampusMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationId: OrderBy
   name: OrderBy
   tenantId: OrderBy
 }
@@ -4600,11 +4413,6 @@ type CampusMutationResponse {
   returning: [Campus!]!
 }
 
-input CampusObjRelInsertInput {
-  data: CampusInsertInput!
-  onConflict: CampusOnConflict
-}
-
 input CampusOnConflict {
   constraint: CampusConstraint!
   updateColumns: [CampusUpdateColumn!]! = []
@@ -4612,7 +4420,6 @@ input CampusOnConflict {
 }
 
 input CampusOrderBy {
-  address: AddressOrderBy
   campusCluster: CampusClusterOrderBy
   campusClusterId: OrderBy
   createdAt: OrderBy
@@ -4621,6 +4428,8 @@ input CampusOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
   name: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -4637,6 +4446,7 @@ enum CampusSelectColumn {
   deletedAt
   hiddenAt
   id
+  locationId
   name
   tenantId
 }
@@ -4648,6 +4458,7 @@ input CampusSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -4656,6 +4467,7 @@ type CampusStddevFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4663,6 +4475,7 @@ input CampusStddevOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4670,6 +4483,7 @@ type CampusStddevPopFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4677,6 +4491,7 @@ input CampusStddevPopOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4684,6 +4499,7 @@ type CampusStddevSampFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4691,6 +4507,7 @@ input CampusStddevSampOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4706,6 +4523,7 @@ input CampusStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -4714,6 +4532,7 @@ type CampusSumFields {
   campusClusterId: bigint
   createdById: bigint
   id: bigint
+  locationId: bigint
   tenantId: bigint
 }
 
@@ -4721,6 +4540,7 @@ input CampusSumOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4731,6 +4551,7 @@ enum CampusUpdateColumn {
   deletedAt
   hiddenAt
   id
+  locationId
   name
   tenantId
 }
@@ -4745,6 +4566,7 @@ type CampusVarianceFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4752,6 +4574,7 @@ input CampusVarianceOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4759,6 +4582,7 @@ type CampusVarPopFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4766,6 +4590,7 @@ input CampusVarPopOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -4773,6 +4598,7 @@ type CampusVarSampFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -4780,6 +4606,7 @@ input CampusVarSampOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -8322,8 +8149,6 @@ input DocumentVarSampOrderBy {
 }
 
 type Event {
-  address: Address
-  addressId: bigint
   approvalSubmissionId: bigint
   banner: FileUpload
   bannerId: bigint
@@ -8356,11 +8181,11 @@ type Event {
   isTemplate: Boolean!
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  location: Location
+  locationId: bigint
   maxParticipants: smallint
   meta(path: String): jsonb!
   name: String!
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float!
   price: Float!
   project: Project
@@ -9716,7 +9541,6 @@ input EventArrRelInsertInput {
 }
 
 type EventAvgFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -9724,6 +9548,7 @@ type EventAvgFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -9732,7 +9557,6 @@ type EventAvgFields {
 }
 
 input EventAvgOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -9740,6 +9564,7 @@ input EventAvgOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -9751,8 +9576,6 @@ input EventBoolExp {
   _and: [EventBoolExp!]
   _not: EventBoolExp
   _or: [EventBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   approvalSubmissionId: BigintComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
@@ -9785,11 +9608,11 @@ input EventBoolExp {
   isTemplate: BooleanComparisonExp
   joinFormId: BigintComparisonExp
   lastEventApprovalStepId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
   maxParticipants: SmallintComparisonExp
   meta: JsonbComparisonExp
   name: StringComparisonExp
-  onlineMeetingLink: StringComparisonExp
-  onlineMeetingPlace: StringComparisonExp
   pointsPresence: FloatComparisonExp
   price: FloatComparisonExp
   project: ProjectBoolExp
@@ -9805,6 +9628,7 @@ enum EventConstraint {
   event_approval_submission_id_unique
   event_content_id_unique
   event_pkey
+  event_slug_unique
 }
 
 input EventDeleteAtPathInput {
@@ -9820,7 +9644,6 @@ input EventDeleteKeyInput {
 }
 
 input EventIncInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -9828,6 +9651,7 @@ input EventIncInput {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   pointsPresence: Float
   price: Float
@@ -9836,8 +9660,6 @@ input EventIncInput {
 }
 
 input EventInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   approvalSubmissionId: bigint
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
@@ -9864,11 +9686,11 @@ input EventInsertInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   project: ProjectObjRelInsertInput
@@ -10935,7 +10757,6 @@ input EventManageVarSampOrderBy {
 }
 
 type EventMaxFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -10947,10 +10768,9 @@ type EventMaxFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -10961,7 +10781,6 @@ type EventMaxFields {
 }
 
 input EventMaxOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -10973,10 +10792,9 @@ input EventMaxOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   projectId: OrderBy
@@ -10987,7 +10805,6 @@ input EventMaxOrderBy {
 }
 
 type EventMinFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -10999,10 +10816,9 @@ type EventMinFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -11013,7 +10829,6 @@ type EventMinFields {
 }
 
 input EventMinOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11025,10 +10840,9 @@ input EventMinOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   projectId: OrderBy
@@ -11055,8 +10869,6 @@ input EventOnConflict {
 }
 
 input EventOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
@@ -11083,11 +10895,11 @@ input EventOrderBy {
   isTemplate: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   meta: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   project: ProjectOrderBy
@@ -11108,7 +10920,6 @@ input EventPrependInput {
 }
 
 enum EventSelectColumn {
-  addressId
   approvalSubmissionId
   bannerId
   contentId
@@ -11123,11 +10934,10 @@ enum EventSelectColumn {
   isTemplate
   joinFormId
   lastEventApprovalStepId
+  locationId
   maxParticipants
   meta
   name
-  onlineMeetingLink
-  onlineMeetingPlace
   pointsPresence
   price
   projectId
@@ -11150,7 +10960,6 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 }
 
 input EventSetInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -11165,11 +10974,10 @@ input EventSetInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -11180,7 +10988,6 @@ input EventSetInput {
 }
 
 type EventStddevFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11188,6 +10995,7 @@ type EventStddevFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11196,7 +11004,6 @@ type EventStddevFields {
 }
 
 input EventStddevOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11204,6 +11011,7 @@ input EventStddevOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11212,7 +11020,6 @@ input EventStddevOrderBy {
 }
 
 type EventStddevPopFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11220,6 +11027,7 @@ type EventStddevPopFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11228,7 +11036,6 @@ type EventStddevPopFields {
 }
 
 input EventStddevPopOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11236,6 +11043,7 @@ input EventStddevPopOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11244,7 +11052,6 @@ input EventStddevPopOrderBy {
 }
 
 type EventStddevSampFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11252,6 +11059,7 @@ type EventStddevSampFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11260,7 +11068,6 @@ type EventStddevSampFields {
 }
 
 input EventStddevSampOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11268,6 +11075,7 @@ input EventStddevSampOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11281,7 +11089,6 @@ input EventStreamCursorInput {
 }
 
 input EventStreamCursorValueInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -11296,11 +11103,10 @@ input EventStreamCursorValueInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -11311,7 +11117,6 @@ input EventStreamCursorValueInput {
 }
 
 type EventSumFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -11319,6 +11124,7 @@ type EventSumFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   pointsPresence: Float
   price: Float
@@ -11327,7 +11133,6 @@ type EventSumFields {
 }
 
 input EventSumOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11335,6 +11140,7 @@ input EventSumOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11815,7 +11621,6 @@ input EventTagsVarSampOrderBy {
 }
 
 enum EventUpdateColumn {
-  addressId
   approvalSubmissionId
   bannerId
   contentId
@@ -11830,11 +11635,10 @@ enum EventUpdateColumn {
   isTemplate
   joinFormId
   lastEventApprovalStepId
+  locationId
   maxParticipants
   meta
   name
-  onlineMeetingLink
-  onlineMeetingPlace
   pointsPresence
   price
   projectId
@@ -11856,7 +11660,6 @@ input EventUpdates {
 }
 
 type EventVarianceFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11864,6 +11667,7 @@ type EventVarianceFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11872,7 +11676,6 @@ type EventVarianceFields {
 }
 
 input EventVarianceOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11880,6 +11683,7 @@ input EventVarianceOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11888,7 +11692,6 @@ input EventVarianceOrderBy {
 }
 
 type EventVarPopFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11896,6 +11699,7 @@ type EventVarPopFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11904,7 +11708,6 @@ type EventVarPopFields {
 }
 
 input EventVarPopOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11912,6 +11715,7 @@ input EventVarPopOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -11920,7 +11724,6 @@ input EventVarPopOrderBy {
 }
 
 type EventVarSampFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -11928,6 +11731,7 @@ type EventVarSampFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -11936,7 +11740,6 @@ type EventVarSampFields {
 }
 
 input EventVarSampOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -11944,6 +11747,7 @@ input EventVarSampOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -12106,9 +11910,9 @@ input ExpenseInsertInput {
 }
 
 type ExpenseItem {
-  address: Address
-  addressId: bigint
   category: String!
+  company: LegalUnit
+  companyId: bigint
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
@@ -12414,7 +12218,7 @@ input ExpenseItemAttachmentsVarSampOrderBy {
 }
 
 type ExpenseItemAvgFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12424,7 +12228,7 @@ type ExpenseItemAvgFields {
 }
 
 input ExpenseItemAvgOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12437,9 +12241,9 @@ input ExpenseItemBoolExp {
   _and: [ExpenseItemBoolExp!]
   _not: ExpenseItemBoolExp
   _or: [ExpenseItemBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   category: StringComparisonExp
+  company: LegalUnitBoolExp
+  companyId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -12464,7 +12268,7 @@ enum ExpenseItemConstraint {
 }
 
 input ExpenseItemIncInput {
-  addressId: bigint
+  companyId: bigint
   createdById: bigint
   expenseId: bigint
   id: bigint
@@ -12474,9 +12278,9 @@ input ExpenseItemIncInput {
 }
 
 input ExpenseItemInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   category: String
+  company: LegalUnitObjRelInsertInput
+  companyId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -12496,8 +12300,8 @@ input ExpenseItemInsertInput {
 }
 
 type ExpenseItemMaxFields {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12513,8 +12317,8 @@ type ExpenseItemMaxFields {
 }
 
 input ExpenseItemMaxOrderBy {
-  addressId: OrderBy
   category: OrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -12530,8 +12334,8 @@ input ExpenseItemMaxOrderBy {
 }
 
 type ExpenseItemMinFields {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12547,8 +12351,8 @@ type ExpenseItemMinFields {
 }
 
 input ExpenseItemMinOrderBy {
-  addressId: OrderBy
   category: OrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -12580,9 +12384,9 @@ input ExpenseItemOnConflict {
 }
 
 input ExpenseItemOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   category: OrderBy
+  company: LegalUnitOrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -12606,8 +12410,8 @@ input ExpenseItemPkColumnsInput {
 }
 
 enum ExpenseItemSelectColumn {
-  addressId
   category
+  companyId
   createdAt
   createdById
   deletedAt
@@ -12623,8 +12427,8 @@ enum ExpenseItemSelectColumn {
 }
 
 input ExpenseItemSetInput {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12640,7 +12444,7 @@ input ExpenseItemSetInput {
 }
 
 type ExpenseItemStddevFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12650,7 +12454,7 @@ type ExpenseItemStddevFields {
 }
 
 input ExpenseItemStddevOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12660,7 +12464,7 @@ input ExpenseItemStddevOrderBy {
 }
 
 type ExpenseItemStddevPopFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12670,7 +12474,7 @@ type ExpenseItemStddevPopFields {
 }
 
 input ExpenseItemStddevPopOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12680,7 +12484,7 @@ input ExpenseItemStddevPopOrderBy {
 }
 
 type ExpenseItemStddevSampFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12690,7 +12494,7 @@ type ExpenseItemStddevSampFields {
 }
 
 input ExpenseItemStddevSampOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12705,8 +12509,8 @@ input ExpenseItemStreamCursorInput {
 }
 
 input ExpenseItemStreamCursorValueInput {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12722,7 +12526,7 @@ input ExpenseItemStreamCursorValueInput {
 }
 
 type ExpenseItemSumFields {
-  addressId: bigint
+  companyId: bigint
   createdById: bigint
   expenseId: bigint
   id: bigint
@@ -12732,7 +12536,7 @@ type ExpenseItemSumFields {
 }
 
 input ExpenseItemSumOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12742,8 +12546,8 @@ input ExpenseItemSumOrderBy {
 }
 
 enum ExpenseItemUpdateColumn {
-  addressId
   category
+  companyId
   createdAt
   createdById
   deletedAt
@@ -12765,7 +12569,7 @@ input ExpenseItemUpdates {
 }
 
 type ExpenseItemVarianceFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12775,7 +12579,7 @@ type ExpenseItemVarianceFields {
 }
 
 input ExpenseItemVarianceOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12785,7 +12589,7 @@ input ExpenseItemVarianceOrderBy {
 }
 
 type ExpenseItemVarPopFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12795,7 +12599,7 @@ type ExpenseItemVarPopFields {
 }
 
 input ExpenseItemVarPopOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -12805,7 +12609,7 @@ input ExpenseItemVarPopOrderBy {
 }
 
 type ExpenseItemVarSampFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -12815,7 +12619,7 @@ type ExpenseItemVarSampFields {
 }
 
 input ExpenseItemVarSampOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -13512,7 +13316,6 @@ input FavoriteVarSampOrderBy {
 
 type FileUpload {
   actorImage: ActorImage
-  address: Address
   contentAttachments(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): [ContentAttachments!]!
   contentAttachmentsAggregate(distinctOn: [ContentAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [ContentAttachmentsOrderBy!], where: ContentAttachmentsBoolExp): ContentAttachmentsAggregate!
   createdAt: timestamptz!
@@ -13541,6 +13344,8 @@ type FileUpload {
   grantsAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  locationImages(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): [LocationImages!]!
+  locationImagesAggregate(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): LocationImagesAggregate!
   name: String!
   projects(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): [Project!]!
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
@@ -13627,7 +13432,6 @@ input FileUploadBoolExp {
   _not: FileUploadBoolExp
   _or: [FileUploadBoolExp!]
   actorImage: ActorImageBoolExp
-  address: AddressBoolExp
   contentAttachments: ContentAttachmentsBoolExp
   contentAttachmentsAggregate: ContentAttachmentsAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -13656,6 +13460,8 @@ input FileUploadBoolExp {
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  locationImages: LocationImagesBoolExp
+  locationImagesAggregate: LocationImagesAggregateBoolExp
   name: StringComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
@@ -13687,7 +13493,6 @@ input FileUploadIncInput {
 
 input FileUploadInsertInput {
   actorImage: ActorImageObjRelInsertInput
-  address: AddressObjRelInsertInput
   contentAttachments: ContentAttachmentsArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -13706,6 +13511,7 @@ input FileUploadInsertInput {
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  locationImages: LocationImagesArrRelInsertInput
   name: String
   projects: ProjectArrRelInsertInput
   signatureGrants: GrantArrRelInsertInput
@@ -13793,7 +13599,6 @@ input FileUploadOnConflict {
 
 input FileUploadOrderBy {
   actorImage: ActorImageOrderBy
-  address: AddressOrderBy
   contentAttachmentsAggregate: ContentAttachmentsAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -13812,6 +13617,7 @@ input FileUploadOrderBy {
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationImagesAggregate: LocationImagesAggregateOrderBy
   name: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
   signatureGrantsAggregate: GrantAggregateOrderBy
@@ -13995,8 +13801,6 @@ input FileUploadVarSampOrderBy {
 }
 
 type Finance {
-  address: Address
-  addressId: bigint
   addressType: String!
   amount: Float!
   category: String!
@@ -14015,6 +13819,7 @@ type Finance {
   grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  isOnline: Boolean!
   method: String!
   name: String!
   payedAt: timestamptz!
@@ -14038,7 +13843,23 @@ type FinanceAggregate {
 }
 
 input FinanceAggregateBoolExp {
+  bool_and: financeAggregateBoolExpBool_and
+  bool_or: financeAggregateBoolExpBool_or
   count: financeAggregateBoolExpCount
+}
+
+input financeAggregateBoolExpBool_and {
+  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: FinanceBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input financeAggregateBoolExpBool_or {
+  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: FinanceBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input financeAggregateBoolExpCount {
@@ -14318,7 +14139,6 @@ input FinanceAttachmentsVarSampOrderBy {
 }
 
 type FinanceAvgFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14332,7 +14152,6 @@ type FinanceAvgFields {
 }
 
 input FinanceAvgOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14349,8 +14168,6 @@ input FinanceBoolExp {
   _and: [FinanceBoolExp!]
   _not: FinanceBoolExp
   _or: [FinanceBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   addressType: StringComparisonExp
   amount: FloatComparisonExp
   category: StringComparisonExp
@@ -14369,6 +14186,7 @@ input FinanceBoolExp {
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isOnline: BooleanComparisonExp
   method: StringComparisonExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
@@ -14392,7 +14210,6 @@ enum FinanceConstraint {
 }
 
 input FinanceIncInput {
-  addressId: bigint
   amount: Float
   createdById: bigint
   eventId: bigint
@@ -14406,8 +14223,6 @@ input FinanceIncInput {
 }
 
 input FinanceInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -14424,6 +14239,7 @@ input FinanceInsertInput {
   grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -14442,7 +14258,6 @@ input FinanceInsertInput {
 }
 
 type FinanceMaxFields {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -14467,7 +14282,6 @@ type FinanceMaxFields {
 }
 
 input FinanceMaxOrderBy {
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -14492,7 +14306,6 @@ input FinanceMaxOrderBy {
 }
 
 type FinanceMinFields {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -14517,7 +14330,6 @@ type FinanceMinFields {
 }
 
 input FinanceMinOrderBy {
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -14558,8 +14370,6 @@ input FinanceOnConflict {
 }
 
 input FinanceOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -14576,6 +14386,7 @@ input FinanceOrderBy {
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isOnline: OrderBy
   method: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -14598,7 +14409,6 @@ input FinancePkColumnsInput {
 }
 
 enum FinanceSelectColumn {
-  addressId
   addressType
   amount
   category
@@ -14610,6 +14420,7 @@ enum FinanceSelectColumn {
   expenseId
   hiddenAt
   id
+  isOnline
   method
   name
   payedAt
@@ -14622,8 +14433,15 @@ enum FinanceSelectColumn {
   tenantId
 }
 
+enum FinanceSelectColumnFinanceAggregateBoolExpBool_andArgumentsColumns {
+  isOnline
+}
+
+enum FinanceSelectColumnFinanceAggregateBoolExpBool_orArgumentsColumns {
+  isOnline
+}
+
 input FinanceSetInput {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -14635,6 +14453,7 @@ input FinanceSetInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -14648,7 +14467,6 @@ input FinanceSetInput {
 }
 
 type FinanceStddevFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14662,7 +14480,6 @@ type FinanceStddevFields {
 }
 
 input FinanceStddevOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14676,7 +14493,6 @@ input FinanceStddevOrderBy {
 }
 
 type FinanceStddevPopFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14690,7 +14506,6 @@ type FinanceStddevPopFields {
 }
 
 input FinanceStddevPopOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14704,7 +14519,6 @@ input FinanceStddevPopOrderBy {
 }
 
 type FinanceStddevSampFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14718,7 +14532,6 @@ type FinanceStddevSampFields {
 }
 
 input FinanceStddevSampOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14737,7 +14550,6 @@ input FinanceStreamCursorInput {
 }
 
 input FinanceStreamCursorValueInput {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -14749,6 +14561,7 @@ input FinanceStreamCursorValueInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -14762,7 +14575,6 @@ input FinanceStreamCursorValueInput {
 }
 
 type FinanceSumFields {
-  addressId: bigint
   amount: Float
   createdById: bigint
   eventId: bigint
@@ -14776,7 +14588,6 @@ type FinanceSumFields {
 }
 
 input FinanceSumOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14790,7 +14601,6 @@ input FinanceSumOrderBy {
 }
 
 enum FinanceUpdateColumn {
-  addressId
   addressType
   amount
   category
@@ -14802,6 +14612,7 @@ enum FinanceUpdateColumn {
   expenseId
   hiddenAt
   id
+  isOnline
   method
   name
   payedAt
@@ -14821,7 +14632,6 @@ input FinanceUpdates {
 }
 
 type FinanceVarianceFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14835,7 +14645,6 @@ type FinanceVarianceFields {
 }
 
 input FinanceVarianceOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14849,7 +14658,6 @@ input FinanceVarianceOrderBy {
 }
 
 type FinanceVarPopFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14863,7 +14671,6 @@ type FinanceVarPopFields {
 }
 
 input FinanceVarPopOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -14877,7 +14684,6 @@ input FinanceVarPopOrderBy {
 }
 
 type FinanceVarSampFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -14891,7 +14697,6 @@ type FinanceVarSampFields {
 }
 
 input FinanceVarSampOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -17755,8 +17560,12 @@ type Individual {
   createdIndividualsAggregate(distinctOn: [IndividualSelectColumn!], limit: Int, offset: Int, orderBy: [IndividualOrderBy!], where: IndividualBoolExp): IndividualAggregate!
   createdIssues(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): [Issue!]!
   createdIssuesAggregate(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): IssueAggregate!
+  createdLegalUnitLocations(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
+  createdLegalUnitLocationsAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
   createdLegalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
   createdLegalUnitsAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
+  createdLocations(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  createdLocationsAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
   createdMissionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
   createdMissionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   createdMissions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
@@ -17986,8 +17795,12 @@ input IndividualBoolExp {
   createdIndividualsAggregate: IndividualAggregateBoolExp
   createdIssues: IssueBoolExp
   createdIssuesAggregate: IssueAggregateBoolExp
+  createdLegalUnitLocations: LegalUnitLocationBoolExp
+  createdLegalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
   createdLegalUnits: LegalUnitBoolExp
   createdLegalUnitsAggregate: LegalUnitAggregateBoolExp
+  createdLocations: LocationBoolExp
+  createdLocationsAggregate: LocationAggregateBoolExp
   createdMissionJoins: MissionJoinBoolExp
   createdMissionJoinsAggregate: MissionJoinAggregateBoolExp
   createdMissions: MissionBoolExp
@@ -18128,7 +17941,9 @@ input IndividualInsertInput {
   createdGrants: GrantArrRelInsertInput
   createdIndividuals: IndividualArrRelInsertInput
   createdIssues: IssueArrRelInsertInput
+  createdLegalUnitLocations: LegalUnitLocationArrRelInsertInput
   createdLegalUnits: LegalUnitArrRelInsertInput
+  createdLocations: LocationArrRelInsertInput
   createdMissionJoins: MissionJoinArrRelInsertInput
   createdMissions: MissionArrRelInsertInput
   createdPoles: PoleArrRelInsertInput
@@ -18291,7 +18106,9 @@ input IndividualOrderBy {
   createdGrantsAggregate: GrantAggregateOrderBy
   createdIndividualsAggregate: IndividualAggregateOrderBy
   createdIssuesAggregate: IssueAggregateOrderBy
+  createdLegalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
   createdLegalUnitsAggregate: LegalUnitAggregateOrderBy
+  createdLocationsAggregate: LocationAggregateOrderBy
   createdMissionJoinsAggregate: MissionJoinAggregateOrderBy
   createdMissionsAggregate: MissionAggregateOrderBy
   createdPolesAggregate: PoleAggregateOrderBy
@@ -19406,19 +19223,29 @@ input JsonbComparisonExp {
 }
 
 type LegalUnit {
+  activityCategory: String
   actor: Actor
-  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  bankCode: smallint
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
+  expenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
+  expenseItemsAggregate(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): ExpenseItemAggregate!
   grandFundTeams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   grandFundTeamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint!
-  tenant: Tenant!
-  tenantId: bigint!
+  legalCategory: String
+  legalName: String
+  legalUnitLocations(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
+  legalUnitLocationsAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
+  legalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
+  legalUnitsAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
+  parent: LegalUnit
+  parentId: bigint
+  siren: String
   type: String!
 }
 
@@ -19472,34 +19299,46 @@ input LegalUnitArrRelInsertInput {
 }
 
 type LegalUnitAvgFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 input LegalUnitAvgOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 input LegalUnitBoolExp {
   _and: [LegalUnitBoolExp!]
   _not: LegalUnitBoolExp
   _or: [LegalUnitBoolExp!]
+  activityCategory: StringComparisonExp
   actor: ActorBoolExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  bankCode: SmallintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   grandFundTeams: TeamBoolExp
   grandFundTeamsAggregate: TeamAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
+  headquartersLocation: StringComparisonExp
+  headquartersNic: StringComparisonExp
   id: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
+  legalCategory: StringComparisonExp
+  legalName: StringComparisonExp
+  legalUnitLocations: LegalUnitLocationBoolExp
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
+  legalUnits: LegalUnitBoolExp
+  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  parent: LegalUnitBoolExp
+  parentId: BigintComparisonExp
+  siren: StringComparisonExp
   type: StringComparisonExp
 }
 
@@ -19508,63 +19347,497 @@ enum LegalUnitConstraint {
 }
 
 input LegalUnitIncInput {
+  bankCode: smallint
   createdById: bigint
   id: bigint
-  tenantId: bigint
+  parentId: bigint
 }
 
 input LegalUnitInsertInput {
+  activityCategory: String
   actor: ActorObjRelInsertInput
-  bankInfos: BankInfoArrRelInsertInput
+  bankCode: smallint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  expenseItems: ExpenseItemArrRelInsertInput
   grandFundTeams: TeamArrRelInsertInput
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  legalUnitLocations: LegalUnitLocationArrRelInsertInput
+  legalUnits: LegalUnitArrRelInsertInput
+  parent: LegalUnitObjRelInsertInput
+  parentId: bigint
+  siren: String
   type: String
 }
 
-type LegalUnitMaxFields {
+type LegalUnitLocation {
+  actor: Actor
+  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
+  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  bankLocationCode: Int
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
+  individual: Individual
+  legalName: String
+  legalUnit: LegalUnit
+  legalUnitId: bigint
+  location: Location
+  locationId: bigint
+  locationType: String!
+  nic: String
+}
+
+type LegalUnitLocationAggregate {
+  aggregate: LegalUnitLocationAggregateFields
+  nodes: [LegalUnitLocation!]!
+}
+
+input LegalUnitLocationAggregateBoolExp {
+  count: legalUnitLocationAggregateBoolExpCount
+}
+
+input legalUnitLocationAggregateBoolExpCount {
+  arguments: [LegalUnitLocationSelectColumn!]
+  distinct: Boolean
+  filter: LegalUnitLocationBoolExp
+  predicate: IntComparisonExp!
+}
+
+type LegalUnitLocationAggregateFields {
+  avg: LegalUnitLocationAvgFields
+  count(columns: [LegalUnitLocationSelectColumn!], distinct: Boolean): Int!
+  max: LegalUnitLocationMaxFields
+  min: LegalUnitLocationMinFields
+  stddev: LegalUnitLocationStddevFields
+  stddevPop: LegalUnitLocationStddevPopFields
+  stddevSamp: LegalUnitLocationStddevSampFields
+  sum: LegalUnitLocationSumFields
+  varPop: LegalUnitLocationVarPopFields
+  varSamp: LegalUnitLocationVarSampFields
+  variance: LegalUnitLocationVarianceFields
+}
+
+input LegalUnitLocationAggregateOrderBy {
+  avg: LegalUnitLocationAvgOrderBy
+  count: OrderBy
+  max: LegalUnitLocationMaxOrderBy
+  min: LegalUnitLocationMinOrderBy
+  stddev: LegalUnitLocationStddevOrderBy
+  stddevPop: LegalUnitLocationStddevPopOrderBy
+  stddevSamp: LegalUnitLocationStddevSampOrderBy
+  sum: LegalUnitLocationSumOrderBy
+  varPop: LegalUnitLocationVarPopOrderBy
+  varSamp: LegalUnitLocationVarSampOrderBy
+  variance: LegalUnitLocationVarianceOrderBy
+}
+
+input LegalUnitLocationArrRelInsertInput {
+  data: [LegalUnitLocationInsertInput!]!
+  onConflict: LegalUnitLocationOnConflict
+}
+
+type LegalUnitLocationAvgFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationAvgOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+input LegalUnitLocationBoolExp {
+  _and: [LegalUnitLocationBoolExp!]
+  _not: LegalUnitLocationBoolExp
+  _or: [LegalUnitLocationBoolExp!]
+  actor: ActorBoolExp
+  bankInfos: BankInfoBoolExp
+  bankInfosAggregate: BankInfoAggregateBoolExp
+  bankLocationCode: IntComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  legalName: StringComparisonExp
+  legalUnit: LegalUnitBoolExp
+  legalUnitId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
+  locationType: StringComparisonExp
+  nic: StringComparisonExp
+}
+
+enum LegalUnitLocationConstraint {
+  legal_unit_location_pkey
+}
+
+input LegalUnitLocationIncInput {
+  bankLocationCode: Int
+  createdById: bigint
+  id: bigint
+  legalUnitId: bigint
+  locationId: bigint
+}
+
+input LegalUnitLocationInsertInput {
+  actor: ActorObjRelInsertInput
+  bankInfos: BankInfoArrRelInsertInput
+  bankLocationCode: Int
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
   id: bigint
-  tenantId: bigint
+  individual: IndividualObjRelInsertInput
+  legalName: String
+  legalUnit: LegalUnitObjRelInsertInput
+  legalUnitId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+type LegalUnitLocationMaxFields {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+input LegalUnitLocationMaxOrderBy {
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  legalName: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+type LegalUnitLocationMinFields {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+input LegalUnitLocationMinOrderBy {
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  legalName: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+type LegalUnitLocationMutationResponse {
+  affectedRows: Int!
+  returning: [LegalUnitLocation!]!
+}
+
+input LegalUnitLocationObjRelInsertInput {
+  data: LegalUnitLocationInsertInput!
+  onConflict: LegalUnitLocationOnConflict
+}
+
+input LegalUnitLocationOnConflict {
+  constraint: LegalUnitLocationConstraint!
+  updateColumns: [LegalUnitLocationUpdateColumn!]! = []
+  where: LegalUnitLocationBoolExp
+}
+
+input LegalUnitLocationOrderBy {
+  actor: ActorOrderBy
+  bankInfosAggregate: BankInfoAggregateOrderBy
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  legalName: OrderBy
+  legalUnit: LegalUnitOrderBy
+  legalUnitId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+input LegalUnitLocationPkColumnsInput {
+  id: bigint!
+}
+
+enum LegalUnitLocationSelectColumn {
+  bankLocationCode
+  createdAt
+  createdById
+  deletedAt
+  id
+  legalName
+  legalUnitId
+  locationId
+  locationType
+  nic
+}
+
+input LegalUnitLocationSetInput {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+type LegalUnitLocationStddevFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationStddevOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+type LegalUnitLocationStddevPopFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationStddevPopOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+type LegalUnitLocationStddevSampFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationStddevSampOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+input LegalUnitLocationStreamCursorInput {
+  initialValue: LegalUnitLocationStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input LegalUnitLocationStreamCursorValueInput {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+type LegalUnitLocationSumFields {
+  bankLocationCode: Int
+  createdById: bigint
+  id: bigint
+  legalUnitId: bigint
+  locationId: bigint
+}
+
+input LegalUnitLocationSumOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+enum LegalUnitLocationUpdateColumn {
+  bankLocationCode
+  createdAt
+  createdById
+  deletedAt
+  id
+  legalName
+  legalUnitId
+  locationId
+  locationType
+  nic
+}
+
+input LegalUnitLocationUpdates {
+  _inc: LegalUnitLocationIncInput
+  _set: LegalUnitLocationSetInput
+  where: LegalUnitLocationBoolExp!
+}
+
+type LegalUnitLocationVarianceFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationVarianceOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+type LegalUnitLocationVarPopFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationVarPopOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+type LegalUnitLocationVarSampFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+input LegalUnitLocationVarSampOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+type LegalUnitMaxFields {
+  activityCategory: String
+  bankCode: smallint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
+  id: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 input LegalUnitMaxOrderBy {
+  activityCategory: OrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
 type LegalUnitMinFields {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 input LegalUnitMinOrderBy {
+  activityCategory: OrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
@@ -19585,17 +19858,25 @@ input LegalUnitOnConflict {
 }
 
 input LegalUnitOrderBy {
+  activityCategory: OrderBy
   actor: ActorOrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   grandFundTeamsAggregate: TeamAggregateOrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
+  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  parent: LegalUnitOrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
@@ -19604,59 +19885,77 @@ input LegalUnitPkColumnsInput {
 }
 
 enum LegalUnitSelectColumn {
+  activityCategory
+  bankCode
   createdAt
   createdById
   deletedAt
-  hiddenAt
+  headquartersLocation
+  headquartersNic
   id
-  tenantId
+  legalCategory
+  legalName
+  parentId
+  siren
   type
 }
 
 input LegalUnitSetInput {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 type LegalUnitStddevFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 input LegalUnitStddevOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 type LegalUnitStddevPopFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 input LegalUnitStddevPopOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 type LegalUnitStddevSampFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 input LegalUnitStddevSampOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 input LegalUnitStreamCursorInput {
@@ -19665,34 +19964,48 @@ input LegalUnitStreamCursorInput {
 }
 
 input LegalUnitStreamCursorValueInput {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 type LegalUnitSumFields {
+  bankCode: smallint
   createdById: bigint
   id: bigint
-  tenantId: bigint
+  parentId: bigint
 }
 
 input LegalUnitSumOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 enum LegalUnitUpdateColumn {
+  activityCategory
+  bankCode
   createdAt
   createdById
   deletedAt
-  hiddenAt
+  headquartersLocation
+  headquartersNic
   id
-  tenantId
+  legalCategory
+  legalName
+  parentId
+  siren
   type
 }
 
@@ -19703,36 +20016,721 @@ input LegalUnitUpdates {
 }
 
 type LegalUnitVarianceFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 input LegalUnitVarianceOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 type LegalUnitVarPopFields {
+  bankCode: Float
+  createdById: Float
+  id: Float
+  parentId: Float
+}
+
+input LegalUnitVarPopOrderBy {
+  bankCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  parentId: OrderBy
+}
+
+type LegalUnitVarSampFields {
+  bankCode: Float
+  createdById: Float
+  id: Float
+  parentId: Float
+}
+
+input LegalUnitVarSampOrderBy {
+  bankCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  parentId: OrderBy
+}
+
+type Location {
+  actor: Actor!
+  actorId: bigint!
+  address: Address
+  addressId: bigint
+  campuses(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): [Campus!]!
+  campusesAggregate(distinctOn: [CampusSelectColumn!], limit: Int, offset: Int, orderBy: [CampusOrderBy!], where: CampusBoolExp): CampusAggregate!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String!
+  events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
+  eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+  individual: Individual
+  legalUnitLocations(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
+  legalUnitLocationsAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
+  locationImages(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): [LocationImages!]!
+  locationImagesAggregate(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): LocationImagesAggregate!
+  name: String!
+  onlineLink: String!
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+type LocationAggregate {
+  aggregate: LocationAggregateFields
+  nodes: [Location!]!
+}
+
+input LocationAggregateBoolExp {
+  count: locationAggregateBoolExpCount
+}
+
+input locationAggregateBoolExpCount {
+  arguments: [LocationSelectColumn!]
+  distinct: Boolean
+  filter: LocationBoolExp
+  predicate: IntComparisonExp!
+}
+
+type LocationAggregateFields {
+  avg: LocationAvgFields
+  count(columns: [LocationSelectColumn!], distinct: Boolean): Int!
+  max: LocationMaxFields
+  min: LocationMinFields
+  stddev: LocationStddevFields
+  stddevPop: LocationStddevPopFields
+  stddevSamp: LocationStddevSampFields
+  sum: LocationSumFields
+  varPop: LocationVarPopFields
+  varSamp: LocationVarSampFields
+  variance: LocationVarianceFields
+}
+
+input LocationAggregateOrderBy {
+  avg: LocationAvgOrderBy
+  count: OrderBy
+  max: LocationMaxOrderBy
+  min: LocationMinOrderBy
+  stddev: LocationStddevOrderBy
+  stddevPop: LocationStddevPopOrderBy
+  stddevSamp: LocationStddevSampOrderBy
+  sum: LocationSumOrderBy
+  varPop: LocationVarPopOrderBy
+  varSamp: LocationVarSampOrderBy
+  variance: LocationVarianceOrderBy
+}
+
+input LocationArrRelInsertInput {
+  data: [LocationInsertInput!]!
+  onConflict: LocationOnConflict
+}
+
+type LocationAvgFields {
+  actorId: Float
+  addressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
-input LegalUnitVarPopOrderBy {
+input LocationAvgOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
-type LegalUnitVarSampFields {
+input LocationBoolExp {
+  _and: [LocationBoolExp!]
+  _not: LocationBoolExp
+  _or: [LocationBoolExp!]
+  actor: ActorBoolExp
+  actorId: BigintComparisonExp
+  address: AddressBoolExp
+  addressId: BigintComparisonExp
+  campuses: CampusBoolExp
+  campusesAggregate: CampusAggregateBoolExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  details: StringComparisonExp
+  events: EventBoolExp
+  eventsAggregate: EventAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  legalUnitLocations: LegalUnitLocationBoolExp
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
+  locationImages: LocationImagesBoolExp
+  locationImagesAggregate: LocationImagesAggregateBoolExp
+  name: StringComparisonExp
+  onlineLink: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+enum LocationConstraint {
+  location_pkey
+}
+
+type LocationImages {
+  fileUpload: FileUpload!
+  fileUploadId: bigint!
+  location: Location!
+  locationId: bigint!
+}
+
+type LocationImagesAggregate {
+  aggregate: LocationImagesAggregateFields
+  nodes: [LocationImages!]!
+}
+
+input LocationImagesAggregateBoolExp {
+  count: locationImagesAggregateBoolExpCount
+}
+
+input locationImagesAggregateBoolExpCount {
+  arguments: [LocationImagesSelectColumn!]
+  distinct: Boolean
+  filter: LocationImagesBoolExp
+  predicate: IntComparisonExp!
+}
+
+type LocationImagesAggregateFields {
+  avg: LocationImagesAvgFields
+  count(columns: [LocationImagesSelectColumn!], distinct: Boolean): Int!
+  max: LocationImagesMaxFields
+  min: LocationImagesMinFields
+  stddev: LocationImagesStddevFields
+  stddevPop: LocationImagesStddevPopFields
+  stddevSamp: LocationImagesStddevSampFields
+  sum: LocationImagesSumFields
+  varPop: LocationImagesVarPopFields
+  varSamp: LocationImagesVarSampFields
+  variance: LocationImagesVarianceFields
+}
+
+input LocationImagesAggregateOrderBy {
+  avg: LocationImagesAvgOrderBy
+  count: OrderBy
+  max: LocationImagesMaxOrderBy
+  min: LocationImagesMinOrderBy
+  stddev: LocationImagesStddevOrderBy
+  stddevPop: LocationImagesStddevPopOrderBy
+  stddevSamp: LocationImagesStddevSampOrderBy
+  sum: LocationImagesSumOrderBy
+  varPop: LocationImagesVarPopOrderBy
+  varSamp: LocationImagesVarSampOrderBy
+  variance: LocationImagesVarianceOrderBy
+}
+
+input LocationImagesArrRelInsertInput {
+  data: [LocationImagesInsertInput!]!
+  onConflict: LocationImagesOnConflict
+}
+
+type LocationImagesAvgFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesAvgOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+input LocationImagesBoolExp {
+  _and: [LocationImagesBoolExp!]
+  _not: LocationImagesBoolExp
+  _or: [LocationImagesBoolExp!]
+  fileUpload: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
+}
+
+enum LocationImagesConstraint {
+  location_images_pkey
+}
+
+input LocationImagesIncInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+input LocationImagesInsertInput {
+  fileUpload: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
+}
+
+type LocationImagesMaxFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+input LocationImagesMaxOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesMinFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+input LocationImagesMinOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesMutationResponse {
+  affectedRows: Int!
+  returning: [LocationImages!]!
+}
+
+input LocationImagesOnConflict {
+  constraint: LocationImagesConstraint!
+  updateColumns: [LocationImagesUpdateColumn!]! = []
+  where: LocationImagesBoolExp
+}
+
+input LocationImagesOrderBy {
+  fileUpload: FileUploadOrderBy
+  fileUploadId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
+}
+
+input LocationImagesPkColumnsInput {
+  fileUploadId: bigint!
+  locationId: bigint!
+}
+
+enum LocationImagesSelectColumn {
+  fileUploadId
+  locationId
+}
+
+input LocationImagesSetInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+type LocationImagesStddevFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesStddevOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesStddevPopFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesStddevPopOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesStddevSampFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesStddevSampOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+input LocationImagesStreamCursorInput {
+  initialValue: LocationImagesStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input LocationImagesStreamCursorValueInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+type LocationImagesSumFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+input LocationImagesSumOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+enum LocationImagesUpdateColumn {
+  fileUploadId
+  locationId
+}
+
+input LocationImagesUpdates {
+  _inc: LocationImagesIncInput
+  _set: LocationImagesSetInput
+  where: LocationImagesBoolExp!
+}
+
+type LocationImagesVarianceFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesVarianceOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesVarPopFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesVarPopOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+type LocationImagesVarSampFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+input LocationImagesVarSampOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+input LocationIncInput {
+  actorId: bigint
+  addressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+input LocationInsertInput {
+  actor: ActorObjRelInsertInput
+  actorId: bigint
+  address: AddressObjRelInsertInput
+  addressId: bigint
+  campuses: CampusArrRelInsertInput
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  events: EventArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  legalUnitLocations: LegalUnitLocationArrRelInsertInput
+  locationImages: LocationImagesArrRelInsertInput
+  name: String
+  onlineLink: String
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+type LocationMaxFields {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+input LocationMaxOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type LocationMinFields {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+input LocationMinOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type LocationMutationResponse {
+  affectedRows: Int!
+  returning: [Location!]!
+}
+
+input LocationObjRelInsertInput {
+  data: LocationInsertInput!
+  onConflict: LocationOnConflict
+}
+
+input LocationOnConflict {
+  constraint: LocationConstraint!
+  updateColumns: [LocationUpdateColumn!]! = []
+  where: LocationBoolExp
+}
+
+input LocationOrderBy {
+  actor: ActorOrderBy
+  actorId: OrderBy
+  address: AddressOrderBy
+  addressId: OrderBy
+  campusesAggregate: CampusAggregateOrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  eventsAggregate: EventAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
+  locationImagesAggregate: LocationImagesAggregateOrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+input LocationPkColumnsInput {
+  id: bigint!
+}
+
+enum LocationSelectColumn {
+  actorId
+  addressId
+  createdAt
+  createdById
+  deletedAt
+  details
+  hiddenAt
+  id
+  name
+  onlineLink
+  tenantId
+  type
+}
+
+input LocationSetInput {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+type LocationStddevFields {
+  actorId: Float
+  addressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
-input LegalUnitVarSampOrderBy {
+input LocationStddevOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+type LocationStddevPopFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+input LocationStddevPopOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+type LocationStddevSampFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+input LocationStddevSampOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+input LocationStreamCursorInput {
+  initialValue: LocationStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input LocationStreamCursorValueInput {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+type LocationSumFields {
+  actorId: bigint
+  addressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+input LocationSumOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+enum LocationUpdateColumn {
+  actorId
+  addressId
+  createdAt
+  createdById
+  deletedAt
+  details
+  hiddenAt
+  id
+  name
+  onlineLink
+  tenantId
+  type
+}
+
+input LocationUpdates {
+  _inc: LocationIncInput
+  _set: LocationSetInput
+  where: LocationBoolExp!
+}
+
+type LocationVarianceFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+input LocationVarianceOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+type LocationVarPopFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+input LocationVarPopOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+type LocationVarSampFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+input LocationVarSampOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -20987,6 +21985,12 @@ type Mutation {
   deleteIssueTagsByPk(issueId: bigint!, tagId: bigint!): IssueTags
   deleteLegalUnit(where: LegalUnitBoolExp!): LegalUnitMutationResponse
   deleteLegalUnitByPk(id: bigint!): LegalUnit
+  deleteLegalUnitLocation(where: LegalUnitLocationBoolExp!): LegalUnitLocationMutationResponse
+  deleteLegalUnitLocationByPk(id: bigint!): LegalUnitLocation
+  deleteLocation(where: LocationBoolExp!): LocationMutationResponse
+  deleteLocationByPk(id: bigint!): Location
+  deleteLocationImages(where: LocationImagesBoolExp!): LocationImagesMutationResponse
+  deleteLocationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
   deleteMission(where: MissionBoolExp!): MissionMutationResponse
   deleteMissionByPk(id: bigint!): Mission
   deleteMissionJoin(where: MissionJoinBoolExp!): MissionJoinMutationResponse
@@ -21142,7 +22146,13 @@ type Mutation {
   insertIssueTags(objects: [IssueTagsInsertInput!]!, onConflict: IssueTagsOnConflict): IssueTagsMutationResponse
   insertIssueTagsOne(object: IssueTagsInsertInput!, onConflict: IssueTagsOnConflict): IssueTags
   insertLegalUnit(objects: [LegalUnitInsertInput!]!, onConflict: LegalUnitOnConflict): LegalUnitMutationResponse
+  insertLegalUnitLocation(objects: [LegalUnitLocationInsertInput!]!, onConflict: LegalUnitLocationOnConflict): LegalUnitLocationMutationResponse
+  insertLegalUnitLocationOne(object: LegalUnitLocationInsertInput!, onConflict: LegalUnitLocationOnConflict): LegalUnitLocation
   insertLegalUnitOne(object: LegalUnitInsertInput!, onConflict: LegalUnitOnConflict): LegalUnit
+  insertLocation(objects: [LocationInsertInput!]!, onConflict: LocationOnConflict): LocationMutationResponse
+  insertLocationImages(objects: [LocationImagesInsertInput!]!, onConflict: LocationImagesOnConflict): LocationImagesMutationResponse
+  insertLocationImagesOne(object: LocationImagesInsertInput!, onConflict: LocationImagesOnConflict): LocationImages
+  insertLocationOne(object: LocationInsertInput!, onConflict: LocationOnConflict): Location
   insertMission(objects: [MissionInsertInput!]!, onConflict: MissionOnConflict): MissionMutationResponse
   insertMissionJoin(objects: [MissionJoinInsertInput!]!, onConflict: MissionJoinOnConflict): MissionJoinMutationResponse
   insertMissionJoinOne(object: MissionJoinInsertInput!, onConflict: MissionJoinOnConflict): MissionJoin
@@ -21347,7 +22357,16 @@ type Mutation {
   updateIssueTagsMany(updates: [IssueTagsUpdates!]!): [IssueTagsMutationResponse]
   updateLegalUnit(_inc: LegalUnitIncInput, _set: LegalUnitSetInput, where: LegalUnitBoolExp!): LegalUnitMutationResponse
   updateLegalUnitByPk(_inc: LegalUnitIncInput, _set: LegalUnitSetInput, pkColumns: LegalUnitPkColumnsInput!): LegalUnit
+  updateLegalUnitLocation(_inc: LegalUnitLocationIncInput, _set: LegalUnitLocationSetInput, where: LegalUnitLocationBoolExp!): LegalUnitLocationMutationResponse
+  updateLegalUnitLocationByPk(_inc: LegalUnitLocationIncInput, _set: LegalUnitLocationSetInput, pkColumns: LegalUnitLocationPkColumnsInput!): LegalUnitLocation
+  updateLegalUnitLocationMany(updates: [LegalUnitLocationUpdates!]!): [LegalUnitLocationMutationResponse]
   updateLegalUnitMany(updates: [LegalUnitUpdates!]!): [LegalUnitMutationResponse]
+  updateLocation(_inc: LocationIncInput, _set: LocationSetInput, where: LocationBoolExp!): LocationMutationResponse
+  updateLocationByPk(_inc: LocationIncInput, _set: LocationSetInput, pkColumns: LocationPkColumnsInput!): Location
+  updateLocationImages(_inc: LocationImagesIncInput, _set: LocationImagesSetInput, where: LocationImagesBoolExp!): LocationImagesMutationResponse
+  updateLocationImagesByPk(_inc: LocationImagesIncInput, _set: LocationImagesSetInput, pkColumns: LocationImagesPkColumnsInput!): LocationImages
+  updateLocationImagesMany(updates: [LocationImagesUpdates!]!): [LocationImagesMutationResponse]
+  updateLocationMany(updates: [LocationUpdates!]!): [LocationMutationResponse]
   updateMission(_inc: MissionIncInput, _set: MissionSetInput, where: MissionBoolExp!): MissionMutationResponse
   updateMissionByPk(_inc: MissionIncInput, _set: MissionSetInput, pkColumns: MissionPkColumnsInput!): Mission
   updateMissionJoin(_inc: MissionJoinIncInput, _set: MissionJoinSetInput, where: MissionJoinBoolExp!): MissionJoinMutationResponse
@@ -23058,6 +24077,15 @@ type Query {
   legalUnit(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
   legalUnitAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
   legalUnitByPk(id: bigint!): LegalUnit
+  legalUnitLocation(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
+  legalUnitLocationAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
+  legalUnitLocationByPk(id: bigint!): LegalUnitLocation
+  location(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  locationAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
+  locationByPk(id: bigint!): Location
+  locationImages(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): [LocationImages!]!
+  locationImagesAggregate(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): LocationImagesAggregate!
+  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
   mission(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   missionByPk(id: bigint!): Mission
@@ -23147,8 +24175,9 @@ type Query {
   voteByPk(id: bigint!): Vote
   financeLogs(id: bigint, teamId: bigint): [Log!]!
   me: User
-  searchLocation(query: String!): [Location!]!
-  searchFrenchCompany(query: SearchCompanyQuery): [CompanyInfo!]!
+  searchLocation(query: String!): [LocationInfo!]!
+  getFirstResultLink(query: String!): String!
+  searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
   processReceipt(key: String!): ProcessedReceipt
 }
 
@@ -26456,7 +27485,19 @@ type Subscription {
   legalUnit(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
   legalUnitAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
   legalUnitByPk(id: bigint!): LegalUnit
+  legalUnitLocation(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
+  legalUnitLocationAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
+  legalUnitLocationByPk(id: bigint!): LegalUnitLocation
+  legalUnitLocationStream(batchSize: Int!, cursor: [LegalUnitLocationStreamCursorInput]!, where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
   legalUnitStream(batchSize: Int!, cursor: [LegalUnitStreamCursorInput]!, where: LegalUnitBoolExp): [LegalUnit!]!
+  location(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  locationAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
+  locationByPk(id: bigint!): Location
+  locationImages(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): [LocationImages!]!
+  locationImagesAggregate(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): LocationImagesAggregate!
+  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
+  locationImagesStream(batchSize: Int!, cursor: [LocationImagesStreamCursorInput]!, where: LocationImagesBoolExp): [LocationImages!]!
+  locationStream(batchSize: Int!, cursor: [LocationStreamCursorInput]!, where: LocationBoolExp): [Location!]!
   mission(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   missionByPk(id: bigint!): Mission
@@ -29700,8 +30741,6 @@ type Tenant {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actors(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): [Actor!]!
   actorsAggregate(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): ActorAggregate!
-  addresses(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
-  addressesAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
   bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
   bots(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
@@ -29769,8 +30808,8 @@ type Tenant {
   isOidcEnabled: Boolean!
   issues(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): [Issue!]!
   issuesAggregate(distinctOn: [IssueSelectColumn!], limit: Int, offset: Int, orderBy: [IssueOrderBy!], where: IssueBoolExp): IssueAggregate!
-  legalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
-  legalUnitsAggregate(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): LegalUnitAggregate!
+  locations(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): [Location!]!
+  locationsAggregate(distinctOn: [LocationSelectColumn!], limit: Int, offset: Int, orderBy: [LocationOrderBy!], where: LocationBoolExp): LocationAggregate!
   missionJoins(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): [MissionJoin!]!
   missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
@@ -29916,8 +30955,6 @@ input TenantBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actors: ActorBoolExp
   actorsAggregate: ActorAggregateBoolExp
-  addresses: AddressBoolExp
-  addressesAggregate: AddressAggregateBoolExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bots: BotBoolExp
@@ -29985,8 +31022,8 @@ input TenantBoolExp {
   isOidcEnabled: BooleanComparisonExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
-  legalUnits: LegalUnitBoolExp
-  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
   missions: MissionBoolExp
@@ -30059,7 +31096,6 @@ input TenantInsertInput {
   actions: ActionArrRelInsertInput
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
-  addresses: AddressArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   bots: BotArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
@@ -30098,7 +31134,7 @@ input TenantInsertInput {
   individuals: IndividualArrRelInsertInput
   isOidcEnabled: Boolean
   issues: IssueArrRelInsertInput
-  legalUnits: LegalUnitArrRelInsertInput
+  locations: LocationArrRelInsertInput
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
@@ -30587,7 +31623,6 @@ input TenantOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
-  addressesAggregate: AddressAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
@@ -30626,7 +31661,7 @@ input TenantOrderBy {
   individualsAggregate: IndividualAggregateOrderBy
   isOidcEnabled: OrderBy
   issuesAggregate: IssueAggregateOrderBy
-  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  locationsAggregate: LocationAggregateOrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy
@@ -32948,20 +33983,18 @@ input LoginInput {
   password: String!
 }
 
-type Point {
+type LocationInfo {
   latitude: Float!
   longitude: Float!
-}
-
-type Location {
-  id: String
+  category: String!
   name: String!
-  city: String!
-  zip: String!
-  state: String!
+  streetNumber: String!
   street: String!
+  zip: String!
+  city: String!
+  state: String!
   country: String!
-  coordinates: Point!
+  geoapifyId: String!
 }
 
 type AddressInfo {

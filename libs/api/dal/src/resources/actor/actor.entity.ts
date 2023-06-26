@@ -27,10 +27,13 @@ import type { Team } from '../team/team.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
+import type { LegalUnitLocation } from './legal-unit-location/legal-unit-location.entity';
 
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
   [EntityRepositoryType]!: ActorRepository;
+
+  @Unique()
   @Property({ type: 'text' }) // TODO: implement unique by tenant
   slug!: string;
 
@@ -61,6 +64,9 @@ export class Actor extends TenantScopedEntity {
 
   @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true, default: null })
   legalUnit: LegalUnit | null = null;
+
+  @OneToOne({ type: 'LegalUnitLocation', inversedBy: 'actor', nullable: true, default: null })
+  legalUnitLocation: LegalUnitLocation | null = null;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()

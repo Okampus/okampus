@@ -25,6 +25,8 @@ export class LegalUnitSeeder extends Factory<LegalUnit> {
       status: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),
       type: LegalUnitType.Company,
+      siren: faker.datatype.number({ min: 100_000_000, max: 999_999_999 }).toString(),
+      legalName: name.toUpperCase(),
       createdBy: null,
       tenant: this.tenant,
     };

@@ -8,8 +8,8 @@ export const actionBaseInfo = Selector('Action')({
   ...entityBase,
   description: true,
   points: true,
+  pointsSettledBy: individualBaseInfo,
   state: true,
   name: true,
-  settledBy: individualBaseInfo,
 });
 export type ActionBaseInfo = InputType<GraphQLTypes['Action'], typeof actionBaseInfo>;

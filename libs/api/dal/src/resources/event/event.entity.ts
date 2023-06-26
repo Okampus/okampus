@@ -14,13 +14,14 @@ import {
   OneToMany,
   OneToOne,
   Property,
+  Unique,
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 import { EventState } from '@okampus/shared/enums';
-
 import { toSlug } from '@okampus/shared/utils';
-import type { Address } from '../actor/address/address.entity';
+
+import type { Location } from '../actor/location/location.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
 import type { EventOptions } from './event.options';
@@ -56,6 +57,7 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'text' })
   name!: string;
 
+  @Unique()
   @Property({ type: 'text' })
   slug!: string;
 
@@ -81,17 +83,11 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'json', default: '{}' })
   meta: JSONObject = {};
 
-  @Property({ type: 'text', nullable: true, default: null })
-  onlineMeetingPlace: string | null = null;
-
-  @Property({ type: 'text', nullable: true, default: null })
-  onlineMeetingLink: string | null = null;
-
   @Property({ type: 'boolean', default: false })
   isTemplate = false;
 
-  @ManyToOne({ type: 'Address', nullable: true, default: null })
-  address: Address | null = null;
+  @ManyToOne({ type: 'Location', nullable: true, default: null })
+  location: Location | null = null;
 
   @OneToOne({ type: 'Content', onDelete: 'CASCADE' })
   content!: Content; // Description

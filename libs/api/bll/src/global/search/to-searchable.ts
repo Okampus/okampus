@@ -61,7 +61,7 @@ export function eventToSearchable(event: Event): BaseSearchable {
     name: event.name,
     thumbnail: event.banner?.url ?? null,
     description: event.content.text,
-    categories: [event.state, ...(event.address?.city ? [event.address.city] : [])],
+    categories: [event.state, ...(event.location?.address?.city ? [event.location.address.city] : [])],
     createdAt: event.createdAt.getTime(),
     // updatedAt: event.updatedAt.getTime(),
     individuals: [],

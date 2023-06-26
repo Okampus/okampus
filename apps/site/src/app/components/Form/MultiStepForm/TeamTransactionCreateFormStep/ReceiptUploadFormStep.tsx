@@ -4,16 +4,8 @@ import { Buckets, PaymentMethod } from '@okampus/shared/enums';
 import { useTypedLazyQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { Skeleton, TextAddress } from '@okampus/ui/atoms';
-import {
-  ActionButton,
-  DateInput,
-  DocumentInput,
-  NumberInput,
-  SearchInput,
-  SelectInput,
-  TextInput,
-} from '@okampus/ui/molecules';
+import { Skeleton } from '@okampus/ui/atoms';
+import { ActionButton, DateInput, DocumentInput, NumberInput, SelectInput, TextInput } from '@okampus/ui/molecules';
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -134,14 +126,14 @@ export function ReceiptUploadFormStep({ values, setValues }: ReceiptUploadFormSt
         onChange={(value) => setValues({ ...values, method: value })}
       />
 
-      <SearchInput
+      {/* <SearchInput
         options={{ label: 'Lieu de la dépense', name: 'location' }}
         items={(data?.searchLocation ?? []).map((item) => ({ label: <TextAddress address={item} />, value: item }))}
         value={values.addressItem}
         onChangeValue={(address) => setValues({ ...values, addressItem: address })}
         query={values.addressQuery}
         onChangeQuery={(query) => setValues({ ...values, addressQuery: query })}
-      />
+      /> */}
     </div>
   );
 }

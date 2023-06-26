@@ -148,7 +148,7 @@ export function TeamEventCreateForm() {
               state: EventState.Submitted,
               contentMaster: { data: { name, slug: toSlug(name ?? '') } },
               teamEvents: { data: [{ teamId: teamManage?.id }] },
-              addressId: tenant?.campusClusters[0].campuses[0].address,
+              locationId: tenant?.campusClusters[0].campuses[0].location.id,
               projectId: project?.id,
               supervisorId: currentUser?.id,
               start,

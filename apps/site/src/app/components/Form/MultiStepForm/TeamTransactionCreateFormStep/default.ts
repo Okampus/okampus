@@ -32,5 +32,5 @@ export const teamTransactionCreateDefaultValues: {
   payedByType: PayedByType.Manual,
   payedAt: new Date(),
   category: FinanceCategory.Other,
-  method: PaymentMethod.CreditCard,
+  method: PaymentMethod.Cash,
 };

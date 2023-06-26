@@ -44,13 +44,6 @@ array_relationships:
         table:
           name: actor
           schema: public
-  - name: addresses
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: address
-          schema: public
   - name: bankInfos
     using:
       foreign_key_constraint_on:
@@ -254,12 +247,12 @@ array_relationships:
         table:
           name: issue
           schema: public
-  - name: legalUnits
+  - name: locations
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
-          name: legal_unit
+          name: location
           schema: public
   - name: missionJoins
     using:

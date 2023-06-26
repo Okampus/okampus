@@ -56,14 +56,6 @@ export class EventProps {
   @IsObject()
   meta?: JSONObject = {};
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  onlineMeetingPlace?: string | null = null;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  onlineMeetingLink?: string | null = null;
-
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()

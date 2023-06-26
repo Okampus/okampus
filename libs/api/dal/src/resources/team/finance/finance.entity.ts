@@ -16,7 +16,6 @@ import { TransformCollection } from '@okampus/api/shards';
 import { PaymentMethod, FinanceState, PayedByType, FinanceCategory, AddressType } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
-import type { Address } from '../../actor/address/address.entity';
 import type { FinanceOptions } from './finance.options';
 import type { Expense } from '../expense/expense.entity';
 import type { Event } from '../../event/event.entity';
@@ -36,6 +35,9 @@ export class Finance extends TenantScopedEntity {
 
   @Property({ type: 'float' })
   amount!: number;
+
+  @Property({ type: 'boolean', default: false })
+  isOnline = false;
 
   @Enum({ items: () => PaymentMethod, type: EnumType })
   method!: PaymentMethod;
@@ -60,9 +62,6 @@ export class Finance extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
-
-  @ManyToOne({ type: 'Address', nullable: true, default: null })
-  address: Address | null = null;
 
   @Enum({ items: () => AddressType, default: AddressType.Known, type: EnumType })
   addressType: AddressType = AddressType.Known;

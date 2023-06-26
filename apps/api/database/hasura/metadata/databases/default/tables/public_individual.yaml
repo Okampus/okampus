@@ -267,12 +267,26 @@ array_relationships:
         table:
           name: issue
           schema: public
+  - name: createdLegalUnitLocations
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: legal_unit_location
+          schema: public
   - name: createdLegalUnits
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
           name: legal_unit
+          schema: public
+  - name: createdLocations
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: location
           schema: public
   - name: createdMissionJoins
     using:

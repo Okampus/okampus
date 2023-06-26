@@ -1,7 +1,7 @@
 import { Factory } from '@mikro-orm/seeder';
-import { ControlType, EventState, FormType } from '@okampus/shared/enums';
+import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
 import { pickOneFromArray } from '@okampus/shared/utils';
-import { Address, Content, Event, Form } from '@okampus/api/dal';
+import { Address, Content, Event, Form, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { faker } from '@faker-js/faker/locale/fr';
 import { randomInt } from 'node:crypto';
@@ -47,6 +47,7 @@ export class EventSeeder extends Factory<Event> {
     const name = faker.commerce.productName();
 
     const isPayedEvent = Math.random() > 0.5;
+    const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
 
     return {
       name,
@@ -61,18 +62,22 @@ export class EventSeeder extends Factory<Event> {
       pointsPresence: [0.25, 1][randomInt(2)],
       price: isPayedEvent ? randomInt(1, 50) : 0,
       project: this.project,
-      address: new Address({
-        actor: this.team.actor,
-        city: faker.address.city(),
-        country: Countries.France,
-        latitude: Number.parseFloat(faker.address.latitude()),
-        longitude: Number.parseFloat(faker.address.longitude()),
-        state: faker.address.state(),
-        street: faker.address.streetAddress(),
-        zip: faker.address.zipCode(),
+      location: new Location({
+        type: LocationType.Address,
         name: faker.company.name(),
+        actor: this.team.actor,
         createdBy: null,
         tenant: this.team.tenant,
+        address: new Address({
+          city: faker.address.city(),
+          country: Countries.France,
+          latitude: Number.parseFloat(faker.address.latitude()),
+          longitude: Number.parseFloat(faker.address.longitude()),
+          state: faker.address.state(),
+          streetNumber,
+          street: rest.join(' '),
+          zip: faker.address.zipCode(),
+        }),
       }),
       supervisors: [supervisor],
       state,

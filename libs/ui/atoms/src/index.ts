@@ -21,5 +21,6 @@ export * from './Skeleton/Skeleton';
 export * from './Text/TextAddress';
 export * from './Text/TextFinance';
 export * from './Text/TextItemSection';
+export * from './Text/TextLocation';
 export * from './Text/TextSection';
 // @endindex

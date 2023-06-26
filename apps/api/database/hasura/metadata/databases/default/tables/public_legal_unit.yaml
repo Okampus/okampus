@@ -12,16 +12,16 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: tenant
+  - name: parent
     using:
-      foreign_key_constraint_on: tenant_id
+      foreign_key_constraint_on: parent_id
 array_relationships:
-  - name: bankInfos
+  - name: expenseItems
     using:
       foreign_key_constraint_on:
-        column: bank_id
+        column: company_id
         table:
-          name: bank_info
+          name: expense_item
           schema: public
   - name: grandFundTeams
     using:
@@ -29,4 +29,18 @@ array_relationships:
         column: tenant_grant_fund_id
         table:
           name: team
+          schema: public
+  - name: legalUnitLocations
+    using:
+      foreign_key_constraint_on:
+        column: legal_unit_id
+        table:
+          name: legal_unit_location
+          schema: public
+  - name: legalUnits
+    using:
+      foreign_key_constraint_on:
+        column: parent_id
+        table:
+          name: legal_unit
           schema: public

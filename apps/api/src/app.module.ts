@@ -44,6 +44,7 @@ import {
   ActorImagesModule,
   ActorsModule,
   SocialsModule,
+  GoogleModule,
 } from '@okampus/api/bll';
 import { Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -181,6 +182,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     OIDCCacheModule,
     NotificationsModule,
     GeocodeModule,
+    GoogleModule,
     NationalIdentificationModule,
     TextractModule,
     AuthModule,

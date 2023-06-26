@@ -3,7 +3,7 @@ import { FinanceSidePanel } from '../SidePanel/FinanceSidePanel';
 import { Align } from '@okampus/shared/enums';
 import { formatDateDayOfWeekNoHour, getColorHexFromData, isNotNull } from '@okampus/shared/utils';
 
-import { TextAddress, TextBadge, TextFinance } from '@okampus/ui/atoms';
+import { TextBadge, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 import { FileGroup, LabeledTeam, LabeledUser } from '@okampus/ui/molecules';
 import { Dashboard } from '@okampus/ui/organisms';
@@ -51,7 +51,7 @@ export function FinanceDashboard({ finances }: FinanceDashboardProps) {
       label: 'Destinataire',
       align: Align.Left,
       render: (value: FinanceBaseInfo) => {
-        return value.address && <TextAddress className="text-left" address={value.address} />;
+        return value.receivedBy.name;
       },
     },
     {

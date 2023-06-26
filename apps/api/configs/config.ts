@@ -67,8 +67,11 @@ export const config: ApiConfig = {
     secretKey: process.env.TEXTRACT_SECRET_ACCESS_KEY ?? 'api-key-secret',
     region: process.env.TEXTRACT_REGION ?? 'region',
   },
-  mapbox: {
-    apiKey: process.env.MAPBOX_API_KEY ?? 'api-key',
+  geoapify: {
+    apiKey: process.env.GEOAPIFY_API_KEY ?? 'api-key',
+  },
+  google: {
+    customSearchApiKey: process.env.GOOGLE_CUSTOM_SEARCH_API_KEY ?? 'api-key',
   },
   insee: {
     apiToken: process.env.INSEE_API_TOKEN ?? 'api-key',

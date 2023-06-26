@@ -48,6 +48,7 @@ import {
   ActorImageType,
   TeamHistoryEventType,
   ApproximateDate,
+  LocationType,
 } from '@okampus/shared/enums';
 import {
   pickOneFromArray,
@@ -66,11 +67,12 @@ import { nanoid } from 'nanoid';
 import YAML from 'yaml';
 
 import { Mission } from '@okampus/api/dal';
+import { Location } from '@okampus/api/dal';
 import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Individual, EventApprovalStep, User, BaseEntity, Actor } from '@okampus/api/dal';
+import type { Actor, EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
 import type { UploadsService } from '../../features/uploads/uploads.service.js';
 import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
@@ -163,17 +165,22 @@ function randomMission(project: Project, tenant: Tenant): Mission {
   });
 }
 
-function randomAddress(actor: Actor, tenant: Tenant): Address {
-  return new Address({
-    actor,
-    city: faker.address.city(),
-    country: Countries.France,
-    latitude: Number.parseFloat(faker.address.latitude()),
-    longitude: Number.parseFloat(faker.address.longitude()),
-    state: faker.address.state(),
-    street: faker.address.streetAddress(),
-    zip: faker.address.zipCode(),
+function randomLocation(actor: Actor, tenant: Tenant, type = LocationType.Address): Location {
+  const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
+  return new Location({
     name: faker.company.name(),
+    type,
+    actor,
+    address: new Address({
+      city: faker.address.city(),
+      country: Countries.France,
+      latitude: Number.parseFloat(faker.address.latitude()),
+      longitude: Number.parseFloat(faker.address.longitude()),
+      state: faker.address.state(),
+      streetNumber,
+      street: rest.join(' '),
+      zip: faker.address.zipCode(),
+    }),
     createdBy: null,
     tenant,
   });
@@ -231,7 +238,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
       bio: faker.lorem.paragraph(randomInt(2, 12)),
       tags: randomFromArray(categories, 1, 3),
       socials: [],
-      slug: toSlug(name),
+      slug: toSlug(name) + '-' + nanoid(6),
       status: faker.company.catchPhrase(),
       type: TeamType.Association,
     };
@@ -329,9 +336,9 @@ export class DatabaseSeeder extends Seeder {
       });
 
       for (const _ of Array.from({ length: randomInt(1, 3) })) {
-        const address = randomAddress(campusClusterManageTeam.actor, tenant);
+        const location = randomLocation(campusClusterManageTeam.actor, tenant, LocationType.Campus);
         campusCluster.campuses.add(
-          new Campus({ name: `Campus ${campusCluster.name}`, address, campusCluster, ...scopedOptions })
+          new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions })
         );
       }
 
@@ -458,7 +465,6 @@ export class DatabaseSeeder extends Seeder {
         const subvention = new Finance({
           team: team,
           amount: 6000,
-          address: randomAddress(team.actor, tenant),
           name: 'Subvention 2023',
           payedAt: start,
           method: PaymentMethod.Transfer,
@@ -621,9 +627,7 @@ export class DatabaseSeeder extends Seeder {
           .then(async (events) => {
             events = events.map((event, i) => {
               event.name = `${project.name} #${i + 1}`;
-              event.slug = toSlug(event.name);
-
-              event.eventManages.add(new EventManage({ event, team, createdBy: event.createdBy, tenant }));
+              event.slug = toSlug(event.name) + '-' + nanoid(6);
               return event;
             });
 
@@ -649,7 +653,6 @@ export class DatabaseSeeder extends Seeder {
                   team,
                   event,
                   project,
-                  address: randomAddress(team.actor, tenant),
                   amount: -amount,
                   name: faker.lorem.words(3),
                   category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,

@@ -1,10 +1,10 @@
+import type { Location } from '../../actor/location/location.entity';
 import type { CampusProps } from '@okampus/shared/dtos';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { Address } from '../../actor/address/address.entity';
 import type { CampusCluster } from '../campus-cluster/campus-cluster.entity';
 
 export type CampusOptions = CampusProps &
   TenantScopedOptions & {
-    address: Address;
+    location: Location;
     campusCluster: CampusCluster;
   };

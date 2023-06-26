@@ -10,6 +10,10 @@ export class BankInfoProps {
   holderName?: string;
 
   @Field(() => String)
+  @IsString()
+  bicSwift!: string;
+
+  @Field(() => String)
   @IsEnum(Countries)
   @IsString()
   country!: string;

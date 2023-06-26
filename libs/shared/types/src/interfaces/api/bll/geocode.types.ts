@@ -1,20 +1,13 @@
 export type GeocodeLocation = {
-  id?: string;
+  latitude: number | null;
+  longitude: number | null;
+  category: string;
   name: string;
+  streetNumber: string;
   street: string;
-  state: string;
-  city: string;
   zip: string;
+  city: string;
+  state: string;
   country: string;
-  coordinates: {
-    longitude: number;
-    latitude: number;
-  };
-};
-
-export type AddressLocation = {
-  coordinates: {
-    longitude: number;
-    latitude: number;
-  };
+  geoapifyId: string | null;
 };

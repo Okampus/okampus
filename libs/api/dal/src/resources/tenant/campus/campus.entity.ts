@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-cycle
 import { CampusRepository } from './campus.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
-import type { Address } from '../../actor/address/address.entity';
 import type { CampusOptions } from './campus.options';
 import type { CampusCluster } from '../campus-cluster/campus-cluster.entity';
+import type { Location } from '../../actor/location/location.entity';
 
 @Entity({ customRepository: () => CampusRepository })
 export class Campus extends TenantScopedEntity {
@@ -14,8 +14,8 @@ export class Campus extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @OneToOne({ type: 'Address', mappedBy: 'campus' })
-  address!: Address;
+  @ManyToOne({ type: 'Location' })
+  location!: Location;
 
   @ManyToOne({ type: 'CampusCluster' })
   campusCluster!: CampusCluster;

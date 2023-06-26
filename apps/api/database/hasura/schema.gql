@@ -1823,42 +1823,6 @@ type Actor {
   ): ActorTagsAggregate!
 
   # An array relationship
-  addresses(
-    # distinct select on columns
-    distinctOn: [AddressSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [AddressOrderBy!]
-
-    # filter the rows returned
-    where: AddressBoolExp
-  ): [Address!]!
-
-  # An aggregate relationship
-  addressesAggregate(
-    # distinct select on columns
-    distinctOn: [AddressSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [AddressOrderBy!]
-
-    # filter the rows returned
-    where: AddressBoolExp
-  ): AddressAggregate!
-
-  # An array relationship
   bankInfos(
     # distinct select on columns
     distinctOn: [BankInfoSelectColumn!]
@@ -1984,6 +1948,46 @@ type Actor {
   # An object relationship
   legalUnit: LegalUnit
   legalUnitId: bigint
+
+  # An object relationship
+  legalUnitLocation: LegalUnitLocation
+  legalUnitLocationId: bigint
+
+  # An array relationship
+  locations(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
+
+  # An aggregate relationship
+  locationsAggregate(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): LocationAggregate!
   name: String!
 
   # An array relationship
@@ -2275,6 +2279,7 @@ type ActorAvgFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -2285,6 +2290,7 @@ input ActorAvgOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -2298,8 +2304,6 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
-  addresses: AddressBoolExp
-  addressesAggregate: AddressAggregateBoolExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bio: StringComparisonExp
@@ -2319,6 +2323,10 @@ input ActorBoolExp {
   individualId: BigintComparisonExp
   legalUnit: LegalUnitBoolExp
   legalUnitId: BigintComparisonExp
+  legalUnitLocation: LegalUnitLocationBoolExp
+  legalUnitLocationId: BigintComparisonExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   name: StringComparisonExp
   ownedBots: BotBoolExp
   ownedBotsAggregate: BotAggregateBoolExp
@@ -2352,8 +2360,14 @@ enum ActorConstraint {
   # unique or primary key constraint on columns "legal_unit_id"
   actor_legal_unit_id_unique
 
+  # unique or primary key constraint on columns "legal_unit_location_id"
+  actor_legal_unit_location_id_unique
+
   # unique or primary key constraint on columns "id"
   actor_pkey
+
+  # unique or primary key constraint on columns "slug"
+  actor_slug_unique
 
   # unique or primary key constraint on columns "team_id"
   actor_team_id_unique
@@ -2863,6 +2877,7 @@ input ActorIncInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -2871,7 +2886,6 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
-  addresses: AddressArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   bio: String
   createdAt: timestamptz
@@ -2888,6 +2902,9 @@ input ActorInsertInput {
   individualId: bigint
   legalUnit: LegalUnitObjRelInsertInput
   legalUnitId: bigint
+  legalUnitLocation: LegalUnitLocationObjRelInsertInput
+  legalUnitLocationId: bigint
+  locations: LocationArrRelInsertInput
   name: String
   ownedBots: BotArrRelInsertInput
   payedFinances: FinanceArrRelInsertInput
@@ -2916,6 +2933,7 @@ type ActorMaxFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2936,6 +2954,7 @@ input ActorMaxOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   name: OrderBy
   slug: OrderBy
   status: OrderBy
@@ -2956,6 +2975,7 @@ type ActorMinFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -2976,6 +2996,7 @@ input ActorMinOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   name: OrderBy
   slug: OrderBy
   status: OrderBy
@@ -3012,7 +3033,6 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
-  addressesAggregate: AddressAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   bio: OrderBy
   createdAt: OrderBy
@@ -3029,6 +3049,9 @@ input ActorOrderBy {
   individualId: OrderBy
   legalUnit: LegalUnitOrderBy
   legalUnitId: OrderBy
+  legalUnitLocation: LegalUnitLocationOrderBy
+  legalUnitLocationId: OrderBy
+  locationsAggregate: LocationAggregateOrderBy
   name: OrderBy
   ownedBotsAggregate: BotAggregateOrderBy
   payedFinancesAggregate: FinanceAggregateOrderBy
@@ -3083,6 +3106,9 @@ enum ActorSelectColumn {
   legalUnitId
 
   # column name
+  legalUnitLocationId
+
+  # column name
   name
 
   # column name
@@ -3113,6 +3139,7 @@ input ActorSetInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -3127,6 +3154,7 @@ type ActorStddevFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3137,6 +3165,7 @@ input ActorStddevOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3147,6 +3176,7 @@ type ActorStddevPopFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3157,6 +3187,7 @@ input ActorStddevPopOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3167,6 +3198,7 @@ type ActorStddevSampFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3177,6 +3209,7 @@ input ActorStddevSampOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3202,6 +3235,7 @@ input ActorStreamCursorValueInput {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   name: String
   slug: String
   status: String
@@ -3216,6 +3250,7 @@ type ActorSumFields {
   id: bigint
   individualId: bigint
   legalUnitId: bigint
+  legalUnitLocationId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -3226,6 +3261,7 @@ input ActorSumOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3560,6 +3596,9 @@ enum ActorUpdateColumn {
   legalUnitId
 
   # column name
+  legalUnitLocationId
+
+  # column name
   name
 
   # column name
@@ -3595,6 +3634,7 @@ type ActorVarianceFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3605,6 +3645,7 @@ input ActorVarianceOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3615,6 +3656,7 @@ type ActorVarPopFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3625,6 +3667,7 @@ input ActorVarPopOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -3635,6 +3678,7 @@ type ActorVarSampFields {
   id: Float
   individualId: Float
   legalUnitId: Float
+  legalUnitLocationId: Float
   teamId: Float
   tenantId: Float
 }
@@ -3645,91 +3689,14 @@ input ActorVarSampOrderBy {
   id: OrderBy
   individualId: OrderBy
   legalUnitId: OrderBy
+  legalUnitLocationId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 # columns and relationships of "address"
 type Address {
-  # An object relationship
-  actor: Actor!
-  actorId: bigint!
-
-  # An array relationship
-  bankInfos(
-    # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
-
-    # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
-
-  # An aggregate relationship
-  bankInfosAggregate(
-    # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
-
-    # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
-
-  # An object relationship
-  campus: Campus
-
-  # An array relationship
-  campusClusters(
-    # distinct select on columns
-    distinctOn: [CampusClusterSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CampusClusterOrderBy!]
-
-    # filter the rows returned
-    where: CampusClusterBoolExp
-  ): [CampusCluster!]!
-
-  # An aggregate relationship
-  campusClustersAggregate(
-    # distinct select on columns
-    distinctOn: [CampusClusterSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [CampusClusterOrderBy!]
-
-    # filter the rows returned
-    where: CampusClusterBoolExp
-  ): CampusClusterAggregate!
-  campusId: bigint
+  category: String!
   city: String!
   country: String!
   createdAt: timestamptz!
@@ -3738,130 +3705,50 @@ type Address {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-
-  # An array relationship
-  events(
-    # distinct select on columns
-    distinctOn: [EventSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrderBy!]
-
-    # filter the rows returned
-    where: EventBoolExp
-  ): [Event!]!
-
-  # An aggregate relationship
-  eventsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrderBy!]
-
-    # filter the rows returned
-    where: EventBoolExp
-  ): EventAggregate!
-
-  # An array relationship
-  expenseItems(
-    # distinct select on columns
-    distinctOn: [ExpenseItemSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemBoolExp
-  ): [ExpenseItem!]!
-
-  # An aggregate relationship
-  expenseItemsAggregate(
-    # distinct select on columns
-    distinctOn: [ExpenseItemSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [ExpenseItemOrderBy!]
-
-    # filter the rows returned
-    where: ExpenseItemBoolExp
-  ): ExpenseItemAggregate!
-
-  # An array relationship
-  finances(
-    # distinct select on columns
-    distinctOn: [FinanceSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceOrderBy!]
-
-    # filter the rows returned
-    where: FinanceBoolExp
-  ): [Finance!]!
-
-  # An aggregate relationship
-  financesAggregate(
-    # distinct select on columns
-    distinctOn: [FinanceSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceOrderBy!]
-
-    # filter the rows returned
-    where: FinanceBoolExp
-  ): FinanceAggregate!
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint!
-
-  # An object relationship
-  image: FileUpload
-  imageId: bigint
-  isPublic: Boolean!
   latitude: Float
+
+  # An array relationship
+  locations(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
+
+  # An aggregate relationship
+  locationsAggregate(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): LocationAggregate!
   longitude: Float
   name: String!
   state: String!
   street: String!
-
-  # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
+  streetNumber: String!
   zip: String!
 }
 
@@ -3872,23 +3759,7 @@ type AddressAggregate {
 }
 
 input AddressAggregateBoolExp {
-  bool_and: addressAggregateBoolExpBool_and
-  bool_or: addressAggregateBoolExpBool_or
   count: addressAggregateBoolExpCount
-}
-
-input addressAggregateBoolExpBool_and {
-  arguments: AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: AddressBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input addressAggregateBoolExpBool_or {
-  arguments: AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: AddressBoolExp
-  predicate: BooleanComparisonExp!
 }
 
 input addressAggregateBoolExpCount {
@@ -3938,26 +3809,18 @@ input AddressArrRelInsertInput {
 
 # aggregate avg on columns
 type AddressAvgFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by avg() on columns of table "address"
 input AddressAvgOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "address". All fields are combined with a logical 'AND'.
@@ -3965,178 +3828,134 @@ input AddressBoolExp {
   _and: [AddressBoolExp!]
   _not: AddressBoolExp
   _or: [AddressBoolExp!]
-  actor: ActorBoolExp
-  actorId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
-  campus: CampusBoolExp
-  campusClusters: CampusClusterBoolExp
-  campusClustersAggregate: CampusClusterAggregateBoolExp
-  campusId: BigintComparisonExp
+  category: StringComparisonExp
   city: StringComparisonExp
   country: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  events: EventBoolExp
-  eventsAggregate: EventAggregateBoolExp
-  expenseItems: ExpenseItemBoolExp
-  expenseItemsAggregate: ExpenseItemAggregateBoolExp
-  finances: FinanceBoolExp
-  financesAggregate: FinanceAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
+  geoapifyId: StringComparisonExp
   id: BigintComparisonExp
-  image: FileUploadBoolExp
-  imageId: BigintComparisonExp
-  isPublic: BooleanComparisonExp
   latitude: FloatComparisonExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   longitude: FloatComparisonExp
   name: StringComparisonExp
   state: StringComparisonExp
   street: StringComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
+  streetNumber: StringComparisonExp
   zip: StringComparisonExp
 }
 
 # unique or primary key constraints on table "address"
 enum AddressConstraint {
-  # unique or primary key constraint on columns "campus_id"
-  address_campus_id_unique
-
-  # unique or primary key constraint on columns "image_id"
-  address_image_id_unique
-
   # unique or primary key constraint on columns "id"
   address_pkey
 }
 
 # input type for incrementing numeric columns in table "address"
 input AddressIncInput {
-  actorId: bigint
-  campusId: bigint
   createdById: bigint
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
-  tenantId: bigint
 }
 
 # input type for inserting data into table "address"
 input AddressInsertInput {
-  actor: ActorObjRelInsertInput
-  actorId: bigint
-  bankInfos: BankInfoArrRelInsertInput
-  campus: CampusObjRelInsertInput
-  campusClusters: CampusClusterArrRelInsertInput
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  events: EventArrRelInsertInput
-  expenseItems: ExpenseItemArrRelInsertInput
-  finances: FinanceArrRelInsertInput
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  image: FileUploadObjRelInsertInput
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
+  locations: LocationArrRelInsertInput
   longitude: Float
   name: String
   state: String
   street: String
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 # aggregate max on columns
 type AddressMaxFields {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 # order by max() on columns of table "address"
 input AddressMaxOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
 # aggregate min on columns
 type AddressMinFields {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 # order by min() on columns of table "address"
 input AddressMinOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
@@ -4166,33 +3985,22 @@ input AddressOnConflict {
 
 # Ordering options when selecting data from "address".
 input AddressOrderBy {
-  actor: ActorOrderBy
-  actorId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
-  campus: CampusOrderBy
-  campusClustersAggregate: CampusClusterAggregateOrderBy
-  campusId: OrderBy
+  category: OrderBy
   city: OrderBy
   country: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  eventsAggregate: EventAggregateOrderBy
-  expenseItemsAggregate: ExpenseItemAggregateOrderBy
-  financesAggregate: FinanceAggregateOrderBy
-  hiddenAt: OrderBy
+  geoapifyId: OrderBy
   id: OrderBy
-  image: FileUploadOrderBy
-  imageId: OrderBy
-  isPublic: OrderBy
   latitude: OrderBy
+  locationsAggregate: LocationAggregateOrderBy
   longitude: OrderBy
   name: OrderBy
   state: OrderBy
   street: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
+  streetNumber: OrderBy
   zip: OrderBy
 }
 
@@ -4204,10 +4012,7 @@ input AddressPkColumnsInput {
 # select columns of table "address"
 enum AddressSelectColumn {
   # column name
-  actorId
-
-  # column name
-  campusId
+  category
 
   # column name
   city
@@ -4225,16 +4030,10 @@ enum AddressSelectColumn {
   deletedAt
 
   # column name
-  hiddenAt
+  geoapifyId
 
   # column name
   id
-
-  # column name
-  imageId
-
-  # column name
-  isPublic
 
   # column name
   latitude
@@ -4252,116 +4051,77 @@ enum AddressSelectColumn {
   street
 
   # column name
-  tenantId
+  streetNumber
 
   # column name
   zip
 }
 
-# select "addressAggregateBoolExpBool_andArgumentsColumns" columns of table "address"
-enum AddressSelectColumnAddressAggregateBoolExpBool_andArgumentsColumns {
-  # column name
-  isPublic
-}
-
-# select "addressAggregateBoolExpBool_orArgumentsColumns" columns of table "address"
-enum AddressSelectColumnAddressAggregateBoolExpBool_orArgumentsColumns {
-  # column name
-  isPublic
-}
-
 # input type for updating data in table "address"
 input AddressSetInput {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 # aggregate stddev on columns
 type AddressStddevFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by stddev() on columns of table "address"
 input AddressStddevOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # aggregate stddevPop on columns
 type AddressStddevPopFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by stddevPop() on columns of table "address"
 input AddressStddevPopOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type AddressStddevSampFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by stddevSamp() on columns of table "address"
 input AddressStddevSampOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # Streaming cursor of the table "address"
@@ -4375,57 +4135,43 @@ input AddressStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input AddressStreamCursorValueInput {
-  actorId: bigint
-  campusId: bigint
+  category: String
   city: String
   country: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  geoapifyId: String
   id: bigint
-  imageId: bigint
-  isPublic: Boolean
   latitude: Float
   longitude: Float
   name: String
   state: String
   street: String
-  tenantId: bigint
+  streetNumber: String
   zip: String
 }
 
 # aggregate sum on columns
 type AddressSumFields {
-  actorId: bigint
-  campusId: bigint
   createdById: bigint
   id: bigint
-  imageId: bigint
   latitude: Float
   longitude: Float
-  tenantId: bigint
 }
 
 # order by sum() on columns of table "address"
 input AddressSumOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # update columns of table "address"
 enum AddressUpdateColumn {
   # column name
-  actorId
-
-  # column name
-  campusId
+  category
 
   # column name
   city
@@ -4443,16 +4189,10 @@ enum AddressUpdateColumn {
   deletedAt
 
   # column name
-  hiddenAt
+  geoapifyId
 
   # column name
   id
-
-  # column name
-  imageId
-
-  # column name
-  isPublic
 
   # column name
   latitude
@@ -4470,7 +4210,7 @@ enum AddressUpdateColumn {
   street
 
   # column name
-  tenantId
+  streetNumber
 
   # column name
   zip
@@ -4489,74 +4229,50 @@ input AddressUpdates {
 
 # aggregate variance on columns
 type AddressVarianceFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by variance() on columns of table "address"
 input AddressVarianceOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # aggregate varPop on columns
 type AddressVarPopFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by varPop() on columns of table "address"
 input AddressVarPopOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # aggregate varSamp on columns
 type AddressVarSampFields {
-  actorId: Float
-  campusId: Float
   createdById: Float
   id: Float
-  imageId: Float
   latitude: Float
   longitude: Float
-  tenantId: Float
 }
 
 # order by varSamp() on columns of table "address"
 input AddressVarSampOrderBy {
-  actorId: OrderBy
-  campusId: OrderBy
   createdById: OrderBy
   id: OrderBy
-  imageId: OrderBy
   latitude: OrderBy
   longitude: OrderBy
-  tenantId: OrderBy
 }
 
 # columns and relationships of "bank_info"
@@ -4602,17 +4318,13 @@ type BankInfo {
   # An object relationship
   actor: Actor!
   actorId: bigint!
-
-  # An object relationship
-  address: Address!
-  addressId: bigint!
   agencyCode: String!
 
   # An object relationship
-  bank: LegalUnit
+  bank: LegalUnitLocation
   bankCode: String!
-  bankCodeBic: String!
   bankId: bigint
+  bicSwift: String!
   checksum: String!
   country: String!
   countryCode: String!
@@ -4726,7 +4438,6 @@ input BankInfoArrRelInsertInput {
 # aggregate avg on columns
 type BankInfoAvgFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -4736,7 +4447,6 @@ type BankInfoAvgFields {
 # order by avg() on columns of table "bank_info"
 input BankInfoAvgOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -4753,13 +4463,11 @@ input BankInfoBoolExp {
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   agencyCode: StringComparisonExp
-  bank: LegalUnitBoolExp
+  bank: LegalUnitLocationBoolExp
   bankCode: StringComparisonExp
-  bankCodeBic: StringComparisonExp
   bankId: BigintComparisonExp
+  bicSwift: StringComparisonExp
   checksum: StringComparisonExp
   country: StringComparisonExp
   countryCode: StringComparisonExp
@@ -4786,7 +4494,6 @@ enum BankInfoConstraint {
 # input type for incrementing numeric columns in table "bank_info"
 input BankInfoIncInput {
   actorId: bigint
-  addressId: bigint
   bankId: bigint
   createdById: bigint
   id: bigint
@@ -4799,13 +4506,11 @@ input BankInfoInsertInput {
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  address: AddressObjRelInsertInput
-  addressId: bigint
   agencyCode: String
-  bank: LegalUnitObjRelInsertInput
+  bank: LegalUnitLocationObjRelInsertInput
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -4826,11 +4531,10 @@ input BankInfoInsertInput {
 type BankInfoMaxFields {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -4848,11 +4552,10 @@ type BankInfoMaxFields {
 input BankInfoMaxOrderBy {
   accountCode: OrderBy
   actorId: OrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -4870,11 +4573,10 @@ input BankInfoMaxOrderBy {
 type BankInfoMinFields {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -4892,11 +4594,10 @@ type BankInfoMinFields {
 input BankInfoMinOrderBy {
   accountCode: OrderBy
   actorId: OrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -4940,13 +4641,11 @@ input BankInfoOrderBy {
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  address: AddressOrderBy
-  addressId: OrderBy
   agencyCode: OrderBy
-  bank: LegalUnitOrderBy
+  bank: LegalUnitLocationOrderBy
   bankCode: OrderBy
-  bankCodeBic: OrderBy
   bankId: OrderBy
+  bicSwift: OrderBy
   checksum: OrderBy
   country: OrderBy
   countryCode: OrderBy
@@ -4977,19 +4676,16 @@ enum BankInfoSelectColumn {
   actorId
 
   # column name
-  addressId
-
-  # column name
   agencyCode
 
   # column name
   bankCode
 
   # column name
-  bankCodeBic
+  bankId
 
   # column name
-  bankId
+  bicSwift
 
   # column name
   checksum
@@ -5029,11 +4725,10 @@ enum BankInfoSelectColumn {
 input BankInfoSetInput {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -5050,7 +4745,6 @@ input BankInfoSetInput {
 # aggregate stddev on columns
 type BankInfoStddevFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5060,7 +4754,6 @@ type BankInfoStddevFields {
 # order by stddev() on columns of table "bank_info"
 input BankInfoStddevOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5070,7 +4763,6 @@ input BankInfoStddevOrderBy {
 # aggregate stddevPop on columns
 type BankInfoStddevPopFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5080,7 +4772,6 @@ type BankInfoStddevPopFields {
 # order by stddevPop() on columns of table "bank_info"
 input BankInfoStddevPopOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5090,7 +4781,6 @@ input BankInfoStddevPopOrderBy {
 # aggregate stddevSamp on columns
 type BankInfoStddevSampFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5100,7 +4790,6 @@ type BankInfoStddevSampFields {
 # order by stddevSamp() on columns of table "bank_info"
 input BankInfoStddevSampOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5120,11 +4809,10 @@ input BankInfoStreamCursorInput {
 input BankInfoStreamCursorValueInput {
   accountCode: String
   actorId: bigint
-  addressId: bigint
   agencyCode: String
   bankCode: String
-  bankCodeBic: String
   bankId: bigint
+  bicSwift: String
   checksum: String
   country: String
   countryCode: String
@@ -5141,7 +4829,6 @@ input BankInfoStreamCursorValueInput {
 # aggregate sum on columns
 type BankInfoSumFields {
   actorId: bigint
-  addressId: bigint
   bankId: bigint
   createdById: bigint
   id: bigint
@@ -5151,7 +4838,6 @@ type BankInfoSumFields {
 # order by sum() on columns of table "bank_info"
 input BankInfoSumOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5167,19 +4853,16 @@ enum BankInfoUpdateColumn {
   actorId
 
   # column name
-  addressId
-
-  # column name
   agencyCode
 
   # column name
   bankCode
 
   # column name
-  bankCodeBic
+  bankId
 
   # column name
-  bankId
+  bicSwift
 
   # column name
   checksum
@@ -5229,7 +4912,6 @@ input BankInfoUpdates {
 # aggregate variance on columns
 type BankInfoVarianceFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5239,7 +4921,6 @@ type BankInfoVarianceFields {
 # order by variance() on columns of table "bank_info"
 input BankInfoVarianceOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5249,7 +4930,6 @@ input BankInfoVarianceOrderBy {
 # aggregate varPop on columns
 type BankInfoVarPopFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5259,7 +4939,6 @@ type BankInfoVarPopFields {
 # order by varPop() on columns of table "bank_info"
 input BankInfoVarPopOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5269,7 +4948,6 @@ input BankInfoVarPopOrderBy {
 # aggregate varSamp on columns
 type BankInfoVarSampFields {
   actorId: Float
-  addressId: Float
   bankId: Float
   createdById: Float
   id: Float
@@ -5279,7 +4957,6 @@ type BankInfoVarSampFields {
 # order by varSamp() on columns of table "bank_info"
 input BankInfoVarSampOrderBy {
   actorId: OrderBy
-  addressId: OrderBy
   bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -5748,9 +5425,6 @@ input BotVarSampOrderBy {
 # columns and relationships of "campus"
 type Campus {
   # An object relationship
-  address: Address
-
-  # An object relationship
   campusCluster: CampusCluster!
   campusClusterId: bigint!
   createdAt: timestamptz!
@@ -5761,6 +5435,10 @@ type Campus {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
+
+  # An object relationship
+  location: Location!
+  locationId: bigint!
   name: String!
 
   # An object relationship
@@ -5828,6 +5506,7 @@ type CampusAvgFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -5836,6 +5515,7 @@ input CampusAvgOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -5844,7 +5524,6 @@ input CampusBoolExp {
   _and: [CampusBoolExp!]
   _not: CampusBoolExp
   _or: [CampusBoolExp!]
-  address: AddressBoolExp
   campusCluster: CampusClusterBoolExp
   campusClusterId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -5853,6 +5532,8 @@ input CampusBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
   name: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -5860,10 +5541,6 @@ input CampusBoolExp {
 
 # columns and relationships of "campus_cluster"
 type CampusCluster {
-  # An object relationship
-  approximateAddress: Address
-  approximateAddressId: bigint
-
   # An array relationship
   campuses(
     # distinct select on columns
@@ -6007,7 +5684,6 @@ input CampusClusterArrRelInsertInput {
 
 # aggregate avg on columns
 type CampusClusterAvgFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6015,7 +5691,6 @@ type CampusClusterAvgFields {
 
 # order by avg() on columns of table "campus_cluster"
 input CampusClusterAvgOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6026,8 +5701,6 @@ input CampusClusterBoolExp {
   _and: [CampusClusterBoolExp!]
   _not: CampusClusterBoolExp
   _or: [CampusClusterBoolExp!]
-  approximateAddress: AddressBoolExp
-  approximateAddressId: BigintComparisonExp
   campuses: CampusBoolExp
   campusesAggregate: CampusAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -6051,7 +5724,6 @@ enum CampusClusterConstraint {
 
 # input type for incrementing numeric columns in table "campus_cluster"
 input CampusClusterIncInput {
-  approximateAddressId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -6059,8 +5731,6 @@ input CampusClusterIncInput {
 
 # input type for inserting data into table "campus_cluster"
 input CampusClusterInsertInput {
-  approximateAddress: AddressObjRelInsertInput
-  approximateAddressId: bigint
   campuses: CampusArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -6076,7 +5746,6 @@ input CampusClusterInsertInput {
 
 # aggregate max on columns
 type CampusClusterMaxFields {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -6088,7 +5757,6 @@ type CampusClusterMaxFields {
 
 # order by max() on columns of table "campus_cluster"
 input CampusClusterMaxOrderBy {
-  approximateAddressId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -6100,7 +5768,6 @@ input CampusClusterMaxOrderBy {
 
 # aggregate min on columns
 type CampusClusterMinFields {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -6112,7 +5779,6 @@ type CampusClusterMinFields {
 
 # order by min() on columns of table "campus_cluster"
 input CampusClusterMinOrderBy {
-  approximateAddressId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -6148,8 +5814,6 @@ input CampusClusterOnConflict {
 
 # Ordering options when selecting data from "campus_cluster".
 input CampusClusterOrderBy {
-  approximateAddress: AddressOrderBy
-  approximateAddressId: OrderBy
   campusesAggregate: CampusAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -6170,9 +5834,6 @@ input CampusClusterPkColumnsInput {
 
 # select columns of table "campus_cluster"
 enum CampusClusterSelectColumn {
-  # column name
-  approximateAddressId
-
   # column name
   createdAt
 
@@ -6197,7 +5858,6 @@ enum CampusClusterSelectColumn {
 
 # input type for updating data in table "campus_cluster"
 input CampusClusterSetInput {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -6209,7 +5869,6 @@ input CampusClusterSetInput {
 
 # aggregate stddev on columns
 type CampusClusterStddevFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6217,7 +5876,6 @@ type CampusClusterStddevFields {
 
 # order by stddev() on columns of table "campus_cluster"
 input CampusClusterStddevOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6225,7 +5883,6 @@ input CampusClusterStddevOrderBy {
 
 # aggregate stddevPop on columns
 type CampusClusterStddevPopFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6233,7 +5890,6 @@ type CampusClusterStddevPopFields {
 
 # order by stddevPop() on columns of table "campus_cluster"
 input CampusClusterStddevPopOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6241,7 +5897,6 @@ input CampusClusterStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type CampusClusterStddevSampFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6249,7 +5904,6 @@ type CampusClusterStddevSampFields {
 
 # order by stddevSamp() on columns of table "campus_cluster"
 input CampusClusterStddevSampOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6266,7 +5920,6 @@ input CampusClusterStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input CampusClusterStreamCursorValueInput {
-  approximateAddressId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -6278,7 +5931,6 @@ input CampusClusterStreamCursorValueInput {
 
 # aggregate sum on columns
 type CampusClusterSumFields {
-  approximateAddressId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
@@ -6286,7 +5938,6 @@ type CampusClusterSumFields {
 
 # order by sum() on columns of table "campus_cluster"
 input CampusClusterSumOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6294,9 +5945,6 @@ input CampusClusterSumOrderBy {
 
 # update columns of table "campus_cluster"
 enum CampusClusterUpdateColumn {
-  # column name
-  approximateAddressId
-
   # column name
   createdAt
 
@@ -6332,7 +5980,6 @@ input CampusClusterUpdates {
 
 # aggregate variance on columns
 type CampusClusterVarianceFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6340,7 +5987,6 @@ type CampusClusterVarianceFields {
 
 # order by variance() on columns of table "campus_cluster"
 input CampusClusterVarianceOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6348,7 +5994,6 @@ input CampusClusterVarianceOrderBy {
 
 # aggregate varPop on columns
 type CampusClusterVarPopFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6356,7 +6001,6 @@ type CampusClusterVarPopFields {
 
 # order by varPop() on columns of table "campus_cluster"
 input CampusClusterVarPopOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6364,7 +6008,6 @@ input CampusClusterVarPopOrderBy {
 
 # aggregate varSamp on columns
 type CampusClusterVarSampFields {
-  approximateAddressId: Float
   createdById: Float
   id: Float
   tenantId: Float
@@ -6372,7 +6015,6 @@ type CampusClusterVarSampFields {
 
 # order by varSamp() on columns of table "campus_cluster"
 input CampusClusterVarSampOrderBy {
-  approximateAddressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -6389,12 +6031,12 @@ input CampusIncInput {
   campusClusterId: bigint
   createdById: bigint
   id: bigint
+  locationId: bigint
   tenantId: bigint
 }
 
 # input type for inserting data into table "campus"
 input CampusInsertInput {
-  address: AddressObjRelInsertInput
   campusCluster: CampusClusterObjRelInsertInput
   campusClusterId: bigint
   createdAt: timestamptz
@@ -6403,6 +6045,8 @@ input CampusInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
   name: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -6416,6 +6060,7 @@ type CampusMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -6428,6 +6073,7 @@ input CampusMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationId: OrderBy
   name: OrderBy
   tenantId: OrderBy
 }
@@ -6440,6 +6086,7 @@ type CampusMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -6452,6 +6099,7 @@ input CampusMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationId: OrderBy
   name: OrderBy
   tenantId: OrderBy
 }
@@ -6465,14 +6113,6 @@ type CampusMutationResponse {
   returning: [Campus!]!
 }
 
-# input type for inserting object relation for remote table "campus"
-input CampusObjRelInsertInput {
-  data: CampusInsertInput!
-
-  # upsert condition
-  onConflict: CampusOnConflict
-}
-
 # on_conflict condition type for table "campus"
 input CampusOnConflict {
   constraint: CampusConstraint!
@@ -6482,7 +6122,6 @@ input CampusOnConflict {
 
 # Ordering options when selecting data from "campus".
 input CampusOrderBy {
-  address: AddressOrderBy
   campusCluster: CampusClusterOrderBy
   campusClusterId: OrderBy
   createdAt: OrderBy
@@ -6491,6 +6130,8 @@ input CampusOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
   name: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -6522,6 +6163,9 @@ enum CampusSelectColumn {
   id
 
   # column name
+  locationId
+
+  # column name
   name
 
   # column name
@@ -6536,6 +6180,7 @@ input CampusSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -6545,6 +6190,7 @@ type CampusStddevFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6553,6 +6199,7 @@ input CampusStddevOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6561,6 +6208,7 @@ type CampusStddevPopFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6569,6 +6217,7 @@ input CampusStddevPopOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6577,6 +6226,7 @@ type CampusStddevSampFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6585,6 +6235,7 @@ input CampusStddevSampOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6605,6 +6256,7 @@ input CampusStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  locationId: bigint
   name: String
   tenantId: bigint
 }
@@ -6614,6 +6266,7 @@ type CampusSumFields {
   campusClusterId: bigint
   createdById: bigint
   id: bigint
+  locationId: bigint
   tenantId: bigint
 }
 
@@ -6622,6 +6275,7 @@ input CampusSumOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6646,6 +6300,9 @@ enum CampusUpdateColumn {
   id
 
   # column name
+  locationId
+
+  # column name
   name
 
   # column name
@@ -6668,6 +6325,7 @@ type CampusVarianceFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6676,6 +6334,7 @@ input CampusVarianceOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6684,6 +6343,7 @@ type CampusVarPopFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6692,6 +6352,7 @@ input CampusVarPopOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -6700,6 +6361,7 @@ type CampusVarSampFields {
   campusClusterId: Float
   createdById: Float
   id: Float
+  locationId: Float
   tenantId: Float
 }
 
@@ -6708,6 +6370,7 @@ input CampusVarSampOrderBy {
   campusClusterId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  locationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11582,9 +11245,6 @@ input DocumentVarSampOrderBy {
 
 # columns and relationships of "event"
 type Event {
-  # An object relationship
-  address: Address
-  addressId: bigint
   approvalSubmissionId: bigint
 
   # An object relationship
@@ -11833,14 +11493,16 @@ type Event {
   isTemplate: Boolean!
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+
+  # An object relationship
+  location: Location
+  locationId: bigint
   maxParticipants: smallint
   meta(
     # JSON select path
     path: String
   ): jsonb!
   name: String!
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float!
   price: Float!
 
@@ -13699,7 +13361,6 @@ input EventArrRelInsertInput {
 
 # aggregate avg on columns
 type EventAvgFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -13707,6 +13368,7 @@ type EventAvgFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -13716,7 +13378,6 @@ type EventAvgFields {
 
 # order by avg() on columns of table "event"
 input EventAvgOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -13724,6 +13385,7 @@ input EventAvgOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -13736,8 +13398,6 @@ input EventBoolExp {
   _and: [EventBoolExp!]
   _not: EventBoolExp
   _or: [EventBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   approvalSubmissionId: BigintComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
@@ -13770,11 +13430,11 @@ input EventBoolExp {
   isTemplate: BooleanComparisonExp
   joinFormId: BigintComparisonExp
   lastEventApprovalStepId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
   maxParticipants: SmallintComparisonExp
   meta: JsonbComparisonExp
   name: StringComparisonExp
-  onlineMeetingLink: StringComparisonExp
-  onlineMeetingPlace: StringComparisonExp
   pointsPresence: FloatComparisonExp
   price: FloatComparisonExp
   project: ProjectBoolExp
@@ -13796,6 +13456,9 @@ enum EventConstraint {
 
   # unique or primary key constraint on columns "id"
   event_pkey
+
+  # unique or primary key constraint on columns "slug"
+  event_slug_unique
 }
 
 # delete the field or element with specified path (for JSON arrays, negative integers count from the end)
@@ -13816,7 +13479,6 @@ input EventDeleteKeyInput {
 
 # input type for incrementing numeric columns in table "event"
 input EventIncInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -13824,6 +13486,7 @@ input EventIncInput {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   pointsPresence: Float
   price: Float
@@ -13833,8 +13496,6 @@ input EventIncInput {
 
 # input type for inserting data into table "event"
 input EventInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   approvalSubmissionId: bigint
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
@@ -13861,11 +13522,11 @@ input EventInsertInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   project: ProjectObjRelInsertInput
@@ -15286,7 +14947,6 @@ input EventManageVarSampOrderBy {
 
 # aggregate max on columns
 type EventMaxFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -15298,10 +14958,9 @@ type EventMaxFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -15313,7 +14972,6 @@ type EventMaxFields {
 
 # order by max() on columns of table "event"
 input EventMaxOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15325,10 +14983,9 @@ input EventMaxOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   projectId: OrderBy
@@ -15340,7 +14997,6 @@ input EventMaxOrderBy {
 
 # aggregate min on columns
 type EventMinFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -15352,10 +15008,9 @@ type EventMinFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -15367,7 +15022,6 @@ type EventMinFields {
 
 # order by min() on columns of table "event"
 input EventMinOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15379,10 +15033,9 @@ input EventMinOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   projectId: OrderBy
@@ -15418,8 +15071,6 @@ input EventOnConflict {
 
 # Ordering options when selecting data from "event".
 input EventOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
@@ -15446,11 +15097,11 @@ input EventOrderBy {
   isTemplate: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   meta: OrderBy
   name: OrderBy
-  onlineMeetingLink: OrderBy
-  onlineMeetingPlace: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
   project: ProjectOrderBy
@@ -15474,9 +15125,6 @@ input EventPrependInput {
 
 # select columns of table "event"
 enum EventSelectColumn {
-  # column name
-  addressId
-
   # column name
   approvalSubmissionId
 
@@ -15520,6 +15168,9 @@ enum EventSelectColumn {
   lastEventApprovalStepId
 
   # column name
+  locationId
+
+  # column name
   maxParticipants
 
   # column name
@@ -15527,12 +15178,6 @@ enum EventSelectColumn {
 
   # column name
   name
-
-  # column name
-  onlineMeetingLink
-
-  # column name
-  onlineMeetingPlace
 
   # column name
   pointsPresence
@@ -15582,7 +15227,6 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 
 # input type for updating data in table "event"
 input EventSetInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -15597,11 +15241,10 @@ input EventSetInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -15613,7 +15256,6 @@ input EventSetInput {
 
 # aggregate stddev on columns
 type EventStddevFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -15621,6 +15263,7 @@ type EventStddevFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -15630,7 +15273,6 @@ type EventStddevFields {
 
 # order by stddev() on columns of table "event"
 input EventStddevOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15638,6 +15280,7 @@ input EventStddevOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -15647,7 +15290,6 @@ input EventStddevOrderBy {
 
 # aggregate stddevPop on columns
 type EventStddevPopFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -15655,6 +15297,7 @@ type EventStddevPopFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -15664,7 +15307,6 @@ type EventStddevPopFields {
 
 # order by stddevPop() on columns of table "event"
 input EventStddevPopOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15672,6 +15314,7 @@ input EventStddevPopOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -15681,7 +15324,6 @@ input EventStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type EventStddevSampFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -15689,6 +15331,7 @@ type EventStddevSampFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -15698,7 +15341,6 @@ type EventStddevSampFields {
 
 # order by stddevSamp() on columns of table "event"
 input EventStddevSampOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15706,6 +15348,7 @@ input EventStddevSampOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -15724,7 +15367,6 @@ input EventStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input EventStreamCursorValueInput {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -15739,11 +15381,10 @@ input EventStreamCursorValueInput {
   isTemplate: Boolean
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  onlineMeetingLink: String
-  onlineMeetingPlace: String
   pointsPresence: Float
   price: Float
   projectId: bigint
@@ -15755,7 +15396,6 @@ input EventStreamCursorValueInput {
 
 # aggregate sum on columns
 type EventSumFields {
-  addressId: bigint
   approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
@@ -15763,6 +15403,7 @@ type EventSumFields {
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
+  locationId: bigint
   maxParticipants: smallint
   pointsPresence: Float
   price: Float
@@ -15772,7 +15413,6 @@ type EventSumFields {
 
 # order by sum() on columns of table "event"
 input EventSumOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -15780,6 +15420,7 @@ input EventSumOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -16384,9 +16025,6 @@ input EventTagsVarSampOrderBy {
 # update columns of table "event"
 enum EventUpdateColumn {
   # column name
-  addressId
-
-  # column name
   approvalSubmissionId
 
   # column name
@@ -16429,6 +16067,9 @@ enum EventUpdateColumn {
   lastEventApprovalStepId
 
   # column name
+  locationId
+
+  # column name
   maxParticipants
 
   # column name
@@ -16436,12 +16077,6 @@ enum EventUpdateColumn {
 
   # column name
   name
-
-  # column name
-  onlineMeetingLink
-
-  # column name
-  onlineMeetingPlace
 
   # column name
   pointsPresence
@@ -16494,7 +16129,6 @@ input EventUpdates {
 
 # aggregate variance on columns
 type EventVarianceFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -16502,6 +16136,7 @@ type EventVarianceFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -16511,7 +16146,6 @@ type EventVarianceFields {
 
 # order by variance() on columns of table "event"
 input EventVarianceOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -16519,6 +16153,7 @@ input EventVarianceOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -16528,7 +16163,6 @@ input EventVarianceOrderBy {
 
 # aggregate varPop on columns
 type EventVarPopFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -16536,6 +16170,7 @@ type EventVarPopFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -16545,7 +16180,6 @@ type EventVarPopFields {
 
 # order by varPop() on columns of table "event"
 input EventVarPopOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -16553,6 +16187,7 @@ input EventVarPopOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -16562,7 +16197,6 @@ input EventVarPopOrderBy {
 
 # aggregate varSamp on columns
 type EventVarSampFields {
-  addressId: Float
   approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
@@ -16570,6 +16204,7 @@ type EventVarSampFields {
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
+  locationId: Float
   maxParticipants: Float
   pointsPresence: Float
   price: Float
@@ -16579,7 +16214,6 @@ type EventVarSampFields {
 
 # order by varSamp() on columns of table "event"
 input EventVarSampOrderBy {
-  addressId: OrderBy
   approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
@@ -16587,6 +16221,7 @@ input EventVarSampOrderBy {
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
+  locationId: OrderBy
   maxParticipants: OrderBy
   pointsPresence: OrderBy
   price: OrderBy
@@ -16809,10 +16444,11 @@ input ExpenseInsertInput {
 
 # columns and relationships of "expense_item"
 type ExpenseItem {
-  # An object relationship
-  address: Address
-  addressId: bigint
   category: String!
+
+  # An object relationship
+  company: LegalUnit
+  companyId: bigint
   createdAt: timestamptz!
 
   # An object relationship
@@ -17226,7 +16862,7 @@ input ExpenseItemAttachmentsVarSampOrderBy {
 
 # aggregate avg on columns
 type ExpenseItemAvgFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17237,7 +16873,7 @@ type ExpenseItemAvgFields {
 
 # order by avg() on columns of table "expense_item"
 input ExpenseItemAvgOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17251,9 +16887,9 @@ input ExpenseItemBoolExp {
   _and: [ExpenseItemBoolExp!]
   _not: ExpenseItemBoolExp
   _or: [ExpenseItemBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   category: StringComparisonExp
+  company: LegalUnitBoolExp
+  companyId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -17281,7 +16917,7 @@ enum ExpenseItemConstraint {
 
 # input type for incrementing numeric columns in table "expense_item"
 input ExpenseItemIncInput {
-  addressId: bigint
+  companyId: bigint
   createdById: bigint
   expenseId: bigint
   id: bigint
@@ -17292,9 +16928,9 @@ input ExpenseItemIncInput {
 
 # input type for inserting data into table "expense_item"
 input ExpenseItemInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   category: String
+  company: LegalUnitObjRelInsertInput
+  companyId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -17315,8 +16951,8 @@ input ExpenseItemInsertInput {
 
 # aggregate max on columns
 type ExpenseItemMaxFields {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17333,8 +16969,8 @@ type ExpenseItemMaxFields {
 
 # order by max() on columns of table "expense_item"
 input ExpenseItemMaxOrderBy {
-  addressId: OrderBy
   category: OrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -17351,8 +16987,8 @@ input ExpenseItemMaxOrderBy {
 
 # aggregate min on columns
 type ExpenseItemMinFields {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17369,8 +17005,8 @@ type ExpenseItemMinFields {
 
 # order by min() on columns of table "expense_item"
 input ExpenseItemMinOrderBy {
-  addressId: OrderBy
   category: OrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -17411,9 +17047,9 @@ input ExpenseItemOnConflict {
 
 # Ordering options when selecting data from "expense_item".
 input ExpenseItemOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   category: OrderBy
+  company: LegalUnitOrderBy
+  companyId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -17440,10 +17076,10 @@ input ExpenseItemPkColumnsInput {
 # select columns of table "expense_item"
 enum ExpenseItemSelectColumn {
   # column name
-  addressId
+  category
 
   # column name
-  category
+  companyId
 
   # column name
   createdAt
@@ -17484,8 +17120,8 @@ enum ExpenseItemSelectColumn {
 
 # input type for updating data in table "expense_item"
 input ExpenseItemSetInput {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17502,7 +17138,7 @@ input ExpenseItemSetInput {
 
 # aggregate stddev on columns
 type ExpenseItemStddevFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17513,7 +17149,7 @@ type ExpenseItemStddevFields {
 
 # order by stddev() on columns of table "expense_item"
 input ExpenseItemStddevOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17524,7 +17160,7 @@ input ExpenseItemStddevOrderBy {
 
 # aggregate stddevPop on columns
 type ExpenseItemStddevPopFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17535,7 +17171,7 @@ type ExpenseItemStddevPopFields {
 
 # order by stddevPop() on columns of table "expense_item"
 input ExpenseItemStddevPopOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17546,7 +17182,7 @@ input ExpenseItemStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type ExpenseItemStddevSampFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17557,7 +17193,7 @@ type ExpenseItemStddevSampFields {
 
 # order by stddevSamp() on columns of table "expense_item"
 input ExpenseItemStddevSampOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17577,8 +17213,8 @@ input ExpenseItemStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input ExpenseItemStreamCursorValueInput {
-  addressId: bigint
   category: String
+  companyId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17595,7 +17231,7 @@ input ExpenseItemStreamCursorValueInput {
 
 # aggregate sum on columns
 type ExpenseItemSumFields {
-  addressId: bigint
+  companyId: bigint
   createdById: bigint
   expenseId: bigint
   id: bigint
@@ -17606,7 +17242,7 @@ type ExpenseItemSumFields {
 
 # order by sum() on columns of table "expense_item"
 input ExpenseItemSumOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17618,10 +17254,10 @@ input ExpenseItemSumOrderBy {
 # update columns of table "expense_item"
 enum ExpenseItemUpdateColumn {
   # column name
-  addressId
+  category
 
   # column name
-  category
+  companyId
 
   # column name
   createdAt
@@ -17673,7 +17309,7 @@ input ExpenseItemUpdates {
 
 # aggregate variance on columns
 type ExpenseItemVarianceFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17684,7 +17320,7 @@ type ExpenseItemVarianceFields {
 
 # order by variance() on columns of table "expense_item"
 input ExpenseItemVarianceOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17695,7 +17331,7 @@ input ExpenseItemVarianceOrderBy {
 
 # aggregate varPop on columns
 type ExpenseItemVarPopFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17706,7 +17342,7 @@ type ExpenseItemVarPopFields {
 
 # order by varPop() on columns of table "expense_item"
 input ExpenseItemVarPopOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -17717,7 +17353,7 @@ input ExpenseItemVarPopOrderBy {
 
 # aggregate varSamp on columns
 type ExpenseItemVarSampFields {
-  addressId: Float
+  companyId: Float
   createdById: Float
   expenseId: Float
   id: Float
@@ -17728,7 +17364,7 @@ type ExpenseItemVarSampFields {
 
 # order by varSamp() on columns of table "expense_item"
 input ExpenseItemVarSampOrderBy {
-  addressId: OrderBy
+  companyId: OrderBy
   createdById: OrderBy
   expenseId: OrderBy
   id: OrderBy
@@ -18612,9 +18248,6 @@ type FileUpload {
   # An object relationship
   actorImage: ActorImage
 
-  # An object relationship
-  address: Address
-
   # An array relationship
   contentAttachments(
     # distinct select on columns
@@ -18986,6 +18619,42 @@ type FileUpload {
   ): GrantAggregate!
   hiddenAt: timestamptz
   id: bigint!
+
+  # An array relationship
+  locationImages(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): [LocationImages!]!
+
+  # An aggregate relationship
+  locationImagesAggregate(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): LocationImagesAggregate!
   name: String!
 
   # An array relationship
@@ -19253,7 +18922,6 @@ input FileUploadBoolExp {
   _not: FileUploadBoolExp
   _or: [FileUploadBoolExp!]
   actorImage: ActorImageBoolExp
-  address: AddressBoolExp
   contentAttachments: ContentAttachmentsBoolExp
   contentAttachmentsAggregate: ContentAttachmentsAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -19282,6 +18950,8 @@ input FileUploadBoolExp {
   grantsAggregate: GrantAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  locationImages: LocationImagesBoolExp
+  locationImagesAggregate: LocationImagesAggregateBoolExp
   name: StringComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
@@ -19317,7 +18987,6 @@ input FileUploadIncInput {
 # input type for inserting data into table "file_upload"
 input FileUploadInsertInput {
   actorImage: ActorImageObjRelInsertInput
-  address: AddressObjRelInsertInput
   contentAttachments: ContentAttachmentsArrRelInsertInput
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -19336,6 +19005,7 @@ input FileUploadInsertInput {
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  locationImages: LocationImagesArrRelInsertInput
   name: String
   projects: ProjectArrRelInsertInput
   signatureGrants: GrantArrRelInsertInput
@@ -19436,7 +19106,6 @@ input FileUploadOnConflict {
 # Ordering options when selecting data from "file_upload".
 input FileUploadOrderBy {
   actorImage: ActorImageOrderBy
-  address: AddressOrderBy
   contentAttachmentsAggregate: ContentAttachmentsAggregateOrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -19455,6 +19124,7 @@ input FileUploadOrderBy {
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationImagesAggregate: LocationImagesAggregateOrderBy
   name: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
   signatureGrantsAggregate: GrantAggregateOrderBy
@@ -19709,9 +19379,6 @@ input FileUploadVarSampOrderBy {
 
 # columns and relationships of "finance"
 type Finance {
-  # An object relationship
-  address: Address
-  addressId: bigint
   addressType: String!
   amount: Float!
   category: String!
@@ -19804,6 +19471,7 @@ type Finance {
   ): GrantAllocateAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  isOnline: Boolean!
   method: String!
   name: String!
   payedAt: timestamptz!
@@ -19838,7 +19506,23 @@ type FinanceAggregate {
 }
 
 input FinanceAggregateBoolExp {
+  bool_and: financeAggregateBoolExpBool_and
+  bool_or: financeAggregateBoolExpBool_or
   count: financeAggregateBoolExpCount
+}
+
+input financeAggregateBoolExpBool_and {
+  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: FinanceBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input financeAggregateBoolExpBool_or {
+  arguments: FinanceSelectColumnFinanceAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: FinanceBoolExp
+  predicate: BooleanComparisonExp!
 }
 
 input financeAggregateBoolExpCount {
@@ -20185,7 +19869,6 @@ input FinanceAttachmentsVarSampOrderBy {
 
 # aggregate avg on columns
 type FinanceAvgFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20200,7 +19883,6 @@ type FinanceAvgFields {
 
 # order by avg() on columns of table "finance"
 input FinanceAvgOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20218,8 +19900,6 @@ input FinanceBoolExp {
   _and: [FinanceBoolExp!]
   _not: FinanceBoolExp
   _or: [FinanceBoolExp!]
-  address: AddressBoolExp
-  addressId: BigintComparisonExp
   addressType: StringComparisonExp
   amount: FloatComparisonExp
   category: StringComparisonExp
@@ -20238,6 +19918,7 @@ input FinanceBoolExp {
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isOnline: BooleanComparisonExp
   method: StringComparisonExp
   name: StringComparisonExp
   payedAt: TimestamptzComparisonExp
@@ -20266,7 +19947,6 @@ enum FinanceConstraint {
 
 # input type for incrementing numeric columns in table "finance"
 input FinanceIncInput {
-  addressId: bigint
   amount: Float
   createdById: bigint
   eventId: bigint
@@ -20281,8 +19961,6 @@ input FinanceIncInput {
 
 # input type for inserting data into table "finance"
 input FinanceInsertInput {
-  address: AddressObjRelInsertInput
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -20299,6 +19977,7 @@ input FinanceInsertInput {
   grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -20318,7 +19997,6 @@ input FinanceInsertInput {
 
 # aggregate max on columns
 type FinanceMaxFields {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -20344,7 +20022,6 @@ type FinanceMaxFields {
 
 # order by max() on columns of table "finance"
 input FinanceMaxOrderBy {
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -20370,7 +20047,6 @@ input FinanceMaxOrderBy {
 
 # aggregate min on columns
 type FinanceMinFields {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -20396,7 +20072,6 @@ type FinanceMinFields {
 
 # order by min() on columns of table "finance"
 input FinanceMinOrderBy {
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -20446,8 +20121,6 @@ input FinanceOnConflict {
 
 # Ordering options when selecting data from "finance".
 input FinanceOrderBy {
-  address: AddressOrderBy
-  addressId: OrderBy
   addressType: OrderBy
   amount: OrderBy
   category: OrderBy
@@ -20464,6 +20137,7 @@ input FinanceOrderBy {
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isOnline: OrderBy
   method: OrderBy
   name: OrderBy
   payedAt: OrderBy
@@ -20488,9 +20162,6 @@ input FinancePkColumnsInput {
 
 # select columns of table "finance"
 enum FinanceSelectColumn {
-  # column name
-  addressId
-
   # column name
   addressType
 
@@ -20523,6 +20194,9 @@ enum FinanceSelectColumn {
 
   # column name
   id
+
+  # column name
+  isOnline
 
   # column name
   method
@@ -20555,9 +20229,20 @@ enum FinanceSelectColumn {
   tenantId
 }
 
+# select "financeAggregateBoolExpBool_andArgumentsColumns" columns of table "finance"
+enum FinanceSelectColumnFinanceAggregateBoolExpBool_andArgumentsColumns {
+  # column name
+  isOnline
+}
+
+# select "financeAggregateBoolExpBool_orArgumentsColumns" columns of table "finance"
+enum FinanceSelectColumnFinanceAggregateBoolExpBool_orArgumentsColumns {
+  # column name
+  isOnline
+}
+
 # input type for updating data in table "finance"
 input FinanceSetInput {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -20569,6 +20254,7 @@ input FinanceSetInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -20583,7 +20269,6 @@ input FinanceSetInput {
 
 # aggregate stddev on columns
 type FinanceStddevFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20598,7 +20283,6 @@ type FinanceStddevFields {
 
 # order by stddev() on columns of table "finance"
 input FinanceStddevOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20613,7 +20297,6 @@ input FinanceStddevOrderBy {
 
 # aggregate stddevPop on columns
 type FinanceStddevPopFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20628,7 +20311,6 @@ type FinanceStddevPopFields {
 
 # order by stddevPop() on columns of table "finance"
 input FinanceStddevPopOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20643,7 +20325,6 @@ input FinanceStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type FinanceStddevSampFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20658,7 +20339,6 @@ type FinanceStddevSampFields {
 
 # order by stddevSamp() on columns of table "finance"
 input FinanceStddevSampOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20682,7 +20362,6 @@ input FinanceStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input FinanceStreamCursorValueInput {
-  addressId: bigint
   addressType: String
   amount: Float
   category: String
@@ -20694,6 +20373,7 @@ input FinanceStreamCursorValueInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isOnline: Boolean
   method: String
   name: String
   payedAt: timestamptz
@@ -20708,7 +20388,6 @@ input FinanceStreamCursorValueInput {
 
 # aggregate sum on columns
 type FinanceSumFields {
-  addressId: bigint
   amount: Float
   createdById: bigint
   eventId: bigint
@@ -20723,7 +20402,6 @@ type FinanceSumFields {
 
 # order by sum() on columns of table "finance"
 input FinanceSumOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20738,9 +20416,6 @@ input FinanceSumOrderBy {
 
 # update columns of table "finance"
 enum FinanceUpdateColumn {
-  # column name
-  addressId
-
   # column name
   addressType
 
@@ -20773,6 +20448,9 @@ enum FinanceUpdateColumn {
 
   # column name
   id
+
+  # column name
+  isOnline
 
   # column name
   method
@@ -20818,7 +20496,6 @@ input FinanceUpdates {
 
 # aggregate variance on columns
 type FinanceVarianceFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20833,7 +20510,6 @@ type FinanceVarianceFields {
 
 # order by variance() on columns of table "finance"
 input FinanceVarianceOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20848,7 +20524,6 @@ input FinanceVarianceOrderBy {
 
 # aggregate varPop on columns
 type FinanceVarPopFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20863,7 +20538,6 @@ type FinanceVarPopFields {
 
 # order by varPop() on columns of table "finance"
 input FinanceVarPopOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -20878,7 +20552,6 @@ input FinanceVarPopOrderBy {
 
 # aggregate varSamp on columns
 type FinanceVarSampFields {
-  addressId: Float
   amount: Float
   createdById: Float
   eventId: Float
@@ -20893,7 +20566,6 @@ type FinanceVarSampFields {
 
 # order by varSamp() on columns of table "finance"
 input FinanceVarSampOrderBy {
-  addressId: OrderBy
   amount: OrderBy
   createdById: OrderBy
   eventId: OrderBy
@@ -25949,6 +25621,42 @@ type Individual {
   ): IssueAggregate!
 
   # An array relationship
+  createdLegalUnitLocations(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
+  # An aggregate relationship
+  createdLegalUnitLocationsAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): LegalUnitLocationAggregate!
+
+  # An array relationship
   createdLegalUnits(
     # distinct select on columns
     distinctOn: [LegalUnitSelectColumn!]
@@ -25983,6 +25691,42 @@ type Individual {
     # filter the rows returned
     where: LegalUnitBoolExp
   ): LegalUnitAggregate!
+
+  # An array relationship
+  createdLocations(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
+
+  # An aggregate relationship
+  createdLocationsAggregate(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): LocationAggregate!
 
   # An array relationship
   createdMissionJoins(
@@ -27449,8 +27193,12 @@ input IndividualBoolExp {
   createdIndividualsAggregate: IndividualAggregateBoolExp
   createdIssues: IssueBoolExp
   createdIssuesAggregate: IssueAggregateBoolExp
+  createdLegalUnitLocations: LegalUnitLocationBoolExp
+  createdLegalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
   createdLegalUnits: LegalUnitBoolExp
   createdLegalUnitsAggregate: LegalUnitAggregateBoolExp
+  createdLocations: LocationBoolExp
+  createdLocationsAggregate: LocationAggregateBoolExp
   createdMissionJoins: MissionJoinBoolExp
   createdMissionJoinsAggregate: MissionJoinAggregateBoolExp
   createdMissions: MissionBoolExp
@@ -27599,7 +27347,9 @@ input IndividualInsertInput {
   createdGrants: GrantArrRelInsertInput
   createdIndividuals: IndividualArrRelInsertInput
   createdIssues: IssueArrRelInsertInput
+  createdLegalUnitLocations: LegalUnitLocationArrRelInsertInput
   createdLegalUnits: LegalUnitArrRelInsertInput
+  createdLocations: LocationArrRelInsertInput
   createdMissionJoins: MissionJoinArrRelInsertInput
   createdMissions: MissionArrRelInsertInput
   createdPoles: PoleArrRelInsertInput
@@ -27775,7 +27525,9 @@ input IndividualOrderBy {
   createdGrantsAggregate: GrantAggregateOrderBy
   createdIndividualsAggregate: IndividualAggregateOrderBy
   createdIssuesAggregate: IssueAggregateOrderBy
+  createdLegalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
   createdLegalUnitsAggregate: LegalUnitAggregateOrderBy
+  createdLocationsAggregate: LocationAggregateOrderBy
   createdMissionJoinsAggregate: MissionJoinAggregateOrderBy
   createdMissionsAggregate: MissionAggregateOrderBy
   createdPolesAggregate: PoleAggregateOrderBy
@@ -29259,50 +29011,53 @@ input JsonbComparisonExp {
 
 # columns and relationships of "legal_unit"
 type LegalUnit {
+  activityCategory: String
+
   # An object relationship
   actor: Actor
-
-  # An array relationship
-  bankInfos(
-    # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
-
-    # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
-
-  # An aggregate relationship
-  bankInfosAggregate(
-    # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
-
-    # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+  bankCode: smallint
   createdAt: timestamptz!
 
   # An object relationship
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
+
+  # An array relationship
+  expenseItems(
+    # distinct select on columns
+    distinctOn: [ExpenseItemSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ExpenseItemOrderBy!]
+
+    # filter the rows returned
+    where: ExpenseItemBoolExp
+  ): [ExpenseItem!]!
+
+  # An aggregate relationship
+  expenseItemsAggregate(
+    # distinct select on columns
+    distinctOn: [ExpenseItemSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ExpenseItemOrderBy!]
+
+    # filter the rows returned
+    where: ExpenseItemBoolExp
+  ): ExpenseItemAggregate!
 
   # An array relationship
   grandFundTeams(
@@ -29339,12 +29094,88 @@ type LegalUnit {
     # filter the rows returned
     where: TeamBoolExp
   ): TeamAggregate!
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint!
+  legalCategory: String
+  legalName: String
+
+  # An array relationship
+  legalUnitLocations(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
+  # An aggregate relationship
+  legalUnitLocationsAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): LegalUnitLocationAggregate!
+
+  # An array relationship
+  legalUnits(
+    # distinct select on columns
+    distinctOn: [LegalUnitSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitBoolExp
+  ): [LegalUnit!]!
+
+  # An aggregate relationship
+  legalUnitsAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitBoolExp
+  ): LegalUnitAggregate!
 
   # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
+  parent: LegalUnit
+  parentId: bigint
+  siren: String
   type: String!
 }
 
@@ -29405,16 +29236,18 @@ input LegalUnitArrRelInsertInput {
 
 # aggregate avg on columns
 type LegalUnitAvgFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 # order by avg() on columns of table "legal_unit"
 input LegalUnitAvgOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "legal_unit". All fields are combined with a logical 'AND'.
@@ -29422,19 +29255,29 @@ input LegalUnitBoolExp {
   _and: [LegalUnitBoolExp!]
   _not: LegalUnitBoolExp
   _or: [LegalUnitBoolExp!]
+  activityCategory: StringComparisonExp
   actor: ActorBoolExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  bankCode: SmallintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  expenseItems: ExpenseItemBoolExp
+  expenseItemsAggregate: ExpenseItemAggregateBoolExp
   grandFundTeams: TeamBoolExp
   grandFundTeamsAggregate: TeamAggregateBoolExp
-  hiddenAt: TimestamptzComparisonExp
+  headquartersLocation: StringComparisonExp
+  headquartersNic: StringComparisonExp
   id: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
+  legalCategory: StringComparisonExp
+  legalName: StringComparisonExp
+  legalUnitLocations: LegalUnitLocationBoolExp
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
+  legalUnits: LegalUnitBoolExp
+  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  parent: LegalUnitBoolExp
+  parentId: BigintComparisonExp
+  siren: StringComparisonExp
   type: StringComparisonExp
 }
 
@@ -29446,68 +29289,636 @@ enum LegalUnitConstraint {
 
 # input type for incrementing numeric columns in table "legal_unit"
 input LegalUnitIncInput {
+  bankCode: smallint
   createdById: bigint
   id: bigint
-  tenantId: bigint
+  parentId: bigint
 }
 
 # input type for inserting data into table "legal_unit"
 input LegalUnitInsertInput {
+  activityCategory: String
   actor: ActorObjRelInsertInput
-  bankInfos: BankInfoArrRelInsertInput
+  bankCode: smallint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
+  expenseItems: ExpenseItemArrRelInsertInput
   grandFundTeams: TeamArrRelInsertInput
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  legalUnitLocations: LegalUnitLocationArrRelInsertInput
+  legalUnits: LegalUnitArrRelInsertInput
+  parent: LegalUnitObjRelInsertInput
+  parentId: bigint
+  siren: String
   type: String
+}
+
+# columns and relationships of "legal_unit_location"
+type LegalUnitLocation {
+  # An object relationship
+  actor: Actor
+
+  # An array relationship
+  bankInfos(
+    # distinct select on columns
+    distinctOn: [BankInfoSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [BankInfoOrderBy!]
+
+    # filter the rows returned
+    where: BankInfoBoolExp
+  ): [BankInfo!]!
+
+  # An aggregate relationship
+  bankInfosAggregate(
+    # distinct select on columns
+    distinctOn: [BankInfoSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [BankInfoOrderBy!]
+
+    # filter the rows returned
+    where: BankInfoBoolExp
+  ): BankInfoAggregate!
+  bankLocationCode: Int
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+  legalName: String
+
+  # An object relationship
+  legalUnit: LegalUnit
+  legalUnitId: bigint
+
+  # An object relationship
+  location: Location
+  locationId: bigint
+  locationType: String!
+  nic: String
+}
+
+# aggregated selection of "legal_unit_location"
+type LegalUnitLocationAggregate {
+  aggregate: LegalUnitLocationAggregateFields
+  nodes: [LegalUnitLocation!]!
+}
+
+input LegalUnitLocationAggregateBoolExp {
+  count: legalUnitLocationAggregateBoolExpCount
+}
+
+input legalUnitLocationAggregateBoolExpCount {
+  arguments: [LegalUnitLocationSelectColumn!]
+  distinct: Boolean
+  filter: LegalUnitLocationBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "legal_unit_location"
+type LegalUnitLocationAggregateFields {
+  avg: LegalUnitLocationAvgFields
+  count(columns: [LegalUnitLocationSelectColumn!], distinct: Boolean): Int!
+  max: LegalUnitLocationMaxFields
+  min: LegalUnitLocationMinFields
+  stddev: LegalUnitLocationStddevFields
+  stddevPop: LegalUnitLocationStddevPopFields
+  stddevSamp: LegalUnitLocationStddevSampFields
+  sum: LegalUnitLocationSumFields
+  varPop: LegalUnitLocationVarPopFields
+  varSamp: LegalUnitLocationVarSampFields
+  variance: LegalUnitLocationVarianceFields
+}
+
+# order by aggregate values of table "legal_unit_location"
+input LegalUnitLocationAggregateOrderBy {
+  avg: LegalUnitLocationAvgOrderBy
+  count: OrderBy
+  max: LegalUnitLocationMaxOrderBy
+  min: LegalUnitLocationMinOrderBy
+  stddev: LegalUnitLocationStddevOrderBy
+  stddevPop: LegalUnitLocationStddevPopOrderBy
+  stddevSamp: LegalUnitLocationStddevSampOrderBy
+  sum: LegalUnitLocationSumOrderBy
+  varPop: LegalUnitLocationVarPopOrderBy
+  varSamp: LegalUnitLocationVarSampOrderBy
+  variance: LegalUnitLocationVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "legal_unit_location"
+input LegalUnitLocationArrRelInsertInput {
+  data: [LegalUnitLocationInsertInput!]!
+
+  # upsert condition
+  onConflict: LegalUnitLocationOnConflict
+}
+
+# aggregate avg on columns
+type LegalUnitLocationAvgFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by avg() on columns of table "legal_unit_location"
+input LegalUnitLocationAvgOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "legal_unit_location". All fields are combined with a logical 'AND'.
+input LegalUnitLocationBoolExp {
+  _and: [LegalUnitLocationBoolExp!]
+  _not: LegalUnitLocationBoolExp
+  _or: [LegalUnitLocationBoolExp!]
+  actor: ActorBoolExp
+  bankInfos: BankInfoBoolExp
+  bankInfosAggregate: BankInfoAggregateBoolExp
+  bankLocationCode: IntComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  legalName: StringComparisonExp
+  legalUnit: LegalUnitBoolExp
+  legalUnitId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
+  locationType: StringComparisonExp
+  nic: StringComparisonExp
+}
+
+# unique or primary key constraints on table "legal_unit_location"
+enum LegalUnitLocationConstraint {
+  # unique or primary key constraint on columns "id"
+  legal_unit_location_pkey
+}
+
+# input type for incrementing numeric columns in table "legal_unit_location"
+input LegalUnitLocationIncInput {
+  bankLocationCode: Int
+  createdById: bigint
+  id: bigint
+  legalUnitId: bigint
+  locationId: bigint
+}
+
+# input type for inserting data into table "legal_unit_location"
+input LegalUnitLocationInsertInput {
+  actor: ActorObjRelInsertInput
+  bankInfos: BankInfoArrRelInsertInput
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  legalName: String
+  legalUnit: LegalUnitObjRelInsertInput
+  legalUnitId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+# aggregate max on columns
+type LegalUnitLocationMaxFields {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+# order by max() on columns of table "legal_unit_location"
+input LegalUnitLocationMaxOrderBy {
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  legalName: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+# aggregate min on columns
+type LegalUnitLocationMinFields {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+# order by min() on columns of table "legal_unit_location"
+input LegalUnitLocationMinOrderBy {
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  legalName: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+# response of any mutation on the table "legal_unit_location"
+type LegalUnitLocationMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [LegalUnitLocation!]!
+}
+
+# input type for inserting object relation for remote table "legal_unit_location"
+input LegalUnitLocationObjRelInsertInput {
+  data: LegalUnitLocationInsertInput!
+
+  # upsert condition
+  onConflict: LegalUnitLocationOnConflict
+}
+
+# on_conflict condition type for table "legal_unit_location"
+input LegalUnitLocationOnConflict {
+  constraint: LegalUnitLocationConstraint!
+  updateColumns: [LegalUnitLocationUpdateColumn!]! = []
+  where: LegalUnitLocationBoolExp
+}
+
+# Ordering options when selecting data from "legal_unit_location".
+input LegalUnitLocationOrderBy {
+  actor: ActorOrderBy
+  bankInfosAggregate: BankInfoAggregateOrderBy
+  bankLocationCode: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  legalName: OrderBy
+  legalUnit: LegalUnitOrderBy
+  legalUnitId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
+  locationType: OrderBy
+  nic: OrderBy
+}
+
+# primary key columns input for table: legal_unit_location
+input LegalUnitLocationPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "legal_unit_location"
+enum LegalUnitLocationSelectColumn {
+  # column name
+  bankLocationCode
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
+  # column name
+  legalName
+
+  # column name
+  legalUnitId
+
+  # column name
+  locationId
+
+  # column name
+  locationType
+
+  # column name
+  nic
+}
+
+# input type for updating data in table "legal_unit_location"
+input LegalUnitLocationSetInput {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+# aggregate stddev on columns
+type LegalUnitLocationStddevFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by stddev() on columns of table "legal_unit_location"
+input LegalUnitLocationStddevOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type LegalUnitLocationStddevPopFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by stddevPop() on columns of table "legal_unit_location"
+input LegalUnitLocationStddevPopOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type LegalUnitLocationStddevSampFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by stddevSamp() on columns of table "legal_unit_location"
+input LegalUnitLocationStddevSampOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# Streaming cursor of the table "legal_unit_location"
+input LegalUnitLocationStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: LegalUnitLocationStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input LegalUnitLocationStreamCursorValueInput {
+  bankLocationCode: Int
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  id: bigint
+  legalName: String
+  legalUnitId: bigint
+  locationId: bigint
+  locationType: String
+  nic: String
+}
+
+# aggregate sum on columns
+type LegalUnitLocationSumFields {
+  bankLocationCode: Int
+  createdById: bigint
+  id: bigint
+  legalUnitId: bigint
+  locationId: bigint
+}
+
+# order by sum() on columns of table "legal_unit_location"
+input LegalUnitLocationSumOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# update columns of table "legal_unit_location"
+enum LegalUnitLocationUpdateColumn {
+  # column name
+  bankLocationCode
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  id
+
+  # column name
+  legalName
+
+  # column name
+  legalUnitId
+
+  # column name
+  locationId
+
+  # column name
+  locationType
+
+  # column name
+  nic
+}
+
+input LegalUnitLocationUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: LegalUnitLocationIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: LegalUnitLocationSetInput
+
+  # filter the rows which have to be updated
+  where: LegalUnitLocationBoolExp!
+}
+
+# aggregate variance on columns
+type LegalUnitLocationVarianceFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by variance() on columns of table "legal_unit_location"
+input LegalUnitLocationVarianceOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate varPop on columns
+type LegalUnitLocationVarPopFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by varPop() on columns of table "legal_unit_location"
+input LegalUnitLocationVarPopOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate varSamp on columns
+type LegalUnitLocationVarSampFields {
+  bankLocationCode: Float
+  createdById: Float
+  id: Float
+  legalUnitId: Float
+  locationId: Float
+}
+
+# order by varSamp() on columns of table "legal_unit_location"
+input LegalUnitLocationVarSampOrderBy {
+  bankLocationCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  legalUnitId: OrderBy
+  locationId: OrderBy
 }
 
 # aggregate max on columns
 type LegalUnitMaxFields {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 # order by max() on columns of table "legal_unit"
 input LegalUnitMaxOrderBy {
+  activityCategory: OrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
 # aggregate min on columns
 type LegalUnitMinFields {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 # order by min() on columns of table "legal_unit"
 input LegalUnitMinOrderBy {
+  activityCategory: OrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
@@ -29537,17 +29948,25 @@ input LegalUnitOnConflict {
 
 # Ordering options when selecting data from "legal_unit".
 input LegalUnitOrderBy {
+  activityCategory: OrderBy
   actor: ActorOrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  bankCode: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  expenseItemsAggregate: ExpenseItemAggregateOrderBy
   grandFundTeamsAggregate: TeamAggregateOrderBy
-  hiddenAt: OrderBy
+  headquartersLocation: OrderBy
+  headquartersNic: OrderBy
   id: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
+  legalCategory: OrderBy
+  legalName: OrderBy
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
+  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  parent: LegalUnitOrderBy
+  parentId: OrderBy
+  siren: OrderBy
   type: OrderBy
 }
 
@@ -29559,6 +29978,12 @@ input LegalUnitPkColumnsInput {
 # select columns of table "legal_unit"
 enum LegalUnitSelectColumn {
   # column name
+  activityCategory
+
+  # column name
+  bankCode
+
+  # column name
   createdAt
 
   # column name
@@ -29568,13 +29993,25 @@ enum LegalUnitSelectColumn {
   deletedAt
 
   # column name
-  hiddenAt
+  headquartersLocation
+
+  # column name
+  headquartersNic
 
   # column name
   id
 
   # column name
-  tenantId
+  legalCategory
+
+  # column name
+  legalName
+
+  # column name
+  parentId
+
+  # column name
+  siren
 
   # column name
   type
@@ -29582,55 +30019,67 @@ enum LegalUnitSelectColumn {
 
 # input type for updating data in table "legal_unit"
 input LegalUnitSetInput {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 # aggregate stddev on columns
 type LegalUnitStddevFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 # order by stddev() on columns of table "legal_unit"
 input LegalUnitStddevOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 # aggregate stddevPop on columns
 type LegalUnitStddevPopFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 # order by stddevPop() on columns of table "legal_unit"
 input LegalUnitStddevPopOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type LegalUnitStddevSampFields {
+  bankCode: Float
   createdById: Float
   id: Float
-  tenantId: Float
+  parentId: Float
 }
 
 # order by stddevSamp() on columns of table "legal_unit"
 input LegalUnitStddevSampOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 # Streaming cursor of the table "legal_unit"
@@ -29644,31 +30093,45 @@ input LegalUnitStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input LegalUnitStreamCursorValueInput {
+  activityCategory: String
+  bankCode: smallint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  hiddenAt: timestamptz
+  headquartersLocation: String
+  headquartersNic: String
   id: bigint
-  tenantId: bigint
+  legalCategory: String
+  legalName: String
+  parentId: bigint
+  siren: String
   type: String
 }
 
 # aggregate sum on columns
 type LegalUnitSumFields {
+  bankCode: smallint
   createdById: bigint
   id: bigint
-  tenantId: bigint
+  parentId: bigint
 }
 
 # order by sum() on columns of table "legal_unit"
 input LegalUnitSumOrderBy {
+  bankCode: OrderBy
   createdById: OrderBy
   id: OrderBy
-  tenantId: OrderBy
+  parentId: OrderBy
 }
 
 # update columns of table "legal_unit"
 enum LegalUnitUpdateColumn {
+  # column name
+  activityCategory
+
+  # column name
+  bankCode
+
   # column name
   createdAt
 
@@ -29679,13 +30142,25 @@ enum LegalUnitUpdateColumn {
   deletedAt
 
   # column name
-  hiddenAt
+  headquartersLocation
+
+  # column name
+  headquartersNic
 
   # column name
   id
 
   # column name
-  tenantId
+  legalCategory
+
+  # column name
+  legalName
+
+  # column name
+  parentId
+
+  # column name
+  siren
 
   # column name
   type
@@ -29704,41 +30179,1031 @@ input LegalUnitUpdates {
 
 # aggregate variance on columns
 type LegalUnitVarianceFields {
+  bankCode: Float
+  createdById: Float
+  id: Float
+  parentId: Float
+}
+
+# order by variance() on columns of table "legal_unit"
+input LegalUnitVarianceOrderBy {
+  bankCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  parentId: OrderBy
+}
+
+# aggregate varPop on columns
+type LegalUnitVarPopFields {
+  bankCode: Float
+  createdById: Float
+  id: Float
+  parentId: Float
+}
+
+# order by varPop() on columns of table "legal_unit"
+input LegalUnitVarPopOrderBy {
+  bankCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  parentId: OrderBy
+}
+
+# aggregate varSamp on columns
+type LegalUnitVarSampFields {
+  bankCode: Float
+  createdById: Float
+  id: Float
+  parentId: Float
+}
+
+# order by varSamp() on columns of table "legal_unit"
+input LegalUnitVarSampOrderBy {
+  bankCode: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  parentId: OrderBy
+}
+
+# columns and relationships of "location"
+type Location {
+  # An object relationship
+  actor: Actor!
+  actorId: bigint!
+
+  # An object relationship
+  address: Address
+  addressId: bigint
+
+  # An array relationship
+  campuses(
+    # distinct select on columns
+    distinctOn: [CampusSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusOrderBy!]
+
+    # filter the rows returned
+    where: CampusBoolExp
+  ): [Campus!]!
+
+  # An aggregate relationship
+  campusesAggregate(
+    # distinct select on columns
+    distinctOn: [CampusSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [CampusOrderBy!]
+
+    # filter the rows returned
+    where: CampusBoolExp
+  ): CampusAggregate!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String!
+
+  # An array relationship
+  events(
+    # distinct select on columns
+    distinctOn: [EventSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrderBy!]
+
+    # filter the rows returned
+    where: EventBoolExp
+  ): [Event!]!
+
+  # An aggregate relationship
+  eventsAggregate(
+    # distinct select on columns
+    distinctOn: [EventSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrderBy!]
+
+    # filter the rows returned
+    where: EventBoolExp
+  ): EventAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An array relationship
+  legalUnitLocations(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
+  # An aggregate relationship
+  legalUnitLocationsAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): LegalUnitLocationAggregate!
+
+  # An array relationship
+  locationImages(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): [LocationImages!]!
+
+  # An aggregate relationship
+  locationImagesAggregate(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): LocationImagesAggregate!
+  name: String!
+  onlineLink: String!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+# aggregated selection of "location"
+type LocationAggregate {
+  aggregate: LocationAggregateFields
+  nodes: [Location!]!
+}
+
+input LocationAggregateBoolExp {
+  count: locationAggregateBoolExpCount
+}
+
+input locationAggregateBoolExpCount {
+  arguments: [LocationSelectColumn!]
+  distinct: Boolean
+  filter: LocationBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "location"
+type LocationAggregateFields {
+  avg: LocationAvgFields
+  count(columns: [LocationSelectColumn!], distinct: Boolean): Int!
+  max: LocationMaxFields
+  min: LocationMinFields
+  stddev: LocationStddevFields
+  stddevPop: LocationStddevPopFields
+  stddevSamp: LocationStddevSampFields
+  sum: LocationSumFields
+  varPop: LocationVarPopFields
+  varSamp: LocationVarSampFields
+  variance: LocationVarianceFields
+}
+
+# order by aggregate values of table "location"
+input LocationAggregateOrderBy {
+  avg: LocationAvgOrderBy
+  count: OrderBy
+  max: LocationMaxOrderBy
+  min: LocationMinOrderBy
+  stddev: LocationStddevOrderBy
+  stddevPop: LocationStddevPopOrderBy
+  stddevSamp: LocationStddevSampOrderBy
+  sum: LocationSumOrderBy
+  varPop: LocationVarPopOrderBy
+  varSamp: LocationVarSampOrderBy
+  variance: LocationVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "location"
+input LocationArrRelInsertInput {
+  data: [LocationInsertInput!]!
+
+  # upsert condition
+  onConflict: LocationOnConflict
+}
+
+# aggregate avg on columns
+type LocationAvgFields {
+  actorId: Float
+  addressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
-# order by variance() on columns of table "legal_unit"
-input LegalUnitVarianceOrderBy {
+# order by avg() on columns of table "location"
+input LocationAvgOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "location". All fields are combined with a logical 'AND'.
+input LocationBoolExp {
+  _and: [LocationBoolExp!]
+  _not: LocationBoolExp
+  _or: [LocationBoolExp!]
+  actor: ActorBoolExp
+  actorId: BigintComparisonExp
+  address: AddressBoolExp
+  addressId: BigintComparisonExp
+  campuses: CampusBoolExp
+  campusesAggregate: CampusAggregateBoolExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  details: StringComparisonExp
+  events: EventBoolExp
+  eventsAggregate: EventAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  legalUnitLocations: LegalUnitLocationBoolExp
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
+  locationImages: LocationImagesBoolExp
+  locationImagesAggregate: LocationImagesAggregateBoolExp
+  name: StringComparisonExp
+  onlineLink: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+# unique or primary key constraints on table "location"
+enum LocationConstraint {
+  # unique or primary key constraint on columns "id"
+  location_pkey
+}
+
+# columns and relationships of "location_images"
+type LocationImages {
+  # An object relationship
+  fileUpload: FileUpload!
+  fileUploadId: bigint!
+
+  # An object relationship
+  location: Location!
+  locationId: bigint!
+}
+
+# aggregated selection of "location_images"
+type LocationImagesAggregate {
+  aggregate: LocationImagesAggregateFields
+  nodes: [LocationImages!]!
+}
+
+input LocationImagesAggregateBoolExp {
+  count: locationImagesAggregateBoolExpCount
+}
+
+input locationImagesAggregateBoolExpCount {
+  arguments: [LocationImagesSelectColumn!]
+  distinct: Boolean
+  filter: LocationImagesBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "location_images"
+type LocationImagesAggregateFields {
+  avg: LocationImagesAvgFields
+  count(columns: [LocationImagesSelectColumn!], distinct: Boolean): Int!
+  max: LocationImagesMaxFields
+  min: LocationImagesMinFields
+  stddev: LocationImagesStddevFields
+  stddevPop: LocationImagesStddevPopFields
+  stddevSamp: LocationImagesStddevSampFields
+  sum: LocationImagesSumFields
+  varPop: LocationImagesVarPopFields
+  varSamp: LocationImagesVarSampFields
+  variance: LocationImagesVarianceFields
+}
+
+# order by aggregate values of table "location_images"
+input LocationImagesAggregateOrderBy {
+  avg: LocationImagesAvgOrderBy
+  count: OrderBy
+  max: LocationImagesMaxOrderBy
+  min: LocationImagesMinOrderBy
+  stddev: LocationImagesStddevOrderBy
+  stddevPop: LocationImagesStddevPopOrderBy
+  stddevSamp: LocationImagesStddevSampOrderBy
+  sum: LocationImagesSumOrderBy
+  varPop: LocationImagesVarPopOrderBy
+  varSamp: LocationImagesVarSampOrderBy
+  variance: LocationImagesVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "location_images"
+input LocationImagesArrRelInsertInput {
+  data: [LocationImagesInsertInput!]!
+
+  # upsert condition
+  onConflict: LocationImagesOnConflict
+}
+
+# aggregate avg on columns
+type LocationImagesAvgFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by avg() on columns of table "location_images"
+input LocationImagesAvgOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "location_images". All fields are combined with a logical 'AND'.
+input LocationImagesBoolExp {
+  _and: [LocationImagesBoolExp!]
+  _not: LocationImagesBoolExp
+  _or: [LocationImagesBoolExp!]
+  fileUpload: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  location: LocationBoolExp
+  locationId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "location_images"
+enum LocationImagesConstraint {
+  # unique or primary key constraint on columns "file_upload_id", "location_id"
+  location_images_pkey
+}
+
+# input type for incrementing numeric columns in table "location_images"
+input LocationImagesIncInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# input type for inserting data into table "location_images"
+input LocationImagesInsertInput {
+  fileUpload: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  location: LocationObjRelInsertInput
+  locationId: bigint
+}
+
+# aggregate max on columns
+type LocationImagesMaxFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# order by max() on columns of table "location_images"
+input LocationImagesMaxOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate min on columns
+type LocationImagesMinFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# order by min() on columns of table "location_images"
+input LocationImagesMinOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# response of any mutation on the table "location_images"
+type LocationImagesMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [LocationImages!]!
+}
+
+# on_conflict condition type for table "location_images"
+input LocationImagesOnConflict {
+  constraint: LocationImagesConstraint!
+  updateColumns: [LocationImagesUpdateColumn!]! = []
+  where: LocationImagesBoolExp
+}
+
+# Ordering options when selecting data from "location_images".
+input LocationImagesOrderBy {
+  fileUpload: FileUploadOrderBy
+  fileUploadId: OrderBy
+  location: LocationOrderBy
+  locationId: OrderBy
+}
+
+# primary key columns input for table: location_images
+input LocationImagesPkColumnsInput {
+  fileUploadId: bigint!
+  locationId: bigint!
+}
+
+# select columns of table "location_images"
+enum LocationImagesSelectColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  locationId
+}
+
+# input type for updating data in table "location_images"
+input LocationImagesSetInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# aggregate stddev on columns
+type LocationImagesStddevFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by stddev() on columns of table "location_images"
+input LocationImagesStddevOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type LocationImagesStddevPopFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by stddevPop() on columns of table "location_images"
+input LocationImagesStddevPopOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type LocationImagesStddevSampFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by stddevSamp() on columns of table "location_images"
+input LocationImagesStddevSampOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# Streaming cursor of the table "location_images"
+input LocationImagesStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: LocationImagesStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input LocationImagesStreamCursorValueInput {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# aggregate sum on columns
+type LocationImagesSumFields {
+  fileUploadId: bigint
+  locationId: bigint
+}
+
+# order by sum() on columns of table "location_images"
+input LocationImagesSumOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# update columns of table "location_images"
+enum LocationImagesUpdateColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  locationId
+}
+
+input LocationImagesUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: LocationImagesIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: LocationImagesSetInput
+
+  # filter the rows which have to be updated
+  where: LocationImagesBoolExp!
+}
+
+# aggregate variance on columns
+type LocationImagesVarianceFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by variance() on columns of table "location_images"
+input LocationImagesVarianceOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate varPop on columns
+type LocationImagesVarPopFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by varPop() on columns of table "location_images"
+input LocationImagesVarPopOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# aggregate varSamp on columns
+type LocationImagesVarSampFields {
+  fileUploadId: Float
+  locationId: Float
+}
+
+# order by varSamp() on columns of table "location_images"
+input LocationImagesVarSampOrderBy {
+  fileUploadId: OrderBy
+  locationId: OrderBy
+}
+
+# input type for incrementing numeric columns in table "location"
+input LocationIncInput {
+  actorId: bigint
+  addressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "location"
+input LocationInsertInput {
+  actor: ActorObjRelInsertInput
+  actorId: bigint
+  address: AddressObjRelInsertInput
+  addressId: bigint
+  campuses: CampusArrRelInsertInput
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  events: EventArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  legalUnitLocations: LegalUnitLocationArrRelInsertInput
+  locationImages: LocationImagesArrRelInsertInput
+  name: String
+  onlineLink: String
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+# aggregate max on columns
+type LocationMaxFields {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+# order by max() on columns of table "location"
+input LocationMaxOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# aggregate min on columns
+type LocationMinFields {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+# order by min() on columns of table "location"
+input LocationMinOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# response of any mutation on the table "location"
+type LocationMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [Location!]!
+}
+
+# input type for inserting object relation for remote table "location"
+input LocationObjRelInsertInput {
+  data: LocationInsertInput!
+
+  # upsert condition
+  onConflict: LocationOnConflict
+}
+
+# on_conflict condition type for table "location"
+input LocationOnConflict {
+  constraint: LocationConstraint!
+  updateColumns: [LocationUpdateColumn!]! = []
+  where: LocationBoolExp
+}
+
+# Ordering options when selecting data from "location".
+input LocationOrderBy {
+  actor: ActorOrderBy
+  actorId: OrderBy
+  address: AddressOrderBy
+  addressId: OrderBy
+  campusesAggregate: CampusAggregateOrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  details: OrderBy
+  eventsAggregate: EventAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
+  locationImagesAggregate: LocationImagesAggregateOrderBy
+  name: OrderBy
+  onlineLink: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# primary key columns input for table: location
+input LocationPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "location"
+enum LocationSelectColumn {
+  # column name
+  actorId
+
+  # column name
+  addressId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  details
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  onlineLink
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+# input type for updating data in table "location"
+input LocationSetInput {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+# aggregate stddev on columns
+type LocationStddevFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "location"
+input LocationStddevOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type LocationStddevPopFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "location"
+input LocationStddevPopOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type LocationStddevSampFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "location"
+input LocationStddevSampOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "location"
+input LocationStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: LocationStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input LocationStreamCursorValueInput {
+  actorId: bigint
+  addressId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  details: String
+  hiddenAt: timestamptz
+  id: bigint
+  name: String
+  onlineLink: String
+  tenantId: bigint
+  type: String
+}
+
+# aggregate sum on columns
+type LocationSumFields {
+  actorId: bigint
+  addressId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "location"
+input LocationSumOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "location"
+enum LocationUpdateColumn {
+  # column name
+  actorId
+
+  # column name
+  addressId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  details
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  onlineLink
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+input LocationUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: LocationIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: LocationSetInput
+
+  # filter the rows which have to be updated
+  where: LocationBoolExp!
+}
+
+# aggregate variance on columns
+type LocationVarianceFields {
+  actorId: Float
+  addressId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "location"
+input LocationVarianceOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varPop on columns
-type LegalUnitVarPopFields {
+type LocationVarPopFields {
+  actorId: Float
+  addressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
-# order by varPop() on columns of table "legal_unit"
-input LegalUnitVarPopOrderBy {
+# order by varPop() on columns of table "location"
+input LocationVarPopOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varSamp on columns
-type LegalUnitVarSampFields {
+type LocationVarSampFields {
+  actorId: Float
+  addressId: Float
   createdById: Float
   id: Float
   tenantId: Float
 }
 
-# order by varSamp() on columns of table "legal_unit"
-input LegalUnitVarSampOrderBy {
+# order by varSamp() on columns of table "location"
+input LocationVarSampOrderBy {
+  actorId: OrderBy
+  addressId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
@@ -31679,6 +33144,33 @@ type Mutation {
   # delete single row from the table: "legal_unit"
   deleteLegalUnitByPk(id: bigint!): LegalUnit
 
+  # delete data from the table: "legal_unit_location"
+  deleteLegalUnitLocation(
+    # filter the rows which have to be deleted
+    where: LegalUnitLocationBoolExp!
+  ): LegalUnitLocationMutationResponse
+
+  # delete single row from the table: "legal_unit_location"
+  deleteLegalUnitLocationByPk(id: bigint!): LegalUnitLocation
+
+  # delete data from the table: "location"
+  deleteLocation(
+    # filter the rows which have to be deleted
+    where: LocationBoolExp!
+  ): LocationMutationResponse
+
+  # delete single row from the table: "location"
+  deleteLocationByPk(id: bigint!): Location
+
+  # delete data from the table: "location_images"
+  deleteLocationImages(
+    # filter the rows which have to be deleted
+    where: LocationImagesBoolExp!
+  ): LocationImagesMutationResponse
+
+  # delete single row from the table: "location_images"
+  deleteLocationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
+
   # delete data from the table: "mission"
   deleteMission(
     # filter the rows which have to be deleted
@@ -32813,6 +34305,24 @@ type Mutation {
     onConflict: LegalUnitOnConflict
   ): LegalUnitMutationResponse
 
+  # insert data into the table: "legal_unit_location"
+  insertLegalUnitLocation(
+    # the rows to be inserted
+    objects: [LegalUnitLocationInsertInput!]!
+
+    # upsert condition
+    onConflict: LegalUnitLocationOnConflict
+  ): LegalUnitLocationMutationResponse
+
+  # insert a single row into the table: "legal_unit_location"
+  insertLegalUnitLocationOne(
+    # the row to be inserted
+    object: LegalUnitLocationInsertInput!
+
+    # upsert condition
+    onConflict: LegalUnitLocationOnConflict
+  ): LegalUnitLocation
+
   # insert a single row into the table: "legal_unit"
   insertLegalUnitOne(
     # the row to be inserted
@@ -32821,6 +34331,42 @@ type Mutation {
     # upsert condition
     onConflict: LegalUnitOnConflict
   ): LegalUnit
+
+  # insert data into the table: "location"
+  insertLocation(
+    # the rows to be inserted
+    objects: [LocationInsertInput!]!
+
+    # upsert condition
+    onConflict: LocationOnConflict
+  ): LocationMutationResponse
+
+  # insert data into the table: "location_images"
+  insertLocationImages(
+    # the rows to be inserted
+    objects: [LocationImagesInsertInput!]!
+
+    # upsert condition
+    onConflict: LocationImagesOnConflict
+  ): LocationImagesMutationResponse
+
+  # insert a single row into the table: "location_images"
+  insertLocationImagesOne(
+    # the row to be inserted
+    object: LocationImagesInsertInput!
+
+    # upsert condition
+    onConflict: LocationImagesOnConflict
+  ): LocationImages
+
+  # insert a single row into the table: "location"
+  insertLocationOne(
+    # the row to be inserted
+    object: LocationInsertInput!
+
+    # upsert condition
+    onConflict: LocationOnConflict
+  ): Location
 
   # insert data into the table: "mission"
   insertMission(
@@ -34806,11 +36352,95 @@ type Mutation {
     pkColumns: LegalUnitPkColumnsInput!
   ): LegalUnit
 
+  # update data of the table: "legal_unit_location"
+  updateLegalUnitLocation(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LegalUnitLocationIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LegalUnitLocationSetInput
+
+    # filter the rows which have to be updated
+    where: LegalUnitLocationBoolExp!
+  ): LegalUnitLocationMutationResponse
+
+  # update single row of the table: "legal_unit_location"
+  updateLegalUnitLocationByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LegalUnitLocationIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LegalUnitLocationSetInput
+    pkColumns: LegalUnitLocationPkColumnsInput!
+  ): LegalUnitLocation
+
+  # update multiples rows of table: "legal_unit_location"
+  updateLegalUnitLocationMany(
+    # updates to execute, in order
+    updates: [LegalUnitLocationUpdates!]!
+  ): [LegalUnitLocationMutationResponse]
+
   # update multiples rows of table: "legal_unit"
   updateLegalUnitMany(
     # updates to execute, in order
     updates: [LegalUnitUpdates!]!
   ): [LegalUnitMutationResponse]
+
+  # update data of the table: "location"
+  updateLocation(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LocationIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LocationSetInput
+
+    # filter the rows which have to be updated
+    where: LocationBoolExp!
+  ): LocationMutationResponse
+
+  # update single row of the table: "location"
+  updateLocationByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LocationIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LocationSetInput
+    pkColumns: LocationPkColumnsInput!
+  ): Location
+
+  # update data of the table: "location_images"
+  updateLocationImages(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LocationImagesIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LocationImagesSetInput
+
+    # filter the rows which have to be updated
+    where: LocationImagesBoolExp!
+  ): LocationImagesMutationResponse
+
+  # update single row of the table: "location_images"
+  updateLocationImagesByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: LocationImagesIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: LocationImagesSetInput
+    pkColumns: LocationImagesPkColumnsInput!
+  ): LocationImages
+
+  # update multiples rows of table: "location_images"
+  updateLocationImagesMany(
+    # updates to execute, in order
+    updates: [LocationImagesUpdates!]!
+  ): [LocationImagesMutationResponse]
+
+  # update multiples rows of table: "location"
+  updateLocationMany(
+    # updates to execute, in order
+    updates: [LocationUpdates!]!
+  ): [LocationMutationResponse]
 
   # update data of the table: "mission"
   updateMission(
@@ -39689,6 +41319,123 @@ type Query {
 
   # fetch data from the table: "legal_unit" using primary key columns
   legalUnitByPk(id: bigint!): LegalUnit
+
+  # fetch data from the table: "legal_unit_location"
+  legalUnitLocation(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
+  # fetch aggregated fields from the table: "legal_unit_location"
+  legalUnitLocationAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): LegalUnitLocationAggregate!
+
+  # fetch data from the table: "legal_unit_location" using primary key columns
+  legalUnitLocationByPk(id: bigint!): LegalUnitLocation
+
+  # fetch data from the table: "location"
+  location(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
+
+  # fetch aggregated fields from the table: "location"
+  locationAggregate(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): LocationAggregate!
+
+  # fetch data from the table: "location" using primary key columns
+  locationByPk(id: bigint!): Location
+
+  # An array relationship
+  locationImages(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): [LocationImages!]!
+
+  # An aggregate relationship
+  locationImagesAggregate(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): LocationImagesAggregate!
+
+  # fetch data from the table: "location_images" using primary key columns
+  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
 
   # fetch data from the table: "mission"
   mission(
@@ -47447,6 +49194,57 @@ type Subscription {
   # fetch data from the table: "legal_unit" using primary key columns
   legalUnitByPk(id: bigint!): LegalUnit
 
+  # fetch data from the table: "legal_unit_location"
+  legalUnitLocation(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
+  # fetch aggregated fields from the table: "legal_unit_location"
+  legalUnitLocationAggregate(
+    # distinct select on columns
+    distinctOn: [LegalUnitLocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LegalUnitLocationOrderBy!]
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): LegalUnitLocationAggregate!
+
+  # fetch data from the table: "legal_unit_location" using primary key columns
+  legalUnitLocationByPk(id: bigint!): LegalUnitLocation
+
+  # fetch data from the table in a streaming manner: "legal_unit_location"
+  legalUnitLocationStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [LegalUnitLocationStreamCursorInput]!
+
+    # filter the rows returned
+    where: LegalUnitLocationBoolExp
+  ): [LegalUnitLocation!]!
+
   # fetch data from the table in a streaming manner: "legal_unit"
   legalUnitStream(
     # maximum number of rows returned in a single batch
@@ -47458,6 +49256,108 @@ type Subscription {
     # filter the rows returned
     where: LegalUnitBoolExp
   ): [LegalUnit!]!
+
+  # fetch data from the table: "location"
+  location(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
+
+  # fetch aggregated fields from the table: "location"
+  locationAggregate(
+    # distinct select on columns
+    distinctOn: [LocationSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationOrderBy!]
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): LocationAggregate!
+
+  # fetch data from the table: "location" using primary key columns
+  locationByPk(id: bigint!): Location
+
+  # An array relationship
+  locationImages(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): [LocationImages!]!
+
+  # An aggregate relationship
+  locationImagesAggregate(
+    # distinct select on columns
+    distinctOn: [LocationImagesSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [LocationImagesOrderBy!]
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): LocationImagesAggregate!
+
+  # fetch data from the table: "location_images" using primary key columns
+  locationImagesByPk(fileUploadId: bigint!, locationId: bigint!): LocationImages
+
+  # fetch data from the table in a streaming manner: "location_images"
+  locationImagesStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [LocationImagesStreamCursorInput]!
+
+    # filter the rows returned
+    where: LocationImagesBoolExp
+  ): [LocationImages!]!
+
+  # fetch data from the table in a streaming manner: "location"
+  locationStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [LocationStreamCursorInput]!
+
+    # filter the rows returned
+    where: LocationBoolExp
+  ): [Location!]!
 
   # fetch data from the table: "mission"
   mission(
@@ -53795,42 +55695,6 @@ type Tenant {
   ): ActorAggregate!
 
   # An array relationship
-  addresses(
-    # distinct select on columns
-    distinctOn: [AddressSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [AddressOrderBy!]
-
-    # filter the rows returned
-    where: AddressBoolExp
-  ): [Address!]!
-
-  # An aggregate relationship
-  addressesAggregate(
-    # distinct select on columns
-    distinctOn: [AddressSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [AddressOrderBy!]
-
-    # filter the rows returned
-    where: AddressBoolExp
-  ): AddressAggregate!
-
-  # An array relationship
   bankInfos(
     # distinct select on columns
     distinctOn: [BankInfoSelectColumn!]
@@ -54888,9 +56752,9 @@ type Tenant {
   ): IssueAggregate!
 
   # An array relationship
-  legalUnits(
+  locations(
     # distinct select on columns
-    distinctOn: [LegalUnitSelectColumn!]
+    distinctOn: [LocationSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -54899,16 +56763,16 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [LegalUnitOrderBy!]
+    orderBy: [LocationOrderBy!]
 
     # filter the rows returned
-    where: LegalUnitBoolExp
-  ): [LegalUnit!]!
+    where: LocationBoolExp
+  ): [Location!]!
 
   # An aggregate relationship
-  legalUnitsAggregate(
+  locationsAggregate(
     # distinct select on columns
-    distinctOn: [LegalUnitSelectColumn!]
+    distinctOn: [LocationSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -54917,11 +56781,11 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [LegalUnitOrderBy!]
+    orderBy: [LocationOrderBy!]
 
     # filter the rows returned
-    where: LegalUnitBoolExp
-  ): LegalUnitAggregate!
+    where: LocationBoolExp
+  ): LocationAggregate!
 
   # An array relationship
   missionJoins(
@@ -55824,8 +57688,6 @@ input TenantBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actors: ActorBoolExp
   actorsAggregate: ActorAggregateBoolExp
-  addresses: AddressBoolExp
-  addressesAggregate: AddressAggregateBoolExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bots: BotBoolExp
@@ -55893,8 +57755,8 @@ input TenantBoolExp {
   isOidcEnabled: BooleanComparisonExp
   issues: IssueBoolExp
   issuesAggregate: IssueAggregateBoolExp
-  legalUnits: LegalUnitBoolExp
-  legalUnitsAggregate: LegalUnitAggregateBoolExp
+  locations: LocationBoolExp
+  locationsAggregate: LocationAggregateBoolExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
   missions: MissionBoolExp
@@ -55975,7 +57837,6 @@ input TenantInsertInput {
   actions: ActionArrRelInsertInput
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
-  addresses: AddressArrRelInsertInput
   bankInfos: BankInfoArrRelInsertInput
   bots: BotArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
@@ -56014,7 +57875,7 @@ input TenantInsertInput {
   individuals: IndividualArrRelInsertInput
   isOidcEnabled: Boolean
   issues: IssueArrRelInsertInput
-  legalUnits: LegalUnitArrRelInsertInput
+  locations: LocationArrRelInsertInput
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
   name: String
@@ -56605,7 +58466,6 @@ input TenantOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
-  addressesAggregate: AddressAggregateOrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
@@ -56644,7 +58504,7 @@ input TenantOrderBy {
   individualsAggregate: IndividualAggregateOrderBy
   isOidcEnabled: OrderBy
   issuesAggregate: IssueAggregateOrderBy
-  legalUnitsAggregate: LegalUnitAggregateOrderBy
+  locationsAggregate: LocationAggregateOrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
   name: OrderBy

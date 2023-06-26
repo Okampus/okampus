@@ -1,12 +1,16 @@
 import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
 import { PaymentMethod, FinanceState, PayedByType, FinanceCategory } from '@okampus/shared/enums';
-import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class FinanceProps {
   @Field(() => String)
   @IsString()
   name!: string;
+
+  @Field(() => Boolean)
+  @IsBoolean()
+  isOnline?: boolean = false;
 
   @Field(() => Float)
   @IsOptional()

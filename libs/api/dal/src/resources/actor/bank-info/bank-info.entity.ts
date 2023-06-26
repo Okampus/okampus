@@ -3,10 +3,9 @@ import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { Countries } from '@okampus/shared/consts';
 
+import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
 import type { BankInfoOptions } from './bank-info.options';
 import type { Actor } from '../actor.entity';
-import type { Address } from '../address/address.entity';
-import type { LegalUnit } from '../legal-unit/legal-unit.entity';
 
 @Entity({ customRepository: () => BankInfoRepository })
 export class BankInfo extends TenantScopedEntity {
@@ -17,17 +16,14 @@ export class BankInfo extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
 
-  @ManyToOne({ type: 'Address' })
-  address!: Address;
-
-  @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
-  bank: LegalUnit | null = null;
+  @ManyToOne({ type: 'LegalUnitLocation', nullable: true, default: null })
+  bank: LegalUnitLocation | null = null;
 
   @Property({ type: 'text', default: '' })
   holderName = '';
 
   @Property({ type: 'text' })
-  bankCodeBic!: string;
+  bicSwift!: string;
 
   @Property({ type: 'text' })
   fullAcount!: string;

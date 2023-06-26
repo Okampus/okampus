@@ -1,13 +1,12 @@
 // eslint-disable-next-line import/no-cycle
 import { CampusClusterRepository } from './campus-cluster.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
 
 import type { TenantManage } from '../tenant-manage/tenant-manage.entity';
 import type { Campus } from '../campus/campus.entity';
-import type { Address } from '../../actor/address/address.entity';
 import type { CampusClusterOptions } from './campus-cluster.options';
 
 @Entity({ customRepository: () => CampusClusterRepository })
@@ -16,9 +15,6 @@ export class CampusCluster extends TenantScopedEntity {
 
   @Property({ type: 'text' })
   name!: string;
-
-  @ManyToOne({ type: 'Address', nullable: true, default: null })
-  approximateAddress: Address | null = null;
 
   @OneToMany({ type: 'Campus', mappedBy: 'campusCluster' })
   @TransformCollection()

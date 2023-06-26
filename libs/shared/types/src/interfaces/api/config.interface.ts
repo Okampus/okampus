@@ -30,8 +30,11 @@ export type ApiConfig = {
     readonly secretKey: string;
     readonly region: string;
   };
-  readonly mapbox: {
+  readonly geoapify: {
     readonly apiKey: string;
+  };
+  readonly google: {
+    readonly customSearchApiKey: string;
   };
   readonly insee: {
     readonly apiToken: string;
