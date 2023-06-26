@@ -23,7 +23,6 @@ export * from './Input/CategorySelector';
 export * from './Input/DarkModeToggle';
 export * from './Input/DateInput';
 export * from './Input/DocumentInput';
-export * from './Input/LocationInput';
 export * from './Input/MultiCheckboxInput';
 export * from './Input/MultiFileInput';
 export * from './Input/MultiSelectInput';
