@@ -24175,7 +24175,7 @@ type Query {
   voteByPk(id: bigint!): Vote
   financeLogs(id: bigint, teamId: bigint): [Log!]!
   me: User
-  searchLocation(query: String!): [LocationInfo!]!
+  searchLocation(query: String!): [GeocodeLocation!]!
   getFirstResultLink(query: String!): String!
   searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
   processReceipt(key: String!): ProcessedReceipt
@@ -33983,7 +33983,7 @@ input LoginInput {
   password: String!
 }
 
-type LocationInfo {
+type GeocodeLocation {
   latitude: Float!
   longitude: Float!
   category: String!

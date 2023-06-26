@@ -32596,7 +32596,7 @@ export const ReturnTypes: Record<string, any> = {
     voteByPk: 'Vote',
     financeLogs: 'Log',
     me: 'User',
-    searchLocation: 'LocationInfo',
+    searchLocation: 'GeocodeLocation',
     getFirstResultLink: 'String',
     searchFrenchCompany: 'CompanyInfo',
     processReceipt: 'ProcessedReceipt',
@@ -35684,7 +35684,7 @@ export const ReturnTypes: Record<string, any> = {
     tenant: 'Tenant',
   },
   Upload: `scalar.Upload` as const,
-  LocationInfo: {
+  GeocodeLocation: {
     latitude: 'Float',
     longitude: 'Float',
     category: 'String',

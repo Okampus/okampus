@@ -30,6 +30,7 @@ export * from './scalars/query-order-map.scalar';
 export * from './selectors/actor/actorBase';
 export * from './selectors/actor/actorImage/actorImageBase';
 export * from './selectors/actor/address/addressBase';
+export * from './selectors/actor/address/geolocationBase';
 export * from './selectors/actor/bankInfo/bankInfoBase';
 export * from './selectors/actor/follow/followBase';
 export * from './selectors/actor/legalUnit/legalUnitMinimal';
