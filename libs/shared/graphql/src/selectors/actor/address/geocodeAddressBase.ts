@@ -2,7 +2,7 @@ import { Selector } from '../../../zeus';
 
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
-export const geocodeLocationBaseInfo = Selector('GeocodeLocation')({
+export const geocodeAddressBaseInfo = Selector('GeocodeAddress')({
   latitude: true,
   longitude: true,
   category: true,
@@ -15,4 +15,4 @@ export const geocodeLocationBaseInfo = Selector('GeocodeLocation')({
   country: true,
   geoapifyId: true,
 });
-export type GeocodeLocationBaseInfo = InputType<GraphQLTypes['GeocodeLocation'], typeof geocodeLocationBaseInfo>;
+export type GeocodeAddressBaseInfo = InputType<GraphQLTypes['GeocodeAddress'], typeof geocodeAddressBaseInfo>;

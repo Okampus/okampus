@@ -1,5 +1,5 @@
 import { AddressType, PayedByType, FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
-import type { GeocodeLocation, SelectItem } from '@okampus/shared/types';
+import type { GeocodeAddress, SelectItem } from '@okampus/shared/types';
 
 export const teamTransactionCreateDefaultValues: {
   name: string;
@@ -9,7 +9,7 @@ export const teamTransactionCreateDefaultValues: {
   eventId: string | null;
   fileUploadId: string | null;
   file: File | null;
-  addressItem: SelectItem<GeocodeLocation> | null;
+  addressItem: SelectItem<GeocodeAddress> | null;
   addressType: AddressType;
   addressQuery: string;
   payedById: string | null;
