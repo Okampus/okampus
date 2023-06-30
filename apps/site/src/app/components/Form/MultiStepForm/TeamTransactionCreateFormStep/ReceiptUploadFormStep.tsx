@@ -80,25 +80,25 @@ type ReceiptUploadFormStepProps = { values: Context['values']; setValues: Contex
 export function ReceiptUploadFormStep({ values, setValues }: ReceiptUploadFormStepProps) {
   const { t } = useTranslation();
 
-  const [search, { data }] = useTypedLazyQuery({
-    searchLocation: [
-      { query: values.addressQuery },
-      {
-        id: true,
-        name: true,
-        city: true,
-        zip: true,
-        country: true,
-        state: true,
-        street: true,
-        coordinates: { latitude: true, longitude: true },
-      },
-    ],
-  });
+  // const [search, { data }] = useTypedLazyQuery({
+  //   searchLocation: [
+  //     { query: values.addressQuery },
+  //     {
+  //       id: true,
+  //       name: true,
+  //       city: true,
+  //       zip: true,
+  //       country: true,
+  //       state: true,
+  //       street: true,
+  //       coordinates: { latitude: true, longitude: true },
+  //     },
+  //   ],
+  // });
 
-  useEffect(() => {
-    if (values.addressQuery) search();
-  }, [search, values.addressQuery]);
+  // useEffect(() => {
+  //   if (values.addressQuery) search();
+  // }, [search, values.addressQuery]);
 
   return (
     <div className="text-0 flex flex-col gap-4 max-w-[42rem]">

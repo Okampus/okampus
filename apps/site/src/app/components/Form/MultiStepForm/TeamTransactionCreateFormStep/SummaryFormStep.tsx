@@ -1,14 +1,13 @@
 import { payedByLabel } from './PayedByFormStep';
 
 import { DateInput, NumberInput, SelectInput, TextInput, UserItem } from '@okampus/ui/molecules';
-import { projectBaseInfo, useTypedLazyQuery, useTypedQuery } from '@okampus/shared/graphql';
+import { projectBaseInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
 // import { TextAddress } from '@okampus/ui/atoms';
 import { useTeamManage } from '@okampus/ui/hooks';
 import { getAvatar } from '@okampus/ui/utils';
 
 import { t } from 'i18next';
-import { useEffect } from 'react';
 
 import type { teamTransactionCreateDefaultValues } from './default';
 import type { FormStepContext } from '@okampus/ui/organisms';
@@ -24,25 +23,25 @@ export function SummaryFormStep({ values, setValues }: SummaryFormStepProps) {
 
   const selectedProject = projectData?.project.find((project) => project.id === values.projectId) || null;
 
-  const [search, { data }] = useTypedLazyQuery({
-    searchLocation: [
-      { query: values.addressQuery },
-      {
-        id: true,
-        name: true,
-        city: true,
-        zip: true,
-        country: true,
-        state: true,
-        street: true,
-        coordinates: { latitude: true, longitude: true },
-      },
-    ],
-  });
+  // const [search, { data }] = useTypedLazyQuery({
+  //   searchLocation: [
+  //     { query: values.addressQuery },
+  //     {
+  //       id: true,
+  //       name: true,
+  //       city: true,
+  //       zip: true,
+  //       country: true,
+  //       state: true,
+  //       street: true,
+  //       coordinates: { latitude: true, longitude: true },
+  //     },
+  //   ],
+  // });
 
-  useEffect(() => {
-    if (values.addressQuery) search();
-  }, [search, values.addressQuery]);
+  // useEffect(() => {
+  //   if (values.addressQuery) search();
+  // }, [search, values.addressQuery]);
 
   const src = values.file ? URL.createObjectURL(values.file) : '';
   return (
