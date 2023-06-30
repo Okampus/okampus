@@ -11,7 +11,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 
 import type { AxiosInstance } from 'axios';
-import type { ApiConfig, GeocodeLocation } from '@okampus/shared/types';
+import type { ApiConfig, GeocodeAddress } from '@okampus/shared/types';
 
 type Feature = {
   lon: number;
@@ -40,7 +40,7 @@ export class GeocodeService {
 
     this.axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
     this.axiosInstance.interceptors.request.use((config) => {
-      config.params = { access_token: options.apiKey, ...config.params };
+      config.params = { apiKey: options.apiKey, ...config.params };
       return config;
     });
   }
@@ -50,10 +50,13 @@ export class GeocodeService {
   //   const { data } = await this.axiosInstance.get<{ features: Feature[] }>(url);
   // }
 
-  public async searchLocation(query: string, limit = 5): Promise<GeocodeLocation[]> {
+  public async searchLocation(query: string, limit = 5): Promise<GeocodeAddress[]> {
     const config = { params: { limit, format: 'json', type: 'amenity', lang: 'fr', bias: PARIS_BIAS } };
-    const url = `v1/geocode/autocomplete?${encodeURIComponent(query)}`;
-    const { data } = await this.axiosInstance.get<{ results: Feature[] }>(url, config);
+    const url = `v1/geocode/autocomplete?text=${encodeURIComponent(query)}`;
+    const { data } = await this.axiosInstance.get<{ results: Feature[] }>(url, config).catch(async (error) => {
+      this.logger.error(error);
+      return { data: { results: [] } };
+    });
 
     return data.results.map((result) => ({
       latitude: result.lat,

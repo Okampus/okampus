@@ -1,8 +1,8 @@
 import type { ControlType } from '@okampus/shared/enums';
-import type { ArrayElement } from '../../types/array.type';
+import type { ArrayElement } from '../types/array.type';
 import type { SelectItem } from '../ui/select-item.interface';
-import type { Cast } from '../../types/cast.type';
-import type { DeepWriteable } from '../../types/deep-writeable.type';
+import type { Cast } from '../types/cast.type';
+import type { DeepWriteable } from '../types/deep-writeable.type';
 
 type SubmissionNoReadonly<T> = T extends Array<{ name: infer Key; type: ControlType }>
   ? { [K in Cast<Key, string>]: FormFieldValue<Extract<ArrayElement<T>, { name: K }>['type']> }

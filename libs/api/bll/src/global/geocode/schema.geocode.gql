@@ -1,4 +1,4 @@
-type GeocodeLocation {
+type GeocodeAddress {
   latitude: Float!
   longitude: Float!
   category: String!
@@ -13,5 +13,5 @@ type GeocodeLocation {
 }
 
 type Query {
-  searchLocation(query: String!): [GeocodeLocation!]!
+  searchLocation(query: String!): [GeocodeAddress!]!
 }

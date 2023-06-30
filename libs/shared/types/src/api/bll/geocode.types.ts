@@ -1,4 +1,4 @@
-export type GeocodeLocation = {
+export type GeocodeAddress = {
   latitude: number | null;
   longitude: number | null;
   category: string;
