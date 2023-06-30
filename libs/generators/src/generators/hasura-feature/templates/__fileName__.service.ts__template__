@@ -73,7 +73,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
   checkCreateRelationships(props: ValueTypes['<%= className %>InsertInput']) {
     // Custom logic
 
-    <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { %>{ path: '<%= rel %>' }, <% } %> ]);<% } %>
+    <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { if (rel.split(':')[1]) { %>{ path: '<%= rel.split(':')[0] %>', slugify: '<%= rel.split(':')[1] %>' }, <% } else { %>{ path: '<%= rel %>' }, <% } } %> ]);<% } %>
     <% if (expectedIds.length > 0) { %>this.hasuraService.expectIdRelationships(props, [ <% for(const id of expectedIds) { %>{ path: '<%= id %>' }, <% } %> ]);<% } %>
 
     return true;

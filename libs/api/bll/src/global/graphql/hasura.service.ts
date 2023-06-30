@@ -16,9 +16,10 @@ import { ConfigService } from '@nestjs/config';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamMemberRepository } from '@okampus/api/dal';
-import { GraphQLEnum, isNonNullObject } from '@okampus/shared/utils';
+import { GraphQLEnum, isNonNullObject, toSlug } from '@okampus/shared/utils';
 
 import axios from 'axios';
+import { nanoid } from 'nanoid';
 import type { TeamPermissions, TenantPermissions } from '@okampus/shared/enums';
 import type { AxiosInstance } from 'axios';
 
@@ -93,6 +94,7 @@ const forbiddenFields = [
 export type ExpectNestedRelation = {
   path: string;
   optional?: boolean;
+  slugify?: string;
   defaultProps?: Record<string, unknown>;
   overwrite?: Record<string, unknown>;
   checkTransform?: (value: Record<string, unknown>) => Record<string, unknown>;
@@ -287,6 +289,13 @@ export class HasuraService extends RequestContext {
       if (isNonNullObject(dataValue) && 'data' in dataValue && isNonNullObject(dataValue.data)) {
         const data = this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite);
         deepProps[lastPathKey] = { data: relationship.checkTransform ? relationship.checkTransform(data) : data };
+
+        if (relationship.slugify) {
+          const slugify = dataValue.data[relationship.slugify] as string | undefined;
+
+          // @ts-expect-error - Zeus never type is wrong
+          deepProps[lastPathKey].data.slug = `${toSlug(slugify ?? nanoid(6))}.${nanoid(16)}`;
+        }
       } else if (!relationship.optional) {
         throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);
       }

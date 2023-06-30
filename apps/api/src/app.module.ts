@@ -28,6 +28,8 @@ import {
   ProjectsModule,
   IndividualsModule,
   BotsModule,
+  LegalUnitsModule,
+  LegalUnitLocationsModule,
   UsersModule,
   EventJoinsModule,
   FormsModule,
@@ -45,6 +47,9 @@ import {
   ActorsModule,
   SocialsModule,
   GoogleModule,
+  BankInfosModule,
+  AccountsModule,
+  AccountAllocatesModule,
 } from '@okampus/api/bll';
 import { Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -209,6 +214,11 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     TenantsModule,
     ActorsModule,
     ActorImagesModule,
+    AccountsModule,
+    AccountAllocatesModule,
+    LegalUnitsModule,
+    LegalUnitLocationsModule,
+    BankInfosModule,
     EventJoinsModule,
     EventsModule,
     FormsModule,
