@@ -12,13 +12,12 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
 import { FileUpload } from '@okampus/api/dal';
 import { Buckets } from '@okampus/shared/enums';
-import { streamToBuffer, toSlug } from '@okampus/shared/utils';
+import { randomId, streamToBuffer, toSlug } from '@okampus/shared/utils';
 
 import { Client } from 'minio';
 import QRCodeGenerator from 'qrcode';
 import sharp from 'sharp';
 
-import { nanoid } from 'nanoid';
 import { Readable } from 'node:stream';
 import { promises } from 'node:fs';
 
@@ -108,7 +107,7 @@ export class UploadsService extends RequestContext {
     // }
 
     const type = file.typetype ?? 'application/octet-stream';
-    const key = `${nanoid(16)}.${toSlug(file.filename ?? file.fieldname)}.${toSlug(bucket)}.${nowString()}`;
+    const key = `${randomId()}-${toSlug(file.filename ?? file.fieldname)}-${toSlug(bucket)}-${nowString()}`;
     const { url, size } = await this.upload(stream, type, key, bucket);
     const name = file.originalname ?? file.filename ?? key;
     const fileLastModifiedAt = file.fileLastModifiedAt?.toISOString() ?? new Date().toISOString();

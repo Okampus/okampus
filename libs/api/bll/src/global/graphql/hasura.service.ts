@@ -16,10 +16,9 @@ import { ConfigService } from '@nestjs/config';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamMemberRepository } from '@okampus/api/dal';
-import { GraphQLEnum, isNonNullObject, toSlug } from '@okampus/shared/utils';
-
+import { GraphQLEnum, isNonNullObject, randomId, toSlug } from '@okampus/shared/utils';
 import axios from 'axios';
-import { nanoid } from 'nanoid';
+
 import type { TeamPermissions, TenantPermissions } from '@okampus/shared/enums';
 import type { AxiosInstance } from 'axios';
 
@@ -294,7 +293,7 @@ export class HasuraService extends RequestContext {
           const slugify = dataValue.data[relationship.slugify] as string | undefined;
 
           // @ts-expect-error - Zeus never type is wrong
-          deepProps[lastPathKey].data.slug = `${toSlug(slugify ?? nanoid(6))}.${nanoid(16)}`;
+          deepProps[lastPathKey].data.slug = slugify ? `${toSlug(slugify)}-${randomId()}` : randomId();
         }
       } else if (!relationship.optional) {
         throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);

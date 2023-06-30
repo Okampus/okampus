@@ -12,13 +12,10 @@ import DeviceDetector from 'device-detector-js';
 import jsonwebtoken from 'jsonwebtoken';
 import fastifyCookie from '@fastify/cookie';
 import { requestContext } from '@fastify/request-context';
-import { nanoid } from 'nanoid';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ConfigService } from '@nestjs/config';
 import {
   BadRequestException,
   Injectable,
@@ -28,12 +25,15 @@ import {
 } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '@nestjs/config';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { JwtService } from '@nestjs/jwt';
 
 import { Individual, Session, Tenant, User } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
-import { objectContains } from '@okampus/shared/utils';
+import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
 
@@ -221,7 +221,7 @@ export class AuthService extends RequestContext {
     }
 
     /* If there is no active session, create a new one */
-    if (!fam) fam = nanoid(16);
+    if (!fam) fam = randomId();
     [jwt, exp] = await this.createHttpOnlyJwt({ sub, fam }, TokenType.Refresh);
     await this.createSession(userSession, this.tenant(), jwt.value, fam, sub);
 

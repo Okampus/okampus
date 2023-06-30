@@ -54,6 +54,7 @@ export * from './objects/object-filter';
 export * from './objects/remove-circular';
 export * from './random/random-digits';
 export * from './random/random-enum';
+export * from './random/random-id';
 export * from './random/random-int';
 export * from './requests/is-file-upload';
 export * from './resources/users/full-name';

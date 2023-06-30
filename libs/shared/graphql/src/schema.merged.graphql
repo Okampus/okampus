@@ -27991,7 +27991,6 @@ type Team {
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
-  currentFinance: Float!
   deletedAt: timestamptz
   directorsCategoryName: String!
   documents(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
@@ -28109,7 +28108,6 @@ type TeamAvgFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -28123,7 +28121,6 @@ input TeamAvgOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -28154,7 +28151,6 @@ input TeamBoolExp {
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
-  currentFinance: FloatComparisonExp
   deletedAt: TimestamptzComparisonExp
   directorsCategoryName: StringComparisonExp
   documents: DocumentBoolExp
@@ -28583,7 +28579,6 @@ input TeamIncInput {
   classGroupId: bigint
   cohortId: bigint
   createdById: bigint
-  currentFinance: Float
   id: bigint
   membershipFees: Float
   parentId: bigint
@@ -28607,7 +28602,6 @@ input TeamInsertInput {
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
-  currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
@@ -29203,7 +29197,6 @@ type TeamMaxFields {
   cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
-  currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   hiddenAt: timestamptz
@@ -29225,7 +29218,6 @@ input TeamMaxOrderBy {
   cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   hiddenAt: OrderBy
@@ -30249,7 +30241,6 @@ type TeamMinFields {
   cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
-  currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   hiddenAt: timestamptz
@@ -30271,7 +30262,6 @@ input TeamMinOrderBy {
   cohortId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   hiddenAt: OrderBy
@@ -30318,7 +30308,6 @@ input TeamOrderBy {
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
@@ -30363,7 +30352,6 @@ enum TeamSelectColumn {
   cohortId
   createdAt
   createdById
-  currentFinance
   deletedAt
   directorsCategoryName
   hiddenAt
@@ -30394,7 +30382,6 @@ input TeamSetInput {
   cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
-  currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   hiddenAt: timestamptz
@@ -30416,7 +30403,6 @@ type TeamStddevFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30430,7 +30416,6 @@ input TeamStddevOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30444,7 +30429,6 @@ type TeamStddevPopFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30458,7 +30442,6 @@ input TeamStddevPopOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30472,7 +30455,6 @@ type TeamStddevSampFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30486,7 +30468,6 @@ input TeamStddevSampOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30506,7 +30487,6 @@ input TeamStreamCursorValueInput {
   cohortId: bigint
   createdAt: timestamptz
   createdById: bigint
-  currentFinance: Float
   deletedAt: timestamptz
   directorsCategoryName: String
   hiddenAt: timestamptz
@@ -30528,7 +30508,6 @@ type TeamSumFields {
   classGroupId: bigint
   cohortId: bigint
   createdById: bigint
-  currentFinance: Float
   id: bigint
   membershipFees: Float
   parentId: bigint
@@ -30542,7 +30521,6 @@ input TeamSumOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30557,7 +30535,6 @@ enum TeamUpdateColumn {
   cohortId
   createdAt
   createdById
-  currentFinance
   deletedAt
   directorsCategoryName
   hiddenAt
@@ -30585,7 +30562,6 @@ type TeamVarianceFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30599,7 +30575,6 @@ input TeamVarianceOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30613,7 +30588,6 @@ type TeamVarPopFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30627,7 +30601,6 @@ input TeamVarPopOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy
@@ -30641,7 +30614,6 @@ type TeamVarSampFields {
   classGroupId: Float
   cohortId: Float
   createdById: Float
-  currentFinance: Float
   id: Float
   membershipFees: Float
   parentId: Float
@@ -30655,7 +30627,6 @@ input TeamVarSampOrderBy {
   classGroupId: OrderBy
   cohortId: OrderBy
   createdById: OrderBy
-  currentFinance: OrderBy
   id: OrderBy
   membershipFees: OrderBy
   parentId: OrderBy

@@ -119,7 +119,7 @@ function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo 
         <div className="flex justify-between items-start">
           <div className="flex flex-col gap-2">
             <div className="text-5xl font-semibold text-0 tracking-tight">
-              {formatCurrency(teamManage.currentFinance)}
+              {formatCurrency(teamManage.accounts[0]?.balance)}
             </div>
             <div className="text-1 text-lg">Total restant</div>
           </div>

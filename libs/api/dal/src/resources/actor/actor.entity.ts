@@ -13,9 +13,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { toSlug } from '@okampus/shared/utils';
-
-import { nanoid } from 'nanoid';
+import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { BankInfo } from './bank-info/bank-info.entity';
 import type { Tag } from './tag/tag.entity';
@@ -52,9 +50,9 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   website = '';
 
-  @Property({ type: 'varchar(26)', defaultRaw: 'substring(md5(random()::text), 0, 26)' })
+  @Property({ type: 'text', defaultRaw: '"public"."id_generator"(21)' })
   @Unique()
-  ical = nanoid(26);
+  ical = randomId();
 
   @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true, default: null })
   individual: Individual | null = null;

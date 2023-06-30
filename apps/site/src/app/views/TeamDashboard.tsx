@@ -102,7 +102,7 @@ export const TeamDashboard = () => {
     {
       label: 'Trésorerie',
       render: (value: TeamDashboardInfo) => {
-        return <TextFinance amount={value.currentFinance} showRed={true} />;
+        return <TextFinance amount={value.accounts[0]?.balance} showRed={true} />;
       },
     },
     {

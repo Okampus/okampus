@@ -55,6 +55,7 @@ import {
   randomEnum,
   randomFromArray,
   randomFromArrayWithRemainder,
+  randomId,
   randomInt,
   toSlug,
 } from '@okampus/shared/utils';
@@ -63,7 +64,6 @@ import { faker } from '@faker-js/faker/locale/fr';
 import { Seeder } from '@mikro-orm/seeder';
 import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
-import { nanoid } from 'nanoid';
 import YAML from 'yaml';
 
 import { Mission } from '@okampus/api/dal';
@@ -238,7 +238,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
       bio: faker.lorem.paragraph(randomInt(2, 12)),
       tags: randomFromArray(categories, 1, 3),
       socials: [],
-      slug: `${toSlug(name)}.${nanoid(16)}`,
+      slug: `${toSlug(name)}-${randomId()}`,
       status: faker.company.catchPhrase(),
       type: TeamType.Association,
     };
@@ -395,7 +395,6 @@ export class DatabaseSeeder extends Seeder {
     const teamsWithParent = await Promise.all(
       teamsData.map(async (teamData) => {
         const team = new Team({
-          currentFinance: 6000,
           ...teamData,
           managersCategoryName: 'Bureau étendu',
           directorsCategoryName: 'Bureau restreint',
@@ -589,7 +588,7 @@ export class DatabaseSeeder extends Seeder {
         const project = new Project({
           name: projectName,
           color: randomEnum(Colors),
-          slug: toSlug(`${projectName}.${nanoid(16)}`),
+          slug: `${toSlug(projectName)}-${randomId()}`,
           description: faker.lorem.paragraph(randomInt(2, 12)),
           supervisors: randomFromArray(teamMembers, 1, 3),
           budget: randomInt(9000, 20_000) / 10,
@@ -627,7 +626,7 @@ export class DatabaseSeeder extends Seeder {
           .then(async (events) => {
             events = events.map((event, i) => {
               event.name = `${project.name} #${i + 1}`;
-              event.slug = `${toSlug(event.name)}.${nanoid(16)}`;
+              event.slug = `${toSlug(event.name)}-${randomId()}`;
               return event;
             });
 
@@ -642,7 +641,6 @@ export class DatabaseSeeder extends Seeder {
             const finances = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
-                team.currentFinance -= amount;
 
                 let upload;
                 if (Math.random() > 0.92)

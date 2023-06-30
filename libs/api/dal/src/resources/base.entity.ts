@@ -4,7 +4,7 @@ import { isIn } from '@okampus/shared/utils';
 import type { Individual } from './individual/individual.entity';
 
 export abstract class BaseEntity {
-  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."id_generator"()', autoincrement: false })
+  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."snowflake"()', autoincrement: false })
   id!: string;
 
   @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })

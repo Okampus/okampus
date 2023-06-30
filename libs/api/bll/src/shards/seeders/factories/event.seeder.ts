@@ -1,11 +1,10 @@
 import { Address, Content, Event, Form, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
-import { getRoundedDate, pickOneFromArray, toSlug } from '@okampus/shared/utils';
+import { getRoundedDate, pickOneFromArray, randomId, toSlug } from '@okampus/shared/utils';
 
 import { faker } from '@faker-js/faker/locale/fr';
 import { Factory } from '@mikro-orm/seeder';
-import { nanoid } from 'nanoid';
 import { randomInt } from 'node:crypto';
 
 import type { EntityManager } from '@mikro-orm/core';
@@ -59,7 +58,7 @@ export class EventSeeder extends Factory<Event> {
         tenant: this.team.tenant,
         createdBy: supervisor.individual,
       }),
-      slug: `${toSlug(name)}.${nanoid(16)}`,
+      slug: `${toSlug(name)}-${randomId()}`,
       start,
       end,
       pointsAwardedForAttendance: [0.25, 1][randomInt(2)],

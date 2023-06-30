@@ -17,7 +17,7 @@ import type { LogDiff } from '@okampus/shared/types';
 export class Log {
   [EntityRepositoryType]!: LogRepository;
 
-  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."id_generator"()', autoincrement: false })
+  @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."snowflake"()', autoincrement: false })
   id!: string;
 
   @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })

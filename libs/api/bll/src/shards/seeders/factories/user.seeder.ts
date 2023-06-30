@@ -1,7 +1,6 @@
 import { Factory } from '@mikro-orm/seeder';
 import { Individual } from '@okampus/api/dal';
-import { toSlug } from '@okampus/shared/utils';
-import { nanoid } from 'nanoid';
+import { randomId, toSlug } from '@okampus/shared/utils';
 import { faker } from '@faker-js/faker/locale/fr';
 
 import type { EntityManager } from '@mikro-orm/core';
@@ -25,7 +24,7 @@ export class UserSeeder extends Factory<Individual> {
     const lastName = faker.name.lastName();
 
     return {
-      slug: toSlug(`${firstName}.${lastName}.${nanoid(16)}`),
+      slug: `${toSlug(`${firstName}-${lastName}`)}-${randomId()}`,
       name: `${firstName} ${lastName}`,
       userProps: { firstName, lastName },
       passwordHash: this.passwordHash,

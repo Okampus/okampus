@@ -52,9 +52,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Property({ type: 'text', default: '' })
   membershipDuration = '';
 
-  @Property({ type: 'float', default: 0 })
-  currentFinance = 0;
-
   @Property({ type: 'text', default: RoleCategory.Directors })
   directorsCategoryName: string = RoleCategory.Directors;
 

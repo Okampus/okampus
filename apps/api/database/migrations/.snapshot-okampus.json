@@ -13,7 +13,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -208,7 +208,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -325,7 +325,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -418,16 +418,6 @@
           "nullable": false,
           "default": "''",
           "mappedType": "text"
-        },
-        "current_finance": {
-          "name": "current_finance",
-          "type": "real",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "float"
         },
         "directors_category_name": {
           "name": "directors_category_name",
@@ -686,7 +676,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -899,7 +889,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -1105,7 +1095,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -1246,7 +1236,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -1427,7 +1417,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -1602,7 +1592,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -1783,7 +1773,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2014,7 +2004,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2266,7 +2256,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2438,7 +2428,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2620,7 +2610,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2832,7 +2822,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -2986,7 +2976,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -3198,7 +3188,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -3439,7 +3429,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -3918,7 +3908,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -4197,7 +4187,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -4313,7 +4303,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -4511,7 +4501,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -4648,7 +4638,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -4937,7 +4927,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -5168,7 +5158,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -5363,7 +5353,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -5649,7 +5639,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -5819,7 +5809,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -6170,7 +6160,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -6298,7 +6288,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -6426,7 +6416,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -6542,7 +6532,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -6693,7 +6683,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -7125,7 +7115,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -7240,13 +7230,13 @@
         },
         "ical": {
           "name": "ical",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "substring(md5(random()::text), 0, 26)",
-          "mappedType": "string"
+          "default": "\"public\".\"id_generator\"(21)",
+          "mappedType": "text"
         },
         "individual_id": {
           "name": "individual_id",
@@ -7446,7 +7436,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -7621,7 +7611,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -7785,7 +7775,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -7974,7 +7964,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -8233,7 +8223,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -8397,7 +8387,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -8826,7 +8816,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -9114,7 +9104,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -9273,7 +9263,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -9621,7 +9611,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -9856,7 +9846,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10014,7 +10004,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10142,7 +10132,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10306,7 +10296,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10434,7 +10424,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10613,7 +10603,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -10832,7 +10822,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -11216,7 +11206,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -11611,7 +11601,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -11900,7 +11890,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -12151,7 +12141,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -12335,7 +12325,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -12494,7 +12484,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -12844,7 +12834,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -13142,7 +13132,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -13377,7 +13367,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -13650,7 +13640,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
@@ -13800,7 +13790,7 @@
           "autoincrement": false,
           "primary": true,
           "nullable": false,
-          "default": "\"public\".\"id_generator\"()",
+          "default": "\"public\".\"snowflake\"()",
           "mappedType": "bigint"
         },
         "created_at": {
