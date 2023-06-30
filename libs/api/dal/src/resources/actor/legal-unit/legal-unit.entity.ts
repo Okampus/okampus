@@ -43,8 +43,8 @@ export class LegalUnit extends BaseEntity {
   @Property({ type: 'string', nullable: true, default: null }) // https://www.insee.fr/fr/information/2406147
   activityCategory: string | null = null;
 
-  @Property({ type: 'string', nullable: true, default: null })
-  legalName: string | null = null;
+  @Property({ type: 'string' })
+  legalName!: string;
 
   @Property({ type: 'smallint', nullable: true, default: null })
   bankCode: number | null = null;

@@ -6,9 +6,7 @@ import type { Actor } from './actor.entity';
 export class ActorRepository extends BaseRepository<Actor> {
   async ensureUniqueSlug(slug: string, tenantId: string): Promise<string> {
     const existingActor = await this.findOne({ slug, tenant: { id: tenantId } });
-    if (existingActor) {
-      return this.ensureUniqueSlug(`${slug}-${nanoid(5)}`, tenantId);
-    }
+    if (existingActor) return this.ensureUniqueSlug(`${slug}.${nanoid(16)}`, tenantId);
     return slug;
   }
 }

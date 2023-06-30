@@ -4277,8 +4277,6 @@ input AddressVarSampOrderBy {
 
 # columns and relationships of "bank_info"
 type BankInfo {
-  accountCode: String!
-
   # An array relationship
   accounts(
     # distinct select on columns
@@ -4318,16 +4316,11 @@ type BankInfo {
   # An object relationship
   actor: Actor!
   actorId: bigint!
-  agencyCode: String!
 
   # An object relationship
   bank: LegalUnitLocation
-  bankCode: String!
   bankId: bigint
   bicSwift: String!
-  checksum: String!
-  country: String!
-  countryCode: String!
   createdAt: timestamptz!
 
   # An object relationship
@@ -4370,9 +4363,9 @@ type BankInfo {
     # filter the rows returned
     where: ExpenseBoolExp
   ): ExpenseAggregate!
-  fullAcount: String!
   hiddenAt: timestamptz
   holderName: String!
+  iban: String!
   id: bigint!
 
   # An object relationship
@@ -4458,28 +4451,22 @@ input BankInfoBoolExp {
   _and: [BankInfoBoolExp!]
   _not: BankInfoBoolExp
   _or: [BankInfoBoolExp!]
-  accountCode: StringComparisonExp
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  agencyCode: StringComparisonExp
   bank: LegalUnitLocationBoolExp
-  bankCode: StringComparisonExp
   bankId: BigintComparisonExp
   bicSwift: StringComparisonExp
-  checksum: StringComparisonExp
-  country: StringComparisonExp
-  countryCode: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
-  fullAcount: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   holderName: StringComparisonExp
+  iban: StringComparisonExp
   id: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -4502,26 +4489,20 @@ input BankInfoIncInput {
 
 # input type for inserting data into table "bank_info"
 input BankInfoInsertInput {
-  accountCode: String
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  agencyCode: String
   bank: LegalUnitLocationObjRelInsertInput
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
   expenses: ExpenseArrRelInsertInput
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -4529,84 +4510,60 @@ input BankInfoInsertInput {
 
 # aggregate max on columns
 type BankInfoMaxFields {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
 
 # order by max() on columns of table "bank_info"
 input BankInfoMaxOrderBy {
-  accountCode: OrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate min on columns
 type BankInfoMinFields {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
 
 # order by min() on columns of table "bank_info"
 input BankInfoMinOrderBy {
-  accountCode: OrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
@@ -4637,26 +4594,20 @@ input BankInfoOnConflict {
 
 # Ordering options when selecting data from "bank_info".
 input BankInfoOrderBy {
-  accountCode: OrderBy
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
   bank: LegalUnitLocationOrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   expensesAggregate: ExpenseAggregateOrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -4670,31 +4621,13 @@ input BankInfoPkColumnsInput {
 # select columns of table "bank_info"
 enum BankInfoSelectColumn {
   # column name
-  accountCode
-
-  # column name
   actorId
-
-  # column name
-  agencyCode
-
-  # column name
-  bankCode
 
   # column name
   bankId
 
   # column name
   bicSwift
-
-  # column name
-  checksum
-
-  # column name
-  country
-
-  # column name
-  countryCode
 
   # column name
   createdAt
@@ -4706,13 +4639,13 @@ enum BankInfoSelectColumn {
   deletedAt
 
   # column name
-  fullAcount
-
-  # column name
   hiddenAt
 
   # column name
   holderName
+
+  # column name
+  iban
 
   # column name
   id
@@ -4723,21 +4656,15 @@ enum BankInfoSelectColumn {
 
 # input type for updating data in table "bank_info"
 input BankInfoSetInput {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
@@ -4807,21 +4734,15 @@ input BankInfoStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input BankInfoStreamCursorValueInput {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
@@ -4847,31 +4768,13 @@ input BankInfoSumOrderBy {
 # update columns of table "bank_info"
 enum BankInfoUpdateColumn {
   # column name
-  accountCode
-
-  # column name
   actorId
-
-  # column name
-  agencyCode
-
-  # column name
-  bankCode
 
   # column name
   bankId
 
   # column name
   bicSwift
-
-  # column name
-  checksum
-
-  # column name
-  country
-
-  # column name
-  countryCode
 
   # column name
   createdAt
@@ -4883,13 +4786,13 @@ enum BankInfoUpdateColumn {
   deletedAt
 
   # column name
-  fullAcount
-
-  # column name
   hiddenAt
 
   # column name
   holderName
+
+  # column name
+  iban
 
   # column name
   id
@@ -11374,42 +11277,6 @@ type Event {
   ): EventManageAggregate!
 
   # An array relationship
-  eventSupervisors(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): [EventSupervisors!]!
-
-  # An aggregate relationship
-  eventSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): EventSupervisorsAggregate!
-
-  # An array relationship
   eventTags(
     # distinct select on columns
     distinctOn: [EventTagsSelectColumn!]
@@ -13415,8 +13282,6 @@ input EventBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   eventManages: EventManageBoolExp
   eventManagesAggregate: EventManageAggregateBoolExp
-  eventSupervisors: EventSupervisorsBoolExp
-  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
   finances: FinanceBoolExp
@@ -13510,7 +13375,6 @@ input EventInsertInput {
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   eventManages: EventManageArrRelInsertInput
-  eventSupervisors: EventSupervisorsArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
@@ -15085,7 +14949,6 @@ input EventOrderBy {
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventManagesAggregate: EventManageAggregateOrderBy
-  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
@@ -15426,303 +15289,6 @@ input EventSumOrderBy {
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
-}
-
-# columns and relationships of "event_supervisors"
-type EventSupervisors {
-  # An object relationship
-  event: Event!
-  eventId: bigint!
-
-  # An object relationship
-  user: User!
-  userId: bigint!
-}
-
-# aggregated selection of "event_supervisors"
-type EventSupervisorsAggregate {
-  aggregate: EventSupervisorsAggregateFields
-  nodes: [EventSupervisors!]!
-}
-
-input EventSupervisorsAggregateBoolExp {
-  count: eventSupervisorsAggregateBoolExpCount
-}
-
-input eventSupervisorsAggregateBoolExpCount {
-  arguments: [EventSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_supervisors"
-type EventSupervisorsAggregateFields {
-  avg: EventSupervisorsAvgFields
-  count(columns: [EventSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventSupervisorsMaxFields
-  min: EventSupervisorsMinFields
-  stddev: EventSupervisorsStddevFields
-  stddevPop: EventSupervisorsStddevPopFields
-  stddevSamp: EventSupervisorsStddevSampFields
-  sum: EventSupervisorsSumFields
-  varPop: EventSupervisorsVarPopFields
-  varSamp: EventSupervisorsVarSampFields
-  variance: EventSupervisorsVarianceFields
-}
-
-# order by aggregate values of table "event_supervisors"
-input EventSupervisorsAggregateOrderBy {
-  avg: EventSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventSupervisorsMaxOrderBy
-  min: EventSupervisorsMinOrderBy
-  stddev: EventSupervisorsStddevOrderBy
-  stddevPop: EventSupervisorsStddevPopOrderBy
-  stddevSamp: EventSupervisorsStddevSampOrderBy
-  sum: EventSupervisorsSumOrderBy
-  varPop: EventSupervisorsVarPopOrderBy
-  varSamp: EventSupervisorsVarSampOrderBy
-  variance: EventSupervisorsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_supervisors"
-input EventSupervisorsArrRelInsertInput {
-  data: [EventSupervisorsInsertInput!]!
-
-  # upsert condition
-  onConflict: EventSupervisorsOnConflict
-}
-
-# aggregate avg on columns
-type EventSupervisorsAvgFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by avg() on columns of table "event_supervisors"
-input EventSupervisorsAvgOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "event_supervisors". All fields are combined with a logical 'AND'.
-input EventSupervisorsBoolExp {
-  _and: [EventSupervisorsBoolExp!]
-  _not: EventSupervisorsBoolExp
-  _or: [EventSupervisorsBoolExp!]
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_supervisors"
-enum EventSupervisorsConstraint {
-  # unique or primary key constraint on columns "event_id", "user_id"
-  event_supervisors_pkey
-}
-
-# input type for incrementing numeric columns in table "event_supervisors"
-input EventSupervisorsIncInput {
-  eventId: bigint
-  userId: bigint
-}
-
-# input type for inserting data into table "event_supervisors"
-input EventSupervisorsInsertInput {
-  event: EventObjRelInsertInput
-  eventId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-# aggregate max on columns
-type EventSupervisorsMaxFields {
-  eventId: bigint
-  userId: bigint
-}
-
-# order by max() on columns of table "event_supervisors"
-input EventSupervisorsMaxOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate min on columns
-type EventSupervisorsMinFields {
-  eventId: bigint
-  userId: bigint
-}
-
-# order by min() on columns of table "event_supervisors"
-input EventSupervisorsMinOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# response of any mutation on the table "event_supervisors"
-type EventSupervisorsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventSupervisors!]!
-}
-
-# on_conflict condition type for table "event_supervisors"
-input EventSupervisorsOnConflict {
-  constraint: EventSupervisorsConstraint!
-  updateColumns: [EventSupervisorsUpdateColumn!]! = []
-  where: EventSupervisorsBoolExp
-}
-
-# Ordering options when selecting data from "event_supervisors".
-input EventSupervisorsOrderBy {
-  event: EventOrderBy
-  eventId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-# primary key columns input for table: event_supervisors
-input EventSupervisorsPkColumnsInput {
-  eventId: bigint!
-  userId: bigint!
-}
-
-# select columns of table "event_supervisors"
-enum EventSupervisorsSelectColumn {
-  # column name
-  eventId
-
-  # column name
-  userId
-}
-
-# input type for updating data in table "event_supervisors"
-input EventSupervisorsSetInput {
-  eventId: bigint
-  userId: bigint
-}
-
-# aggregate stddev on columns
-type EventSupervisorsStddevFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by stddev() on columns of table "event_supervisors"
-input EventSupervisorsStddevOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventSupervisorsStddevPopFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by stddevPop() on columns of table "event_supervisors"
-input EventSupervisorsStddevPopOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventSupervisorsStddevSampFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by stddevSamp() on columns of table "event_supervisors"
-input EventSupervisorsStddevSampOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# Streaming cursor of the table "event_supervisors"
-input EventSupervisorsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventSupervisorsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventSupervisorsStreamCursorValueInput {
-  eventId: bigint
-  userId: bigint
-}
-
-# aggregate sum on columns
-type EventSupervisorsSumFields {
-  eventId: bigint
-  userId: bigint
-}
-
-# order by sum() on columns of table "event_supervisors"
-input EventSupervisorsSumOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# update columns of table "event_supervisors"
-enum EventSupervisorsUpdateColumn {
-  # column name
-  eventId
-
-  # column name
-  userId
-}
-
-input EventSupervisorsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventSupervisorsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventSupervisorsSetInput
-
-  # filter the rows which have to be updated
-  where: EventSupervisorsBoolExp!
-}
-
-# aggregate variance on columns
-type EventSupervisorsVarianceFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by variance() on columns of table "event_supervisors"
-input EventSupervisorsVarianceOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventSupervisorsVarPopFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by varPop() on columns of table "event_supervisors"
-input EventSupervisorsVarPopOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventSupervisorsVarSampFields {
-  eventId: Float
-  userId: Float
-}
-
-# order by varSamp() on columns of table "event_supervisors"
-input EventSupervisorsVarSampOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
 }
 
 # columns and relationships of "event_tags"
@@ -29098,7 +28664,7 @@ type LegalUnit {
   headquartersNic: String
   id: bigint!
   legalCategory: String
-  legalName: String
+  legalName: String!
 
   # An array relationship
   legalUnitLocations(
@@ -29367,7 +28933,7 @@ type LegalUnitLocation {
 
   # An object relationship
   individual: Individual
-  legalName: String
+  legalName: String!
 
   # An object relationship
   legalUnit: LegalUnit
@@ -32955,15 +32521,6 @@ type Mutation {
   # delete single row from the table: "event_manage"
   deleteEventManageByPk(id: bigint!): EventManage
 
-  # delete data from the table: "event_supervisors"
-  deleteEventSupervisors(
-    # filter the rows which have to be deleted
-    where: EventSupervisorsBoolExp!
-  ): EventSupervisorsMutationResponse
-
-  # delete single row from the table: "event_supervisors"
-  deleteEventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
-
   # delete data from the table: "event_tags"
   deleteEventTags(
     # filter the rows which have to be deleted
@@ -33935,24 +33492,6 @@ type Mutation {
     # upsert condition
     onConflict: EventOnConflict
   ): Event
-
-  # insert data into the table: "event_supervisors"
-  insertEventSupervisors(
-    # the rows to be inserted
-    objects: [EventSupervisorsInsertInput!]!
-
-    # upsert condition
-    onConflict: EventSupervisorsOnConflict
-  ): EventSupervisorsMutationResponse
-
-  # insert a single row into the table: "event_supervisors"
-  insertEventSupervisorsOne(
-    # the row to be inserted
-    object: EventSupervisorsInsertInput!
-
-    # upsert condition
-    onConflict: EventSupervisorsOnConflict
-  ): EventSupervisors
 
   # insert data into the table: "event_tags"
   insertEventTags(
@@ -35705,34 +35244,6 @@ type Mutation {
     # updates to execute, in order
     updates: [EventUpdates!]!
   ): [EventMutationResponse]
-
-  # update data of the table: "event_supervisors"
-  updateEventSupervisors(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventSupervisorsSetInput
-
-    # filter the rows which have to be updated
-    where: EventSupervisorsBoolExp!
-  ): EventSupervisorsMutationResponse
-
-  # update single row of the table: "event_supervisors"
-  updateEventSupervisorsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventSupervisorsSetInput
-    pkColumns: EventSupervisorsPkColumnsInput!
-  ): EventSupervisors
-
-  # update multiples rows of table: "event_supervisors"
-  updateEventSupervisorsMany(
-    # updates to execute, in order
-    updates: [EventSupervisorsUpdates!]!
-  ): [EventSupervisorsMutationResponse]
 
   # update data of the table: "event_tags"
   updateEventTags(
@@ -40500,45 +40011,6 @@ type Query {
 
   # fetch data from the table: "event_manage" using primary key columns
   eventManageByPk(id: bigint!): EventManage
-
-  # An array relationship
-  eventSupervisors(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): [EventSupervisors!]!
-
-  # An aggregate relationship
-  eventSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): EventSupervisorsAggregate!
-
-  # fetch data from the table: "event_supervisors" using primary key columns
-  eventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
 
   # An array relationship
   eventTags(
@@ -48134,57 +47606,6 @@ type Subscription {
     # filter the rows returned
     where: EventBoolExp
   ): [Event!]!
-
-  # An array relationship
-  eventSupervisors(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): [EventSupervisors!]!
-
-  # An aggregate relationship
-  eventSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): EventSupervisorsAggregate!
-
-  # fetch data from the table: "event_supervisors" using primary key columns
-  eventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
-
-  # fetch data from the table in a streaming manner: "event_supervisors"
-  eventSupervisorsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [EventSupervisorsStreamCursorInput]!
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): [EventSupervisors!]!
 
   # An array relationship
   eventTags(
@@ -60069,42 +59490,6 @@ type User {
     # filter the rows returned
     where: EventJoinBoolExp
   ): EventJoinAggregate!
-
-  # An array relationship
-  eventSupervisors(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): [EventSupervisors!]!
-
-  # An aggregate relationship
-  eventSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventSupervisorsBoolExp
-  ): EventSupervisorsAggregate!
   firstName: String!
   hiddenAt: timestamptz
   id: bigint!
@@ -60407,8 +59792,6 @@ input UserBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventSupervisors: EventSupervisorsBoolExp
-  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   firstName: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
@@ -60458,7 +59841,6 @@ input UserInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
-  eventSupervisors: EventSupervisorsArrRelInsertInput
   firstName: String
   hiddenAt: timestamptz
   id: bigint
@@ -60565,7 +59947,6 @@ input UserOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy

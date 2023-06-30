@@ -52,7 +52,7 @@ export class Actor extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   website = '';
 
-  @Property({ type: 'text' })
+  @Property({ type: 'varchar(26)', defaultRaw: 'substring(md5(random()::text), 0, 26)' })
   @Unique()
   ical = nanoid(26);
 

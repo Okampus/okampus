@@ -13,10 +13,9 @@ export class LegalUnitLocationProps {
   @IsString()
   nic?: string | null = null;
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
+  @Field(() => String)
   @IsString()
-  legalName?: string | null = null;
+  legalName!: string;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

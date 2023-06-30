@@ -21,21 +21,21 @@ import { TransformCollection } from '@okampus/api/shards';
 import { EventState } from '@okampus/shared/enums';
 import { toSlug } from '@okampus/shared/utils';
 
+import type { JSONObject } from '@okampus/shared/types';
+import type { EventOptions } from './event.options';
+import type { EventManage } from './event-manage/event-manage.entity';
+import type { Tag } from '../actor/tag/tag.entity';
+import type { Form } from '../form/form.entity';
 import type { Location } from '../actor/location/location.entity';
+import type { Project } from '../project/project.entity';
+import type { EventJoin } from './event-join/event-join.entity';
+import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
-import type { EventOptions } from './event.options';
-import type { EventJoin } from './event-join/event-join.entity';
-import type { Form } from '../form/form.entity';
-import type { FormSubmission } from '../form-submission/form-submission.entity';
-import type { Project } from '../project/project.entity';
-import type { Searchable } from '../../types/search-entity.type';
-import type { Tag } from '../actor/tag/tag.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { User } from '../individual/user/user.entity';
-import type { JSONObject } from '@okampus/shared/types';
-import type { EventManage } from './event-manage/event-manage.entity';
 import type { Content } from '../content/content.entity';
+
+import type { Searchable } from '../../types/search-entity.type';
 
 @Entity({ customRepository: () => EventRepository })
 export class Event extends TenantScopedEntity implements Searchable {
@@ -106,10 +106,6 @@ export class Event extends TenantScopedEntity implements Searchable {
 
   @ManyToOne({ type: 'EventApprovalStep', nullable: true, default: null })
   lastEventApprovalStep: EventApprovalStep | null = null;
-
-  @ManyToMany({ type: 'User' })
-  @TransformCollection()
-  supervisors = new Collection<User>(this);
 
   @OneToMany({ type: 'EventApproval', mappedBy: 'event' })
   @TransformCollection()

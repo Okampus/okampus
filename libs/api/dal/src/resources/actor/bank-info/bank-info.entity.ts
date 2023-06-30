@@ -1,7 +1,6 @@
 import { BankInfoRepository } from './bank-info.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
-import { Countries } from '@okampus/shared/consts';
+import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
 import type { BankInfoOptions } from './bank-info.options';
@@ -26,25 +25,7 @@ export class BankInfo extends TenantScopedEntity {
   bicSwift!: string;
 
   @Property({ type: 'text' })
-  fullAcount!: string;
-
-  @Enum({ items: () => Countries, type: EnumType })
-  country: Countries = Countries.France;
-
-  @Property({ type: 'text' })
-  countryCode!: string;
-
-  @Property({ type: 'text' })
-  bankCode!: string;
-
-  @Property({ type: 'text' })
-  agencyCode!: string;
-
-  @Property({ type: 'text' })
-  accountCode!: string;
-
-  @Property({ type: 'text' })
-  checksum!: string;
+  iban!: string;
 
   constructor(options: BankInfoOptions) {
     super(options);

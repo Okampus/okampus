@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230626161543 extends Migration {
+export class Migration20230630140135 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "user" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "first_name" text not null, "middle_names" text[] not null default \'{}\', "last_name" text not null, "points" real not null default 0, "is_onboarding_finished" boolean not null default false, "is_introduction_finished" boolean not null default false, "is_dark_mode_preferred" boolean not null default false, "is_data_exported_on_deactivation" boolean not null default true, "is_data_anonymized_on_deactivation" boolean not null default false, constraint "user_pkey" primary key ("id"));');
@@ -37,7 +37,7 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "pole" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "team_id" bigint not null, "name" text not null, "description" text not null, "is_required" boolean not null default false, "category" text check ("category" in (\'Administration\', \'Communication\', \'Members\', \'Relations\', \'Activity\')) not null, constraint "pole_pkey" primary key ("id"));');
 
-    this.addSql('create table "legal_unit" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "type" text check ("type" in (\'Bank\', \'Company\', \'Association\', \'TenantGrantFund\')) not null, "siren" varchar(255) null default null, "headquarters_nic" varchar(255) null default null, "headquarters_location" varchar(255) null default null, "legal_category" varchar(255) null default null, "activity_category" varchar(255) null default null, "legal_name" varchar(255) null default null, "bank_code" smallint null default null, "parent_id" bigint null default null, constraint "legal_unit_pkey" primary key ("id"));');
+    this.addSql('create table "legal_unit" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "type" text check ("type" in (\'Bank\', \'Company\', \'Association\', \'TenantGrantFund\')) not null, "siren" varchar(255) null default null, "headquarters_nic" varchar(255) null default null, "headquarters_location" varchar(255) null default null, "legal_category" varchar(255) null default null, "activity_category" varchar(255) null default null, "legal_name" varchar(255) not null, "bank_code" smallint null default null, "parent_id" bigint null default null, constraint "legal_unit_pkey" primary key ("id"));');
 
     this.addSql('create table "form" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "team_id" bigint null default null, "schema" jsonb not null, "type" text check ("type" in (\'Event\', \'Team\', \'Internal\', \'Survey\')) not null, "is_enabled" boolean not null default true, "is_allowing_multiple_answers" boolean not null default false, "is_allowing_editing_answers" boolean not null default true, "is_required" boolean not null default false, constraint "form_pkey" primary key ("id"));');
     this.addSql('alter table "form" add constraint "form_team_id_unique" unique ("team_id");');
@@ -106,7 +106,7 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "address" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "latitude" real null default null, "longitude" real null default null, "category" text not null default \'\', "name" text not null default \'\', "street_number" text not null, "street" text not null, "zip" text not null, "city" text not null, "state" text not null default \'\', "country" text check ("country" in (\'AF\', \'AX\', \'AL\', \'DZ\', \'AS\', \'AD\', \'AO\', \'AI\', \'AQ\', \'AG\', \'AR\', \'AM\', \'AW\', \'AU\', \'AT\', \'AZ\', \'BS\', \'BH\', \'BD\', \'BB\', \'BY\', \'BE\', \'BZ\', \'BJ\', \'BM\', \'BT\', \'BO\', \'BQ\', \'BA\', \'BW\', \'BV\', \'BR\', \'IO\', \'BN\', \'BG\', \'BF\', \'BI\', \'KH\', \'CM\', \'CA\', \'CV\', \'KY\', \'CF\', \'TD\', \'CL\', \'CN\', \'CX\', \'CC\', \'CO\', \'KM\', \'CG\', \'CD\', \'CK\', \'CR\', \'CI\', \'HR\', \'CU\', \'CW\', \'CY\', \'CZ\', \'DK\', \'DJ\', \'DM\', \'DO\', \'EC\', \'EG\', \'SV\', \'GQ\', \'ER\', \'EE\', \'ET\', \'FK\', \'FO\', \'FJ\', \'FI\', \'FR\', \'GF\', \'PF\', \'TF\', \'GA\', \'GM\', \'GE\', \'DE\', \'GH\', \'GI\', \'GR\', \'GL\', \'GD\', \'GP\', \'GU\', \'GT\', \'GG\', \'GN\', \'GW\', \'GY\', \'HT\', \'HM\', \'VA\', \'HN\', \'HK\', \'HU\', \'IS\', \'IN\', \'ID\', \'IR\', \'IQ\', \'IE\', \'IM\', \'IL\', \'IT\', \'JM\', \'JP\', \'JE\', \'JO\', \'KZ\', \'KE\', \'KI\', \'KR\', \'KP\', \'KW\', \'KG\', \'LA\', \'LV\', \'LB\', \'LS\', \'LR\', \'LY\', \'LI\', \'LT\', \'LU\', \'MO\', \'MK\', \'MG\', \'MW\', \'MY\', \'MV\', \'ML\', \'MT\', \'MH\', \'MQ\', \'MR\', \'MU\', \'YT\', \'MX\', \'FM\', \'MD\', \'MC\', \'MN\', \'ME\', \'MS\', \'MA\', \'MZ\', \'MM\', \'NA\', \'NR\', \'NP\', \'NL\', \'NC\', \'NZ\', \'NI\', \'NE\', \'NG\', \'NU\', \'NF\', \'MP\', \'NO\', \'OM\', \'PK\', \'PW\', \'PS\', \'PA\', \'PG\', \'PY\', \'PE\', \'PH\', \'PN\', \'PL\', \'PT\', \'PR\', \'QA\', \'RE\', \'RO\', \'RU\', \'RW\', \'BL\', \'SH\', \'KN\', \'LC\', \'MF\', \'PM\', \'VC\', \'WS\', \'SM\', \'ST\', \'SA\', \'SN\', \'RS\', \'SC\', \'SL\', \'SG\', \'SX\', \'SK\', \'SI\', \'SB\', \'SO\', \'ZA\', \'GS\', \'SS\', \'ES\', \'LK\', \'SD\', \'SR\', \'SJ\', \'SZ\', \'SE\', \'CH\', \'SY\', \'TW\', \'TJ\', \'TZ\', \'TH\', \'TL\', \'TG\', \'TK\', \'TO\', \'TT\', \'TN\', \'TR\', \'TM\', \'TC\', \'TV\', \'UG\', \'UA\', \'AE\', \'GB\', \'US\', \'UM\', \'UY\', \'UZ\', \'VU\', \'VE\', \'VN\', \'VG\', \'VI\', \'WF\', \'EH\', \'YE\', \'ZM\', \'ZW\')) not null default \'FR\', "geoapify_id" text null default null, constraint "address_pkey" primary key ("id"));');
 
-    this.addSql('create table "actor" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "slug" text not null, "name" text not null, "status" text not null default \'\', "bio" text not null default \'\', "email" text not null default \'\', "website" text not null default \'\', "ical" text not null, "individual_id" bigint null default null, "team_id" bigint null default null, "legal_unit_id" bigint null default null, "legal_unit_location_id" bigint null default null, constraint "actor_pkey" primary key ("id"));');
+    this.addSql('create table "actor" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "slug" text not null, "name" text not null, "status" text not null default \'\', "bio" text not null default \'\', "email" text not null default \'\', "website" text not null default \'\', "ical" varchar(255) not null default substring(md5(random()::text), 0, 26), "individual_id" bigint null default null, "team_id" bigint null default null, "legal_unit_id" bigint null default null, "legal_unit_location_id" bigint null default null, constraint "actor_pkey" primary key ("id"));');
     this.addSql('alter table "actor" add constraint "actor_slug_unique" unique ("slug");');
     this.addSql('alter table "actor" add constraint "actor_ical_unique" unique ("ical");');
     this.addSql('alter table "actor" add constraint "actor_individual_id_unique" unique ("individual_id");');
@@ -124,7 +124,7 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "location_images" ("location_id" bigint not null, "file_upload_id" bigint not null, constraint "location_images_pkey" primary key ("location_id", "file_upload_id"));');
 
-    this.addSql('create table "legal_unit_location" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "location_type" text check ("location_type" in (\'HQ\', \'Location\', \'Franchisee\')) not null, "nic" varchar(255) null default null, "legal_name" varchar(255) null default null, "bank_location_code" int null default null, "legal_unit_id" bigint null default null, "location_id" bigint null default null, constraint "legal_unit_location_pkey" primary key ("id"));');
+    this.addSql('create table "legal_unit_location" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "location_type" text check ("location_type" in (\'Location\', \'Franchisee\')) not null default \'Location\', "nic" varchar(255) null default null, "legal_name" varchar(255) not null, "bank_location_code" int null default null, "legal_unit_id" bigint null default null, "location_id" bigint null default null, constraint "legal_unit_location_pkey" primary key ("id"));');
 
     this.addSql('create table "event" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "start" timestamptz(0) not null, "end" timestamptz(0) not null, "name" text not null, "slug" text not null, "price" real not null default 0, "points_presence" real not null default 0, "max_participants" smallint null default null, "state" text check ("state" in (\'Template\', \'Draft\', \'Submitted\', \'Rejected\', \'Approved\', \'Published\')) not null default \'Draft\', "is_private" boolean not null default false, "is_auto_accepting_joins" boolean not null default true, "meta" jsonb not null default \'{}\', "is_template" boolean not null default false, "location_id" bigint null default null, "content_id" bigint not null, "approval_submission_id" bigint null default null, "banner_id" bigint null default null, "join_form_id" bigint null default null, "project_id" bigint null default null, "last_event_approval_step_id" bigint null default null, constraint "event_pkey" primary key ("id"));');
     this.addSql('alter table "event" add constraint "event_slug_unique" unique ("slug");');
@@ -138,6 +138,8 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "mission" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "description" text not null default \'\', "points_minimum" smallint not null, "points_maximum" smallint not null, "quantity" smallint not null default 1, "is_auto_accepting_members" boolean not null default false, "is_template" boolean not null default false, "color" text check ("color" in (\'Blue\', \'DeepBlue\', \'DarkBlue\', \'LightBlue\', \'Green\', \'DeepGreen\', \'DarkGreen\', \'LightGreen\', \'Orange\', \'DeepOrange\', \'DarkOrange\', \'LightOrange\', \'Red\', \'DeepRed\', \'DarkRed\', \'LightRed\', \'Purple\', \'DeepPurple\', \'DarkPurple\', \'LightPurple\', \'Gray\', \'DeepGray\', \'DarkGray\', \'Turquoise\', \'Pink\', \'Cyan\', \'Brown\', \'Indigo\', \'Lime\', \'Teal\')) not null default \'Blue\', "team_id" bigint not null, "event_manage_id" bigint null default null, "project_id" bigint null default null, constraint "mission_pkey" primary key ("id"));');
 
+    this.addSql('create table "event_manage_supervisors" ("event_manage_id" bigint not null, "team_member_id" bigint not null, constraint "event_manage_supervisors_pkey" primary key ("event_manage_id", "team_member_id"));');
+
     this.addSql('create table "event_approval" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "message" text not null default \'\', "is_approved" boolean not null, "event_id" bigint null, "event_approval_step_id" bigint null, constraint "event_approval_pkey" primary key ("id"));');
 
     this.addSql('create table "event_tags" ("event_id" bigint not null, "tag_id" bigint not null, constraint "event_tags_pkey" primary key ("event_id", "tag_id"));');
@@ -150,7 +152,7 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "bot" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "owner_id" bigint not null, constraint "bot_pkey" primary key ("id"));');
 
-    this.addSql('create table "bank_info" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "bank_id" bigint null default null, "holder_name" text not null default \'\', "bic_swift" text not null, "full_acount" text not null, "country" text check ("country" in (\'AF\', \'AX\', \'AL\', \'DZ\', \'AS\', \'AD\', \'AO\', \'AI\', \'AQ\', \'AG\', \'AR\', \'AM\', \'AW\', \'AU\', \'AT\', \'AZ\', \'BS\', \'BH\', \'BD\', \'BB\', \'BY\', \'BE\', \'BZ\', \'BJ\', \'BM\', \'BT\', \'BO\', \'BQ\', \'BA\', \'BW\', \'BV\', \'BR\', \'IO\', \'BN\', \'BG\', \'BF\', \'BI\', \'KH\', \'CM\', \'CA\', \'CV\', \'KY\', \'CF\', \'TD\', \'CL\', \'CN\', \'CX\', \'CC\', \'CO\', \'KM\', \'CG\', \'CD\', \'CK\', \'CR\', \'CI\', \'HR\', \'CU\', \'CW\', \'CY\', \'CZ\', \'DK\', \'DJ\', \'DM\', \'DO\', \'EC\', \'EG\', \'SV\', \'GQ\', \'ER\', \'EE\', \'ET\', \'FK\', \'FO\', \'FJ\', \'FI\', \'FR\', \'GF\', \'PF\', \'TF\', \'GA\', \'GM\', \'GE\', \'DE\', \'GH\', \'GI\', \'GR\', \'GL\', \'GD\', \'GP\', \'GU\', \'GT\', \'GG\', \'GN\', \'GW\', \'GY\', \'HT\', \'HM\', \'VA\', \'HN\', \'HK\', \'HU\', \'IS\', \'IN\', \'ID\', \'IR\', \'IQ\', \'IE\', \'IM\', \'IL\', \'IT\', \'JM\', \'JP\', \'JE\', \'JO\', \'KZ\', \'KE\', \'KI\', \'KR\', \'KP\', \'KW\', \'KG\', \'LA\', \'LV\', \'LB\', \'LS\', \'LR\', \'LY\', \'LI\', \'LT\', \'LU\', \'MO\', \'MK\', \'MG\', \'MW\', \'MY\', \'MV\', \'ML\', \'MT\', \'MH\', \'MQ\', \'MR\', \'MU\', \'YT\', \'MX\', \'FM\', \'MD\', \'MC\', \'MN\', \'ME\', \'MS\', \'MA\', \'MZ\', \'MM\', \'NA\', \'NR\', \'NP\', \'NL\', \'NC\', \'NZ\', \'NI\', \'NE\', \'NG\', \'NU\', \'NF\', \'MP\', \'NO\', \'OM\', \'PK\', \'PW\', \'PS\', \'PA\', \'PG\', \'PY\', \'PE\', \'PH\', \'PN\', \'PL\', \'PT\', \'PR\', \'QA\', \'RE\', \'RO\', \'RU\', \'RW\', \'BL\', \'SH\', \'KN\', \'LC\', \'MF\', \'PM\', \'VC\', \'WS\', \'SM\', \'ST\', \'SA\', \'SN\', \'RS\', \'SC\', \'SL\', \'SG\', \'SX\', \'SK\', \'SI\', \'SB\', \'SO\', \'ZA\', \'GS\', \'SS\', \'ES\', \'LK\', \'SD\', \'SR\', \'SJ\', \'SZ\', \'SE\', \'CH\', \'SY\', \'TW\', \'TJ\', \'TZ\', \'TH\', \'TL\', \'TG\', \'TK\', \'TO\', \'TT\', \'TN\', \'TR\', \'TM\', \'TC\', \'TV\', \'UG\', \'UA\', \'AE\', \'GB\', \'US\', \'UM\', \'UY\', \'UZ\', \'VU\', \'VE\', \'VN\', \'VG\', \'VI\', \'WF\', \'EH\', \'YE\', \'ZM\', \'ZW\')) not null, "country_code" text not null, "bank_code" text not null, "agency_code" text not null, "account_code" text not null, "checksum" text not null, constraint "bank_info_pkey" primary key ("id"));');
+    this.addSql('create table "bank_info" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "actor_id" bigint not null, "bank_id" bigint null default null, "holder_name" text not null default \'\', "bic_swift" text not null, "iban" text not null, constraint "bank_info_pkey" primary key ("id"));');
 
     this.addSql('create table "expense" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "description" text not null, "state" text check ("state" in (\'Approved\', \'Rejected\', \'Canceled\', \'Pending\')) not null default \'Pending\', "last_notified_at" timestamptz(0) null default null, "settled_by_id" bigint null default null, "settled_at" timestamptz(0) null default null, "expense_report_id" bigint not null, "bank_info_id" bigint not null, constraint "expense_pkey" primary key ("id"));');
 
@@ -180,8 +182,6 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('create table "mission_join" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "state" text check ("state" in (\'Approved\', \'Rejected\', \'Canceled\', \'Pending\')) not null default \'Pending\', "points" smallint null default null, "settled_by_id" bigint null default null, "settled_at" timestamptz(0) null default null, "points_settled_by_id" bigint null default null, "points_settled_at" timestamptz(0) null default null, "mission_id" bigint not null, "joiner_id" bigint not null, "event_join_id" bigint null default null, "project_id" bigint null default null, constraint "mission_join_pkey" primary key ("id"));');
     this.addSql('alter table "mission_join" add constraint "mission_join_event_join_id_unique" unique ("event_join_id");');
-
-    this.addSql('create table "event_supervisors" ("event_id" bigint not null, "user_id" bigint not null, constraint "event_supervisors_pkey" primary key ("event_id", "user_id"));');
 
     this.addSql('create table "class_group_teacher" ("id" bigint not null default "public"."id_generator"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "user_id" bigint not null, "class_group_id" bigint not null, "start_date" timestamptz(0) not null, "end_date" timestamptz(0) null default null, constraint "class_group_teacher_pkey" primary key ("id"));');
 
@@ -432,6 +432,9 @@ export class Migration20230626161543 extends Migration {
     this.addSql('alter table "mission" add constraint "mission_event_manage_id_foreign" foreign key ("event_manage_id") references "event_manage" ("id") on update cascade on delete set null;');
     this.addSql('alter table "mission" add constraint "mission_project_id_foreign" foreign key ("project_id") references "project" ("id") on update cascade on delete set null;');
 
+    this.addSql('alter table "event_manage_supervisors" add constraint "event_manage_supervisors_event_manage_id_foreign" foreign key ("event_manage_id") references "event_manage" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "event_manage_supervisors" add constraint "event_manage_supervisors_team_member_id_foreign" foreign key ("team_member_id") references "team_member" ("id") on update cascade on delete cascade;');
+
     this.addSql('alter table "event_approval" add constraint "event_approval_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "event_approval" add constraint "event_approval_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "event_approval" add constraint "event_approval_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete cascade;');
@@ -538,9 +541,6 @@ export class Migration20230626161543 extends Migration {
     this.addSql('alter table "mission_join" add constraint "mission_join_event_join_id_foreign" foreign key ("event_join_id") references "event_join" ("id") on update cascade on delete set null;');
     this.addSql('alter table "mission_join" add constraint "mission_join_project_id_foreign" foreign key ("project_id") references "project" ("id") on update cascade on delete set null;');
 
-    this.addSql('alter table "event_supervisors" add constraint "event_supervisors_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "event_supervisors" add constraint "event_supervisors_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete cascade;');
-
     this.addSql('alter table "class_group_teacher" add constraint "class_group_teacher_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "class_group_teacher" add constraint "class_group_teacher_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "class_group_teacher" add constraint "class_group_teacher_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
@@ -580,8 +580,6 @@ export class Migration20230626161543 extends Migration {
     this.addSql('alter table "event_join" drop constraint "event_join_joiner_id_foreign";');
 
     this.addSql('alter table "mission_join" drop constraint "mission_join_joiner_id_foreign";');
-
-    this.addSql('alter table "event_supervisors" drop constraint "event_supervisors_user_id_foreign";');
 
     this.addSql('alter table "class_group_teacher" drop constraint "class_group_teacher_user_id_foreign";');
 
@@ -907,6 +905,8 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('alter table "project_supervisors" drop constraint "project_supervisors_team_member_id_foreign";');
 
+    this.addSql('alter table "event_manage_supervisors" drop constraint "event_manage_supervisors_team_member_id_foreign";');
+
     this.addSql('alter table "subject_class_groups" drop constraint "subject_class_groups_subject_id_foreign";');
 
     this.addSql('alter table "document" drop constraint "document_subject_id_foreign";');
@@ -1111,9 +1111,9 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('alter table "event_join" drop constraint "event_join_event_id_foreign";');
 
-    this.addSql('alter table "event_supervisors" drop constraint "event_supervisors_event_id_foreign";');
-
     this.addSql('alter table "mission" drop constraint "mission_event_manage_id_foreign";');
+
+    this.addSql('alter table "event_manage_supervisors" drop constraint "event_manage_supervisors_event_manage_id_foreign";');
 
     this.addSql('alter table "event_join" drop constraint "event_join_joined_for_id_foreign";');
 
@@ -1259,6 +1259,8 @@ export class Migration20230626161543 extends Migration {
 
     this.addSql('drop table if exists "mission" cascade;');
 
+    this.addSql('drop table if exists "event_manage_supervisors" cascade;');
+
     this.addSql('drop table if exists "event_approval" cascade;');
 
     this.addSql('drop table if exists "event_tags" cascade;');
@@ -1298,8 +1300,6 @@ export class Migration20230626161543 extends Migration {
     this.addSql('drop table if exists "event_join" cascade;');
 
     this.addSql('drop table if exists "mission_join" cascade;');
-
-    this.addSql('drop table if exists "event_supervisors" cascade;');
 
     this.addSql('drop table if exists "class_group_teacher" cascade;');
 

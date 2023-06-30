@@ -1,9 +1,11 @@
-import { Factory } from '@mikro-orm/seeder';
-import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
-import { pickOneFromArray } from '@okampus/shared/utils';
 import { Address, Content, Event, Form, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
+import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
+import { getRoundedDate, pickOneFromArray, toSlug } from '@okampus/shared/utils';
+
 import { faker } from '@faker-js/faker/locale/fr';
+import { Factory } from '@mikro-orm/seeder';
+import { nanoid } from 'nanoid';
 import { randomInt } from 'node:crypto';
 
 import type { EntityManager } from '@mikro-orm/core';
@@ -23,8 +25,8 @@ export class EventSeeder extends Factory<Event> {
   }
 
   public definition(): EventOptions {
-    const start = faker.date.between(new Date('2023-04-01'), new Date('2023-07-31'));
-    const end = new Date(start.getTime() + 1000 * 60 * 60 * (randomInt(2, 96) / 2));
+    const start = getRoundedDate(30, faker.date.between(new Date('2023-07-01'), new Date('2023-12-31')));
+    const end = new Date(start.getTime() + 1000 * 60 * 60 * randomInt(1, 48));
 
     const submitted = Math.random() > 0.5;
 
@@ -57,6 +59,7 @@ export class EventSeeder extends Factory<Event> {
         tenant: this.team.tenant,
         createdBy: supervisor.individual,
       }),
+      slug: `${toSlug(name)}.${nanoid(16)}`,
       start,
       end,
       pointsPresence: [0.25, 1][randomInt(2)],
@@ -79,7 +82,6 @@ export class EventSeeder extends Factory<Event> {
           zip: faker.address.zipCode(),
         }),
       }),
-      supervisors: [supervisor],
       state,
       lastEventApprovalStep: step,
       joinForm: isPayedEvent

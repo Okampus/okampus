@@ -3045,28 +3045,22 @@ input AddressVarSampOrderBy {
 }
 
 type BankInfo {
-  accountCode: String!
   accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actor: Actor!
   actorId: bigint!
-  agencyCode: String!
   bank: LegalUnitLocation
-  bankCode: String!
   bankId: bigint
   bicSwift: String!
-  checksum: String!
-  country: String!
-  countryCode: String!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
   expenses(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): [Expense!]!
   expensesAggregate(distinctOn: [ExpenseSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseOrderBy!], where: ExpenseBoolExp): ExpenseAggregate!
-  fullAcount: String!
   hiddenAt: timestamptz
   holderName: String!
+  iban: String!
   id: bigint!
   tenant: Tenant!
   tenantId: bigint!
@@ -3141,28 +3135,22 @@ input BankInfoBoolExp {
   _and: [BankInfoBoolExp!]
   _not: BankInfoBoolExp
   _or: [BankInfoBoolExp!]
-  accountCode: StringComparisonExp
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  agencyCode: StringComparisonExp
   bank: LegalUnitLocationBoolExp
-  bankCode: StringComparisonExp
   bankId: BigintComparisonExp
   bicSwift: StringComparisonExp
-  checksum: StringComparisonExp
-  country: StringComparisonExp
-  countryCode: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   expenses: ExpenseBoolExp
   expensesAggregate: ExpenseAggregateBoolExp
-  fullAcount: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   holderName: StringComparisonExp
+  iban: StringComparisonExp
   id: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -3181,107 +3169,77 @@ input BankInfoIncInput {
 }
 
 input BankInfoInsertInput {
-  accountCode: String
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  agencyCode: String
   bank: LegalUnitLocationObjRelInsertInput
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
   expenses: ExpenseArrRelInsertInput
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
 type BankInfoMaxFields {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
 
 input BankInfoMaxOrderBy {
-  accountCode: OrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
 
 type BankInfoMinFields {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
 
 input BankInfoMinOrderBy {
-  accountCode: OrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenantId: OrderBy
 }
@@ -3303,26 +3261,20 @@ input BankInfoOnConflict {
 }
 
 input BankInfoOrderBy {
-  accountCode: OrderBy
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  agencyCode: OrderBy
   bank: LegalUnitLocationOrderBy
-  bankCode: OrderBy
   bankId: OrderBy
   bicSwift: OrderBy
-  checksum: OrderBy
-  country: OrderBy
-  countryCode: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   expensesAggregate: ExpenseAggregateOrderBy
-  fullAcount: OrderBy
   hiddenAt: OrderBy
   holderName: OrderBy
+  iban: OrderBy
   id: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -3333,41 +3285,29 @@ input BankInfoPkColumnsInput {
 }
 
 enum BankInfoSelectColumn {
-  accountCode
   actorId
-  agencyCode
-  bankCode
   bankId
   bicSwift
-  checksum
-  country
-  countryCode
   createdAt
   createdById
   deletedAt
-  fullAcount
   hiddenAt
   holderName
+  iban
   id
   tenantId
 }
 
 input BankInfoSetInput {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
@@ -3426,21 +3366,15 @@ input BankInfoStreamCursorInput {
 }
 
 input BankInfoStreamCursorValueInput {
-  accountCode: String
   actorId: bigint
-  agencyCode: String
-  bankCode: String
   bankId: bigint
   bicSwift: String
-  checksum: String
-  country: String
-  countryCode: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  fullAcount: String
   hiddenAt: timestamptz
   holderName: String
+  iban: String
   id: bigint
   tenantId: bigint
 }
@@ -3462,21 +3396,15 @@ input BankInfoSumOrderBy {
 }
 
 enum BankInfoUpdateColumn {
-  accountCode
   actorId
-  agencyCode
-  bankCode
   bankId
   bicSwift
-  checksum
-  country
-  countryCode
   createdAt
   createdById
   deletedAt
-  fullAcount
   hiddenAt
   holderName
+  iban
   id
   tenantId
 }
@@ -8166,8 +8094,6 @@ type Event {
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
   eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
-  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
-  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
@@ -9593,8 +9519,6 @@ input EventBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   eventManages: EventManageBoolExp
   eventManagesAggregate: EventManageAggregateBoolExp
-  eventSupervisors: EventSupervisorsBoolExp
-  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
   finances: FinanceBoolExp
@@ -9674,7 +9598,6 @@ input EventInsertInput {
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   eventManages: EventManageArrRelInsertInput
-  eventSupervisors: EventSupervisorsArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
@@ -10883,7 +10806,6 @@ input EventOrderBy {
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventManagesAggregate: EventManageAggregateOrderBy
-  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
@@ -11146,242 +11068,6 @@ input EventSumOrderBy {
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
-}
-
-type EventSupervisors {
-  event: Event!
-  eventId: bigint!
-  user: User!
-  userId: bigint!
-}
-
-type EventSupervisorsAggregate {
-  aggregate: EventSupervisorsAggregateFields
-  nodes: [EventSupervisors!]!
-}
-
-input EventSupervisorsAggregateBoolExp {
-  count: eventSupervisorsAggregateBoolExpCount
-}
-
-input eventSupervisorsAggregateBoolExpCount {
-  arguments: [EventSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventSupervisorsAggregateFields {
-  avg: EventSupervisorsAvgFields
-  count(columns: [EventSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventSupervisorsMaxFields
-  min: EventSupervisorsMinFields
-  stddev: EventSupervisorsStddevFields
-  stddevPop: EventSupervisorsStddevPopFields
-  stddevSamp: EventSupervisorsStddevSampFields
-  sum: EventSupervisorsSumFields
-  varPop: EventSupervisorsVarPopFields
-  varSamp: EventSupervisorsVarSampFields
-  variance: EventSupervisorsVarianceFields
-}
-
-input EventSupervisorsAggregateOrderBy {
-  avg: EventSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventSupervisorsMaxOrderBy
-  min: EventSupervisorsMinOrderBy
-  stddev: EventSupervisorsStddevOrderBy
-  stddevPop: EventSupervisorsStddevPopOrderBy
-  stddevSamp: EventSupervisorsStddevSampOrderBy
-  sum: EventSupervisorsSumOrderBy
-  varPop: EventSupervisorsVarPopOrderBy
-  varSamp: EventSupervisorsVarSampOrderBy
-  variance: EventSupervisorsVarianceOrderBy
-}
-
-input EventSupervisorsArrRelInsertInput {
-  data: [EventSupervisorsInsertInput!]!
-  onConflict: EventSupervisorsOnConflict
-}
-
-type EventSupervisorsAvgFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsAvgOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-input EventSupervisorsBoolExp {
-  _and: [EventSupervisorsBoolExp!]
-  _not: EventSupervisorsBoolExp
-  _or: [EventSupervisorsBoolExp!]
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  user: UserBoolExp
-  userId: BigintComparisonExp
-}
-
-enum EventSupervisorsConstraint {
-  event_supervisors_pkey
-}
-
-input EventSupervisorsIncInput {
-  eventId: bigint
-  userId: bigint
-}
-
-input EventSupervisorsInsertInput {
-  event: EventObjRelInsertInput
-  eventId: bigint
-  user: UserObjRelInsertInput
-  userId: bigint
-}
-
-type EventSupervisorsMaxFields {
-  eventId: bigint
-  userId: bigint
-}
-
-input EventSupervisorsMaxOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsMinFields {
-  eventId: bigint
-  userId: bigint
-}
-
-input EventSupervisorsMinOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsMutationResponse {
-  affectedRows: Int!
-  returning: [EventSupervisors!]!
-}
-
-input EventSupervisorsOnConflict {
-  constraint: EventSupervisorsConstraint!
-  updateColumns: [EventSupervisorsUpdateColumn!]! = []
-  where: EventSupervisorsBoolExp
-}
-
-input EventSupervisorsOrderBy {
-  event: EventOrderBy
-  eventId: OrderBy
-  user: UserOrderBy
-  userId: OrderBy
-}
-
-input EventSupervisorsPkColumnsInput {
-  eventId: bigint!
-  userId: bigint!
-}
-
-enum EventSupervisorsSelectColumn {
-  eventId
-  userId
-}
-
-input EventSupervisorsSetInput {
-  eventId: bigint
-  userId: bigint
-}
-
-type EventSupervisorsStddevFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsStddevOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsStddevPopFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsStddevPopOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsStddevSampFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsStddevSampOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-input EventSupervisorsStreamCursorInput {
-  initialValue: EventSupervisorsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventSupervisorsStreamCursorValueInput {
-  eventId: bigint
-  userId: bigint
-}
-
-type EventSupervisorsSumFields {
-  eventId: bigint
-  userId: bigint
-}
-
-input EventSupervisorsSumOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-enum EventSupervisorsUpdateColumn {
-  eventId
-  userId
-}
-
-input EventSupervisorsUpdates {
-  _inc: EventSupervisorsIncInput
-  _set: EventSupervisorsSetInput
-  where: EventSupervisorsBoolExp!
-}
-
-type EventSupervisorsVarianceFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsVarianceOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsVarPopFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsVarPopOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
-}
-
-type EventSupervisorsVarSampFields {
-  eventId: Float
-  userId: Float
-}
-
-input EventSupervisorsVarSampOrderBy {
-  eventId: OrderBy
-  userId: OrderBy
 }
 
 type EventTags {
@@ -19238,7 +18924,7 @@ type LegalUnit {
   headquartersNic: String
   id: bigint!
   legalCategory: String
-  legalName: String
+  legalName: String!
   legalUnitLocations(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
   legalUnitLocationsAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
   legalUnits(distinctOn: [LegalUnitSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitOrderBy!], where: LegalUnitBoolExp): [LegalUnit!]!
@@ -19386,7 +19072,7 @@ type LegalUnitLocation {
   deletedAt: timestamptz
   id: bigint!
   individual: Individual
-  legalName: String
+  legalName: String!
   legalUnit: LegalUnit
   legalUnitId: bigint
   location: Location
@@ -21943,8 +21629,6 @@ type Mutation {
   deleteEventJoinByPk(id: bigint!): EventJoin
   deleteEventManage(where: EventManageBoolExp!): EventManageMutationResponse
   deleteEventManageByPk(id: bigint!): EventManage
-  deleteEventSupervisors(where: EventSupervisorsBoolExp!): EventSupervisorsMutationResponse
-  deleteEventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
   deleteEventTags(where: EventTagsBoolExp!): EventTagsMutationResponse
   deleteEventTagsByPk(eventId: bigint!, tagId: bigint!): EventTags
   deleteExpense(where: ExpenseBoolExp!): ExpenseMutationResponse
@@ -22105,8 +21789,6 @@ type Mutation {
   insertEventManage(objects: [EventManageInsertInput!]!, onConflict: EventManageOnConflict): EventManageMutationResponse
   insertEventManageOne(object: EventManageInsertInput!, onConflict: EventManageOnConflict): EventManage
   insertEventOne(object: EventInsertInput!, onConflict: EventOnConflict): Event
-  insertEventSupervisors(objects: [EventSupervisorsInsertInput!]!, onConflict: EventSupervisorsOnConflict): EventSupervisorsMutationResponse
-  insertEventSupervisorsOne(object: EventSupervisorsInsertInput!, onConflict: EventSupervisorsOnConflict): EventSupervisors
   insertEventTags(objects: [EventTagsInsertInput!]!, onConflict: EventTagsOnConflict): EventTagsMutationResponse
   insertEventTagsOne(object: EventTagsInsertInput!, onConflict: EventTagsOnConflict): EventTags
   insertExpense(objects: [ExpenseInsertInput!]!, onConflict: ExpenseOnConflict): ExpenseMutationResponse
@@ -22295,9 +21977,6 @@ type Mutation {
   updateEventManageByPk(_inc: EventManageIncInput, _set: EventManageSetInput, pkColumns: EventManagePkColumnsInput!): EventManage
   updateEventManageMany(updates: [EventManageUpdates!]!): [EventManageMutationResponse]
   updateEventMany(updates: [EventUpdates!]!): [EventMutationResponse]
-  updateEventSupervisors(_inc: EventSupervisorsIncInput, _set: EventSupervisorsSetInput, where: EventSupervisorsBoolExp!): EventSupervisorsMutationResponse
-  updateEventSupervisorsByPk(_inc: EventSupervisorsIncInput, _set: EventSupervisorsSetInput, pkColumns: EventSupervisorsPkColumnsInput!): EventSupervisors
-  updateEventSupervisorsMany(updates: [EventSupervisorsUpdates!]!): [EventSupervisorsMutationResponse]
   updateEventTags(_inc: EventTagsIncInput, _set: EventTagsSetInput, where: EventTagsBoolExp!): EventTagsMutationResponse
   updateEventTagsByPk(_inc: EventTagsIncInput, _set: EventTagsSetInput, pkColumns: EventTagsPkColumnsInput!): EventTags
   updateEventTagsMany(updates: [EventTagsUpdates!]!): [EventTagsMutationResponse]
@@ -24014,9 +23693,6 @@ type Query {
   eventManage(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
   eventManageAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
   eventManageByPk(id: bigint!): EventManage
-  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
-  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
-  eventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   eventTagsByPk(eventId: bigint!, tagId: bigint!): EventTags
@@ -24175,7 +23851,7 @@ type Query {
   voteByPk(id: bigint!): Vote
   financeLogs(id: bigint, teamId: bigint): [Log!]!
   me: User
-  searchLocation(query: String!): [GeocodeLocation!]!
+  searchLocation(query: String!): [GeocodeAddress!]!
   getFirstResultLink(query: String!): String!
   searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
   processReceipt(key: String!): ProcessedReceipt
@@ -27402,10 +27078,6 @@ type Subscription {
   eventManageByPk(id: bigint!): EventManage
   eventManageStream(batchSize: Int!, cursor: [EventManageStreamCursorInput]!, where: EventManageBoolExp): [EventManage!]!
   eventStream(batchSize: Int!, cursor: [EventStreamCursorInput]!, where: EventBoolExp): [Event!]!
-  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
-  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
-  eventSupervisorsByPk(eventId: bigint!, userId: bigint!): EventSupervisors
-  eventSupervisorsStream(batchSize: Int!, cursor: [EventSupervisorsStreamCursorInput]!, where: EventSupervisorsBoolExp): [EventSupervisors!]!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   eventTagsByPk(eventId: bigint!, tagId: bigint!): EventTags
@@ -32745,8 +32417,6 @@ type User {
   deletedAt: timestamptz
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
-  eventSupervisors(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): [EventSupervisors!]!
-  eventSupervisorsAggregate(distinctOn: [EventSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorsOrderBy!], where: EventSupervisorsBoolExp): EventSupervisorsAggregate!
   firstName: String!
   hiddenAt: timestamptz
   id: bigint!
@@ -32866,8 +32536,6 @@ input UserBoolExp {
   deletedAt: TimestamptzComparisonExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventSupervisors: EventSupervisorsBoolExp
-  eventSupervisorsAggregate: EventSupervisorsAggregateBoolExp
   firstName: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
@@ -32913,7 +32581,6 @@ input UserInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   eventJoins: EventJoinArrRelInsertInput
-  eventSupervisors: EventSupervisorsArrRelInsertInput
   firstName: String
   hiddenAt: timestamptz
   id: bigint
@@ -33007,7 +32674,6 @@ input UserOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventSupervisorsAggregate: EventSupervisorsAggregateOrderBy
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -33983,7 +33649,7 @@ input LoginInput {
   password: String!
 }
 
-type GeocodeLocation {
+type GeocodeAddress {
   latitude: Float!
   longitude: Float!
   category: String!

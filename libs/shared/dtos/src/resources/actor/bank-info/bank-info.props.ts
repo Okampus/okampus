@@ -1,6 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Countries } from '@okampus/shared/consts';
-import { Length, IsString, IsEnum } from 'class-validator';
+import { Length, IsString } from 'class-validator';
 
 @InputType()
 export class BankInfoProps {
@@ -14,27 +13,6 @@ export class BankInfoProps {
   bicSwift!: string;
 
   @Field(() => String)
-  @IsEnum(Countries)
   @IsString()
-  country!: string;
-
-  @Field(() => String)
-  @IsString()
-  countryCode!: string;
-
-  @Field(() => String)
-  @IsString()
-  bankCode!: string;
-
-  @Field(() => String)
-  @IsString()
-  agencyCode!: string;
-
-  @Field(() => String)
-  @IsString()
-  accountCode!: string;
-
-  @Field(() => String)
-  @IsString()
-  checksum!: string;
+  iban!: string;
 }

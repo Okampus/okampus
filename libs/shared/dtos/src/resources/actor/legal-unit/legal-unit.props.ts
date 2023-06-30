@@ -28,10 +28,9 @@ export class LegalUnitProps {
   @IsString()
   activityCategory?: string | null = null;
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
+  @Field(() => String)
   @IsString()
-  legalName?: string | null = null;
+  legalName!: string;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

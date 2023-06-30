@@ -22,7 +22,7 @@ export class TagSeeder extends Factory<Tag> {
     return {
       name,
       type: TagType.Tag,
-      slug: toSlug(`${name}.${nanoid(4)}`),
+      slug: toSlug(`${name}.${nanoid(16)}`),
       createdBy: null,
       tenant: this.tenant,
     };

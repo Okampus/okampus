@@ -238,7 +238,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
       bio: faker.lorem.paragraph(randomInt(2, 12)),
       tags: randomFromArray(categories, 1, 3),
       socials: [],
-      slug: toSlug(name) + '-' + nanoid(6),
+      slug: `${toSlug(name)}.${nanoid(16)}`,
       status: faker.company.catchPhrase(),
       type: TeamType.Association,
     };
@@ -589,7 +589,7 @@ export class DatabaseSeeder extends Seeder {
         const project = new Project({
           name: projectName,
           color: randomEnum(Colors),
-          slug: toSlug(`${projectName}-${nanoid(6)}`),
+          slug: toSlug(`${projectName}.${nanoid(16)}`),
           description: faker.lorem.paragraph(randomInt(2, 12)),
           supervisors: randomFromArray(teamMembers, 1, 3),
           budget: randomInt(9000, 20_000) / 10,
@@ -627,13 +627,14 @@ export class DatabaseSeeder extends Seeder {
           .then(async (events) => {
             events = events.map((event, i) => {
               event.name = `${project.name} #${i + 1}`;
-              event.slug = toSlug(event.name) + '-' + nanoid(6);
+              event.slug = `${toSlug(event.name)}.${nanoid(16)}`;
               return event;
             });
 
             const eventManages = events.map((event) => {
-              const createdBy = event.supervisors.getItems()[0].individual;
-              return new EventManage({ team, event, createdBy, tenant });
+              const createdBy = pickOneFromArray(teamMembers).user.individual;
+              const supervisors = randomFromArray(teamMembers, 1, 3);
+              return new EventManage({ team, event, createdBy, tenant, supervisors });
             });
 
             team.eventManages.add(eventManages);
@@ -674,8 +675,6 @@ export class DatabaseSeeder extends Seeder {
 
             const eventJoins = [];
             for (const event of events) {
-              const supervisor = pickOneFromArray(event.supervisors.getItems()).individual;
-
               const missions: [Mission, number][] = [];
               for (const _ of Array.from({ length: randomInt(1, 5) })) {
                 const mission = randomMission(project, tenant);
@@ -701,7 +700,7 @@ export class DatabaseSeeder extends Seeder {
                       points: randomInt(1, 10),
                       team: team,
                       user: individual.user,
-                      pointsSettledBy: supervisor,
+                      pointsSettledBy: pickOneFromArray(managers),
                       pointsSettledAt: createdAt,
                       state: ApprovalState.Approved,
                       createdBy: individual,
@@ -732,7 +731,7 @@ export class DatabaseSeeder extends Seeder {
                     tenant: team.tenant,
                   });
 
-                  eventJoin.presenceSettledBy = pickOneFromArray([...managers, supervisor]);
+                  eventJoin.presenceSettledBy = pickOneFromArray(managers);
                   if (presence) eventJoin.presenceSettledVia = Math.random() > 0.5 ? SettledVia.QR : SettledVia.Manual;
 
                   entities.push(eventJoin);

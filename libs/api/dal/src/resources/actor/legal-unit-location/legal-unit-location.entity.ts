@@ -14,14 +14,14 @@ import type { LegalUnit } from '../legal-unit/legal-unit.entity';
 export class LegalUnitLocation extends BaseEntity {
   [EntityRepositoryType]!: LegalUnitLocationRepository;
 
-  @Enum({ items: () => LegalUnitLocationType, type: EnumType })
-  locationType!: LegalUnitLocationType;
+  @Enum({ items: () => LegalUnitLocationType, type: EnumType, default: LegalUnitLocationType.Location })
+  locationType = LegalUnitLocationType.Location;
 
   @Property({ type: 'string', nullable: true, default: null })
   nic: string | null = null;
 
-  @Property({ type: 'string', nullable: true, default: null })
-  legalName: string | null = null;
+  @Property({ type: 'string' })
+  legalName!: string;
 
   @Property({ type: 'number', nullable: true, default: null })
   bankLocationCode: number | null = null;

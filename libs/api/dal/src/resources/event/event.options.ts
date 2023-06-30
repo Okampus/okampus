@@ -1,4 +1,3 @@
-import type { User } from '../individual/user/user.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
 import type { Event } from './event.entity';
@@ -15,7 +14,6 @@ import type { Location } from '../actor/location/location.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    supervisors?: User[];
     content: Content;
     location?: Location | null;
     banner?: FileUpload | null;

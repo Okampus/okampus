@@ -25,7 +25,7 @@ export class UserSeeder extends Factory<Individual> {
     const lastName = faker.name.lastName();
 
     return {
-      slug: toSlug(`${firstName}-${lastName}-${nanoid(4)}`),
+      slug: toSlug(`${firstName}.${lastName}.${nanoid(16)}`),
       name: `${firstName} ${lastName}`,
       userProps: { firstName, lastName },
       passwordHash: this.passwordHash,
