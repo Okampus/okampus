@@ -13,7 +13,7 @@ export const eventJoinBaseInfo = Selector('EventJoin')({
   participationProcessedVia: true,
   participationProcessedAt: true,
   participationProcessedBy: individualBaseInfo,
-  presence: true,
+  isParticipant: true,
   state: true,
 });
 export type EventJoinBaseInfo = InputType<GraphQLTypes['EventJoin'], typeof eventJoinBaseInfo>;

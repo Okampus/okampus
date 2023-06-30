@@ -72,6 +72,7 @@ export * from './selectors/project/projectWithTeam';
 export * from './selectors/team/account/accountBase';
 export * from './selectors/team/accountAllocate/accountAllocateBase';
 export * from './selectors/team/action/actionBase';
+export * from './selectors/team/action/actionWithProject';
 export * from './selectors/team/expenseItem/expenseItemBase';
 export * from './selectors/team/finance/financeBase';
 export * from './selectors/team/pole/poleBase';

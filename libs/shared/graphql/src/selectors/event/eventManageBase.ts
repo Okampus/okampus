@@ -8,6 +8,6 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 export const eventManageBaseInfo = Selector('Event')({
   ...eventBaseInfo,
   eventApprovals: [{}, eventApprovalBaseInfo],
-  eventApprovalStep: eventApprovalStepBaseInfo,
+  lastEventApprovalStep: eventApprovalStepBaseInfo,
 });
 export type EventManageBaseInfo = InputType<GraphQLTypes['Event'], typeof eventManageBaseInfo>;

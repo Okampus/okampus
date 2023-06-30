@@ -1,17 +1,15 @@
 import { userBaseInfo } from './userBase';
-import { entityBase } from '../entityBase';
 import { teamMemberBaseInfo } from '../team/teamMember/teamMemberBase';
-import { projectBaseInfo } from '../project/projectBase';
-import { actionBaseInfo } from '../team/action/actionBase';
-import { eventBaseInfo } from '../event/eventBase';
+import { actionWithProjectInfo } from '../team/action/actionWithProject';
 import { Selector } from '../../zeus';
+import { eventJoinDetailsInfo } from '../event/eventJoin/eventJoinDetails';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const userWithMembershipsInfo = Selector('User')({
   ...userBaseInfo,
   teamMembers: [{ where: { endDate: { _isNull: true } } }, teamMemberBaseInfo],
-  eventJoins: [{}, { ...entityBase, state: true, presence: true, actions: [{}, actionBaseInfo], event: eventBaseInfo }],
-  actions: [{}, { ...actionBaseInfo, project: projectBaseInfo }],
+  eventJoins: [{}, eventJoinDetailsInfo],
+  actions: [{}, actionWithProjectInfo],
 });
 export type UserWithMembershipsInfo = InputType<GraphQLTypes['User'], typeof userWithMembershipsInfo>;
