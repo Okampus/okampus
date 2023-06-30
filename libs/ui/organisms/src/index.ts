@@ -3,7 +3,6 @@ export * from './Calendar/Calendar';
 export * from './Calendar/CalendarTopbar';
 export * from './Calendar/CreateEventButton';
 export * from './Calendar/Day';
-export * from './Calendar/EventModal';
 export * from './Calendar/GlobalContext';
 export * from './Calendar/Labels';
 export * from './Calendar/Month';
