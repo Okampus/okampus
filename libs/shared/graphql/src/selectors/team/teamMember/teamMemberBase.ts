@@ -1,14 +1,10 @@
+import { teamMemberMinimalInfo } from './teamMemberMinimal';
 import { Selector } from '../../../zeus';
-import { roleBaseInfo } from '../role/roleBase';
-import { entityBase } from '../../entityBase';
-import { teamBaseInfo } from '../teamBase';
+import { teamMinimalInfo } from '../teamMinimal';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const teamMemberBaseInfo = Selector('TeamMember')({
-  ...entityBase,
-  startDate: true,
-  endDate: true,
-  teamMemberRoles: [{}, { role: roleBaseInfo }],
-  team: teamBaseInfo,
+  ...teamMemberMinimalInfo,
+  team: teamMinimalInfo,
 });
 export type TeamMemberBaseInfo = InputType<GraphQLTypes['TeamMember'], typeof teamMemberBaseInfo>;

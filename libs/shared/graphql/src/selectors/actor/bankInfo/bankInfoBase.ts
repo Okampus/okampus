@@ -7,6 +7,7 @@ import type { GraphQLTypes, InputType } from '../../../zeus';
 export const bankInfoBase = Selector('BankInfo')({
   ...entityBase,
   bank: legalUnitLocationMinimalInfo,
-  accountCode: true,
+  bicSwift: true,
+  iban: true,
 });
 export type BankInfoBaseInfo = InputType<GraphQLTypes['BankInfo'], typeof bankInfoBase>;
