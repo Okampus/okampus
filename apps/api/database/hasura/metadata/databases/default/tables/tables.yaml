@@ -26,7 +26,7 @@
 - "!include public_event_approval_step_validators.yaml"
 - "!include public_event_join.yaml"
 - "!include public_event_manage.yaml"
-- "!include public_event_supervisors.yaml"
+- "!include public_event_manage_supervisors.yaml"
 - "!include public_event_tags.yaml"
 - "!include public_expense.yaml"
 - "!include public_expense_item.yaml"

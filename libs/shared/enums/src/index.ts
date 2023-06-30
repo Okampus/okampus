@@ -40,7 +40,7 @@ export * from './dal/individual/scope-role.enum';
 export * from './dal/interaction/reaction-type.enum';
 export * from './dal/interaction/report-reason.enum';
 export * from './dal/interaction/validation-type.enum';
-export * from './dal/join/settled-via.enum';
+export * from './dal/join/processed-via.enum';
 export * from './dal/kind/actor-kind.enum';
 export * from './dal/kind/content-kind.enum';
 export * from './dal/kind/document-kind.enum';

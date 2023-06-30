@@ -48,7 +48,7 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
 
   let amIRegistered = false;
   for (const participant of event.eventJoinsAggregate.nodes) {
-    if (participant.joiner?.id === currentUser?.id) {
+    if (participant.joinedBy?.id === currentUser?.id) {
       amIRegistered = true;
       break;
     }
@@ -77,7 +77,7 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
                     !amIRegistered &&
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    createEventJoin({ variables: { object: { eventId: event.id, joinerId: currentUser?.id } } }),
+                    createEventJoin({ variables: { object: { eventId: event.id, joinedById: currentUser?.id } } }),
                   label: amIRegistered ? 'Je participe' : 'Participer',
                   active: amIRegistered,
                   type: ActionType.Action,

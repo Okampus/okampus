@@ -7,8 +7,8 @@ import type { Project } from '../../project/project.entity';
 
 export type GrantOptions = GrantProps &
   TenantScopedOptions & {
-    validatedBy?: Individual | null;
-    validatedAt?: Date | null;
+    receivedAmountProcessedBy?: Individual | null;
+    receivedAmountProcessedAt?: Date | null;
     team: Team;
     signature?: FileUpload | null;
     generatedDocument?: FileUpload | null;

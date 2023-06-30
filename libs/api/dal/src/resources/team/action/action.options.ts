@@ -10,8 +10,8 @@ export type ActionOptions = ActionProps &
   TenantScopedOptions & {
     team: Team;
     user: User;
-    pointsSettledBy?: Individual | null;
-    pointsSettledAt?: Date | null;
+    pointsProcessedBy?: Individual | null;
+    pointsProcessedAt?: Date | null;
     event?: Event | null;
     project?: Project | null;
   };

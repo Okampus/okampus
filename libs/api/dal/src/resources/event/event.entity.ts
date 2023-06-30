@@ -65,7 +65,7 @@ export class Event extends TenantScopedEntity implements Searchable {
   price = 0;
 
   @Property({ type: 'float', default: 0 })
-  pointsPresence = 0;
+  pointsAwardedForAttendance = 0;
 
   @Property({ type: 'smallint', nullable: true, default: null })
   maxParticipants: number | null = null;
@@ -93,7 +93,7 @@ export class Event extends TenantScopedEntity implements Searchable {
   content!: Content; // Description
 
   @OneToOne({ type: 'FormSubmission', nullable: true, default: null })
-  approvalSubmission: FormSubmission | null = null;
+  eventApprovalSubmission: FormSubmission | null = null;
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null, cascade: [Cascade.ALL] })
   banner: FileUpload | null = null;

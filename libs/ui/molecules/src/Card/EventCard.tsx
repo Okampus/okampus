@@ -36,7 +36,7 @@ export function EventCard({ event, link }: EventCardProps) {
           <div className="rounded-lg bg-red-400 text-white py-0.5 px-2">Refusé</div>
         ) : event.state === EventState.Submitted ? (
           <div className="rounded-lg bg-opposite text-opposite py-0.5 px-2">
-            En attente de validation / {event.eventApprovalStep?.name ?? 'Validation initiale'}
+            En attente de validation / {event.lastEventApprovalStep?.name ?? 'Validation initiale'}
           </div>
         ) : event.state === EventState.Draft ? (
           <div className="rounded-lg bg-yellow-500 text-white py-0.5 px-2">Brouillon</div>

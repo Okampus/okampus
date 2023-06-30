@@ -3253,8 +3253,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "amount_asked": {
-          "name": "amount_asked",
+        "asked_amount": {
+          "name": "asked_amount",
           "type": "real",
           "unsigned": false,
           "autoincrement": false,
@@ -3262,8 +3262,8 @@
           "nullable": false,
           "mappedType": "float"
         },
-        "amount_given": {
-          "name": "amount_given",
+        "received_amount": {
+          "name": "received_amount",
           "type": "real",
           "unsigned": false,
           "autoincrement": false,
@@ -3286,8 +3286,8 @@
           ],
           "mappedType": "enum"
         },
-        "validated_by_id": {
-          "name": "validated_by_id",
+        "received_amount_processed_by_id": {
+          "name": "received_amount_processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -3296,8 +3296,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "validated_at": {
-          "name": "validated_at",
+        "received_amount_processed_at": {
+          "name": "received_amount_processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -3377,10 +3377,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "grant_validated_by_id_foreign": {
-          "constraintName": "grant_validated_by_id_foreign",
+        "grant_received_amount_processed_by_id_foreign": {
+          "constraintName": "grant_received_amount_processed_by_id_foreign",
           "columnNames": [
-            "validated_by_id"
+            "received_amount_processed_by_id"
           ],
           "localTableName": "public.grant",
           "referencedColumnNames": [
@@ -4719,8 +4719,8 @@
           ],
           "mappedType": "enum"
         },
-        "joiner_id": {
-          "name": "joiner_id",
+        "joined_by_id": {
+          "name": "joined_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -4728,8 +4728,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "settled_by_id": {
-          "name": "settled_by_id",
+        "processed_by_id": {
+          "name": "processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -4738,8 +4738,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "settled_at": {
-          "name": "settled_at",
+        "processed_at": {
+          "name": "processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -4838,10 +4838,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "team_join_joiner_id_foreign": {
-          "constraintName": "team_join_joiner_id_foreign",
+        "team_join_joined_by_id_foreign": {
+          "constraintName": "team_join_joined_by_id_foreign",
           "columnNames": [
-            "joiner_id"
+            "joined_by_id"
           ],
           "localTableName": "public.team_join",
           "referencedColumnNames": [
@@ -4850,10 +4850,10 @@
           "referencedTableName": "public.user",
           "updateRule": "cascade"
         },
-        "team_join_settled_by_id_foreign": {
-          "constraintName": "team_join_settled_by_id_foreign",
+        "team_join_processed_by_id_foreign": {
+          "constraintName": "team_join_processed_by_id_foreign",
           "columnNames": [
-            "settled_by_id"
+            "processed_by_id"
           ],
           "localTableName": "public.team_join",
           "referencedColumnNames": [
@@ -8052,8 +8052,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "details": {
-          "name": "details",
+        "online_link": {
+          "name": "online_link",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -8062,8 +8062,8 @@
           "default": "''",
           "mappedType": "text"
         },
-        "online_link": {
-          "name": "online_link",
+        "location_note": {
+          "name": "location_note",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -8500,8 +8500,8 @@
           "default": "0",
           "mappedType": "float"
         },
-        "points_presence": {
-          "name": "points_presence",
+        "points_awarded_for_attendance": {
+          "name": "points_awarded_for_attendance",
           "type": "real",
           "unsigned": false,
           "autoincrement": false,
@@ -8597,8 +8597,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "approval_submission_id": {
-          "name": "approval_submission_id",
+        "event_approval_submission_id": {
+          "name": "event_approval_submission_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -8680,10 +8680,10 @@
         },
         {
           "columnNames": [
-            "approval_submission_id"
+            "event_approval_submission_id"
           ],
           "composite": false,
-          "keyName": "event_approval_submission_id_unique",
+          "keyName": "event_event_approval_submission_id_unique",
           "primary": false,
           "unique": true
         },
@@ -8750,10 +8750,10 @@
           "deleteRule": "CASCADE",
           "updateRule": "cascade"
         },
-        "event_approval_submission_id_foreign": {
-          "constraintName": "event_approval_submission_id_foreign",
+        "event_event_approval_submission_id_foreign": {
+          "constraintName": "event_event_approval_submission_id_foreign",
           "columnNames": [
-            "approval_submission_id"
+            "event_approval_submission_id"
           ],
           "localTableName": "public.event",
           "referencedColumnNames": [
@@ -10704,8 +10704,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "settled_by_id": {
-          "name": "settled_by_id",
+        "processed_by_id": {
+          "name": "processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -10714,8 +10714,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "settled_at": {
-          "name": "settled_at",
+        "processed_at": {
+          "name": "processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -10784,10 +10784,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "expense_settled_by_id_foreign": {
-          "constraintName": "expense_settled_by_id_foreign",
+        "expense_processed_by_id_foreign": {
+          "constraintName": "expense_processed_by_id_foreign",
           "columnNames": [
-            "settled_by_id"
+            "processed_by_id"
           ],
           "localTableName": "public.expense",
           "referencedColumnNames": [
@@ -11271,8 +11271,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "amount_asked": {
-          "name": "amount_asked",
+        "asked_amount": {
+          "name": "asked_amount",
           "type": "real",
           "unsigned": false,
           "autoincrement": false,
@@ -11280,13 +11280,14 @@
           "nullable": false,
           "mappedType": "float"
         },
-        "amount_given": {
-          "name": "amount_given",
+        "received_amount": {
+          "name": "received_amount",
           "type": "real",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "null",
           "mappedType": "float"
         },
         "state": {
@@ -11304,8 +11305,8 @@
           ],
           "mappedType": "enum"
         },
-        "validated_by_id": {
-          "name": "validated_by_id",
+        "received_amount_processed_by_id": {
+          "name": "received_amount_processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -11314,8 +11315,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "validated_at": {
-          "name": "validated_at",
+        "received_amount_processed_at": {
+          "name": "received_amount_processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -11405,10 +11406,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "grant_allocate_validated_by_id_foreign": {
-          "constraintName": "grant_allocate_validated_by_id_foreign",
+        "grant_allocate_received_amount_processed_by_id_foreign": {
+          "constraintName": "grant_allocate_received_amount_processed_by_id_foreign",
           "columnNames": [
-            "validated_by_id"
+            "received_amount_processed_by_id"
           ],
           "localTableName": "public.grant_allocate",
           "referencedColumnNames": [
@@ -12564,8 +12565,8 @@
           ],
           "mappedType": "enum"
         },
-        "presence": {
-          "name": "presence",
+        "is_participant": {
+          "name": "is_participant",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -12574,8 +12575,8 @@
           "default": "null",
           "mappedType": "boolean"
         },
-        "settled_by_id": {
-          "name": "settled_by_id",
+        "processed_by_id": {
+          "name": "processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12584,8 +12585,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "settled_at": {
-          "name": "settled_at",
+        "processed_at": {
+          "name": "processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -12595,8 +12596,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "presence_settled_by_id": {
-          "name": "presence_settled_by_id",
+        "participation_processed_by_id": {
+          "name": "participation_processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12605,8 +12606,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "presence_settled_at": {
-          "name": "presence_settled_at",
+        "participation_processed_at": {
+          "name": "participation_processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -12616,8 +12617,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "presence_settled_via": {
-          "name": "presence_settled_via",
+        "participation_processed_via": {
+          "name": "participation_processed_via",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -12640,8 +12641,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "joiner_id": {
-          "name": "joiner_id",
+        "joined_by_id": {
+          "name": "joined_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12730,10 +12731,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "event_join_settled_by_id_foreign": {
-          "constraintName": "event_join_settled_by_id_foreign",
+        "event_join_processed_by_id_foreign": {
+          "constraintName": "event_join_processed_by_id_foreign",
           "columnNames": [
-            "settled_by_id"
+            "processed_by_id"
           ],
           "localTableName": "public.event_join",
           "referencedColumnNames": [
@@ -12743,10 +12744,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "event_join_presence_settled_by_id_foreign": {
-          "constraintName": "event_join_presence_settled_by_id_foreign",
+        "event_join_participation_processed_by_id_foreign": {
+          "constraintName": "event_join_participation_processed_by_id_foreign",
           "columnNames": [
-            "presence_settled_by_id"
+            "participation_processed_by_id"
           ],
           "localTableName": "public.event_join",
           "referencedColumnNames": [
@@ -12768,10 +12769,10 @@
           "referencedTableName": "public.event",
           "updateRule": "cascade"
         },
-        "event_join_joiner_id_foreign": {
-          "constraintName": "event_join_joiner_id_foreign",
+        "event_join_joined_by_id_foreign": {
+          "constraintName": "event_join_joined_by_id_foreign",
           "columnNames": [
-            "joiner_id"
+            "joined_by_id"
           ],
           "localTableName": "public.event_join",
           "referencedColumnNames": [
@@ -12924,8 +12925,8 @@
           "default": "null",
           "mappedType": "smallint"
         },
-        "settled_by_id": {
-          "name": "settled_by_id",
+        "processed_by_id": {
+          "name": "processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12934,8 +12935,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "settled_at": {
-          "name": "settled_at",
+        "processed_at": {
+          "name": "processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -12945,8 +12946,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "points_settled_by_id": {
-          "name": "points_settled_by_id",
+        "points_processed_by_id": {
+          "name": "points_processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -12955,8 +12956,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "points_settled_at": {
-          "name": "points_settled_at",
+        "points_processed_at": {
+          "name": "points_processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -12975,8 +12976,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "joiner_id": {
-          "name": "joiner_id",
+        "joined_by_id": {
+          "name": "joined_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -13054,10 +13055,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "mission_join_settled_by_id_foreign": {
-          "constraintName": "mission_join_settled_by_id_foreign",
+        "mission_join_processed_by_id_foreign": {
+          "constraintName": "mission_join_processed_by_id_foreign",
           "columnNames": [
-            "settled_by_id"
+            "processed_by_id"
           ],
           "localTableName": "public.mission_join",
           "referencedColumnNames": [
@@ -13067,10 +13068,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "mission_join_points_settled_by_id_foreign": {
-          "constraintName": "mission_join_points_settled_by_id_foreign",
+        "mission_join_points_processed_by_id_foreign": {
+          "constraintName": "mission_join_points_processed_by_id_foreign",
           "columnNames": [
-            "points_settled_by_id"
+            "points_processed_by_id"
           ],
           "localTableName": "public.mission_join",
           "referencedColumnNames": [
@@ -13092,10 +13093,10 @@
           "referencedTableName": "public.mission",
           "updateRule": "cascade"
         },
-        "mission_join_joiner_id_foreign": {
-          "constraintName": "mission_join_joiner_id_foreign",
+        "mission_join_joined_by_id_foreign": {
+          "constraintName": "mission_join_joined_by_id_foreign",
           "columnNames": [
-            "joiner_id"
+            "joined_by_id"
           ],
           "localTableName": "public.mission_join",
           "referencedColumnNames": [
@@ -13475,8 +13476,8 @@
           ],
           "mappedType": "enum"
         },
-        "points_settled_by_id": {
-          "name": "points_settled_by_id",
+        "points_processed_by_id": {
+          "name": "points_processed_by_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -13485,8 +13486,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "points_settled_at": {
-          "name": "points_settled_at",
+        "points_processed_at": {
+          "name": "points_processed_at",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -13575,10 +13576,10 @@
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "action_points_settled_by_id_foreign": {
-          "constraintName": "action_points_settled_by_id_foreign",
+        "action_points_processed_by_id_foreign": {
+          "constraintName": "action_points_processed_by_id_foreign",
           "columnNames": [
-            "points_settled_by_id"
+            "points_processed_by_id"
           ],
           "localTableName": "public.action",
           "referencedColumnNames": [

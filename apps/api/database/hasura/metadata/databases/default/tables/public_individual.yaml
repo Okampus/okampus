@@ -463,54 +463,68 @@ array_relationships:
         table:
           name: event_approval_step_notifiees
           schema: public
-  - name: pointsSettledActions
+  - name: participationProcessedEventJoins
     using:
       foreign_key_constraint_on:
-        column: points_settled_by_id
+        column: participation_processed_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: pointsProcessedActions
+    using:
+      foreign_key_constraint_on:
+        column: points_processed_by_id
         table:
           name: action
           schema: public
-  - name: pointsSettledMissionJoins
+  - name: pointsProcessedMissionJoins
     using:
       foreign_key_constraint_on:
-        column: points_settled_by_id
+        column: points_processed_by_id
         table:
           name: mission_join
           schema: public
-  - name: presenceSettledEventJoins
+  - name: processedEventJoins
     using:
       foreign_key_constraint_on:
-        column: presence_settled_by_id
+        column: processed_by_id
         table:
           name: event_join
           schema: public
-  - name: settledEventJoins
+  - name: processedExpenses
     using:
       foreign_key_constraint_on:
-        column: settled_by_id
-        table:
-          name: event_join
-          schema: public
-  - name: settledExpenses
-    using:
-      foreign_key_constraint_on:
-        column: settled_by_id
+        column: processed_by_id
         table:
           name: expense
           schema: public
-  - name: settledMissionJoins
+  - name: processedMissionJoins
     using:
       foreign_key_constraint_on:
-        column: settled_by_id
+        column: processed_by_id
         table:
           name: mission_join
           schema: public
-  - name: settledTeamJoins
+  - name: processedTeamJoins
     using:
       foreign_key_constraint_on:
-        column: settled_by_id
+        column: processed_by_id
         table:
           name: team_join
+          schema: public
+  - name: receivedAmountProcessedGrantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: received_amount_processed_by_id
+        table:
+          name: grant_allocate
+          schema: public
+  - name: receivedAmountProcessedGrants
+    using:
+      foreign_key_constraint_on:
+        column: received_amount_processed_by_id
+        table:
+          name: grant
           schema: public
   - name: threadContributors
     using:
@@ -518,20 +532,6 @@ array_relationships:
         column: individual_id
         table:
           name: thread_contributors
-          schema: public
-  - name: validatedGrantAllocates
-    using:
-      foreign_key_constraint_on:
-        column: validated_by_id
-        table:
-          name: grant_allocate
-          schema: public
-  - name: validatedGrants
-    using:
-      foreign_key_constraint_on:
-        column: validated_by_id
-        table:
-          name: grant
           schema: public
   - name: validatorEventApprovalStep
     using:

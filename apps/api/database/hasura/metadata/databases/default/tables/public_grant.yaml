@@ -8,6 +8,9 @@ object_relationships:
   - name: generatedDocument
     using:
       foreign_key_constraint_on: generated_document_id
+  - name: receivedAmountProcessed
+    using:
+      foreign_key_constraint_on: received_amount_processed_by_id
   - name: signature
     using:
       foreign_key_constraint_on: signature_id
@@ -17,9 +20,6 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: validatedBy
-    using:
-      foreign_key_constraint_on: validated_by_id
 array_relationships:
   - name: grantAllocates
     using:

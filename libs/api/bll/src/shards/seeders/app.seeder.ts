@@ -44,7 +44,7 @@ import {
   Buckets,
   TagType,
   PoleCategory,
-  SettledVia,
+  ProcessedVia,
   ActorImageType,
   TeamHistoryEventType,
   ApproximateDate,
@@ -547,19 +547,19 @@ export class DatabaseSeeder extends Seeder {
         if (!individual.user) return [];
 
         let createdBy;
-        let settledBy;
+        let processedBy;
         if (Math.random() > 0.5) {
           createdBy = pickOneFromArray(managers);
-          settledBy = individual;
+          processedBy = individual;
         } else {
           createdBy = individual;
-          settledBy = pickOneFromArray(managers);
+          processedBy = pickOneFromArray(managers);
         }
 
         const teamJoin = new TeamJoin({
           team: team,
           askedRole: roles[5],
-          joiner: individual.user,
+          joinedBy: individual.user,
           state: ApprovalState.Pending,
           formSubmission: new FormSubmission({
             submission: { motivation: faker.lorem.lines(4) },
@@ -569,8 +569,8 @@ export class DatabaseSeeder extends Seeder {
           }),
           receivedRole: roles[5],
           receivedPole: team.poles.getItems()[0],
-          settledBy,
-          settledAt: createdAt,
+          processedBy,
+          processedAt: createdAt,
           createdBy,
           tenant,
         });
@@ -610,8 +610,8 @@ export class DatabaseSeeder extends Seeder {
             user,
             points: randomInt(1, 5),
             state: ApprovalState.Approved,
-            pointsSettledBy: pickOneFromArray(managers),
-            pointsSettledAt: createdAt,
+            pointsProcessedBy: pickOneFromArray(managers),
+            pointsProcessedAt: createdAt,
             name: pickOneFromArray(potentialRoles),
             description: faker.lorem.paragraph(randomInt(2, 12)),
             createdBy: user.individual,
@@ -700,8 +700,8 @@ export class DatabaseSeeder extends Seeder {
                       points: randomInt(1, 10),
                       team: team,
                       user: individual.user,
-                      pointsSettledBy: pickOneFromArray(managers),
-                      pointsSettledAt: createdAt,
+                      pointsProcessedBy: pickOneFromArray(managers),
+                      pointsProcessedAt: createdAt,
                       state: ApprovalState.Approved,
                       createdBy: individual,
                       tenant: team.tenant,
@@ -711,9 +711,9 @@ export class DatabaseSeeder extends Seeder {
 
                   const eventJoin = new EventJoin({
                     actions: action ? [action] : [],
-                    joiner: individual.user,
-                    settledBy: pickOneFromArray(managers),
-                    settledAt: createdAt,
+                    joinedBy: individual.user,
+                    processedBy: pickOneFromArray(managers),
+                    processedAt: createdAt,
                     event: event,
                     presence,
                     state: ApprovalState.Approved,
@@ -731,8 +731,9 @@ export class DatabaseSeeder extends Seeder {
                     tenant: team.tenant,
                   });
 
-                  eventJoin.presenceSettledBy = pickOneFromArray(managers);
-                  if (presence) eventJoin.presenceSettledVia = Math.random() > 0.5 ? SettledVia.QR : SettledVia.Manual;
+                  eventJoin.participationProcessedBy = pickOneFromArray(managers);
+                  if (presence)
+                    eventJoin.participationProcessedVia = Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual;
 
                   entities.push(eventJoin);
 
@@ -753,12 +754,12 @@ export class DatabaseSeeder extends Seeder {
                         new MissionJoin({
                           eventJoin,
                           state,
-                          joiner: individual.user,
+                          joinedBy: individual.user,
                           mission: mission[0],
-                          settledBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
-                          settledAt: createdAt,
+                          processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
+                          processedAt: createdAt,
                           ...(completed
-                            ? { points: randomInt(1, 3), pointsSettledBy: pickOneFromArray(managers) }
+                            ? { points: randomInt(1, 3), pointsProcessedBy: pickOneFromArray(managers) }
                             : {}),
                           createdBy: individual,
                           tenant,

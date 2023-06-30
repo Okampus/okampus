@@ -54,7 +54,7 @@ export class User extends TenantScopedEntity {
   @TransformCollection()
   teamMemberships = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'TeamJoin', mappedBy: 'joiner' })
+  @OneToMany({ type: 'TeamJoin', mappedBy: 'joinedBy' })
   @TransformCollection()
   teamJoins = new Collection<TeamJoin>(this);
 

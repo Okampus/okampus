@@ -33,7 +33,7 @@ array_relationships:
   - name: eventJoins
     using:
       foreign_key_constraint_on:
-        column: joiner_id
+        column: joinedBy_id
         table:
           name: event_join
           schema: public
@@ -47,7 +47,7 @@ array_relationships:
   - name: missionJoins
     using:
       foreign_key_constraint_on:
-        column: joiner_id
+        column: joinedBy_id
         table:
           name: mission_join
           schema: public
@@ -68,7 +68,7 @@ array_relationships:
   - name: teamJoins
     using:
       foreign_key_constraint_on:
-        column: joiner_id
+        column: joinedBy_id
         table:
           name: team_join
           schema: public

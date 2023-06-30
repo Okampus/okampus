@@ -30,7 +30,7 @@ export class EventProps {
   @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
-  pointsPresence?: number = 0;
+  pointsAwardedForAttendance?: number = 0;
 
   @Field(() => Int, { nullable: true })
   @IsOptional()

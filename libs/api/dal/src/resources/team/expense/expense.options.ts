@@ -8,7 +8,7 @@ import type { ExpenseProps } from '@okampus/shared/dtos';
 export type ExpenseOptions = ExpenseProps &
   TenantScopedOptions & {
     formSubmission: FormSubmission;
-    joiner: User;
+    joinedBy: User;
     team: Team;
     askedRole: Role;
   };

@@ -30,10 +30,10 @@ export class Location extends TenantScopedEntity {
   name!: string;
 
   @Property({ type: 'text', default: '' })
-  details = '';
+  onlineLink = '';
 
   @Property({ type: 'text', default: '' })
-  onlineLink = '';
+  locationNote = '';
 
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()

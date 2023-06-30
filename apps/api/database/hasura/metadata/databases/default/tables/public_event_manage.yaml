@@ -29,3 +29,10 @@ array_relationships:
         table:
           name: mission
           schema: public
+  - name: supervisors
+    using:
+      foreign_key_constraint_on:
+        column: event_manage_id
+        table:
+          name: event_manage_supervisors
+          schema: public

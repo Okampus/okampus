@@ -1095,11 +1095,11 @@ type Action {
   id: bigint!
   name: String!
   points: smallint
-  pointsSettledAt: timestamptz
 
   # An object relationship
-  pointsSettledBy: Individual
-  pointsSettledById: bigint
+  pointsProcecessedBy: Individual
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
 
   # An object relationship
   project: Project
@@ -1180,7 +1180,7 @@ type ActionAvgFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1193,7 +1193,7 @@ input ActionAvgOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1216,9 +1216,9 @@ input ActionBoolExp {
   id: BigintComparisonExp
   name: StringComparisonExp
   points: SmallintComparisonExp
-  pointsSettledAt: TimestamptzComparisonExp
-  pointsSettledBy: IndividualBoolExp
-  pointsSettledById: BigintComparisonExp
+  pointsProcecessedBy: IndividualBoolExp
+  pointsProcessedAt: TimestamptzComparisonExp
+  pointsProcessedById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
   state: StringComparisonExp
@@ -1242,7 +1242,7 @@ input ActionIncInput {
   eventJoinId: bigint
   id: bigint
   points: smallint
-  pointsSettledById: bigint
+  pointsProcessedById: bigint
   projectId: bigint
   teamId: bigint
   tenantId: bigint
@@ -1262,9 +1262,9 @@ input ActionInsertInput {
   id: bigint
   name: String
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledBy: IndividualObjRelInsertInput
-  pointsSettledById: bigint
+  pointsProcecessedBy: IndividualObjRelInsertInput
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
   state: String
@@ -1287,8 +1287,8 @@ type ActionMaxFields {
   id: bigint
   name: String
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
   projectId: bigint
   state: String
   teamId: bigint
@@ -1307,8 +1307,8 @@ input ActionMaxOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   state: OrderBy
   teamId: OrderBy
@@ -1327,8 +1327,8 @@ type ActionMinFields {
   id: bigint
   name: String
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
   projectId: bigint
   state: String
   teamId: bigint
@@ -1347,8 +1347,8 @@ input ActionMinOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   state: OrderBy
   teamId: OrderBy
@@ -1385,9 +1385,9 @@ input ActionOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledBy: IndividualOrderBy
-  pointsSettledById: OrderBy
+  pointsProcecessedBy: IndividualOrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
   state: OrderBy
@@ -1434,10 +1434,10 @@ enum ActionSelectColumn {
   points
 
   # column name
-  pointsSettledAt
+  pointsProcessedAt
 
   # column name
-  pointsSettledById
+  pointsProcessedById
 
   # column name
   projectId
@@ -1466,8 +1466,8 @@ input ActionSetInput {
   id: bigint
   name: String
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
   projectId: bigint
   state: String
   teamId: bigint
@@ -1481,7 +1481,7 @@ type ActionStddevFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1494,7 +1494,7 @@ input ActionStddevOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1507,7 +1507,7 @@ type ActionStddevPopFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1520,7 +1520,7 @@ input ActionStddevPopOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1533,7 +1533,7 @@ type ActionStddevSampFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1546,7 +1546,7 @@ input ActionStddevSampOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1573,8 +1573,8 @@ input ActionStreamCursorValueInput {
   id: bigint
   name: String
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
   projectId: bigint
   state: String
   teamId: bigint
@@ -1588,7 +1588,7 @@ type ActionSumFields {
   eventJoinId: bigint
   id: bigint
   points: smallint
-  pointsSettledById: bigint
+  pointsProcessedById: bigint
   projectId: bigint
   teamId: bigint
   tenantId: bigint
@@ -1601,7 +1601,7 @@ input ActionSumOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1638,10 +1638,10 @@ enum ActionUpdateColumn {
   points
 
   # column name
-  pointsSettledAt
+  pointsProcessedAt
 
   # column name
-  pointsSettledById
+  pointsProcessedById
 
   # column name
   projectId
@@ -1676,7 +1676,7 @@ type ActionVarianceFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1689,7 +1689,7 @@ input ActionVarianceOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1702,7 +1702,7 @@ type ActionVarPopFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1715,7 +1715,7 @@ input ActionVarPopOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -1728,7 +1728,7 @@ type ActionVarSampFields {
   eventJoinId: Float
   id: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
   projectId: Float
   teamId: Float
   tenantId: Float
@@ -1741,7 +1741,7 @@ input ActionVarSampOrderBy {
   eventJoinId: OrderBy
   id: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -11148,8 +11148,6 @@ input DocumentVarSampOrderBy {
 
 # columns and relationships of "event"
 type Event {
-  approvalSubmissionId: bigint
-
   # An object relationship
   banner: FileUpload
   bannerId: bigint
@@ -11166,7 +11164,8 @@ type Event {
   end: timestamptz!
 
   # An object relationship
-  eventApprovalStep: EventApprovalStep
+  eventApprovalSubmission: FormSubmission
+  eventApprovalSubmissionId: bigint
 
   # An array relationship
   eventApprovals(
@@ -11350,15 +11349,15 @@ type Event {
 
   # An object relationship
   form: Form
-
-  # An object relationship
-  formSubmission: FormSubmission
   hiddenAt: timestamptz
   id: bigint!
   isAutoAcceptingJoins: Boolean!
   isPrivate: Boolean!
   isTemplate: Boolean!
   joinFormId: bigint
+
+  # An object relationship
+  lastEventApprovalStep: EventApprovalStep
   lastEventApprovalStepId: bigint
 
   # An object relationship
@@ -11370,7 +11369,7 @@ type Event {
     path: String
   ): jsonb!
   name: String!
-  pointsPresence: Float!
+  pointsAwardedForAttendance: Float!
   price: Float!
 
   # An object relationship
@@ -13228,16 +13227,16 @@ input EventArrRelInsertInput {
 
 # aggregate avg on columns
 type EventAvgFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -13245,16 +13244,16 @@ type EventAvgFields {
 
 # order by avg() on columns of table "event"
 input EventAvgOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -13265,7 +13264,6 @@ input EventBoolExp {
   _and: [EventBoolExp!]
   _not: EventBoolExp
   _or: [EventBoolExp!]
-  approvalSubmissionId: BigintComparisonExp
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   content: ContentBoolExp
@@ -13275,7 +13273,8 @@ input EventBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   end: TimestamptzComparisonExp
-  eventApprovalStep: EventApprovalStepBoolExp
+  eventApprovalSubmission: FormSubmissionBoolExp
+  eventApprovalSubmissionId: BigintComparisonExp
   eventApprovals: EventApprovalBoolExp
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
@@ -13287,20 +13286,20 @@ input EventBoolExp {
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   form: FormBoolExp
-  formSubmission: FormSubmissionBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isAutoAcceptingJoins: BooleanComparisonExp
   isPrivate: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
   joinFormId: BigintComparisonExp
+  lastEventApprovalStep: EventApprovalStepBoolExp
   lastEventApprovalStepId: BigintComparisonExp
   location: LocationBoolExp
   locationId: BigintComparisonExp
   maxParticipants: SmallintComparisonExp
   meta: JsonbComparisonExp
   name: StringComparisonExp
-  pointsPresence: FloatComparisonExp
+  pointsAwardedForAttendance: FloatComparisonExp
   price: FloatComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
@@ -13313,11 +13312,11 @@ input EventBoolExp {
 
 # unique or primary key constraints on table "event"
 enum EventConstraint {
-  # unique or primary key constraint on columns "approval_submission_id"
-  event_approval_submission_id_unique
-
   # unique or primary key constraint on columns "content_id"
   event_content_id_unique
+
+  # unique or primary key constraint on columns "event_approval_submission_id"
+  event_event_approval_submission_id_unique
 
   # unique or primary key constraint on columns "id"
   event_pkey
@@ -13344,16 +13343,16 @@ input EventDeleteKeyInput {
 
 # input type for incrementing numeric columns in table "event"
 input EventIncInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdById: bigint
+  eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   tenantId: bigint
@@ -13361,7 +13360,6 @@ input EventIncInput {
 
 # input type for inserting data into table "event"
 input EventInsertInput {
-  approvalSubmissionId: bigint
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   content: ContentObjRelInsertInput
@@ -13371,27 +13369,28 @@ input EventInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
-  eventApprovalStep: EventApprovalStepObjRelInsertInput
+  eventApprovalSubmission: FormSubmissionObjRelInsertInput
+  eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   eventManages: EventManageArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
   form: FormObjRelInsertInput
-  formSubmission: FormSubmissionObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
+  lastEventApprovalStep: EventApprovalStepObjRelInsertInput
   lastEventApprovalStepId: bigint
   location: LocationObjRelInsertInput
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   project: ProjectObjRelInsertInput
   projectId: bigint
@@ -13458,11 +13457,12 @@ type EventJoin {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint!
-  joinedForId: bigint
+  isParticipant: Boolean
 
   # An object relationship
-  joiner: User!
-  joinerId: bigint!
+  joinedBy: User!
+  joinedById: bigint!
+  joinedForId: bigint
 
   # An object relationship
   linkedMissionJoin: MissionJoin
@@ -13470,22 +13470,21 @@ type EventJoin {
   # An object relationship
   missionJoin: MissionJoin
   missionJoinId: bigint
-  presence: Boolean
-  presenceSettledAt: timestamptz
+  participationProcessedAt: timestamptz
 
   # An object relationship
-  presenceSettledBy: Individual
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedBy: Individual
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+
+  # An object relationship
+  processedBy: Individual
+  processedById: bigint
 
   # An object relationship
   qrCode: FileUpload
   qrCodeId: bigint
-  settledAt: timestamptz
-
-  # An object relationship
-  settledBy: Individual
-  settledById: bigint
   state: String!
 
   # An object relationship
@@ -13570,12 +13569,12 @@ type EventJoinAvgFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -13585,12 +13584,12 @@ input EventJoinAvgOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -13612,22 +13611,22 @@ input EventJoinBoolExp {
   formSubmissionId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  isParticipant: BooleanComparisonExp
+  joinedBy: UserBoolExp
+  joinedById: BigintComparisonExp
   joinedForId: BigintComparisonExp
-  joiner: UserBoolExp
-  joinerId: BigintComparisonExp
   linkedMissionJoin: MissionJoinBoolExp
   missionJoin: MissionJoinBoolExp
   missionJoinId: BigintComparisonExp
-  presence: BooleanComparisonExp
-  presenceSettledAt: TimestamptzComparisonExp
-  presenceSettledBy: IndividualBoolExp
-  presenceSettledById: BigintComparisonExp
-  presenceSettledVia: StringComparisonExp
+  participationProcessedAt: TimestamptzComparisonExp
+  participationProcessedBy: IndividualBoolExp
+  participationProcessedById: BigintComparisonExp
+  participationProcessedVia: StringComparisonExp
+  processedAt: TimestamptzComparisonExp
+  processedBy: IndividualBoolExp
+  processedById: BigintComparisonExp
   qrCode: FileUploadBoolExp
   qrCodeId: BigintComparisonExp
-  settledAt: TimestamptzComparisonExp
-  settledBy: IndividualBoolExp
-  settledById: BigintComparisonExp
   state: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -13645,12 +13644,12 @@ input EventJoinIncInput {
   eventId: bigint
   formSubmissionId: bigint
   id: bigint
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presenceSettledById: bigint
+  participationProcessedById: bigint
+  processedById: bigint
   qrCodeId: bigint
-  settledById: bigint
   tenantId: bigint
 }
 
@@ -13668,22 +13667,22 @@ input EventJoinInsertInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isParticipant: Boolean
+  joinedBy: UserObjRelInsertInput
+  joinedById: bigint
   joinedForId: bigint
-  joiner: UserObjRelInsertInput
-  joinerId: bigint
   linkedMissionJoin: MissionJoinObjRelInsertInput
   missionJoin: MissionJoinObjRelInsertInput
   missionJoinId: bigint
-  presence: Boolean
-  presenceSettledAt: timestamptz
-  presenceSettledBy: IndividualObjRelInsertInput
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedAt: timestamptz
+  participationProcessedBy: IndividualObjRelInsertInput
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+  processedBy: IndividualObjRelInsertInput
+  processedById: bigint
   qrCode: FileUploadObjRelInsertInput
   qrCodeId: bigint
-  settledAt: timestamptz
-  settledBy: IndividualObjRelInsertInput
-  settledById: bigint
   state: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -13698,15 +13697,15 @@ type EventJoinMaxFields {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presenceSettledAt: timestamptz
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedAt: timestamptz
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+  processedById: bigint
   qrCodeId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -13720,15 +13719,15 @@ input EventJoinMaxOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledAt: OrderBy
-  presenceSettledById: OrderBy
-  presenceSettledVia: OrderBy
+  participationProcessedAt: OrderBy
+  participationProcessedById: OrderBy
+  participationProcessedVia: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -13742,15 +13741,15 @@ type EventJoinMinFields {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presenceSettledAt: timestamptz
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedAt: timestamptz
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+  processedById: bigint
   qrCodeId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -13764,15 +13763,15 @@ input EventJoinMinOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledAt: OrderBy
-  presenceSettledById: OrderBy
-  presenceSettledVia: OrderBy
+  participationProcessedAt: OrderBy
+  participationProcessedById: OrderBy
+  participationProcessedVia: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -13815,22 +13814,22 @@ input EventJoinOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  isParticipant: OrderBy
+  joinedBy: UserOrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joiner: UserOrderBy
-  joinerId: OrderBy
   linkedMissionJoin: MissionJoinOrderBy
   missionJoin: MissionJoinOrderBy
   missionJoinId: OrderBy
-  presence: OrderBy
-  presenceSettledAt: OrderBy
-  presenceSettledBy: IndividualOrderBy
-  presenceSettledById: OrderBy
-  presenceSettledVia: OrderBy
+  participationProcessedAt: OrderBy
+  participationProcessedBy: IndividualOrderBy
+  participationProcessedById: OrderBy
+  participationProcessedVia: OrderBy
+  processedAt: OrderBy
+  processedBy: IndividualOrderBy
+  processedById: OrderBy
   qrCode: FileUploadOrderBy
   qrCodeId: OrderBy
-  settledAt: OrderBy
-  settledBy: IndividualOrderBy
-  settledById: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -13865,34 +13864,34 @@ enum EventJoinSelectColumn {
   id
 
   # column name
-  joinedForId
+  isParticipant
 
   # column name
-  joinerId
+  joinedById
+
+  # column name
+  joinedForId
 
   # column name
   missionJoinId
 
   # column name
-  presence
+  participationProcessedAt
 
   # column name
-  presenceSettledAt
+  participationProcessedById
 
   # column name
-  presenceSettledById
+  participationProcessedVia
 
   # column name
-  presenceSettledVia
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   qrCodeId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -13904,13 +13903,13 @@ enum EventJoinSelectColumn {
 # select "eventJoinAggregateBoolExpBool_andArgumentsColumns" columns of table "event_join"
 enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  presence
+  isParticipant
 }
 
 # select "eventJoinAggregateBoolExpBool_orArgumentsColumns" columns of table "event_join"
 enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  presence
+  isParticipant
 }
 
 # input type for updating data in table "event_join"
@@ -13922,16 +13921,16 @@ input EventJoinSetInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isParticipant: Boolean
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presence: Boolean
-  presenceSettledAt: timestamptz
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedAt: timestamptz
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+  processedById: bigint
   qrCodeId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -13942,12 +13941,12 @@ type EventJoinStddevFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -13957,12 +13956,12 @@ input EventJoinStddevOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -13972,12 +13971,12 @@ type EventJoinStddevPopFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -13987,12 +13986,12 @@ input EventJoinStddevPopOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14002,12 +14001,12 @@ type EventJoinStddevSampFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -14017,12 +14016,12 @@ input EventJoinStddevSampOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14044,16 +14043,16 @@ input EventJoinStreamCursorValueInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
+  isParticipant: Boolean
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presence: Boolean
-  presenceSettledAt: timestamptz
-  presenceSettledById: bigint
-  presenceSettledVia: String
+  participationProcessedAt: timestamptz
+  participationProcessedById: bigint
+  participationProcessedVia: String
+  processedAt: timestamptz
+  processedById: bigint
   qrCodeId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -14064,12 +14063,12 @@ type EventJoinSumFields {
   eventId: bigint
   formSubmissionId: bigint
   id: bigint
+  joinedById: bigint
   joinedForId: bigint
-  joinerId: bigint
   missionJoinId: bigint
-  presenceSettledById: bigint
+  participationProcessedById: bigint
+  processedById: bigint
   qrCodeId: bigint
-  settledById: bigint
   tenantId: bigint
 }
 
@@ -14079,12 +14078,12 @@ input EventJoinSumOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14112,34 +14111,34 @@ enum EventJoinUpdateColumn {
   id
 
   # column name
-  joinedForId
+  isParticipant
 
   # column name
-  joinerId
+  joinedById
+
+  # column name
+  joinedForId
 
   # column name
   missionJoinId
 
   # column name
-  presence
+  participationProcessedAt
 
   # column name
-  presenceSettledAt
+  participationProcessedById
 
   # column name
-  presenceSettledById
+  participationProcessedVia
 
   # column name
-  presenceSettledVia
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   qrCodeId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -14165,12 +14164,12 @@ type EventJoinVarianceFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -14180,12 +14179,12 @@ input EventJoinVarianceOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14195,12 +14194,12 @@ type EventJoinVarPopFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -14210,12 +14209,12 @@ input EventJoinVarPopOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14225,12 +14224,12 @@ type EventJoinVarSampFields {
   eventId: Float
   formSubmissionId: Float
   id: Float
+  joinedById: Float
   joinedForId: Float
-  joinerId: Float
   missionJoinId: Float
-  presenceSettledById: Float
+  participationProcessedById: Float
+  processedById: Float
   qrCodeId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -14240,12 +14239,12 @@ input EventJoinVarSampOrderBy {
   eventId: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
+  joinedById: OrderBy
   joinedForId: OrderBy
-  joinerId: OrderBy
   missionJoinId: OrderBy
-  presenceSettledById: OrderBy
+  participationProcessedById: OrderBy
+  processedById: OrderBy
   qrCodeId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -14336,6 +14335,42 @@ type EventManage {
     # filter the rows returned
     where: MissionBoolExp
   ): MissionAggregate!
+
+  # An array relationship
+  supervisors(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): [EventManageSupervisors!]!
+
+  # An aggregate relationship
+  supervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): EventManageSupervisorsAggregate!
 
   # An object relationship
   team: Team!
@@ -14437,6 +14472,8 @@ input EventManageBoolExp {
   id: BigintComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
+  supervisors: EventManageSupervisorsBoolExp
+  supervisorsAggregate: EventManageSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -14471,6 +14508,7 @@ input EventManageInsertInput {
   hiddenAt: timestamptz
   id: bigint
   missions: MissionArrRelInsertInput
+  supervisors: EventManageSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -14566,6 +14604,7 @@ input EventManageOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   missionsAggregate: MissionAggregateOrderBy
+  supervisorsAggregate: EventManageSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -14714,6 +14753,303 @@ input EventManageSumOrderBy {
   tenantId: OrderBy
 }
 
+# columns and relationships of "event_manage_supervisors"
+type EventManageSupervisors {
+  # An object relationship
+  eventManage: EventManage!
+  eventManageId: bigint!
+
+  # An object relationship
+  teamMember: TeamMember!
+  teamMemberId: bigint!
+}
+
+# aggregated selection of "event_manage_supervisors"
+type EventManageSupervisorsAggregate {
+  aggregate: EventManageSupervisorsAggregateFields
+  nodes: [EventManageSupervisors!]!
+}
+
+input EventManageSupervisorsAggregateBoolExp {
+  count: eventManageSupervisorsAggregateBoolExpCount
+}
+
+input eventManageSupervisorsAggregateBoolExpCount {
+  arguments: [EventManageSupervisorsSelectColumn!]
+  distinct: Boolean
+  filter: EventManageSupervisorsBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "event_manage_supervisors"
+type EventManageSupervisorsAggregateFields {
+  avg: EventManageSupervisorsAvgFields
+  count(columns: [EventManageSupervisorsSelectColumn!], distinct: Boolean): Int!
+  max: EventManageSupervisorsMaxFields
+  min: EventManageSupervisorsMinFields
+  stddev: EventManageSupervisorsStddevFields
+  stddevPop: EventManageSupervisorsStddevPopFields
+  stddevSamp: EventManageSupervisorsStddevSampFields
+  sum: EventManageSupervisorsSumFields
+  varPop: EventManageSupervisorsVarPopFields
+  varSamp: EventManageSupervisorsVarSampFields
+  variance: EventManageSupervisorsVarianceFields
+}
+
+# order by aggregate values of table "event_manage_supervisors"
+input EventManageSupervisorsAggregateOrderBy {
+  avg: EventManageSupervisorsAvgOrderBy
+  count: OrderBy
+  max: EventManageSupervisorsMaxOrderBy
+  min: EventManageSupervisorsMinOrderBy
+  stddev: EventManageSupervisorsStddevOrderBy
+  stddevPop: EventManageSupervisorsStddevPopOrderBy
+  stddevSamp: EventManageSupervisorsStddevSampOrderBy
+  sum: EventManageSupervisorsSumOrderBy
+  varPop: EventManageSupervisorsVarPopOrderBy
+  varSamp: EventManageSupervisorsVarSampOrderBy
+  variance: EventManageSupervisorsVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "event_manage_supervisors"
+input EventManageSupervisorsArrRelInsertInput {
+  data: [EventManageSupervisorsInsertInput!]!
+
+  # upsert condition
+  onConflict: EventManageSupervisorsOnConflict
+}
+
+# aggregate avg on columns
+type EventManageSupervisorsAvgFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by avg() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsAvgOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "event_manage_supervisors". All fields are combined with a logical 'AND'.
+input EventManageSupervisorsBoolExp {
+  _and: [EventManageSupervisorsBoolExp!]
+  _not: EventManageSupervisorsBoolExp
+  _or: [EventManageSupervisorsBoolExp!]
+  eventManage: EventManageBoolExp
+  eventManageId: BigintComparisonExp
+  teamMember: TeamMemberBoolExp
+  teamMemberId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "event_manage_supervisors"
+enum EventManageSupervisorsConstraint {
+  # unique or primary key constraint on columns "event_manage_id", "team_member_id"
+  event_manage_supervisors_pkey
+}
+
+# input type for incrementing numeric columns in table "event_manage_supervisors"
+input EventManageSupervisorsIncInput {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# input type for inserting data into table "event_manage_supervisors"
+input EventManageSupervisorsInsertInput {
+  eventManage: EventManageObjRelInsertInput
+  eventManageId: bigint
+  teamMember: TeamMemberObjRelInsertInput
+  teamMemberId: bigint
+}
+
+# aggregate max on columns
+type EventManageSupervisorsMaxFields {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# order by max() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsMaxOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate min on columns
+type EventManageSupervisorsMinFields {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# order by min() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsMinOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# response of any mutation on the table "event_manage_supervisors"
+type EventManageSupervisorsMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [EventManageSupervisors!]!
+}
+
+# on_conflict condition type for table "event_manage_supervisors"
+input EventManageSupervisorsOnConflict {
+  constraint: EventManageSupervisorsConstraint!
+  updateColumns: [EventManageSupervisorsUpdateColumn!]! = []
+  where: EventManageSupervisorsBoolExp
+}
+
+# Ordering options when selecting data from "event_manage_supervisors".
+input EventManageSupervisorsOrderBy {
+  eventManage: EventManageOrderBy
+  eventManageId: OrderBy
+  teamMember: TeamMemberOrderBy
+  teamMemberId: OrderBy
+}
+
+# primary key columns input for table: event_manage_supervisors
+input EventManageSupervisorsPkColumnsInput {
+  eventManageId: bigint!
+  teamMemberId: bigint!
+}
+
+# select columns of table "event_manage_supervisors"
+enum EventManageSupervisorsSelectColumn {
+  # column name
+  eventManageId
+
+  # column name
+  teamMemberId
+}
+
+# input type for updating data in table "event_manage_supervisors"
+input EventManageSupervisorsSetInput {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# aggregate stddev on columns
+type EventManageSupervisorsStddevFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by stddev() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsStddevOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type EventManageSupervisorsStddevPopFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by stddevPop() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsStddevPopOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type EventManageSupervisorsStddevSampFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by stddevSamp() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsStddevSampOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# Streaming cursor of the table "event_manage_supervisors"
+input EventManageSupervisorsStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: EventManageSupervisorsStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input EventManageSupervisorsStreamCursorValueInput {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# aggregate sum on columns
+type EventManageSupervisorsSumFields {
+  eventManageId: bigint
+  teamMemberId: bigint
+}
+
+# order by sum() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsSumOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# update columns of table "event_manage_supervisors"
+enum EventManageSupervisorsUpdateColumn {
+  # column name
+  eventManageId
+
+  # column name
+  teamMemberId
+}
+
+input EventManageSupervisorsUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: EventManageSupervisorsIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: EventManageSupervisorsSetInput
+
+  # filter the rows which have to be updated
+  where: EventManageSupervisorsBoolExp!
+}
+
+# aggregate variance on columns
+type EventManageSupervisorsVarianceFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by variance() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsVarianceOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate varPop on columns
+type EventManageSupervisorsVarPopFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by varPop() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsVarPopOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate varSamp on columns
+type EventManageSupervisorsVarSampFields {
+  eventManageId: Float
+  teamMemberId: Float
+}
+
+# order by varSamp() on columns of table "event_manage_supervisors"
+input EventManageSupervisorsVarSampOrderBy {
+  eventManageId: OrderBy
+  teamMemberId: OrderBy
+}
+
 # update columns of table "event_manage"
 enum EventManageUpdateColumn {
   # column name
@@ -14811,13 +15147,13 @@ input EventManageVarSampOrderBy {
 
 # aggregate max on columns
 type EventMaxFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -14825,7 +15161,7 @@ type EventMaxFields {
   locationId: bigint
   maxParticipants: smallint
   name: String
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   slug: String
@@ -14836,13 +15172,13 @@ type EventMaxFields {
 
 # order by max() on columns of table "event"
 input EventMaxOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   end: OrderBy
+  eventApprovalSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -14850,7 +15186,7 @@ input EventMaxOrderBy {
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   slug: OrderBy
@@ -14861,13 +15197,13 @@ input EventMaxOrderBy {
 
 # aggregate min on columns
 type EventMinFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -14875,7 +15211,7 @@ type EventMinFields {
   locationId: bigint
   maxParticipants: smallint
   name: String
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   slug: String
@@ -14886,13 +15222,13 @@ type EventMinFields {
 
 # order by min() on columns of table "event"
 input EventMinOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   end: OrderBy
+  eventApprovalSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -14900,7 +15236,7 @@ input EventMinOrderBy {
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   slug: OrderBy
@@ -14935,7 +15271,6 @@ input EventOnConflict {
 
 # Ordering options when selecting data from "event".
 input EventOrderBy {
-  approvalSubmissionId: OrderBy
   banner: FileUploadOrderBy
   bannerId: OrderBy
   content: ContentOrderBy
@@ -14945,27 +15280,28 @@ input EventOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   end: OrderBy
-  eventApprovalStep: EventApprovalStepOrderBy
+  eventApprovalSubmission: FormSubmissionOrderBy
+  eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventManagesAggregate: EventManageAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   form: FormOrderBy
-  formSubmission: FormSubmissionOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isAutoAcceptingJoins: OrderBy
   isPrivate: OrderBy
   isTemplate: OrderBy
   joinFormId: OrderBy
+  lastEventApprovalStep: EventApprovalStepOrderBy
   lastEventApprovalStepId: OrderBy
   location: LocationOrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   meta: OrderBy
   name: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
@@ -14989,9 +15325,6 @@ input EventPrependInput {
 # select columns of table "event"
 enum EventSelectColumn {
   # column name
-  approvalSubmissionId
-
-  # column name
   bannerId
 
   # column name
@@ -15008,6 +15341,9 @@ enum EventSelectColumn {
 
   # column name
   end
+
+  # column name
+  eventApprovalSubmissionId
 
   # column name
   hiddenAt
@@ -15043,7 +15379,7 @@ enum EventSelectColumn {
   name
 
   # column name
-  pointsPresence
+  pointsAwardedForAttendance
 
   # column name
   price
@@ -15090,13 +15426,13 @@ enum EventSelectColumnEventAggregateBoolExpBool_orArgumentsColumns {
 
 # input type for updating data in table "event"
 input EventSetInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
@@ -15108,7 +15444,7 @@ input EventSetInput {
   maxParticipants: smallint
   meta: jsonb
   name: String
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   slug: String
@@ -15119,16 +15455,16 @@ input EventSetInput {
 
 # aggregate stddev on columns
 type EventStddevFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15136,16 +15472,16 @@ type EventStddevFields {
 
 # order by stddev() on columns of table "event"
 input EventStddevOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15153,16 +15489,16 @@ input EventStddevOrderBy {
 
 # aggregate stddevPop on columns
 type EventStddevPopFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15170,16 +15506,16 @@ type EventStddevPopFields {
 
 # order by stddevPop() on columns of table "event"
 input EventStddevPopOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15187,16 +15523,16 @@ input EventStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type EventStddevSampFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15204,16 +15540,16 @@ type EventStddevSampFields {
 
 # order by stddevSamp() on columns of table "event"
 input EventStddevSampOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15230,13 +15566,13 @@ input EventStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input EventStreamCursorValueInput {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   end: timestamptz
+  eventApprovalSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
@@ -15248,7 +15584,7 @@ input EventStreamCursorValueInput {
   maxParticipants: smallint
   meta: jsonb
   name: String
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   slug: String
@@ -15259,16 +15595,16 @@ input EventStreamCursorValueInput {
 
 # aggregate sum on columns
 type EventSumFields {
-  approvalSubmissionId: bigint
   bannerId: bigint
   contentId: bigint
   createdById: bigint
+  eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
   lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: bigint
   tenantId: bigint
@@ -15276,16 +15612,16 @@ type EventSumFields {
 
 # order by sum() on columns of table "event"
 input EventSumOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15591,9 +15927,6 @@ input EventTagsVarSampOrderBy {
 # update columns of table "event"
 enum EventUpdateColumn {
   # column name
-  approvalSubmissionId
-
-  # column name
   bannerId
 
   # column name
@@ -15610,6 +15943,9 @@ enum EventUpdateColumn {
 
   # column name
   end
+
+  # column name
+  eventApprovalSubmissionId
 
   # column name
   hiddenAt
@@ -15645,7 +15981,7 @@ enum EventUpdateColumn {
   name
 
   # column name
-  pointsPresence
+  pointsAwardedForAttendance
 
   # column name
   price
@@ -15695,16 +16031,16 @@ input EventUpdates {
 
 # aggregate variance on columns
 type EventVarianceFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15712,16 +16048,16 @@ type EventVarianceFields {
 
 # order by variance() on columns of table "event"
 input EventVarianceOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15729,16 +16065,16 @@ input EventVarianceOrderBy {
 
 # aggregate varPop on columns
 type EventVarPopFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15746,16 +16082,16 @@ type EventVarPopFields {
 
 # order by varPop() on columns of table "event"
 input EventVarPopOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15763,16 +16099,16 @@ input EventVarPopOrderBy {
 
 # aggregate varSamp on columns
 type EventVarSampFields {
-  approvalSubmissionId: Float
   bannerId: Float
   contentId: Float
   createdById: Float
+  eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
   lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
-  pointsPresence: Float
+  pointsAwardedForAttendance: Float
   price: Float
   projectId: Float
   tenantId: Float
@@ -15780,16 +16116,16 @@ type EventVarSampFields {
 
 # order by varSamp() on columns of table "event"
 input EventVarSampOrderBy {
-  approvalSubmissionId: OrderBy
   bannerId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
+  eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
   lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
-  pointsPresence: OrderBy
+  pointsAwardedForAttendance: OrderBy
   price: OrderBy
   projectId: OrderBy
   tenantId: OrderBy
@@ -15853,11 +16189,11 @@ type Expense {
   hiddenAt: timestamptz
   id: bigint!
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
+  processedAt: timestamptz
 
   # An object relationship
-  settledBy: Individual
-  settledById: bigint
+  processedBy: Individual
+  processedById: bigint
   state: String!
 
   # An object relationship
@@ -15926,7 +16262,7 @@ type ExpenseAvgFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -15936,7 +16272,7 @@ input ExpenseAvgOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -15960,9 +16296,9 @@ input ExpenseBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   lastNotifiedAt: TimestamptzComparisonExp
-  settledAt: TimestamptzComparisonExp
-  settledBy: IndividualBoolExp
-  settledById: BigintComparisonExp
+  processedAt: TimestamptzComparisonExp
+  processedBy: IndividualBoolExp
+  processedById: BigintComparisonExp
   state: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -15980,7 +16316,7 @@ input ExpenseIncInput {
   createdById: bigint
   expenseReportId: bigint
   id: bigint
-  settledById: bigint
+  processedById: bigint
   tenantId: bigint
 }
 
@@ -16000,9 +16336,9 @@ input ExpenseInsertInput {
   hiddenAt: timestamptz
   id: bigint
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
-  settledBy: IndividualObjRelInsertInput
-  settledById: bigint
+  processedAt: timestamptz
+  processedBy: IndividualObjRelInsertInput
+  processedById: bigint
   state: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -16950,8 +17286,8 @@ type ExpenseMaxFields {
   hiddenAt: timestamptz
   id: bigint
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
-  settledById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   state: String
   tenantId: bigint
 }
@@ -16967,8 +17303,8 @@ input ExpenseMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   lastNotifiedAt: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -16984,8 +17320,8 @@ type ExpenseMinFields {
   hiddenAt: timestamptz
   id: bigint
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
-  settledById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   state: String
   tenantId: bigint
 }
@@ -17001,8 +17337,8 @@ input ExpenseMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   lastNotifiedAt: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -17047,9 +17383,9 @@ input ExpenseOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   lastNotifiedAt: OrderBy
-  settledAt: OrderBy
-  settledBy: IndividualOrderBy
-  settledById: OrderBy
+  processedAt: OrderBy
+  processedBy: IndividualOrderBy
+  processedById: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -17090,10 +17426,10 @@ enum ExpenseSelectColumn {
   lastNotifiedAt
 
   # column name
-  settledAt
+  processedAt
 
   # column name
-  settledById
+  processedById
 
   # column name
   state
@@ -17113,8 +17449,8 @@ input ExpenseSetInput {
   hiddenAt: timestamptz
   id: bigint
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
-  settledById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   state: String
   tenantId: bigint
 }
@@ -17125,7 +17461,7 @@ type ExpenseStddevFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17135,7 +17471,7 @@ input ExpenseStddevOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17145,7 +17481,7 @@ type ExpenseStddevPopFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17155,7 +17491,7 @@ input ExpenseStddevPopOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17165,7 +17501,7 @@ type ExpenseStddevSampFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17175,7 +17511,7 @@ input ExpenseStddevSampOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17199,8 +17535,8 @@ input ExpenseStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   lastNotifiedAt: timestamptz
-  settledAt: timestamptz
-  settledById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   state: String
   tenantId: bigint
 }
@@ -17211,7 +17547,7 @@ type ExpenseSumFields {
   createdById: bigint
   expenseReportId: bigint
   id: bigint
-  settledById: bigint
+  processedById: bigint
   tenantId: bigint
 }
 
@@ -17221,7 +17557,7 @@ input ExpenseSumOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17255,10 +17591,10 @@ enum ExpenseUpdateColumn {
   lastNotifiedAt
 
   # column name
-  settledAt
+  processedAt
 
   # column name
-  settledById
+  processedById
 
   # column name
   state
@@ -17284,7 +17620,7 @@ type ExpenseVarianceFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17294,7 +17630,7 @@ input ExpenseVarianceOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17304,7 +17640,7 @@ type ExpenseVarPopFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17314,7 +17650,7 @@ input ExpenseVarPopOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -17324,7 +17660,7 @@ type ExpenseVarSampFields {
   createdById: Float
   expenseReportId: Float
   id: Float
-  settledById: Float
+  processedById: Float
   tenantId: Float
 }
 
@@ -17334,7 +17670,7 @@ input ExpenseVarSampOrderBy {
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
-  settledById: OrderBy
+  processedById: OrderBy
   tenantId: OrderBy
 }
 
@@ -21840,8 +22176,7 @@ input FormVarSampOrderBy {
 
 # columns and relationships of "grant"
 type Grant {
-  amountAsked: Float!
-  amountGiven: Float!
+  askedAmount: Float!
   createdAt: timestamptz!
 
   # An object relationship
@@ -21962,6 +22297,12 @@ type Grant {
     # filter the rows returned
     where: ProjectBoolExp
   ): ProjectAggregate!
+  receivedAmount: Float!
+
+  # An object relationship
+  receivedAmountProcessed: Individual
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
 
   # An object relationship
   signature: FileUpload
@@ -21975,11 +22316,6 @@ type Grant {
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
-  validatedAt: timestamptz
-
-  # An object relationship
-  validatedBy: Individual
-  validatedById: bigint
 }
 
 # aggregated selection of "grant"
@@ -22031,8 +22367,7 @@ input GrantAggregateOrderBy {
 
 # columns and relationships of "grant_allocate"
 type GrantAllocate {
-  amountAsked: Float!
-  amountGiven: Float!
+  askedAmount: Float!
   createdAt: timestamptz!
 
   # An object relationship
@@ -22089,6 +22424,12 @@ type GrantAllocate {
   grantId: bigint!
   hiddenAt: timestamptz
   id: bigint!
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+
+  # An object relationship
+  receivedAmountProcessedBy: Individual
+  receivedAmountProcessedById: bigint
 
   # An object relationship
   signature: FileUpload
@@ -22098,11 +22439,6 @@ type GrantAllocate {
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
-  validatedAt: timestamptz
-
-  # An object relationship
-  validatedBy: Individual
-  validatedById: bigint
 }
 
 # aggregated selection of "grant_allocate"
@@ -22459,30 +22795,30 @@ input GrantAllocateAttachmentsVarSampOrderBy {
 
 # aggregate avg on columns
 type GrantAllocateAvgFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by avg() on columns of table "grant_allocate"
 input GrantAllocateAvgOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # Boolean expression to filter rows from the table "grant_allocate". All fields are combined with a logical 'AND'.
@@ -22490,8 +22826,7 @@ input GrantAllocateBoolExp {
   _and: [GrantAllocateBoolExp!]
   _not: GrantAllocateBoolExp
   _or: [GrantAllocateBoolExp!]
-  amountAsked: FloatComparisonExp
-  amountGiven: FloatComparisonExp
+  askedAmount: FloatComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -22506,14 +22841,15 @@ input GrantAllocateBoolExp {
   grantId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  receivedAmount: FloatComparisonExp
+  receivedAmountProcessedAt: TimestamptzComparisonExp
+  receivedAmountProcessedBy: IndividualBoolExp
+  receivedAmountProcessedById: BigintComparisonExp
   signature: FileUploadBoolExp
   signatureId: BigintComparisonExp
   state: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
-  validatedAt: TimestamptzComparisonExp
-  validatedBy: IndividualBoolExp
-  validatedById: BigintComparisonExp
 }
 
 # unique or primary key constraints on table "grant_allocate"
@@ -22524,22 +22860,21 @@ enum GrantAllocateConstraint {
 
 # input type for incrementing numeric columns in table "grant_allocate"
 input GrantAllocateIncInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: bigint
   financeId: bigint
   generatedDocumentId: bigint
   grantId: bigint
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   tenantId: bigint
-  validatedById: bigint
 }
 
 # input type for inserting data into table "grant_allocate"
 input GrantAllocateInsertInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -22553,20 +22888,20 @@ input GrantAllocateInsertInput {
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedBy: IndividualObjRelInsertInput
+  receivedAmountProcessedById: bigint
   signature: FileUploadObjRelInsertInput
   signatureId: bigint
   state: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedBy: IndividualObjRelInsertInput
-  validatedById: bigint
 }
 
 # aggregate max on columns
 type GrantAllocateMaxFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22575,17 +22910,17 @@ type GrantAllocateMaxFields {
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # order by max() on columns of table "grant_allocate"
 input GrantAllocateMaxOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -22594,17 +22929,17 @@ input GrantAllocateMaxOrderBy {
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   state: OrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate min on columns
 type GrantAllocateMinFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22613,17 +22948,17 @@ type GrantAllocateMinFields {
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # order by min() on columns of table "grant_allocate"
 input GrantAllocateMinOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -22632,11 +22967,12 @@ input GrantAllocateMinOrderBy {
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   state: OrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
 }
 
 # response of any mutation on the table "grant_allocate"
@@ -22665,8 +23001,7 @@ input GrantAllocateOnConflict {
 
 # Ordering options when selecting data from "grant_allocate".
 input GrantAllocateOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -22680,14 +23015,15 @@ input GrantAllocateOrderBy {
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedBy: IndividualOrderBy
+  receivedAmountProcessedById: OrderBy
   signature: FileUploadOrderBy
   signatureId: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedBy: IndividualOrderBy
-  validatedById: OrderBy
 }
 
 # primary key columns input for table: grant_allocate
@@ -22698,10 +23034,7 @@ input GrantAllocatePkColumnsInput {
 # select columns of table "grant_allocate"
 enum GrantAllocateSelectColumn {
   # column name
-  amountAsked
-
-  # column name
-  amountGiven
+  askedAmount
 
   # column name
   createdAt
@@ -22728,6 +23061,15 @@ enum GrantAllocateSelectColumn {
   id
 
   # column name
+  receivedAmount
+
+  # column name
+  receivedAmountProcessedAt
+
+  # column name
+  receivedAmountProcessedById
+
+  # column name
   signatureId
 
   # column name
@@ -22735,18 +23077,11 @@ enum GrantAllocateSelectColumn {
 
   # column name
   tenantId
-
-  # column name
-  validatedAt
-
-  # column name
-  validatedById
 }
 
 # input type for updating data in table "grant_allocate"
 input GrantAllocateSetInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22755,95 +23090,96 @@ input GrantAllocateSetInput {
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # aggregate stddev on columns
 type GrantAllocateStddevFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddev() on columns of table "grant_allocate"
 input GrantAllocateStddevOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate stddevPop on columns
 type GrantAllocateStddevPopFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddevPop() on columns of table "grant_allocate"
 input GrantAllocateStddevPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type GrantAllocateStddevSampFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddevSamp() on columns of table "grant_allocate"
 input GrantAllocateStddevSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # Streaming cursor of the table "grant_allocate"
@@ -22857,8 +23193,7 @@ input GrantAllocateStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input GrantAllocateStreamCursorValueInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22867,48 +23202,46 @@ input GrantAllocateStreamCursorValueInput {
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # aggregate sum on columns
 type GrantAllocateSumFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: bigint
   financeId: bigint
   generatedDocumentId: bigint
   grantId: bigint
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   tenantId: bigint
-  validatedById: bigint
 }
 
 # order by sum() on columns of table "grant_allocate"
 input GrantAllocateSumOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # update columns of table "grant_allocate"
 enum GrantAllocateUpdateColumn {
   # column name
-  amountAsked
-
-  # column name
-  amountGiven
+  askedAmount
 
   # column name
   createdAt
@@ -22935,6 +23268,15 @@ enum GrantAllocateUpdateColumn {
   id
 
   # column name
+  receivedAmount
+
+  # column name
+  receivedAmountProcessedAt
+
+  # column name
+  receivedAmountProcessedById
+
+  # column name
   signatureId
 
   # column name
@@ -22942,12 +23284,6 @@ enum GrantAllocateUpdateColumn {
 
   # column name
   tenantId
-
-  # column name
-  validatedAt
-
-  # column name
-  validatedById
 }
 
 input GrantAllocateUpdates {
@@ -22963,86 +23299,86 @@ input GrantAllocateUpdates {
 
 # aggregate variance on columns
 type GrantAllocateVarianceFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by variance() on columns of table "grant_allocate"
 input GrantAllocateVarianceOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate varPop on columns
 type GrantAllocateVarPopFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by varPop() on columns of table "grant_allocate"
 input GrantAllocateVarPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate varSamp on columns
 type GrantAllocateVarSampFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   financeId: Float
   generatedDocumentId: Float
   grantId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by varSamp() on columns of table "grant_allocate"
 input GrantAllocateVarSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   financeId: OrderBy
   generatedDocumentId: OrderBy
   grantId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # input type for inserting array relation for remote table "grant"
@@ -23352,28 +23688,28 @@ input GrantAttachmentsVarSampOrderBy {
 
 # aggregate avg on columns
 type GrantAvgFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by avg() on columns of table "grant"
 input GrantAvgOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # Boolean expression to filter rows from the table "grant". All fields are combined with a logical 'AND'.
@@ -23381,8 +23717,7 @@ input GrantBoolExp {
   _and: [GrantBoolExp!]
   _not: GrantBoolExp
   _or: [GrantBoolExp!]
-  amountAsked: FloatComparisonExp
-  amountGiven: FloatComparisonExp
+  askedAmount: FloatComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -23397,6 +23732,10 @@ input GrantBoolExp {
   id: BigintComparisonExp
   projects: ProjectBoolExp
   projectsAggregate: ProjectAggregateBoolExp
+  receivedAmount: FloatComparisonExp
+  receivedAmountProcessed: IndividualBoolExp
+  receivedAmountProcessedAt: TimestamptzComparisonExp
+  receivedAmountProcessedById: BigintComparisonExp
   signature: FileUploadBoolExp
   signatureId: BigintComparisonExp
   state: StringComparisonExp
@@ -23404,9 +23743,6 @@ input GrantBoolExp {
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
-  validatedAt: TimestamptzComparisonExp
-  validatedBy: IndividualBoolExp
-  validatedById: BigintComparisonExp
 }
 
 # unique or primary key constraints on table "grant"
@@ -23417,21 +23753,20 @@ enum GrantConstraint {
 
 # input type for incrementing numeric columns in table "grant"
 input GrantIncInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: bigint
   generatedDocumentId: bigint
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   teamId: bigint
   tenantId: bigint
-  validatedById: bigint
 }
 
 # input type for inserting data into table "grant"
 input GrantInsertInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -23443,6 +23778,10 @@ input GrantInsertInput {
   hiddenAt: timestamptz
   id: bigint
   projects: ProjectArrRelInsertInput
+  receivedAmount: Float
+  receivedAmountProcessed: IndividualObjRelInsertInput
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signature: FileUploadObjRelInsertInput
   signatureId: bigint
   state: String
@@ -23450,81 +23789,78 @@ input GrantInsertInput {
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedBy: IndividualObjRelInsertInput
-  validatedById: bigint
 }
 
 # aggregate max on columns
 type GrantMaxFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   teamId: bigint
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # order by max() on columns of table "grant"
 input GrantMaxOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate min on columns
 type GrantMinFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   teamId: bigint
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # order by min() on columns of table "grant"
 input GrantMinOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   generatedDocumentId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedById: OrderBy
 }
 
 # response of any mutation on the table "grant"
@@ -23553,8 +23889,7 @@ input GrantOnConflict {
 
 # Ordering options when selecting data from "grant".
 input GrantOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -23566,6 +23901,10 @@ input GrantOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   projectsAggregate: ProjectAggregateOrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessed: IndividualOrderBy
+  receivedAmountProcessedAt: OrderBy
+  receivedAmountProcessedById: OrderBy
   signature: FileUploadOrderBy
   signatureId: OrderBy
   state: OrderBy
@@ -23573,9 +23912,6 @@ input GrantOrderBy {
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
-  validatedAt: OrderBy
-  validatedBy: IndividualOrderBy
-  validatedById: OrderBy
 }
 
 # primary key columns input for table: grant
@@ -23586,10 +23922,7 @@ input GrantPkColumnsInput {
 # select columns of table "grant"
 enum GrantSelectColumn {
   # column name
-  amountAsked
-
-  # column name
-  amountGiven
+  askedAmount
 
   # column name
   createdAt
@@ -23610,6 +23943,15 @@ enum GrantSelectColumn {
   id
 
   # column name
+  receivedAmount
+
+  # column name
+  receivedAmountProcessedAt
+
+  # column name
+  receivedAmountProcessedById
+
+  # column name
   signatureId
 
   # column name
@@ -23620,108 +23962,102 @@ enum GrantSelectColumn {
 
   # column name
   tenantId
-
-  # column name
-  validatedAt
-
-  # column name
-  validatedById
 }
 
 # input type for updating data in table "grant"
 input GrantSetInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   teamId: bigint
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # aggregate stddev on columns
 type GrantStddevFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddev() on columns of table "grant"
 input GrantStddevOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate stddevPop on columns
 type GrantStddevPopFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddevPop() on columns of table "grant"
 input GrantStddevPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type GrantStddevSampFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by stddevSamp() on columns of table "grant"
 input GrantStddevSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # Streaming cursor of the table "grant"
@@ -23735,55 +24071,52 @@ input GrantStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input GrantStreamCursorValueInput {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   generatedDocumentId: bigint
   hiddenAt: timestamptz
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedAt: timestamptz
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   state: String
   teamId: bigint
   tenantId: bigint
-  validatedAt: timestamptz
-  validatedById: bigint
 }
 
 # aggregate sum on columns
 type GrantSumFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: bigint
   generatedDocumentId: bigint
   id: bigint
+  receivedAmount: Float
+  receivedAmountProcessedById: bigint
   signatureId: bigint
   teamId: bigint
   tenantId: bigint
-  validatedById: bigint
 }
 
 # order by sum() on columns of table "grant"
 input GrantSumOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # update columns of table "grant"
 enum GrantUpdateColumn {
   # column name
-  amountAsked
-
-  # column name
-  amountGiven
+  askedAmount
 
   # column name
   createdAt
@@ -23804,6 +24137,15 @@ enum GrantUpdateColumn {
   id
 
   # column name
+  receivedAmount
+
+  # column name
+  receivedAmountProcessedAt
+
+  # column name
+  receivedAmountProcessedById
+
+  # column name
   signatureId
 
   # column name
@@ -23814,12 +24156,6 @@ enum GrantUpdateColumn {
 
   # column name
   tenantId
-
-  # column name
-  validatedAt
-
-  # column name
-  validatedById
 }
 
 input GrantUpdates {
@@ -23835,80 +24171,80 @@ input GrantUpdates {
 
 # aggregate variance on columns
 type GrantVarianceFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by variance() on columns of table "grant"
 input GrantVarianceOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate varPop on columns
 type GrantVarPopFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by varPop() on columns of table "grant"
 input GrantVarPopOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # aggregate varSamp on columns
 type GrantVarSampFields {
-  amountAsked: Float
-  amountGiven: Float
+  askedAmount: Float
   createdById: Float
   generatedDocumentId: Float
   id: Float
+  receivedAmount: Float
+  receivedAmountProcessedById: Float
   signatureId: Float
   teamId: Float
   tenantId: Float
-  validatedById: Float
 }
 
 # order by varSamp() on columns of table "grant"
 input GrantVarSampOrderBy {
-  amountAsked: OrderBy
-  amountGiven: OrderBy
+  askedAmount: OrderBy
   createdById: OrderBy
   generatedDocumentId: OrderBy
   id: OrderBy
+  receivedAmount: OrderBy
+  receivedAmountProcessedById: OrderBy
   signatureId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-  validatedById: OrderBy
 }
 
 # columns and relationships of "individual"
@@ -26196,10 +26532,46 @@ type Individual {
     # filter the rows returned
     where: EventApprovalStepNotifieesBoolExp
   ): EventApprovalStepNotifieesAggregate!
+
+  # An array relationship
+  participationProcessedEventJoins(
+    # distinct select on columns
+    distinctOn: [EventJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventJoinOrderBy!]
+
+    # filter the rows returned
+    where: EventJoinBoolExp
+  ): [EventJoin!]!
+
+  # An aggregate relationship
+  participationProcessedEventJoinsAggregate(
+    # distinct select on columns
+    distinctOn: [EventJoinSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventJoinOrderBy!]
+
+    # filter the rows returned
+    where: EventJoinBoolExp
+  ): EventJoinAggregate!
   passwordHash: String
 
   # An array relationship
-  pointsSettledActions(
+  pointsProcessedActions(
     # distinct select on columns
     distinctOn: [ActionSelectColumn!]
 
@@ -26217,7 +26589,7 @@ type Individual {
   ): [Action!]!
 
   # An aggregate relationship
-  pointsSettledActionsAggregate(
+  pointsProcessedActionsAggregate(
     # distinct select on columns
     distinctOn: [ActionSelectColumn!]
 
@@ -26235,7 +26607,7 @@ type Individual {
   ): ActionAggregate!
 
   # An array relationship
-  pointsSettledMissionJoins(
+  pointsProcessedMissionJoins(
     # distinct select on columns
     distinctOn: [MissionJoinSelectColumn!]
 
@@ -26253,7 +26625,7 @@ type Individual {
   ): [MissionJoin!]!
 
   # An aggregate relationship
-  pointsSettledMissionJoinsAggregate(
+  pointsProcessedMissionJoinsAggregate(
     # distinct select on columns
     distinctOn: [MissionJoinSelectColumn!]
 
@@ -26271,7 +26643,7 @@ type Individual {
   ): MissionJoinAggregate!
 
   # An array relationship
-  presenceSettledEventJoins(
+  processedEventJoins(
     # distinct select on columns
     distinctOn: [EventJoinSelectColumn!]
 
@@ -26289,44 +26661,7 @@ type Individual {
   ): [EventJoin!]!
 
   # An aggregate relationship
-  presenceSettledEventJoinsAggregate(
-    # distinct select on columns
-    distinctOn: [EventJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventJoinOrderBy!]
-
-    # filter the rows returned
-    where: EventJoinBoolExp
-  ): EventJoinAggregate!
-  scopeRole: String!
-
-  # An array relationship
-  settledEventJoins(
-    # distinct select on columns
-    distinctOn: [EventJoinSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventJoinOrderBy!]
-
-    # filter the rows returned
-    where: EventJoinBoolExp
-  ): [EventJoin!]!
-
-  # An aggregate relationship
-  settledEventJoinsAggregate(
+  processedEventJoinsAggregate(
     # distinct select on columns
     distinctOn: [EventJoinSelectColumn!]
 
@@ -26344,7 +26679,7 @@ type Individual {
   ): EventJoinAggregate!
 
   # An array relationship
-  settledExpenses(
+  processedExpenses(
     # distinct select on columns
     distinctOn: [ExpenseSelectColumn!]
 
@@ -26362,7 +26697,7 @@ type Individual {
   ): [Expense!]!
 
   # An aggregate relationship
-  settledExpensesAggregate(
+  processedExpensesAggregate(
     # distinct select on columns
     distinctOn: [ExpenseSelectColumn!]
 
@@ -26380,7 +26715,7 @@ type Individual {
   ): ExpenseAggregate!
 
   # An array relationship
-  settledMissionJoins(
+  processedMissionJoins(
     # distinct select on columns
     distinctOn: [MissionJoinSelectColumn!]
 
@@ -26398,7 +26733,7 @@ type Individual {
   ): [MissionJoin!]!
 
   # An aggregate relationship
-  settledMissionJoinsAggregate(
+  processedMissionJoinsAggregate(
     # distinct select on columns
     distinctOn: [MissionJoinSelectColumn!]
 
@@ -26416,7 +26751,7 @@ type Individual {
   ): MissionJoinAggregate!
 
   # An array relationship
-  settledTeamJoins(
+  processedTeamJoins(
     # distinct select on columns
     distinctOn: [TeamJoinSelectColumn!]
 
@@ -26434,7 +26769,7 @@ type Individual {
   ): [TeamJoin!]!
 
   # An aggregate relationship
-  settledTeamJoinsAggregate(
+  processedTeamJoinsAggregate(
     # distinct select on columns
     distinctOn: [TeamJoinSelectColumn!]
 
@@ -26450,6 +26785,79 @@ type Individual {
     # filter the rows returned
     where: TeamJoinBoolExp
   ): TeamJoinAggregate!
+
+  # An array relationship
+  receivedAmountProcessedGrantAllocates(
+    # distinct select on columns
+    distinctOn: [GrantAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAllocateOrderBy!]
+
+    # filter the rows returned
+    where: GrantAllocateBoolExp
+  ): [GrantAllocate!]!
+
+  # An aggregate relationship
+  receivedAmountProcessedGrantAllocatesAggregate(
+    # distinct select on columns
+    distinctOn: [GrantAllocateSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantAllocateOrderBy!]
+
+    # filter the rows returned
+    where: GrantAllocateBoolExp
+  ): GrantAllocateAggregate!
+
+  # An array relationship
+  receivedAmountProcessedGrants(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): [Grant!]!
+
+  # An aggregate relationship
+  receivedAmountProcessedGrantsAggregate(
+    # distinct select on columns
+    distinctOn: [GrantSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [GrantOrderBy!]
+
+    # filter the rows returned
+    where: GrantBoolExp
+  ): GrantAggregate!
+  scopeRole: String!
 
   # An object relationship
   tenant: Tenant!
@@ -26494,78 +26902,6 @@ type Individual {
   # An object relationship
   user: User
   userId: bigint
-
-  # An array relationship
-  validatedGrantAllocates(
-    # distinct select on columns
-    distinctOn: [GrantAllocateSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateBoolExp
-  ): [GrantAllocate!]!
-
-  # An aggregate relationship
-  validatedGrantAllocatesAggregate(
-    # distinct select on columns
-    distinctOn: [GrantAllocateSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantAllocateOrderBy!]
-
-    # filter the rows returned
-    where: GrantAllocateBoolExp
-  ): GrantAllocateAggregate!
-
-  # An array relationship
-  validatedGrants(
-    # distinct select on columns
-    distinctOn: [GrantSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantOrderBy!]
-
-    # filter the rows returned
-    where: GrantBoolExp
-  ): [Grant!]!
-
-  # An aggregate relationship
-  validatedGrantsAggregate(
-    # distinct select on columns
-    distinctOn: [GrantSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [GrantOrderBy!]
-
-    # filter the rows returned
-    where: GrantBoolExp
-  ): GrantAggregate!
 
   # An array relationship
   validatorEventApprovalStep(
@@ -26818,32 +27154,32 @@ input IndividualBoolExp {
   id: BigintComparisonExp
   notifieeEventApprovalSteps: EventApprovalStepNotifieesBoolExp
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateBoolExp
+  participationProcessedEventJoins: EventJoinBoolExp
+  participationProcessedEventJoinsAggregate: EventJoinAggregateBoolExp
   passwordHash: StringComparisonExp
-  pointsSettledActions: ActionBoolExp
-  pointsSettledActionsAggregate: ActionAggregateBoolExp
-  pointsSettledMissionJoins: MissionJoinBoolExp
-  pointsSettledMissionJoinsAggregate: MissionJoinAggregateBoolExp
-  presenceSettledEventJoins: EventJoinBoolExp
-  presenceSettledEventJoinsAggregate: EventJoinAggregateBoolExp
+  pointsProcessedActions: ActionBoolExp
+  pointsProcessedActionsAggregate: ActionAggregateBoolExp
+  pointsProcessedMissionJoins: MissionJoinBoolExp
+  pointsProcessedMissionJoinsAggregate: MissionJoinAggregateBoolExp
+  processedEventJoins: EventJoinBoolExp
+  processedEventJoinsAggregate: EventJoinAggregateBoolExp
+  processedExpenses: ExpenseBoolExp
+  processedExpensesAggregate: ExpenseAggregateBoolExp
+  processedMissionJoins: MissionJoinBoolExp
+  processedMissionJoinsAggregate: MissionJoinAggregateBoolExp
+  processedTeamJoins: TeamJoinBoolExp
+  processedTeamJoinsAggregate: TeamJoinAggregateBoolExp
+  receivedAmountProcessedGrantAllocates: GrantAllocateBoolExp
+  receivedAmountProcessedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
+  receivedAmountProcessedGrants: GrantBoolExp
+  receivedAmountProcessedGrantsAggregate: GrantAggregateBoolExp
   scopeRole: StringComparisonExp
-  settledEventJoins: EventJoinBoolExp
-  settledEventJoinsAggregate: EventJoinAggregateBoolExp
-  settledExpenses: ExpenseBoolExp
-  settledExpensesAggregate: ExpenseAggregateBoolExp
-  settledMissionJoins: MissionJoinBoolExp
-  settledMissionJoinsAggregate: MissionJoinAggregateBoolExp
-  settledTeamJoins: TeamJoinBoolExp
-  settledTeamJoinsAggregate: TeamJoinAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   threadContributors: ThreadContributorsBoolExp
   threadContributorsAggregate: ThreadContributorsAggregateBoolExp
   user: UserBoolExp
   userId: BigintComparisonExp
-  validatedGrantAllocates: GrantAllocateBoolExp
-  validatedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
-  validatedGrants: GrantBoolExp
-  validatedGrantsAggregate: GrantAggregateBoolExp
   validatorEventApprovalStep: EventApprovalStepValidatorsBoolExp
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateBoolExp
 }
@@ -26944,22 +27280,22 @@ input IndividualInsertInput {
   hiddenAt: timestamptz
   id: bigint
   notifieeEventApprovalSteps: EventApprovalStepNotifieesArrRelInsertInput
+  participationProcessedEventJoins: EventJoinArrRelInsertInput
   passwordHash: String
-  pointsSettledActions: ActionArrRelInsertInput
-  pointsSettledMissionJoins: MissionJoinArrRelInsertInput
-  presenceSettledEventJoins: EventJoinArrRelInsertInput
+  pointsProcessedActions: ActionArrRelInsertInput
+  pointsProcessedMissionJoins: MissionJoinArrRelInsertInput
+  processedEventJoins: EventJoinArrRelInsertInput
+  processedExpenses: ExpenseArrRelInsertInput
+  processedMissionJoins: MissionJoinArrRelInsertInput
+  processedTeamJoins: TeamJoinArrRelInsertInput
+  receivedAmountProcessedGrantAllocates: GrantAllocateArrRelInsertInput
+  receivedAmountProcessedGrants: GrantArrRelInsertInput
   scopeRole: String
-  settledEventJoins: EventJoinArrRelInsertInput
-  settledExpenses: ExpenseArrRelInsertInput
-  settledMissionJoins: MissionJoinArrRelInsertInput
-  settledTeamJoins: TeamJoinArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   threadContributors: ThreadContributorsArrRelInsertInput
   user: UserObjRelInsertInput
   userId: bigint
-  validatedGrantAllocates: GrantAllocateArrRelInsertInput
-  validatedGrants: GrantArrRelInsertInput
   validatorEventApprovalStep: EventApprovalStepValidatorsArrRelInsertInput
 }
 
@@ -27122,22 +27458,22 @@ input IndividualOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateOrderBy
+  participationProcessedEventJoinsAggregate: EventJoinAggregateOrderBy
   passwordHash: OrderBy
-  pointsSettledActionsAggregate: ActionAggregateOrderBy
-  pointsSettledMissionJoinsAggregate: MissionJoinAggregateOrderBy
-  presenceSettledEventJoinsAggregate: EventJoinAggregateOrderBy
+  pointsProcessedActionsAggregate: ActionAggregateOrderBy
+  pointsProcessedMissionJoinsAggregate: MissionJoinAggregateOrderBy
+  processedEventJoinsAggregate: EventJoinAggregateOrderBy
+  processedExpensesAggregate: ExpenseAggregateOrderBy
+  processedMissionJoinsAggregate: MissionJoinAggregateOrderBy
+  processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
+  receivedAmountProcessedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
+  receivedAmountProcessedGrantsAggregate: GrantAggregateOrderBy
   scopeRole: OrderBy
-  settledEventJoinsAggregate: EventJoinAggregateOrderBy
-  settledExpensesAggregate: ExpenseAggregateOrderBy
-  settledMissionJoinsAggregate: MissionJoinAggregateOrderBy
-  settledTeamJoinsAggregate: TeamJoinAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   threadContributorsAggregate: ThreadContributorsAggregateOrderBy
   user: UserOrderBy
   userId: OrderBy
-  validatedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
-  validatedGrantsAggregate: GrantAggregateOrderBy
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateOrderBy
 }
 
@@ -29839,7 +30175,6 @@ type Location {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
-  details: String!
 
   # An array relationship
   events(
@@ -29953,6 +30288,7 @@ type Location {
     # filter the rows returned
     where: LocationImagesBoolExp
   ): LocationImagesAggregate!
+  locationNote: String!
   name: String!
   onlineLink: String!
 
@@ -30049,7 +30385,6 @@ input LocationBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  details: StringComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -30059,6 +30394,7 @@ input LocationBoolExp {
   legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
   locationImages: LocationImagesBoolExp
   locationImagesAggregate: LocationImagesAggregateBoolExp
+  locationNote: StringComparisonExp
   name: StringComparisonExp
   onlineLink: StringComparisonExp
   tenant: TenantBoolExp
@@ -30388,13 +30724,13 @@ input LocationInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   events: EventArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   legalUnitLocations: LegalUnitLocationArrRelInsertInput
   locationImages: LocationImagesArrRelInsertInput
+  locationNote: String
   name: String
   onlineLink: String
   tenant: TenantObjRelInsertInput
@@ -30409,9 +30745,9 @@ type LocationMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   hiddenAt: timestamptz
   id: bigint
+  locationNote: String
   name: String
   onlineLink: String
   tenantId: bigint
@@ -30425,9 +30761,9 @@ input LocationMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationNote: OrderBy
   name: OrderBy
   onlineLink: OrderBy
   tenantId: OrderBy
@@ -30441,9 +30777,9 @@ type LocationMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   hiddenAt: timestamptz
   id: bigint
+  locationNote: String
   name: String
   onlineLink: String
   tenantId: bigint
@@ -30457,9 +30793,9 @@ input LocationMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  locationNote: OrderBy
   name: OrderBy
   onlineLink: OrderBy
   tenantId: OrderBy
@@ -30500,13 +30836,13 @@ input LocationOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  details: OrderBy
   eventsAggregate: EventAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
   locationImagesAggregate: LocationImagesAggregateOrderBy
+  locationNote: OrderBy
   name: OrderBy
   onlineLink: OrderBy
   tenant: TenantOrderBy
@@ -30537,13 +30873,13 @@ enum LocationSelectColumn {
   deletedAt
 
   # column name
-  details
-
-  # column name
   hiddenAt
 
   # column name
   id
+
+  # column name
+  locationNote
 
   # column name
   name
@@ -30565,9 +30901,9 @@ input LocationSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   hiddenAt: timestamptz
   id: bigint
+  locationNote: String
   name: String
   onlineLink: String
   tenantId: bigint
@@ -30644,9 +30980,9 @@ input LocationStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  details: String
   hiddenAt: timestamptz
   id: bigint
+  locationNote: String
   name: String
   onlineLink: String
   tenantId: bigint
@@ -30689,13 +31025,13 @@ enum LocationUpdateColumn {
   deletedAt
 
   # column name
-  details
-
-  # column name
   hiddenAt
 
   # column name
   id
+
+  # column name
+  locationNote
 
   # column name
   name
@@ -31073,27 +31409,27 @@ type MissionJoin {
   id: bigint!
 
   # An object relationship
-  joiner: User!
-  joinerId: bigint!
+  individual: Individual
+
+  # An object relationship
+  joinedBy: User!
+  joinedById: bigint!
 
   # An object relationship
   mission: Mission!
   missionId: bigint!
   points: smallint
-  pointsSettledAt: timestamptz
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
 
   # An object relationship
-  pointsSettledBy: Individual
-  pointsSettledById: bigint
+  processedBy: Individual
+  processedById: bigint
 
   # An object relationship
   project: Project
   projectId: bigint
-  settledAt: timestamptz
-
-  # An object relationship
-  settledBy: Individual
-  settledById: bigint
   state: String!
 
   # An object relationship
@@ -31161,12 +31497,12 @@ type MissionJoinAvgFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31175,12 +31511,12 @@ input MissionJoinAvgOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31199,19 +31535,19 @@ input MissionJoinBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  joiner: UserBoolExp
-  joinerId: BigintComparisonExp
+  individual: IndividualBoolExp
+  joinedBy: UserBoolExp
+  joinedById: BigintComparisonExp
   mission: MissionBoolExp
   missionId: BigintComparisonExp
   points: SmallintComparisonExp
-  pointsSettledAt: TimestamptzComparisonExp
-  pointsSettledBy: IndividualBoolExp
-  pointsSettledById: BigintComparisonExp
+  pointsProcessedAt: TimestamptzComparisonExp
+  pointsProcessedById: BigintComparisonExp
+  processedAt: TimestamptzComparisonExp
+  processedBy: IndividualBoolExp
+  processedById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  settledAt: TimestamptzComparisonExp
-  settledBy: IndividualBoolExp
-  settledById: BigintComparisonExp
   state: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -31231,12 +31567,12 @@ input MissionJoinIncInput {
   createdById: bigint
   eventJoinId: bigint
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledById: bigint
+  pointsProcessedById: bigint
+  processedById: bigint
   projectId: bigint
-  settledById: bigint
   tenantId: bigint
 }
 
@@ -31251,19 +31587,19 @@ input MissionJoinInsertInput {
   eventJoins: EventJoinArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
-  joiner: UserObjRelInsertInput
-  joinerId: bigint
+  individual: IndividualObjRelInsertInput
+  joinedBy: UserObjRelInsertInput
+  joinedById: bigint
   mission: MissionObjRelInsertInput
   missionId: bigint
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledBy: IndividualObjRelInsertInput
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
+  processedBy: IndividualObjRelInsertInput
+  processedById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
-  settledAt: timestamptz
-  settledBy: IndividualObjRelInsertInput
-  settledById: bigint
   state: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -31277,14 +31613,14 @@ type MissionJoinMaxFields {
   eventJoinId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -31297,14 +31633,14 @@ input MissionJoinMaxOrderBy {
   eventJoinId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -31317,14 +31653,14 @@ type MissionJoinMinFields {
   eventJoinId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -31337,14 +31673,14 @@ input MissionJoinMinOrderBy {
   eventJoinId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   tenantId: OrderBy
 }
@@ -31384,19 +31720,19 @@ input MissionJoinOrderBy {
   eventJoinsAggregate: EventJoinAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joiner: UserOrderBy
-  joinerId: OrderBy
+  individual: IndividualOrderBy
+  joinedBy: UserOrderBy
+  joinedById: OrderBy
   mission: MissionOrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledAt: OrderBy
-  pointsSettledBy: IndividualOrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedAt: OrderBy
+  pointsProcessedById: OrderBy
+  processedAt: OrderBy
+  processedBy: IndividualOrderBy
+  processedById: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  settledAt: OrderBy
-  settledBy: IndividualOrderBy
-  settledById: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -31428,7 +31764,7 @@ enum MissionJoinSelectColumn {
   id
 
   # column name
-  joinerId
+  joinedById
 
   # column name
   missionId
@@ -31437,19 +31773,19 @@ enum MissionJoinSelectColumn {
   points
 
   # column name
-  pointsSettledAt
+  pointsProcessedAt
 
   # column name
-  pointsSettledById
+  pointsProcessedById
+
+  # column name
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   projectId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -31466,14 +31802,14 @@ input MissionJoinSetInput {
   eventJoinId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -31483,12 +31819,12 @@ type MissionJoinStddevFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31497,12 +31833,12 @@ input MissionJoinStddevOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31511,12 +31847,12 @@ type MissionJoinStddevPopFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31525,12 +31861,12 @@ input MissionJoinStddevPopOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31539,12 +31875,12 @@ type MissionJoinStddevSampFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31553,12 +31889,12 @@ input MissionJoinStddevSampOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31579,14 +31915,14 @@ input MissionJoinStreamCursorValueInput {
   eventJoinId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledAt: timestamptz
-  pointsSettledById: bigint
+  pointsProcessedAt: timestamptz
+  pointsProcessedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   projectId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   tenantId: bigint
 }
@@ -31596,12 +31932,12 @@ type MissionJoinSumFields {
   createdById: bigint
   eventJoinId: bigint
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
   missionId: bigint
   points: smallint
-  pointsSettledById: bigint
+  pointsProcessedById: bigint
+  processedById: bigint
   projectId: bigint
-  settledById: bigint
   tenantId: bigint
 }
 
@@ -31610,12 +31946,12 @@ input MissionJoinSumOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31640,7 +31976,7 @@ enum MissionJoinUpdateColumn {
   id
 
   # column name
-  joinerId
+  joinedById
 
   # column name
   missionId
@@ -31649,19 +31985,19 @@ enum MissionJoinUpdateColumn {
   points
 
   # column name
-  pointsSettledAt
+  pointsProcessedAt
 
   # column name
-  pointsSettledById
+  pointsProcessedById
+
+  # column name
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   projectId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -31686,12 +32022,12 @@ type MissionJoinVarianceFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31700,12 +32036,12 @@ input MissionJoinVarianceOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31714,12 +32050,12 @@ type MissionJoinVarPopFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31728,12 +32064,12 @@ input MissionJoinVarPopOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -31742,12 +32078,12 @@ type MissionJoinVarSampFields {
   createdById: Float
   eventJoinId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
   missionId: Float
   points: Float
-  pointsSettledById: Float
+  pointsProcessedById: Float
+  processedById: Float
   projectId: Float
-  settledById: Float
   tenantId: Float
 }
 
@@ -31756,12 +32092,12 @@ input MissionJoinVarSampOrderBy {
   createdById: OrderBy
   eventJoinId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
   missionId: OrderBy
   points: OrderBy
-  pointsSettledById: OrderBy
+  pointsProcessedById: OrderBy
+  processedById: OrderBy
   projectId: OrderBy
-  settledById: OrderBy
   tenantId: OrderBy
 }
 
@@ -32520,6 +32856,15 @@ type Mutation {
 
   # delete single row from the table: "event_manage"
   deleteEventManageByPk(id: bigint!): EventManage
+
+  # delete data from the table: "event_manage_supervisors"
+  deleteEventManageSupervisors(
+    # filter the rows which have to be deleted
+    where: EventManageSupervisorsBoolExp!
+  ): EventManageSupervisorsMutationResponse
+
+  # delete single row from the table: "event_manage_supervisors"
+  deleteEventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
 
   # delete data from the table: "event_tags"
   deleteEventTags(
@@ -33483,6 +33828,24 @@ type Mutation {
     # upsert condition
     onConflict: EventManageOnConflict
   ): EventManage
+
+  # insert data into the table: "event_manage_supervisors"
+  insertEventManageSupervisors(
+    # the rows to be inserted
+    objects: [EventManageSupervisorsInsertInput!]!
+
+    # upsert condition
+    onConflict: EventManageSupervisorsOnConflict
+  ): EventManageSupervisorsMutationResponse
+
+  # insert a single row into the table: "event_manage_supervisors"
+  insertEventManageSupervisorsOne(
+    # the row to be inserted
+    object: EventManageSupervisorsInsertInput!
+
+    # upsert condition
+    onConflict: EventManageSupervisorsOnConflict
+  ): EventManageSupervisors
 
   # insert a single row into the table: "event"
   insertEventOne(
@@ -35238,6 +35601,34 @@ type Mutation {
     # updates to execute, in order
     updates: [EventManageUpdates!]!
   ): [EventManageMutationResponse]
+
+  # update data of the table: "event_manage_supervisors"
+  updateEventManageSupervisors(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventManageSupervisorsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventManageSupervisorsSetInput
+
+    # filter the rows which have to be updated
+    where: EventManageSupervisorsBoolExp!
+  ): EventManageSupervisorsMutationResponse
+
+  # update single row of the table: "event_manage_supervisors"
+  updateEventManageSupervisorsByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventManageSupervisorsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventManageSupervisorsSetInput
+    pkColumns: EventManageSupervisorsPkColumnsInput!
+  ): EventManageSupervisors
+
+  # update multiples rows of table: "event_manage_supervisors"
+  updateEventManageSupervisorsMany(
+    # updates to execute, in order
+    updates: [EventManageSupervisorsUpdates!]!
+  ): [EventManageSupervisorsMutationResponse]
 
   # update multiples rows of table: "event"
   updateEventMany(
@@ -40011,6 +40402,45 @@ type Query {
 
   # fetch data from the table: "event_manage" using primary key columns
   eventManageByPk(id: bigint!): EventManage
+
+  # fetch data from the table: "event_manage_supervisors"
+  eventManageSupervisors(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): [EventManageSupervisors!]!
+
+  # fetch aggregated fields from the table: "event_manage_supervisors"
+  eventManageSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): EventManageSupervisorsAggregate!
+
+  # fetch data from the table: "event_manage_supervisors" using primary key columns
+  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
 
   # An array relationship
   eventTags(
@@ -47595,6 +48025,57 @@ type Subscription {
     where: EventManageBoolExp
   ): [EventManage!]!
 
+  # fetch data from the table: "event_manage_supervisors"
+  eventManageSupervisors(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): [EventManageSupervisors!]!
+
+  # fetch aggregated fields from the table: "event_manage_supervisors"
+  eventManageSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): EventManageSupervisorsAggregate!
+
+  # fetch data from the table: "event_manage_supervisors" using primary key columns
+  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+
+  # fetch data from the table in a streaming manner: "event_manage_supervisors"
+  eventManageSupervisorsStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [EventManageSupervisorsStreamCursorInput]!
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): [EventManageSupervisors!]!
+
   # fetch data from the table in a streaming manner: "event"
   eventStream(
     # maximum number of rows returned in a single batch
@@ -52366,8 +52847,13 @@ type TeamJoin {
   id: bigint!
 
   # An object relationship
-  joiner: User!
-  joinerId: bigint!
+  joinedBy: User!
+  joinedById: bigint!
+  processedAt: timestamptz
+
+  # An object relationship
+  processedBy: Individual
+  processedById: bigint
 
   # An object relationship
   receivedPole: Pole
@@ -52376,11 +52862,6 @@ type TeamJoin {
   # An object relationship
   receivedRole: Role
   receivedRoleId: bigint
-  settledAt: timestamptz
-
-  # An object relationship
-  settledBy: Individual
-  settledById: bigint
   state: String!
 
   # An object relationship
@@ -52453,10 +52934,10 @@ type TeamJoinAvgFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52467,10 +52948,10 @@ input TeamJoinAvgOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52490,15 +52971,15 @@ input TeamJoinBoolExp {
   formSubmissionId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  joiner: UserBoolExp
-  joinerId: BigintComparisonExp
+  joinedBy: UserBoolExp
+  joinedById: BigintComparisonExp
+  processedAt: TimestamptzComparisonExp
+  processedBy: IndividualBoolExp
+  processedById: BigintComparisonExp
   receivedPole: PoleBoolExp
   receivedPoleId: BigintComparisonExp
   receivedRole: RoleBoolExp
   receivedRoleId: BigintComparisonExp
-  settledAt: TimestamptzComparisonExp
-  settledBy: IndividualBoolExp
-  settledById: BigintComparisonExp
   state: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -52518,10 +52999,10 @@ input TeamJoinIncInput {
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledById: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -52538,15 +53019,15 @@ input TeamJoinInsertInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joiner: UserObjRelInsertInput
-  joinerId: bigint
+  joinedBy: UserObjRelInsertInput
+  joinedById: bigint
+  processedAt: timestamptz
+  processedBy: IndividualObjRelInsertInput
+  processedById: bigint
   receivedPole: PoleObjRelInsertInput
   receivedPoleId: bigint
   receivedRole: RoleObjRelInsertInput
   receivedRoleId: bigint
-  settledAt: timestamptz
-  settledBy: IndividualObjRelInsertInput
-  settledById: bigint
   state: String
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -52563,11 +53044,11 @@ type TeamJoinMaxFields {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -52582,11 +53063,11 @@ input TeamJoinMaxOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -52601,11 +53082,11 @@ type TeamJoinMinFields {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -52620,11 +53101,11 @@ input TeamJoinMinOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedAt: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledAt: OrderBy
-  settledById: OrderBy
   state: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
@@ -52658,15 +53139,15 @@ input TeamJoinOrderBy {
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  joiner: UserOrderBy
-  joinerId: OrderBy
+  joinedBy: UserOrderBy
+  joinedById: OrderBy
+  processedAt: OrderBy
+  processedBy: IndividualOrderBy
+  processedById: OrderBy
   receivedPole: PoleOrderBy
   receivedPoleId: OrderBy
   receivedRole: RoleOrderBy
   receivedRoleId: OrderBy
-  settledAt: OrderBy
-  settledBy: IndividualOrderBy
-  settledById: OrderBy
   state: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -52703,19 +53184,19 @@ enum TeamJoinSelectColumn {
   id
 
   # column name
-  joinerId
+  joinedById
+
+  # column name
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   receivedPoleId
 
   # column name
   receivedRoleId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -52736,11 +53217,11 @@ input TeamJoinSetInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -52752,10 +53233,10 @@ type TeamJoinStddevFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52766,10 +53247,10 @@ input TeamJoinStddevOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52780,10 +53261,10 @@ type TeamJoinStddevPopFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52794,10 +53275,10 @@ input TeamJoinStddevPopOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52808,10 +53289,10 @@ type TeamJoinStddevSampFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52822,10 +53303,10 @@ input TeamJoinStddevSampOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52848,11 +53329,11 @@ input TeamJoinStreamCursorValueInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedAt: timestamptz
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledAt: timestamptz
-  settledById: bigint
   state: String
   teamId: bigint
   tenantId: bigint
@@ -52864,10 +53345,10 @@ type TeamJoinSumFields {
   createdById: bigint
   formSubmissionId: bigint
   id: bigint
-  joinerId: bigint
+  joinedById: bigint
+  processedById: bigint
   receivedPoleId: bigint
   receivedRoleId: bigint
-  settledById: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -52878,10 +53359,10 @@ input TeamJoinSumOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52910,19 +53391,19 @@ enum TeamJoinUpdateColumn {
   id
 
   # column name
-  joinerId
+  joinedById
+
+  # column name
+  processedAt
+
+  # column name
+  processedById
 
   # column name
   receivedPoleId
 
   # column name
   receivedRoleId
-
-  # column name
-  settledAt
-
-  # column name
-  settledById
 
   # column name
   state
@@ -52951,10 +53432,10 @@ type TeamJoinVarianceFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52965,10 +53446,10 @@ input TeamJoinVarianceOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -52979,10 +53460,10 @@ type TeamJoinVarPopFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -52993,10 +53474,10 @@ input TeamJoinVarPopOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -53007,10 +53488,10 @@ type TeamJoinVarSampFields {
   createdById: Float
   formSubmissionId: Float
   id: Float
-  joinerId: Float
+  joinedById: Float
+  processedById: Float
   receivedPoleId: Float
   receivedRoleId: Float
-  settledById: Float
   teamId: Float
   tenantId: Float
 }
@@ -53021,10 +53502,10 @@ input TeamJoinVarSampOrderBy {
   createdById: OrderBy
   formSubmissionId: OrderBy
   id: OrderBy
-  joinerId: OrderBy
+  joinedById: OrderBy
+  processedById: OrderBy
   receivedPoleId: OrderBy
   receivedRoleId: OrderBy
-  settledById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -53087,9 +53568,46 @@ type TeamMember {
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
+  startDate: timestamptz!
 
   # An array relationship
-  projectSupervisors(
+  supervisedEvents(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): [EventManageSupervisors!]!
+
+  # An aggregate relationship
+  supervisedEventsAggregate(
+    # distinct select on columns
+    distinctOn: [EventManageSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventManageSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventManageSupervisorsBoolExp
+  ): EventManageSupervisorsAggregate!
+
+  # An array relationship
+  supervisedProjects(
     # distinct select on columns
     distinctOn: [ProjectSupervisorsSelectColumn!]
 
@@ -53107,7 +53625,7 @@ type TeamMember {
   ): [ProjectSupervisors!]!
 
   # An aggregate relationship
-  projectSupervisorsAggregate(
+  supervisedProjectsAggregate(
     # distinct select on columns
     distinctOn: [ProjectSupervisorsSelectColumn!]
 
@@ -53123,7 +53641,6 @@ type TeamMember {
     # filter the rows returned
     where: ProjectSupervisorsBoolExp
   ): ProjectSupervisorsAggregate!
-  startDate: timestamptz!
 
   # An object relationship
   team: Team!
@@ -53262,9 +53779,11 @@ input TeamMemberBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  projectSupervisors: ProjectSupervisorsBoolExp
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateBoolExp
   startDate: TimestamptzComparisonExp
+  supervisedEvents: EventManageSupervisorsBoolExp
+  supervisedEventsAggregate: EventManageSupervisorsAggregateBoolExp
+  supervisedProjects: ProjectSupervisorsBoolExp
+  supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamMemberRoles: TeamMemberRolesBoolExp
@@ -53301,8 +53820,9 @@ input TeamMemberInsertInput {
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  projectSupervisors: ProjectSupervisorsArrRelInsertInput
   startDate: timestamptz
+  supervisedEvents: EventManageSupervisorsArrRelInsertInput
+  supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   teamMemberRoles: TeamMemberRolesArrRelInsertInput
@@ -53406,8 +53926,9 @@ input TeamMemberOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  projectSupervisorsAggregate: ProjectSupervisorsAggregateOrderBy
   startDate: OrderBy
+  supervisedEventsAggregate: EventManageSupervisorsAggregateOrderBy
+  supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy

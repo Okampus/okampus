@@ -6,10 +6,10 @@ export class GrantProps {
   @Field(() => Float)
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
-  amountAsked!: number;
+  askedAmount!: number;
 
   @Field(() => Float)
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
-  amountGiven!: number;
+  receivedAmount!: number;
 }

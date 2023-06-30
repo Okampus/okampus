@@ -62,7 +62,7 @@ export class EventSeeder extends Factory<Event> {
       slug: `${toSlug(name)}.${nanoid(16)}`,
       start,
       end,
-      pointsPresence: [0.25, 1][randomInt(2)],
+      pointsAwardedForAttendance: [0.25, 1][randomInt(2)],
       price: isPayedEvent ? randomInt(1, 50) : 0,
       project: this.project,
       location: new Location({

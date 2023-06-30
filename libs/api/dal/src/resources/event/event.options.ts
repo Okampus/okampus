@@ -20,7 +20,7 @@ export type EventOptions = EventProps &
     project?: Project | null;
     joinForm?: Form | null;
     regularEvent?: Event | null;
-    approvalSubmission?: FormSubmission | null;
+    eventApprovalSubmission?: FormSubmission | null;
     lastEventApprovalStep?: EventApprovalStep | null;
     tags?: Tag[];
     teams?: Team[];

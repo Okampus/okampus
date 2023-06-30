@@ -99,10 +99,10 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
   for (const event of events) {
     const eventId = event.id as string;
     for (const participant of event.eventJoins) {
-      const id = participant.joiner.id as string;
+      const id = participant.joinedBy.id as string;
       if (id === currentUser?.id) myEventJoins[eventId] = participant;
       else if (allEventJoins[id]) allEventJoins[id].eventJoins[eventId] = participant;
-      else allEventJoins[id] = { user: participant.joiner, eventJoins: { [eventId]: participant } };
+      else allEventJoins[id] = { user: participant.joinedBy, eventJoins: { [eventId]: participant } };
     }
   }
 
@@ -140,7 +140,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
                   createEventJoin({
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    variables: { object: { eventId: event.id, joinerId: currentUser?.id } },
+                    variables: { object: { eventId: event.id, joinedById: currentUser?.id } },
                     onCompleted: (data) => {
                       console.log('Data', data.insertEventJoinOne, data.insertEventJoinOne?.id);
                     },
@@ -187,7 +187,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
       createEventJoin({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        variables: { object: { eventId: event.id, joinerId: currentUser?.id } },
+        variables: { object: { eventId: event.id, joinedById: currentUser?.id } },
         onCompleted: (data) => {
           console.log('Data', data.insertEventJoinOne, data.insertEventJoinOne?.id);
         },
@@ -329,7 +329,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
               </div>
               {events.map((event) => {
                 const eventJoin = eventJoins[event.id as string];
-                return <PresenceCell presence={eventJoin?.presence} />;
+                return <PresenceCell presence={eventJoin?.isParticipant} />;
                 // const color = !eventJoin?.attendanceStatus eventJoin?.attendanceStatus === RegistrationStatus.Sure ? 'bg-green-500' : 'bg-red-500';
                 // return (
                 //   <div className="w-64 shrink-0 h-16 flex items-center justify-center" key={event.id as string}>

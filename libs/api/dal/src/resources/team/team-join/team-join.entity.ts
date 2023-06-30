@@ -19,13 +19,13 @@ export class TeamJoin extends TenantScopedEntity {
   state = ApprovalState.Pending;
 
   @ManyToOne({ type: 'User' })
-  joiner!: User;
+  joinedBy!: User;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  settledBy: Individual | null = null;
+  processedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  settledAt: Date | null = null;
+  processedAt: Date | null = null;
 
   @ManyToOne({ type: 'FormSubmission', nullable: true, default: null })
   formSubmission: FormSubmission | null = null;

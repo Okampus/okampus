@@ -8,7 +8,7 @@ object_relationships:
   - name: event
     using:
       foreign_key_constraint_on:
-        column: approval_submission_id
+        column: event_approval_submission_id
         table:
           name: event
           schema: public

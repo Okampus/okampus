@@ -21,8 +21,9 @@ export function UserView() {
   const totalAttendances = sum(
     user.eventJoins.map((eventJoin) => {
       return eventJoin
-        ? eventJoin.presence
-          ? eventJoin.event.pointsPresence + sum(eventJoin.actions?.map((action) => action.points).filter(isNotNull))
+        ? eventJoin.isParticipant
+          ? eventJoin.event.pointsAwardedForAttendance +
+            sum(eventJoin.actions?.map((action) => action.points).filter(isNotNull))
           : -0.25
         : 0;
     })
@@ -54,11 +55,11 @@ export function UserView() {
                       label: 'Points présence',
                       align: Align.Right,
                       render: (eventJoin) => {
-                        return eventJoin.presence ? (
+                        return eventJoin.isParticipant ? (
                           <div className="text-green-500 font-semibold flex justify-between w-full">
                             <div>Présent</div>{' '}
                             <div>
-                              {eventJoin.event.pointsPresence} {tenant?.pointName}
+                              {eventJoin.event.pointsAwardedForAttendance} {tenant?.pointName}
                             </div>
                           </div>
                         ) : (
@@ -109,10 +110,10 @@ export function UserView() {
                       label: 'Total',
                       align: Align.Right,
                       render: (eventJoin) => {
-                        return eventJoin.presence ? (
+                        return eventJoin.isParticipant ? (
                           <div className="text-green-500 font-semibold">
                             +
-                            {eventJoin.event.pointsPresence +
+                            {eventJoin.event.pointsAwardedForAttendance +
                               sum(eventJoin.actions?.map((action) => action.points).filter(isNotNull))}
                           </div>
                         ) : (
@@ -124,7 +125,7 @@ export function UserView() {
                 />
                 {/* {user.eventJoins.map((eventJoin) => (
                   <div>
-                    {eventJoin.event?.contentMaster?.name} - {eventJoin.event?.presenceReward} points
+                    {eventJoin.event?.contentMaster?.name} - {eventJoin.event?.isParticipantReward} points
                   </div>
                   // <div key={eventJoin.id as string} className="flex flex-col items-center justify-center">
                   //   <div className="w-20 h-20 rounded-full bg-gray-200" />
@@ -182,7 +183,7 @@ export function UserView() {
                 />
                 {/* {user.eventJoins.map((eventJoin) => (
                   <div>
-                    {eventJoin.event?.contentMaster?.name} - {eventJoin.event?.presenceReward} points
+                    {eventJoin.event?.contentMaster?.name} - {eventJoin.event?.isParticipantReward} points
                   </div>
                   // <div key={eventJoin.id as string} className="flex flex-col items-center justify-center">
                   //   <div className="w-20 h-20 rounded-full bg-gray-200" />

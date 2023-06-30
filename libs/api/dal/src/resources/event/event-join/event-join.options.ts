@@ -6,23 +6,21 @@ import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { User } from '../../individual/user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { EventManage } from '../event-manage/event-manage.entity';
-import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
-import type { SettledVia } from '@okampus/shared/enums';
+import type { ProcessedVia } from '@okampus/shared/enums';
 import type { Individual } from '../../individual/individual.entity';
 
 export type EventJoinOptions = EventJoinProps &
   TenantScopedOptions & {
     presence?: boolean | null;
-    settledBy?: Individual | null;
-    settledAt?: Date | null;
-    presenceSettledBy?: Individual | null;
-    presenceSettledAt?: Date | null;
-    presenceSettledVia?: SettledVia | null;
+    processedBy?: Individual | null;
+    processedAt?: Date | null;
+    participationProcessedBy?: Individual | null;
+    participationProcessedAt?: Date | null;
+    participationProcessedVia?: ProcessedVia | null;
     event: Event;
-    joiner: User;
+    joinedBy: User;
     joinedFor?: EventManage | null;
     qrCode?: FileUpload | null;
-    missionJoin?: MissionJoin | null;
     actions?: Action[];
     formSubmission?: FormSubmission | null;
   };

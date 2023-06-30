@@ -20,7 +20,7 @@ export const eventBaseInfo = Selector('Event')({
   location: locationBaseInfo,
   state: true,
   price: true,
-  pointsPresence: true,
+  pointsAwardedForAttendance: true,
   banner: fileUploadBaseInfo,
   isPrivate: true,
   project: projectMinimalInfo,

@@ -58,19 +58,19 @@ export class MissionJoinsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    if (props.settledById) throw new BadRequestException('Cannot update settledById directly.');
-    if (props.settledAt) throw new BadRequestException('Cannot update settledAt directly.');
+    if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
+    if (props.processedAt) throw new BadRequestException('Cannot update processedAt directly.');
 
     if (props.state === ApprovalState.Approved || props.state === ApprovalState.Rejected) {
-      props.settledById = this.requester().id;
-      props.settledAt = new Date().toISOString();
+      props.processedById = this.requester().id;
+      props.processedAt = new Date().toISOString();
     }
-    if (props.pointsSettledById) throw new BadRequestException('Cannot update pointsSettledById directly.');
-    if (props.pointsSettledAt) throw new BadRequestException('Cannot update pointsSettledAt directly.');
+    if (props.pointsProcessedById) throw new BadRequestException('Cannot update pointsProcessedById directly.');
+    if (props.pointsProcessedAt) throw new BadRequestException('Cannot update pointsProcessedAt directly.');
 
     if (props.points !== null) {
-      props.pointsSettledById = this.requester().id;
-      props.pointsSettledAt = new Date().toISOString();
+      props.pointsProcessedById = this.requester().id;
+      props.pointsProcessedAt = new Date().toISOString();
     }
 
     // Custom logic

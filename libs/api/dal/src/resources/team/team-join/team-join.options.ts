@@ -11,10 +11,10 @@ import type { Individual } from '../../individual/individual.entity';
 export type TeamJoinOptions = TeamJoinProps &
   TenantScopedOptions & {
     state: ApprovalState;
-    settledAt?: Date | null;
+    processedAt?: Date | null;
     formSubmission?: FormSubmission | null;
-    joiner: User;
-    settledBy?: Individual | null;
+    joinedBy: User;
+    processedBy?: Individual | null;
     team: Team;
     askedRole: Role;
     receivedRole?: Role | null;

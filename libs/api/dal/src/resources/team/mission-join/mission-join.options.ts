@@ -8,12 +8,12 @@ import type { Project } from '../../project/project.entity';
 
 export type MissionJoinOptions = TenantScopedOptions &
   MissionJoinProps & {
-    settledBy?: Individual | null;
-    settledAt?: Date | null;
-    pointsSettledBy?: Individual | null;
-    pointsSettledAt?: Date | null;
+    processedBy?: Individual | null;
+    processedAt?: Date | null;
+    pointsProcessedBy?: Individual | null;
+    pointsProcessedAt?: Date | null;
     mission: Mission;
-    joiner: User;
+    joinedBy: User;
     eventJoin?: EventJoin | null;
     project?: Project | null;
   };

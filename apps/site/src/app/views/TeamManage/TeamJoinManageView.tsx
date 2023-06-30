@@ -179,13 +179,13 @@ export function TeamJoinManageView() {
                       <div className="flex gap-item items-center">
                         <AvatarImage
                           size={36}
-                          src={getAvatar(selectedTeamJoin.joiner.individual?.actor?.actorImages)}
-                          name={selectedTeamJoin.joiner.individual?.actor?.name}
+                          src={getAvatar(selectedTeamJoin.joinedBy.individual?.actor?.actorImages)}
+                          name={selectedTeamJoin.joinedBy.individual?.actor?.name}
                           type="user"
                         />
                         <div className="flex flex-col gap-1">
                           <div className="text-1 font-semibold text-4xl">
-                            {selectedTeamJoin.joiner.individual?.actor?.name}
+                            {selectedTeamJoin.joinedBy.individual?.actor?.name}
                           </div>
                           <div className="text-3 text-xl">
                             A candidaté{' '}
@@ -254,7 +254,7 @@ export function TeamJoinManageView() {
                                             //       receivedPoleId: teamManage.poles?.[0]?.id as string,
                                             //       receivedRoleId: values.role,
                                             //       teamId: teamManage.id as string,
-                                            //       userId: selectedTeamJoin.joiner.id as string,
+                                            //       userId: selectedTeamJoin.joinedBy.id as string,
                                             //       note: '',
                                             //     },
                                             //   },
@@ -289,7 +289,7 @@ export function TeamJoinManageView() {
                                     ),
                                   // {
                                   //   showButtonModal({
-                                  //     title: `Adhésion de ${selectedTeamJoin.joiner.individual?.actor?.name}`,
+                                  //     title: `Adhésion de ${selectedTeamJoin.joinedBy.individual?.actor?.name}`,
                                   //     content: (
                                   //       <ValidateTeamJoinForm
                                   //         teamJoin={selectedTeamJoin}
@@ -313,7 +313,7 @@ export function TeamJoinManageView() {
                                         setSelectedTeamJoin(null);
                                         setNotification({
                                           type: ToastType.Success,
-                                          message: `L'adhésion de ${selectedTeamJoin.joiner.individual?.actor?.name} a été refusée !`,
+                                          message: `L'adhésion de ${selectedTeamJoin.joinedBy.individual?.actor?.name} a été refusée !`,
                                         });
                                       },
                                       onError: (error) =>

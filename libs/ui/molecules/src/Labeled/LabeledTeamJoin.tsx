@@ -20,12 +20,12 @@ export function LabeledTeamJoin({ teamJoin, onClick }: LabeledTeamJoinProps) {
       <div className="flex gap-item">
         <AvatarImage
           size={22}
-          src={getAvatar(teamJoin.joiner.individual?.actor?.actorImages)}
-          name={teamJoin.joiner.individual?.actor?.name}
+          src={getAvatar(teamJoin.joinedBy.individual?.actor?.actorImages)}
+          name={teamJoin.joinedBy.individual?.actor?.name}
           type="user"
         />
         <div className="flex flex-col gap-0.5 font-heading">
-          <div className="text-1 font-bold text-lg line-clamp-1">{teamJoin.joiner.individual?.actor?.name}</div>
+          <div className="text-1 font-bold text-lg line-clamp-1">{teamJoin.joinedBy.individual?.actor?.name}</div>
           <div className="flex items-center gap-1 text-xs">Pour le rôle de {teamJoin.receivedRole?.name}</div>
         </div>
       </div>

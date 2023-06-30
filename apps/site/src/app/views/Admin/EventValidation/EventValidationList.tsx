@@ -94,7 +94,7 @@ export function EventValidationList() {
         <div className="flex gap-4">
           <EventCard key={event.id as string} event={event} link={`/admin/event/${event.id}`} />
           <div className="flex flex-col items text-1">
-            Étape actuelle: {event.eventApprovalStep?.name} / {event.state}
+            Étape actuelle: {event.lastEventApprovalStep?.name} / {event.state}
             <div className="flex gap-4">
               <ActionButton
                 action={{

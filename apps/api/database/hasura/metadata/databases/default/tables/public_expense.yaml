@@ -18,9 +18,9 @@ object_relationships:
         table:
           name: finance
           schema: public
-  - name: settledBy
+  - name: processedBy
     using:
-      foreign_key_constraint_on: settled_by_id
+      foreign_key_constraint_on: processed_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

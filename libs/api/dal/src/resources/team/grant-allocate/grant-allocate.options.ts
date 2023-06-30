@@ -7,8 +7,8 @@ import type { Finance } from '../finance/finance.entity';
 
 export type GrantAllocateOptions = GrantAllocateProps &
   TenantScopedOptions & {
-    validatedBy?: Individual | null;
-    validatedAt?: Date | null;
+    receivedAmountProcessedBy?: Individual | null;
+    receivedAmountProcessedAt?: Date | null;
     grant: Grant;
     finance?: Finance | null;
     signature?: FileUpload | null;

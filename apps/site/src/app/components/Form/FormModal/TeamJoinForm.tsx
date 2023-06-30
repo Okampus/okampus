@@ -49,7 +49,7 @@ export function TeamJoinForm({ team }: TeamJoinFormProps) {
                   createdById: currentUser?.individual?.id,
                   tenantId: team.tenantId,
                   askedRoleId: role,
-                  joinerId: currentUser?.id,
+                  joinedById: currentUser?.id,
                   state: ApprovalState.Pending,
                   formSubmission: {
                     data: {

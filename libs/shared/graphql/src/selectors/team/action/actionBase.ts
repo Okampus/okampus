@@ -8,7 +8,7 @@ export const actionBaseInfo = Selector('Action')({
   ...entityBase,
   description: true,
   points: true,
-  pointsSettledBy: individualBaseInfo,
+  pointsProcessedBy: individualBaseInfo,
   state: true,
   name: true,
 });

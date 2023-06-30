@@ -7,7 +7,7 @@ import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/
 // import { ReactComponent as PlusIcon } from '@okampus/assets/svg/icons/material/filled/add.svg';
 
 import { EVENT_MANAGE_ROUTE, EVENT_MANAGE_ROUTES } from '@okampus/shared/consts';
-import { Align, SettledVia } from '@okampus/shared/enums';
+import { Align, ProcessedVia } from '@okampus/shared/enums';
 // import { ActionType } from '@okampus/shared/types';
 import { formatDateStandard, formatHourSimple } from '@okampus/shared/utils';
 
@@ -89,10 +89,10 @@ export function EventManageView() {
                 render: (eventJoin) => {
                   return (
                     <LabeledUser
-                      id={eventJoin.joiner.id as string}
-                      name={eventJoin.joiner.individual?.actor?.name ?? ''}
+                      id={eventJoin.joinedBy.id as string}
+                      name={eventJoin.joinedBy.individual?.actor?.name ?? ''}
                       avatar={{
-                        src: getAvatar(eventJoin.joiner.individual?.actor?.actorImages),
+                        src: getAvatar(eventJoin.joinedBy.individual?.actor?.actorImages),
                         size: 14,
                       }}
                     />
@@ -156,7 +156,7 @@ export function EventManageView() {
               //     //         //   content: (
               //     //         //     <EventInsertAction
               //     //         //       eventJoinId={eventJoin.id}
-              //     //         //       userId={eventJoin.joiner.id}
+              //     //         //       userId={eventJoin.joinedBy.id}
               //     //         //       teamId={eventManage.teamEvents[0].teamId}
               //     //         //     />
               //     //         //   ),
@@ -208,10 +208,10 @@ export function EventManageView() {
               {
                 label: `${tenant?.pointName} Présence`,
                 render: (eventJoin) => {
-                  const present = eventJoin.presence;
+                  const present = eventJoin.isParticipant;
                   return (
                     <div className={clsx('text-lg font-medium', present ? 'text-green-400' : 'text-red-500')}>
-                      {present ? `+${eventManage.pointsPresence}` : -0.25} {tenant?.pointName}
+                      {present ? `+${eventManage.pointsAwardedForAttendance}` : -0.25} {tenant?.pointName}
                     </div>
                   );
                 },
@@ -220,7 +220,7 @@ export function EventManageView() {
               {
                 label: 'Confirmation de présence / absence',
                 render: (eventJoin) => {
-                  if (!eventJoin.presence)
+                  if (!eventJoin.isParticipant)
                     return (
                       <div></div>
                       // <div className="flex gap-4">
@@ -261,13 +261,14 @@ export function EventManageView() {
                       // </div>
                     );
 
-                  if (!eventJoin.presenceSettledAt) return;
+                  if (!eventJoin.participationProcessedAt) return;
 
-                  const date = formatDateStandard(eventJoin.presenceSettledAt);
-                  const time = formatHourSimple(eventJoin.presenceSettledAt);
+                  const date = formatDateStandard(eventJoin.participationProcessedAt);
+                  const time = formatHourSimple(eventJoin.participationProcessedAt);
 
-                  if (eventJoin.presence) {
-                    const via = eventJoin.presenceSettledVia === SettledVia.QR ? 'QR code validé' : 'Noté présent';
+                  if (eventJoin.isParticipant) {
+                    const via =
+                      eventJoin.participationProcessedVia === ProcessedVia.QR ? 'QR code validé' : 'Noté présent';
                     return (
                       <div className="text-lg font-medium w-full flex items-center justify-center gap-2 bg-green-100 dark:bg-green-900 py-3 px-4 rounded">
                         <CheckIcon className="w-8 h-8 text-green-500" />
@@ -287,7 +288,7 @@ export function EventManageView() {
                     );
                   }
 
-                  // if (!eventJoin.presence) return <div className="text-red-500">Désinscrit</div>;
+                  // if (!eventJoin.isParticipant) return <div className="text-red-500">Désinscrit</div>;
                   // return (
                   //   <ActionButton
                   //     className="w-full"
@@ -304,8 +305,8 @@ export function EventManageView() {
                 align: Align.Left,
                 render: (eventJoin) => {
                   // const attendance = eventJoin.eventAttendances[0];
-                  const actor = eventJoin.settledBy?.actor;
-                  if (eventJoin.presenceSettledAt && actor?.individual?.user) {
+                  const actor = eventJoin.processedBy?.actor;
+                  if (eventJoin.participationProcessedAt && actor?.individual?.user) {
                     return (
                       <LabeledUser
                         id={actor.individual.user.id}

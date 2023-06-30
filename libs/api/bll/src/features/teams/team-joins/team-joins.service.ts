@@ -58,12 +58,12 @@ export class TeamJoinsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    if (props.settledById) throw new BadRequestException('Cannot update settledById directly.');
-    if (props.settledAt) throw new BadRequestException('Cannot update settledAt directly.');
+    if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
+    if (props.processedAt) throw new BadRequestException('Cannot update processedAt directly.');
 
     if (props.state === ApprovalState.Rejected || (props.state === ApprovalState.Approved && props.receivedRoleId)) {
-      props.settledById = this.requester().id;
-      props.settledAt = new Date().toISOString();
+      props.processedById = this.requester().id;
+      props.processedAt = new Date().toISOString();
     }
 
     // Custom logic

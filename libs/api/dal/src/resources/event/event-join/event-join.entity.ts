@@ -12,7 +12,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { ApprovalState, SettledVia } from '@okampus/shared/enums';
+import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
 
 import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 import type { Individual } from '../../individual/individual.entity';
@@ -32,28 +32,28 @@ export class EventJoin extends TenantScopedEntity {
   state = ApprovalState.Pending;
 
   @Property({ type: 'boolean', nullable: true, default: null })
-  presence: boolean | null = null;
+  isParticipant: boolean | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  settledBy: Individual | null = null;
+  processedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  settledAt: Date | null = null;
+  processedAt: Date | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  presenceSettledBy: Individual | null = null;
+  participationProcessedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  presenceSettledAt: Date | null = null;
+  participationProcessedAt: Date | null = null;
 
-  @Enum({ items: () => SettledVia, type: EnumType, nullable: true })
-  presenceSettledVia: SettledVia | null = null;
+  @Enum({ items: () => ProcessedVia, type: EnumType, nullable: true })
+  participationProcessedVia: ProcessedVia | null = null;
 
   @ManyToOne({ type: 'Event' })
   event!: Event;
 
   @ManyToOne({ type: 'User' })
-  joiner!: User;
+  joinedBy!: User;
 
   @ManyToOne({ type: 'EventManage', nullable: true, default: null })
   joinedFor: EventManage | null = null;

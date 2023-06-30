@@ -35,10 +35,10 @@ export class Expense extends TenantScopedEntity {
   lastNotifiedAt: Date | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  settledBy: Individual | null = null;
+  processedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  settledAt: Date | null = null;
+  processedAt: Date | null = null;
 
   @OneToOne({ type: 'Finance', mappedBy: 'expense' })
   finance!: Finance;

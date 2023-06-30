@@ -23,7 +23,7 @@ nx g hasura-feature account --subfolder teams --folder $1
 nx g hasura-feature account-allocate --subfolder teams --folder $1
 nx g hasura-feature action --subfolder teams --folder $1
 nx g hasura-feature finance --subfolder teams --folder $1
-nx g hasura-feature team-join --subfolder teams --folder $1 --settles='by:settledById_at:settledAt_if:props.state === enum!ApprovalState.Rejected || (props.state === enum!ApprovalState.Approved && props.receivedRoleId)'
-nx g hasura-feature mission-join --subfolder teams --folder $1 --settles='by:settledById_at:settledAt_if:props.state === enum!ApprovalState.Approved || props.state === enum!ApprovalState.Rejected;by:pointsSettledById_at:pointsSettledAt_if:props.points !== null'
+nx g hasura-feature team-join --subfolder teams --folder $1 --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Rejected || (props.state === enum!ApprovalState.Approved && props.receivedRoleId)'
+nx g hasura-feature mission-join --subfolder teams --folder $1 --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Approved || props.state === enum!ApprovalState.Rejected;by:pointsProcessedById_at:pointsProcessedAt_if:props.points !== null'
 nx g hasura-feature tenant --folder $1 --tenant-scoped false
 nx g hasura-feature event-approval-step --subfolder tenants --folder $1

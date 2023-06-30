@@ -14,9 +14,9 @@ object_relationships:
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id
-  - name: joiner
+  - name: joinedBy
     using:
-      foreign_key_constraint_on: joiner_id
+      foreign_key_constraint_on: joined_by_id
   - name: linkedMissionJoin
     using:
       foreign_key_constraint_on: mission_join_id
@@ -27,15 +27,15 @@ object_relationships:
         table:
           name: mission_join
           schema: public
-  - name: presenceSettledBy
+  - name: participationProcessedBy
     using:
-      foreign_key_constraint_on: presence_settled_by_id
+      foreign_key_constraint_on: participation_processed_by_id
+  - name: processedBy
+    using:
+      foreign_key_constraint_on: processed_by_id
   - name: qrCode
     using:
       foreign_key_constraint_on: qr_code_id
-  - name: settledBy
-    using:
-      foreign_key_constraint_on: settled_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

@@ -25,19 +25,19 @@ export class GrantAllocate extends TenantScopedEntity {
   [EntityRepositoryType]!: GrantAllocateRepository;
 
   @Property({ type: 'float' })
-  amountAsked!: number;
+  askedAmount!: number;
 
-  @Property({ type: 'float' })
-  amountGiven!: number;
+  @Property({ type: 'float', nullable: true, default: null })
+  receivedAmount: number | null = null;
 
   @Enum({ items: () => FinanceState, default: FinanceState.Completed, type: EnumType })
   state = FinanceState.Completed;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  validatedBy: Individual | null = null;
+  receivedAmountProcessedBy: Individual | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
-  validatedAt: Date | null = null;
+  receivedAmountProcessedAt: Date | null = null;
 
   @ManyToOne({ type: 'Grant' })
   grant!: Grant;
