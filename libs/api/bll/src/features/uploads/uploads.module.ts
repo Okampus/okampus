@@ -38,8 +38,8 @@ export class UploadsModule implements OnModuleInit {
     if (this.isEnabled) {
       logger.log(`Distant storage is enabled, uploading to ${this.s3EndPoint}`);
     } else {
-      logger.log('Distant storage is disabled, uploading to local file system.');
-      const makeDir = (dir: string) => () => mkdir(dir, { recursive: true });
+      logger.log(`Distant storage is disabled, uploading to local file system. ${this.uploadLocalPath}`);
+      const makeDir = (dir: string) => mkdir(dir, { recursive: true });
       await Promise.all(Object.keys(Buckets).map((value) => makeDir(path.join(this.uploadLocalPath, value))));
     }
   }
