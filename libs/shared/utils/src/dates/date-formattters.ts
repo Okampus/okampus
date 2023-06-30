@@ -27,6 +27,13 @@ const fmtSimple = Intl.DateTimeFormat('fr', {
   month: 'short',
 });
 
+const fmtSimpleHour = Intl.DateTimeFormat('fr', {
+  day: 'numeric',
+  month: 'short',
+  hour: 'numeric',
+  minute: 'numeric',
+});
+
 const fmtHourSimple = Intl.DateTimeFormat('fr', { hour: 'numeric', minute: 'numeric' });
 
 export const getDate = (date?: string | Date): Date => {
@@ -99,14 +106,16 @@ export function formatDateRangeStandard(date1: string | Date, date2: string | Da
   return fmtStandard.formatRange(date1, date2);
 }
 
-export function formatDateRangeSimple(date1: string | Date, date2: string | Date): string {
+export function formatDateRangeSimple(date1: string | Date, date2: string | Date, hour?: boolean): string {
   date1 = getDate(date1);
   date2 = getDate(date2);
   const currentYear = new Date().getFullYear();
 
+  const formatter = hour ? fmtSimpleHour : fmtSimple;
+
   if (date1.getFullYear() === currentYear && date2.getFullYear() === currentYear)
-    return fmtSimple.formatRange(date1, date2).replace(currentYear.toString(), '');
-  return fmtSimple.formatRange(date1, date2);
+    return formatter.formatRange(date1, date2).replace(currentYear.toString(), '');
+  return formatter.formatRange(date1, date2);
 }
 
 export function formatHourRangeSimple(date1: string | Date, date2: string | Date): string {
