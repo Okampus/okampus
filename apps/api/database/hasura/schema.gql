@@ -1095,10 +1095,10 @@ type Action {
   id: bigint!
   name: String!
   points: smallint
+  pointsProcessedAt: timestamptz
 
   # An object relationship
-  pointsProcecessedBy: Individual
-  pointsProcessedAt: timestamptz
+  pointsProcessedBy: Individual
   pointsProcessedById: bigint
 
   # An object relationship
@@ -1216,8 +1216,8 @@ input ActionBoolExp {
   id: BigintComparisonExp
   name: StringComparisonExp
   points: SmallintComparisonExp
-  pointsProcecessedBy: IndividualBoolExp
   pointsProcessedAt: TimestamptzComparisonExp
+  pointsProcessedBy: IndividualBoolExp
   pointsProcessedById: BigintComparisonExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
@@ -1262,8 +1262,8 @@ input ActionInsertInput {
   id: bigint
   name: String
   points: smallint
-  pointsProcecessedBy: IndividualObjRelInsertInput
   pointsProcessedAt: timestamptz
+  pointsProcessedBy: IndividualObjRelInsertInput
   pointsProcessedById: bigint
   project: ProjectObjRelInsertInput
   projectId: bigint
@@ -1385,8 +1385,8 @@ input ActionOrderBy {
   id: OrderBy
   name: OrderBy
   points: OrderBy
-  pointsProcecessedBy: IndividualOrderBy
   pointsProcessedAt: OrderBy
+  pointsProcessedBy: IndividualOrderBy
   pointsProcessedById: OrderBy
   project: ProjectOrderBy
   projectId: OrderBy

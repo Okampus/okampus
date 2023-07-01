@@ -1,4 +1,5 @@
 type Log {
+  id: String!
   createdAt: timestamptz!
   createdBy: Individual
   eventType: String!
