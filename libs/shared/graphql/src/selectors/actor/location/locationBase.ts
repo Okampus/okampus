@@ -7,7 +7,7 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 export const locationBaseInfo = Selector('Location')({
   ...entityBase,
   type: true,
-  details: true,
+  locationNote: true,
   address: addressBaseInfo,
   name: true,
   onlineLink: true,

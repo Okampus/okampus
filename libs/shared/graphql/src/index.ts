@@ -64,6 +64,7 @@ export * from './selectors/individual/userBase';
 export * from './selectors/individual/userMe';
 export * from './selectors/individual/userMinimal';
 export * from './selectors/individual/userWithMemberships';
+export * from './selectors/log/logBase';
 export * from './selectors/project/projectBase';
 export * from './selectors/project/projectDetails';
 export * from './selectors/project/projectMinimal';
