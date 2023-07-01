@@ -72,9 +72,10 @@ export class AuthGuard implements CanActivate {
       }
       case 'graphql': {
         // GraphQL or WebSocket case
-        const gqlExecutionContext = GqlExecutionContext.create(host);
+        const ctx = GqlExecutionContext.create(host);
+        requestContext.set('gqlInfo', ctx.getInfo());
 
-        const { req, reply, connectionParams, socket } = gqlExecutionContext.getContext<GqlContext>();
+        const { req, reply, connectionParams, socket } = ctx.getContext<GqlContext>();
 
         // WebSocket case
         if (socket && connectionParams) {
@@ -103,7 +104,8 @@ export class AuthGuard implements CanActivate {
     else if (headers.authorization) {
       // WebSocket / Bot bearer token case
       const token = getTokenFromAuthHeader(headers.authorization);
-      return cookies === null ? { token, tokenType: TokenType.WebSocket } : { token, tokenType: TokenType.Bot };
+      const tokenType = cookies === null ? TokenType.WebSocket : TokenType.Bot;
+      return { token, tokenType };
     }
 
     throw new UnauthorizedException('No token provided');

@@ -9,7 +9,7 @@ export class LogsResolver {
   constructor(private readonly logsService: LogsService) {}
 
   @Query()
-  public async financeLogs(@Args('id') id: string, @Args('teamId') teamId: string): Promise<Log[]> {
-    return await this.logsService.getFinanceLogs(id, teamId);
+  public async financeLogs(@Args('id') id: string): Promise<Log[]> {
+    return await this.logsService.getFinanceLogs(id);
   }
 }

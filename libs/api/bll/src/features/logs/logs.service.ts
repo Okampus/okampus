@@ -3,10 +3,10 @@ import { RequestContext } from '../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { BaseEntity, Individual, Log, LogRepository, Team, TeamRepository, Event } from '@okampus/api/dal';
+import { BaseEntity, Individual, Log, LogRepository, Team, Event, FinanceRepository } from '@okampus/api/dal';
 
-import { Injectable } from '@nestjs/common';
-import { EntityName, EventContext, EventType } from '@okampus/shared/enums';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { EntityName, EventContext, EventType, TeamPermissions } from '@okampus/shared/enums';
 import { DiffType } from '@okampus/shared/types';
 
 import { isIn } from '@okampus/shared/utils';
@@ -23,7 +23,7 @@ export class LogsService extends RequestContext {
   constructor(
     private readonly em: EntityManager,
     private readonly logRepository: LogRepository,
-    private readonly teamRepository: TeamRepository
+    private readonly financeRepository: FinanceRepository
   ) {
     super();
   }
@@ -121,13 +121,23 @@ export class LogsService extends RequestContext {
     }
   }
 
-  public async getFinanceLogs(id: string, teamId: string) {
-    const team = await this.teamRepository.findOneOrFail(teamId);
-    // TODO: check permissions
-    return await this.logRepository.find({
-      entityId: id,
-      entityName: EntityName.Finance,
-      team,
+  public async getFinanceLogs(id: string) {
+    const finance = await this.financeRepository.findOne({
+      id,
+      team: {
+        teamMembers: {
+          user: { id: this.requester().user?.id },
+          permissions: { $in: [TeamPermissions.ManageTreasury] },
+        },
+      },
     });
+
+    if (!finance) throw new NotFoundException(`Finance (${id}) not found.`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await this.logRepository.find<any>(
+      { entityId: id, entityName: EntityName.Finance, team: finance.team },
+      { populate: this.autoPopulate() }
+    );
   }
 }
