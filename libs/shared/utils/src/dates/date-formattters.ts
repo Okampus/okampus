@@ -9,6 +9,15 @@ const fmtShort = Intl.DateTimeFormat('fr', {
   hour12: false,
 });
 
+const fmtLong = Intl.DateTimeFormat('fr', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: false,
+});
+
 const fmtShortNoHour = Intl.DateTimeFormat('fr', {
   weekday: 'short',
   day: 'numeric',
@@ -77,7 +86,7 @@ export function formatDateDayOfWeekNoHour(date: string | Date): string {
 
 export function formatDateStandard(date: string | Date): string {
   date = getDate(date);
-  return fmtStandard.format(date);
+  return fmtStandard.format(date).replaceAll('/', '.');
 }
 
 export function formatDateSimple(date: string | Date): string {
@@ -97,6 +106,13 @@ export function formatDateRangeDayOfWeek(date1: string | Date, date2: string | D
   date2 = getDate(date2);
 
   return fmtShort.formatRange(date1, date2);
+}
+
+export function formatDateRangeDayOfWeekLong(date1: string | Date, date2: string | Date): string {
+  date1 = getDate(date1);
+  date2 = getDate(date2);
+
+  return fmtLong.formatRange(date1, date2);
 }
 
 export function formatDateRangeStandard(date1: string | Date, date2: string | Date): string {
