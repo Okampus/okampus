@@ -19,7 +19,6 @@ const _in = [
 ];
 export const teamManageInfo = Selector('Team')({
   ...teamWithMembersInfo,
-  currentFinance: true,
   eventManages: [{}, { event: eventBaseInfo }],
   projects: [{}, projectBaseInfo],
   membershipDuration: true,

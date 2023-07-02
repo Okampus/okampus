@@ -4,13 +4,7 @@ import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/
 import { ReactComponent as QRCodeIcon } from '@okampus/assets/svg/icons/material/filled/qr-code.svg';
 
 import { AVATAR_USER_ROUNDED, EVENT_MANAGE_ROUTES, EVENT_MANAGE_TAB_ROUTE, EVENT_ROUTE } from '@okampus/shared/consts';
-import {
-  eventWithJoinInfo,
-  insertEventJoinMutation,
-  teamMemberBaseInfo,
-  useTypedQuery,
-  userBaseInfo,
-} from '@okampus/shared/graphql';
+import { eventWithJoinDetailsInfo, insertEventJoinMutation, useTypedQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { formatDateRangeDayOfWeek } from '@okampus/shared/utils';
 
@@ -70,16 +64,7 @@ export function ProjectEventListView({ project }: ProjectEventListViewProps) {
   const [createEventJoin, { data: eventJoin }] = useMutation(insertEventJoinMutation);
 
   const { data } = useTypedQuery({
-    event: [
-      { where: { projectId: { _eq: project.id } } },
-      {
-        ...eventWithJoinInfo,
-        user: {
-          ...userBaseInfo,
-          teamMembers: [{ where: { team: { projects: { id: { _eq: project.id } } } } }, teamMemberBaseInfo],
-        },
-      },
-    ],
+    event: [{ where: { projectId: { _eq: project.id } } }, eventWithJoinDetailsInfo],
   });
 
   if (!project) return null;

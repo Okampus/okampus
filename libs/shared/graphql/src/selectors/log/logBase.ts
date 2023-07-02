@@ -13,6 +13,5 @@ export const logBaseInfo = Selector('Log')({
   eventType: true,
   entityId: true,
   context: true,
-  deletedAt: true,
 });
 export type LogBaseInfo = InputType<GraphQLTypes['Log'], typeof logBaseInfo>;

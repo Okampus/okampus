@@ -3,6 +3,7 @@ import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 import { entityBase } from '../entityBase';
 import { teamBaseInfo } from '../team/teamBase';
 import { projectMinimalInfo } from '../project/projectMinimal';
+import { tagBaseInfo } from '../actor/tag/tagBase';
 import { contentBaseInfo } from '../content/contentBase';
 import { locationBaseInfo } from '../actor/location/locationBase';
 
@@ -24,6 +25,7 @@ export const eventBaseInfo = Selector('Event')({
   banner: fileUploadBaseInfo,
   isPrivate: true,
   project: projectMinimalInfo,
+  eventTags: [{}, { tag: tagBaseInfo }],
   eventManages: [{}, { team: teamBaseInfo }],
   eventJoinsAggregate: [{ where: { state: { _eq: ApprovalState.Approved } } }, { aggregate: { count: [{}, true] } }],
 });

@@ -1,3 +1,4 @@
+import { teamMinimalInfo } from '../teamMinimal';
 import { Selector } from '../../../zeus';
 import { formSubmissionBaseInfo } from '../../formSubmission/formSubmissionBase';
 import { individualBaseInfo } from '../../individual/individualBase';
@@ -9,7 +10,7 @@ import type { InputType, GraphQLTypes } from '../../../zeus';
 export const teamJoinBaseInfo = Selector('TeamJoin')({
   ...entityBase,
   state: true,
-  team: entityBase,
+  team: teamMinimalInfo,
   receivedRole: roleBaseInfo,
   formSubmission: formSubmissionBaseInfo,
   createdBy: individualBaseInfo,
