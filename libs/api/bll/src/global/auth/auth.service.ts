@@ -51,7 +51,7 @@ const deviceDetector = new DeviceDetector();
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
 
-const individualPopulate = ['actor'];
+const individualPopulate = ['actor', 'adminRoles'];
 const userPopulate = ['individual', ...individualPopulate.map((path) => `individual.${path}`)];
 const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
 

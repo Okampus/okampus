@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventApprovalStepRepository, EventApprovalStep } from '@okampus/api/dal';
-import { EntityName, ScopeRole } from '@okampus/shared/enums';
+import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -36,7 +36,14 @@ export class EventApprovalStepsService extends RequestContext {
   checkPermsDelete(eventApprovalStep: EventApprovalStep) {
     if (eventApprovalStep.deletedAt)
       throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+          role.tenant?.id === eventApprovalStep.tenant?.id
+      )
+    )
+      return true;
 
     // Custom logic
     return false;
@@ -50,7 +57,14 @@ export class EventApprovalStepsService extends RequestContext {
     if (eventApprovalStep.hiddenAt)
       throw new NotFoundException('EventApprovalStep must be unhidden before it can be updated.');
 
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+          role.tenant?.id === eventApprovalStep.tenant?.id
+      )
+    )
+      return true;
 
     // Custom logic
     return eventApprovalStep.createdBy?.id === this.requester().id;

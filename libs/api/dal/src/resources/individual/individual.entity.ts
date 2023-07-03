@@ -3,17 +3,14 @@ import { User } from './user/user.entity';
 import { IndividualRepository } from './individual.repository';
 import { TenantScopedEntity } from '..';
 import { Actor } from '../actor/actor.entity';
-import { Entity, EntityRepositoryType, Enum, EnumType, OneToOne, Property } from '@mikro-orm/core';
-import { ScopeRole } from '@okampus/shared/enums';
+import { Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 
+import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
 import type { IndividualOptions } from './individual.options';
 
 @Entity({ customRepository: () => IndividualRepository })
 export class Individual extends TenantScopedEntity {
   [EntityRepositoryType]!: IndividualRepository;
-
-  @Enum({ items: () => ScopeRole, type: EnumType })
-  scopeRole!: ScopeRole;
 
   @Property({ type: 'text', nullable: true, default: null, hidden: true })
   passwordHash: string | null = null;
@@ -29,6 +26,9 @@ export class Individual extends TenantScopedEntity {
 
   @OneToOne({ type: 'Bot', inversedBy: 'individual', nullable: true, default: null })
   bot: Bot | null = null;
+
+  @OneToMany({ type: 'AdminRole', mappedBy: 'individual' })
+  adminRoles: AdminRole[] = [];
 
   // @OneToMany('BadgeUnlock', 'user')
   // @TransformCollection()

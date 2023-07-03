@@ -35,7 +35,6 @@ import { Countries } from '@okampus/shared/consts';
 import {
   Colors,
   ApprovalState,
-  ScopeRole,
   ShortcutType,
   TeamType,
   PaymentMethod,
@@ -49,6 +48,7 @@ import {
   TeamHistoryEventType,
   ApproximateDate,
   LocationType,
+  TenantManageType,
 } from '@okampus/shared/enums';
 import {
   pickOneFromArray,
@@ -354,8 +354,8 @@ export class DatabaseSeeder extends Seeder {
     await Promise.all(adminPromises);
 
     const password = await hash('root', { secret: DatabaseSeeder.pepper });
-    const admins = await new UserSeeder(em, tenant, ScopeRole.TenantAdmin, password).create(seedingConfig.N_ADMINS);
-    const students = await new UserSeeder(em, tenant, ScopeRole.TenantUser, password).create(seedingConfig.N_STUDENTS);
+    const admins = await new UserSeeder(em, tenant, password).create(seedingConfig.N_ADMINS);
+    const students = await new UserSeeder(em, tenant, password).create(seedingConfig.N_STUDENTS);
 
     const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
     const companies = await new LegalUnitSeeder(em, tenant, tags).create(20);

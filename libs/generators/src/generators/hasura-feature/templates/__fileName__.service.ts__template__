@@ -6,7 +6,7 @@ import { LogsService } from '<% for(const _ of Array.from({ length: subfolder.sp
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { <%= className %>Repository, <%= className %> } from '@okampus/api/dal';
-import { EntityName, ScopeRole<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
+import { EntityName, AdminPermissions<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -35,7 +35,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   checkPermsDelete(<%= propertyName %>: <%= className %>) {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (this.requester().adminRoles.some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
+      return true;
 
     // Custom logic
     return false;
@@ -47,7 +48,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
     <% if (!tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');<% } %>
 
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (this.requester().adminRoles.some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
+      return true;
 
     // Custom logic
     return <%= propertyName %>.createdBy?.id === this.requester().id;

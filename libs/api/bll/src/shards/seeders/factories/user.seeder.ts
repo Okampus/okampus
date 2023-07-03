@@ -5,17 +5,11 @@ import { faker } from '@faker-js/faker/locale/fr';
 
 import type { EntityManager } from '@mikro-orm/core';
 import type { Tenant, IndividualOptions } from '@okampus/api/dal';
-import type { ScopeRole } from '@okampus/shared/enums';
 
 export class UserSeeder extends Factory<Individual> {
   model = Individual;
 
-  constructor(
-    em: EntityManager,
-    private readonly tenant: Tenant,
-    private readonly scopeRole: ScopeRole,
-    private readonly passwordHash: string
-  ) {
+  constructor(em: EntityManager, private readonly tenant: Tenant, private readonly passwordHash: string) {
     super(em);
   }
 
@@ -29,7 +23,6 @@ export class UserSeeder extends Factory<Individual> {
       userProps: { firstName, lastName },
       passwordHash: this.passwordHash,
       email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,
-      scopeRole: this.scopeRole,
       createdBy: null,
       tenant: this.tenant,
     };

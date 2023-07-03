@@ -18,7 +18,7 @@ export function individualToSearchable(individual: Individual): BaseSearchable {
     thumbnail,
     description: individual.actor.bio,
     entityType: 'individual',
-    categories: [individual.scopeRole],
+    categories: [],
     createdAt: individual.createdAt.getTime(),
     // updatedAt: individual.updatedAt.getTime(),
     events: [],

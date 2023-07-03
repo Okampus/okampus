@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LegalUnitLocationRepository, LegalUnitLocation } from '@okampus/api/dal';
-import { EntityName, ScopeRole } from '@okampus/shared/enums';
+import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -36,7 +36,13 @@ export class LegalUnitLocationsService extends RequestContext {
   checkPermsDelete(legalUnitLocation: LegalUnitLocation) {
     if (legalUnitLocation.deletedAt)
       throw new NotFoundException(`LegalUnitLocation was deleted on ${legalUnitLocation.deletedAt}.`);
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnitLocation.id
+      )
+    )
+      return true;
 
     // Custom logic
     return false;
@@ -48,7 +54,13 @@ export class LegalUnitLocationsService extends RequestContext {
     if (legalUnitLocation.deletedAt)
       throw new NotFoundException(`LegalUnitLocation was deleted on ${legalUnitLocation.deletedAt}.`);
 
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnitLocation.id
+      )
+    )
+      return true;
 
     // Custom logic
     return legalUnitLocation.createdBy?.id === this.requester().id;

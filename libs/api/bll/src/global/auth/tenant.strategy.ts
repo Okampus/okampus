@@ -1,8 +1,6 @@
-import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'openid-client';
-import { capitalize, enumChecker, toTitleCase } from '@okampus/shared/utils';
-import { ScopeRole } from '@okampus/shared/enums';
+import { toTitleCase } from '@okampus/shared/utils';
 
 import type { AuthService } from './auth.service';
 import type { Individual } from '@okampus/api/dal';
@@ -21,15 +19,12 @@ export function tenantStrategyFactory({ authService, tenantSlug, oidcConfig, cli
       const tenant = await this.authService.findTenant(tenantSlug);
 
       const data: TenantUserResponse = await this.client.userinfo(tokenset);
-      const scopeRole = capitalize(data.role);
-
-      if (!enumChecker(ScopeRole)(scopeRole)) throw new UnauthorizedException('Invalid role');
 
       const [firstName, ...middleNames] = data.given_name.split(' ');
       const user = { firstName, middleNames, lastName: toTitleCase(data.family_name) };
       const name = `${user.firstName} ${user.lastName}`;
 
-      const createUser = { name, slug: data.sub, user, email: data.email, scopeRole, tenant, createdBy: null };
+      const createUser = { name, slug: data.sub, user, email: data.email, tenant, createdBy: null };
 
       try {
         return await this.authService.findUserBySlug(createUser.slug);

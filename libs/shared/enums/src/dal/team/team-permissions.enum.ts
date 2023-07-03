@@ -1,4 +1,3 @@
-const DEFAULT = 0;
 const VIEW_TREASURY = 1;
 const MANAGE_TREASURY = 2;
 const VIEW_JOINS = 4;
@@ -14,22 +13,6 @@ const MANAGE_CONTENTS = 2048;
 const CREATE_ACTIONS = 4096;
 const MANAGE_ACTIONS = 8192;
 
-const TEAM_ADMIN =
-  VIEW_TREASURY |
-  MANAGE_TREASURY |
-  VIEW_JOINS |
-  MANAGE_JOINS |
-  MANAGE_ROLES |
-  MANAGE_MEMBERS |
-  MANAGE_PROFILE |
-  VIEW_DRAFT_EVENTS |
-  CREATE_EVENTS |
-  MANAGE_EVENTS |
-  CREATE_CONTENTS |
-  MANAGE_CONTENTS |
-  CREATE_ACTIONS |
-  MANAGE_ACTIONS;
-
 const VIEW_HIDDEN = 16_384;
 const MANAGE_HIDDEN = 32_768;
 const CREATE_TEAM = 65_536;
@@ -37,11 +20,7 @@ const MANAGE_CAMPUS = 131_072;
 const MANAGE_APPROVAL_STEPS = 262_144;
 const MANAGE_EVENT_APPROVALS = 524_288;
 
-const TENANT_ADMIN =
-  VIEW_HIDDEN | MANAGE_HIDDEN | CREATE_TEAM | MANAGE_CAMPUS | MANAGE_APPROVAL_STEPS | MANAGE_EVENT_APPROVALS;
-
 export enum TeamPermissions {
-  Default = DEFAULT,
   ViewTreasury = VIEW_TREASURY,
   ManageTreasury = MANAGE_TREASURY,
   ViewJoins = VIEW_JOINS,
@@ -56,7 +35,6 @@ export enum TeamPermissions {
   ManageContents = MANAGE_CONTENTS,
   CreateActions = CREATE_ACTIONS,
   ManageActions = MANAGE_ACTIONS,
-  Admin = TEAM_ADMIN,
 }
 
 export enum TenantPermissions {
@@ -66,5 +44,4 @@ export enum TenantPermissions {
   ManageCampus = MANAGE_CAMPUS,
   ManageApprovalSteps = MANAGE_APPROVAL_STEPS,
   ManageEventApprovals = MANAGE_EVENT_APPROVALS,
-  Admin = TENANT_ADMIN,
 }

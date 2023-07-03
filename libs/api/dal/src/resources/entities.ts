@@ -60,9 +60,11 @@ import { Account } from './team/account/account.entity';
 import { AccountAllocate } from './team/account-allocate/account-allocate.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
 import { Location } from './actor/location/location.entity';
+import { AdminRole } from './tenant/admin-role/admin-role.entity';
 
 export const allEntities = [
   Log,
+  AdminRole,
 
   Individual,
   Bot,

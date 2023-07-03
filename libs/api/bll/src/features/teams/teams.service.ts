@@ -6,7 +6,7 @@ import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamRepository, Team } from '@okampus/api/dal';
-import { EntityName, ScopeRole } from '@okampus/shared/enums';
+import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -35,7 +35,13 @@ export class TeamsService extends RequestContext {
 
   checkPermsDelete(team: Team) {
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === team.tenant?.id
+      )
+    )
+      return true;
 
     // Custom logic
     return false;
@@ -47,7 +53,13 @@ export class TeamsService extends RequestContext {
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
     if (team.hiddenAt) throw new NotFoundException('Team must be unhidden before it can be updated.');
 
-    if (this.requester().scopeRole === ScopeRole.Admin) return true;
+    if (
+      this.requester().adminRoles.some(
+        (role) =>
+          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === team.tenant?.id
+      )
+    )
+      return true;
 
     // Custom logic
     return team.createdBy?.id === this.requester().id;

@@ -51,7 +51,7 @@ import {
   AccountsModule,
   AccountAllocatesModule,
 } from '@okampus/api/bll';
-import { Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
+import { AdminRole, Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -66,7 +66,7 @@ import {
   ANON_ACCOUNT_SLUG,
   BASE_TENANT,
 } from '@okampus/shared/consts';
-import { TeamType, TenantManageType } from '@okampus/shared/enums';
+import { AdminPermissions, TeamType, TenantManageType } from '@okampus/shared/enums';
 import { capitalize } from '@okampus/shared/utils';
 
 import { CacheModule } from '@nestjs/cache-manager';
@@ -293,7 +293,6 @@ export class AppModule implements NestModule, OnModuleInit {
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
         userProps: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
         email: ANON_ACCOUNT_EMAIL,
-        scopeRole: ScopeRole.Admin,
         createdBy: null,
         tenant,
       });
@@ -302,9 +301,20 @@ export class AppModule implements NestModule, OnModuleInit {
         slug: ADMIN_ACCOUNT_SLUG,
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
         userProps: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
-        scopeRole: ScopeRole.Admin,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,
+        tenant,
+      });
+
+      const baseAdminRole = new AdminRole({
+        individual: admin,
+        permissions: [AdminPermissions.CreateTenant, AdminPermissions.ManageTenantEntities],
+        tenant: null,
+      });
+
+      const tenantAdminRole = new AdminRole({
+        individual: admin,
+        permissions: [AdminPermissions.ManageTenantEntities, AdminPermissions.DeleteTenantEntities],
         tenant,
       });
 
@@ -325,6 +335,7 @@ export class AppModule implements NestModule, OnModuleInit {
         createdBy: admin,
         type: TenantManageType.Admin,
       });
+      await this.em.persistAndFlush([adminTeam, tenantManage, baseAdminRole, tenantAdminRole]);
 
       const novu = this.notificationsService.novu;
       if (novu) {
