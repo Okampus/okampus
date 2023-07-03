@@ -66,7 +66,7 @@ import {
   ANON_ACCOUNT_SLUG,
   BASE_TENANT,
 } from '@okampus/shared/consts';
-import { ScopeRole, TeamType } from '@okampus/shared/enums';
+import { TeamType, TenantManageType } from '@okampus/shared/enums';
 import { capitalize } from '@okampus/shared/utils';
 
 import { CacheModule } from '@nestjs/cache-manager';
@@ -319,8 +319,12 @@ export class AppModule implements NestModule, OnModuleInit {
         tenant,
       });
 
-      const tenantManage = new TenantManage({ tenant, team: adminTeam, createdBy: admin });
-      await this.em.persistAndFlush([adminTeam, tenantManage]);
+      const tenantManage = new TenantManage({
+        tenant,
+        team: adminTeam,
+        createdBy: admin,
+        type: TenantManageType.Admin,
+      });
 
       const novu = this.notificationsService.novu;
       if (novu) {

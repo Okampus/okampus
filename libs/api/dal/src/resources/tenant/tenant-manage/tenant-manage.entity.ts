@@ -1,6 +1,7 @@
 import { TenantManageRepository } from './tenant.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, EntityRepositoryType, ManyToOne } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne } from '@mikro-orm/core';
+import { TenantManageType } from '@okampus/shared/enums';
 
 import type { CampusCluster } from '../campus-cluster/campus-cluster.entity';
 import type { TenantManageOptions } from './tenant-manage.options';
@@ -10,13 +11,15 @@ import type { Team } from '../../team/team.entity';
 export class TenantManage extends TenantScopedEntity {
   [EntityRepositoryType]!: TenantManageRepository;
 
+  // TODO: add permission system ?
   @ManyToOne({ type: 'CampusCluster', nullable: true, default: null })
   campusCluster: CampusCluster | null = null;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  // TODO: add permission system ?
+  @Enum({ items: () => TenantManageType, type: EnumType })
+  type!: TenantManageType;
 
   constructor(options: TenantManageOptions) {
     super(options);

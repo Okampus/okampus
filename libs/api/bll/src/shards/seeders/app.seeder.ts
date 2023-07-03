@@ -342,7 +342,12 @@ export class DatabaseSeeder extends Seeder {
         );
       }
 
-      const tenantManage = new TenantManage({ campusCluster, team: campusClusterManageTeam, ...scopedOptions });
+      const tenantManage = new TenantManage({
+        campusCluster,
+        team: campusClusterManageTeam,
+        type: TenantManageType.ClusterManager,
+        ...scopedOptions,
+      });
       adminPromises.push(em.persistAndFlush([campusClusterManageTeam, campusCluster, tenantManage]));
     }
 
