@@ -944,21 +944,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "scope_role": {
-          "name": "scope_role",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "tenant_user",
-            "tenant_teacher",
-            "tenant_admin",
-            "admin"
-          ],
-          "mappedType": "enum"
-        },
         "password_hash": {
           "name": "password_hash",
           "type": "text",
@@ -2075,7 +2060,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'{0}'",
+          "default": "'{}'",
           "mappedType": "array"
         },
         "team_id": {
@@ -6605,6 +6590,19 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Admin",
+            "ClusterManager"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "tenant_manage",
@@ -6670,6 +6668,135 @@
             "id"
           ],
           "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "individual_id": {
+          "name": "individual_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "permissions": {
+          "name": "permissions",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "array"
+        }
+      },
+      "name": "admin_role",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "admin_role_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "admin_role_created_by_id_foreign": {
+          "constraintName": "admin_role_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.admin_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "admin_role_individual_id_foreign": {
+          "constraintName": "admin_role_individual_id_foreign",
+          "columnNames": [
+            "individual_id"
+          ],
+          "localTableName": "public.admin_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "updateRule": "cascade"
+        },
+        "admin_role_tenant_id_foreign": {
+          "constraintName": "admin_role_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.admin_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -8548,16 +8675,6 @@
           "default": "true",
           "mappedType": "boolean"
         },
-        "meta": {
-          "name": "meta",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "json"
-        },
         "is_template": {
           "name": "is_template",
           "type": "boolean",
@@ -8567,6 +8684,16 @@
           "nullable": false,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "meta": {
+          "name": "meta",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "json"
         },
         "location_id": {
           "name": "location_id",
@@ -10927,7 +11054,7 @@
             "Check",
             "DirectDebit",
             "Transfer",
-            "CreditCardPhysical",
+            "CreditCard",
             "MobilePayment",
             "Other"
           ],

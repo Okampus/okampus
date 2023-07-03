@@ -26857,7 +26857,6 @@ type Individual {
     # filter the rows returned
     where: GrantBoolExp
   ): GrantAggregate!
-  scopeRole: String!
 
   # An object relationship
   tenant: Tenant!
@@ -27173,7 +27172,6 @@ input IndividualBoolExp {
   receivedAmountProcessedGrantAllocatesAggregate: GrantAllocateAggregateBoolExp
   receivedAmountProcessedGrants: GrantBoolExp
   receivedAmountProcessedGrantsAggregate: GrantAggregateBoolExp
-  scopeRole: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   threadContributors: ThreadContributorsBoolExp
@@ -27290,7 +27288,6 @@ input IndividualInsertInput {
   processedTeamJoins: TeamJoinArrRelInsertInput
   receivedAmountProcessedGrantAllocates: GrantAllocateArrRelInsertInput
   receivedAmountProcessedGrants: GrantArrRelInsertInput
-  scopeRole: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   threadContributors: ThreadContributorsArrRelInsertInput
@@ -27309,7 +27306,6 @@ type IndividualMaxFields {
   hiddenAt: timestamptz
   id: bigint
   passwordHash: String
-  scopeRole: String
   tenantId: bigint
   userId: bigint
 }
@@ -27324,7 +27320,6 @@ input IndividualMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   passwordHash: OrderBy
-  scopeRole: OrderBy
   tenantId: OrderBy
   userId: OrderBy
 }
@@ -27339,7 +27334,6 @@ type IndividualMinFields {
   hiddenAt: timestamptz
   id: bigint
   passwordHash: String
-  scopeRole: String
   tenantId: bigint
   userId: bigint
 }
@@ -27354,7 +27348,6 @@ input IndividualMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   passwordHash: OrderBy
-  scopeRole: OrderBy
   tenantId: OrderBy
   userId: OrderBy
 }
@@ -27468,7 +27461,6 @@ input IndividualOrderBy {
   processedTeamJoinsAggregate: TeamJoinAggregateOrderBy
   receivedAmountProcessedGrantAllocatesAggregate: GrantAllocateAggregateOrderBy
   receivedAmountProcessedGrantsAggregate: GrantAggregateOrderBy
-  scopeRole: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   threadContributorsAggregate: ThreadContributorsAggregateOrderBy
@@ -27509,9 +27501,6 @@ enum IndividualSelectColumn {
   passwordHash
 
   # column name
-  scopeRole
-
-  # column name
   tenantId
 
   # column name
@@ -27528,7 +27517,6 @@ input IndividualSetInput {
   hiddenAt: timestamptz
   id: bigint
   passwordHash: String
-  scopeRole: String
   tenantId: bigint
   userId: bigint
 }
@@ -27606,7 +27594,6 @@ input IndividualStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   passwordHash: String
-  scopeRole: String
   tenantId: bigint
   userId: bigint
 }
@@ -27654,9 +27641,6 @@ enum IndividualUpdateColumn {
 
   # column name
   passwordHash
-
-  # column name
-  scopeRole
 
   # column name
   tenantId
@@ -57838,6 +57822,7 @@ type TenantManage {
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
+  type: String!
 }
 
 # aggregated selection of "tenant_manage"
@@ -57930,6 +57915,7 @@ input TenantManageBoolExp {
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  type: StringComparisonExp
 }
 
 # unique or primary key constraints on table "tenant_manage"
@@ -57961,6 +57947,7 @@ input TenantManageInsertInput {
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  type: String
 }
 
 # aggregate max on columns
@@ -57973,6 +57960,7 @@ type TenantManageMaxFields {
   id: bigint
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # order by max() on columns of table "tenant_manage"
@@ -57985,6 +57973,7 @@ input TenantManageMaxOrderBy {
   id: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # aggregate min on columns
@@ -57997,6 +57986,7 @@ type TenantManageMinFields {
   id: bigint
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # order by min() on columns of table "tenant_manage"
@@ -58009,6 +57999,7 @@ input TenantManageMinOrderBy {
   id: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # response of any mutation on the table "tenant_manage"
@@ -58041,6 +58032,7 @@ input TenantManageOrderBy {
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # primary key columns input for table: tenant_manage
@@ -58073,6 +58065,9 @@ enum TenantManageSelectColumn {
 
   # column name
   tenantId
+
+  # column name
+  type
 }
 
 # input type for updating data in table "tenant_manage"
@@ -58085,6 +58080,7 @@ input TenantManageSetInput {
   id: bigint
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # aggregate stddev on columns
@@ -58160,6 +58156,7 @@ input TenantManageStreamCursorValueInput {
   id: bigint
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # aggregate sum on columns
@@ -58205,6 +58202,9 @@ enum TenantManageUpdateColumn {
 
   # column name
   tenantId
+
+  # column name
+  type
 }
 
 input TenantManageUpdates {
