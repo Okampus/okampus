@@ -85,7 +85,6 @@ export class EventSeeder extends Factory<Event> {
       lastEventApprovalStep: step,
       joinForm: isPayedEvent
         ? new Form({
-            isTemplate: false,
             name: `Rejoindre ${name}`,
             schema: [
               {
@@ -97,7 +96,6 @@ export class EventSeeder extends Factory<Event> {
               },
             ],
             type: FormType.Event,
-            undeletable: true,
             createdBy: supervisor.individual,
             tenant: this.team.tenant,
           })

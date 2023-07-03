@@ -21,7 +21,6 @@ export class TeamSeeder extends Factory<Team> {
     return {
       name,
       bio: faker.lorem.paragraph(randomInt(2, 12)),
-      currentFinance: 0,
       email: `${toSlug(name)}@${this.tenant.domain}.fr`,
       slug: toSlug(name),
       website: faker.internet.url(),

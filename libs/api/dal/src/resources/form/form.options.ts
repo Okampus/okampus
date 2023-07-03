@@ -5,5 +5,4 @@ import type { FormProps } from '@okampus/shared/dtos';
 export type FormOptions = FormProps &
   TenantScopedOptions & {
     team?: Team | null;
-    undeletable?: boolean;
   };

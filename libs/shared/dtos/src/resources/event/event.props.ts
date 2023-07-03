@@ -51,13 +51,13 @@ export class EventProps {
   @IsBoolean()
   isAutoAcceptingJoins?: boolean = true;
 
-  @Field(() => GraphQLJSON, { nullable: true })
-  @IsOptional()
-  @IsObject()
-  meta?: JSONObject = {};
-
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
   isTemplate?: boolean = false;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @IsOptional()
+  @IsObject()
+  meta?: JSONObject = {};
 }

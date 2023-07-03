@@ -48,7 +48,6 @@ export * from './resources/individual/user/user-create.dto';
 export * from './resources/individual/user/user-update.dto';
 export * from './resources/individual/user/user.props';
 export * from './resources/project/project-create.dto';
-export * from './resources/project/project-role/project-role.props';
 export * from './resources/project/project-update.dto';
 export * from './resources/project/project.props';
 export * from './resources/team/account/account.props';

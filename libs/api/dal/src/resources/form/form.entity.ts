@@ -35,7 +35,7 @@ export class Form extends TenantScopedEntity {
   @Property({ type: 'boolean', default: false })
   isRequired = false;
 
-  constructor(options: FormOptions & { undeletable?: boolean }) {
+  constructor(options: FormOptions) {
     super(options);
     this.assign(options);
   }

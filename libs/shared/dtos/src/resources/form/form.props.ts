@@ -24,15 +24,10 @@ export class FormProps {
   @Field(() => Boolean)
   @IsBoolean()
   @IsOptional()
-  isTemplate?: boolean;
+  isAllowingMultipleAnswers?: boolean;
 
   @Field(() => Boolean)
   @IsBoolean()
   @IsOptional()
-  allowMultipleAnswers?: boolean;
-
-  @Field(() => Boolean)
-  @IsBoolean()
-  @IsOptional()
-  allowEditingAnswers?: boolean;
+  isAllowingEditingAnswers?: boolean;
 }

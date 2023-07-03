@@ -168,9 +168,8 @@ export class Team extends TenantScopedEntity implements Searchable {
       ],
       team: this,
       type: FormType.Team,
-      allowEditingAnswers: true,
-      allowMultipleAnswers: false,
-      undeletable: true,
+      isAllowingEditingAnswers: true,
+      isAllowingMultipleAnswers: false,
       createdBy: options.createdBy,
       tenant: options.tenant,
     });
