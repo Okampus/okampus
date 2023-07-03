@@ -7,7 +7,7 @@ import type { GraphQLResolveInfo } from 'graphql';
 
 export abstract class RequestContext {
   public requester(): Individual {
-    const requester = requestContext.get('individual');
+    const requester = requestContext.get('requester');
     if (!requester) throw new UnauthorizedException('Requester is not authenticated');
 
     return requester;

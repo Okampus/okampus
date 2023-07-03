@@ -136,14 +136,14 @@ export class AuthGuard implements CanActivate {
 
     /* Bot token case */
     if (tokenType === TokenType.Bot) {
-      requestContext.set('individual', await this.authService.validateBotToken(token));
+      requestContext.set('requester', await this.authService.validateBotToken(token));
       requestContext.set('token', token);
       return true;
     }
 
     if (!req || !reply) throw new InternalServerErrorException('No request provided in GraphQL context');
     const individual = await this.authService.validateUserToken(token, tokenType, req, reply);
-    requestContext.set('individual', individual);
+    requestContext.set('requester', individual);
     requestContext.set('token', token);
 
     return true;

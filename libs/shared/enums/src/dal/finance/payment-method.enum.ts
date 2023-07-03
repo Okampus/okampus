@@ -3,7 +3,7 @@ export enum PaymentMethod {
   Check = 'Check',
   DirectDebit = 'DirectDebit',
   Transfer = 'Transfer',
-  CreditCard = 'CreditCardPhysical',
+  CreditCard = 'CreditCard',
   MobilePayment = 'MobilePayment',
   Other = 'Other',
 }

@@ -51,6 +51,10 @@ const deviceDetector = new DeviceDetector();
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
 
+const individualPopulate = ['actor'];
+const userPopulate = ['individual', ...individualPopulate.map((path) => `individual.${path}`)];
+const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
+
 @Injectable()
 export class AuthService extends RequestContext {
   cookies: ApiConfig['cookies'];
@@ -131,7 +135,12 @@ export class AuthService extends RequestContext {
   public async validateBotToken(token: string): Promise<Individual> {
     const decoded = await this.processToken(token, { req: RequestType.Http }, this.botSignOptions);
 
-    const bot = await this.em.findOneOrFail(Individual, { id: decoded.sub }, { populate: ['actor'] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const bot = await this.em.findOneOrFail<Individual, any>(
+      Individual,
+      { id: decoded.sub },
+      { populate: individualPopulate }
+    );
     if (bot.bot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
 
     const isTokenValid = await verify(bot.passwordHash, token, { secret: this.pepper });
@@ -275,9 +284,8 @@ export class AuthService extends RequestContext {
     const { fam, sub } = decoded;
 
     const where = { ...this.getUserSession(req), user: { id: sub }, expiredAt: null, revokedAt: null };
-    const session = await this.em.findOneOrFail(Session, where, {
-      populate: ['user.individual', 'user.individual.actor'],
-    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const session = await this.em.findOneOrFail<Session, any>(Session, where, { populate: sessionPopulate });
     if (!session) throw new UnauthorizedException('No active session found');
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
@@ -295,10 +303,12 @@ export class AuthService extends RequestContext {
   }
 
   public async login(body: LoginDto, selectionSet: string[], req: FastifyRequest, res: FastifyReply): Promise<User> {
-    const individual = await this.em.findOneOrFail(Individual, {
-      actor: { $or: [{ slug: body.username }, { email: body.username }] },
-      tenant: this.tenant(),
-    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const individual = await this.em.findOneOrFail<Individual, any>(
+      Individual,
+      { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
+      { populate: individualPopulate }
+    );
 
     if (!individual || !individual.user) throw new UnauthorizedException('Account not yet registered.');
     if (!individual.passwordHash) throw new UnauthorizedException('Account not yet registered with password.');
@@ -308,7 +318,7 @@ export class AuthService extends RequestContext {
 
     await this.refreshSession(req, res, individual.user.id);
 
-    requestContext.set('individual', individual);
+    requestContext.set('requester', individual);
     const data = await this.hasuraService.findByPk('userByPk', selectionSet, { id: individual.user.id });
     return data.userByPk;
   }

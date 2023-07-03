@@ -80,11 +80,11 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'boolean', default: true })
   isAutoAcceptingJoins = true;
 
-  @Property({ type: 'json', default: '{}' })
-  meta: JSONObject = {};
-
   @Property({ type: 'boolean', default: false })
   isTemplate = false;
+
+  @Property({ type: 'json', default: '{}' })
+  meta: JSONObject = {};
 
   @ManyToOne({ type: 'Location', nullable: true, default: null })
   location: Location | null = null;
