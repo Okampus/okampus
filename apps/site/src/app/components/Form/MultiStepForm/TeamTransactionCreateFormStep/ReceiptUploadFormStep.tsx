@@ -145,7 +145,6 @@ export const receiptUploadFormStep = {
     <DocumentInput
       bucket={Buckets.Receipts}
       onChange={(id, file) => {
-        console.log(id, file);
         setValues({ ...values, fileUploadId: id, file });
         id && goToNextStep(0);
       }}

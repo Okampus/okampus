@@ -1,16 +1,16 @@
 import { FinanceHistoryList } from './FinanceHistoryList';
-import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
+// import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 import { formatDateDayOfWeekNoHour, getColorHexFromData } from '@okampus/shared/utils';
 import { CloseButton, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext } from '@okampus/ui/hooks';
 
 import {
-  DateInput,
+  // DateInput,
   //  LabeledUser,
-  NumberInput,
-  SelectInput,
+  // NumberInput,
+  // SelectInput,
   TabsList,
-  TextInput,
+  // TextInput,
 } from '@okampus/ui/molecules';
 // import { useTypedLazyQuery } from '@okampus/shared/graphql';
 import { useContext, useState } from 'react';
@@ -70,13 +70,12 @@ export function FinanceSidePanel({ finance }: FinanceSidePanelProps) {
       <TabsList selected={selectedTab} tabs={tabs} tabClassName="mt-12 w-full" />
       {selectedTab === DETAILS ? (
         <div className="flex flex-col gap-4 p-5">
-          <TextInput
+          {/* <TextInput
             options={{
               label: 'Nom',
               name: 'name',
             }}
             value={finance.name as string}
-            onChange={() => console.log('change')}
           />
           <DateInput
             options={{
@@ -84,26 +83,22 @@ export function FinanceSidePanel({ finance }: FinanceSidePanelProps) {
               name: 'payedAt',
             }}
             date={payedAt}
-            onChange={() => console.log('change')}
+            onChange={() => {}}
           />
 
-          <NumberInput
-            value={-finance.amount}
-            onChange={() => console.log('change')}
-            options={{ label: 'Montant de la dépense', name: 'amount' }}
-          />
+          <NumberInput value={-finance.amount} options={{ label: 'Montant de la dépense', name: 'amount' }} />
           <SelectInput
             items={Object.entries(PaymentMethod).map(([, value]) => ({ label: t(value), value }))}
             options={{ label: 'Méthode de paiement', name: 'method' }}
             value={finance.method}
-            onChange={() => console.log('change')}
+            onChange={() => {}}
           />
           <SelectInput
             items={Object.entries(FinanceCategory).map(([, value]) => ({ label: t(value), value }))}
             options={{ label: 'Catégorie de dépense', name: 'category' }}
             value={finance.category}
-            onChange={() => console.log('change')}
-          />
+            onChange={() => {}}
+          /> */}
         </div>
       ) : (
         <FinanceHistoryList finance={finance} />

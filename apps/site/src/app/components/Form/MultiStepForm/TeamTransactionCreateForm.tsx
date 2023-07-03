@@ -217,7 +217,6 @@ export function TeamTransactionCreateForm() {
         projectId,
         eventId,
       }) => {
-        console.log(addressItem);
         if (teamManage) {
           insertFinance({
             variables: {

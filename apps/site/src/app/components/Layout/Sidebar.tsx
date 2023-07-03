@@ -2,8 +2,8 @@ import { menus } from '../../menus';
 
 import { ReactComponent as LogoutIcon } from '@okampus/assets/svg/icons/logout.svg';
 import { ReactComponent as SortArrowsFilledIcon } from '@okampus/assets/svg/icons/material/filled/sort-arrows.svg';
-import { ReactComponent as AdminFilledIcon } from '@okampus/assets/svg/icons/material/filled/admin-settings.svg';
-import { ReactComponent as PublicFilledIcon } from '@okampus/assets/svg/icons/material/filled/public.svg';
+// import { ReactComponent as AdminFilledIcon } from '@okampus/assets/svg/icons/material/filled/admin-settings.svg';
+// import { ReactComponent as PublicFilledIcon } from '@okampus/assets/svg/icons/material/filled/public.svg';
 
 import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/material/filled/event.svg';
 import { ReactComponent as EventOutlinedIcon } from '@okampus/assets/svg/icons/material/outlined/event.svg';
@@ -22,7 +22,7 @@ import {
   TEAM_MANAGE_ROUTE,
   WELCOME_ROUTE,
 } from '@okampus/shared/consts';
-import { ScopeRole, TagType, TeamType, ViewType } from '@okampus/shared/enums';
+import { TagType, TeamType, ViewType } from '@okampus/shared/enums';
 import { fileUploadBaseInfo, OrderBy, tagBaseInfo, useTypedLazyQuery, logoutMutation } from '@okampus/shared/graphql';
 import { isIn, isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 import { AvatarImage, Popover, PopoverContent, PopoverTrigger, Skeleton } from '@okampus/ui/atoms';
@@ -117,7 +117,7 @@ export function Sidebar() {
   const navigate = useNavigate();
 
   const client = useApolloClient();
-  const { selected, setSelected, tenant, setTenant, setIsLoggedIn } = useContext(NavigationContext);
+  const { selected, tenant, setTenant, setIsLoggedIn } = useContext(NavigationContext);
   const { currentUser } = useCurrentUser();
 
   const [getTeamCategories, { data }] = useTypedLazyQuery({
@@ -146,21 +146,21 @@ export function Sidebar() {
   const tenantActions = [
     {
       actions: [
-        ...(currentUser?.individual?.scopeRole === ScopeRole.Admin
-          ? [
-              selected.viewType === ViewType.Admin
-                ? {
-                    label: 'Passer en vue publique',
-                    iconOrSwitch: <PublicFilledIcon />,
-                    linkOrActionOrMenu: () => setSelected({ ...selected, viewType: ViewType.Community }),
-                  }
-                : {
-                    label: 'Passer en vue administrateur',
-                    iconOrSwitch: <AdminFilledIcon />,
-                    linkOrActionOrMenu: () => setSelected({ ...selected, viewType: ViewType.Admin }),
-                  },
-            ]
-          : []),
+        // ...(currentUser?.individual?.scopeRole === ScopeRole.Admin
+        //   ? [
+        //       selected.viewType === ViewType.Admin
+        //         ? {
+        //             label: 'Passer en vue publique',
+        //             iconOrSwitch: <PublicFilledIcon />,
+        //             linkOrActionOrMenu: () => setSelected({ ...selected, viewType: ViewType.Community }),
+        //           }
+        //         : {
+        //             label: 'Passer en vue administrateur',
+        //             iconOrSwitch: <AdminFilledIcon />,
+        //             linkOrActionOrMenu: () => setSelected({ ...selected, viewType: ViewType.Admin }),
+        //           },
+        //     ]
+        //   : []),
         {
           label: 'Se déconnecter',
           iconOrSwitch: <LogoutIcon />,

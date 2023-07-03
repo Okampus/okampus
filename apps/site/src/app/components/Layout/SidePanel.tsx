@@ -258,7 +258,6 @@ export function SidePanel() {
   //               type: ActionType.Action,
   //               label: !isSmall && 'Suivre',
   //               iconOrSwitch: <PlusIcon className="w-6 h-6 xl-max:h-full xl-max:w-full" />,
-  //               linkOrActionOrMenu: () => console.log('Suivre'),
   //             }}
   //             small={true}
   //           />

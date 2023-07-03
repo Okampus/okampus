@@ -121,7 +121,6 @@ export function EventViewWrapper({ event }: { event: EventDetailsInfo }) {
       //                 </div>
       //                 <ActionButton
       //                   action={{
-      //                     linkOrActionOrMenu: () => console.log('test'),
       //                     label: 'Candidater pour le poste',
       //                   }}
       //                 />

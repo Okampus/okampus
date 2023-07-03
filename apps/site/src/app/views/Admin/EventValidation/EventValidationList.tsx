@@ -57,8 +57,6 @@ export function EventValidationList() {
   const { data } = useTypedQuery({ event: [{ where }, eventManageBaseInfo] });
   // const [updateEvent] = useMutation(updateEventMutation);
   // useEffect(() => {
-  //   console.log('selectedTab', selectedTab, currentUser?.id);
-
   //   if (!id) return;
 
   //   getEvents({ variables: { where } });
