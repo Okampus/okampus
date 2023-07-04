@@ -2,7 +2,7 @@ import { TagRepository } from './tag.repository';
 import { TenantScopedEntity } from '../..';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { Colors, TagType } from '@okampus/shared/enums';
-import { getColorFromData, toSlug } from '@okampus/shared/utils';
+import { getColorFromData, randomId, toSlug } from '@okampus/shared/utils';
 
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { TagOptions } from './tag.options';
@@ -33,7 +33,7 @@ export class Tag extends TenantScopedEntity {
     super(options);
     this.assign(options);
 
-    this.slug = toSlug(options.slug ?? options.name);
+    if (!options.slug) this.slug = toSlug(`${options.slug ?? options.name}-${randomId()}`);
     if (!options.color) this.color = getColorFromData(this.name);
   }
 }

@@ -3,7 +3,7 @@ import { TenantScopedEntity } from '../tenant-scoped.entity';
 import { Collection, Entity, EntityRepositoryType, ManyToMany, OneToOne, Property } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { toSlug } from '@okampus/shared/utils';
+import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Individual } from '../individual/individual.entity';
@@ -35,6 +35,6 @@ export class Thread extends TenantScopedEntity {
     super(options);
     this.assign(options);
 
-    if (!options.slug) this.slug = toSlug(this.name);
+    this.slug = toSlug(`${options.slug ?? options.name}-${randomId()}`);
   }
 }

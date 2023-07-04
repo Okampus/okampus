@@ -19,7 +19,7 @@ import {
 
 import { TransformCollection } from '@okampus/api/shards';
 import { EventState } from '@okampus/shared/enums';
-import { toSlug } from '@okampus/shared/utils';
+import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { JSONObject } from '@okampus/shared/types';
 import type { EventOptions } from './event.options';
@@ -123,6 +123,6 @@ export class Event extends TenantScopedEntity implements Searchable {
     super(options);
     this.assign(options);
 
-    if (!options.slug) this.slug = toSlug(this.name);
+    this.slug = toSlug(`${options.slug ?? options.name}-${randomId()}`);
   }
 }

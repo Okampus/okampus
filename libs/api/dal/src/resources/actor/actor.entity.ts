@@ -94,6 +94,6 @@ export class Actor extends TenantScopedEntity {
     super(options);
     this.assign(options);
 
-    this.slug = toSlug(options.slug ?? options.name);
+    if (!options.slug) this.slug = toSlug(`${options.slug ?? options.name}-${randomId()}`);
   }
 }
