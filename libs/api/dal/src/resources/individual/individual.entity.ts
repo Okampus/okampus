@@ -18,8 +18,8 @@ export class Individual extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   contentSignature = '';
 
-  @OneToOne({ type: 'Actor', mappedBy: 'individual' })
-  actor!: Actor;
+  @OneToOne({ type: 'Actor', inversedBy: 'individual' })
+  actor: Actor;
 
   @OneToOne({ type: 'User', inversedBy: 'individual', nullable: true, default: null })
   user: User | null = null;

@@ -26,9 +26,6 @@ export class Location extends TenantScopedEntity {
   @Enum({ items: () => LocationType, type: EnumType })
   type!: LocationType;
 
-  @Property({ type: 'text' })
-  name!: string;
-
   @Property({ type: 'text', default: '' })
   onlineLink = '';
 

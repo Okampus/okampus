@@ -41,7 +41,7 @@ export class Expense extends TenantScopedEntity {
   processedAt: Date | null = null;
 
   @OneToOne({ type: 'Finance', mappedBy: 'expense' })
-  finance!: Finance;
+  finance?: Finance;
 
   @ManyToOne({ type: 'FileUpload' })
   expenseReport!: FileUpload;

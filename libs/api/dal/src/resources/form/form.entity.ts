@@ -14,8 +14,8 @@ export class Form extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @OneToOne({ type: 'Team', inversedBy: 'joinForm', nullable: true, default: null })
-  team: Team | null = null;
+  @OneToOne({ type: 'Team', mappedBy: 'joinForm' })
+  team?: Team;
 
   @Property({ type: 'json' })
   schema!: JSONObject;

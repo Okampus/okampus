@@ -54,17 +54,17 @@ export class Actor extends TenantScopedEntity {
   @Unique()
   ical = randomId();
 
-  @OneToOne({ type: 'Individual', inversedBy: 'actor', nullable: true, default: null })
-  individual: Individual | null = null;
+  @OneToOne({ type: 'Individual', mappedBy: 'actor' })
+  individual?: Individual;
 
-  @OneToOne({ type: 'Team', inversedBy: 'actor', nullable: true, default: null })
-  team: Team | null = null;
+  @OneToOne({ type: 'Team', mappedBy: 'actor' })
+  team?: Team;
 
-  @OneToOne({ type: 'LegalUnit', inversedBy: 'actor', nullable: true, default: null })
-  legalUnit: LegalUnit | null = null;
+  @OneToOne({ type: 'LegalUnit', mappedBy: 'actor' })
+  legalUnit?: LegalUnit;
 
-  @OneToOne({ type: 'LegalUnitLocation', inversedBy: 'actor', nullable: true, default: null })
-  legalUnitLocation: LegalUnitLocation | null = null;
+  @OneToOne({ type: 'LegalUnitLocation', mappedBy: 'actor' })
+  legalUnitLocation?: LegalUnitLocation;
 
   @ManyToMany({ type: 'Tag' })
   @TransformCollection()

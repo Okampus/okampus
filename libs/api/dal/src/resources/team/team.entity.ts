@@ -64,11 +64,11 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Property({ type: 'boolean', default: true })
   isJoinFormActive = true;
 
-  @OneToOne({ type: 'Form', mappedBy: 'team' })
+  @OneToOne({ type: 'Form', inversedBy: 'team' })
   joinForm: Form;
 
-  @OneToOne({ type: 'Actor', mappedBy: 'team' })
-  actor!: Actor;
+  @OneToOne({ type: 'Actor', inversedBy: 'team' })
+  actor: Actor;
 
   @OneToOne({ type: 'Canteen', inversedBy: 'team', nullable: true, default: null })
   canteen: Canteen | null = null;
