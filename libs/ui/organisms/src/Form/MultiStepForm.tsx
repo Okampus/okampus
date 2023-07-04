@@ -38,7 +38,6 @@ export function MultiStepForm<T>({ initialStep, defaultValues, onClose, onSubmit
   const [currentStep, setCurrentStep] = useState<number[]>([]);
 
   const goToPreviousStep = () => {
-    console.log('goToPreviousStep', currentStep, setCurrentStep);
     setCurrentStep((current) => current.slice(0, -1));
   };
   const goToNextStep = (step: number) => setCurrentStep((current) => [...current, step]);

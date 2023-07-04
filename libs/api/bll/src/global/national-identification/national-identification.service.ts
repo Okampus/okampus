@@ -76,8 +76,6 @@ export class NationalIdentificationService {
       params: { q, nombre: 5 },
     });
 
-    console.log(data);
-
     const output = data.etablissements.map((etablissement) => ({
       nationalId: etablissement.siret,
       name: etablissement.uniteLegale.denominationUniteLegale,
@@ -92,7 +90,6 @@ export class NationalIdentificationService {
       },
     }));
 
-    console.log('output', output);
     return output;
   }
 }

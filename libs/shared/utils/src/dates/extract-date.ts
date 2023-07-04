@@ -85,5 +85,3 @@ export function extractDate(value: string) {
 
   return null;
 }
-
-console.log(extractDate('02/06/22'));

@@ -19,11 +19,9 @@ export interface FormSchemaRenderProps<T> {
 }
 
 export function FormSchemaRender<T extends FormSchema>({ schema, data, onChange }: FormSchemaRenderProps<T>) {
-  console.log('Schema', schema, data);
   return (
     <div className="flex flex-col text-1 gap-6 min-w-[30rem]">
       {schema.map((dynamicField, idx) => {
-        console.log(dynamicField);
         const name = dynamicField.name;
         const fieldData = data[name];
 
