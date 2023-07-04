@@ -5,7 +5,9 @@ import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
 
 import { LegalUnitSeeder } from './factories/legal-unit.seeder';
+import { LegalUnitLocationSeeder } from './factories/legal-unit-location.seeder';
 import { TagSeeder } from './factories/tag.seeder';
+
 import {
   clubDefaultRoles,
   Campus,
@@ -30,6 +32,9 @@ import {
   CampusCluster,
   TenantManage,
   TeamHistory,
+  Account,
+  BankInfo,
+  AccountAllocate,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -49,8 +54,11 @@ import {
   ApproximateDate,
   LocationType,
   TenantManageType,
+  AccountType,
+  LegalUnitType,
 } from '@okampus/shared/enums';
 import {
+  isNotNull,
   pickOneFromArray,
   randomEnum,
   randomFromArray,
@@ -73,7 +81,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { Actor, EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
-import type { UploadsService } from '../../features/uploads/uploads.service.js';
+import type { UploadsService } from '../../features/uploads/uploads.service';
 import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
 
@@ -358,7 +366,9 @@ export class DatabaseSeeder extends Seeder {
     const students = await new UserSeeder(em, tenant, password).create(seedingConfig.N_STUDENTS);
 
     const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
-    const companies = await new LegalUnitSeeder(em, tenant, tags).create(20);
+    const companies = await new LegalUnitSeeder(em, LegalUnitType.Company, tenant, tags).create(20);
+    const banks = await new LegalUnitSeeder(em, LegalUnitType.Bank, tenant, tags).create(20);
+    const bankLocations = await new LegalUnitLocationSeeder(em, banks, tenant, tags).create(20);
 
     let restAdmins = admins;
     let stepAdmins: Individual[];
@@ -466,21 +476,45 @@ export class DatabaseSeeder extends Seeder {
           team.actor.actorImages.add(new ActorImage({ actor: team.actor, image, type, ...scopedOptions }));
         }
 
-        const subvention = new Finance({
-          team: team,
-          amount: 6000,
-          name: 'Subvention 2023',
-          payedAt: start,
-          method: PaymentMethod.Transfer,
-          category: FinanceCategory.Subvention,
-          payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminManage.team.actor,
-          receivedBy: team.actor,
-          createdBy: pickOneFromArray(admins),
-          state: FinanceState.Completed,
-          tenant,
-        });
+        if (!teamData.parent) {
+          const bankLocation = pickOneFromArray(bankLocations);
+          const account = new Account({
+            name: 'Compte principal',
+            type: AccountType.Primary,
+            bankInfo: new BankInfo({
+              bank: bankLocation,
+              actor: team.actor,
+              bicSwift: faker.finance.bic(),
+              iban: `FR76${bankLocation.legalUnit?.bankCode?.toString().padStart(5, '0')}${bankLocation.bankLocationCode
+                ?.toString()
+                .padStart(5, '0')}${faker.finance.iban().slice(15, 27)}`,
+              ...scopedOptions,
+            }),
+            team,
+            balance: 10_000,
+            ...scopedOptions,
+          });
 
-        team.finances.add(subvention);
+          const subvention = new Finance({
+            account,
+            team,
+            amount: 10_000,
+            name: 'Subvention 2023',
+            payedAt: start,
+            method: PaymentMethod.Transfer,
+            category: FinanceCategory.Subvention,
+            payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminManage.team.actor,
+            receivedBy: team.actor,
+            createdBy: pickOneFromArray(admins),
+            state: FinanceState.Completed,
+            tenant,
+          });
+
+          team.finances.add(subvention);
+          team.accounts.add(account);
+
+          await em.persistAndFlush([account, subvention]);
+        }
 
         await em.persistAndFlush([team]);
         return { team, parent: teamData.parent };
@@ -490,7 +524,12 @@ export class DatabaseSeeder extends Seeder {
     const teams = teamsWithParent.map(({ team, parent }) => {
       if (parent) {
         const parentTeam = teamsWithParent.find(({ team }) => team.actor.slug === parent);
-        if (parentTeam) team.parent = parentTeam.team;
+        if (parentTeam) {
+          team.parent = parentTeam.team;
+          const account = parentTeam.team.accounts.getItems()[0];
+          const accountAllocate = new AccountAllocate({ account, team, balance: 1700, ...scopedOptions });
+          team.accountAllocates.add(accountAllocate);
+        }
       }
       return team;
     });
@@ -653,26 +692,39 @@ export class DatabaseSeeder extends Seeder {
 
                 const event = pickOneFromArray(events);
                 const category = randomEnum(FinanceCategory);
-                const finance = new Finance({
-                  team,
-                  event,
-                  project,
-                  amount: -amount,
-                  name: faker.lorem.words(3),
-                  category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
-                  payedBy: pickOneFromArray(teamMembers).user.individual.actor,
-                  createdBy: pickOneFromArray(teamMembers).user.individual,
-                  payedAt: faker.date.between(start, createdAt),
-                  method: randomEnum(PaymentMethod),
-                  state: FinanceState.Completed,
-                  tenant,
-                  receivedBy: pickOneFromArray(companies).actor,
-                  attachments: upload ? [upload] : [],
-                });
 
-                return finance;
+                const account = team.parent ? team.parent.accounts.getItems()[0] : team.accounts.getItems()[0];
+                const accountAllocate = team.parent
+                  ? team.accountAllocates.getItems().find((allocate) => allocate.team.id === team.id)
+                  : null;
+
+                if (account) {
+                  const finance = new Finance({
+                    team,
+                    account,
+                    event,
+                    project,
+                    amount,
+                    name: faker.lorem.words(3),
+                    category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
+                    payedBy: pickOneFromArray(teamMembers).user.individual.actor,
+                    createdBy: pickOneFromArray(teamMembers).user.individual,
+                    payedAt: faker.date.between(start, createdAt),
+                    method: randomEnum(PaymentMethod),
+                    state: FinanceState.Completed,
+                    tenant,
+                    receivedBy: pickOneFromArray(companies).actor,
+                    attachments: upload ? [upload] : [],
+                  });
+                  account.balance -= amount;
+                  if (accountAllocate) accountAllocate.balance -= amount;
+
+                  return finance;
+                }
+
+                return null;
               })
-            );
+            ).then((finances) => finances.filter(isNotNull));
 
             teamPromises.push(em.persistAndFlush(finances));
 

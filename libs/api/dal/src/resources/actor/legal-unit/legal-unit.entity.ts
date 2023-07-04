@@ -46,7 +46,7 @@ export class LegalUnit extends BaseEntity {
   @Property({ type: 'string' })
   legalName!: string;
 
-  @Property({ type: 'smallint', nullable: true, default: null })
+  @Property({ type: 'int', nullable: true, default: null })
   bankCode: number | null = null;
 
   @OneToOne({ type: 'Actor', mappedBy: 'legalUnit' })

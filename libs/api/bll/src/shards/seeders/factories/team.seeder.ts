@@ -15,14 +15,13 @@ export class TeamSeeder extends Factory<Team> {
     super(em);
   }
 
-  public definition(): Omit<TeamOptions, 'joinForm'> {
+  public definition(): TeamOptions {
     const name = faker.company.name();
 
     return {
       name,
       bio: faker.lorem.paragraph(randomInt(2, 12)),
       email: `${toSlug(name)}@${this.tenant.domain}.fr`,
-      slug: toSlug(name),
       website: faker.internet.url(),
       status: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),

@@ -1,6 +1,5 @@
 import { Factory } from '@mikro-orm/seeder';
 import { Tag } from '@okampus/api/dal';
-import { randomId, toSlug } from '@okampus/shared/utils';
 import { TagType } from '@okampus/shared/enums';
 import { faker } from '@faker-js/faker/locale/fr';
 
@@ -20,7 +19,6 @@ export class TagSeeder extends Factory<Tag> {
     return {
       name,
       type: TagType.Tag,
-      slug: `${toSlug(name)}-${randomId()}`,
       createdBy: null,
       tenant: this.tenant,
     };
