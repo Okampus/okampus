@@ -165,11 +165,11 @@ function randomMission(project: Project, tenant: Tenant): Mission {
   });
 }
 
-function randomLocation(actor: Actor, tenant: Tenant, type = LocationType.Address): Location {
+function randomLocation(actor: Actor, tenant: Tenant): Location {
   const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
   return new Location({
     name: faker.company.name(),
-    type,
+    type: LocationType.Address,
     actor,
     address: new Address({
       city: faker.address.city(),
@@ -336,7 +336,7 @@ export class DatabaseSeeder extends Seeder {
       });
 
       for (const _ of Array.from({ length: randomInt(1, 3) })) {
-        const location = randomLocation(campusClusterManageTeam.actor, tenant, LocationType.Campus);
+        const location = randomLocation(campusClusterManageTeam.actor, tenant);
         campusCluster.campuses.add(
           new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions })
         );
