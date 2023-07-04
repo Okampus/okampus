@@ -1,16 +1,7 @@
 import { TenantRepository } from './tenant.repository';
 // eslint-disable-next-line import/no-cycle
 import { BaseEntity } from '..';
-import {
-  Cascade,
-  Collection,
-  Entity,
-  EntityRepositoryType,
-  OneToMany,
-  OneToOne,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
 import type { TenantOptions } from './tenant.options';
@@ -59,7 +50,7 @@ export class Tenant extends BaseEntity {
   @TransformCollection()
   eventApprovalSteps = new Collection<EventApprovalStep>(this);
 
-  @OneToOne({ type: 'Form', nullable: true, default: null, cascade: [Cascade.ALL] })
+  @OneToOne({ type: 'Form', nullable: true, default: null })
   eventValidationForm: Form | null = null;
 
   @OneToMany({ type: 'CampusCluster', mappedBy: 'tenant' })
