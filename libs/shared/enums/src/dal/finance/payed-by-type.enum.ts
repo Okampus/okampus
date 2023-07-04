@@ -1,6 +1,6 @@
 export enum PayedByType {
-  Unknown = 'Unknown',
   Automatic = 'Automatic',
+  Unknown = 'Unknown',
   Outsider = 'Outsider',
   Manual = 'Manual',
 }

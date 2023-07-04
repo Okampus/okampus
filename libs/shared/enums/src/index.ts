@@ -29,7 +29,6 @@ export * from './dal/document/document-type.enum';
 export * from './dal/document/document-upload-type.enum';
 export * from './dal/document/study-doc-type.enum';
 export * from './dal/entity-name.enum';
-export * from './dal/finance/address-type.enum';
 export * from './dal/finance/finance-category.enum';
 export * from './dal/finance/finance-type.enum';
 export * from './dal/finance/payed-by-type.enum';

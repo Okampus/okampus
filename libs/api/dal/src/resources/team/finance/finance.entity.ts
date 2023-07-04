@@ -13,7 +13,7 @@ import {
 } from '@mikro-orm/core';
 
 import { TransformCollection } from '@okampus/api/shards';
-import { PaymentMethod, FinanceState, PayedByType, FinanceCategory, AddressType } from '@okampus/shared/enums';
+import { PaymentMethod, FinanceState, PayedByType, FinanceCategory } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
 import type { FinanceOptions } from './finance.options';
@@ -22,13 +22,13 @@ import type { Event } from '../../event/event.entity';
 import type { Project } from '../../project/project.entity';
 import type { FileUpload } from 'graphql-upload-minimal';
 import type { Actor } from '../../actor/actor.entity';
+import type { Account } from '../account/account.entity';
+import type { Tag } from '../../actor/tag/tag.entity';
+import type { Location } from '../../actor/location/location.entity';
 
 @Entity({ customRepository: () => FinanceRepository })
 export class Finance extends TenantScopedEntity {
   [EntityRepositoryType]!: FinanceRepository;
-
-  @Property({ type: 'text' })
-  name!: string;
 
   @Property({ type: 'text', default: '' })
   description = '';
@@ -63,8 +63,8 @@ export class Finance extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @Enum({ items: () => AddressType, default: AddressType.Known, type: EnumType })
-  addressType: AddressType = AddressType.Known;
+  @ManyToOne({ type: 'Account' })
+  account!: Account;
 
   @OneToOne({ type: 'Expense', inversedBy: 'finance', nullable: true, default: null })
   expense: Expense | null = null;
@@ -72,12 +72,19 @@ export class Finance extends TenantScopedEntity {
   @ManyToOne({ type: 'Event', nullable: true, default: null })
   event: Event | null = null;
 
+  @ManyToOne({ type: 'Location', nullable: true, default: null })
+  location: Location | null = null;
+
   @ManyToOne({ type: 'Project', nullable: true, default: null })
   project: Project | null = null;
 
   @ManyToMany({ type: 'FileUpload' })
   @TransformCollection()
   attachments = new Collection<FileUpload>(this);
+
+  @ManyToMany({ type: 'Tag' })
+  @TransformCollection()
+  tags = new Collection<Tag>(this);
 
   constructor(options: FinanceOptions) {
     super(options);

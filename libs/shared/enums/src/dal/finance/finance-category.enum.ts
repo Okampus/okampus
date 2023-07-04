@@ -1,6 +1,6 @@
 export enum FinanceCategory {
   Entertainment = 'Entertainment',
-  Equipement = 'Equipement',
+  Equipment = 'Equipment',
   Errands = 'Errands',
   MemberReimbursement = 'MemberReimbursement',
   MembershipFees = 'MembershipFees',
@@ -11,5 +11,3 @@ export enum FinanceCategory {
   Other = 'Other',
   Unknown = 'Unknown',
 }
-
-console.log(Object.keys(FinanceCategory).join(', '));
