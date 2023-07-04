@@ -14,7 +14,7 @@ export const teamBaseInfo = Selector('Team')({
   directorsCategoryName: true,
   managersCategoryName: true,
   membersCategoryName: true,
-  form: formBaseInfo,
+  joinForm: formBaseInfo,
   teamMembersAggregate: [{}, { aggregate: { count: [{}, true] } }],
   poles: [{}, poleBaseInfo],
   tenantId: true,

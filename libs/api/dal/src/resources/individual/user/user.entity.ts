@@ -47,7 +47,7 @@ export class User extends TenantScopedEntity {
   isDataAnonymizedOnDeactivation = false;
   ////
 
-  @OneToOne({ type: 'Individual', mappedBy: 'user' })
+  @OneToOne({ type: 'Individual', inversedBy: 'user' })
   individual!: Individual;
 
   @OneToMany({ type: 'TeamMember', mappedBy: 'user' })

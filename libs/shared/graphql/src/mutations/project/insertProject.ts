@@ -9,6 +9,6 @@ import type { ValueTypes } from '../../zeus';
 export const insertProject = typedGql('mutation')({
   insertProjectOne: [
     { object: $('object', 'ProjectInsertInput!') as ValueTypes['ProjectInsertInput'] },
-    { ...projectBaseInfo, org: { ...teamBaseInfo, projects: [{}, projectBaseInfo] } },
+    { ...projectBaseInfo, team: { ...teamBaseInfo, projects: [{}, projectBaseInfo] } },
   ],
 });

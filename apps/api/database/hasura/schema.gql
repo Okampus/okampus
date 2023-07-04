@@ -4802,7 +4802,8 @@ type Bot {
   id: bigint!
 
   # An object relationship
-  individual: Individual
+  individual: Individual!
+  individualId: bigint!
 
   # An object relationship
   owner: Actor!
@@ -4872,6 +4873,7 @@ input BotArrRelInsertInput {
 type BotAvgFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -4880,6 +4882,7 @@ type BotAvgFields {
 input BotAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -4896,6 +4899,7 @@ input BotBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  individualId: BigintComparisonExp
   owner: ActorBoolExp
   ownerId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -4904,6 +4908,9 @@ input BotBoolExp {
 
 # unique or primary key constraints on table "bot"
 enum BotConstraint {
+  # unique or primary key constraint on columns "individual_id"
+  bot_individual_id_unique
+
   # unique or primary key constraint on columns "id"
   bot_pkey
 }
@@ -4912,6 +4919,7 @@ enum BotConstraint {
 input BotIncInput {
   createdById: bigint
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -4925,6 +4933,7 @@ input BotInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  individualId: bigint
   owner: ActorObjRelInsertInput
   ownerId: bigint
   tenant: TenantObjRelInsertInput
@@ -4938,6 +4947,7 @@ type BotMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -4949,6 +4959,7 @@ input BotMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -4960,6 +4971,7 @@ type BotMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -4971,6 +4983,7 @@ input BotMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5008,6 +5021,7 @@ input BotOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  individualId: OrderBy
   owner: ActorOrderBy
   ownerId: OrderBy
   tenant: TenantOrderBy
@@ -5037,6 +5051,9 @@ enum BotSelectColumn {
   id
 
   # column name
+  individualId
+
+  # column name
   ownerId
 
   # column name
@@ -5050,6 +5067,7 @@ input BotSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -5058,6 +5076,7 @@ input BotSetInput {
 type BotStddevFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5066,6 +5085,7 @@ type BotStddevFields {
 input BotStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5074,6 +5094,7 @@ input BotStddevOrderBy {
 type BotStddevPopFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5082,6 +5103,7 @@ type BotStddevPopFields {
 input BotStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5090,6 +5112,7 @@ input BotStddevPopOrderBy {
 type BotStddevSampFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5098,6 +5121,7 @@ type BotStddevSampFields {
 input BotStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5118,6 +5142,7 @@ input BotStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -5126,6 +5151,7 @@ input BotStreamCursorValueInput {
 type BotSumFields {
   createdById: bigint
   id: bigint
+  individualId: bigint
   ownerId: bigint
   tenantId: bigint
 }
@@ -5134,6 +5160,7 @@ type BotSumFields {
 input BotSumOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5154,6 +5181,9 @@ enum BotUpdateColumn {
 
   # column name
   id
+
+  # column name
+  individualId
 
   # column name
   ownerId
@@ -5177,6 +5207,7 @@ input BotUpdates {
 type BotVarianceFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5185,6 +5216,7 @@ type BotVarianceFields {
 input BotVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5193,6 +5225,7 @@ input BotVarianceOrderBy {
 type BotVarPopFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5201,6 +5234,7 @@ type BotVarPopFields {
 input BotVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -5209,6 +5243,7 @@ input BotVarPopOrderBy {
 type BotVarSampFields {
   createdById: Float
   id: Float
+  individualId: Float
   ownerId: Float
   tenantId: Float
 }
@@ -5217,6 +5252,7 @@ type BotVarSampFields {
 input BotVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   ownerId: OrderBy
   tenantId: OrderBy
 }
@@ -24497,7 +24533,6 @@ type Individual {
 
   # An object relationship
   bot: Bot
-  botId: bigint
   contentSignature: String!
 
   # An array relationship
@@ -27143,7 +27178,6 @@ type Individual {
 
   # An object relationship
   user: User
-  userId: bigint
 
   # An array relationship
   validatorEventApprovalStep(
@@ -27240,21 +27274,17 @@ input IndividualArrRelInsertInput {
 # aggregate avg on columns
 type IndividualAvgFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by avg() on columns of table "individual"
 input IndividualAvgOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # Boolean expression to filter rows from the table "individual". All fields are combined with a logical 'AND'.
@@ -27265,7 +27295,6 @@ input IndividualBoolExp {
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   bot: BotBoolExp
-  botId: BigintComparisonExp
   contentSignature: StringComparisonExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
@@ -27423,7 +27452,6 @@ input IndividualBoolExp {
   threadContributors: ThreadContributorsBoolExp
   threadContributorsAggregate: ThreadContributorsAggregateBoolExp
   user: UserBoolExp
-  userId: BigintComparisonExp
   validatorEventApprovalStep: EventApprovalStepValidatorsBoolExp
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateBoolExp
 }
@@ -27433,24 +27461,16 @@ enum IndividualConstraint {
   # unique or primary key constraint on columns "actor_id"
   individual_actor_id_unique
 
-  # unique or primary key constraint on columns "bot_id"
-  individual_bot_id_unique
-
   # unique or primary key constraint on columns "id"
   individual_pkey
-
-  # unique or primary key constraint on columns "user_id"
-  individual_user_id_unique
 }
 
 # input type for incrementing numeric columns in table "individual"
 input IndividualIncInput {
   actorId: bigint
-  botId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
-  userId: bigint
 }
 
 # input type for inserting data into table "individual"
@@ -27458,7 +27478,6 @@ input IndividualInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
   bot: BotObjRelInsertInput
-  botId: bigint
   contentSignature: String
   contributorIssues: IssueContributorsArrRelInsertInput
   createdAccountAllocates: AccountAllocateArrRelInsertInput
@@ -27543,14 +27562,12 @@ input IndividualInsertInput {
   tenantId: bigint
   threadContributors: ThreadContributorsArrRelInsertInput
   user: UserObjRelInsertInput
-  userId: bigint
   validatorEventApprovalStep: EventApprovalStepValidatorsArrRelInsertInput
 }
 
 # aggregate max on columns
 type IndividualMaxFields {
   actorId: bigint
-  botId: bigint
   contentSignature: String
   createdAt: timestamptz
   createdById: bigint
@@ -27559,13 +27576,11 @@ type IndividualMaxFields {
   id: bigint
   passwordHash: String
   tenantId: bigint
-  userId: bigint
 }
 
 # order by max() on columns of table "individual"
 input IndividualMaxOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   contentSignature: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -27574,13 +27589,11 @@ input IndividualMaxOrderBy {
   id: OrderBy
   passwordHash: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # aggregate min on columns
 type IndividualMinFields {
   actorId: bigint
-  botId: bigint
   contentSignature: String
   createdAt: timestamptz
   createdById: bigint
@@ -27589,13 +27602,11 @@ type IndividualMinFields {
   id: bigint
   passwordHash: String
   tenantId: bigint
-  userId: bigint
 }
 
 # order by min() on columns of table "individual"
 input IndividualMinOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   contentSignature: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -27604,7 +27615,6 @@ input IndividualMinOrderBy {
   id: OrderBy
   passwordHash: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # response of any mutation on the table "individual"
@@ -27636,7 +27646,6 @@ input IndividualOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
   bot: BotOrderBy
-  botId: OrderBy
   contentSignature: OrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
   createdAccountAllocatesAggregate: AccountAllocateAggregateOrderBy
@@ -27721,7 +27730,6 @@ input IndividualOrderBy {
   tenantId: OrderBy
   threadContributorsAggregate: ThreadContributorsAggregateOrderBy
   user: UserOrderBy
-  userId: OrderBy
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateOrderBy
 }
 
@@ -27736,9 +27744,6 @@ enum IndividualSelectColumn {
   actorId
 
   # column name
-  botId
-
-  # column name
   contentSignature
 
   # column name
@@ -27761,15 +27766,11 @@ enum IndividualSelectColumn {
 
   # column name
   tenantId
-
-  # column name
-  userId
 }
 
 # input type for updating data in table "individual"
 input IndividualSetInput {
   actorId: bigint
-  botId: bigint
   contentSignature: String
   createdAt: timestamptz
   createdById: bigint
@@ -27778,67 +27779,54 @@ input IndividualSetInput {
   id: bigint
   passwordHash: String
   tenantId: bigint
-  userId: bigint
 }
 
 # aggregate stddev on columns
 type IndividualStddevFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by stddev() on columns of table "individual"
 input IndividualStddevOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # aggregate stddevPop on columns
 type IndividualStddevPopFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by stddevPop() on columns of table "individual"
 input IndividualStddevPopOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # aggregate stddevSamp on columns
 type IndividualStddevSampFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by stddevSamp() on columns of table "individual"
 input IndividualStddevSampOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # Streaming cursor of the table "individual"
@@ -27853,7 +27841,6 @@ input IndividualStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input IndividualStreamCursorValueInput {
   actorId: bigint
-  botId: bigint
   contentSignature: String
   createdAt: timestamptz
   createdById: bigint
@@ -27862,36 +27849,28 @@ input IndividualStreamCursorValueInput {
   id: bigint
   passwordHash: String
   tenantId: bigint
-  userId: bigint
 }
 
 # aggregate sum on columns
 type IndividualSumFields {
   actorId: bigint
-  botId: bigint
   createdById: bigint
   id: bigint
   tenantId: bigint
-  userId: bigint
 }
 
 # order by sum() on columns of table "individual"
 input IndividualSumOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # update columns of table "individual"
 enum IndividualUpdateColumn {
   # column name
   actorId
-
-  # column name
-  botId
 
   # column name
   contentSignature
@@ -27916,9 +27895,6 @@ enum IndividualUpdateColumn {
 
   # column name
   tenantId
-
-  # column name
-  userId
 }
 
 input IndividualUpdates {
@@ -27935,61 +27911,49 @@ input IndividualUpdates {
 # aggregate variance on columns
 type IndividualVarianceFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by variance() on columns of table "individual"
 input IndividualVarianceOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # aggregate varPop on columns
 type IndividualVarPopFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by varPop() on columns of table "individual"
 input IndividualVarPopOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # aggregate varSamp on columns
 type IndividualVarSampFields {
   actorId: Float
-  botId: Float
   createdById: Float
   id: Float
   tenantId: Float
-  userId: Float
 }
 
 # order by varSamp() on columns of table "individual"
 input IndividualVarSampOrderBy {
   actorId: OrderBy
-  botId: OrderBy
   createdById: OrderBy
   id: OrderBy
   tenantId: OrderBy
-  userId: OrderBy
 }
 
 # Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
@@ -60614,7 +60578,8 @@ type User {
   id: bigint!
 
   # An object relationship
-  individual: Individual
+  individual: Individual!
+  individualId: bigint!
   isDarkModePreferred: Boolean!
   isDataAnonymizedOnDeactivation: Boolean!
   isDataExportedOnDeactivation: Boolean!
@@ -60884,6 +60849,7 @@ input UserArrRelInsertInput {
 type UserAvgFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -60892,6 +60858,7 @@ type UserAvgFields {
 input UserAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -60915,6 +60882,7 @@ input UserBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
+  individualId: BigintComparisonExp
   isDarkModePreferred: BooleanComparisonExp
   isDataAnonymizedOnDeactivation: BooleanComparisonExp
   isDataExportedOnDeactivation: BooleanComparisonExp
@@ -60939,6 +60907,9 @@ input UserBoolExp {
 
 # unique or primary key constraints on table "user"
 enum UserConstraint {
+  # unique or primary key constraint on columns "individual_id"
+  user_individual_id_unique
+
   # unique or primary key constraint on columns "id"
   user_pkey
 }
@@ -60947,6 +60918,7 @@ enum UserConstraint {
 input UserIncInput {
   createdById: bigint
   id: bigint
+  individualId: bigint
   points: Float
   tenantId: bigint
 }
@@ -60964,6 +60936,7 @@ input UserInsertInput {
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
+  individualId: bigint
   isDarkModePreferred: Boolean
   isDataAnonymizedOnDeactivation: Boolean
   isDataExportedOnDeactivation: Boolean
@@ -60989,6 +60962,7 @@ type UserMaxFields {
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   lastName: String
   points: Float
   tenantId: bigint
@@ -61002,6 +60976,7 @@ input UserMaxOrderBy {
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individualId: OrderBy
   lastName: OrderBy
   points: OrderBy
   tenantId: OrderBy
@@ -61015,6 +60990,7 @@ type UserMinFields {
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   lastName: String
   points: Float
   tenantId: bigint
@@ -61028,6 +61004,7 @@ input UserMinOrderBy {
   firstName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  individualId: OrderBy
   lastName: OrderBy
   points: OrderBy
   tenantId: OrderBy
@@ -61070,6 +61047,7 @@ input UserOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
+  individualId: OrderBy
   isDarkModePreferred: OrderBy
   isDataAnonymizedOnDeactivation: OrderBy
   isDataExportedOnDeactivation: OrderBy
@@ -61111,6 +61089,9 @@ enum UserSelectColumn {
 
   # column name
   id
+
+  # column name
+  individualId
 
   # column name
   isDarkModePreferred
@@ -61184,6 +61165,7 @@ input UserSetInput {
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   isDarkModePreferred: Boolean
   isDataAnonymizedOnDeactivation: Boolean
   isDataExportedOnDeactivation: Boolean
@@ -61199,6 +61181,7 @@ input UserSetInput {
 type UserStddevFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61207,6 +61190,7 @@ type UserStddevFields {
 input UserStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61215,6 +61199,7 @@ input UserStddevOrderBy {
 type UserStddevPopFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61223,6 +61208,7 @@ type UserStddevPopFields {
 input UserStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61231,6 +61217,7 @@ input UserStddevPopOrderBy {
 type UserStddevSampFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61239,6 +61226,7 @@ type UserStddevSampFields {
 input UserStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61260,6 +61248,7 @@ input UserStreamCursorValueInput {
   firstName: String
   hiddenAt: timestamptz
   id: bigint
+  individualId: bigint
   isDarkModePreferred: Boolean
   isDataAnonymizedOnDeactivation: Boolean
   isDataExportedOnDeactivation: Boolean
@@ -61275,6 +61264,7 @@ input UserStreamCursorValueInput {
 type UserSumFields {
   createdById: bigint
   id: bigint
+  individualId: bigint
   points: Float
   tenantId: bigint
 }
@@ -61283,6 +61273,7 @@ type UserSumFields {
 input UserSumOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61306,6 +61297,9 @@ enum UserUpdateColumn {
 
   # column name
   id
+
+  # column name
+  individualId
 
   # column name
   isDarkModePreferred
@@ -61350,6 +61344,7 @@ input UserUpdates {
 type UserVarianceFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61358,6 +61353,7 @@ type UserVarianceFields {
 input UserVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61366,6 +61362,7 @@ input UserVarianceOrderBy {
 type UserVarPopFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61374,6 +61371,7 @@ type UserVarPopFields {
 input UserVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -61382,6 +61380,7 @@ input UserVarPopOrderBy {
 type UserVarSampFields {
   createdById: Float
   id: Float
+  individualId: Float
   points: Float
   tenantId: Float
 }
@@ -61390,6 +61389,7 @@ type UserVarSampFields {
 input UserVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  individualId: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }

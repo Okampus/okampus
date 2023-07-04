@@ -21,11 +21,11 @@ export class Individual extends TenantScopedEntity {
   @OneToOne({ type: 'Actor', inversedBy: 'individual' })
   actor: Actor;
 
-  @OneToOne({ type: 'User', inversedBy: 'individual', nullable: true, default: null })
-  user: User | null = null;
+  @OneToOne({ type: 'User', mappedBy: 'individual' })
+  user?: User;
 
-  @OneToOne({ type: 'Bot', inversedBy: 'individual', nullable: true, default: null })
-  bot: Bot | null = null;
+  @OneToOne({ type: 'Bot', mappedBy: 'individual' })
+  bot?: Bot;
 
   @OneToMany({ type: 'AdminRole', mappedBy: 'individual' })
   adminRoles: AdminRole[] = [];

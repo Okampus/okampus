@@ -13,7 +13,7 @@ export class Bot extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor' })
   owner!: Actor;
 
-  @OneToOne({ type: 'Individual', mappedBy: 'bot' })
+  @OneToOne({ type: 'Individual', inversedBy: 'bot' })
   individual!: Individual;
 
   constructor(options: BotOptions) {

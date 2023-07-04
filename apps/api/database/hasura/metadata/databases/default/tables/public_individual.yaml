@@ -7,7 +7,11 @@ object_relationships:
       foreign_key_constraint_on: actor_id
   - name: bot
     using:
-      foreign_key_constraint_on: bot_id
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: bot
+          schema: public
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -16,7 +20,11 @@ object_relationships:
       foreign_key_constraint_on: tenant_id
   - name: user
     using:
-      foreign_key_constraint_on: user_id
+      foreign_key_constraint_on:
+        column: individual_id
+        table:
+          name: user
+          schema: public
 array_relationships:
   - name: contributorIssues
     using:

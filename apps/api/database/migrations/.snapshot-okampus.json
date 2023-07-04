@@ -48,28 +48,8 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "first_name": {
-          "name": "first_name",
+        "domain": {
+          "name": "domain",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -77,18 +57,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "middle_names": {
-          "name": "middle_names",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'{}'",
-          "mappedType": "array"
-        },
-        "last_name": {
-          "name": "last_name",
+        "name": {
+          "name": "name",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -96,48 +66,17 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "points": {
-          "name": "points",
-          "type": "real",
+        "point_name": {
+          "name": "point_name",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
-          "mappedType": "float"
+          "mappedType": "text"
         },
-        "is_onboarding_finished": {
-          "name": "is_onboarding_finished",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "is_introduction_finished": {
-          "name": "is_introduction_finished",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "is_dark_mode_preferred": {
-          "name": "is_dark_mode_preferred",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "is_data_exported_on_deactivation": {
-          "name": "is_data_exported_on_deactivation",
+        "is_oidc_enabled": {
+          "name": "is_oidc_enabled",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -146,22 +85,100 @@
           "default": "true",
           "mappedType": "boolean"
         },
-        "is_data_anonymized_on_deactivation": {
-          "name": "is_data_anonymized_on_deactivation",
-          "type": "boolean",
+        "oidc_name": {
+          "name": "oidc_name",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
+          "default": "''",
+          "mappedType": "text"
+        },
+        "oidc_client_id": {
+          "name": "oidc_client_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "oidc_client_secret": {
+          "name": "oidc_client_secret",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "oidc_discovery_url": {
+          "name": "oidc_discovery_url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "oidc_scopes": {
+          "name": "oidc_scopes",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "oidc_callback_uri": {
+          "name": "oidc_callback_uri",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "event_validation_form_id": {
+          "name": "event_validation_form_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
         }
       },
-      "name": "user",
+      "name": "tenant",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "user_pkey",
+          "columnNames": [
+            "domain"
+          ],
+          "composite": false,
+          "keyName": "tenant_domain_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
+            "event_validation_form_id"
+          ],
+          "composite": false,
+          "keyName": "tenant_event_validation_form_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "tenant_pkey",
           "columnNames": [
             "id"
           ],
@@ -172,12 +189,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "user_created_by_id_foreign": {
-          "constraintName": "user_created_by_id_foreign",
+        "tenant_created_by_id_foreign": {
+          "constraintName": "tenant_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.user",
+          "localTableName": "public.tenant",
           "referencedColumnNames": [
             "id"
           ],
@@ -185,16 +202,17 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "user_tenant_id_foreign": {
-          "constraintName": "user_tenant_id_foreign",
+        "tenant_event_validation_form_id_foreign": {
+          "constraintName": "tenant_event_validation_form_id_foreign",
           "columnNames": [
-            "tenant_id"
+            "event_validation_form_id"
           ],
-          "localTableName": "public.user",
+          "localTableName": "public.tenant",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.tenant",
+          "referencedTableName": "public.form",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -484,26 +502,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "bot_id": {
-          "name": "bot_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
         }
       },
       "name": "individual",
@@ -515,24 +513,6 @@
           ],
           "composite": false,
           "keyName": "individual_actor_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "user_id"
-          ],
-          "composite": false,
-          "keyName": "individual_user_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "bot_id"
-          ],
-          "composite": false,
-          "keyName": "individual_bot_id_unique",
           "primary": false,
           "unique": true
         },
@@ -583,466 +563,6 @@
             "id"
           ],
           "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        },
-        "individual_user_id_foreign": {
-          "constraintName": "individual_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "individual_bot_id_foreign": {
-          "constraintName": "individual_bot_id_foreign",
-          "columnNames": [
-            "bot_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.bot",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "domain": {
-          "name": "domain",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "point_name": {
-          "name": "point_name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "is_oidc_enabled": {
-          "name": "is_oidc_enabled",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
-        },
-        "oidc_name": {
-          "name": "oidc_name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "oidc_client_id": {
-          "name": "oidc_client_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "oidc_client_secret": {
-          "name": "oidc_client_secret",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "oidc_discovery_url": {
-          "name": "oidc_discovery_url",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "oidc_scopes": {
-          "name": "oidc_scopes",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "oidc_callback_uri": {
-          "name": "oidc_callback_uri",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "event_validation_form_id": {
-          "name": "event_validation_form_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "tenant",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "domain"
-          ],
-          "composite": false,
-          "keyName": "tenant_domain_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "event_validation_form_id"
-          ],
-          "composite": false,
-          "keyName": "tenant_event_validation_form_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "tenant_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "tenant_created_by_id_foreign": {
-          "constraintName": "tenant_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.tenant",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "tenant_event_validation_form_id_foreign": {
-          "constraintName": "tenant_event_validation_form_id_foreign",
-          "columnNames": [
-            "event_validation_form_id"
-          ],
-          "localTableName": "public.tenant",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.form",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "password_hash": {
-          "name": "password_hash",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "text"
-        },
-        "content_signature": {
-          "name": "content_signature",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "actor_id": {
-          "name": "actor_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "bot_id": {
-          "name": "bot_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "individual",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "actor_id"
-          ],
-          "composite": false,
-          "keyName": "individual_actor_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "user_id"
-          ],
-          "composite": false,
-          "keyName": "individual_user_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "bot_id"
-          ],
-          "composite": false,
-          "keyName": "individual_bot_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "individual_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "individual_created_by_id_foreign": {
-          "constraintName": "individual_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "individual_tenant_id_foreign": {
-          "constraintName": "individual_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "individual_actor_id_foreign": {
-          "constraintName": "individual_actor_id_foreign",
-          "columnNames": [
-            "actor_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        },
-        "individual_user_id_foreign": {
-          "constraintName": "individual_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "individual_bot_id_foreign": {
-          "constraintName": "individual_bot_id_foreign",
-          "columnNames": [
-            "bot_id"
-          ],
-          "localTableName": "public.individual",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.bot",
-          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -1540,401 +1060,6 @@
           ],
           "referencedTableName": "public.actor",
           "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Team",
-            "Project",
-            "User",
-            "Event"
-          ],
-          "mappedType": "enum"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "target_actor_id": {
-          "name": "target_actor_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "shortcut",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "shortcut_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "shortcut_created_by_id_foreign": {
-          "constraintName": "shortcut_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "shortcut_tenant_id_foreign": {
-          "constraintName": "shortcut_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "shortcut_user_id_foreign": {
-          "constraintName": "shortcut_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "shortcut_target_actor_id_foreign": {
-          "constraintName": "shortcut_target_actor_id_foreign",
-          "columnNames": [
-            "target_actor_id"
-          ],
-          "localTableName": "public.shortcut",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "ip": {
-          "name": "ip",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "country": {
-          "name": "country",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "client_type": {
-          "name": "client_type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "WebClient",
-            "MobileClient",
-            "DesktopClient"
-          ],
-          "mappedType": "enum"
-        },
-        "user_agent": {
-          "name": "user_agent",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "refresh_token_hash": {
-          "name": "refresh_token_hash",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "token_family": {
-          "name": "token_family",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "last_activity_at": {
-          "name": "last_activity_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "last_issued_at": {
-          "name": "last_issued_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "revoked_at": {
-          "name": "revoked_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "expired_at": {
-          "name": "expired_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "session",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "session_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "session_created_by_id_foreign": {
-          "constraintName": "session_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.session",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "session_tenant_id_foreign": {
-          "constraintName": "session_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.session",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "session_user_id_foreign": {
-          "constraintName": "session_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.session",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
           "updateRule": "cascade"
         }
       }
@@ -4020,187 +3145,6 @@
           "default": "null",
           "mappedType": "datetime"
         },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "permissions": {
-          "name": "permissions",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "integer"
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "CURRENT_TIMESTAMP",
-          "mappedType": "datetime"
-        },
-        "end_date": {
-          "name": "end_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "team_member",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_member_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_member_created_by_id_foreign": {
-          "constraintName": "team_member_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_member_tenant_id_foreign": {
-          "constraintName": "team_member_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "team_member_team_id_foreign": {
-          "constraintName": "team_member_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        },
-        "team_member_user_id_foreign": {
-          "constraintName": "team_member_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "public.team_member",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "approximate_date": {
           "name": "approximate_date",
           "type": "text",
@@ -4501,71 +3445,6 @@
     },
     {
       "columns": {
-        "team_member_id": {
-          "name": "team_member_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "role_id": {
-          "name": "role_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "team_member_roles",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_member_roles_pkey",
-          "columnNames": [
-            "team_member_id",
-            "role_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_member_roles_team_member_id_foreign": {
-          "constraintName": "team_member_roles_team_member_id_foreign",
-          "columnNames": [
-            "team_member_id"
-          ],
-          "localTableName": "public.team_member_roles",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "team_member_roles_role_id_foreign": {
-          "constraintName": "team_member_roles_role_id_foreign",
-          "columnNames": [
-            "role_id"
-          ],
-          "localTableName": "public.team_member_roles",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.role",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
         "id": {
           "name": "id",
           "type": "bigint",
@@ -4732,295 +3611,6 @@
             "id"
           ],
           "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Pending'",
-          "enumItems": [
-            "Approved",
-            "Rejected",
-            "Canceled",
-            "Pending"
-          ],
-          "mappedType": "enum"
-        },
-        "joined_by_id": {
-          "name": "joined_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "processed_by_id": {
-          "name": "processed_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "processed_at": {
-          "name": "processed_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "form_submission_id": {
-          "name": "form_submission_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "asked_role_id": {
-          "name": "asked_role_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "received_role_id": {
-          "name": "received_role_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "received_pole_id": {
-          "name": "received_pole_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "team_join",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "team_join_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "team_join_created_by_id_foreign": {
-          "constraintName": "team_join_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_join_tenant_id_foreign": {
-          "constraintName": "team_join_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "team_join_joined_by_id_foreign": {
-          "constraintName": "team_join_joined_by_id_foreign",
-          "columnNames": [
-            "joined_by_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
-        },
-        "team_join_processed_by_id_foreign": {
-          "constraintName": "team_join_processed_by_id_foreign",
-          "columnNames": [
-            "processed_by_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_join_form_submission_id_foreign": {
-          "constraintName": "team_join_form_submission_id_foreign",
-          "columnNames": [
-            "form_submission_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.form_submission",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_join_team_id_foreign": {
-          "constraintName": "team_join_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        },
-        "team_join_asked_role_id_foreign": {
-          "constraintName": "team_join_asked_role_id_foreign",
-          "columnNames": [
-            "asked_role_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.role",
-          "updateRule": "cascade"
-        },
-        "team_join_received_role_id_foreign": {
-          "constraintName": "team_join_received_role_id_foreign",
-          "columnNames": [
-            "received_role_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.role",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "team_join_received_pole_id_foreign": {
-          "constraintName": "team_join_received_pole_id_foreign",
-          "columnNames": [
-            "received_pole_id"
-          ],
-          "localTableName": "public.team_join",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.pole",
-          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -5617,71 +4207,6 @@
     },
     {
       "columns": {
-        "project_id": {
-          "name": "project_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "team_member_id": {
-          "name": "team_member_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "project_supervisors",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "project_supervisors_pkey",
-          "columnNames": [
-            "project_id",
-            "team_member_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "project_supervisors_project_id_foreign": {
-          "constraintName": "project_supervisors_project_id_foreign",
-          "columnNames": [
-            "project_id"
-          ],
-          "localTableName": "public.project_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.project",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "project_supervisors_team_member_id_foreign": {
-          "constraintName": "project_supervisors_team_member_id_foreign",
-          "columnNames": [
-            "team_member_id"
-          ],
-          "localTableName": "public.project_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
         "grant_id": {
           "name": "grant_id",
           "type": "bigint",
@@ -6167,292 +4692,6 @@
           ],
           "referencedTableName": "public.team",
           "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "slug": {
-          "name": "slug",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "content_id": {
-          "name": "content_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "thread",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "content_id"
-          ],
-          "composite": false,
-          "keyName": "thread_content_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "thread_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "thread_created_by_id_foreign": {
-          "constraintName": "thread_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.thread",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "thread_tenant_id_foreign": {
-          "constraintName": "thread_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.thread",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "thread_content_id_foreign": {
-          "constraintName": "thread_content_id_foreign",
-          "columnNames": [
-            "content_id"
-          ],
-          "localTableName": "public.thread",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.content",
-          "deleteRule": "CASCADE",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "thread_id": {
-          "name": "thread_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "thread_tags",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "thread_tags_pkey",
-          "columnNames": [
-            "thread_id",
-            "tag_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "thread_tags_thread_id_foreign": {
-          "constraintName": "thread_tags_thread_id_foreign",
-          "columnNames": [
-            "thread_id"
-          ],
-          "localTableName": "public.thread_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.thread",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "thread_tags_tag_id_foreign": {
-          "constraintName": "thread_tags_tag_id_foreign",
-          "columnNames": [
-            "tag_id"
-          ],
-          "localTableName": "public.thread_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tag",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "thread_id": {
-          "name": "thread_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "individual_id": {
-          "name": "individual_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "thread_contributors",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "thread_contributors_pkey",
-          "columnNames": [
-            "thread_id",
-            "individual_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "thread_contributors_thread_id_foreign": {
-          "constraintName": "thread_contributors_thread_id_foreign",
-          "columnNames": [
-            "thread_id"
-          ],
-          "localTableName": "public.thread_contributors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.thread",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "thread_contributors_individual_id_foreign": {
-          "constraintName": "thread_contributors_individual_id_foreign",
-          "columnNames": [
-            "individual_id"
-          ],
-          "localTableName": "public.thread_contributors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -7535,170 +5774,6 @@
             "id"
           ],
           "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "campus_cluster_id": {
-          "name": "campus_cluster_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Admin",
-            "ClusterManager"
-          ],
-          "mappedType": "enum"
-        }
-      },
-      "name": "tenant_manage",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "tenant_manage_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "tenant_manage_created_by_id_foreign": {
-          "constraintName": "tenant_manage_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.tenant_manage",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.individual",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "tenant_manage_tenant_id_foreign": {
-          "constraintName": "tenant_manage_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.tenant_manage",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "tenant_manage_campus_cluster_id_foreign": {
-          "constraintName": "tenant_manage_campus_cluster_id_foreign",
-          "columnNames": [
-            "campus_cluster_id"
-          ],
-          "localTableName": "public.tenant_manage",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.campus_cluster",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "tenant_manage_team_id_foreign": {
-          "constraintName": "tenant_manage_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.tenant_manage",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
           "updateRule": "cascade"
         }
       }
@@ -9869,71 +7944,6 @@
     },
     {
       "columns": {
-        "event_manage_id": {
-          "name": "event_manage_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "team_member_id": {
-          "name": "team_member_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "event_manage_supervisors",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "event_manage_supervisors_pkey",
-          "columnNames": [
-            "event_manage_id",
-            "team_member_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "event_manage_supervisors_event_manage_id_foreign": {
-          "constraintName": "event_manage_supervisors_event_manage_id_foreign",
-          "columnNames": [
-            "event_manage_id"
-          ],
-          "localTableName": "public.event_manage_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event_manage",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "event_manage_supervisors_team_member_id_foreign": {
-          "constraintName": "event_manage_supervisors_team_member_id_foreign",
-          "columnNames": [
-            "team_member_id"
-          ],
-          "localTableName": "public.event_manage_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
         "id": {
           "name": "id",
           "type": "bigint",
@@ -10689,11 +8699,29 @@
           "primary": false,
           "nullable": false,
           "mappedType": "bigint"
+        },
+        "individual_id": {
+          "name": "individual_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
         }
       },
       "name": "bot",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "individual_id"
+          ],
+          "composite": false,
+          "keyName": "bot_individual_id_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "bot_pkey",
           "columnNames": [
@@ -10741,6 +8769,18 @@
             "id"
           ],
           "referencedTableName": "public.actor",
+          "updateRule": "cascade"
+        },
+        "bot_individual_id_foreign": {
+          "constraintName": "bot_individual_id_foreign",
+          "columnNames": [
+            "individual_id"
+          ],
+          "localTableName": "public.bot",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
           "updateRule": "cascade"
         }
       }
@@ -12886,6 +10926,1741 @@
             "id"
           ],
           "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "campus_cluster_id": {
+          "name": "campus_cluster_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Admin",
+            "ClusterManager"
+          ],
+          "mappedType": "enum"
+        }
+      },
+      "name": "tenant_manage",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "tenant_manage_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "tenant_manage_created_by_id_foreign": {
+          "constraintName": "tenant_manage_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.tenant_manage",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "tenant_manage_tenant_id_foreign": {
+          "constraintName": "tenant_manage_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.tenant_manage",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "tenant_manage_campus_cluster_id_foreign": {
+          "constraintName": "tenant_manage_campus_cluster_id_foreign",
+          "columnNames": [
+            "campus_cluster_id"
+          ],
+          "localTableName": "public.tenant_manage",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.campus_cluster",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "tenant_manage_team_id_foreign": {
+          "constraintName": "tenant_manage_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.tenant_manage",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "thread",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "content_id"
+          ],
+          "composite": false,
+          "keyName": "thread_content_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "thread_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "thread_created_by_id_foreign": {
+          "constraintName": "thread_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.thread",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "thread_tenant_id_foreign": {
+          "constraintName": "thread_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.thread",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "thread_content_id_foreign": {
+          "constraintName": "thread_content_id_foreign",
+          "columnNames": [
+            "content_id"
+          ],
+          "localTableName": "public.thread",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.content",
+          "deleteRule": "CASCADE",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "thread_id": {
+          "name": "thread_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "individual_id": {
+          "name": "individual_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "thread_contributors",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "thread_contributors_pkey",
+          "columnNames": [
+            "thread_id",
+            "individual_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "thread_contributors_thread_id_foreign": {
+          "constraintName": "thread_contributors_thread_id_foreign",
+          "columnNames": [
+            "thread_id"
+          ],
+          "localTableName": "public.thread_contributors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.thread",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "thread_contributors_individual_id_foreign": {
+          "constraintName": "thread_contributors_individual_id_foreign",
+          "columnNames": [
+            "individual_id"
+          ],
+          "localTableName": "public.thread_contributors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "thread_id": {
+          "name": "thread_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "thread_tags",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "thread_tags_pkey",
+          "columnNames": [
+            "thread_id",
+            "tag_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "thread_tags_thread_id_foreign": {
+          "constraintName": "thread_tags_thread_id_foreign",
+          "columnNames": [
+            "thread_id"
+          ],
+          "localTableName": "public.thread_tags",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.thread",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "thread_tags_tag_id_foreign": {
+          "constraintName": "thread_tags_tag_id_foreign",
+          "columnNames": [
+            "tag_id"
+          ],
+          "localTableName": "public.thread_tags",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tag",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "middle_names": {
+          "name": "middle_names",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "array"
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "points": {
+          "name": "points",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "float"
+        },
+        "is_onboarding_finished": {
+          "name": "is_onboarding_finished",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_introduction_finished": {
+          "name": "is_introduction_finished",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_dark_mode_preferred": {
+          "name": "is_dark_mode_preferred",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_data_exported_on_deactivation": {
+          "name": "is_data_exported_on_deactivation",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_data_anonymized_on_deactivation": {
+          "name": "is_data_anonymized_on_deactivation",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "individual_id": {
+          "name": "individual_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "user",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "individual_id"
+          ],
+          "composite": false,
+          "keyName": "user_individual_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "user_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "user_created_by_id_foreign": {
+          "constraintName": "user_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.user",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "user_tenant_id_foreign": {
+          "constraintName": "user_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.user",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "user_individual_id_foreign": {
+          "constraintName": "user_individual_id_foreign",
+          "columnNames": [
+            "individual_id"
+          ],
+          "localTableName": "public.user",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "permissions": {
+          "name": "permissions",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "CURRENT_TIMESTAMP",
+          "mappedType": "datetime"
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        }
+      },
+      "name": "team_member",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_member_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_member_created_by_id_foreign": {
+          "constraintName": "team_member_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_member_tenant_id_foreign": {
+          "constraintName": "team_member_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "team_member_team_id_foreign": {
+          "constraintName": "team_member_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "team_member_user_id_foreign": {
+          "constraintName": "team_member_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.team_member",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "team_member_id": {
+          "name": "team_member_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "role_id": {
+          "name": "role_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "team_member_roles",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_member_roles_pkey",
+          "columnNames": [
+            "team_member_id",
+            "role_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_member_roles_team_member_id_foreign": {
+          "constraintName": "team_member_roles_team_member_id_foreign",
+          "columnNames": [
+            "team_member_id"
+          ],
+          "localTableName": "public.team_member_roles",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_member",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "team_member_roles_role_id_foreign": {
+          "constraintName": "team_member_roles_role_id_foreign",
+          "columnNames": [
+            "role_id"
+          ],
+          "localTableName": "public.team_member_roles",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.role",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "project_id": {
+          "name": "project_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "team_member_id": {
+          "name": "team_member_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "project_supervisors",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "project_supervisors_pkey",
+          "columnNames": [
+            "project_id",
+            "team_member_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "project_supervisors_project_id_foreign": {
+          "constraintName": "project_supervisors_project_id_foreign",
+          "columnNames": [
+            "project_id"
+          ],
+          "localTableName": "public.project_supervisors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.project",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "project_supervisors_team_member_id_foreign": {
+          "constraintName": "project_supervisors_team_member_id_foreign",
+          "columnNames": [
+            "team_member_id"
+          ],
+          "localTableName": "public.project_supervisors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_member",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "event_manage_id": {
+          "name": "event_manage_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "team_member_id": {
+          "name": "team_member_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "event_manage_supervisors",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "event_manage_supervisors_pkey",
+          "columnNames": [
+            "event_manage_id",
+            "team_member_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "event_manage_supervisors_event_manage_id_foreign": {
+          "constraintName": "event_manage_supervisors_event_manage_id_foreign",
+          "columnNames": [
+            "event_manage_id"
+          ],
+          "localTableName": "public.event_manage_supervisors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.event_manage",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "event_manage_supervisors_team_member_id_foreign": {
+          "constraintName": "event_manage_supervisors_team_member_id_foreign",
+          "columnNames": [
+            "team_member_id"
+          ],
+          "localTableName": "public.event_manage_supervisors",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team_member",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Pending'",
+          "enumItems": [
+            "Approved",
+            "Rejected",
+            "Canceled",
+            "Pending"
+          ],
+          "mappedType": "enum"
+        },
+        "joined_by_id": {
+          "name": "joined_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "processed_by_id": {
+          "name": "processed_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "processed_at": {
+          "name": "processed_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "form_submission_id": {
+          "name": "form_submission_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "asked_role_id": {
+          "name": "asked_role_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "received_role_id": {
+          "name": "received_role_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "received_pole_id": {
+          "name": "received_pole_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "team_join",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "team_join_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "team_join_created_by_id_foreign": {
+          "constraintName": "team_join_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_join_tenant_id_foreign": {
+          "constraintName": "team_join_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "team_join_joined_by_id_foreign": {
+          "constraintName": "team_join_joined_by_id_foreign",
+          "columnNames": [
+            "joined_by_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "team_join_processed_by_id_foreign": {
+          "constraintName": "team_join_processed_by_id_foreign",
+          "columnNames": [
+            "processed_by_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_join_form_submission_id_foreign": {
+          "constraintName": "team_join_form_submission_id_foreign",
+          "columnNames": [
+            "form_submission_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.form_submission",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_join_team_id_foreign": {
+          "constraintName": "team_join_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "team_join_asked_role_id_foreign": {
+          "constraintName": "team_join_asked_role_id_foreign",
+          "columnNames": [
+            "asked_role_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.role",
+          "updateRule": "cascade"
+        },
+        "team_join_received_role_id_foreign": {
+          "constraintName": "team_join_received_role_id_foreign",
+          "columnNames": [
+            "received_role_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.role",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_join_received_pole_id_foreign": {
+          "constraintName": "team_join_received_pole_id_foreign",
+          "columnNames": [
+            "received_pole_id"
+          ],
+          "localTableName": "public.team_join",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.pole",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Team",
+            "Project",
+            "User",
+            "Event"
+          ],
+          "mappedType": "enum"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "target_actor_id": {
+          "name": "target_actor_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "shortcut",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "shortcut_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "shortcut_created_by_id_foreign": {
+          "constraintName": "shortcut_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.shortcut",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "shortcut_tenant_id_foreign": {
+          "constraintName": "shortcut_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.shortcut",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "shortcut_user_id_foreign": {
+          "constraintName": "shortcut_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.shortcut",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "shortcut_target_actor_id_foreign": {
+          "constraintName": "shortcut_target_actor_id_foreign",
+          "columnNames": [
+            "target_actor_id"
+          ],
+          "localTableName": "public.shortcut",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.actor",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "ip": {
+          "name": "ip",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "client_type": {
+          "name": "client_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "WebClient",
+            "MobileClient",
+            "DesktopClient"
+          ],
+          "mappedType": "enum"
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "refresh_token_hash": {
+          "name": "refresh_token_hash",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "token_family": {
+          "name": "token_family",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "last_activity_at": {
+          "name": "last_activity_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "last_issued_at": {
+          "name": "last_issued_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "expired_at": {
+          "name": "expired_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        }
+      },
+      "name": "session",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "session_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "session_created_by_id_foreign": {
+          "constraintName": "session_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.session",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "session_tenant_id_foreign": {
+          "constraintName": "session_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.session",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "session_user_id_foreign": {
+          "constraintName": "session_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.session",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
           "updateRule": "cascade"
         }
       }

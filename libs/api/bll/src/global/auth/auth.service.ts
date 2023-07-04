@@ -52,6 +52,9 @@ type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
 
 const individualPopulate = ['actor', 'adminRoles'];
+const loginUserPopulate = [...individualPopulate, 'user'];
+// const loginBotPopulate = [...individualPopulate, 'bot'];
+
 const userPopulate = ['individual', ...individualPopulate.map((path) => `individual.${path}`)];
 const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
 
@@ -307,7 +310,7 @@ export class AuthService extends RequestContext {
     const individual = await this.em.findOneOrFail<Individual, any>(
       Individual,
       { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
-      { populate: individualPopulate }
+      { populate: loginUserPopulate }
     );
 
     if (!individual || !individual.user) throw new UnauthorizedException('Account not yet registered.');
