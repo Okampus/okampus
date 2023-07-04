@@ -22,3 +22,10 @@ array_relationships:
         table:
           name: account_allocate
           schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: account_id
+        table:
+          name: finance
+          schema: public

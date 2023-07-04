@@ -4,11 +4,7 @@ table:
 object_relationships:
   - name: actor
     using:
-      foreign_key_constraint_on:
-        column: legal_unit_id
-        table:
-          name: actor
-          schema: public
+      foreign_key_constraint_on: actor_id
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id

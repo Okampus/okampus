@@ -2,6 +2,9 @@ table:
   name: finance
   schema: public
 object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: account_id
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -11,6 +14,9 @@ object_relationships:
   - name: expense
     using:
       foreign_key_constraint_on: expense_id
+  - name: location
+    using:
+      foreign_key_constraint_on: location_id
   - name: payedBy
     using:
       foreign_key_constraint_on: payed_by_id
@@ -33,6 +39,13 @@ array_relationships:
         column: finance_id
         table:
           name: finance_attachments
+          schema: public
+  - name: financeTags
+    using:
+      foreign_key_constraint_on:
+        column: finance_id
+        table:
+          name: finance_tags
           schema: public
   - name: grantAllocates
     using:

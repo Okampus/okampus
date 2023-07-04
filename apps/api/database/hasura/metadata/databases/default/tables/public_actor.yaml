@@ -7,16 +7,32 @@ object_relationships:
       foreign_key_constraint_on: created_by_id
   - name: individual
     using:
-      foreign_key_constraint_on: individual_id
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: individual
+          schema: public
   - name: legalUnit
     using:
-      foreign_key_constraint_on: legal_unit_id
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: legal_unit
+          schema: public
   - name: legalUnitLocation
     using:
-      foreign_key_constraint_on: legal_unit_location_id
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: legal_unit_location
+          schema: public
   - name: team
     using:
-      foreign_key_constraint_on: team_id
+      foreign_key_constraint_on:
+        column: actor_id
+        table:
+          name: team
+          schema: public
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

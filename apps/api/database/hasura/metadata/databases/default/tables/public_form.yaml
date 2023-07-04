@@ -7,7 +7,11 @@ object_relationships:
       foreign_key_constraint_on: created_by_id
   - name: team
     using:
-      foreign_key_constraint_on: team_id
+      foreign_key_constraint_on:
+        column: join_form_id
+        table:
+          name: team
+          schema: public
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
