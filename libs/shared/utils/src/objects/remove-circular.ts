@@ -1,4 +1,4 @@
-import { isObject } from './is-object';
+import { isNonNullObject } from './is-object';
 
 type IdentifyFunc = (obj1: object, obj2: object) => boolean;
 const equals = (obj1: object, obj2: object) => obj1 === obj2;
@@ -27,7 +27,7 @@ export function referenceRemover<T extends object>(src: T, identify: IdentifyFun
           return;
         };
 
-    if (isObject(value)) {
+    if (isNonNullObject(value)) {
       let referenceFound = false;
 
       for (const reference of references) {

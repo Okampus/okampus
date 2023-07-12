@@ -1,0 +1,25 @@
+table:
+  name: campus_cluster
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: campus_cluster_id
+        table:
+          name: campus
+          schema: public
+  - name: tenantManages
+    using:
+      foreign_key_constraint_on:
+        column: campus_cluster_id
+        table:
+          name: tenant_manage
+          schema: public

@@ -1,11 +1,12 @@
-import { S3Buckets, TokenType } from '@okampus/shared/enums';
+import { Buckets, TokenType } from '@okampus/shared/enums';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import type { ApiConfig } from '@okampus/shared/types';
 
 const _dirname = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
-export const appPath = `${_dirname}/../../../apps/api`;
+export const rootPath = `${_dirname}/../../..`;
+const appPath = `${rootPath}/apps/api`;
 
 dotenv.config({ path: `${appPath}/.env` });
 
@@ -46,52 +47,69 @@ export const config: ApiConfig = {
   release: process.env.RELEASE ?? 'alpha',
   network: {
     port,
-    frontendOriginUrl,
     baseDomain,
+    frontendOriginUrl,
     apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.${baseDomain}`,
-    frontendUrl: nodeEnv === 'development' ? 'http://localhost:5173' : `https://${frontendOriginUrl}`,
+    hasuraUrl: nodeEnv === 'development' ? 'http://localhost:8080' : `https://hasura.${baseDomain}`,
+    frontendUrl: nodeEnv === 'development' ? 'http://localhost:4201' : `https://${frontendOriginUrl}`,
   },
   upload: {
     localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
     localPrefix: process.env.UPLOAD_PATH ?? 'uploads',
   },
   meilisearch: {
-    enabled: getEnabled(process.env.MEILISEARCH_ENABLED, process.env.MEILISEARCH_HOST),
+    isEnabled: getEnabled(process.env.MEILISEARCH_ENABLED, process.env.MEILISEARCH_HOST),
     host: process.env.MEILISEARCH_HOST ?? 'localhost:7700',
     apiKey: process.env.MEILISEARCH_API_KEY ?? 'api-key',
   },
+  textract: {
+    accessKey: process.env.TEXTRACT_API_KEY_ID ?? 'api-key-id',
+    secretKey: process.env.TEXTRACT_SECRET_ACCESS_KEY ?? 'api-key-secret',
+    region: process.env.TEXTRACT_REGION ?? 'region',
+  },
+  geoapify: {
+    apiKey: process.env.GEOAPIFY_API_KEY ?? 'api-key',
+  },
+  google: {
+    customSearchApiKey: process.env.GOOGLE_CUSTOM_SEARCH_API_KEY ?? 'api-key',
+  },
+  insee: {
+    apiToken: process.env.INSEE_API_TOKEN ?? 'api-key',
+  },
   database: {
-    seed: parseEnvBoolean(process.env.MIKRO_ORM_SEED, false),
-    name: process.env.DB_NAME ?? 'db-name',
-    user: process.env.DB_USER ?? 'user',
-    password: process.env.DB_PASSWORD ?? 'secret-db-user',
+    host: process.env.PSQL_HOST ?? 'localhost',
+    name: process.env.PSQL_DATABASE ?? 'db-name',
+    user: process.env.PSQL_USERNAME ?? 'user',
+    password: process.env.PSQL_PASSWORD ?? 'secret-db-user',
+    isSeeding: parseEnvBoolean(process.env.ORM_SEEDING_ENABLED, false),
   },
   s3: {
-    enabled: parseEnvBoolean(process.env.S3_ENABLED, false),
-    accessKeyId: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
-    endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
+    isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
+    accessKey: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
+    secretKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
+    endPoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
     buckets: {
-      [S3Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'bucket-attachments',
-      [S3Buckets.OrgDocuments]: process.env.S3_BUCKET_NAME_ORG_DOCUMENTS ?? 'bucket-org-documents',
-      [S3Buckets.OrgImages]: process.env.S3_BUCKET_NAME_ORG_IMAGES ?? 'bucket-org-images',
-      [S3Buckets.OrgVideos]: process.env.S3_BUCKET_NAME_ORG_VIDEOS ?? 'bucket-org-videos',
-      [S3Buckets.UserImages]: process.env.S3_BUCKET_NAME_USER_IMAGES ?? 'bucket-user-images',
+      [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'bucket-attachments',
+      [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'bucket-qr',
+      [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'bucket-receipts',
+      [Buckets.Teams]: process.env.S3_BUCKET_NAME_TEAMS ?? 'bucket-teams',
+      [Buckets.Tenants]: process.env.S3_BUCKET_NAME_TENANTS ?? 'bucket-tenants',
+      [Buckets.Users]: process.env.S3_BUCKET_NAME_USERS ?? 'bucket-users',
     },
   },
   redis: {
-    enabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
+    isEnabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
     host: process.env.REDIS_HOST ?? 'localhost',
     port: parseEnvInt(process.env.REDIS_PORT, 6379),
     password: process.env.REDIS_PASSWORD ?? '',
   },
   sentry: {
-    enabled: parseEnvBoolean(process.env.SENTRY_ENABLED, false),
+    isEnabled: parseEnvBoolean(process.env.SENTRY_ENABLED, false),
     dsn: process.env.SENTRY_DSN ?? 'https://sentry.io',
   },
   novu: {
-    enabled: parseEnvBoolean(process.env.NOVU_ENABLED, false),
+    isEnabled: parseEnvBoolean(process.env.NOVU_ENABLED, false),
     apiKey: process.env.NOVU_API_KEY ?? 'api-key',
     appId: process.env.NOVU_APP_ID ?? 'app-id',
   },
@@ -110,14 +128,6 @@ export const config: ApiConfig = {
     },
   },
   cookies: {
-    names: {
-      [TokenType.MeiliSearch]: process.env.MEILISEARCH_TOKEN_COOKIE_NAME ?? 'meilisearch_key',
-      [TokenType.Access]: process.env.ACCESS_TOKEN_COOKIE_NAME ?? 'access_token',
-      [TokenType.Refresh]: process.env.REFRESH_TOKEN_COOKIE_NAME ?? 'refresh_token',
-      [TokenType.WebSocket]: process.env.WS_TOKEN_COOKIE_NAME ?? 'ws_token',
-      AccessExpiration: process.env.ACCESS_TOKEN_EXPIRATION_COOKIE_NAME ?? 'access_exp',
-      RefreshExpiration: process.env.REFRESH_TOKEN_EXPIRATION_COOKIE_NAME ?? 'refresh_exp',
-    },
     signature: process.env.COOKIE_SIGNATURE_SECRET ?? 'cookie_secret',
     // This is only the default value, the real value is set right after the config is initialized.
     options: {
@@ -127,15 +137,20 @@ export const config: ApiConfig = {
       httpOnly: true,
       // eslint-disable-next-line no-undefined
       domain: nodeEnv === 'production' ? `.${baseDomain}` : undefined,
-      sameSite: 'none',
+      sameSite: 'lax',
     },
   },
   session: {
     secret: process.env.SESSION_SECRET ?? 'session_secret',
   },
-  cryptoSecret: process.env.CRYPTO_PEPPER_SECRET ?? 'CRYPTO_PEPPER_SECRET',
-  adminAccountPassword: process.env.ADMIN_ACCOUNT_PASSWORD ?? 'root',
+  jwt: {
+    algorithm: process.env.JWT_ALGORITHM ?? 'HS256',
+    hasuraSecret: process.env.HASURA_JWT_SECRET ?? 'very_secret_and_long_hasura_jwt_secret',
+  },
+  pepperSecret: process.env.PEPPER_SECRET ?? 'very_secret_and_long_pepper_secret',
+  hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET ?? 'very_secret_and_long_hasura_admin_secret',
   baseTenant: {
+    adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
     name: process.env.BASE_TENANT_NAME ?? 'Demo Tenant',
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),

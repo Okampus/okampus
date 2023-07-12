@@ -1,25 +1,28 @@
-import { Banner } from '@okampus/ui/atoms';
-import { NavigationContext } from '@okampus/ui/hooks';
+import { BannerImage } from '@okampus/ui/atoms';
+// import { NavigationContext } from '@okampus/ui/hooks';
 
-import { useContext, useRef } from 'react';
+import {
+  // useContext,
+  useRef,
+} from 'react';
 
-import type { BannerProps } from '@okampus/ui/atoms';
+import type { BannerImageProps } from '@okampus/ui/atoms';
 
 export type BannerEditorProps = {
-  banner?: BannerProps;
+  banner?: BannerImageProps;
   small?: boolean;
   onChange: (file: File | null) => void;
 };
 
 export function BannerEditor({ banner, onChange }: BannerEditorProps) {
-  const { showModal } = useContext(NavigationContext);
+  // const { showButtonModal } = useContext(NavigationContext);
   // TODO: add cropper
 
   const ref = useRef<HTMLInputElement>(null);
 
   return (
     <div className="h-full">
-      <Banner {...banner} className="absolute inset-0" />
+      <BannerImage {...banner} className="absolute inset-0" />
       <input
         ref={ref}
         type="file"
@@ -31,7 +34,7 @@ export function BannerEditor({ banner, onChange }: BannerEditorProps) {
         }}
       />
       <div
-        className="z-10 absolute top-[var(--topbar-height)] right-[var(--padding-view)] text-white cursor-pointer font-semibold hover:underline"
+        className="z-10 absolute top-[var(--topbar-height)] text-white cursor-pointer font-semibold hover:underline"
         onClick={() => ref.current?.click()}
       >
         Modifier la bannière

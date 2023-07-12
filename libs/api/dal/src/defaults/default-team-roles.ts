@@ -1,62 +1,95 @@
-import { Colors, TeamPermissions, TeamRoleCategory, TeamRoleKey } from '@okampus/shared/enums';
-import type { RoleProps, TeamRoleProps } from '@okampus/shared/dtos';
+import { Colors, TeamPermissions, RoleCategory, TeamRoleType } from '@okampus/shared/enums';
+import type { RoleOptions } from '../resources/team/role/role.options';
 
-type TeamRoleDefault = TeamRoleProps &
-  RoleProps & {
-    key?: TeamRoleKey;
-    required?: boolean;
-  };
+const viewPermissions = [TeamPermissions.ViewDraftEvents, TeamPermissions.ViewJoins];
+const manageMembersPermissions = [
+  TeamPermissions.ManageJoins,
+  TeamPermissions.ManageMembers,
+  TeamPermissions.ManageRoles,
+  TeamPermissions.CreateActions,
+  TeamPermissions.ManageActions,
+];
+const manageCommunicationPermissions = [
+  TeamPermissions.ManageProfile,
+  TeamPermissions.ManageContents,
+  TeamPermissions.CreateContents,
+];
+const manageEventPermissions = [
+  TeamPermissions.CreateEvents,
+  TeamPermissions.ManageEvents,
+  TeamPermissions.CreateActions,
+  TeamPermissions.ManageActions,
+];
 
-const viewPermissions = [TeamPermissions.ViewDraftEvents, TeamPermissions.ViewRequests, TeamPermissions.ViewTreasury];
+const manageTreasuryPermissions = [TeamPermissions.ViewTreasury, TeamPermissions.ManageTreasury];
 
-export const clubDefaultRoles: TeamRoleDefault[] = [
+export const clubDefaultRoles: Omit<RoleOptions, 'team' | 'tenant' | 'createdBy'>[] = [
   {
     name: 'President',
     color: Colors.Green,
-    category: TeamRoleCategory.Directors,
-    permissions: [TeamPermissions.Admin],
-    key: TeamRoleKey.Director,
-    required: true,
+    category: RoleCategory.Directors,
+    permissions: [
+      ...viewPermissions,
+      ...manageMembersPermissions,
+      ...manageEventPermissions,
+      ...manageCommunicationPermissions,
+      ...manageTreasuryPermissions,
+    ],
+    type: TeamRoleType.Director,
+    isRequired: true,
   },
   {
     name: 'Trésorier',
     color: Colors.Green,
-    category: TeamRoleCategory.Directors,
-    permissions: [TeamPermissions.Admin],
-    key: TeamRoleKey.Treasurer,
-    required: true,
+    category: RoleCategory.Directors,
+    permissions: [
+      ...viewPermissions,
+      ...manageMembersPermissions,
+      ...manageEventPermissions,
+      ...manageCommunicationPermissions,
+      ...manageTreasuryPermissions,
+    ],
+    type: TeamRoleType.Treasurer,
+    isRequired: true,
   },
   {
     name: 'Secrétaire',
     color: Colors.Green,
-    category: TeamRoleCategory.Directors,
-    permissions: [TeamPermissions.Admin],
-    key: TeamRoleKey.Secretary,
-    required: true,
+    category: RoleCategory.Directors,
+    permissions: [
+      ...viewPermissions,
+      ...manageMembersPermissions,
+      ...manageEventPermissions,
+      ...manageCommunicationPermissions,
+      TeamPermissions.ViewTreasury,
+    ],
+    type: TeamRoleType.Secretary,
+    isRequired: true,
   },
   {
     name: 'Responsable événements',
     color: Colors.Red,
-    category: TeamRoleCategory.Managers,
-    permissions: [...viewPermissions, TeamPermissions.ManageEvents],
-    required: true,
+    category: RoleCategory.Managers,
+    permissions: [...viewPermissions, ...manageEventPermissions],
+    isRequired: true,
   },
   {
-    name: 'Responsable adhésions',
+    name: 'Responsable communication',
     color: Colors.Red,
-    category: TeamRoleCategory.Managers,
-    permissions: [
-      ...viewPermissions,
-      TeamPermissions.ManageRequests,
-      TeamPermissions.ManageMembers,
-      TeamPermissions.ManageRoles,
-    ],
+    category: RoleCategory.Managers,
+    permissions: [...viewPermissions, ...manageCommunicationPermissions],
+  },
+  {
+    name: 'Responsable cohésion',
+    color: Colors.Red,
+    category: RoleCategory.Managers,
+    permissions: [...viewPermissions, ...manageMembersPermissions],
   },
   {
     name: 'Membre',
     color: Colors.LightBlue,
-    category: TeamRoleCategory.Members,
-    permissions: [TeamPermissions.ViewTreasury],
+    category: RoleCategory.Members,
+    permissions: viewPermissions,
   },
 ];
 
@@ -64,9 +97,15 @@ export const teamDefaultRoles = [
   {
     name: 'Propriétaire',
     color: Colors.Green,
-    category: TeamRoleCategory.Directors,
-    permissions: [TeamPermissions.Admin],
-    key: TeamRoleKey.Director,
+    category: RoleCategory.Directors,
+    key: TeamRoleType.Director,
+    permissions: [
+      ...viewPermissions,
+      ...manageMembersPermissions,
+      ...manageEventPermissions,
+      ...manageCommunicationPermissions,
+      ...manageTreasuryPermissions,
+    ],
     required: true,
   },
 ];

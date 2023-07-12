@@ -1,0 +1,20 @@
+table:
+  name: event_change_role
+  schema: public
+object_relationships:
+  - name: eventJoin
+    using:
+      foreign_key_constraint_on:
+        column: event_change_role_id
+        table:
+          name: event_join
+          schema: public
+  - name: eventRole
+    using:
+      foreign_key_constraint_on: received_role_id
+  - name: individual
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

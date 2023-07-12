@@ -1,0 +1,39 @@
+table:
+  name: form
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: team
+    using:
+      foreign_key_constraint_on:
+        column: join_form_id
+        table:
+          name: team
+          schema: public
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: tenantById
+    using:
+      foreign_key_constraint_on:
+        column: event_validation_form_id
+        table:
+          name: tenant
+          schema: public
+array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: join_form_id
+        table:
+          name: event
+          schema: public
+  - name: formSubmissions
+    using:
+      foreign_key_constraint_on:
+        column: form_id
+        table:
+          name: form_submission
+          schema: public

@@ -1,0 +1,10 @@
+table:
+  name: project_tags
+  schema: public
+object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: tag
+    using:
+      foreign_key_constraint_on: tag_id

@@ -1,0 +1,97 @@
+table:
+  name: content
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: event
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: event
+          schema: public
+  - name: issue
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: issue
+          schema: public
+  - name: parent
+    using:
+      foreign_key_constraint_on: parent_id
+  - name: replyingTo
+    using:
+      foreign_key_constraint_on: replying_to_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: thread
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: thread
+          schema: public
+array_relationships:
+  - name: children
+    using:
+      foreign_key_constraint_on:
+        column: parent_id
+        table:
+          name: content
+          schema: public
+  - name: contentAttachments
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: content_attachments
+          schema: public
+  - name: favorites
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: favorite
+          schema: public
+  - name: reactions
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: reaction
+          schema: public
+  - name: replies
+    using:
+      foreign_key_constraint_on:
+        column: replying_to_id
+        table:
+          name: content
+          schema: public
+  - name: reports
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: report
+          schema: public
+  - name: validations
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: validation
+          schema: public
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: vote
+          schema: public

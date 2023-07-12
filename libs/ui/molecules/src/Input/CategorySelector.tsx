@@ -1,4 +1,4 @@
-import { Tag } from '@okampus/ui/atoms';
+import { TagBadge } from '@okampus/ui/atoms';
 import { useEffect, useState } from 'react';
 
 // TODO: add swiper for overflowing categories
@@ -71,10 +71,10 @@ export function CategorySelector<T extends object>({
   return (
     <div className="flex gap-2">
       {categories.map(([category, count]) => (
-        <Tag
+        <TagBadge
           key={category}
           label={category}
-          className={'cursor-pointer bg-2-hover'}
+          className={'cursor-pointer bg-1-hover'}
           backgroundClass={selectedCategory.includes(category) ? 'bg-0 bg-3-hover' : 'bg-4'}
           onClick={() => toggleCategory(category)}
           {...(showCount ? { count } : {})}

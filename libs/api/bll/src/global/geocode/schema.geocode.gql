@@ -1,0 +1,17 @@
+type GeocodeAddress {
+  latitude: Float!
+  longitude: Float!
+  category: String!
+  name: String!
+  streetNumber: String!
+  street: String!
+  zip: String!
+  city: String!
+  state: String!
+  country: String!
+  geoapifyId: String!
+}
+
+type Query {
+  searchLocation(query: String!): [GeocodeAddress!]!
+}

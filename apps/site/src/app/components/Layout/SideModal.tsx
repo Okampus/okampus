@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 type SideModalProps = {
   children: React.ReactNode | React.ReactNode[];
-  hideModal: () => void;
+  hideButtonModal: () => void;
 };
-export function SideModal({ children, hideModal }: SideModalProps) {
+export function SideModal({ children, hideButtonModal }: SideModalProps) {
   return (
     <motion.div
       onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
@@ -17,7 +17,7 @@ export function SideModal({ children, hideModal }: SideModalProps) {
       <div className="p-6 h-full w-96 bg-blue-500 z-[101] rounded-l-lg gap-8 flex flex-col">
         <div className="flex justify-between items-center">
           <span className="text-2xl font-medium">Créer un événement</span>
-          <button onClick={hideModal}>
+          <button onClick={hideButtonModal}>
             <CloseIcon height={36} />
           </button>
         </div>

@@ -1,0 +1,16 @@
+table:
+  name: event_approval
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: eventApprovalStep
+    using:
+      foreign_key_constraint_on: event_approval_step_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

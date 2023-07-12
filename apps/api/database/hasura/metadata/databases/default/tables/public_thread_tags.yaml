@@ -1,0 +1,10 @@
+table:
+  name: thread_tags
+  schema: public
+object_relationships:
+  - name: tag
+    using:
+      foreign_key_constraint_on: tag_id
+  - name: thread
+    using:
+      foreign_key_constraint_on: thread_id

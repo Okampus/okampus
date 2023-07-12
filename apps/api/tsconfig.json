@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "esModuleInterop": true,
     "module": "es2022",
     "target": "es2022",
     "types": ["node", "vite/client", "vitest"]

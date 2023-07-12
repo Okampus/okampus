@@ -1,0 +1,13 @@
+table:
+  name: vote
+  schema: public
+object_relationships:
+  - name: content
+    using:
+      foreign_key_constraint_on: content_id
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

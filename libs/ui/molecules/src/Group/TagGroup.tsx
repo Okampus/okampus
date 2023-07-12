@@ -1,9 +1,9 @@
 import { ItemGroup } from './ItemGroup';
-import { Tag } from '@okampus/ui/atoms';
-import type { TagItem } from '@okampus/ui/atoms';
+import { TagBadge } from '@okampus/ui/atoms';
+import type { TagBadgeProps } from '@okampus/ui/atoms';
 
 export type TagGroupProps = {
-  tags: TagItem[];
+  tags: TagBadgeProps[];
   limit?: number;
   size?: number;
 };
@@ -17,9 +17,9 @@ export function TagGroup({ tags, limit = 2, size = 14 }: TagGroupProps) {
       limit={limit}
       size={size}
       rounded={50}
-      render={(item) => <Tag {...item} />}
-      renderListElement={(item) => <Tag {...item} />}
-      renderMore={(items) => <Tag label={`+${items}`} />}
+      render={(item) => <TagBadge {...item} />}
+      renderListElement={(item) => <TagBadge {...item} />}
+      renderMore={(items) => <TagBadge label={`+${items}`} />}
     />
   );
 }

@@ -1,21 +1,11 @@
 import { FileUploadRepository } from './file-upload.repository';
-import { TenantScopedEntity } from '../../shards/abstract/tenant-scoped/tenant-scoped.entity';
-import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import { FileUploadKind } from '@okampus/shared/enums';
+import { TenantScopedEntity } from '..';
+import { Entity, EntityRepositoryType, Property } from '@mikro-orm/core';
 import type { FileUploadOptions } from './file-upload.options';
-import type { Individual } from '../actor/individual/individual.entity';
 
-@Entity({
-  customRepository: () => FileUploadRepository,
-  discriminatorColumn: 'fileUploadKind',
-  discriminatorMap: FileUploadKind,
-})
+@Entity({ customRepository: () => FileUploadRepository })
 export class FileUpload extends TenantScopedEntity {
-  @Enum({ items: () => FileUploadKind, type: 'string' })
-  fileUploadKind!: FileUploadKind;
-
-  @ManyToOne({ type: 'Individual', onDelete: 'CASCADE' })
-  uploadedBy!: Individual;
+  [EntityRepositoryType]!: FileUploadRepository;
 
   @Property({ type: 'text' })
   name!: string;
@@ -24,20 +14,16 @@ export class FileUpload extends TenantScopedEntity {
   size!: number;
 
   @Property({ type: 'text' })
-  mime!: string;
+  type!: string;
 
   @Property({ type: 'text' })
   url!: string;
 
-  @Property({ type: 'datetime' })
-  lastModifiedAt = new Date();
+  @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
+  fileLastModifiedAt = new Date();
 
-  // TODO: implement antivirus and NSFW scanning
-  // @Property()
-  // validated = false;
-
-  constructor(options: FileUploadOptions & { fileUploadKind: FileUploadKind }) {
-    super({ tenant: options.tenant });
+  constructor(options: FileUploadOptions) {
+    super(options);
     this.assign(options);
   }
 }

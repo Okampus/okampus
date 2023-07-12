@@ -1,0 +1,158 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController1_find
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - Global
+  /auth/oidc-callback:
+    get:
+      operationId: AuthController_oidcLoginCallback
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags: &a1
+        - Authentication
+  /auth/hasura:
+    post:
+      operationId: AuthController_hasuraAuth
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags: *a1
+  /auth/ws-token:
+    post:
+      operationId: AuthController_wsToken
+      summary: Issue websocket token.
+      parameters: []
+      responses:
+        "200":
+          description: Issued WS token.
+      tags: *a1
+  /auth/bot-token:
+    post:
+      operationId: AuthController_botToken
+      summary: Issue bot token.
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Issued bot token.
+      tags: *a1
+  /health:
+    get:
+      operationId: HealthController_check
+      parameters: []
+      responses:
+        "200":
+          description: The Health Check is successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  info:
+                    type: object
+                    example: &a2
+                      database: &a3
+                        status: up
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+                    nullable: true
+                  error:
+                    type: object
+                    example: {}
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+                    nullable: true
+                  details:
+                    type: object
+                    example: *a2
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+        "503":
+          description: The Health Check is not successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  info:
+                    type: object
+                    example: *a2
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+                    nullable: true
+                  error:
+                    type: object
+                    example:
+                      redis: &a4
+                        status: down
+                        message: Could not connect
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+                    nullable: true
+                  details:
+                    type: object
+                    example:
+                      database: *a3
+                      redis: *a4
+                    additionalProperties:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                      additionalProperties:
+                        type: string
+      tags:
+        - Health
+info:
+  title: Okampus Web API
+  description: REST API for Okampus
+  version: "1.0"
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas: {}

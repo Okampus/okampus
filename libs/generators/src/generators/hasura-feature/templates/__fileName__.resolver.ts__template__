@@ -1,0 +1,130 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
+import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
+import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
+
+import type {
+  Delete<%= className %>ArgsType,
+  InsertOne<%= className %>ArgsType,
+  Insert<%= className %>ArgsType,
+  UpdateByPk<%= className %>ArgsType,
+  Update<%= className %>ArgsType,
+  Find<%= className %>ArgsType,
+  FindByPk<%= className %>ArgsType,
+  Aggregate<%= className %>ArgsType
+} from './<%= fileName %>.types';
+
+import type { GraphQLResolveInfo } from 'graphql';
+
+@Resolver('<%= className %>MutationResponse')
+export class <%= pluralClassName %>MutationResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Mutation()
+  async insert<%= className %>(@Info() info: GraphQLResolveInfo) {
+    const { objects, onConflict } = getGraphQLArgs<Insert<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.insert<%= className %>(getSelectionSet(info), objects, onConflict);
+  }
+
+  @Mutation()
+  async update<%= className %>Many(@Info() info: GraphQLResolveInfo) {
+    const { updates } = getGraphQLArgs<{ updates: Update<%= className %>ArgsType[] }>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.update<%= className %>Many(getSelectionSet(info), updates);
+  }
+
+  @Mutation()
+  async delete<%= className %>(@Info() info: GraphQLResolveInfo) {
+    const { where } = getGraphQLArgs<Delete<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.delete<%= className %>(getSelectionSet(info), where);
+  }
+}
+
+@Resolver('<%= className %>')
+export class <%= pluralClassName %>QueryResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Query()
+  async <%= propertyName %>(@Info() info: GraphQLResolveInfo) {
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<Find<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.find<%= className %>(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+  }
+  
+
+  @Mutation()
+  async insert<%= className %>One(@Info() info: GraphQLResolveInfo) {
+    const { object, onConflict } = getGraphQLArgs<InsertOne<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.insert<%= className %>One(getSelectionSet(info), object, onConflict);
+  }
+
+  @Query()
+  async <%= propertyName %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { <% for(const pk of pkColumns) { %> <%= pk %>, <% } %> } = getGraphQLArgs<FindByPk<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.find<%= className %>ByPk(getSelectionSet(info), <% for(const pk of pkColumns) { %> <%= pk %>, <% } %>);
+  }
+
+  @Mutation()
+  async update<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns, _set } = getGraphQLArgs<UpdateByPk<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.update<%= className %>ByPk(getSelectionSet(info), pkColumns, _set);
+  }
+
+  @Mutation()
+  async delete<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
+    const { pkColumns } = getGraphQLArgs<UpdateByPk<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.delete<%= className %>ByPk(getSelectionSet(info), pkColumns);
+  }
+}
+
+@Resolver('<%= className %>Aggregate')
+export class <%= pluralClassName %>QueryAggregateResolver {
+  constructor(private readonly <%= pluralPropertyName %>Service: <%= pluralClassName %>Service) {}
+
+  @Query()
+  async <%= propertyName %>Aggregate(@Info() info: GraphQLResolveInfo) {
+    const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<Aggregate<%= className %>ArgsType>(
+      info.parentType.getFields()[info.fieldName],
+      info.fieldNodes[0],
+      info.variableValues
+    );
+    return await this.<%= pluralPropertyName %>Service.aggregate<%= className %>(
+      getSelectionSet(info), 
+      where, 
+      orderBy, 
+      distinctOn, 
+      limit, 
+      offset
+    );
+  }
+}

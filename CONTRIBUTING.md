@@ -1,3 +1,5 @@
+// TODO: redo this whole file + translate it to English
+
 # Contribuer
 
 ## Directives
@@ -25,6 +27,6 @@ Les messages visibles par les utilisateurs sur le frontend, votre PR, vos issues
 
 <!-- Link Dump -->
 
-[Node.js]: https://nodejs.org/en/download/
-[le README du backend]: ./apps/api/README.md
-[le README du frontend]: ./apps/site/README.md
+[node.js]: https://nodejs.org/en/download/
+[le readme du backend]: ./apps/api/README.md
+[le readme du frontend]: ./apps/site/README.md

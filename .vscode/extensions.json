@@ -5,6 +5,7 @@
     "orta.vscode-jest",
     "JayFong.generate-index",
     "Gruntfuggly.todo-tree",
-    "seatonjiang.gitmoji-vscode"
+    "seatonjiang.gitmoji-vscode",
+    "firsttris.vscode-jest-runner"
   ]
 }

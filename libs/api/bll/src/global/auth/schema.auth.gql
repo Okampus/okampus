@@ -1,0 +1,13 @@
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+type Query {
+  me: User
+}
+
+type Mutation {
+  login(dto: LoginInput!): User
+  logout: Boolean!
+}

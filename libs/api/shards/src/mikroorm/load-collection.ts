@@ -14,3 +14,10 @@ export function loadApply<T extends object, U>(collection: Collection<T>, apply:
     .map((elem) => apply(elem))
     .filter(isNotNull);
 }
+
+export async function loadApplyAsync<T extends object, U>(
+  collection: Collection<T>,
+  apply: (item: T) => Promise<U>
+): Promise<NonNullable<U>[]> {
+  return Promise.all(load(collection).map((elem) => apply(elem))).then((elems) => elems.filter(isNotNull));
+}

@@ -2,28 +2,37 @@
 import React from 'react';
 import { defaultSelectedMenu } from '@okampus/shared/types';
 
-import type { TenantInfoFragment } from '@okampus/shared/graphql';
-import type { FileLike, ModalProps, SelectedMenu, Route } from '@okampus/shared/types';
+import type { TenantDetailsInfo } from '@okampus/shared/graphql';
+import type { FileLike, SelectedMenu, Route } from '@okampus/shared/types';
 import type { ToastProps } from '@okampus/shared/types';
 
-type NavigationContextProps = {
-  tenant: TenantInfoFragment | null;
-  setTenant: (tenant: TenantInfoFragment | null) => void;
+export type NavigationContextProps = {
+  tenant: TenantDetailsInfo | null;
+  setTenant: (tenant: TenantDetailsInfo | null) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
 
   history: Route[];
   setHistory: (route: Route[]) => void;
   previousRoute: Route | null;
   setPreviousRoute: (route: Route | null) => void;
 
-  modal: ModalProps | null;
-  isModalShown: boolean;
-  showModal: (modal: ModalProps | null) => void;
-  hideModal: () => void;
+  topbar: React.ReactNode;
+  setTopbar: (topbar: React.ReactNode) => void;
+  isTopbarAlwaysShown: boolean;
+  setIsTopbarAlwaysShown: (isTopbarAlwaysShown: boolean) => void;
 
-  isSideModalShown: boolean;
-  sideModal: ModalProps | null;
-  showSideModal: (modal: ModalProps | null) => void;
-  hideSideModal: () => void;
+  sidePanel: React.ReactNode;
+  isSidePanelShown: boolean;
+  isSidePanelUncollapsed: boolean;
+  showSidePanel: (modal: React.ReactNode) => void;
+  hideSidePanel: () => void;
+  setIsSidePanelUncollapsed: (isUncollapsed: boolean) => void;
+
+  isOverlayShown: boolean;
+  overlay: React.ReactNode;
+  showOverlay: (modal: React.ReactNode) => void;
+  hideOverlay: () => void;
 
   previewedFile: FileLike | null;
   isFilePreviewed: boolean;
@@ -32,50 +41,51 @@ type NavigationContextProps = {
 
   isSearching: boolean;
   setIsSearching: (searching: boolean) => void;
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
   selected: SelectedMenu;
   setSelected: (selected: SelectedMenu) => void;
 
-  notifications: ToastProps[];
-  addNotification: (notifications: Omit<ToastProps, 'id'>) => void;
-  removeNotification: (id: string) => void;
-  getNotifications: () => ToastProps[];
+  notification: ToastProps | null;
+  setNotification: (notification: ToastProps | null) => void;
 };
 
 export const NavigationContext = React.createContext<NavigationContextProps>({
   tenant: null,
   setTenant: () => {},
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
 
   history: [],
   setHistory: () => {},
   previousRoute: null,
   setPreviousRoute: () => {},
 
-  modal: null,
-  isModalShown: false,
-  showModal: () => {},
-  hideModal: () => {},
+  topbar: null,
+  setTopbar: () => {},
+  isTopbarAlwaysShown: false,
+  setIsTopbarAlwaysShown: () => {},
 
-  isSideModalShown: false,
-  sideModal: null,
-  showSideModal: () => {},
-  hideSideModal: () => {},
+  isSidePanelShown: false,
+  isSidePanelUncollapsed: false,
+  sidePanel: null,
+  showSidePanel: () => {},
+  hideSidePanel: () => {},
+  setIsSidePanelUncollapsed: () => {},
 
-  previewedFile: null,
+  isOverlayShown: false,
+  overlay: null,
+  showOverlay: () => {},
+  hideOverlay: () => {},
+
   isFilePreviewed: false,
+  previewedFile: null,
   previewFile: () => {},
   hideFilePreview: () => {},
 
   isSearching: false,
   setIsSearching: () => {},
-  isLoading: false,
-  setIsLoading: () => {},
   selected: defaultSelectedMenu,
   setSelected: () => {},
 
-  notifications: [],
-  addNotification: () => {},
-  removeNotification: () => {},
-  getNotifications: () => [],
+  notification: null,
+  setNotification: () => {},
 });

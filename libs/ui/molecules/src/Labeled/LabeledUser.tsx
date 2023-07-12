@@ -1,27 +1,40 @@
-import { UserCard } from '../Card/UserCard';
-import { Avatar } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
+import { UserPopoverCard } from '../PopoverCard/UserPopoverCard';
+import { AvatarImage } from '@okampus/ui/atoms';
+import clsx from 'clsx';
 
-import type { AvatarProps } from '@okampus/ui/atoms';
+import type { AvatarImageProps } from '@okampus/ui/atoms';
 
 export type UserLabelProps = {
   name: string;
+  subtitle?: React.ReactNode;
   id: string;
-  avatar?: { src?: AvatarProps['src']; size?: AvatarProps['size'] };
+  avatar?: { src?: AvatarImageProps['src']; size?: AvatarImageProps['size'] };
+  className?: string;
+  labelClassName?: string;
   ellipsis?: boolean;
 };
 
-export function LabeledUser({ name, id, avatar, ellipsis }: UserLabelProps) {
+export function LabeledUser({
+  name,
+  subtitle,
+  id,
+  avatar,
+  className = 'gap-2',
+  labelClassName,
+  ellipsis,
+}: UserLabelProps) {
   return (
-    <div className="flex gap-item items-center font-heading font-semibold">
-      <UserCard userId={id}>
-        <Avatar src={avatar?.src} name={name} size={avatar?.size ?? 18} rounded={AVATAR_USER_ROUNDED} />
-      </UserCard>
+    <div className={clsx('flex items-center font-semibold text-hover contrast-hover text-1', className)}>
+      <UserPopoverCard userId={id}>
+        <AvatarImage src={avatar?.src} name={name} size={avatar?.size ?? 18} type="user" />
+      </UserPopoverCard>
 
-      <UserCard userId={id}>
-        <div className={clsx(ellipsis ? 'line-clamp-1' : 'shrink-0', 'hover:underline')}>{name}</div>
-      </UserCard>
+      <UserPopoverCard userId={id}>
+        <div className="flex flex-col items-start leading-none text-lg">
+          <div className={clsx(ellipsis ? 'line-clamp-1' : 'shrink-0', labelClassName)}>{name}</div>
+          {subtitle}
+        </div>
+      </UserPopoverCard>
     </div>
   );
 }

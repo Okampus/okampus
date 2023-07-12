@@ -1,0 +1,10 @@
+table:
+  name: subject_class_groups
+  schema: public
+object_relationships:
+  - name: classGroup
+    using:
+      foreign_key_constraint_on: class_group_id
+  - name: subject
+    using:
+      foreign_key_constraint_on: subject_id

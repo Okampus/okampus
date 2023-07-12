@@ -1,5 +1,5 @@
-import { ImageHorizontal } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
+import { HorizontalImage } from '@okampus/ui/atoms';
+import clsx from 'clsx';
 
 export type ImageGroupProps = {
   images: string[];
@@ -12,15 +12,15 @@ export function ImageGroup({ images, className }: ImageGroupProps) {
   const right = images.slice(1, 3);
 
   return (
-    <div className={clsx('aspect-[16/9] flex card-sm !p-0', className)}>
-      <ImageHorizontal
+    <div className={clsx('aspect-[16/9] flex card-md !p-0', className)}>
+      <HorizontalImage
         src={left}
         className={clsx(right.length > 0 ? 'w-[60%] border-r border-gray-700' : 'w-full', 'object-contain')}
       />
       {right.length > 0 && (
         <div className="flex flex-col w-[40%]">
           {right.map((item, index) => (
-            <ImageHorizontal
+            <HorizontalImage
               key={index}
               src={item}
               className={clsx(

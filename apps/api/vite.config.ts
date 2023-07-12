@@ -3,13 +3,29 @@ import { VitePluginNode } from 'vite-plugin-node';
 
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import path from 'node:path';
+import fs from 'node:fs';
 
 const _ = (dir: string) => path.resolve(path.resolve(__dirname, '../../'), dir);
+
+/** @type {import('vite').Plugin} */
+const hexLoader = {
+  name: 'hex-loader',
+  transform(code, id) {
+    const [path, query] = id.split('?');
+    if (query != 'raw-hex') return null;
+
+    const data = fs.readFileSync(path);
+    const hex = data.toString('hex');
+
+    return `export default '${hex}';`;
+  },
+};
 
 export default defineConfig({
   server: { port: 8081, open: true, hmr: true },
   build: { outDir: _('dist/apps/api') },
   plugins: [
+    hexLoader,
     viteTsConfigPaths({
       projects: [
         _('apps/api'),
@@ -62,6 +78,7 @@ export default defineConfig({
       '@nestjs/microservices',
       '@nestjs/websockets',
       '@node-rs/xxhash',
+      'argon2',
       'cache-manager',
       'class-transformer',
       'class-validator',

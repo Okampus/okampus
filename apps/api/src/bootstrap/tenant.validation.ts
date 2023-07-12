@@ -1,14 +1,12 @@
 import { tenantStrategyFactory } from '@okampus/api/bll';
 import { Issuer } from 'openid-client';
-import type { TenantCoreRepository } from '@okampus/api/dal';
-import type { OIDCCacheService, UsersService } from '@okampus/api/bll';
+import type { OIDCCacheService, AuthService } from '@okampus/api/bll';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { Authenticator, Strategy } from '@fastify/passport';
 
 type TenantStrategyValidation = {
-  tenantCoreRepository: TenantCoreRepository;
   oidcCache: OIDCCacheService;
-  usersService: UsersService;
+  authService: AuthService;
   fastifyInstance: FastifyInstance;
   fastifyPassport: Authenticator;
 };
@@ -20,25 +18,29 @@ function getTenant(req: FastifyRequest) {
 }
 
 export const tenantStrategyValidation =
-  ({ tenantCoreRepository, oidcCache, usersService, fastifyInstance, fastifyPassport }: TenantStrategyValidation) =>
+  ({ oidcCache, authService, fastifyInstance, fastifyPassport }: TenantStrategyValidation) =>
   async (req: FastifyRequest, res: FastifyReply) => {
     const domain = getTenant(req);
     if (!domain) return false;
 
-    const tenant = await tenantCoreRepository.findOneOrFail({ domain });
+    const tenant = await authService.findTenant(domain);
     if (!tenant) return false;
 
     if (!oidcCache.strategies.has(domain)) {
-      const oidc = tenant.oidcInfo;
-      const { oidcEnabled, oidcClientId, oidcClientSecret, oidcDiscoveryUrl, oidcScopes, oidcCallbackUri } = oidc;
-      if (!oidcEnabled || !oidcClientId || !oidcClientSecret || !oidcDiscoveryUrl || !oidcScopes || !oidcCallbackUri)
+      if (
+        !tenant.isOidcEnabled ||
+        !tenant.oidcClientId ||
+        !tenant.oidcClientSecret ||
+        !tenant.oidcDiscoveryUrl ||
+        !tenant.oidcScopes ||
+        !tenant.oidcCallbackUri
+      )
         return false;
 
-      const TrustIssuer = await Issuer.discover(oidcDiscoveryUrl);
-      const client = new TrustIssuer.Client({ client_id: oidcClientId, client_secret: oidcClientSecret });
-
-      const oidcConfig = { redirect_uri: oidcCallbackUri, scope: oidcScopes };
-      const strategy = tenantStrategyFactory(usersService, domain, oidcConfig, client);
+      const TrustIssuer = await Issuer.discover(tenant.oidcDiscoveryUrl);
+      const client = new TrustIssuer.Client({ client_id: tenant.oidcClientId, client_secret: tenant.oidcClientSecret });
+      const oidcConfig = { redirect_uri: tenant.oidcCallbackUri, scope: tenant.oidcScopes };
+      const strategy = tenantStrategyFactory({ authService, tenantSlug: domain, oidcConfig, client });
       oidcCache.strategies.set(domain, strategy);
     }
 

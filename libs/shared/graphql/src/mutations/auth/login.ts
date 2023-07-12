@@ -1,15 +1,10 @@
-import { gql } from '../../schema/__generated__/gql';
+import { userMeInfo } from '../../selectors/individual/userMe';
+import { $ } from '../../zeus';
+import { typedGql } from '../../zeus/typedDocumentNode';
+import type { ValueTypes } from '../../zeus';
 
-export const loginMutation = gql(`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      __typename
-      user {
-        ...MyInfo
-      }
-      tenant {
-        ...TenantInfo
-      }
-    }
-  }
-`);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const loginMutation = typedGql('mutation')({
+  login: [{ dto: $('dto', 'LoginInput!') as unknown as ValueTypes['LoginInput'] }, userMeInfo],
+});

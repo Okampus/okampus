@@ -10,7 +10,7 @@ export const download = (href: string, filename: string) => {
   a.remove();
 };
 
-export const downloadResource = (url: string, filename: string) => {
+export const downloadResource = (url: string, filename?: string) => {
   if (!filename) filename = url.split('\\')?.pop?.()?.split('/').pop() ?? 'fichier';
 
   fetch(url, {
@@ -20,7 +20,7 @@ export const downloadResource = (url: string, filename: string) => {
     mode: 'cors',
   })
     .then((response) => response.blob())
-    .then((blob) => download(getObjectUrl(blob), filename))
+    .then((blob) => download(getObjectUrl(blob), filename ?? new Date().toISOString()))
     .catch((error) => console.error(error));
 };
 

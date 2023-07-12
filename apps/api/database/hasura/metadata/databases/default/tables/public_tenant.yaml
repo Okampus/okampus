@@ -1,0 +1,410 @@
+table:
+  name: tenant
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: eventValidationForm
+    using:
+      foreign_key_constraint_on: event_validation_form_id
+array_relationships:
+  - name: accountAllocates
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: account_allocate
+          schema: public
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: account
+          schema: public
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: action
+          schema: public
+  - name: actorImages
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: actor_image
+          schema: public
+  - name: actors
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: actor
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: bank_info
+          schema: public
+  - name: bots
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: bot
+          schema: public
+  - name: campusClusters
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: campus_cluster
+          schema: public
+  - name: campuses
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: campus
+          schema: public
+  - name: canteenFoods
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: canteen_food
+          schema: public
+  - name: canteenMenus
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: canteen_menu
+          schema: public
+  - name: canteens
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: canteen
+          schema: public
+  - name: classGroupTeachers
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: class_group_teacher
+          schema: public
+  - name: classGroups
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: class_group
+          schema: public
+  - name: cohorts
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: cohort
+          schema: public
+  - name: contents
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: content
+          schema: public
+  - name: documents
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: document
+          schema: public
+  - name: eventApprovalSteps
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_approval_step
+          schema: public
+  - name: eventApprovals
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_approval
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_join
+          schema: public
+  - name: eventManages
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_manage
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event
+          schema: public
+  - name: expenseItems
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: expense_item
+          schema: public
+  - name: expenses
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: expense
+          schema: public
+  - name: favorites
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: favorite
+          schema: public
+  - name: fileUploads
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: file_upload
+          schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: finance
+          schema: public
+  - name: follows
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: follow
+          schema: public
+  - name: formSubmissions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: form_submission
+          schema: public
+  - name: forms
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: form
+          schema: public
+  - name: grantAllocates
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: grant_allocate
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: grant
+          schema: public
+  - name: individuals
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: individual
+          schema: public
+  - name: issues
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: issue
+          schema: public
+  - name: locations
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: location
+          schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: mission_join
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: mission
+          schema: public
+  - name: poles
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: pole
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: project
+          schema: public
+  - name: reactions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: reaction
+          schema: public
+  - name: reports
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: report
+          schema: public
+  - name: roles
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: role
+          schema: public
+  - name: sessions
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: session
+          schema: public
+  - name: shortcuts
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: shortcut
+          schema: public
+  - name: socials
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: social
+          schema: public
+  - name: subjects
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: subject
+          schema: public
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: tag
+          schema: public
+  - name: teamHistories
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_history
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_member
+          schema: public
+  - name: teamMetrics
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team_metric
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: team
+          schema: public
+  - name: tenantManages
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: tenant_manage
+          schema: public
+  - name: threads
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: thread
+          schema: public
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: user
+          schema: public
+  - name: validations
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: validation
+          schema: public
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: vote
+          schema: public

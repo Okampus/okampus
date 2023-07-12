@@ -8,7 +8,7 @@
       "command": "vite build --config apps/api/vite.config.ts --mode production"
     },
     "migration:create": {
-      "command": "cross-env MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs",
+      "command": "cross-env MIKRO_ORM_MIGRATION=create node dist/apps/api/main.mjs | pino-pretty -c -t",
       "dependsOn": ["build"]
     },
     "migration:up": {
@@ -16,14 +16,14 @@
       "options": {
         "commands": [
           "tsc --pretty -p apps/api/tsconfig.migrations.json",
-          "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs"
+          "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs | tee /dev/null | pino-pretty -c -t"
         ]
       },
       "dependsOn": ["migration:create"]
     },
     "serve": {
-      "command": "vite serve --config apps/api/vite.config.ts --mode development",
-      "dependsOn": ["migration:up"]
+      "command": "vite serve --config apps/api/vite.config.ts --mode development | tee /dev/null | pino-pretty -c -t",
+      "dependsOn": ["merge", "migration:up"]
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -55,8 +55,25 @@
         "commands": ["prettier --check apps/api"]
       }
     },
+    "hasura:schema": {
+      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Downloading Hasura schema...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && get-graphql-schema \"http://localhost:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" > apps/api/database/hasura/schema.gql && bash apps/api/database/hasura/close.sh"
+    },
+    "hasura:serve": {
+      "command": "bash apps/api/database/hasura/run.sh"
+    },
+    "hasura:metadata": {
+      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Applying Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata apply && cd ../../../.. && bash apps/api/database/hasura/close.sh"
+    },
+    "graphql:codegen": {
+      "dependsOn": ["graphql:merge"],
+      "command": "zeus libs/shared/graphql/src/schema.merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts && sed -i -e 's/ | Variable<any, string>//g' -e 's/\\[\"bigint\"\\]:[^;]*;/[\"bigint\"]: string;/g' -e 's/\\[\"timestamptz\"\\]:[^;]*;/[\"timestamptz\"]: string;/g' -e 's/\\[\"smallint\"\\]:[^;]*;/[\"smallint\"]: number;/g' libs/shared/graphql/src/zeus/index.ts"
+    },
+    "graphql:merge": {
+      "dependsOn": ["hasura:schema"],
+      "command": "node tools/scripts/graphql-merge.mjs"
+    },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/api/jest.config.ts",

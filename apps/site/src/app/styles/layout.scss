@@ -1,9 +1,9 @@
 :root {
-  --topbar-height: 5rem;
+  --topbar-height: 5.5rem;
   --sidebar-width-xl: 18rem;
-  --sidebar-width-sm: 6rem;
-  --padding-inner: 0.5rem;
-  --padding-view: 2.5rem;
+  --sidebar-width: 5rem;
+  --padding-view: 3rem;
+  --padding-vertical-view: 3rem;
 }
 
 .icon {
@@ -12,28 +12,23 @@
 }
 
 .w-sidebar {
-  @apply xl:w-[var(--sidebar-width-xl)] w-[var(--topbar-height)];
+  @apply w-[var(--sidebar-width)] xl:w-[var(--sidebar-width-xl)];
 }
 
 .w-content {
+  width: calc(100vw - var(--sidebar-width));
   /* stylelint-disable-next-line scss/operator-no-unspaced */
-  @apply xl:w-[calc(100%-var(--sidebar-width-xl)*2)] w-[calc(100%-var(--topbar-height)*2)];
+  @apply xl:w-[calc(100vw-var(--sidebar-width-xl))];
+}
+
+.px-content {
+  @apply px-10 lg:px-16;
+}
+
+.py-content {
+  @apply py-10;
 }
 
 .w-popover-card {
   @apply w-96;
-}
-
-.p-view-topbar {
-  padding: calc(var(--topbar-height) + var(--padding-view) / 4) var(--padding-view) calc(var(--padding-view) / 2)
-    var(--padding-view);
-}
-
-.p-view {
-  padding: var(--padding-view);
-}
-
-.px-view {
-  padding-right: var(--padding-view);
-  padding-left: var(--padding-view);
 }

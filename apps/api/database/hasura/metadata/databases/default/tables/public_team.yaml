@@ -1,0 +1,154 @@
+table:
+  name: team
+  schema: public
+object_relationships:
+  - name: actor
+    using:
+      foreign_key_constraint_on: actor_id
+  - name: canteen
+    using:
+      foreign_key_constraint_on: canteen_id
+  - name: classGroup
+    using:
+      foreign_key_constraint_on: class_group_id
+  - name: cohort
+    using:
+      foreign_key_constraint_on: cohort_id
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: grantFund
+    using:
+      foreign_key_constraint_on: tenant_grant_fund_id
+  - name: joinForm
+    using:
+      foreign_key_constraint_on: join_form_id
+  - name: team
+    using:
+      foreign_key_constraint_on: parent_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+  - name: video
+    using:
+      foreign_key_constraint_on: video_id
+array_relationships:
+  - name: accountAllocates
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: account_allocate
+          schema: public
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: account
+          schema: public
+  - name: actions
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: action
+          schema: public
+  - name: contents
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: content
+          schema: public
+  - name: documents
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: document
+          schema: public
+  - name: eventManages
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: event_manage
+          schema: public
+  - name: finances
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: finance
+          schema: public
+  - name: grants
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: grant
+          schema: public
+  - name: missions
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: mission
+          schema: public
+  - name: poles
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: pole
+          schema: public
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: project
+          schema: public
+  - name: roles
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: role
+          schema: public
+  - name: teamHistories
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: team_history
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: team_member
+          schema: public
+  - name: teams
+    using:
+      foreign_key_constraint_on:
+        column: parent_id
+        table:
+          name: team
+          schema: public
+  - name: tenantManages
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: tenant_manage
+          schema: public

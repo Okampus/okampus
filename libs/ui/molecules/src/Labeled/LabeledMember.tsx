@@ -1,5 +1,4 @@
-import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import { Avatar } from '@okampus/ui/atoms';
+import { AvatarImage } from '@okampus/ui/atoms';
 
 export type MemberLabelProps = {
   avatar?: string;
@@ -10,7 +9,7 @@ export type MemberLabelProps = {
 export function LabeledMember({ avatar, name, role }: MemberLabelProps) {
   return (
     <div className="flex flex-col items-center text-center">
-      <Avatar src={avatar} name={name} size={24} rounded={AVATAR_USER_ROUNDED} />
+      <AvatarImage src={avatar} name={name} size={24} type="user" />
       <div className="line-clamp-1 text-white font-heading">{name}</div>
       <div className="text-gray-200 -mt-0.5 text-xs line-clamp-2 leading-[1.1]">{role}</div>
     </div>

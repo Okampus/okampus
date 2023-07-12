@@ -1,34 +1,33 @@
-import { TeamCard } from '../Card/TeamCard';
-import { Avatar } from '@okampus/ui/atoms';
-import { clsx } from 'clsx';
-import { AVATAR_TEAM_ROUNDED } from '@okampus/shared/consts';
+import { TeamPopoverCard } from '../PopoverCard/TeamPopoverCard';
+import { AvatarImage } from '@okampus/ui/atoms';
+import clsx from 'clsx';
 
 export type TeamLabelProps = {
-  name: string;
-  teamType: string;
-  id: string;
   avatar?: string;
+  id: string;
+  name?: string;
+  teamType?: string;
   ellipsis?: boolean;
 };
 
 export function LabeledTeam({ name, teamType, id, avatar, ellipsis }: TeamLabelProps) {
   return (
-    <div className="flex gap-2 items-center font-heading font-semibold">
-      <TeamCard teamId={id}>
-        <Avatar src={avatar} name={name} size={18} rounded={AVATAR_TEAM_ROUNDED} />
-      </TeamCard>
+    <div className="flex gap-3 items-center text-hover contrast-hover text-0-hover">
+      <TeamPopoverCard teamId={id}>
+        <AvatarImage src={avatar} name={name} size={teamType ? 18 : 11} type="team" />
+      </TeamPopoverCard>
 
-      <TeamCard teamId={id}>
+      <TeamPopoverCard teamId={id}>
         <div
           className={clsx(
-            'hover:underline flex flex-col justify-start items-start leading-tight',
+            'text-1 flex flex-col justify-start items-start leading-tight font-semibold',
             !ellipsis && 'shrink-0'
           )}
         >
-          <span className={ellipsis ? 'line-clamp-1' : ''}>{name}</span>
-          <div className={clsx(ellipsis && 'line-clamp-1', 'text-2 text-sm')}>{teamType}</div>
+          <span className={clsx(ellipsis ? 'line-clamp-1' : '')}>{name}</span>
+          {teamType && <div className={clsx(ellipsis && 'line-clamp-1', 'font-normal')}>{teamType}</div>}
         </div>
-      </TeamCard>
+      </TeamPopoverCard>
     </div>
   );
 }

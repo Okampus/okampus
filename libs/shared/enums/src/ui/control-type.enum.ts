@@ -1,8 +1,12 @@
 export enum ControlType {
+  Div = 'div',
   Text = 'text',
+  DatetimeLocal = 'datetime-local',
   SingleFile = 'single-file',
   Select = 'select',
   Number = 'number',
   Checkbox = 'checkbox',
-  DatetimeLocal = 'datetime-local',
+  MultiCheckbox = 'multi-checkbox',
+  Radio = 'radio',
+  Markdown = 'markdown',
 }

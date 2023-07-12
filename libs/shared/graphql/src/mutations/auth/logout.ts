@@ -1,7 +1,3 @@
-import { gql } from '../../schema/__generated__/gql';
+import { typedGql } from '../../zeus/typedDocumentNode';
 
-export const logoutMutation = gql(`
-  mutation logout {
-    logout
-  }
-`);
+export const logoutMutation = typedGql('mutation')({ logout: true });

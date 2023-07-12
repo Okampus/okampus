@@ -1,43 +1,47 @@
-import { CLUB_CATEGORY_ROUTE, COLORS } from '@okampus/shared/consts';
-import { getFragmentData, getTeamCategoriesQuery, teamCategoryFragment } from '@okampus/shared/graphql';
-import { CategoryCard } from '@okampus/ui/molecules';
+import { CLUB_CATEGORY_ROUTE, COLORS, TEAM_ROUTE } from '@okampus/shared/consts';
+import { TagType, TeamType } from '@okampus/shared/enums';
+import { isIn } from '@okampus/shared/utils';
+import { OrderBy, teamBaseInfo, useTypedQuery, tagWithUploadInfo } from '@okampus/shared/graphql';
 
-import { useQuery } from '@apollo/client';
+import { Skeleton } from '@okampus/ui/atoms';
+import { CategoryCard, TeamListCard } from '@okampus/ui/molecules';
+import { BaseView } from '@okampus/ui/templates';
 
 export function TeamCategoryList() {
-  const { data } = useQuery(getTeamCategoriesQuery);
+  const { data } = useTypedQuery({
+    tag: [{ where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.ASC }] }, tagWithUploadInfo],
+  });
 
-  if (!data || !data.teamCategories.edges) return null;
-  const categories = data.teamCategories.edges.map((edge) => getFragmentData(teamCategoryFragment, edge.node));
+  const categories = data?.tag;
+
+  const { data: dataTeam } = useTypedQuery({
+    team: [{ where: { type: { _in: [TeamType.Club, TeamType.Association] } } }, teamBaseInfo],
+  });
 
   return (
-    <div className="flex flex-col text-0">
-      <div className="p-view-topbar text-2xl font-title font-bold">Par catégorie</div>
-      <div className="px-view grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4">
-        {categories.map((category) => (
-          <CategoryCard
-            link={CLUB_CATEGORY_ROUTE(category.slug)}
-            key={category.name}
-            name={category.name}
-            image={category.iconImage?.url}
-            color={COLORS[category.color]}
-          />
-        ))}
-        {/* {data?.teams?.edges?.map((teamEdge) => {
-          const team = getFragmentData(teamFragment, teamEdge.node);
-          return (
-            <TeamCard
-              key={team.id}
-              name={team.actor?.name ?? ''}
-              description={team.tagline}
-              // tags={[
-              //   { name: club.tag_1, color: club.tag_1_color },
-              //   ...(club.tag_2 ? [{ name: club.tag_2, color: club.tag_2_color }] : []),
-              // ]}
-            />
-          );
-        })} */}
+    <BaseView topbar={<div className="title">Associations</div>}>
+      <div className="large-heading">Par catégorie</div>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] gap-4 pt-6">
+        {categories
+          ? categories.map((category) => (
+              <CategoryCard
+                link={CLUB_CATEGORY_ROUTE(category.slug)}
+                key={category.name}
+                name={category.name}
+                image={category.image?.url}
+                color={isIn(category.color, COLORS) ? COLORS[category.color] : category.color}
+              />
+            ))
+          : Array.from({ length: 12 }).map((_, index) => (
+              <Skeleton key={index} height={72} width={72} className="rounded-2xl" />
+            ))}
       </div>
-    </div>
+      <div className="title pt-24">Toutes les associations</div>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4 pt-6">
+        {dataTeam && dataTeam.team
+          ? dataTeam.team.map((team, idx) => <TeamListCard key={idx} team={team} link={TEAM_ROUTE(team.actor?.slug)} />)
+          : Array.from({ length: 12 }).map((_, index) => <Skeleton key={index} height={100} width="full" />)}
+      </div>
+    </BaseView>
   );
 }

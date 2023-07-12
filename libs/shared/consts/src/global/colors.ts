@@ -7,37 +7,35 @@ export const LIGHT_BLUE = '#2070e0';
 
 export const DEEP_GREEN = '#023002';
 export const DARK_GREEN = '#114411';
-export const GREEN = '#008820';
-export const LIGHT_GREEN = '#48cc48';
+export const GREEN = '#00791c';
+export const LIGHT_GREEN = '#24991a';
 
 export const DEEP_ORANGE = '#703010';
 export const DARK_ORANGE = '#bb5000';
-export const ORANGE = '#ff3c00';
-export const LIGHT_ORANGE = '#ff5600';
+export const ORANGE = '#ff6600';
+export const LIGHT_ORANGE = '#f18100';
 
 export const DEEP_RED = '#660000';
 export const DARK_RED = '#992020';
 export const RED = '#ff0000';
 export const LIGHT_RED = '#a04040';
 
-export const DEEP_PURPLE = '#201070';
-export const DARK_PURPLE = '#500080';
-export const PURPLE = '#8800ff';
+export const DEEP_PURPLE = '#412ea0';
+export const DARK_PURPLE = '#7814b3';
+export const PURPLE = '#9a36f1';
 export const LIGHT_PURPLE = '#aa33bb';
 
-export const DEEP_GRAY = '#222222';
-export const DARK_GRAY = '#333333';
-export const GRAY = '#666666';
+export const DEEP_GRAY = '#302c2c';
+export const DARK_GRAY = '#3d3d3d';
+export const GRAY = '#4b4b4b';
 
 export const TURQUOISE = '#007777';
 export const PINK = '#aa3366';
 export const CYAN = '#1b6ec0';
 export const BROWN = '#805555';
 export const INDIGO = '#5060d0';
-export const LIME = '#77aa00';
+export const LIME = '#67ad0c';
 export const TEAL = '#008080';
-
-export const BLACK = '#000000';
 
 export const COLORS: { [key in Colors]: string } = {
   [Colors.Blue]: BLUE,
@@ -70,5 +68,4 @@ export const COLORS: { [key in Colors]: string } = {
   [Colors.Indigo]: INDIGO,
   [Colors.Lime]: LIME,
   [Colors.Teal]: TEAL,
-  [Colors.Black]: BLACK,
 };

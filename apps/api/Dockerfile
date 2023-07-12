@@ -8,7 +8,7 @@ RUN chown api:api /app
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
-RUN npm --no-update-notifier --no-fund --global install pnpm@7.29.3
+RUN npm --no-update-notifier --no-fund --global install pnpm@8.6.0
 RUN mkdir -p /app/dist/apps/api/database && chown -R api:api /app/dist
 
 ADD --chown=api:api package.json ./package.json

@@ -1,6 +1,10 @@
 {
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs",
+      "esModuleInterop": true
+    }
   },
   "compileOnSave": false,
   "compilerOptions": {
@@ -11,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -48,7 +52,8 @@
       "@okampus/ui/organisms": ["libs/ui/organisms/src/index.ts"],
       "@okampus/ui/styles/*": ["libs/ui/styles/src/*"],
       "@okampus/ui/templates": ["libs/ui/templates/src/index.ts"],
-      "@okampus/ui/utils": ["libs/ui/utils/src/index.ts"]
+      "@okampus/ui/utils": ["libs/ui/utils/src/index.ts"],
+      "generators": ["libs/generators/src/index.ts"]
     },
     "resolveJsonModule": true
   },

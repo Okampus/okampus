@@ -1,0 +1,19 @@
+table:
+  name: document
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: file_id
+  - name: subject
+    using:
+      foreign_key_constraint_on: subject_id
+  - name: team
+    using:
+      foreign_key_constraint_on: team_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

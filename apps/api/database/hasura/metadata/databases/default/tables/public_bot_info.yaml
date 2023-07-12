@@ -1,0 +1,20 @@
+table:
+  name: bot_info
+  schema: public
+object_relationships:
+  - name: createdBy
+    using:
+      foreign_key_constraint_on: created_by_id
+  - name: individual
+    using:
+      foreign_key_constraint_on:
+        column: bot_id
+        table:
+          name: individual
+          schema: public
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id

@@ -1,7 +1,40 @@
+@import '../global/layout';
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px #ffe57c inset !important;
+
+  -webkit-text-fill-color: var(--text-0) !important;
+  .dark & {
+    box-shadow: 0 0 0 30px #857222 inset !important;
+  }
+}
+
 .input {
-  @apply shadow-inner hover:cursor-text rounded-lg py-2.5 px-3 font-medium bg-gray-100 text-black dark:bg-[#202020] dark:text-white placeholder:text-[#727272];
+  @apply h-12 rounded-sm px-3 font-medium outline-none focus:outline-2 active:outline-2 flex items-center text-[var(--text-0)] bg-[var(--bg-main)] border border-[var(--border-2)];
+  &[type='date'] {
+    @apply px-2.5;
+  }
+}
+
+.input-label {
+  transition: color 0.2s, top 0.2s, font-weight 0.2s, font-size 0.2s !important;
+  @apply absolute top-3 px-3 text-[var(--text-1)] opacity-90 font-medium line-clamp-1 pointer-events-none text-base text-left;
+}
+
+input:not(:placeholder-shown) ~ .input-label,
+.input:focus ~ .input-label,
+.input:hover ~ .input-label,
+.selected.input-label {
+  @apply top-[0.35rem] text-sm text-[var(--text-2)];
 }
 
 .file-uploader {
-  @apply border-2 border-dashed border-blue-400 border-opacity-70 hover:bg-gray-400 dark:hover:bg-gray-600 [&.dragover]:bg-gray-400 dark:[&.dragover]:bg-gray-600;
+  @apply border-2 border-dashed border-blue-500 hover:bg-[var(--bg-3)] [&.dragover]:bg-[var(--bg-3)];
+}
+
+[type='checkbox']:checked {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 16 16' fill='%23fff' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L6.5 9.086l4.293-4.293a1 1 0 0 1 1.414 0z'/%3E%3C/svg%3E");
 }

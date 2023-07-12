@@ -1,5 +1,3 @@
-import { AdminEventDashboard } from './views/AdminEventDashboard';
-import { ErrorPage } from './views/ErrorPage';
 import { TeamDashboard } from './views/TeamDashboard';
 import { TeamCategoryList } from './views/TeamCategoryList';
 import { WelcomePage } from './views/Welcome/WelcomePage';
@@ -10,10 +8,16 @@ import { GuideManageView } from './views/Admin/GuideManageView';
 import { TeamManageView } from './views/TeamManage/TeamManageView';
 import { TeamList } from './views/TeamList';
 import { TeamView } from './views/Team/TeamView';
-import { UserProfile } from './views/User/UserProfile';
+import { UserView } from './views/User/UserView';
 
 import { MyView } from './views/Me/MyView';
-import { FullCalendar } from '@okampus/ui/molecules';
+import { ProjectList } from './views/Project/ProjectList';
+import { ProjectView } from './views/Project/ProjectView';
+import { EventView } from './views/Event/EventView';
+import { EventList } from './views/Event/EventList';
+import { EventManageView } from './views/EventManage/EventManageView';
+import { EventConfirmPresenceView } from './views/EventManage/EventConfirmPresenceView';
+import { EventValidationView } from './views/Admin/EventValidation/EventValidationView';
 import {
   ADMIN_CLUBS,
   ADMIN_EVENTS,
@@ -23,36 +27,52 @@ import {
   BLOG_ROUTE,
   CLUBS_ROUTE,
   CLUB_CATEGORY_ROUTE,
-  EVENTS_ROUTE,
   HOME_ROUTE,
-  TEAM_MANAGE_TAB_ROUTE,
   ME_ROUTES,
   PEOPLE_ROUTE,
   TEAM_MANAGE_ROUTE,
   TEAM_MANAGE_ROUTES,
+  TEAM_MANAGE_TAB_ROUTE,
   TEAM_ROUTE,
   TEAM_ROUTES,
   TEAM_TAB_ROUTE,
-  USER_ROUTES,
   USER_ROUTE,
+  USER_ROUTES,
   USER_TAB_ROUTE,
   ME_ROUTE,
   ME_TAB_ROUTE,
   DISCOVER_ROUTE,
   FAVORITES_ROUTE,
+  PROJECT_ROUTE,
+  PROJECT_ROUTES,
+  PROJECT_TAB_ROUTE,
   PROJECTS_ROUTE,
+  EVENT_ROUTE,
+  EVENT_ROUTES,
+  EVENT_TAB_ROUTE,
+  EVENTS_ROUTE,
+  EVENT_MANAGE_ROUTE,
+  EVENT_MANAGE_ROUTES,
+  EVENT_MANAGE_TAB_ROUTE,
+  EVENT_JOIN_ID_PARAM,
+  WELCOME_ROUTE,
+  ADMIN_EVENTS_TAB_ROUTE,
+  ADMIN_EVENTS_ROUTES,
 } from '@okampus/shared/consts';
+
+import { ErrorPage } from '@okampus/ui/templates';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-export const router = createBrowserRouter([
+import type { Router } from '@remix-run/router';
+
+export const router: Router = createBrowserRouter([
   {
     path: '/',
     element: <TenantApp />,
-    errorElement: <ErrorPage error="404" />,
     children: [
       {
         path: HOME_ROUTE,
-        element: <GuideView />,
+        element: <TeamCategoryList />,
       },
       {
         path: BLOG_ROUTE,
@@ -72,11 +92,11 @@ export const router = createBrowserRouter([
       },
       {
         path: EVENTS_ROUTE,
-        element: <FullCalendar />,
+        element: <EventList />,
       },
       {
         path: PROJECTS_ROUTE,
-        element: <WIP />,
+        element: <ProjectList />,
       },
       {
         path: CLUBS_ROUTE,
@@ -85,6 +105,34 @@ export const router = createBrowserRouter([
       {
         path: CLUB_CATEGORY_ROUTE(),
         element: <TeamList />,
+      },
+      {
+        path: EVENT_ROUTE(),
+        element: <Navigate to={EVENT_ROUTES.OVERVIEW} replace={true} />,
+      },
+      {
+        path: EVENT_TAB_ROUTE(),
+        element: <EventView />,
+      },
+      {
+        path: EVENT_MANAGE_ROUTE(),
+        element: <Navigate to={EVENT_MANAGE_ROUTES.OVERVIEW} replace={true} />,
+      },
+      {
+        path: EVENT_MANAGE_TAB_ROUTE(),
+        element: <EventManageView />,
+      },
+      {
+        path: `${EVENT_MANAGE_TAB_ROUTE({ tab: EVENT_MANAGE_ROUTES.CONFIRM_PRESENCE })}/:${EVENT_JOIN_ID_PARAM}`,
+        element: <EventConfirmPresenceView />,
+      },
+      {
+        path: PROJECT_ROUTE(),
+        element: <Navigate to={PROJECT_ROUTES.OVERVIEW} replace={true} />,
+      },
+      {
+        path: PROJECT_TAB_ROUTE(),
+        element: <ProjectView />,
       },
       {
         path: TEAM_ROUTE(),
@@ -108,7 +156,7 @@ export const router = createBrowserRouter([
       },
       {
         path: USER_TAB_ROUTE(),
-        element: <UserProfile />,
+        element: <UserView />,
       },
       {
         path: ME_ROUTE,
@@ -136,12 +184,20 @@ export const router = createBrowserRouter([
       },
       {
         path: ADMIN_EVENTS,
-        element: <AdminEventDashboard />,
+        element: <Navigate to={ADMIN_EVENTS_ROUTES.OVERVIEW} replace={true} />,
+      },
+      {
+        path: ADMIN_EVENTS_TAB_ROUTE(),
+        element: <EventValidationView />,
+      },
+      {
+        path: '*',
+        element: <ErrorPage error="404" />,
       },
     ],
   },
   {
-    path: '/welcome',
+    path: WELCOME_ROUTE,
     element: <WelcomePage />,
   },
 ]);

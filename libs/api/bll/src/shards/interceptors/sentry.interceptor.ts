@@ -1,14 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { SentryService } from '../../global/sentry.module';
-
 import { Injectable } from '@nestjs/common';
 import { tap } from 'rxjs/operators';
 import { addRequestDataToEvent } from '@sentry/node';
-import type { Scope } from '@sentry/node';
 
+import Sentry from '@sentry/node';
+
+import type { Scope } from '@sentry/node';
 import type { CallHandler, ExecutionContext, HttpException, NestInterceptor } from '@nestjs/common';
 import type { HttpArgumentsHost, WsArgumentsHost, RpcArgumentsHost, ContextType } from '@nestjs/common/interfaces';
-
 import type { Observable } from 'rxjs';
 
 export interface SentryInterceptorOptionsFilter {
@@ -18,25 +16,14 @@ export interface SentryInterceptorOptionsFilter {
 
 @Injectable()
 export class SentryInterceptor implements NestInterceptor {
-  constructor(private readonly sentryService: SentryService) {}
-
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    return next.handle().pipe(
-      tap({
-        error: (exception: HttpException) => {
-          if (this.shouldReport(exception) && this.sentryService.sentry) {
-            this.sentryService.sentry.withScope((scope) => {
-              return this.captureException(context, scope, exception);
-            });
-          }
-          return;
-        },
-      })
-    );
+    const error = (exception: HttpException) =>
+      this.shouldReport(exception) && Sentry.withScope((scope) => this.captureException(context, scope, exception));
+
+    return next.handle().pipe(tap({ error }));
   }
 
   protected captureException(context: ExecutionContext, scope: Scope, exception: HttpException) {
-    if (!this.sentryService.sentry) return;
     switch (context.getType<ContextType>()) {
       case 'http': {
         return this.captureHttpException(scope, context.switchToHttp(), exception);
@@ -51,7 +38,6 @@ export class SentryInterceptor implements NestInterceptor {
   }
 
   private captureHttpException(scope: Scope, http: HttpArgumentsHost, exception: HttpException): void {
-    if (!this.sentryService.sentry) return;
     const data = addRequestDataToEvent({}, http.getRequest(), {});
 
     scope.setExtra('req', data.request);
@@ -59,22 +45,18 @@ export class SentryInterceptor implements NestInterceptor {
     if (data.extra) scope.setExtras(data.extra);
     if (data.user) scope.setUser(data.user);
 
-    this.sentryService.sentry.captureException(exception);
+    Sentry.captureException(exception);
   }
 
   private captureRpcException(scope: Scope, rpc: RpcArgumentsHost, exception: unknown): void {
-    if (!this.sentryService.sentry) return;
     scope.setExtra('rpc_data', rpc.getData());
-
-    this.sentryService.sentry.captureException(exception);
+    Sentry.captureException(exception);
   }
 
   private captureWsException(scope: Scope, ws: WsArgumentsHost, exception: unknown): void {
-    if (!this.sentryService.sentry) return;
     scope.setExtra('ws_client', ws.getClient());
     scope.setExtra('ws_data', ws.getData());
-
-    this.sentryService.sentry.captureException(exception);
+    Sentry.captureException(exception);
   }
 
   private shouldReport(_exception: unknown) {

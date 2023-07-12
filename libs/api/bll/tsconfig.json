@@ -1,6 +1,6 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "files": ["request-context-data.d.ts"],
+  "files": ["request-context-data.d.ts", "src/vite-imports.d.ts"],
   "include": [],
   "references": [
     {
@@ -13,7 +13,6 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   }
 }

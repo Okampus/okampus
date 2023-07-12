@@ -1,0 +1,10 @@
+table:
+  name: issue_contributors
+  schema: public
+object_relationships:
+  - name: individual
+    using:
+      foreign_key_constraint_on: individual_id
+  - name: issue
+    using:
+      foreign_key_constraint_on: issue_id

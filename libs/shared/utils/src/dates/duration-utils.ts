@@ -28,7 +28,7 @@ export const pattern = new RegExp(iso8601);
 
 /** Parse PnYnMnDTnHnMnS format to object */
 export const stringToDuration = (durationString: string): Duration => {
-  const matches = durationString.replace(/,/g, '.').match(pattern);
+  const matches = durationString.replaceAll(',', '.').match(pattern);
   if (!matches) throw new RangeError(`invalid duration: ${durationString}`);
 
   // Slice away first entry in match-array (the input string)

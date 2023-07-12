@@ -1,22 +1,25 @@
 import './Skeleton.scss';
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 
 export type SkeletonProps = {
-  rounded?: string;
   width?: number | 'full';
   height?: number | 'full';
-  className?: string;
+  ratio?: number;
 };
 
-export function Skeleton({ rounded = '0.25rem', width, height, className }: SkeletonProps) {
+export function Skeleton({ width, height, ratio, ...props }: React.HTMLProps<HTMLDivElement> & SkeletonProps) {
+  const { className, style, ...rest } = props;
+  if (style) style.borderRadius = style.borderRadius ?? '0.25rem';
+
   return (
     <div
       className={clsx('skeleton-loader', className)}
       style={{
         ...(width && { width: width === 'full' ? '100%' : `${width / 6}rem` }),
-        ...(height && { height: height === 'full' ? '100%' : `${height / 6}rem` }),
-        borderRadius: rounded,
+        ...(ratio ? { aspectRatio: ratio } : height && { height: height === 'full' ? '100%' : `${height / 6}rem` }),
+        ...style,
       }}
+      {...rest}
     />
   );
 }

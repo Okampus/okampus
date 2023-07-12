@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "hasura-feature": {
+      "factory": "./src/generators/hasura-feature/generator",
+      "schema": "./src/generators/hasura-feature/schema.json",
+      "description": "hasura-feature generator"
+    }
+  }
+}

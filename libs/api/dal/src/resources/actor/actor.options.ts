@@ -1,7 +1,14 @@
+import type { Individual } from '../individual/individual.entity';
+import type { Team } from '../team/team.entity';
+import type { TenantScopedOptions } from '../tenant-scoped.options';
+import type { LegalUnit } from './legal-unit/legal-unit.entity';
+import type { Tag } from './tag/tag.entity';
 import type { ActorProps } from '@okampus/shared/dtos';
-import type { Either } from '@okampus/shared/types';
-import type { TaggableOptions } from '../../shards/abstract/taggable/taggable.options';
-import type { Org } from '../org/org.entity';
-import type { Individual } from './individual/individual.entity';
 
-export type ActorOptions = ActorProps & TaggableOptions & Either<{ org: Org }, { individual: Individual }>;
+export type ActorOptions = ActorProps &
+  TenantScopedOptions & {
+    tags?: Tag[];
+    individual?: Individual | null;
+    team?: Team | null;
+    legalUnit?: LegalUnit | null;
+  };

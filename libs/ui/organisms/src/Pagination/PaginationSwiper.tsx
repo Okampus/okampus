@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import clsx from 'clsx';
 import { useState } from 'react';
 
 // TODO: improve next/previous page buttons (change page switching approach?), add animation

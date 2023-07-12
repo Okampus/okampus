@@ -1,183 +1,216 @@
-import { ControlType, FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
-import {
-  createFinanceMutation,
-  documentUploadFragment,
-  financeFragment,
-  getFragmentData,
-} from '@okampus/shared/graphql';
-import { Dashboard, DynamicForm } from '@okampus/ui/organisms';
+import { TreasuryManageProjectView } from './TreasuryManage/TreasuryManageProjectView';
+import { Align } from '@okampus/shared/enums';
+import { financeBaseInfo, projectWithFinanceInfo, useTypedQuery, teamBaseInfo } from '@okampus/shared/graphql';
+import { ReactComponent as UploadFilledIcon } from '@okampus/assets/svg/icons/material/filled/upload.svg';
+import { ReactComponent as TuneFilledIcon } from '@okampus/assets/svg/icons/material/filled/tune.svg';
+import { ReactComponent as SearchFilledIcon } from '@okampus/assets/svg/icons/material/filled/search.svg';
+import { ReactComponent as AddFilledIcon } from '@okampus/assets/svg/icons/material/filled/add.svg';
 
-import { FileGroup } from '@okampus/ui/molecules';
+import { ActionType } from '@okampus/shared/types';
+import { formatCurrency, sum } from '@okampus/shared/utils';
+
+import { Skeleton, TextFinance } from '@okampus/ui/atoms';
 import { NavigationContext, useTeamManage } from '@okampus/ui/hooks';
+import { ActionButton, TabsList } from '@okampus/ui/molecules';
+import { Dashboard } from '@okampus/ui/organisms';
 
-import { isNotNull } from '@okampus/shared/utils';
-import { useMutation } from '@apollo/client';
-import { clsx } from 'clsx';
-import { useContext } from 'react';
+import { FinanceDashboard } from '#site/app/components/Dashboard/FinanceDashboard';
+import { TeamTransactionCreateForm } from '#site/app/components/Form/MultiStepForm/TeamTransactionCreateForm';
+import { memo, useContext, useState } from 'react';
 
-import type { DynamicFieldData } from '@okampus/ui/organisms';
-import type { FinanceInfoFragment } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '@okampus/shared/graphql';
 
-const columns = [
-  {
-    label: 'Transaction',
-    render: (value: FinanceInfoFragment) => <div className="text-0">{value.transaction}</div>,
-  },
-  {
-    label: 'Méthode',
-    render: (value: FinanceInfoFragment) => <div className="text-0">{value.paymentMethod}</div>,
-  },
-  {
-    label: 'Catégorie',
-    render: (value: FinanceInfoFragment) => <div className="text-0">{value.category}</div>,
-  },
-  {
-    label: 'Date',
-    render: (value: FinanceInfoFragment) => <div className="text-0">{value.paymentDate}</div>,
-  },
-  {
-    label: 'Justificatif',
-    render: (value: FinanceInfoFragment) => (
-      <div
-        className={clsx(
-          'rounded-lg px-2 py-1 text-sm flex justify-center',
-          value.receipts.length === 0 ? 'bg-gray-200 text-gray-800' : 'bg-green-300 text-green-700'
-        )}
-      >
-        {value.receipts.length === 0 ? (
-          'Manquant'
-        ) : (
-          <FileGroup
-            files={value.receipts
-              .map((document) => {
-                if (!document || document.__typename !== 'DocumentUploadModel') return null;
-                const file = getFragmentData(documentUploadFragment, document);
-                return {
-                  name: file.name,
-                  size: file.size,
-                  type: file.mime,
-                  src: file.url,
-                };
-              })
-              .filter(isNotNull)}
-          />
-        )}
-      </div>
-    ),
-  },
-  {
-    classes: 'text-right',
-    label: 'Montant',
-    render: (value: FinanceInfoFragment) => (
-      <div className={clsx(value.amountPayed > 0 ? 'dark:text-green-300 text-green-500' : 'text-0')}>
-        {value.amountPayed > 0 ? `+${value.amountPayed}` : value.amountPayed} EUR
-      </div>
-    ),
-  },
-];
+type BalanceSheetTransaction = {
+  transaction: string;
+  key?: string;
+  amountExpected: number;
+  amountPayed: number;
+};
 
-export function TreasuryManageView() {
-  const { teamManage } = useTeamManage();
-  const { showModal, hideModal } = useContext(NavigationContext);
+const HISTORY = 'history';
+const BUDGET = 'budget';
+const GENERAL = 'general';
 
-  const [createFinance] = useMutation(createFinanceMutation, {
-    onCompleted: () => {
-      hideModal();
-    },
+function TreasuryManageViewWrapper({ teamManage }: { teamManage: TeamManageInfo }) {
+  const { showOverlay } = useContext(NavigationContext);
+  const [selectedTab, setSelectedTab] = useState<string | number>(HISTORY);
+
+  const { data: financeDetails } = useTypedQuery({
+    team: [
+      { where: { id: { _eq: teamManage.id } }, limit: 1 },
+      { ...teamBaseInfo, finances: [{}, financeBaseInfo] },
+    ],
+    // finance: [{ where: { team: { id: { _eq: teamManage.id } } } }, financeBaseInfo],
   });
 
-  const fields: DynamicFieldData[] = [
+  const { data } = useTypedQuery({
+    project: [{ where: { team: { id: { _eq: teamManage.id } } } }, projectWithFinanceInfo],
+  });
+
+  const finances = financeDetails?.team[0].finances ?? [];
+
+  const projects = data?.project ?? [];
+  const balanceSheetColumns = [
     {
-      fieldName: 'transaction',
-      inputType: ControlType.Text,
-      label: 'Nom de la transaction',
-      defaultValue: '',
-      placeholder: 'Nom de la transaction',
+      label: 'Projet / Subvention',
+      render: (value: BalanceSheetTransaction) => (
+        <div
+          onClick={() => value.key && setSelectedTab(value.key)}
+          className={value.key ? 'cursor-pointer hover:underline' : 'text-0'}
+        >
+          {value.transaction}
+        </div>
+      ),
     },
     {
-      fieldName: 'paymentDate',
-      inputType: ControlType.DatetimeLocal,
-      label: 'Début de paiement',
-      placeholder: 'Date de paiement',
+      label: 'Prévu',
+      align: Align.Right,
+      render: (value: BalanceSheetTransaction) => <div className="text-0">{formatCurrency(value.amountExpected)}</div>,
     },
     {
-      fieldName: 'amountDue',
-      inputType: ControlType.Number,
-      label: 'Montant dû',
-      placeholder: 'Montant dû',
-    },
-    {
-      fieldName: 'amountPayed',
-      inputType: ControlType.Number,
-      label: 'Montant payé',
-      placeholder: 'Montant payé',
-    },
-    {
-      fieldName: 'paymentMethod',
-      inputType: ControlType.Select,
-      label: 'Méthode de paiement',
-      options: Object.entries(PaymentMethod).map(([value, label]) => ({ label, value })),
-      fullWidth: true,
-      placeholder: 'Méthode de paiement',
-    },
-    {
-      fieldName: 'category',
-      inputType: ControlType.Select,
-      label: 'Catégorie de dépense',
-      options: Object.entries(FinanceCategory).map(([value, label]) => ({ label, value })),
-      fullWidth: true,
-      placeholder: 'Catégorie de dépense',
+      label: 'Réel',
+      align: Align.Right,
+      render: (value: BalanceSheetTransaction) => <TextFinance amount={value.amountPayed} />,
     },
   ];
 
-  const finances = teamManage?.finances.map((finance) => getFragmentData(financeFragment, finance)) ?? [];
+  const tabs = [
+    {
+      key: HISTORY,
+      label: 'Historique',
+      element: () => <FinanceDashboard finances={finances} />,
+    },
+    {
+      key: BUDGET,
+      label: 'Bilan',
+      element: () => (
+        <Dashboard
+          columns={balanceSheetColumns}
+          data={projects.map((project) => ({
+            key: project.slug,
+            transaction: project.name,
+            amountExpected: project.budget,
+            amountPayed: sum(project.finances.map((finance) => finance.amount ?? 0)),
+          }))}
+        />
+      ),
+    },
+    {
+      key: GENERAL,
+      label: 'Général',
+      element: () => (
+        <div>
+          <div className="px-12 text-4xl text-0 font-bold mt-6 mb-12">Dépenses/recettes générales</div>
+          {finances && <FinanceDashboard finances={finances.filter((finance) => !finance.project)} />}
+        </div>
+      ),
+      // onClick: () => setSelectedTab(GENERAL),
+    },
+    ...projects.map((project) => ({
+      key: project.slug,
+      label: project.name,
+      element: () => <TreasuryManageProjectView project={project} />,
+    })),
+  ];
 
   return (
-    <div className="p-view flex flex-col text-2 gap-10 pb-4">
-      <div>
-        <div className="flex justify-between items-center">
-          <pre className="text-4xl font-semibold text-0 tracking-tight pt-2">{teamManage?.currentFinance} €</pre>
-          <div className="flex gap-2 font-medium">
-            <button className="py-2.5   px-3.5 hover:cursor-pointer rounded-lg bg-0 text-0 font-medium border border-color-2">
-              Détails du compte
-            </button>
-            <button className="py-2.5  px-3.5 hover:cursor-pointer rounded-lg bg-opposite text-opposite font-medium">
-              Export
-            </button>
+    <div className="h-full flex flex-col">
+      <div className="px-content py-content">
+        <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2">
+            <div className="text-5xl font-semibold text-0 tracking-tight">
+              {formatCurrency(teamManage.accounts[0]?.balance)}
+            </div>
+            <div className="text-1 text-lg">Total restant</div>
+          </div>
+          <div className="flex gap-4">
+            <ActionButton
+              action={{
+                label: 'Importer un CSV',
+                linkOrActionOrMenu: () => console.log('Import'),
+                iconOrSwitch: <UploadFilledIcon />,
+                type: ActionType.Action,
+                active: true,
+              }}
+            />
+            <ActionButton
+              action={{
+                label: 'Exporter la trésorerie',
+                linkOrActionOrMenu: () => console.log('Import'),
+                type: ActionType.Action,
+              }}
+            />
           </div>
         </div>
-        <div>Total restant</div>
       </div>
-      <button
-        className="button bg-opposite text-opposite"
-        onClick={() =>
-          showModal({
-            title: "Ajout d'une transaction",
-            content: (
-              <DynamicForm
-                fields={fields}
-                onSubmit={(data) => {
-                  if (teamManage) {
-                    createFinance({
-                      variables: {
-                        finance: {
-                          ...data,
-                          amountDue: Number.parseInt(data.amountDue, 10),
-                          amountPayed: Number.parseInt(data.amountPayed, 10),
-                          teamId: teamManage.id,
-                        },
-                      },
-                    });
-                  }
-                }}
-              />
-            ),
-          })
-        }
-      >
-        Ajouter une transaction
-      </button>
-      <Dashboard columns={columns} data={finances} />
+      {/* <div className="grid grid-cols-3">
+                  {projects.map((project) => (
+                <Dashboard columns={columns} data={generalFinances.finance} />
+                    // <>
+                    //   <div className="text-2">{project.name}</div>
+                    //   <div className="text-2">Budget prévu: {project.expected_budget} €</div>
+                    //   <div className="text-2">
+                    //     Dépenses réelles: {project.finances_aggregate.aggregate?.sum?.amount_due ?? 0} €
+                    //   </div>
+                    // </>
+                  ))}
+                </div> */}
+      {/* <div className="h-full flex flex-col gap-6"> */}
+      <div className="flex flex-col gap-6">
+        <TabsList
+          selected={selectedTab}
+          tabClassName="text-lg"
+          tabs={tabs.map((tab) => ({ ...tab, onClick: () => setSelectedTab(tab.key) }))}
+        />
+        <div className="flex gap-6 px-content">
+          <div className="input text-lg font-medium !text-[var(--text-2)] w-full !bg-[var(--bg-1)]">
+            <SearchFilledIcon className="h-full py-3 pr-3" />
+            Rechercher
+          </div>
+          <div className="input text-lg font-medium">
+            <TuneFilledIcon className="h-full py-3 pr-3" />
+            Filtres
+          </div>
+          <ActionButton
+            action={{
+              label: 'Ajouter une transaction',
+              linkOrActionOrMenu: () => showOverlay(<TeamTransactionCreateForm />),
+              iconOrSwitch: <AddFilledIcon />,
+              type: ActionType.Primary,
+            }}
+          />
+        </div>
+        {finances && projects ? (
+          <div>
+            {tabs.find((tab) => tab.key === selectedTab)?.element()}
+            {/* <Dashboard
+                columns={balanceSheetColumns}
+                data={[
+                  { transaction: "Subvention de l'année", amountExpected: 4000, amountPayed: 4000 },
+                  ...projects.map((project) => ({
+                    transaction: project.name,
+                    key: project.slug,
+                    amountExpected: project.expectedBudget,
+                    amountPayed: sum(project.finances.map((finance) => finance.actorFinance?.amount ?? 0)),
+                  })),
+                ]}
+              /> */}
+          </div>
+        ) : (
+          <>
+            <Skeleton height={24} width="full" />
+            <FinanceDashboard finances={undefined} />
+          </>
+        )}
+      </div>
     </div>
   );
+}
+
+const MemoizedTreasuryManageViewWrapper = memo(TreasuryManageViewWrapper);
+export function TreasuryManageView() {
+  const { teamManage } = useTeamManage();
+
+  if (!teamManage) return null;
+  return <MemoizedTreasuryManageViewWrapper teamManage={teamManage} />;
 }
