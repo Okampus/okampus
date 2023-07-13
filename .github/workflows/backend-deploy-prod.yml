@@ -49,7 +49,7 @@ jobs:
           repository: 'Okampus/infra'
           token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PATH
 
-      - name: Set version and save file
+      - name: Set version and save values.yaml in infra
         uses: mikefarah/yq@master
         with:
           cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values.yaml'
