@@ -45,6 +45,7 @@ export type ApiConfig = {
     readonly name: string;
     readonly user: string;
     readonly password: string;
+    readonly port: number;
   };
   readonly s3: {
     readonly isEnabled: boolean;
