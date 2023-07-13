@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { LocationType } from '@okampus/shared/enums';
 
-import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class LocationProps {
@@ -9,15 +9,10 @@ export class LocationProps {
   @IsEnum(LocationType)
   type!: LocationType;
 
-  @Field(() => String)
-  @Length(3, 150)
-  @IsString()
-  name!: string;
-
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  details?: string = '';
+  locationDetails?: string = '';
 
   @Field(() => String, { nullable: true })
   @IsOptional()

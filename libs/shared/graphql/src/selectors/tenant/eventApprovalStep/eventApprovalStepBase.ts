@@ -1,10 +1,13 @@
+import { eventApprovalStepMinimalInfo } from './eventApprovalStepMinimal';
 import { Selector } from '../../../zeus';
-import { entityBase } from '../../entityBase';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const eventApprovalStepBaseInfo = Selector('EventApprovalStep')({
-  ...entityBase,
+  ...eventApprovalStepMinimalInfo,
   name: true,
   description: true,
+  order: true,
+  nextSteps: [{}, eventApprovalStepMinimalInfo],
+  previousStep: eventApprovalStepMinimalInfo,
 });
 export type EventApprovalStepBaseInfo = InputType<GraphQLTypes['EventApprovalStep'], typeof eventApprovalStepBaseInfo>;

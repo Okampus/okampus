@@ -11,7 +11,7 @@ import type { Individual } from '../../individual/individual.entity';
 
 export type EventJoinOptions = EventJoinProps &
   TenantScopedOptions & {
-    presence?: boolean | null;
+    isPresent?: boolean | null;
     processedBy?: Individual | null;
     processedAt?: Date | null;
     participationProcessedBy?: Individual | null;

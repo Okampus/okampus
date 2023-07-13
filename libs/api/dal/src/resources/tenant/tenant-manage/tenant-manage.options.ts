@@ -4,7 +4,7 @@ import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { CampusCluster } from '../campus-cluster/campus-cluster.entity';
 
 export type TenantManageOptions = TenantScopedOptions & {
-  campusCluster?: CampusCluster | null;
+  campusCluster: CampusCluster;
   team: Team;
   type: TenantManageType;
 };

@@ -1,12 +1,12 @@
 import { Selector } from '../../zeus';
 import { entityBase } from '../entityBase';
-import { individualBaseInfo } from '../individual/individualBase';
+import { individualMinimalInfo } from '../individual/individualMinimal';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const logBaseInfo = Selector('Log')({
   ...entityBase,
-  createdBy: individualBaseInfo,
+  createdBy: individualMinimalInfo,
   diff: true,
   note: true,
   entityName: true,

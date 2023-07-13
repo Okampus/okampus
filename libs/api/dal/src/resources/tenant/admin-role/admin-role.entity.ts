@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import { AdminRoleRepository } from './admin-role.repository';
 import { BaseEntity } from '../../base.entity';
-import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
+import { ArrayType, Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { Individual } from '../../individual/individual.entity';
 import type { AdminRoleOptions } from './admin-role.options';
@@ -17,7 +17,7 @@ export class AdminRole extends BaseEntity {
   @ManyToOne({ type: 'Tenant', nullable: true, default: null })
   tenant: Tenant | null = null;
 
-  @Property({ type: 'array', default: [] })
+  @Property({ type: new ArrayType((i) => +i), default: [] })
   permissions: number[] = [];
 
   constructor(options: AdminRoleOptions) {

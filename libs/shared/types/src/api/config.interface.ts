@@ -45,6 +45,7 @@ export type ApiConfig = {
     readonly name: string;
     readonly user: string;
     readonly password: string;
+    readonly port: number;
   };
   readonly s3: {
     readonly isEnabled: boolean;
@@ -104,7 +105,6 @@ export type ApiConfig = {
   readonly pepperSecret: string;
   readonly hasuraAdminSecret: string;
   readonly baseTenant: {
-    readonly name: string;
     readonly adminPassword: string;
     readonly oidc: {
       readonly enabled: boolean;

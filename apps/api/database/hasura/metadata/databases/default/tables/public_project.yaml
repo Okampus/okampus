@@ -25,12 +25,12 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: events
+  - name: eventManages
     using:
       foreign_key_constraint_on:
         column: project_id
         table:
-          name: event
+          name: event_manage
           schema: public
   - name: finances
     using:

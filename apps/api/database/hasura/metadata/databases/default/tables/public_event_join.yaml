@@ -8,9 +8,6 @@ object_relationships:
   - name: event
     using:
       foreign_key_constraint_on: event_id
-  - name: eventManage
-    using:
-      foreign_key_constraint_on: joined_for_id
   - name: formSubmission
     using:
       foreign_key_constraint_on: form_submission_id

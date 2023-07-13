@@ -49,9 +49,9 @@ import {
   GoogleModule,
   BankInfosModule,
   AccountsModule,
-  AccountAllocatesModule,
+  EventApprovalsModule,
 } from '@okampus/api/bll';
-import { AdminRole, Individual, Team, Tenant, TenantManage } from '@okampus/api/dal';
+import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -66,8 +66,7 @@ import {
   ANON_ACCOUNT_SLUG,
   BASE_TENANT,
 } from '@okampus/shared/consts';
-import { AdminPermissions, TeamType, TenantManageType } from '@okampus/shared/enums';
-import { capitalize } from '@okampus/shared/utils';
+import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shared/enums';
 
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
@@ -210,12 +209,12 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     BotsModule,
     HealthModule,
     EventsModule,
+    EventApprovalsModule,
     EventApprovalStepsModule,
     TenantsModule,
     ActorsModule,
     ActorImagesModule,
     AccountsModule,
-    AccountAllocatesModule,
     LegalUnitsModule,
     LegalUnitLocationsModule,
     BankInfosModule,
@@ -285,8 +284,8 @@ export class AppModule implements NestModule, OnModuleInit {
       admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
     } else {
       // Init base tenant
-      const tenant = new Tenant({ name: capitalize(BASE_TENANT), domain: BASE_TENANT, pointName: 'LXP' });
-      await this.em.persistAndFlush(tenant);
+      const tenant = new Tenant({ domain: BASE_TENANT, pointName: 'LXP' });
+      await this.em.persistAndFlush([tenant]);
 
       const anon = new Individual({
         slug: ANON_ACCOUNT_SLUG,
@@ -319,23 +318,55 @@ export class AppModule implements NestModule, OnModuleInit {
       });
 
       admin.passwordHash = await hash(adminAccountPassword, { secret: secret });
-      await this.em.persistAndFlush([admin, anon]);
 
       const adminTeam = new Team({
-        name: "Équipe d'administration",
+        name: 'Efrei Paris',
         slug: ADMIN_DEPARTMENT_SLUG(tenant.domain),
         type: TeamType.Tenant,
         createdBy: admin,
         tenant,
       });
 
-      const tenantManage = new TenantManage({
-        tenant,
-        team: adminTeam,
+      await this.em.persistAndFlush([admin, anon, adminTeam, baseAdminRole, tenantAdminRole]);
+
+      adminTeam.adminTenant = tenant;
+      tenant.adminTeam = adminTeam;
+      tenant.eventValidationForm = new Form({
+        name: "Formulaire de déclaration d'événement",
+        schema: [
+          {
+            name: 'drugs',
+            type: ControlType.Checkbox,
+            label:
+              "L'équipe organisatrice a-t-elle suivi une formation relative à l'organisation d'événement festif et/ou de sensibilisation à la consommation de substances psychoactives ?",
+            isRequired: true,
+          },
+          {
+            name: 'serviceProvider',
+            type: ControlType.Checkbox,
+            label:
+              "L'équipe organisatrice a-t-elle recours à un prestataire de services pour l'organisation de l'événement ?",
+            isRequired: true,
+          },
+          {
+            name: 'serviceProviderSiret',
+            type: ControlType.Text,
+            label: 'Si oui, quel est le numéro de SIRET du prestataire de services ?',
+          },
+          {
+            name: 'expectedAttendance',
+            type: ControlType.Number,
+            label: 'Quel est le nombre approximatif de personnes attendues ?',
+          },
+        ],
+        type: FormType.EventValidationForm,
+        isAllowingEditingAnswers: true,
+        isAllowingMultipleAnswers: false,
         createdBy: admin,
-        type: TenantManageType.Admin,
+        tenant,
       });
-      await this.em.persistAndFlush([adminTeam, tenantManage, baseAdminRole, tenantAdminRole]);
+
+      await this.em.persistAndFlush([adminTeam, tenant]);
 
       const novu = this.notificationsService.novu;
       if (novu) {

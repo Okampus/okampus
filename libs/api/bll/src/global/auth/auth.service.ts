@@ -32,7 +32,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { Individual, Session, Tenant, User } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
+import { AdminPermissions, RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
@@ -305,7 +305,15 @@ export class AuthService extends RequestContext {
     return session.user.individual;
   }
 
-  public async login(body: LoginDto, selectionSet: string[], req: FastifyRequest, res: FastifyReply): Promise<User> {
+  public async login(
+    body: LoginDto,
+    selectionSet: string[],
+    req: FastifyRequest,
+    res: FastifyReply
+  ): Promise<{
+    user: User;
+    canManageTenant: boolean;
+  }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const individual = await this.em.findOneOrFail<Individual, any>(
       Individual,
@@ -322,7 +330,22 @@ export class AuthService extends RequestContext {
     await this.refreshSession(req, res, individual.user.id);
 
     requestContext.set('requester', individual);
-    const data = await this.hasuraService.findByPk('userByPk', selectionSet, { id: individual.user.id });
-    return data.userByPk;
+
+    const data = await this.hasuraService.findByPk(
+      'userByPk',
+      selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
+      { id: individual.user.id }
+    );
+
+    return {
+      user: data.userByPk,
+      canManageTenant: individual.adminRoles
+        .getItems()
+        .some((role) =>
+          role.tenant === null
+            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
+            : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities)
+        ),
+    };
   }
 }

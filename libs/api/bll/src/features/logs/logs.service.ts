@@ -5,8 +5,18 @@ import { EntityManager } from '@mikro-orm/core';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { BaseEntity, Individual, Log, LogRepository, Team, Event, FinanceRepository } from '@okampus/api/dal';
 
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { EntityName, EventContext, EventType, TeamPermissions } from '@okampus/shared/enums';
+import {
+  // ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  // AdminPermissions,
+  EntityName,
+  EventContext,
+  EventType,
+  // TeamPermissions
+} from '@okampus/shared/enums';
 import { DiffType } from '@okampus/shared/types';
 
 import { isIn } from '@okampus/shared/utils';
@@ -81,7 +91,8 @@ export class LogsService extends RequestContext {
             const fieldValue = entity[field];
             if (fieldValue instanceof BaseEntity) {
               const before = fieldValue.id;
-              if (before !== value) diff[field] = { before, after: value, type: DiffType.Rel };
+              if (before !== value)
+                diff[field] = { before, after: value, type: DiffType.Rel, relType: fieldValue.constructor.name };
             }
           }
         } else if (isIn(key, entity)) {
@@ -122,21 +133,24 @@ export class LogsService extends RequestContext {
   }
 
   public async getFinanceLogs(id: string) {
-    const finance = await this.financeRepository.findOne({
-      id,
-      team: {
-        teamMembers: {
-          user: { id: this.requester().user?.id },
-          permissions: { $in: [TeamPermissions.ManageTreasury] },
-        },
-      },
-    });
+    // const isAllowed = await this.em.findOne(Team, {
+    //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
+    //   tenant: {
+    //     adminRoles: {
+    //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
+    //       individual: { id: this.requester().id },
+    //     },
+    //   },
+    // });
 
+    // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
+
+    const finance = await this.financeRepository.findOne({ id });
     if (!finance) throw new NotFoundException(`Finance (${id}) not found.`);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return await this.logRepository.find<any>(
-      { entityId: id, entityName: EntityName.Finance, team: finance.team },
+      { entityId: id, entityName: EntityName.Finance },
       { populate: this.autoPopulate() }
     );
   }

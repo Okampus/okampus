@@ -37,11 +37,13 @@ export class EventApprovalStepsService extends RequestContext {
     if (eventApprovalStep.deletedAt)
       throw new NotFoundException(`EventApprovalStep was deleted on ${eventApprovalStep.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-          role.tenant?.id === eventApprovalStep.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+            role.tenant?.id === eventApprovalStep.tenant?.id
+        )
     )
       return true;
 
@@ -58,11 +60,13 @@ export class EventApprovalStepsService extends RequestContext {
       throw new NotFoundException('EventApprovalStep must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-          role.tenant?.id === eventApprovalStep.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+            role.tenant?.id === eventApprovalStep.tenant?.id
+        )
     )
       return true;
 
@@ -72,8 +76,6 @@ export class EventApprovalStepsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['EventApprovalStepSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -81,6 +83,8 @@ export class EventApprovalStepsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['EventApprovalStepInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

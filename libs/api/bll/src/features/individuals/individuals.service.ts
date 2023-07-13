@@ -36,10 +36,13 @@ export class IndividualsService extends RequestContext {
   checkPermsDelete(individual: Individual) {
     if (individual.deletedAt) throw new NotFoundException(`Individual was deleted on ${individual.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === individual.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+            role.tenant?.id === individual.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +57,13 @@ export class IndividualsService extends RequestContext {
     if (individual.hiddenAt) throw new NotFoundException('Individual must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === individual.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+            role.tenant?.id === individual.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +73,6 @@ export class IndividualsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['IndividualSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +80,8 @@ export class IndividualsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['IndividualInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

@@ -3,11 +3,16 @@ input LoginInput {
   password: String!
 }
 
+type UserLogin {
+  user: User!
+  canManageTenant: Boolean!
+}
+
 type Query {
-  me: User
+  me: UserLogin!
 }
 
 type Mutation {
-  login(dto: LoginInput!): User
+  login(dto: LoginInput!): UserLogin!
   logout: Boolean!
 }

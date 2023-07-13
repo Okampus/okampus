@@ -11,14 +11,14 @@ export const financeBaseInfo = Selector('Finance')({
   ...entityBase,
   payedAt: true,
   payedBy: actorWithTeamInfo,
+  initiatedBy: individualBaseInfo,
   receivedBy: actorWithTeamInfo,
   financeAttachments: [{}, { fileUpload: fileUploadBaseInfo }],
   amount: true,
-  name: true,
   category: true,
+  method: true,
   project: projectBaseInfo,
   event: eventBaseInfo,
-  method: true,
   createdBy: individualBaseInfo,
 });
 export type FinanceBaseInfo = InputType<GraphQLTypes['Finance'], typeof financeBaseInfo>;

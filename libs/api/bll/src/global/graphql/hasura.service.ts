@@ -286,8 +286,16 @@ export class HasuraService extends RequestContext {
       const dataValue = deepProps[lastPathKey];
 
       if (isNonNullObject(dataValue) && 'data' in dataValue && isNonNullObject(dataValue.data)) {
-        const data = this.applyData(dataValue.data, relationship.defaultProps, relationship.overwrite);
-        deepProps[lastPathKey] = { data: relationship.checkTransform ? relationship.checkTransform(data) : data };
+        const apply = (data: Record<string, unknown>) =>
+          this.applyData(data, relationship.defaultProps, relationship.overwrite);
+
+        const data = Array.isArray(dataValue.data)
+          ? dataValue.data.map((d) => (relationship.checkTransform ? relationship.checkTransform(apply(d)) : apply(d)))
+          : relationship.checkTransform
+          ? relationship.checkTransform(apply(dataValue.data))
+          : apply(dataValue.data);
+
+        deepProps[lastPathKey] = { data };
 
         if (relationship.slugify) {
           const slugify = dataValue.data[relationship.slugify] as string | undefined;

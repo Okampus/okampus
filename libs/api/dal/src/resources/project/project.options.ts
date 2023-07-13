@@ -1,5 +1,4 @@
 import type { Tag } from '../actor/tag/tag.entity';
-import type { Event } from '../event/event.entity';
 import type { ProjectProps } from '@okampus/shared/dtos';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { Team } from '../team/team.entity';
@@ -11,6 +10,5 @@ export type ProjectOptions = ProjectProps &
     tags?: Tag[];
     team: Team;
     image?: FileUpload;
-    events?: Event[];
     supervisors: TeamMember[];
   };

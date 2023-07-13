@@ -36,10 +36,12 @@ export class ProjectsService extends RequestContext {
   checkPermsDelete(project: Project) {
     if (project.deletedAt) throw new NotFoundException(`Project was deleted on ${project.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === project.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === project.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class ProjectsService extends RequestContext {
     if (project.hiddenAt) throw new NotFoundException('Project must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === project.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === project.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class ProjectsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['ProjectSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +78,8 @@ export class ProjectsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['ProjectInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

@@ -1,6 +1,6 @@
 import { RoleRepository } from './role.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Property, ManyToOne, Enum, EnumType, EntityRepositoryType } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Enum, EnumType, EntityRepositoryType, ArrayType } from '@mikro-orm/core';
 import { RoleCategory, TeamRoleType } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
@@ -13,7 +13,7 @@ export class Role extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'array', default: [] })
+  @Property({ type: new ArrayType((i) => +i), default: [] })
   permissions: number[] = [];
 
   @ManyToOne({ type: 'Team', inversedBy: 'roles' })

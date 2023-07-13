@@ -7,7 +7,7 @@ export class EventApprovalStepProps {
   @IsString()
   name!: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   @IsInt()
-  stepOrder!: number;
+  order!: number;
 }

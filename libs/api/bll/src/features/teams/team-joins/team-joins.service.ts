@@ -36,10 +36,12 @@ export class TeamJoinsService extends RequestContext {
   checkPermsDelete(teamJoin: TeamJoin) {
     if (teamJoin.deletedAt) throw new NotFoundException(`TeamJoin was deleted on ${teamJoin.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class TeamJoinsService extends RequestContext {
     if (teamJoin.hiddenAt) throw new NotFoundException('TeamJoin must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class TeamJoinsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['TeamJoinSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
     if (props.processedAt) throw new BadRequestException('Cannot update processedAt directly.');
@@ -84,6 +86,8 @@ export class TeamJoinsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TeamJoinInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

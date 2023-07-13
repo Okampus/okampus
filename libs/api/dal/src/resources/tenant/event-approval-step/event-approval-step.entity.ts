@@ -13,6 +13,9 @@ export class EventApprovalStep extends TenantScopedEntity {
   @Property({ type: 'string' })
   name!: string;
 
+  @Property({ type: 'int' })
+  order!: number;
+
   @Property({ type: 'string', default: '' })
   description = '';
 

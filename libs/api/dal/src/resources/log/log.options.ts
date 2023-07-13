@@ -16,5 +16,5 @@ export type LogOptions = {
   tenant?: Tenant;
   event?: Event;
   individual?: Individual;
-  createdBy?: Individual;
+  createdBy?: Individual | null;
 };

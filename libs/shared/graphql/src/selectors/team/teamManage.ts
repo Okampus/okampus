@@ -1,10 +1,8 @@
 import { teamWithMembersInfo } from './teamWithMembers';
 import { accountBaseInfo } from './account/accountBase';
-import { accountAllocateBaseInfo } from './accountAllocate/accountAllocateBase';
 import { teamMinimalInfo } from './teamMinimal';
 
 import { Selector } from '../../zeus';
-import { eventBaseInfo } from '../event/eventBase';
 import { projectBaseInfo } from '../project/projectBase';
 
 import { entityBase } from '../entityBase';
@@ -19,13 +17,11 @@ const _in = [
 ];
 export const teamManageInfo = Selector('Team')({
   ...teamWithMembersInfo,
-  eventManages: [{}, { event: eventBaseInfo }],
   projects: [{}, projectBaseInfo],
   membershipDuration: true,
   membershipFees: true,
   isJoinFormActive: true,
   accounts: [{}, accountBaseInfo],
-  accountAllocates: [{}, accountAllocateBaseInfo],
   teamHistories: [{ where: { eventType: { _in } } }, { ...entityBase, eventDate: true }],
   teams: [{}, teamMinimalInfo],
 });

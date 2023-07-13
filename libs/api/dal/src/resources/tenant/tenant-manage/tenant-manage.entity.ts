@@ -12,8 +12,8 @@ export class TenantManage extends TenantScopedEntity {
   [EntityRepositoryType]!: TenantManageRepository;
 
   // TODO: add permission system ?
-  @ManyToOne({ type: 'CampusCluster', nullable: true, default: null })
-  campusCluster: CampusCluster | null = null;
+  @ManyToOne({ type: 'CampusCluster' })
+  campusCluster!: CampusCluster;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;

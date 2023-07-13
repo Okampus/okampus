@@ -26,7 +26,7 @@ export class ExpenseItemProps {
   @Field(() => FinanceCategory, { nullable: true })
   @IsEnum(() => FinanceCategory)
   @IsString()
-  category?: FinanceCategory = FinanceCategory.Unknown;
+  category?: FinanceCategory = FinanceCategory.Other;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @IsDate()

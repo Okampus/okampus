@@ -35,8 +35,8 @@ export class ExpenseItem extends TenantScopedEntity {
   @Property({ type: 'smallint' })
   quantity!: number;
 
-  @Enum({ items: () => FinanceCategory, type: EnumType, default: FinanceCategory.Unknown })
-  category = FinanceCategory.Unknown;
+  @Enum({ items: () => FinanceCategory, type: EnumType, default: FinanceCategory.Other })
+  category = FinanceCategory.Other;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   payedAt: Date | null = null;

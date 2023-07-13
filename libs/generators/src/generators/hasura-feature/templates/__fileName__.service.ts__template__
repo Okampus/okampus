@@ -35,7 +35,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   checkPermsDelete(<%= propertyName %>: <%= className %>) {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
-    if (this.requester().adminRoles.some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
       return true;
 
     // Custom logic
@@ -48,7 +48,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
     <% if (!tenantScoped) { %>if (<%= propertyName %>.hiddenAt) throw new NotFoundException('<%= className %> must be unhidden before it can be updated.');<% } %>
 
-    if (this.requester().adminRoles.some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === <% if (tenantScoped) { %><%= propertyName %>.id<% } else { %><%= propertyName %>.tenant?.id<% } %>)) 
       return true;
 
     // Custom logic
@@ -57,8 +57,6 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['<%= className %>SetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    <% if (!tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
-    props.createdById = this.requester().id;
     <% for(const settle of settles) { %>
     if (props.<%= settle.by %>) throw new BadRequestException('Cannot update <%= settle.by %> directly.');
     if (props.<%= settle.at %>) throw new BadRequestException('Cannot update <%= settle.at %> directly.');
@@ -74,6 +72,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['<%= className %>InsertInput']) {
     // Custom logic
+    <% if (!tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
+    props.createdById = this.requester().id;
 
     <% if (expectedRels.length > 0) { %>this.hasuraService.expectNestedRelationship(props, [ <% for(const rel of expectedRels) { if (rel.split(':')[1]) { %>{ path: '<%= rel.split(':')[0] %>', slugify: '<%= rel.split(':')[1] %>' }, <% } else { %>{ path: '<%= rel %>' }, <% } } %> ]);<% } %>
     <% if (expectedIds.length > 0) { %>this.hasuraService.expectIdRelationships(props, [ <% for(const id of expectedIds) { %>{ path: '<%= id %>' }, <% } %> ]);<% } %>

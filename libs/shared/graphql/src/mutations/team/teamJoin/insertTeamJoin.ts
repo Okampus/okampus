@@ -5,7 +5,7 @@ import type { ValueTypes } from '../../../zeus';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const insertTeamJoin = typedGql('mutation')({
+export const insertTeamJoinMutation = typedGql('mutation')({
   insertTeamJoinOne: [
     { object: $('object', 'TeamJoinInsertInput!') as ValueTypes['TeamJoinInsertInput'] },
     teamJoinBaseInfo,

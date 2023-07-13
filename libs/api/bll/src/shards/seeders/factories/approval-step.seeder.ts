@@ -16,13 +16,15 @@ export class EventApprovalStepSeeder extends Factory<EventApprovalStep> {
   }
 
   public definition(): EventApprovalStepOptions {
-    return {
-      stepOrder: this.order,
-      name: `Validation step #${this.order}`,
-      validators: [],
-      notifiees: [],
-      createdBy: this.createdBy,
-      tenant: this.tenant,
-    };
+    const name =
+      this.order === 1
+        ? 'Validation de principe'
+        : this.order === 2
+        ? 'Validation campus'
+        : this.order === 3
+        ? 'Validation du directeur'
+        : `Validation step #${this.order}`;
+
+    return { order: this.order, name, createdBy: this.createdBy, tenant: this.tenant };
   }
 }

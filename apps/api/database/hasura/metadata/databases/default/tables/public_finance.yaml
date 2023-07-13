@@ -14,6 +14,9 @@ object_relationships:
   - name: expense
     using:
       foreign_key_constraint_on: expense_id
+  - name: initiatedBy
+    using:
+      foreign_key_constraint_on: initiated_by_id
   - name: location
     using:
       foreign_key_constraint_on: location_id

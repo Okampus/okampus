@@ -2,6 +2,9 @@ table:
   name: tenant
   schema: public
 object_relationships:
+  - name: adminTeam
+    using:
+      foreign_key_constraint_on: admin_team_id
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
@@ -9,13 +12,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: event_validation_form_id
 array_relationships:
-  - name: accountAllocates
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: account_allocate
-          schema: public
   - name: accounts
     using:
       foreign_key_constraint_on:

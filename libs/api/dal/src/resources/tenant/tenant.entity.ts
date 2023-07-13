@@ -4,11 +4,13 @@ import { BaseEntity } from '..';
 import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property, Unique } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
-import type { TenantOptions } from './tenant.options';
-import type { TenantManage } from './tenant-manage/tenant-manage.entity';
+import type { AdminRole } from './admin-role/admin-role.entity';
 import type { CampusCluster } from './campus-cluster/campus-cluster.entity';
 import type { EventApprovalStep } from './event-approval-step/event-approval-step.entity';
 import type { Form } from '../form/form.entity';
+import type { Team } from '../team/team.entity';
+import type { TenantManage } from './tenant-manage/tenant-manage.entity';
+import type { TenantOptions } from './tenant.options';
 
 // TODO: add official locations/addresses
 @Entity({ customRepository: () => TenantRepository })
@@ -18,9 +20,6 @@ export class Tenant extends BaseEntity {
   @Unique()
   @Property({ type: 'text' })
   domain!: string;
-
-  @Property({ type: 'text' })
-  name!: string;
 
   @Property({ type: 'text' })
   pointName!: string;
@@ -53,6 +52,9 @@ export class Tenant extends BaseEntity {
   @OneToOne({ type: 'Form', nullable: true, default: null })
   eventValidationForm: Form | null = null;
 
+  @OneToOne({ type: 'Team', inversedBy: 'adminTenant', nullable: true, default: null })
+  adminTeam: Team | null = null;
+
   @OneToMany({ type: 'CampusCluster', mappedBy: 'tenant' })
   @TransformCollection()
   campusClusters = new Collection<CampusCluster>(this);
@@ -60,6 +62,10 @@ export class Tenant extends BaseEntity {
   @OneToMany({ type: 'TenantManage', mappedBy: 'tenant' })
   @TransformCollection()
   tenantManages = new Collection<TenantManage>(this);
+
+  @OneToMany({ type: 'AdminRole', mappedBy: 'tenant' })
+  @TransformCollection()
+  adminRoles = new Collection<AdminRole>(this);
 
   constructor(options: TenantOptions) {
     super();

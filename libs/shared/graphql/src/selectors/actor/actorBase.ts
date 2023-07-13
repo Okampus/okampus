@@ -15,6 +15,6 @@ export const actorBaseInfo = Selector('Actor')({
   status: true,
   email: true,
   actorTags: [{}, { tag: tagBaseInfo }],
-  socials: [{}, socialBaseInfo],
+  socials: [{ where: { deletedAt: { _isNull: true } } }, socialBaseInfo],
 });
 export type ActorBaseInfo = InputType<GraphQLTypes['Actor'], typeof actorBaseInfo>;

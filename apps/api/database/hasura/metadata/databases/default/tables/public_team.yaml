@@ -5,6 +5,13 @@ object_relationships:
   - name: actor
     using:
       foreign_key_constraint_on: actor_id
+  - name: administeredTenant
+    using:
+      foreign_key_constraint_on:
+        column: admin_team_id
+        table:
+          name: tenant
+          schema: public
   - name: canteen
     using:
       foreign_key_constraint_on: canteen_id
@@ -33,13 +40,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: video_id
 array_relationships:
-  - name: accountAllocates
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: account_allocate
-          schema: public
   - name: accounts
     using:
       foreign_key_constraint_on:

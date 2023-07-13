@@ -33,10 +33,10 @@ array_relationships:
         table:
           name: event_approval
           schema: public
-  - name: lastStepEvents
+  - name: nextStepEvents
     using:
       foreign_key_constraint_on:
-        column: last_event_approval_step_id
+        column: next_event_approval_step_id
         table:
           name: event
           schema: public

@@ -1,7 +1,17 @@
 import { AccountRepository } from './account.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Entity, Property, ManyToOne, EntityRepositoryType, Enum, EnumType } from '@mikro-orm/core';
+import {
+  Entity,
+  Property,
+  ManyToOne,
+  EntityRepositoryType,
+  Enum,
+  EnumType,
+  Collection,
+  OneToMany,
+} from '@mikro-orm/core';
 import { AccountType } from '@okampus/shared/enums';
+import { TransformCollection } from '@okampus/api/shards';
 
 import type { AccountOptions } from './account.options';
 import type { Team } from '../team.entity';
@@ -17,14 +27,18 @@ export class Account extends TenantScopedEntity {
   @Property({ type: 'text' })
   name!: string;
 
-  @Property({ type: 'float', default: 0 })
-  balance = 0;
+  @ManyToOne({ type: 'Account', nullable: true, default: null })
+  parent: Account | null = null;
 
   @ManyToOne({ type: 'BankInfo', nullable: true })
   bankInfo: BankInfo | null = null;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
+
+  @OneToMany({ type: 'Account', mappedBy: 'parent' })
+  @TransformCollection()
+  children = new Collection<Account>(this);
 
   constructor(options: AccountOptions) {
     super(options);

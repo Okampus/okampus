@@ -22,7 +22,6 @@ import type { EventJoinOptions } from './event-join.options';
 import type { Event } from '../event.entity';
 import type { Action } from '../../team/action/action.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { EventManage } from '../event-manage/event-manage.entity';
 
 @Entity({ customRepository: () => EventJoinRepository })
 export class EventJoin extends TenantScopedEntity {
@@ -32,7 +31,7 @@ export class EventJoin extends TenantScopedEntity {
   state = ApprovalState.Pending;
 
   @Property({ type: 'boolean', nullable: true, default: null })
-  isParticipant: boolean | null = null;
+  isPresent: boolean | null = null;
 
   @ManyToOne({ type: 'Individual', nullable: true, default: null })
   processedBy: Individual | null = null;
@@ -54,9 +53,6 @@ export class EventJoin extends TenantScopedEntity {
 
   @ManyToOne({ type: 'User' })
   joinedBy!: User;
-
-  @ManyToOne({ type: 'EventManage', nullable: true, default: null })
-  joinedFor: EventManage | null = null;
 
   @ManyToOne({ type: 'FileUpload', nullable: true, default: null })
   qrCode: FileUpload | null = null;

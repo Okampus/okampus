@@ -36,10 +36,12 @@ export class TeamsService extends RequestContext {
   checkPermsDelete(team: Team) {
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === team.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === team.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class TeamsService extends RequestContext {
     if (team.hiddenAt) throw new NotFoundException('Team must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === team.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === team.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class TeamsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['TeamSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +78,8 @@ export class TeamsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['TeamInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

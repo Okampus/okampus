@@ -15,6 +15,7 @@ const mikroOrmConfig: Options = {
   dbName: config.database.name,
   user: config.database.user,
   password: config.database.password,
+  port: config.database.port,
   debug: config.env.isDev(),
   highlighter: new SqlHighlighter(),
   entityRepository: BaseRepository,

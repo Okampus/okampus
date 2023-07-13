@@ -10,6 +10,6 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 export const eventWithJoinInfo = Selector('Event')({
   ...eventBaseInfo,
   eventJoins: [{ where: { state: { _eq: ApprovalState.Approved } }, limit: 3 }, eventJoinMinimalInfo],
-  form: formBaseInfo,
+  joinForm: formBaseInfo,
 });
 export type EventWithJoinInfo = InputType<GraphQLTypes['Event'], typeof eventWithJoinInfo>;

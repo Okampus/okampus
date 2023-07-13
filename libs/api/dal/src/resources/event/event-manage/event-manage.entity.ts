@@ -5,8 +5,9 @@ import { TransformCollection } from '@okampus/api/shards';
 
 import type { EventManageOptions } from './event-manage.options';
 import type { Event } from '../event.entity';
-import type { Team } from '../../team/team.entity';
 import type { Mission } from '../../team/mission/mission.entity';
+import type { Project } from '../../project/project.entity';
+import type { Team } from '../../team/team.entity';
 import type { TeamMember } from '../../team/team-member/team-member.entity';
 
 @Entity({ customRepository: () => EventManageRepository })
@@ -21,6 +22,9 @@ export class EventManage extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
+
+  @ManyToOne({ type: 'Project', nullable: true, default: null })
+  project: Project | null = null;
 
   @OneToMany({ type: 'Mission', mappedBy: 'eventManage' })
   @TransformCollection()
