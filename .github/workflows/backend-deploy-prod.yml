@@ -37,11 +37,6 @@ jobs:
         uses: mikefarah/yq@master
         with:
           cmd: yq -i '.appVersion = "${{ github.sha }}"' 'charts/okampus/Chart.yaml'
-            
-      - name: Set version and save file
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values.yaml'
 
       - name: Checkout repository
         uses: actions/checkout@v3
