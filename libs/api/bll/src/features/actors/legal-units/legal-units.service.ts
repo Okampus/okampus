@@ -36,9 +36,11 @@ export class LegalUnitsService extends RequestContext {
   checkPermsDelete(legalUnit: LegalUnit) {
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnit.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnit.id
+        )
     )
       return true;
 
@@ -52,9 +54,11 @@ export class LegalUnitsService extends RequestContext {
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
 
     if (
-      this.requester().adminRoles.some(
-        (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnit.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnit.id
+        )
     )
       return true;
 
@@ -65,14 +69,14 @@ export class LegalUnitsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['LegalUnitSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
-    props.createdById = this.requester().id;
-
     // Custom logic
     return true;
   }
 
   checkCreateRelationships(props: ValueTypes['LegalUnitInsertInput']) {
     // Custom logic
+
+    props.createdById = this.requester().id;
 
     this.hasuraService.expectNestedRelationship(props, [{ path: 'actor', slugify: 'name' }]);
 

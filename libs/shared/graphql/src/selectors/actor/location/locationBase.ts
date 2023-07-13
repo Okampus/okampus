@@ -8,7 +8,7 @@ export const locationBaseInfo = Selector('Location')({
   ...entityBase,
   address: addressBaseInfo,
   type: true,
-  locationNote: true,
+  locationDetails: true,
   onlineLink: true,
 });
 export type LocationBaseInfo = InputType<GraphQLTypes['Location'], typeof locationBaseInfo>;

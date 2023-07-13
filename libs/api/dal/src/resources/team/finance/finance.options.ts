@@ -7,12 +7,14 @@ import type { FinanceProps } from '@okampus/shared/dtos';
 import type { Actor } from '../../actor/actor.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Account } from '../account/account.entity';
+import type { Individual } from '../../individual/individual.entity';
 
 export type FinanceOptions = FinanceProps &
   TenantScopedOptions & {
     team: Team;
     account: Account;
-    payedBy?: Actor | null;
+    payedBy: Actor;
+    initiatedBy?: Individual | null;
     receivedBy: Actor;
     event?: Event | null;
     location?: Location | null;

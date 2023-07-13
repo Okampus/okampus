@@ -36,9 +36,11 @@ export class TenantsService extends RequestContext {
   checkPermsDelete(tenant: Tenant) {
     if (tenant.deletedAt) throw new NotFoundException(`Tenant was deleted on ${tenant.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === tenant.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === tenant.id
+        )
     )
       return true;
 
@@ -52,9 +54,11 @@ export class TenantsService extends RequestContext {
     if (tenant.deletedAt) throw new NotFoundException(`Tenant was deleted on ${tenant.deletedAt}.`);
 
     if (
-      this.requester().adminRoles.some(
-        (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === tenant.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === tenant.id
+        )
     )
       return true;
 
@@ -65,14 +69,14 @@ export class TenantsService extends RequestContext {
   checkPropsConstraints(props: ValueTypes['TenantSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
 
-    props.createdById = this.requester().id;
-
     // Custom logic
     return true;
   }
 
   checkCreateRelationships(props: ValueTypes['TenantInsertInput']) {
     // Custom logic
+
+    props.createdById = this.requester().id;
 
     return true;
   }

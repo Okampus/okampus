@@ -34,7 +34,8 @@ import {
   TeamHistory,
   Account,
   BankInfo,
-  AccountAllocate,
+  EventApproval,
+  Log,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -56,6 +57,11 @@ import {
   TenantManageType,
   AccountType,
   LegalUnitType,
+  EventState,
+  EventContext,
+  EventType,
+  EntityName,
+  TeamRoleType,
 } from '@okampus/shared/enums';
 import {
   isNotNull,
@@ -65,6 +71,7 @@ import {
   randomFromArrayWithRemainder,
   randomId,
   randomInt,
+  range,
   toSlug,
 } from '@okampus/shared/utils';
 
@@ -80,11 +87,12 @@ import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Actor, EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
+import type { EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
 import type { UploadsService } from '../../features/uploads/uploads.service';
 import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
 
+const createdAt = new Date();
 const seederFolder = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
 
 const seedingConfig = {
@@ -105,10 +113,10 @@ const seedingConfig = {
   MAX_REQUESTS: 5,
 
   MIN_PROJECTS_BY_TEAM: 1,
-  MAX_PROJECTS_BY_TEAM: 2,
+  MAX_PROJECTS_BY_TEAM: 3,
 
   MIN_EVENTS_BY_PROJECT: 1,
-  MAX_EVENTS_BY_PROJECT: 3,
+  MAX_EVENTS_BY_PROJECT: 4,
 
   DEFAULT_CATEGORIES: [
     { name: 'Arts', slug: 'arts', color: Colors.LightBlue, icon: 'arts.webp' }, //
@@ -159,8 +167,9 @@ const potentialRoles = [
   "Aide à l'organisation",
   "Aide à l'animation",
 ];
+
 function randomMission(project: Project, tenant: Tenant): Mission {
-  return new Mission({
+  const mission = new Mission({
     name: pickOneFromArray(potentialRoles),
     color: randomEnum(Colors),
     description: faker.lorem.paragraph(),
@@ -171,27 +180,9 @@ function randomMission(project: Project, tenant: Tenant): Mission {
     createdBy: project.createdBy,
     tenant,
   });
-}
 
-function randomLocation(actor: Actor, tenant: Tenant): Location {
-  const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
-  return new Location({
-    name: faker.company.name(),
-    type: LocationType.Address,
-    actor,
-    address: new Address({
-      city: faker.address.city(),
-      country: Countries.France,
-      latitude: Number.parseFloat(faker.address.latitude()),
-      longitude: Number.parseFloat(faker.address.longitude()),
-      state: faker.address.state(),
-      streetNumber,
-      street: rest.join(' '),
-      zip: faker.address.zipCode(),
-    }),
-    createdBy: null,
-    tenant,
-  });
+  mission.createdAt = createdAt;
+  return mission;
 }
 
 async function readIcon(iconFileName: string) {
@@ -312,39 +303,54 @@ export class DatabaseSeeder extends Seeder {
   public async run(em: EntityManager): Promise<void> {
     this.logger.log(`Seeding launched for tenant ${DatabaseSeeder.targetTenant}...`);
 
-    const createdAt = new Date();
     const start = new Date('2023-05-01T00:00:00.000Z');
 
     const domain = { domain: DatabaseSeeder.targetTenant };
     const tenant = await em.findOneOrFail(Tenant, domain, {
-      populate: ['tenantManages', 'tenantManages.team', 'tenantManages.team.actor'],
+      populate: ['adminTeam', 'eventValidationForm', 'eventApprovalSteps'],
     });
 
-    const adminManage = tenant.tenantManages
-      .getItems()
-      .find((manage) => manage.campusCluster === null && manage.team.type === TeamType.Tenant);
-
     const scopedOptions = { tenant, createdBy: null };
-    this.logger.log(`Seeding tenant ${tenant.name}`);
+
+    const adminTeam = tenant.adminTeam;
+    if (!adminTeam?.actor) throw new Error(`Tenant ${tenant.domain} has no admin team`);
+
+    this.logger.log(`Seeding tenant ${adminTeam.actor.name}`);
 
     const adminPromises = [];
-    if (!adminManage) throw new Error('Tenant admin manage not found');
 
     const campusClusters = [
       new CampusCluster({ name: 'Paris', ...scopedOptions }),
-      new CampusCluster({ name: 'Bordeaux', ...scopedOptions }),
+      new CampusCluster({ name: 'BDX', ...scopedOptions }),
     ];
 
     for (const campusCluster of campusClusters) {
       const campusClusterManageTeam = new Team({
-        name: `${tenant.name} - ${campusCluster.name}`,
+        name: `Campus ${campusCluster.name}`,
         type: TeamType.Department,
-        parent: adminManage.team,
+        parent: adminTeam,
         ...scopedOptions,
       });
 
       for (const _ of Array.from({ length: randomInt(1, 3) })) {
-        const location = randomLocation(campusClusterManageTeam.actor, tenant);
+        const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
+        const location = new Location({
+          type: LocationType.Address,
+          actor: campusClusterManageTeam.actor,
+          address: new Address({
+            city: faker.address.city(),
+            country: Countries.France,
+            latitude: Number.parseFloat(faker.address.latitude()),
+            longitude: Number.parseFloat(faker.address.longitude()),
+            state: faker.address.state(),
+            streetNumber,
+            street: rest.join(' '),
+            zip: faker.address.zipCode(),
+          }),
+          createdBy: null,
+          tenant,
+        });
+
         campusCluster.campuses.add(
           new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions })
         );
@@ -375,7 +381,7 @@ export class DatabaseSeeder extends Seeder {
 
     this.logger.log('Seeding team categories..');
 
-    const approvalSteps = [];
+    const approvalSteps: EventApprovalStep[] = [];
     for (let i = 0; i < seedingConfig.N_APPROVAL_STEPS; i++) {
       const nStepAdmins = randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP);
       [stepAdmins, restAdmins] = randomFromArrayWithRemainder(restAdmins, nStepAdmins);
@@ -476,7 +482,7 @@ export class DatabaseSeeder extends Seeder {
           team.actor.actorImages.add(new ActorImage({ actor: team.actor, image, type, ...scopedOptions }));
         }
 
-        if (!teamData.parent) {
+        if (teamData.slug !== 'efrei-international' && !teamData.parent) {
           const bankLocation = pickOneFromArray(bankLocations);
           const account = new Account({
             name: 'Compte principal',
@@ -491,21 +497,21 @@ export class DatabaseSeeder extends Seeder {
               ...scopedOptions,
             }),
             team,
-            balance: 10_000,
             ...scopedOptions,
           });
 
+          const admin = pickOneFromArray(admins);
           const subvention = new Finance({
             account,
             team,
             amount: 10_000,
-            name: 'Subvention 2023',
             payedAt: start,
             method: PaymentMethod.Transfer,
             category: FinanceCategory.Subvention,
-            payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminManage.team.actor,
+            payedBy: team.tenantGrantFund ? team.tenantGrantFund.actor : adminTeam.actor,
+            initiatedBy: admin,
             receivedBy: team.actor,
-            createdBy: pickOneFromArray(admins),
+            createdBy: admin,
             state: FinanceState.Completed,
             tenant,
           });
@@ -527,8 +533,61 @@ export class DatabaseSeeder extends Seeder {
         if (parentTeam) {
           team.parent = parentTeam.team;
           const account = parentTeam.team.accounts.getItems()[0];
-          const accountAllocate = new AccountAllocate({ account, team, balance: 1700, ...scopedOptions });
-          team.accountAllocates.add(accountAllocate);
+
+          if (account) {
+            const treasurer = parentTeam.team.teamMembers
+              .getItems()
+              .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user;
+
+            const childAccount = new Account({
+              name: 'Compte principal',
+              type: AccountType.Primary,
+              parent: account,
+              bankInfo: null,
+              team,
+              ...scopedOptions,
+            });
+
+            account.children.add(childAccount);
+            team.finances.add(
+              new Finance({
+                account: childAccount,
+                team,
+                amount: 1700,
+                payedAt: start,
+                method: PaymentMethod.Transfer,
+                category: FinanceCategory.Subvention,
+                payedBy: parentTeam.team.actor,
+                receivedBy: team.actor,
+                initiatedBy: treasurer?.individual,
+                createdBy: treasurer?.individual,
+                state: FinanceState.Completed,
+                tenant,
+              })
+            );
+
+            team.accounts.add(childAccount);
+
+            parentTeam.team.finances.add(
+              new Finance({
+                account,
+                team: parentTeam.team,
+                amount: -1700,
+                payedAt: start,
+                method: PaymentMethod.Transfer,
+                category: FinanceCategory.Subvention,
+                payedBy: parentTeam.team.actor,
+                initiatedBy: treasurer?.individual,
+                receivedBy: team.actor,
+                createdBy: parentTeam.team.teamMembers
+                  .getItems()
+                  .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user
+                  .individual,
+                state: FinanceState.Completed,
+                tenant,
+              })
+            );
+          }
         }
       }
       return team;
@@ -661,27 +720,61 @@ export class DatabaseSeeder extends Seeder {
             tenant,
           });
 
+          action.createdAt = new Date();
+
           teamPromises.push(em.persistAndFlush(action));
         }
 
         const N_EVENTS = randomInt(seedingConfig.MIN_EVENTS_BY_PROJECT, seedingConfig.MAX_EVENTS_BY_PROJECT);
-        const events = new EventSeeder(em, team, project, approvalSteps, teamMembers)
-          .create(N_EVENTS)
-          .then(async (events) => {
-            events = events.map((event, i) => {
-              event.name = `${project.name} #${i + 1}`;
-              event.slug = `${toSlug(event.name)}-${randomId()}`;
-              return event;
-            });
+        const events = new EventSeeder(em, team, approvalSteps, teamMembers).create(N_EVENTS).then(async (events) => {
+          events = events.map((event, i) => {
+            event.name = `${project.name} #${i + 1}`;
+            event.slug = `${toSlug(event.name)}-${randomId()}`;
+            event.createdAt = new Date(event.start);
+            event.createdAt.setDate(createdAt.getDate() - 7);
 
-            const eventManages = events.map((event) => {
-              const createdBy = pickOneFromArray(teamMembers).user.individual;
-              const supervisors = randomFromArray(teamMembers, 1, 3);
-              return new EventManage({ team, event, createdBy, tenant, supervisors });
-            });
+            const lastStepIdx = event.nextEventApprovalStep
+              ? event.state === EventState.Rejected
+                ? event.nextEventApprovalStep.order
+                : event.nextEventApprovalStep.order - 1
+              : approvalSteps.length;
 
-            team.eventManages.add(eventManages);
+            if (
+              event.state === EventState.Rejected ||
+              event.state === EventState.Approved ||
+              event.state === EventState.Published ||
+              event.state === EventState.Submitted
+            ) {
+              for (const idx of range({ to: lastStepIdx })) {
+                const eventApprovalStep = approvalSteps[idx];
+                const eventApproval = new EventApproval({
+                  event,
+                  eventApprovalStep,
+                  isApproved: idx === lastStepIdx - 1 && event.state === EventState.Rejected ? false : true,
+                  message: faker.lorem.paragraphs(1),
+                  tenant,
+                  createdBy: pickOneFromArray(admins),
+                });
+                eventApproval.createdAt = new Date(event.createdAt);
+                event.eventApprovals.add(eventApproval);
+              }
+            }
 
+            return event;
+          });
+
+          const eventManages = events.map((event) => {
+            const createdBy = pickOneFromArray(teamMembers).user.individual;
+            const supervisors = randomFromArray(teamMembers, 1, 3);
+            const eventManage = new EventManage({ team, event, createdBy, tenant, supervisors, project });
+
+            eventManage.createdAt = new Date(event.createdAt);
+            return eventManage;
+          });
+
+          team.eventManages.add(eventManages);
+
+          if (team.accounts.getItems().length > 0) {
             const finances = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
@@ -693,143 +786,159 @@ export class DatabaseSeeder extends Seeder {
                 const event = pickOneFromArray(events);
                 const category = randomEnum(FinanceCategory);
 
-                const account = team.parent ? team.parent.accounts.getItems()[0] : team.accounts.getItems()[0];
-                const accountAllocate = team.parent
-                  ? team.accountAllocates.getItems().find((allocate) => allocate.team.id === team.id)
-                  : null;
+                const finance = new Finance({
+                  team,
+                  account: team.accounts.getItems()[0],
+                  event,
+                  project,
+                  amount: -amount,
+                  category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
+                  payedBy: pickOneFromArray(teamMembers).user.individual.actor,
+                  initiatedBy: pickOneFromArray(teamMembers).user.individual,
+                  createdBy: pickOneFromArray(teamMembers).user.individual,
+                  payedAt: faker.date.between(start, createdAt),
+                  method: randomEnum(PaymentMethod),
+                  state: FinanceState.Completed,
+                  tenant,
+                  receivedBy: pickOneFromArray(companies).actor,
+                  attachments: upload ? [upload] : [],
+                });
 
-                if (account) {
-                  const finance = new Finance({
-                    team,
-                    account,
-                    event,
-                    project,
-                    amount,
-                    name: faker.lorem.words(3),
-                    category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
-                    payedBy: pickOneFromArray(teamMembers).user.individual.actor,
-                    createdBy: pickOneFromArray(teamMembers).user.individual,
-                    payedAt: faker.date.between(start, createdAt),
-                    method: randomEnum(PaymentMethod),
-                    state: FinanceState.Completed,
-                    tenant,
-                    receivedBy: pickOneFromArray(companies).actor,
-                    attachments: upload ? [upload] : [],
-                  });
-                  account.balance -= amount;
-                  if (accountAllocate) accountAllocate.balance -= amount;
-
-                  return finance;
-                }
-
-                return null;
+                return finance;
               })
             ).then((finances) => finances.filter(isNotNull));
 
             teamPromises.push(em.persistAndFlush(finances));
+          }
 
-            const eventJoins = [];
-            for (const event of events) {
-              const missions: [Mission, number][] = [];
-              for (const _ of Array.from({ length: randomInt(1, 5) })) {
-                const mission = randomMission(project, tenant);
-                mission.quantity = randomInt(1, 3);
-                event.eventManages[0].missions.add(mission);
-                missions.push([mission, mission.quantity]);
-              }
+          const eventJoins = [];
+          for (const event of events) {
+            const missions: [Mission, number][] = [];
+            for (const _ of Array.from({ length: randomInt(1, 5) })) {
+              const mission = randomMission(project, tenant);
 
-              // Generate event registrations
-              eventJoins.push(
-                ...randomFromArray([...managers, ...students], 4, 20).flatMap((individual) => {
-                  if (!individual.user) return [];
+              mission.createdAt = new Date(event.createdAt);
 
-                  const entities: BaseEntity[] = [];
+              mission.quantity = randomInt(1, 3);
+              event.eventManages[0].missions.add(mission);
+              missions.push([mission, mission.quantity]);
+            }
 
-                  const presence = Math.random() > 0.75;
+            // Generate event registrations
+            eventJoins.push(
+              ...randomFromArray([...managers, ...students], 4, 20).flatMap((individual) => {
+                if (!individual.user) return [];
 
-                  let action = null;
-                  if (presence && Math.random() > 0.5) {
-                    action = new Action({
-                      name: pickOneFromArray(potentialRoles),
-                      description: faker.lorem.lines(2),
-                      points: randomInt(1, 10),
-                      team: team,
-                      user: individual.user,
-                      pointsProcessedBy: pickOneFromArray(managers),
-                      pointsProcessedAt: createdAt,
-                      state: ApprovalState.Approved,
-                      createdBy: individual,
-                      tenant: team.tenant,
-                    });
-                    entities.push(action);
-                  }
+                const entities: BaseEntity[] = [];
 
-                  const eventJoin = new EventJoin({
-                    actions: action ? [action] : [],
-                    joinedBy: individual.user,
-                    processedBy: pickOneFromArray(managers),
-                    processedAt: createdAt,
-                    event: event,
-                    presence,
+                const presence = Math.random() > 0.2 ? (Math.random() > 0.2 ? true : false) : null;
+
+                let action = null;
+                if (presence && Math.random() > 0.5) {
+                  const pointsProcessedAt = new Date(event.createdAt);
+                  pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+
+                  action = new Action({
+                    name: pickOneFromArray(potentialRoles),
+                    description: faker.lorem.lines(2),
+                    points: randomInt(1, 10),
+                    team: team,
+                    user: individual.user,
+                    pointsProcessedAt,
+                    pointsProcessedBy: pickOneFromArray(managers),
                     state: ApprovalState.Approved,
-                    ...(event.joinForm
-                      ? {
-                          formSubmission: new FormSubmission({
-                            submission: { isPayed: Math.random() > 0.5 },
-                            form: event.joinForm,
-                            createdBy: individual,
-                            tenant: team.tenant,
-                          }),
-                        }
-                      : {}),
                     createdBy: individual,
                     tenant: team.tenant,
                   });
 
-                  eventJoin.participationProcessedBy = pickOneFromArray(managers);
-                  if (presence)
-                    eventJoin.participationProcessedVia = Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual;
+                  action.createdAt = new Date(event.createdAt);
 
-                  entities.push(eventJoin);
+                  entities.push(action);
+                }
 
-                  if (Math.random() > 0.7) {
-                    const mission = missions.find((mission) => mission[1] > 0);
-                    if (mission) {
-                      const completed = Math.random() > 0.5;
-                      const state = completed
+                const pointsProcessedAt = new Date(event.createdAt);
+                pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
+
+                const eventJoin = new EventJoin({
+                  actions: action ? [action] : [],
+                  joinedBy: individual.user,
+                  state:
+                    presence === null
+                      ? Math.random() > 0.2
                         ? ApprovalState.Approved
-                        : Math.random() > 0.5
-                        ? ApprovalState.Pending
-                        : Math.random() > 0.5
-                        ? ApprovalState.Rejected
-                        : ApprovalState.Approved;
-
-                      mission[1]--;
-                      entities.push(
-                        new MissionJoin({
-                          eventJoin,
-                          state,
-                          joinedBy: individual.user,
-                          mission: mission[0],
-                          processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
-                          processedAt: createdAt,
-                          ...(completed
-                            ? { points: randomInt(1, 3), pointsProcessedBy: pickOneFromArray(managers) }
-                            : {}),
+                        : ApprovalState.Rejected
+                      : ApprovalState.Approved,
+                  processedBy: pickOneFromArray(managers),
+                  processedAt: pointsProcessedAt,
+                  event: event,
+                  isPresent: presence,
+                  ...(event.joinForm
+                    ? {
+                        formSubmission: new FormSubmission({
+                          submission: { payed: Math.random() > 0.5 },
+                          form: event.joinForm,
                           createdBy: individual,
-                          tenant,
-                        })
-                      );
-                    }
+                          tenant: team.tenant,
+                        }),
+                      }
+                    : {}),
+                  ...(presence === null
+                    ? {}
+                    : {
+                        participationProcessedAt: pointsProcessedAt,
+                        participationProcessedBy: pickOneFromArray(managers),
+                        participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
+                      }),
+                  createdBy: individual,
+                  tenant: team.tenant,
+                });
+
+                entities.push(eventJoin);
+
+                // Add mission registrations
+                if (Math.random() > 0.7) {
+                  const mission = missions.find((mission) => mission[1] > 0);
+                  if (mission) {
+                    const completed = Math.random() > 0.5;
+                    const state = completed
+                      ? ApprovalState.Approved
+                      : Math.random() > 0.5
+                      ? ApprovalState.Pending
+                      : Math.random() > 0.5
+                      ? ApprovalState.Rejected
+                      : ApprovalState.Approved;
+
+                    mission[1]--;
+
+                    entities.push(
+                      new MissionJoin({
+                        eventJoin,
+                        state,
+                        joinedBy: individual.user,
+                        mission: mission[0],
+                        processedAt: event.start,
+                        processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
+                        ...(completed
+                          ? {
+                              points: randomInt(1, 3),
+                              pointsProcessedAt: pointsProcessedAt,
+                              pointsProcessedBy: pickOneFromArray(managers),
+                            }
+                          : {}),
+                        createdBy: individual,
+                        tenant,
+                      })
+                    );
                   }
+                }
 
-                  return entities;
-                })
-              );
-            }
+                return entities;
+              })
+            );
+          }
 
-            return em.persistAndFlush([...events, ...eventJoins]);
-          });
+          return em.persistAndFlush([...events, ...eventJoins]);
+        });
 
         teamPromises.push(events);
         await em.flush();
@@ -837,5 +946,23 @@ export class DatabaseSeeder extends Seeder {
     }
 
     await Promise.all(teamPromises);
+
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const finances = await em.find(Finance, {}, { populate: ['team'] });
+    const logs = finances.map((finance) => {
+      const log = new Log({
+        context: EventContext.User,
+        eventType: EventType.Create,
+        entityId: finance.id,
+        entityName: EntityName.Finance,
+        team: finance.team,
+        createdBy: finance.createdBy,
+      });
+
+      log.createdAt = finance.createdAt;
+      return log;
+    });
+
+    await em.persistAndFlush(logs);
   }
 }

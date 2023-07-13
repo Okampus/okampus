@@ -3,9 +3,9 @@ import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 
 import { teamMemberWithUser } from '../team/teamMember/teamMemberWithUser';
 import { tagBaseInfo } from '../actor/tag/tagBase';
-import { eventDetailsInfo } from '../event/eventDetails';
 import { entityBase } from '../entityBase';
 
+import { eventManageBaseInfo } from '../event/eventManage/eventManageBase';
 import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const projectBaseInfo = Selector('Project')({
@@ -14,7 +14,7 @@ export const projectBaseInfo = Selector('Project')({
   name: true,
   slug: true,
   description: true,
-  eventsAggregate: [{}, { nodes: eventDetailsInfo, aggregate: { min: { start: true }, max: { end: true } } }],
+  eventManages: [{}, eventManageBaseInfo],
   banner: fileUploadBaseInfo,
   projectSupervisors: [{}, { teamMember: teamMemberWithUser }],
   projectTags: [{}, { tag: tagBaseInfo }],

@@ -36,10 +36,12 @@ export class FollowsService extends RequestContext {
   checkPermsDelete(follow: Follow) {
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class FollowsService extends RequestContext {
     if (follow.hiddenAt) throw new NotFoundException('Follow must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class FollowsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['FollowSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +78,8 @@ export class FollowsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['FollowInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

@@ -57,7 +57,6 @@ import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
 import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
 import { Account } from './team/account/account.entity';
-import { AccountAllocate } from './team/account-allocate/account-allocate.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
 import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
@@ -100,7 +99,6 @@ export const allEntities = [
   Role,
 
   Account,
-  AccountAllocate,
   Expense,
   ExpenseItem,
 

@@ -104,7 +104,6 @@ export type ApiConfig = {
   readonly pepperSecret: string;
   readonly hasuraAdminSecret: string;
   readonly baseTenant: {
-    readonly name: string;
     readonly adminPassword: string;
     readonly oidc: {
       readonly enabled: boolean;

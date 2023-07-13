@@ -1,5 +1,5 @@
 import { eventBaseInfo } from './eventBase';
-import { eventJoinDetailsInfo } from './eventJoin/eventJoinDetails';
+import { eventJoinWithEventInfo } from './eventJoin/eventJoinWithEvent';
 import { formBaseInfo } from '../form/formBase';
 import { Selector } from '../../zeus';
 
@@ -9,7 +9,7 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const eventWithJoinDetailsInfo = Selector('Event')({
   ...eventBaseInfo,
-  eventJoins: [{ where: { state: { _eq: ApprovalState.Approved } } }, eventJoinDetailsInfo],
-  form: formBaseInfo,
+  eventJoins: [{ where: { state: { _eq: ApprovalState.Approved } } }, eventJoinWithEventInfo],
+  joinForm: formBaseInfo,
 });
 export type EventWithJoinDetailsInfo = InputType<GraphQLTypes['Event'], typeof eventWithJoinDetailsInfo>;

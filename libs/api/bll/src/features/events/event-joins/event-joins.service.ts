@@ -6,7 +6,7 @@ import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventJoinRepository, EventJoin } from '@okampus/api/dal';
-import { EntityName, AdminPermissions } from '@okampus/shared/enums';
+import { EntityName, AdminPermissions, ApprovalState } from '@okampus/shared/enums';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
@@ -36,10 +36,12 @@ export class EventJoinsService extends RequestContext {
   checkPermsDelete(eventJoin: EventJoin) {
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class EventJoinsService extends RequestContext {
     if (eventJoin.hiddenAt) throw new NotFoundException('EventJoin must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,23 @@ export class EventJoinsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['EventJoinSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
+
+    if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
+    if (props.processedAt) throw new BadRequestException('Cannot update processedAt directly.');
+
+    if (props.state === ApprovalState.Approved || props.state === ApprovalState.Rejected) {
+      props.processedById = this.requester().id;
+      props.processedAt = new Date().toISOString();
+    }
+    if (props.participationProcessedById)
+      throw new BadRequestException('Cannot update participationProcessedById directly.');
+    if (props.participationProcessedAt)
+      throw new BadRequestException('Cannot update participationProcessedAt directly.');
+
+    if (props.isPresent !== null) {
+      props.participationProcessedById = this.requester().id;
+      props.participationProcessedAt = new Date().toISOString();
+    }
 
     // Custom logic
     return true;
@@ -76,6 +95,8 @@ export class EventJoinsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['EventJoinInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

@@ -14,18 +14,15 @@ object_relationships:
   - name: eventApprovalSubmission
     using:
       foreign_key_constraint_on: event_approval_submission_id
-  - name: form
+  - name: joinForm
     using:
       foreign_key_constraint_on: join_form_id
-  - name: lastEventApprovalStep
-    using:
-      foreign_key_constraint_on: last_event_approval_step_id
   - name: location
     using:
       foreign_key_constraint_on: location_id
-  - name: project
+  - name: nextEventApprovalStep
     using:
-      foreign_key_constraint_on: project_id
+      foreign_key_constraint_on: next_event_approval_step_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id

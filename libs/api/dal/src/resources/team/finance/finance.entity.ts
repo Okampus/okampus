@@ -25,6 +25,7 @@ import type { Actor } from '../../actor/actor.entity';
 import type { Account } from '../account/account.entity';
 import type { Tag } from '../../actor/tag/tag.entity';
 import type { Location } from '../../actor/location/location.entity';
+import type { Individual } from '../../individual/individual.entity';
 
 @Entity({ customRepository: () => FinanceRepository })
 export class Finance extends TenantScopedEntity {
@@ -51,8 +52,11 @@ export class Finance extends TenantScopedEntity {
   @Enum({ items: () => PayedByType, default: PayedByType.Manual, type: EnumType })
   payedByType: PayedByType = PayedByType.Manual;
 
-  @ManyToOne({ type: 'Actor', nullable: true, default: null })
-  payedBy: Actor | null = null;
+  @ManyToOne({ type: 'Actor' })
+  payedBy!: Actor;
+
+  @ManyToOne({ type: 'Individual', nullable: true, default: null })
+  initiatedBy: Individual | null = null;
 
   @Property({ type: 'datetime' })
   payedAt!: Date;

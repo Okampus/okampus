@@ -1,11 +1,13 @@
+import { eventJoinMinimalInfo } from './eventJoin/eventJoinMinimal';
 import { Selector } from '../../zeus';
-import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
 import { entityBase } from '../entityBase';
-import { teamBaseInfo } from '../team/teamBase';
-import { projectMinimalInfo } from '../project/projectMinimal';
+import { locationBaseInfo } from '../actor/location/locationBase';
 import { tagBaseInfo } from '../actor/tag/tagBase';
 import { contentBaseInfo } from '../content/contentBase';
-import { locationBaseInfo } from '../actor/location/locationBase';
+import { fileUploadBaseInfo } from '../fileUpload/fileUploadBase';
+import { projectMinimalInfo } from '../project/projectMinimal';
+import { teamBaseInfo } from '../team/teamBase';
+import { teamMemberWithUser } from '../team/teamMember/teamMemberWithUser';
 
 import { ApprovalState } from '@okampus/shared/enums';
 
@@ -24,9 +26,12 @@ export const eventBaseInfo = Selector('Event')({
   pointsAwardedForAttendance: true,
   banner: fileUploadBaseInfo,
   isPrivate: true,
-  project: projectMinimalInfo,
   eventTags: [{}, { tag: tagBaseInfo }],
-  eventManages: [{}, { team: teamBaseInfo }],
+  eventManages: [
+    {},
+    { team: teamBaseInfo, project: projectMinimalInfo, supervisors: [{}, { teamMember: teamMemberWithUser }] },
+  ],
   eventJoinsAggregate: [{ where: { state: { _eq: ApprovalState.Approved } } }, { aggregate: { count: [{}, true] } }],
+  eventJoins: [{ where: { state: { _eq: ApprovalState.Approved } }, limit: 3 }, eventJoinMinimalInfo],
 });
 export type EventBaseInfo = InputType<GraphQLTypes['Event'], typeof eventBaseInfo>;

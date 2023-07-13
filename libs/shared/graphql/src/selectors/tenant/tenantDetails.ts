@@ -1,15 +1,18 @@
 import { tenantBaseInfo } from './tenantBase';
 import { eventApprovalStepDetailsInfo } from './eventApprovalStep/eventApprovalStepDetails';
-import { Selector } from '../../zeus';
+import { campusClusterBaseInfo } from './campusCluster/campusClusterBase';
+import { formBaseInfo } from '../form/formBase';
 import { teamBaseInfo } from '../team/teamBase';
+import { Selector } from '../../zeus';
 
-import { locationBaseInfo } from '../actor/location/locationBase';
 import type { GraphQLTypes, InputType } from '../../zeus';
 
 export const tenantDetailsInfo = Selector('Tenant')({
   ...tenantBaseInfo,
+  eventValidationForm: formBaseInfo,
   eventApprovalSteps: [{}, eventApprovalStepDetailsInfo],
-  campusClusters: [{}, { campuses: [{}, { __typename: true, id: true, name: true, location: locationBaseInfo }] }],
-  tenantManages: [{}, { campusCluster: { __typename: true, id: true }, team: teamBaseInfo }],
+  campusClusters: [{}, campusClusterBaseInfo],
+  tenantManages: [{}, { campusCluster: campusClusterBaseInfo, team: teamBaseInfo }],
+  adminTeam: teamBaseInfo,
 });
 export type TenantDetailsInfo = InputType<GraphQLTypes['Tenant'], typeof tenantDetailsInfo>;

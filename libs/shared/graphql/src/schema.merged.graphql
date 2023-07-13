@@ -15,11 +15,10 @@ input _textComparisonExp {
 }
 
 type Account {
-  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
-  balance: Float!
   bankInfo: BankInfo
   bankInfoId: bigint
+  children(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
+  childrenAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -29,6 +28,8 @@ type Account {
   id: bigint!
   individual: Individual
   name: String!
+  parent: Account
+  parentId: bigint
   team: Team!
   teamId: bigint!
   tenant: Tenant!
@@ -80,420 +81,25 @@ input AccountAggregateOrderBy {
   variance: AccountVarianceOrderBy
 }
 
-type AccountAllocate {
-  account: Account!
-  accountId: bigint!
-  balance: Float!
-  createdAt: timestamptz!
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  individual: Individual
-  team: Team!
-  teamId: bigint!
-  tenant: Tenant!
-  tenantId: bigint!
-}
-
-type AccountAllocateAggregate {
-  aggregate: AccountAllocateAggregateFields
-  nodes: [AccountAllocate!]!
-}
-
-input AccountAllocateAggregateBoolExp {
-  count: accountAllocateAggregateBoolExpCount
-}
-
-input accountAllocateAggregateBoolExpCount {
-  arguments: [AccountAllocateSelectColumn!]
-  distinct: Boolean
-  filter: AccountAllocateBoolExp
-  predicate: IntComparisonExp!
-}
-
-type AccountAllocateAggregateFields {
-  avg: AccountAllocateAvgFields
-  count(columns: [AccountAllocateSelectColumn!], distinct: Boolean): Int!
-  max: AccountAllocateMaxFields
-  min: AccountAllocateMinFields
-  stddev: AccountAllocateStddevFields
-  stddevPop: AccountAllocateStddevPopFields
-  stddevSamp: AccountAllocateStddevSampFields
-  sum: AccountAllocateSumFields
-  varPop: AccountAllocateVarPopFields
-  varSamp: AccountAllocateVarSampFields
-  variance: AccountAllocateVarianceFields
-}
-
-input AccountAllocateAggregateOrderBy {
-  avg: AccountAllocateAvgOrderBy
-  count: OrderBy
-  max: AccountAllocateMaxOrderBy
-  min: AccountAllocateMinOrderBy
-  stddev: AccountAllocateStddevOrderBy
-  stddevPop: AccountAllocateStddevPopOrderBy
-  stddevSamp: AccountAllocateStddevSampOrderBy
-  sum: AccountAllocateSumOrderBy
-  varPop: AccountAllocateVarPopOrderBy
-  varSamp: AccountAllocateVarSampOrderBy
-  variance: AccountAllocateVarianceOrderBy
-}
-
-input AccountAllocateArrRelInsertInput {
-  data: [AccountAllocateInsertInput!]!
-  onConflict: AccountAllocateOnConflict
-}
-
-type AccountAllocateAvgFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateAvgOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input AccountAllocateBoolExp {
-  _and: [AccountAllocateBoolExp!]
-  _not: AccountAllocateBoolExp
-  _or: [AccountAllocateBoolExp!]
-  account: AccountBoolExp
-  accountId: BigintComparisonExp
-  balance: FloatComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  individual: IndividualBoolExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-}
-
-enum AccountAllocateConstraint {
-  account_allocate_pkey
-}
-
-input AccountAllocateIncInput {
-  accountId: bigint
-  balance: Float
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input AccountAllocateInsertInput {
-  account: AccountObjRelInsertInput
-  accountId: bigint
-  balance: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  individual: IndividualObjRelInsertInput
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-}
-
-type AccountAllocateMaxFields {
-  accountId: bigint
-  balance: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input AccountAllocateMaxOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateMinFields {
-  accountId: bigint
-  balance: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input AccountAllocateMinOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateMutationResponse {
-  affectedRows: Int!
-  returning: [AccountAllocate!]!
-}
-
-input AccountAllocateOnConflict {
-  constraint: AccountAllocateConstraint!
-  updateColumns: [AccountAllocateUpdateColumn!]! = []
-  where: AccountAllocateBoolExp
-}
-
-input AccountAllocateOrderBy {
-  account: AccountOrderBy
-  accountId: OrderBy
-  balance: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  individual: IndividualOrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-}
-
-input AccountAllocatePkColumnsInput {
-  id: bigint!
-}
-
-enum AccountAllocateSelectColumn {
-  accountId
-  balance
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  teamId
-  tenantId
-}
-
-input AccountAllocateSetInput {
-  accountId: bigint
-  balance: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-type AccountAllocateStddevFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateStddevOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateStddevPopFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateStddevPopOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateStddevSampFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateStddevSampOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input AccountAllocateStreamCursorInput {
-  initialValue: AccountAllocateStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input AccountAllocateStreamCursorValueInput {
-  accountId: bigint
-  balance: Float
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-type AccountAllocateSumFields {
-  accountId: bigint
-  balance: Float
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input AccountAllocateSumOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-enum AccountAllocateUpdateColumn {
-  accountId
-  balance
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  teamId
-  tenantId
-}
-
-input AccountAllocateUpdates {
-  _inc: AccountAllocateIncInput
-  _set: AccountAllocateSetInput
-  where: AccountAllocateBoolExp!
-}
-
-type AccountAllocateVarianceFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateVarianceOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateVarPopFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateVarPopOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type AccountAllocateVarSampFields {
-  accountId: Float
-  balance: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input AccountAllocateVarSampOrderBy {
-  accountId: OrderBy
-  balance: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
 input AccountArrRelInsertInput {
   data: [AccountInsertInput!]!
   onConflict: AccountOnConflict
 }
 
 type AccountAvgFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountAvgOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -502,11 +108,10 @@ input AccountBoolExp {
   _and: [AccountBoolExp!]
   _not: AccountBoolExp
   _or: [AccountBoolExp!]
-  accountAllocates: AccountAllocateBoolExp
-  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
-  balance: FloatComparisonExp
   bankInfo: BankInfoBoolExp
   bankInfoId: BigintComparisonExp
+  children: AccountBoolExp
+  childrenAggregate: AccountAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -516,6 +121,8 @@ input AccountBoolExp {
   id: BigintComparisonExp
   individual: IndividualBoolExp
   name: StringComparisonExp
+  parent: AccountBoolExp
+  parentId: BigintComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -528,19 +135,18 @@ enum AccountConstraint {
 }
 
 input AccountIncInput {
-  balance: Float
   bankInfoId: bigint
   createdById: bigint
   id: bigint
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
 }
 
 input AccountInsertInput {
-  accountAllocates: AccountAllocateArrRelInsertInput
-  balance: Float
   bankInfo: BankInfoObjRelInsertInput
   bankInfoId: bigint
+  children: AccountArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -549,6 +155,8 @@ input AccountInsertInput {
   id: bigint
   individual: IndividualObjRelInsertInput
   name: String
+  parent: AccountObjRelInsertInput
+  parentId: bigint
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -557,7 +165,6 @@ input AccountInsertInput {
 }
 
 type AccountMaxFields {
-  balance: Float
   bankInfoId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -565,13 +172,13 @@ type AccountMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
   type: String
 }
 
 input AccountMaxOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -579,13 +186,13 @@ input AccountMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
 
 type AccountMinFields {
-  balance: Float
   bankInfoId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -593,13 +200,13 @@ type AccountMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
   type: String
 }
 
 input AccountMinOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -607,6 +214,7 @@ input AccountMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -629,10 +237,9 @@ input AccountOnConflict {
 }
 
 input AccountOrderBy {
-  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
-  balance: OrderBy
   bankInfo: BankInfoOrderBy
   bankInfoId: OrderBy
+  childrenAggregate: AccountAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -641,6 +248,8 @@ input AccountOrderBy {
   id: OrderBy
   individual: IndividualOrderBy
   name: OrderBy
+  parent: AccountOrderBy
+  parentId: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -653,7 +262,6 @@ input AccountPkColumnsInput {
 }
 
 enum AccountSelectColumn {
-  balance
   bankInfoId
   createdAt
   createdById
@@ -661,13 +269,13 @@ enum AccountSelectColumn {
   hiddenAt
   id
   name
+  parentId
   teamId
   tenantId
   type
 }
 
 input AccountSetInput {
-  balance: Float
   bankInfoId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -675,61 +283,62 @@ input AccountSetInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
   type: String
 }
 
 type AccountStddevFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountStddevOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 type AccountStddevPopFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountStddevPopOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 type AccountStddevSampFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountStddevSampOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -740,7 +349,6 @@ input AccountStreamCursorInput {
 }
 
 input AccountStreamCursorValueInput {
-  balance: Float
   bankInfoId: bigint
   createdAt: timestamptz
   createdById: bigint
@@ -748,31 +356,31 @@ input AccountStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
   type: String
 }
 
 type AccountSumFields {
-  balance: Float
   bankInfoId: bigint
   createdById: bigint
   id: bigint
+  parentId: bigint
   teamId: bigint
   tenantId: bigint
 }
 
 input AccountSumOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 enum AccountUpdateColumn {
-  balance
   bankInfoId
   createdAt
   createdById
@@ -780,6 +388,7 @@ enum AccountUpdateColumn {
   hiddenAt
   id
   name
+  parentId
   teamId
   tenantId
   type
@@ -792,55 +401,55 @@ input AccountUpdates {
 }
 
 type AccountVarianceFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountVarianceOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 type AccountVarPopFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountVarPopOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
 
 type AccountVarSampFields {
-  balance: Float
   bankInfoId: Float
   createdById: Float
   id: Float
+  parentId: Float
   teamId: Float
   tenantId: Float
 }
 
 input AccountVarSampOrderBy {
-  balance: OrderBy
   bankInfoId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  parentId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -8014,24 +7623,22 @@ type Event {
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
-  form: Form
   hiddenAt: timestamptz
   id: bigint!
   isAutoAcceptingJoins: Boolean!
   isPrivate: Boolean!
   isTemplate: Boolean!
+  joinForm: Form
   joinFormId: bigint
-  lastEventApprovalStep: EventApprovalStep
-  lastEventApprovalStepId: bigint
   location: Location
   locationId: bigint
   maxParticipants: smallint
   meta(path: String): jsonb!
   name: String!
+  nextEventApprovalStep: EventApprovalStep
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float!
   price: Float!
-  project: Project
-  projectId: bigint
   slug: String!
   start: timestamptz!
   state: String!
@@ -8426,11 +8033,12 @@ type EventApprovalStep {
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   hiddenAt: timestamptz
   id: bigint!
-  lastStepEvents(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
-  lastStepEventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
   name: String!
+  nextStepEvents(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
+  nextStepEventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
   nextSteps(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): [EventApprovalStep!]!
   nextStepsAggregate(distinctOn: [EventApprovalStepSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepOrderBy!], where: EventApprovalStepBoolExp): EventApprovalStepAggregate!
+  order: Int!
   previousStep: EventApprovalStep
   previousStepId: bigint
   tenant: Tenant!
@@ -8489,6 +8097,7 @@ input EventApprovalStepArrRelInsertInput {
 type EventApprovalStepAvgFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -8496,6 +8105,7 @@ type EventApprovalStepAvgFields {
 input EventApprovalStepAvgOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8517,11 +8127,12 @@ input EventApprovalStepBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastStepEvents: EventBoolExp
-  lastStepEventsAggregate: EventAggregateBoolExp
   name: StringComparisonExp
+  nextStepEvents: EventBoolExp
+  nextStepEventsAggregate: EventAggregateBoolExp
   nextSteps: EventApprovalStepBoolExp
   nextStepsAggregate: EventApprovalStepAggregateBoolExp
+  order: IntComparisonExp
   previousStep: EventApprovalStepBoolExp
   previousStepId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -8535,6 +8146,7 @@ enum EventApprovalStepConstraint {
 input EventApprovalStepIncInput {
   createdById: bigint
   id: bigint
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8550,9 +8162,10 @@ input EventApprovalStepInsertInput {
   eventApprovals: EventApprovalArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
-  lastStepEvents: EventArrRelInsertInput
   name: String
+  nextStepEvents: EventArrRelInsertInput
   nextSteps: EventApprovalStepArrRelInsertInput
+  order: Int
   previousStep: EventApprovalStepObjRelInsertInput
   previousStepId: bigint
   tenant: TenantObjRelInsertInput
@@ -8567,6 +8180,7 @@ type EventApprovalStepMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8579,6 +8193,7 @@ input EventApprovalStepMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8591,6 +8206,7 @@ type EventApprovalStepMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8603,6 +8219,7 @@ input EventApprovalStepMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8870,9 +8487,10 @@ input EventApprovalStepOrderBy {
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastStepEventsAggregate: EventAggregateOrderBy
   name: OrderBy
+  nextStepEventsAggregate: EventAggregateOrderBy
   nextStepsAggregate: EventApprovalStepAggregateOrderBy
+  order: OrderBy
   previousStep: EventApprovalStepOrderBy
   previousStepId: OrderBy
   tenant: TenantOrderBy
@@ -8891,6 +8509,7 @@ enum EventApprovalStepSelectColumn {
   hiddenAt
   id
   name
+  order
   previousStepId
   tenantId
 }
@@ -8903,6 +8522,7 @@ input EventApprovalStepSetInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8910,6 +8530,7 @@ input EventApprovalStepSetInput {
 type EventApprovalStepStddevFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -8917,6 +8538,7 @@ type EventApprovalStepStddevFields {
 input EventApprovalStepStddevOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8924,6 +8546,7 @@ input EventApprovalStepStddevOrderBy {
 type EventApprovalStepStddevPopFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -8931,6 +8554,7 @@ type EventApprovalStepStddevPopFields {
 input EventApprovalStepStddevPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8938,6 +8562,7 @@ input EventApprovalStepStddevPopOrderBy {
 type EventApprovalStepStddevSampFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -8945,6 +8570,7 @@ type EventApprovalStepStddevSampFields {
 input EventApprovalStepStddevSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8962,6 +8588,7 @@ input EventApprovalStepStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8969,6 +8596,7 @@ input EventApprovalStepStreamCursorValueInput {
 type EventApprovalStepSumFields {
   createdById: bigint
   id: bigint
+  order: Int
   previousStepId: bigint
   tenantId: bigint
 }
@@ -8976,6 +8604,7 @@ type EventApprovalStepSumFields {
 input EventApprovalStepSumOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -8988,6 +8617,7 @@ enum EventApprovalStepUpdateColumn {
   hiddenAt
   id
   name
+  order
   previousStepId
   tenantId
 }
@@ -9237,6 +8867,7 @@ input EventApprovalStepValidatorsVarSampOrderBy {
 type EventApprovalStepVarianceFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -9244,6 +8875,7 @@ type EventApprovalStepVarianceFields {
 input EventApprovalStepVarianceOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -9251,6 +8883,7 @@ input EventApprovalStepVarianceOrderBy {
 type EventApprovalStepVarPopFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -9258,6 +8891,7 @@ type EventApprovalStepVarPopFields {
 input EventApprovalStepVarPopOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -9265,6 +8899,7 @@ input EventApprovalStepVarPopOrderBy {
 type EventApprovalStepVarSampFields {
   createdById: Float
   id: Float
+  order: Float
   previousStepId: Float
   tenantId: Float
 }
@@ -9272,6 +8907,7 @@ type EventApprovalStepVarSampFields {
 input EventApprovalStepVarSampOrderBy {
   createdById: OrderBy
   id: OrderBy
+  order: OrderBy
   previousStepId: OrderBy
   tenantId: OrderBy
 }
@@ -9389,12 +9025,11 @@ type EventAvgFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -9405,12 +9040,11 @@ input EventAvgOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -9439,24 +9073,22 @@ input EventBoolExp {
   eventTagsAggregate: EventTagsAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
-  form: FormBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isAutoAcceptingJoins: BooleanComparisonExp
   isPrivate: BooleanComparisonExp
   isTemplate: BooleanComparisonExp
+  joinForm: FormBoolExp
   joinFormId: BigintComparisonExp
-  lastEventApprovalStep: EventApprovalStepBoolExp
-  lastEventApprovalStepId: BigintComparisonExp
   location: LocationBoolExp
   locationId: BigintComparisonExp
   maxParticipants: SmallintComparisonExp
   meta: JsonbComparisonExp
   name: StringComparisonExp
+  nextEventApprovalStep: EventApprovalStepBoolExp
+  nextEventApprovalStepId: BigintComparisonExp
   pointsAwardedForAttendance: FloatComparisonExp
   price: FloatComparisonExp
-  project: ProjectBoolExp
-  projectId: BigintComparisonExp
   slug: StringComparisonExp
   start: TimestamptzComparisonExp
   state: StringComparisonExp
@@ -9490,12 +9122,11 @@ input EventIncInput {
   eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   tenantId: bigint
 }
 
@@ -9516,24 +9147,22 @@ input EventInsertInput {
   eventManages: EventManageArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
-  form: FormObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingJoins: Boolean
   isPrivate: Boolean
   isTemplate: Boolean
+  joinForm: FormObjRelInsertInput
   joinFormId: bigint
-  lastEventApprovalStep: EventApprovalStepObjRelInsertInput
-  lastEventApprovalStepId: bigint
   location: LocationObjRelInsertInput
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
+  nextEventApprovalStep: EventApprovalStepObjRelInsertInput
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  project: ProjectObjRelInsertInput
-  projectId: bigint
   slug: String
   start: timestamptz
   state: String
@@ -9550,15 +9179,13 @@ type EventJoin {
   deletedAt: timestamptz
   event: Event!
   eventId: bigint!
-  eventManage: EventManage
   formSubmission: FormSubmission
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint!
-  isParticipant: Boolean
+  isPresent: Boolean
   joinedBy: User!
   joinedById: bigint!
-  joinedForId: bigint
   linkedMissionJoin: MissionJoin
   missionJoin: MissionJoin
   missionJoinId: bigint
@@ -9647,7 +9274,6 @@ type EventJoinAvgFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -9661,7 +9287,6 @@ input EventJoinAvgOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -9681,15 +9306,13 @@ input EventJoinBoolExp {
   deletedAt: TimestamptzComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
-  eventManage: EventManageBoolExp
   formSubmission: FormSubmissionBoolExp
   formSubmissionId: BigintComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isParticipant: BooleanComparisonExp
+  isPresent: BooleanComparisonExp
   joinedBy: UserBoolExp
   joinedById: BigintComparisonExp
-  joinedForId: BigintComparisonExp
   linkedMissionJoin: MissionJoinBoolExp
   missionJoin: MissionJoinBoolExp
   missionJoinId: BigintComparisonExp
@@ -9717,7 +9340,6 @@ input EventJoinIncInput {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
@@ -9733,15 +9355,13 @@ input EventJoinInsertInput {
   deletedAt: timestamptz
   event: EventObjRelInsertInput
   eventId: bigint
-  eventManage: EventManageObjRelInsertInput
   formSubmission: FormSubmissionObjRelInsertInput
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  isParticipant: Boolean
+  isPresent: Boolean
   joinedBy: UserObjRelInsertInput
   joinedById: bigint
-  joinedForId: bigint
   linkedMissionJoin: MissionJoinObjRelInsertInput
   missionJoin: MissionJoinObjRelInsertInput
   missionJoinId: bigint
@@ -9768,7 +9388,6 @@ type EventJoinMaxFields {
   hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
@@ -9789,7 +9408,6 @@ input EventJoinMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
@@ -9810,7 +9428,6 @@ type EventJoinMinFields {
   hiddenAt: timestamptz
   id: bigint
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
@@ -9831,7 +9448,6 @@ input EventJoinMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedAt: OrderBy
   participationProcessedById: OrderBy
@@ -9867,15 +9483,13 @@ input EventJoinOrderBy {
   deletedAt: OrderBy
   event: EventOrderBy
   eventId: OrderBy
-  eventManage: EventManageOrderBy
   formSubmission: FormSubmissionOrderBy
   formSubmissionId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isParticipant: OrderBy
+  isPresent: OrderBy
   joinedBy: UserOrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   linkedMissionJoin: MissionJoinOrderBy
   missionJoin: MissionJoinOrderBy
   missionJoinId: OrderBy
@@ -9905,9 +9519,8 @@ enum EventJoinSelectColumn {
   formSubmissionId
   hiddenAt
   id
-  isParticipant
+  isPresent
   joinedById
-  joinedForId
   missionJoinId
   participationProcessedAt
   participationProcessedById
@@ -9920,11 +9533,11 @@ enum EventJoinSelectColumn {
 }
 
 enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_andArgumentsColumns {
-  isParticipant
+  isPresent
 }
 
 enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_orArgumentsColumns {
-  isParticipant
+  isPresent
 }
 
 input EventJoinSetInput {
@@ -9935,9 +9548,8 @@ input EventJoinSetInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  isParticipant: Boolean
+  isPresent: Boolean
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
@@ -9955,7 +9567,6 @@ type EventJoinStddevFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -9969,7 +9580,6 @@ input EventJoinStddevOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -9983,7 +9593,6 @@ type EventJoinStddevPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -9997,7 +9606,6 @@ input EventJoinStddevPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10011,7 +9619,6 @@ type EventJoinStddevSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -10025,7 +9632,6 @@ input EventJoinStddevSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10046,9 +9652,8 @@ input EventJoinStreamCursorValueInput {
   formSubmissionId: bigint
   hiddenAt: timestamptz
   id: bigint
-  isParticipant: Boolean
+  isPresent: Boolean
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedAt: timestamptz
   participationProcessedById: bigint
@@ -10066,7 +9671,6 @@ type EventJoinSumFields {
   formSubmissionId: bigint
   id: bigint
   joinedById: bigint
-  joinedForId: bigint
   missionJoinId: bigint
   participationProcessedById: bigint
   processedById: bigint
@@ -10080,7 +9684,6 @@ input EventJoinSumOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10096,9 +9699,8 @@ enum EventJoinUpdateColumn {
   formSubmissionId
   hiddenAt
   id
-  isParticipant
+  isPresent
   joinedById
-  joinedForId
   missionJoinId
   participationProcessedAt
   participationProcessedById
@@ -10122,7 +9724,6 @@ type EventJoinVarianceFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -10136,7 +9737,6 @@ input EventJoinVarianceOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10150,7 +9750,6 @@ type EventJoinVarPopFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -10164,7 +9763,6 @@ input EventJoinVarPopOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10178,7 +9776,6 @@ type EventJoinVarSampFields {
   formSubmissionId: Float
   id: Float
   joinedById: Float
-  joinedForId: Float
   missionJoinId: Float
   participationProcessedById: Float
   processedById: Float
@@ -10192,7 +9789,6 @@ input EventJoinVarSampOrderBy {
   formSubmissionId: OrderBy
   id: OrderBy
   joinedById: OrderBy
-  joinedForId: OrderBy
   missionJoinId: OrderBy
   participationProcessedById: OrderBy
   processedById: OrderBy
@@ -10208,12 +9804,12 @@ type EventManage {
   description: String!
   event: Event!
   eventId: bigint!
-  eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
-  eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   hiddenAt: timestamptz
   id: bigint!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
+  project: Project
+  projectId: bigint
   supervisors(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
   supervisorsAggregate(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): EventManageSupervisorsAggregate!
   team: Team!
@@ -10275,6 +9871,7 @@ type EventManageAvgFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10283,6 +9880,7 @@ input EventManageAvgOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10298,12 +9896,12 @@ input EventManageBoolExp {
   description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
-  eventJoins: EventJoinBoolExp
-  eventJoinsAggregate: EventJoinAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
+  project: ProjectBoolExp
+  projectId: BigintComparisonExp
   supervisors: EventManageSupervisorsBoolExp
   supervisorsAggregate: EventManageSupervisorsAggregateBoolExp
   team: TeamBoolExp
@@ -10320,6 +9918,7 @@ input EventManageIncInput {
   createdById: bigint
   eventId: bigint
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10332,10 +9931,11 @@ input EventManageInsertInput {
   description: String
   event: EventObjRelInsertInput
   eventId: bigint
-  eventJoins: EventJoinArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   missions: MissionArrRelInsertInput
+  project: ProjectObjRelInsertInput
+  projectId: bigint
   supervisors: EventManageSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -10351,6 +9951,7 @@ type EventManageMaxFields {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10363,6 +9964,7 @@ input EventManageMaxOrderBy {
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10375,6 +9977,7 @@ type EventManageMinFields {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10387,6 +9990,7 @@ input EventManageMinOrderBy {
   eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10415,10 +10019,11 @@ input EventManageOrderBy {
   description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
-  eventJoinsAggregate: EventJoinAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   missionsAggregate: MissionAggregateOrderBy
+  project: ProjectOrderBy
+  projectId: OrderBy
   supervisorsAggregate: EventManageSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -10438,6 +10043,7 @@ enum EventManageSelectColumn {
   eventId
   hiddenAt
   id
+  projectId
   teamId
   tenantId
 }
@@ -10450,6 +10056,7 @@ input EventManageSetInput {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10458,6 +10065,7 @@ type EventManageStddevFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10466,6 +10074,7 @@ input EventManageStddevOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10474,6 +10083,7 @@ type EventManageStddevPopFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10482,6 +10092,7 @@ input EventManageStddevPopOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10490,6 +10101,7 @@ type EventManageStddevSampFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10498,6 +10110,7 @@ input EventManageStddevSampOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10515,6 +10128,7 @@ input EventManageStreamCursorValueInput {
   eventId: bigint
   hiddenAt: timestamptz
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10523,6 +10137,7 @@ type EventManageSumFields {
   createdById: bigint
   eventId: bigint
   id: bigint
+  projectId: bigint
   teamId: bigint
   tenantId: bigint
 }
@@ -10531,6 +10146,7 @@ input EventManageSumOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10779,6 +10395,7 @@ enum EventManageUpdateColumn {
   eventId
   hiddenAt
   id
+  projectId
   teamId
   tenantId
 }
@@ -10793,6 +10410,7 @@ type EventManageVarianceFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10801,6 +10419,7 @@ input EventManageVarianceOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10809,6 +10428,7 @@ type EventManageVarPopFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10817,6 +10437,7 @@ input EventManageVarPopOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10825,6 +10446,7 @@ type EventManageVarSampFields {
   createdById: Float
   eventId: Float
   id: Float
+  projectId: Float
   teamId: Float
   tenantId: Float
 }
@@ -10833,6 +10455,7 @@ input EventManageVarSampOrderBy {
   createdById: OrderBy
   eventId: OrderBy
   id: OrderBy
+  projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
 }
@@ -10848,13 +10471,12 @@ type EventMaxFields {
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
   name: String
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   slug: String
   start: timestamptz
   state: String
@@ -10872,13 +10494,12 @@ input EventMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   slug: OrderBy
   start: OrderBy
   state: OrderBy
@@ -10896,13 +10517,12 @@ type EventMinFields {
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
   name: String
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   slug: String
   start: timestamptz
   state: String
@@ -10920,13 +10540,12 @@ input EventMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   name: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   slug: OrderBy
   start: OrderBy
   state: OrderBy
@@ -10966,24 +10585,22 @@ input EventOrderBy {
   eventManagesAggregate: EventManageAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
-  form: FormOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isAutoAcceptingJoins: OrderBy
   isPrivate: OrderBy
   isTemplate: OrderBy
+  joinForm: FormOrderBy
   joinFormId: OrderBy
-  lastEventApprovalStep: EventApprovalStepOrderBy
-  lastEventApprovalStepId: OrderBy
   location: LocationOrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
   meta: OrderBy
   name: OrderBy
+  nextEventApprovalStep: EventApprovalStepOrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  project: ProjectOrderBy
-  projectId: OrderBy
   slug: OrderBy
   start: OrderBy
   state: OrderBy
@@ -11013,14 +10630,13 @@ enum EventSelectColumn {
   isPrivate
   isTemplate
   joinFormId
-  lastEventApprovalStepId
   locationId
   maxParticipants
   meta
   name
+  nextEventApprovalStepId
   pointsAwardedForAttendance
   price
-  projectId
   slug
   start
   state
@@ -11053,14 +10669,13 @@ input EventSetInput {
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   slug: String
   start: timestamptz
   state: String
@@ -11074,12 +10689,11 @@ type EventStddevFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11090,12 +10704,11 @@ input EventStddevOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11106,12 +10719,11 @@ type EventStddevPopFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11122,12 +10734,11 @@ input EventStddevPopOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11138,12 +10749,11 @@ type EventStddevSampFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11154,12 +10764,11 @@ input EventStddevSampOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11182,14 +10791,13 @@ input EventStreamCursorValueInput {
   isPrivate: Boolean
   isTemplate: Boolean
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
   meta: jsonb
   name: String
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   slug: String
   start: timestamptz
   state: String
@@ -11203,12 +10811,11 @@ type EventSumFields {
   eventApprovalSubmissionId: bigint
   id: bigint
   joinFormId: bigint
-  lastEventApprovalStepId: bigint
   locationId: bigint
   maxParticipants: smallint
+  nextEventApprovalStepId: bigint
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: bigint
   tenantId: bigint
 }
 
@@ -11219,12 +10826,11 @@ input EventSumOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11478,14 +11084,13 @@ enum EventUpdateColumn {
   isPrivate
   isTemplate
   joinFormId
-  lastEventApprovalStepId
   locationId
   maxParticipants
   meta
   name
+  nextEventApprovalStepId
   pointsAwardedForAttendance
   price
-  projectId
   slug
   start
   state
@@ -11510,12 +11115,11 @@ type EventVarianceFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11526,12 +11130,11 @@ input EventVarianceOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11542,12 +11145,11 @@ type EventVarPopFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11558,12 +11160,11 @@ input EventVarPopOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -11574,12 +11175,11 @@ type EventVarSampFields {
   eventApprovalSubmissionId: Float
   id: Float
   joinFormId: Float
-  lastEventApprovalStepId: Float
   locationId: Float
   maxParticipants: Float
+  nextEventApprovalStepId: Float
   pointsAwardedForAttendance: Float
   price: Float
-  projectId: Float
   tenantId: Float
 }
 
@@ -11590,12 +11190,11 @@ input EventVarSampOrderBy {
   eventApprovalSubmissionId: OrderBy
   id: OrderBy
   joinFormId: OrderBy
-  lastEventApprovalStepId: OrderBy
   locationId: OrderBy
   maxParticipants: OrderBy
+  nextEventApprovalStepId: OrderBy
   pointsAwardedForAttendance: OrderBy
   price: OrderBy
-  projectId: OrderBy
   tenantId: OrderBy
 }
 
@@ -13666,13 +13265,15 @@ type Finance {
   grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  initiatedBy: Individual
+  initiatedById: bigint
   isOnline: Boolean!
   location: Location
   locationId: bigint
   method: String!
   payedAt: timestamptz!
-  payedBy: Actor
-  payedById: bigint
+  payedBy: Actor!
+  payedById: bigint!
   payedByType: String!
   project: Project
   projectId: bigint
@@ -13993,6 +13594,7 @@ type FinanceAvgFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14008,6 +13610,7 @@ input FinanceAvgOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14041,6 +13644,8 @@ input FinanceBoolExp {
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  initiatedBy: IndividualBoolExp
+  initiatedById: BigintComparisonExp
   isOnline: BooleanComparisonExp
   location: LocationBoolExp
   locationId: BigintComparisonExp
@@ -14072,6 +13677,7 @@ input FinanceIncInput {
   eventId: bigint
   expenseId: bigint
   id: bigint
+  initiatedById: bigint
   locationId: bigint
   payedById: bigint
   projectId: bigint
@@ -14099,6 +13705,8 @@ input FinanceInsertInput {
   grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  initiatedBy: IndividualObjRelInsertInput
+  initiatedById: bigint
   isOnline: Boolean
   location: LocationObjRelInsertInput
   locationId: bigint
@@ -14130,6 +13738,7 @@ type FinanceMaxFields {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  initiatedById: bigint
   locationId: bigint
   method: String
   payedAt: timestamptz
@@ -14154,6 +13763,7 @@ input FinanceMaxOrderBy {
   expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   method: OrderBy
   payedAt: OrderBy
@@ -14178,6 +13788,7 @@ type FinanceMinFields {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  initiatedById: bigint
   locationId: bigint
   method: String
   payedAt: timestamptz
@@ -14202,6 +13813,7 @@ input FinanceMinOrderBy {
   expenseId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   method: OrderBy
   payedAt: OrderBy
@@ -14249,6 +13861,8 @@ input FinanceOrderBy {
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  initiatedBy: IndividualOrderBy
+  initiatedById: OrderBy
   isOnline: OrderBy
   location: LocationOrderBy
   locationId: OrderBy
@@ -14284,6 +13898,7 @@ enum FinanceSelectColumn {
   expenseId
   hiddenAt
   id
+  initiatedById
   isOnline
   locationId
   method
@@ -14317,6 +13932,7 @@ input FinanceSetInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  initiatedById: bigint
   isOnline: Boolean
   locationId: bigint
   method: String
@@ -14337,6 +13953,7 @@ type FinanceStddevFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14352,6 +13969,7 @@ input FinanceStddevOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14367,6 +13985,7 @@ type FinanceStddevPopFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14382,6 +14001,7 @@ input FinanceStddevPopOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14397,6 +14017,7 @@ type FinanceStddevSampFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14412,6 +14033,7 @@ input FinanceStddevSampOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14437,6 +14059,7 @@ input FinanceStreamCursorValueInput {
   expenseId: bigint
   hiddenAt: timestamptz
   id: bigint
+  initiatedById: bigint
   isOnline: Boolean
   locationId: bigint
   method: String
@@ -14457,6 +14080,7 @@ type FinanceSumFields {
   eventId: bigint
   expenseId: bigint
   id: bigint
+  initiatedById: bigint
   locationId: bigint
   payedById: bigint
   projectId: bigint
@@ -14472,6 +14096,7 @@ input FinanceSumOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14728,6 +14353,7 @@ enum FinanceUpdateColumn {
   expenseId
   hiddenAt
   id
+  initiatedById
   isOnline
   locationId
   method
@@ -14754,6 +14380,7 @@ type FinanceVarianceFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14769,6 +14396,7 @@ input FinanceVarianceOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14784,6 +14412,7 @@ type FinanceVarPopFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14799,6 +14428,7 @@ input FinanceVarPopOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -14814,6 +14444,7 @@ type FinanceVarSampFields {
   eventId: Float
   expenseId: Float
   id: Float
+  initiatedById: Float
   locationId: Float
   payedById: Float
   projectId: Float
@@ -14829,6 +14460,7 @@ input FinanceVarSampOrderBy {
   eventId: OrderBy
   expenseId: OrderBy
   id: OrderBy
+  initiatedById: OrderBy
   locationId: OrderBy
   payedById: OrderBy
   projectId: OrderBy
@@ -17587,8 +17219,6 @@ type Individual {
   contentSignature: String!
   contributorIssues(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): [IssueContributors!]!
   contributorIssuesAggregate(distinctOn: [IssueContributorsSelectColumn!], limit: Int, offset: Int, orderBy: [IssueContributorsOrderBy!], where: IssueContributorsBoolExp): IssueContributorsAggregate!
-  createdAccountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  createdAccountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
   createdAccounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   createdAccountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   createdActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
@@ -17715,6 +17345,8 @@ type Individual {
   followingAggregate(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): FollowAggregate!
   hiddenAt: timestamptz
   id: bigint!
+  initiatedFinances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
+  initiatedFinancesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   notifieeEventApprovalSteps(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): [EventApprovalStepNotifiees!]!
   notifieeEventApprovalStepsAggregate(distinctOn: [EventApprovalStepNotifieesSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalStepNotifieesOrderBy!], where: EventApprovalStepNotifieesBoolExp): EventApprovalStepNotifieesAggregate!
   participationProcessedEventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
@@ -17818,8 +17450,6 @@ input IndividualBoolExp {
   contentSignature: StringComparisonExp
   contributorIssues: IssueContributorsBoolExp
   contributorIssuesAggregate: IssueContributorsAggregateBoolExp
-  createdAccountAllocates: AccountAllocateBoolExp
-  createdAccountAllocatesAggregate: AccountAllocateAggregateBoolExp
   createdAccounts: AccountBoolExp
   createdAccountsAggregate: AccountAggregateBoolExp
   createdActions: ActionBoolExp
@@ -17946,6 +17576,8 @@ input IndividualBoolExp {
   followingAggregate: FollowAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
+  initiatedFinances: FinanceBoolExp
+  initiatedFinancesAggregate: FinanceAggregateBoolExp
   notifieeEventApprovalSteps: EventApprovalStepNotifieesBoolExp
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateBoolExp
   participationProcessedEventJoins: EventJoinBoolExp
@@ -17994,7 +17626,6 @@ input IndividualInsertInput {
   bot: BotObjRelInsertInput
   contentSignature: String
   contributorIssues: IssueContributorsArrRelInsertInput
-  createdAccountAllocates: AccountAllocateArrRelInsertInput
   createdAccounts: AccountArrRelInsertInput
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
@@ -18061,6 +17692,7 @@ input IndividualInsertInput {
   following: FollowArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
+  initiatedFinances: FinanceArrRelInsertInput
   notifieeEventApprovalSteps: EventApprovalStepNotifieesArrRelInsertInput
   participationProcessedEventJoins: EventJoinArrRelInsertInput
   passwordHash: String
@@ -18149,7 +17781,6 @@ input IndividualOrderBy {
   bot: BotOrderBy
   contentSignature: OrderBy
   contributorIssuesAggregate: IssueContributorsAggregateOrderBy
-  createdAccountAllocatesAggregate: AccountAllocateAggregateOrderBy
   createdAccountsAggregate: AccountAggregateOrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
@@ -18216,6 +17847,7 @@ input IndividualOrderBy {
   followingAggregate: FollowAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
+  initiatedFinancesAggregate: FinanceAggregateOrderBy
   notifieeEventApprovalStepsAggregate: EventApprovalStepNotifieesAggregateOrderBy
   participationProcessedEventJoinsAggregate: EventJoinAggregateOrderBy
   passwordHash: OrderBy
@@ -20192,9 +19824,9 @@ type Location {
   individual: Individual
   legalUnitLocations(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): [LegalUnitLocation!]!
   legalUnitLocationsAggregate(distinctOn: [LegalUnitLocationSelectColumn!], limit: Int, offset: Int, orderBy: [LegalUnitLocationOrderBy!], where: LegalUnitLocationBoolExp): LegalUnitLocationAggregate!
+  locationDetails: String!
   locationImages(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): [LocationImages!]!
   locationImagesAggregate(distinctOn: [LocationImagesSelectColumn!], limit: Int, offset: Int, orderBy: [LocationImagesOrderBy!], where: LocationImagesBoolExp): LocationImagesAggregate!
-  locationNote: String!
   onlineLink: String!
   tenant: Tenant!
   tenantId: bigint!
@@ -20288,9 +19920,9 @@ input LocationBoolExp {
   individual: IndividualBoolExp
   legalUnitLocations: LegalUnitLocationBoolExp
   legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
+  locationDetails: StringComparisonExp
   locationImages: LocationImagesBoolExp
   locationImagesAggregate: LocationImagesAggregateBoolExp
-  locationNote: StringComparisonExp
   onlineLink: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -20560,8 +20192,8 @@ input LocationInsertInput {
   id: bigint
   individual: IndividualObjRelInsertInput
   legalUnitLocations: LegalUnitLocationArrRelInsertInput
+  locationDetails: String
   locationImages: LocationImagesArrRelInsertInput
-  locationNote: String
   onlineLink: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -20576,7 +20208,7 @@ type LocationMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  locationNote: String
+  locationDetails: String
   onlineLink: String
   tenantId: bigint
   type: String
@@ -20590,7 +20222,7 @@ input LocationMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  locationNote: OrderBy
+  locationDetails: OrderBy
   onlineLink: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -20604,7 +20236,7 @@ type LocationMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  locationNote: String
+  locationDetails: String
   onlineLink: String
   tenantId: bigint
   type: String
@@ -20618,7 +20250,7 @@ input LocationMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  locationNote: OrderBy
+  locationDetails: OrderBy
   onlineLink: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -20655,8 +20287,8 @@ input LocationOrderBy {
   id: OrderBy
   individual: IndividualOrderBy
   legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
+  locationDetails: OrderBy
   locationImagesAggregate: LocationImagesAggregateOrderBy
-  locationNote: OrderBy
   onlineLink: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -20675,7 +20307,7 @@ enum LocationSelectColumn {
   deletedAt
   hiddenAt
   id
-  locationNote
+  locationDetails
   onlineLink
   tenantId
   type
@@ -20689,7 +20321,7 @@ input LocationSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  locationNote: String
+  locationDetails: String
   onlineLink: String
   tenantId: bigint
   type: String
@@ -20756,7 +20388,7 @@ input LocationStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  locationNote: String
+  locationDetails: String
   onlineLink: String
   tenantId: bigint
   type: String
@@ -20786,7 +20418,7 @@ enum LocationUpdateColumn {
   deletedAt
   hiddenAt
   id
-  locationNote
+  locationDetails
   onlineLink
   tenantId
   type
@@ -21998,8 +21630,6 @@ input MissionVarSampOrderBy {
 
 type Mutation {
   deleteAccount(where: AccountBoolExp!): AccountMutationResponse
-  deleteAccountAllocate(where: AccountAllocateBoolExp!): AccountAllocateMutationResponse
-  deleteAccountAllocateByPk(id: bigint!): AccountAllocate
   deleteAccountByPk(id: bigint!): Account
   deleteAction(where: ActionBoolExp!): ActionMutationResponse
   deleteActionByPk(id: bigint!): Action
@@ -22162,8 +21792,6 @@ type Mutation {
   deleteVote(where: VoteBoolExp!): VoteMutationResponse
   deleteVoteByPk(id: bigint!): Vote
   insertAccount(objects: [AccountInsertInput!]!, onConflict: AccountOnConflict): AccountMutationResponse
-  insertAccountAllocate(objects: [AccountAllocateInsertInput!]!, onConflict: AccountAllocateOnConflict): AccountAllocateMutationResponse
-  insertAccountAllocateOne(object: AccountAllocateInsertInput!, onConflict: AccountAllocateOnConflict): AccountAllocate
   insertAccountOne(object: AccountInsertInput!, onConflict: AccountOnConflict): Account
   insertAction(objects: [ActionInsertInput!]!, onConflict: ActionOnConflict): ActionMutationResponse
   insertActionOne(object: ActionInsertInput!, onConflict: ActionOnConflict): Action
@@ -22326,9 +21954,6 @@ type Mutation {
   insertVote(objects: [VoteInsertInput!]!, onConflict: VoteOnConflict): VoteMutationResponse
   insertVoteOne(object: VoteInsertInput!, onConflict: VoteOnConflict): Vote
   updateAccount(_inc: AccountIncInput, _set: AccountSetInput, where: AccountBoolExp!): AccountMutationResponse
-  updateAccountAllocate(_inc: AccountAllocateIncInput, _set: AccountAllocateSetInput, where: AccountAllocateBoolExp!): AccountAllocateMutationResponse
-  updateAccountAllocateByPk(_inc: AccountAllocateIncInput, _set: AccountAllocateSetInput, pkColumns: AccountAllocatePkColumnsInput!): AccountAllocate
-  updateAccountAllocateMany(updates: [AccountAllocateUpdates!]!): [AccountAllocateMutationResponse]
   updateAccountByPk(_inc: AccountIncInput, _set: AccountSetInput, pkColumns: AccountPkColumnsInput!): Account
   updateAccountMany(updates: [AccountUpdates!]!): [AccountMutationResponse]
   updateAction(_inc: ActionIncInput, _set: ActionSetInput, where: ActionBoolExp!): ActionMutationResponse
@@ -22572,7 +22197,7 @@ type Mutation {
   updateVoteByPk(_inc: VoteIncInput, _set: VoteSetInput, pkColumns: VotePkColumnsInput!): Vote
   updateVoteMany(updates: [VoteUpdates!]!): [VoteMutationResponse]
   singleUpload(file: Upload!, bucket: String): FileUpload
-  login(dto: LoginInput!): User
+  login(dto: LoginInput!): UserLogin!
   logout: Boolean!
 }
 
@@ -23009,8 +22634,8 @@ type Project {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
-  events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
-  eventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
+  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
+  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   grant: Grant
@@ -23136,8 +22761,8 @@ input ProjectBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  events: EventBoolExp
-  eventsAggregate: EventAggregateBoolExp
+  eventManages: EventManageBoolExp
+  eventManagesAggregate: EventManageAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grant: GrantBoolExp
@@ -23188,7 +22813,7 @@ input ProjectInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  events: EventArrRelInsertInput
+  eventManages: EventManageArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grant: GrantObjRelInsertInput
   grantId: bigint
@@ -23308,7 +22933,7 @@ input ProjectOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventsAggregate: EventAggregateOrderBy
+  eventManagesAggregate: EventManageAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grant: GrantOrderBy
   grantId: OrderBy
@@ -24049,9 +23674,6 @@ input ProjectVarSampOrderBy {
 type Query {
   account(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
-  accountAllocate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  accountAllocateAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
-  accountAllocateByPk(id: bigint!): AccountAllocate
   accountByPk(id: bigint!): Account
   action(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
@@ -24294,7 +23916,7 @@ type Query {
   voteAggregate(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): VoteAggregate!
   voteByPk(id: bigint!): Vote
   financeLogs(id: bigint, teamId: bigint): [Log!]!
-  me: User
+  me: UserLogin!
   searchLocation(query: String!): [GeocodeAddress!]!
   getFirstResultLink(query: String!): String!
   searchFrenchCompany(query: SearchCompanyQuery!): [CompanyInfo!]!
@@ -27412,10 +27034,6 @@ input SubjectVarSampOrderBy {
 type Subscription {
   account(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
-  accountAllocate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  accountAllocateAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
-  accountAllocateByPk(id: bigint!): AccountAllocate
-  accountAllocateStream(batchSize: Int!, cursor: [AccountAllocateStreamCursorInput]!, where: AccountAllocateBoolExp): [AccountAllocate!]!
   accountByPk(id: bigint!): Account
   accountStream(batchSize: Int!, cursor: [AccountStreamCursorInput]!, where: AccountBoolExp): [Account!]!
   action(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
@@ -28175,14 +27793,13 @@ input TagVarSampOrderBy {
 }
 
 type Team {
-  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
   accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actor: Actor!
   actorId: bigint!
+  administeredTenant: Tenant
   canteen: Canteen
   canteenId: bigint
   classGroup: ClassGroup
@@ -28341,14 +27958,13 @@ input TeamBoolExp {
   _and: [TeamBoolExp!]
   _not: TeamBoolExp
   _or: [TeamBoolExp!]
-  accountAllocates: AccountAllocateBoolExp
-  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
+  administeredTenant: TenantBoolExp
   canteen: CanteenBoolExp
   canteenId: BigintComparisonExp
   classGroup: ClassGroupBoolExp
@@ -28802,11 +28418,11 @@ input TeamIncInput {
 }
 
 input TeamInsertInput {
-  accountAllocates: AccountAllocateArrRelInsertInput
   accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
+  administeredTenant: TenantObjRelInsertInput
   canteen: CanteenObjRelInsertInput
   canteenId: bigint
   classGroup: ClassGroupObjRelInsertInput
@@ -30518,11 +30134,11 @@ input TeamOnConflict {
 }
 
 input TeamOrderBy {
-  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
   accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
+  administeredTenant: TenantOrderBy
   canteen: CanteenOrderBy
   canteenId: OrderBy
   classGroup: ClassGroupOrderBy
@@ -30898,8 +30514,6 @@ input TeamVarSampOrderBy {
 }
 
 type Tenant {
-  accountAllocates(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): [AccountAllocate!]!
-  accountAllocatesAggregate(distinctOn: [AccountAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [AccountAllocateOrderBy!], where: AccountAllocateBoolExp): AccountAllocateAggregate!
   accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
@@ -30908,6 +30522,8 @@ type Tenant {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actors(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): [Actor!]!
   actorsAggregate(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): ActorAggregate!
+  adminTeam: Team
+  adminTeamId: bigint
   bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
   bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
   bots(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
@@ -30981,7 +30597,6 @@ type Tenant {
   missionJoinsAggregate(distinctOn: [MissionJoinSelectColumn!], limit: Int, offset: Int, orderBy: [MissionJoinOrderBy!], where: MissionJoinBoolExp): MissionJoinAggregate!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
-  name: String!
   oidcCallbackUri: String!
   oidcClientId: String!
   oidcClientSecret: String!
@@ -31097,12 +30712,14 @@ input TenantArrRelInsertInput {
 }
 
 type TenantAvgFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantAvgOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
@@ -31112,8 +30729,6 @@ input TenantBoolExp {
   _and: [TenantBoolExp!]
   _not: TenantBoolExp
   _or: [TenantBoolExp!]
-  accountAllocates: AccountAllocateBoolExp
-  accountAllocatesAggregate: AccountAllocateAggregateBoolExp
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actions: ActionBoolExp
@@ -31122,6 +30737,8 @@ input TenantBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actors: ActorBoolExp
   actorsAggregate: ActorAggregateBoolExp
+  adminTeam: TeamBoolExp
+  adminTeamId: BigintComparisonExp
   bankInfos: BankInfoBoolExp
   bankInfosAggregate: BankInfoAggregateBoolExp
   bots: BotBoolExp
@@ -31195,7 +30812,6 @@ input TenantBoolExp {
   missionJoinsAggregate: MissionJoinAggregateBoolExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
-  name: StringComparisonExp
   oidcCallbackUri: StringComparisonExp
   oidcClientId: StringComparisonExp
   oidcClientSecret: StringComparisonExp
@@ -31246,23 +30862,26 @@ input TenantBoolExp {
 }
 
 enum TenantConstraint {
+  tenant_admin_team_id_unique
   tenant_domain_unique
   tenant_event_validation_form_id_unique
   tenant_pkey
 }
 
 input TenantIncInput {
+  adminTeamId: bigint
   createdById: bigint
   eventValidationFormId: bigint
   id: bigint
 }
 
 input TenantInsertInput {
-  accountAllocates: AccountAllocateArrRelInsertInput
   accounts: AccountArrRelInsertInput
   actions: ActionArrRelInsertInput
   actorImages: ActorImageArrRelInsertInput
   actors: ActorArrRelInsertInput
+  adminTeam: TeamObjRelInsertInput
+  adminTeamId: bigint
   bankInfos: BankInfoArrRelInsertInput
   bots: BotArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
@@ -31304,7 +30923,6 @@ input TenantInsertInput {
   locations: LocationArrRelInsertInput
   missionJoins: MissionJoinArrRelInsertInput
   missions: MissionArrRelInsertInput
-  name: String
   oidcCallbackUri: String
   oidcClientId: String
   oidcClientSecret: String
@@ -31335,8 +30953,8 @@ input TenantInsertInput {
 }
 
 type TenantManage {
-  campusCluster: CampusCluster
-  campusClusterId: bigint
+  campusCluster: CampusCluster!
+  campusClusterId: bigint!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
@@ -31713,13 +31331,13 @@ input TenantManageVarSampOrderBy {
 }
 
 type TenantMaxFields {
+  adminTeamId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  name: String
   oidcCallbackUri: String
   oidcClientId: String
   oidcClientSecret: String
@@ -31730,13 +31348,13 @@ type TenantMaxFields {
 }
 
 input TenantMaxOrderBy {
+  adminTeamId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   domain: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  name: OrderBy
   oidcCallbackUri: OrderBy
   oidcClientId: OrderBy
   oidcClientSecret: OrderBy
@@ -31747,13 +31365,13 @@ input TenantMaxOrderBy {
 }
 
 type TenantMinFields {
+  adminTeamId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   domain: String
   eventValidationFormId: bigint
   id: bigint
-  name: String
   oidcCallbackUri: String
   oidcClientId: String
   oidcClientSecret: String
@@ -31764,13 +31382,13 @@ type TenantMinFields {
 }
 
 input TenantMinOrderBy {
+  adminTeamId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   domain: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
-  name: OrderBy
   oidcCallbackUri: OrderBy
   oidcClientId: OrderBy
   oidcClientSecret: OrderBy
@@ -31797,11 +31415,12 @@ input TenantOnConflict {
 }
 
 input TenantOrderBy {
-  accountAllocatesAggregate: AccountAllocateAggregateOrderBy
   accountsAggregate: AccountAggregateOrderBy
   actionsAggregate: ActionAggregateOrderBy
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorsAggregate: ActorAggregateOrderBy
+  adminTeam: TeamOrderBy
+  adminTeamId: OrderBy
   bankInfosAggregate: BankInfoAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
@@ -31843,7 +31462,6 @@ input TenantOrderBy {
   locationsAggregate: LocationAggregateOrderBy
   missionJoinsAggregate: MissionJoinAggregateOrderBy
   missionsAggregate: MissionAggregateOrderBy
-  name: OrderBy
   oidcCallbackUri: OrderBy
   oidcClientId: OrderBy
   oidcClientSecret: OrderBy
@@ -31878,6 +31496,7 @@ input TenantPkColumnsInput {
 }
 
 enum TenantSelectColumn {
+  adminTeamId
   createdAt
   createdById
   deletedAt
@@ -31885,7 +31504,6 @@ enum TenantSelectColumn {
   eventValidationFormId
   id
   isOidcEnabled
-  name
   oidcCallbackUri
   oidcClientId
   oidcClientSecret
@@ -31904,6 +31522,7 @@ enum TenantSelectColumnTenantAggregateBoolExpBool_orArgumentsColumns {
 }
 
 input TenantSetInput {
+  adminTeamId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31911,7 +31530,6 @@ input TenantSetInput {
   eventValidationFormId: bigint
   id: bigint
   isOidcEnabled: Boolean
-  name: String
   oidcCallbackUri: String
   oidcClientId: String
   oidcClientSecret: String
@@ -31922,36 +31540,42 @@ input TenantSetInput {
 }
 
 type TenantStddevFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantStddevOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
 }
 
 type TenantStddevPopFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantStddevPopOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
 }
 
 type TenantStddevSampFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantStddevSampOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
@@ -31963,6 +31587,7 @@ input TenantStreamCursorInput {
 }
 
 input TenantStreamCursorValueInput {
+  adminTeamId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -31970,7 +31595,6 @@ input TenantStreamCursorValueInput {
   eventValidationFormId: bigint
   id: bigint
   isOidcEnabled: Boolean
-  name: String
   oidcCallbackUri: String
   oidcClientId: String
   oidcClientSecret: String
@@ -31981,18 +31605,21 @@ input TenantStreamCursorValueInput {
 }
 
 type TenantSumFields {
+  adminTeamId: bigint
   createdById: bigint
   eventValidationFormId: bigint
   id: bigint
 }
 
 input TenantSumOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
 }
 
 enum TenantUpdateColumn {
+  adminTeamId
   createdAt
   createdById
   deletedAt
@@ -32000,7 +31627,6 @@ enum TenantUpdateColumn {
   eventValidationFormId
   id
   isOidcEnabled
-  name
   oidcCallbackUri
   oidcClientId
   oidcClientSecret
@@ -32017,36 +31643,42 @@ input TenantUpdates {
 }
 
 type TenantVarianceFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantVarianceOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
 }
 
 type TenantVarPopFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantVarPopOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
 }
 
 type TenantVarSampFields {
+  adminTeamId: Float
   createdById: Float
   eventValidationFormId: Float
   id: Float
 }
 
 input TenantVarSampOrderBy {
+  adminTeamId: OrderBy
   createdById: OrderBy
   eventValidationFormId: OrderBy
   id: OrderBy
@@ -34185,6 +33817,11 @@ scalar Upload
 input LoginInput {
   username: String!
   password: String!
+}
+
+type UserLogin {
+  user: User!
+  canManageTenant: Boolean!
 }
 
 type GeocodeAddress {

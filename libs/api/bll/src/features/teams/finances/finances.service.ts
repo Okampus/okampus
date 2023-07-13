@@ -36,10 +36,12 @@ export class FinancesService extends RequestContext {
   checkPermsDelete(finance: Finance) {
     if (finance.deletedAt) throw new NotFoundException(`Finance was deleted on ${finance.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class FinancesService extends RequestContext {
     if (finance.hiddenAt) throw new NotFoundException('Finance must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class FinancesService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['FinanceSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +78,8 @@ export class FinancesService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['FinanceInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

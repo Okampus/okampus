@@ -9,5 +9,4 @@ export enum FinanceCategory {
   Subscriptions = 'Subscriptions',
   Transportation = 'Transportation',
   Other = 'Other',
-  Unknown = 'Unknown',
 }

@@ -56,13 +56,13 @@
       }
     },
     "hasura:schema": {
-      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Downloading Hasura schema...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && get-graphql-schema \"http://localhost:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" > apps/api/database/hasura/schema.gql && bash apps/api/database/hasura/close.sh"
+      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Downloading Hasura schema...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && get-graphql-schema \"http://127.0.0.1:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" > apps/api/database/hasura/schema.gql && bash apps/api/database/hasura/close.sh"
     },
     "hasura:serve": {
       "command": "bash apps/api/database/hasura/run.sh"
     },
     "hasura:metadata": {
-      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Applying Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata apply && cd ../../../.. && bash apps/api/database/hasura/close.sh"
+      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Applying Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata apply && cd ../../../.. && bash apps/api/database/hasura/close.sh"
     },
     "graphql:codegen": {
       "dependsOn": ["graphql:merge"],

@@ -13,11 +13,10 @@ export type Submission<T> = SubmissionNoReadonly<DeepWriteable<T>>;
 export type FormFieldValue<Type> = Type extends
   | ControlType.Markdown
   | ControlType.Text
-  | ControlType.Select
-  | ControlType.DatetimeLocal
   | ControlType.SingleFile
+  | ControlType.Number
   ? string
-  : Type extends ControlType.Number | ControlType.Radio
+  : Type extends ControlType.Radio | ControlType.Select
   ? number
   : Type extends ControlType.Checkbox
   ? boolean

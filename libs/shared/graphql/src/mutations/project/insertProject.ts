@@ -6,7 +6,7 @@ import type { ValueTypes } from '../../zeus';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const insertProject = typedGql('mutation')({
+export const insertProjectMutation = typedGql('mutation')({
   insertProjectOne: [
     { object: $('object', 'ProjectInsertInput!') as ValueTypes['ProjectInsertInput'] },
     { ...projectBaseInfo, team: { ...teamBaseInfo, projects: [{}, projectBaseInfo] } },

@@ -3,7 +3,8 @@ import { User } from './user/user.entity';
 import { IndividualRepository } from './individual.repository';
 import { TenantScopedEntity } from '..';
 import { Actor } from '../actor/actor.entity';
-import { Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { TransformCollection } from '@okampus/api/shards';
 
 import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
 import type { IndividualOptions } from './individual.options';
@@ -28,7 +29,8 @@ export class Individual extends TenantScopedEntity {
   bot?: Bot;
 
   @OneToMany({ type: 'AdminRole', mappedBy: 'individual' })
-  adminRoles: AdminRole[] = [];
+  @TransformCollection()
+  adminRoles = new Collection<AdminRole>(this);
 
   // @OneToMany('BadgeUnlock', 'user')
   // @TransformCollection()

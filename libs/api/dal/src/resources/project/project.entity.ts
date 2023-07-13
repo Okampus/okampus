@@ -15,12 +15,12 @@ import {
 
 import { Colors } from '@okampus/shared/enums';
 
-import type { Event } from '../event/event.entity';
+import type { EventManage } from '../event/event-manage/event-manage.entity';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Grant } from '../team/grant/grant.entity';
+import type { Mission } from '../team/mission/mission.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Team } from '../team/team.entity';
-import type { Mission } from '../team/mission/mission.entity';
-import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { TeamMember } from '../team/team-member/team-member.entity';
 import type { ProjectOptions } from './project.options';
 
@@ -69,9 +69,9 @@ export class Project extends TenantScopedEntity {
   @TransformCollection()
   supervisors = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'Event', mappedBy: 'project' })
+  @OneToMany({ type: 'EventManage', mappedBy: 'project' })
   @TransformCollection()
-  events = new Collection<Event>(this);
+  eventManages = new Collection<EventManage>(this);
 
   @OneToMany({ type: 'Mission', mappedBy: 'project' })
   @TransformCollection()

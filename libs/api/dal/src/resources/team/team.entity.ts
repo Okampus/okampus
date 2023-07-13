@@ -35,7 +35,7 @@ import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventManage } from '../event/event-manage/event-manage.entity';
-import type { AccountAllocate } from './account-allocate/account-allocate.entity';
+import type { Tenant } from '../tenant/tenant.entity';
 
 @Entity({ customRepository: () => TeamRepository })
 export class Team extends TenantScopedEntity implements Searchable {
@@ -79,6 +79,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToOne({ type: 'ClassGroup', inversedBy: 'team', nullable: true, default: null })
   classGroup: ClassGroup | null = null;
 
+  @OneToOne({ type: 'Tenant', mappedBy: 'adminTeam' })
+  adminTenant?: Tenant;
+
   @ManyToOne({ type: 'LegalUnit', nullable: true, default: null })
   tenantGrantFund: LegalUnit | null = null;
 
@@ -103,10 +106,6 @@ export class Team extends TenantScopedEntity implements Searchable {
   @OneToMany({ type: 'Account', mappedBy: 'team' })
   @TransformCollection()
   accounts = new Collection<Account>(this);
-
-  @OneToMany({ type: 'AccountAllocate', mappedBy: 'team' })
-  @TransformCollection()
-  accountAllocates = new Collection<AccountAllocate>(this);
 
   @OneToMany({ type: 'EventManage', mappedBy: 'team' })
   @TransformCollection()

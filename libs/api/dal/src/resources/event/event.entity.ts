@@ -27,7 +27,6 @@ import type { EventManage } from './event-manage/event-manage.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Form } from '../form/form.entity';
 import type { Location } from '../actor/location/location.entity';
-import type { Project } from '../project/project.entity';
 import type { EventJoin } from './event-join/event-join.entity';
 import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
@@ -101,11 +100,8 @@ export class Event extends TenantScopedEntity implements Searchable {
   @ManyToOne({ type: 'Form', nullable: true, default: null })
   joinForm: Form | null = null;
 
-  @ManyToOne({ type: 'Project', nullable: true, default: null })
-  project: Project | null = null;
-
   @ManyToOne({ type: 'EventApprovalStep', nullable: true, default: null })
-  lastEventApprovalStep: EventApprovalStep | null = null;
+  nextEventApprovalStep: EventApprovalStep | null = null;
 
   @OneToMany({ type: 'EventApproval', mappedBy: 'event' })
   @TransformCollection()

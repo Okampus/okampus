@@ -4,10 +4,6 @@ import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class
 
 @InputType()
 export class FinanceProps {
-  @Field(() => String)
-  @IsString()
-  name!: string;
-
   @Field(() => Boolean)
   @IsBoolean()
   isOnline?: boolean = false;
@@ -24,7 +20,7 @@ export class FinanceProps {
   @Field(() => FinanceCategory, { nullable: true })
   @IsEnum(() => FinanceCategory)
   @IsString()
-  category?: FinanceCategory = FinanceCategory.Unknown;
+  category?: FinanceCategory = FinanceCategory.Other;
 
   @Field(() => PaymentMethod)
   @IsEnum(() => PaymentMethod)

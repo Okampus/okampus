@@ -1,6 +1,6 @@
 export enum FormType {
+  EventValidationForm = 'EventValidationForm',
   Event = 'Event',
   Team = 'Team',
-  Internal = 'Internal',
   Survey = 'Survey',
 }

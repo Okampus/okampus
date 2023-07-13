@@ -6,23 +6,30 @@ import { Requester } from '../../shards/decorators/requester.decorator';
 import { loadConfig } from '../../shards/utils/load-config';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ReqTenant } from '../../shards/decorators/tenant.decorator';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { Individual, IndividualRepository } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { TokenExpiration, TokenType } from '@okampus/shared/enums';
+import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/enums';
 
+import type { Tenant, User } from '@okampus/api/dal';
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
-import type { Individual, User } from '@okampus/api/dal';
 import type { ApiConfig } from '@okampus/shared/types';
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('User')
 export class AuthResolver {
   constructor(
+    private readonly individualRepository: IndividualRepository,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
     private readonly authService: AuthService
@@ -34,7 +41,10 @@ export class AuthResolver {
     @Args('dto') dto: LoginDto,
     @Context() ctx: GQLContext,
     @Info() info: GraphQLResolveInfo
-  ): Promise<User> {
+  ): Promise<{
+    user: User;
+    canManageTenant: boolean;
+  }> {
     return await this.authService.login(dto, getSelectionSet(info), ctx.req, ctx.reply);
   }
 
@@ -61,45 +71,38 @@ export class AuthResolver {
   }
 
   @Query()
-  public async me(@Requester() requester: Individual, @Info() info: GraphQLResolveInfo): Promise<User> {
+  public async me(
+    @Requester() requester: Individual,
+    @ReqTenant() tenant: Tenant,
+    @Info() info: GraphQLResolveInfo
+  ): Promise<{
+    user: User;
+    canManageTenant: boolean;
+  }> {
     if (!requester.user) throw new BadRequestException('No user found');
-    const data = await this.hasuraService.findByPk('userByPk', getSelectionSet(info), { id: requester.user.id });
-    return data.userByPk;
+
+    const data = await this.hasuraService.findByPk(
+      'userByPk',
+      getSelectionSet(info)
+        .filter((field) => field.startsWith('user'))
+        .map((field) => field.replace('user.', '')),
+      { id: requester.user.id }
+    );
+
+    const individual = await this.individualRepository.findOneOrFail(
+      { id: requester.id },
+      { populate: ['adminRoles'] }
+    );
+
+    return {
+      user: data.userByPk,
+      canManageTenant: individual.adminRoles
+        .getItems()
+        .some((role) =>
+          role.tenant === null
+            ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
+            : role.tenant.id === tenant.id && role.permissions.includes(AdminPermissions.ManageTenantEntities)
+        ),
+    };
   }
-
-  // @TenantPublic()
-  // @Mutation(() => Boolean)
-  // public async logout(@Context() ctx: GQLContext): Promise<boolean> {
-  //   const { options } = loadConfig<ApiConfig['cookies']>(this.configService, 'cookies');
-
-  //   const cookiePublicOptions = { ...options, httpOnly: false };
-
-  //   try {
-  //     void ctx.reply
-  //       .clearCookie(COOKIES_NAMES[TokenType.Access], options)
-  //       .clearCookie(COOKIES_NAMES[TokenType.Refresh], options)
-  //       .clearCookie(COOKIES_NAMES[TokenType.WebSocket], cookiePublicOptions)
-  //       .clearCookie(COOKIES_NAMES[TokenType.MeiliSearch], cookiePublicOptions)
-  //       .clearCookie(COOKIES_NAMES[TokenExpiration.AccessExpiration], cookiePublicOptions)
-  //       .clearCookie(COOKIES_NAMES[TokenExpiration.RefreshExpiration], cookiePublicOptions);
-  //     return true;
-  //   } catch {
-  //     return false;
-  //   }
-  // }
-
-  // @Mutation(() => Boolean)
-  // public async wsToken(@Requester() user: Individual, @Context() ctx: GQLContext): Promise<boolean> {
-  //   this.authService.addWebSocketTokenIfAuthenticated(ctx.reply, user.id);
-  //   return true;
-  // }
-
-  // @Query(() => Boolean)
-  // public async me(@Requester() requester: Individual, @Context() ctx: GQLContext): Promise<boolean> {
-  //   return true;
-  //   // if (!(requester.individualKind === IndividualKind.User))
-  //   //   throw new UnauthorizedException('Only users can query their auth context');
-
-  //   // return await this.authService.getAuthContext(requester as User, ctx.req, ctx.reply);
-  // }
 }

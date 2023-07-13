@@ -36,10 +36,12 @@ export class ActionsService extends RequestContext {
   checkPermsDelete(action: Action) {
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id
+        )
     )
       return true;
 
@@ -54,10 +56,12 @@ export class ActionsService extends RequestContext {
     if (action.hiddenAt) throw new NotFoundException('Action must be unhidden before it can be updated.');
 
     if (
-      this.requester().adminRoles.some(
-        (role) =>
-          role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id
-      )
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id
+        )
     )
       return true;
 
@@ -67,8 +71,6 @@ export class ActionsService extends RequestContext {
 
   checkPropsConstraints(props: ValueTypes['ActionSetInput']) {
     this.hasuraService.checkForbiddenFields(props);
-    props.tenantId = this.tenant().id;
-    props.createdById = this.requester().id;
 
     // Custom logic
     return true;
@@ -76,6 +78,8 @@ export class ActionsService extends RequestContext {
 
   checkCreateRelationships(props: ValueTypes['ActionInsertInput']) {
     // Custom logic
+    props.tenantId = this.tenant().id;
+    props.createdById = this.requester().id;
 
     return true;
   }

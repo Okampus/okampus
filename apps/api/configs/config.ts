@@ -50,7 +50,7 @@ export const config: ApiConfig = {
     baseDomain,
     frontendOriginUrl,
     apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.${baseDomain}`,
-    hasuraUrl: nodeEnv === 'development' ? 'http://localhost:8080' : `https://hasura.${baseDomain}`,
+    hasuraUrl: nodeEnv === 'development' ? 'http://127.0.0.1:8080' : `https://hasura.${baseDomain}`,
     frontendUrl: nodeEnv === 'development' ? 'http://localhost:4201' : `https://${frontendOriginUrl}`,
   },
   upload: {
@@ -151,7 +151,6 @@ export const config: ApiConfig = {
   hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET ?? 'very_secret_and_long_hasura_admin_secret',
   baseTenant: {
     adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
-    name: process.env.BASE_TENANT_NAME ?? 'Demo Tenant',
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
       name: process.env.BASE_TENANT_OIDC_NAME ?? 'demo-tenant',

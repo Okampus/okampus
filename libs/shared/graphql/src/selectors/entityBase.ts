@@ -1,5 +1,1 @@
-export const entityBase = {
-  __typename: true,
-  id: true,
-  createdAt: true,
-};
+export const entityBase = { __typename: true, id: true, createdAt: true };

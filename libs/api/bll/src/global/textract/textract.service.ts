@@ -99,6 +99,7 @@ export class TextractService {
           )
           .map(({ value }) => (value ? roundDecimal(extractPositiveNumber(value) ?? 0) : 0)) ?? [])
       ) || null;
+
     const tax =
       amount &&
       (summary
@@ -124,14 +125,6 @@ export class TextractService {
       date,
       phone,
     });
-    return {
-      lineItems,
-      address,
-      amount,
-      tax,
-      vendorName,
-      date,
-      phone,
-    };
+    return { lineItems, address, amount, tax, vendorName, date, phone };
   }
 }

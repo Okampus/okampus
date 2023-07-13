@@ -1,5 +1,4 @@
 - "!include public_account.yaml"
-- "!include public_account_allocate.yaml"
 - "!include public_action.yaml"
 - "!include public_actor.yaml"
 - "!include public_actor_image.yaml"
