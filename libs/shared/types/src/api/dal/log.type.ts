@@ -1,4 +1,4 @@
-import type { JSON } from '../../types/json.type';
+import type { JSONType } from '../../types/json.type';
 
 // TODO: add more types (date, float vs. int, distinguish some common rel, etc.)
 export enum DiffType {
@@ -10,8 +10,8 @@ export enum DiffType {
 }
 
 export type Diff = {
-  before: JSON;
-  after: JSON;
+  before: JSONType;
+  after: JSONType;
   type: DiffType;
   relType?: string;
 };
