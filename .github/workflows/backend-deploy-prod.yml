@@ -43,6 +43,17 @@ jobs:
         with:
           cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values.yaml'
 
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: 'Okampus/infra'
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PATH
+
+      - name: Set version and save file
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values.yaml'
+
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
