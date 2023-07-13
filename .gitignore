@@ -13,21 +13,23 @@ tmp
 node_modules
 
 # IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/okampus.code-workspace
+
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.bzr/
+.hg/
+.svn/
+.idea/
 
 # misc
 /.sass-cache
@@ -59,3 +61,6 @@ web-build/
 
 # Detox
 apps/mobile/e2e/artifacts
+
+# Next.js
+.next
