@@ -53,15 +53,9 @@ export default defineConfig({
       // swc configs, see [swc doc](https://swc.rs/docs/configuration/swcrc)
       swcOptions: {
         jsc: {
-          parser: {
-            syntax: 'typescript',
-            dynamicImport: true,
-            decorators: true,
-          },
+          parser: { syntax: 'typescript', dynamicImport: true, decorators: true },
           target: 'es2022',
-          transform: {
-            decoratorMetadata: true,
-          },
+          transform: { decoratorMetadata: true },
         },
       },
     }),

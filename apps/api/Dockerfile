@@ -24,8 +24,8 @@ ADD --chown=api:api apps/api ./apps/api
 ADD --chown=api:api libs/api ./libs/api
 ADD --chown=api:api libs/shared ./libs/shared
 
-RUN pnpm tsc --pretty -p apps/api/tsconfig.migrations.json
 RUN pnpm vite build --config apps/api/vite.config.ts --mode production
+RUN pnpm tsc --pretty -p apps/api/tsconfig.migrations.json
 
 USER api
 
