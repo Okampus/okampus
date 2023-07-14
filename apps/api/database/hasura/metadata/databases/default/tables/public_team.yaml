@@ -68,12 +68,12 @@ array_relationships:
         table:
           name: document
           schema: public
-  - name: eventManages
+  - name: eventOrganizes
     using:
       foreign_key_constraint_on:
         column: team_id
         table:
-          name: event_manage
+          name: event_organize
           schema: public
   - name: finances
     using:
@@ -145,10 +145,10 @@ array_relationships:
         table:
           name: team
           schema: public
-  - name: tenantManages
+  - name: tenantOrganizes
     using:
       foreign_key_constraint_on:
         column: team_id
         table:
-          name: tenant_manage
+          name: tenant_organize
           schema: public

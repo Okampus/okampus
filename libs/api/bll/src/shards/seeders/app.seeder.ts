@@ -27,10 +27,10 @@ import {
   Address,
   Social,
   ActorImage,
-  EventManage,
+  EventOrganize,
   MissionJoin,
   CampusCluster,
-  TenantManage,
+  TenantOrganize,
   TeamHistory,
   Account,
   BankInfo,
@@ -54,7 +54,7 @@ import {
   TeamHistoryEventType,
   ApproximateDate,
   LocationType,
-  TenantManageType,
+  TenantOrganizeType,
   AccountType,
   LegalUnitType,
   EventState,
@@ -356,10 +356,10 @@ export class DatabaseSeeder extends Seeder {
         );
       }
 
-      const tenantManage = new TenantManage({
+      const tenantManage = new TenantOrganize({
         campusCluster,
         team: campusClusterManageTeam,
-        type: TenantManageType.ClusterManager,
+        type: TenantOrganizeType.ClusterManager,
         ...scopedOptions,
       });
       adminPromises.push(em.persistAndFlush([campusClusterManageTeam, campusCluster, tenantManage]));
@@ -766,7 +766,7 @@ export class DatabaseSeeder extends Seeder {
           const eventManages = events.map((event) => {
             const createdBy = pickOneFromArray(teamMembers).user.individual;
             const supervisors = randomFromArray(teamMembers, 1, 3);
-            const eventManage = new EventManage({ team, event, createdBy, tenant, supervisors, project });
+            const eventManage = new EventOrganize({ team, event, createdBy, tenant, supervisors, project });
 
             eventManage.createdAt = new Date(event.createdAt);
             return eventManage;

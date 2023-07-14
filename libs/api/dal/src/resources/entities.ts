@@ -48,13 +48,13 @@ import { Follow } from './actor/follow/follow.entity';
 import { Log } from './log/log.entity';
 import { Mission } from './team/mission/mission.entity';
 import { MissionJoin } from './team/mission-join/mission-join.entity';
-import { EventManage } from './event/event-manage/event-manage.entity';
+import { EventOrganize } from './event/event-organize/event-organize.entity';
 import { Issue } from './issue/issue.entity';
 import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 import { Grant } from './team/grant/grant.entity';
 import { GrantAllocate } from './team/grant-allocate/grant-allocate.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
-import { TenantManage } from './tenant/tenant-manage/tenant-manage.entity';
+import { TenantOrganize } from './tenant/tenant-organize/tenant-organize.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
 import { Account } from './team/account/account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
@@ -70,7 +70,7 @@ export const allEntities = [
   User,
 
   Tenant,
-  TenantManage,
+  TenantOrganize,
   Campus,
   CampusCluster,
 
@@ -122,7 +122,7 @@ export const allEntities = [
   Project,
 
   Event,
-  EventManage,
+  EventOrganize,
   EventJoin,
 
   FileUpload,

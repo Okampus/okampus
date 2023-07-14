@@ -19,7 +19,7 @@ import {
 
 import type { Account } from './account/account.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
-import type { TenantManage } from '../tenant/tenant-manage/tenant-manage.entity';
+import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
 import type { TeamOptions } from './team.options';
 import type { Action } from './action/action.entity';
 import type { ClassGroup } from '../class-group/class-group.entity';
@@ -34,7 +34,7 @@ import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
 import type { Role } from './role/role.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
-import type { EventManage } from '../event/event-manage/event-manage.entity';
+import type { EventOrganize } from '../event/event-organize/event-organize.entity';
 import type { Tenant } from '../tenant/tenant.entity';
 
 @Entity({ customRepository: () => TeamRepository })
@@ -107,9 +107,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   accounts = new Collection<Account>(this);
 
-  @OneToMany({ type: 'EventManage', mappedBy: 'team' })
+  @OneToMany({ type: 'EventOrganize', mappedBy: 'team' })
   @TransformCollection()
-  eventManages = new Collection<EventManage>(this);
+  eventManages = new Collection<EventOrganize>(this);
 
   @OneToMany({ type: 'TeamHistory', mappedBy: 'team' })
   @TransformCollection()
@@ -127,9 +127,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   teamMembers = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'TenantManage', mappedBy: 'team' })
+  @OneToMany({ type: 'TenantOrganize', mappedBy: 'team' })
   @TransformCollection()
-  tenantManages = new Collection<TenantManage>(this);
+  tenantOrganizes = new Collection<TenantOrganize>(this);
 
   @OneToMany({ type: 'Role', mappedBy: 'team' })
   @TransformCollection()

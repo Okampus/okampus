@@ -16,10 +16,10 @@ array_relationships:
         table:
           name: campus
           schema: public
-  - name: tenantManages
+  - name: tenantOrganizes
     using:
       foreign_key_constraint_on:
         column: campus_cluster_id
         table:
-          name: tenant_manage
+          name: tenant_organize
           schema: public

@@ -61,8 +61,11 @@
     "hasura:serve": {
       "command": "bash apps/api/database/hasura/run.sh"
     },
-    "hasura:metadata": {
+    "hasura:metadata:apply": {
       "command": "bash apps/api/database/hasura/run.sh -d && echo 'Applying Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata apply && cd ../../../.. && bash apps/api/database/hasura/close.sh"
+    },
+    "hasura:metadata:export": {
+      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Exporting Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata export && cd ../../../.. && bash apps/api/database/hasura/close.sh"
     },
     "graphql:codegen": {
       "dependsOn": ["graphql:merge"],

@@ -23,7 +23,7 @@ import { randomId, toSlug } from '@okampus/shared/utils';
 
 import type { JSONObject } from '@okampus/shared/types';
 import type { EventOptions } from './event.options';
-import type { EventManage } from './event-manage/event-manage.entity';
+import type { EventOrganize } from './event-organize/event-organize.entity';
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Form } from '../form/form.entity';
 import type { Location } from '../actor/location/location.entity';
@@ -111,9 +111,9 @@ export class Event extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   eventJoins = new Collection<EventJoin>(this);
 
-  @OneToMany({ type: 'EventManage', mappedBy: 'event' })
+  @OneToMany({ type: 'EventOrganize', mappedBy: 'event' })
   @TransformCollection()
-  eventManages = new Collection<EventManage>(this);
+  eventManages = new Collection<EventOrganize>(this);
 
   constructor(options: EventOptions) {
     super(options);

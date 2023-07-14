@@ -4,8 +4,8 @@ import { Selector } from '../../../zeus';
 import { eventManageInfo } from '../eventManage';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
-export const eventManageDetailsInfo = Selector('EventManage')({
+export const eventManageDetailsInfo = Selector('EventOrganize')({
   ...eventManageMinimalInfo,
   event: eventManageInfo,
 });
-export type EventManageDetailsInfo = InputType<GraphQLTypes['EventManage'], typeof eventManageDetailsInfo>;
+export type EventOrganizeDetailsInfo = InputType<GraphQLTypes['EventOrganize'], typeof eventManageDetailsInfo>;

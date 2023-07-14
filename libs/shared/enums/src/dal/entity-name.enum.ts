@@ -4,7 +4,7 @@ export enum EntityName {
   User = 'User',
 
   Tenant = 'Tenant',
-  TenantManage = 'TenantManage',
+  TenantOrganize = 'TenantOrganize',
   Campus = 'Campus',
   CampusCluster = 'CampusCluster',
 
@@ -57,7 +57,7 @@ export enum EntityName {
   Project = 'Project',
 
   Event = 'Event',
-  EventManage = 'EventManage',
+  EventOrganize = 'EventOrganize',
   EventJoin = 'EventJoin',
 
   FileUpload = 'FileUpload',

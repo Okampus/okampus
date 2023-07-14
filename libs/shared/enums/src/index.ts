@@ -67,7 +67,7 @@ export * from './dal/tenant/admin-permissions.enum';
 export * from './dal/tenant/approval-step-type.enum';
 export * from './dal/tenant/badge-level.enum';
 export * from './dal/tenant/statistic.enum';
-export * from './dal/tenant/tenant-manage-type.enum';
+export * from './dal/tenant/tenant-organize-type.enum';
 export * from './global/align.enum';
 export * from './global/approval-state.enum';
 export * from './global/approximate-date.enum';

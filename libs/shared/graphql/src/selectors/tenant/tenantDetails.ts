@@ -12,7 +12,7 @@ export const tenantDetailsInfo = Selector('Tenant')({
   eventValidationForm: formBaseInfo,
   eventApprovalSteps: [{}, eventApprovalStepDetailsInfo],
   campusClusters: [{}, campusClusterBaseInfo],
-  tenantManages: [{}, { campusCluster: campusClusterBaseInfo, team: teamBaseInfo }],
+  tenantOrganizes: [{}, { campusCluster: campusClusterBaseInfo, team: teamBaseInfo }],
   adminTeam: teamBaseInfo,
 });
 export type TenantDetailsInfo = InputType<GraphQLTypes['Tenant'], typeof tenantDetailsInfo>;

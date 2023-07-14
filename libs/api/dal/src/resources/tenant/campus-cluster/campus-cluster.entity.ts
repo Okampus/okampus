@@ -5,7 +5,7 @@ import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from '@
 
 import { TransformCollection } from '@okampus/api/shards';
 
-import type { TenantManage } from '../tenant-manage/tenant-manage.entity';
+import type { TenantOrganize } from '../tenant-organize/tenant-organize.entity';
 import type { Campus } from '../campus/campus.entity';
 import type { CampusClusterOptions } from './campus-cluster.options';
 
@@ -20,9 +20,9 @@ export class CampusCluster extends TenantScopedEntity {
   @TransformCollection()
   campuses = new Collection<Campus>(this);
 
-  @OneToMany({ type: 'TenantManage', mappedBy: 'campusCluster' })
+  @OneToMany({ type: 'TenantOrganize', mappedBy: 'campusCluster' })
   @TransformCollection()
-  tenantManages = new Collection<TenantManage>(this);
+  tenantOrganizes = new Collection<TenantOrganize>(this);
 
   constructor(options: CampusClusterOptions) {
     super(options);
