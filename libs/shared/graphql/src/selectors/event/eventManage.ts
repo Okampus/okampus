@@ -15,4 +15,4 @@ export const eventManageInfo = Selector('Event')({
   eventJoins: [{ orderBy: [{ participationProcessedAt: OrderBy.DESC }] }, eventJoinDetailsInfo],
   eventApprovalSubmission: formSubmissionBaseInfo,
 });
-export type EventManageInfo = InputType<GraphQLTypes['Event'], typeof eventManageInfo>;
+export type EventOrganizeInfo = InputType<GraphQLTypes['Event'], typeof eventManageInfo>;

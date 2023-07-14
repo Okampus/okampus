@@ -4944,9 +4944,9 @@ type CampusCluster {
   tenantId: bigint!
 
   # An array relationship
-  tenantManages(
+  tenantOrganizes(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -4955,16 +4955,16 @@ type CampusCluster {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
   # An aggregate relationship
-  tenantManagesAggregate(
+  tenantOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -4973,11 +4973,11 @@ type CampusCluster {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
 }
 
 # aggregated selection of "campus_cluster"
@@ -5065,8 +5065,8 @@ input CampusClusterBoolExp {
   name: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
 }
 
 # unique or primary key constraints on table "campus_cluster"
@@ -5094,7 +5094,7 @@ input CampusClusterInsertInput {
   name: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
 }
 
 # aggregate max on columns
@@ -5177,7 +5177,7 @@ input CampusClusterOrderBy {
   name: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
 }
 
 # primary key columns input for table: campus_cluster
@@ -10690,9 +10690,9 @@ type Event {
   ): EventJoinAggregate!
 
   # An array relationship
-  eventManages(
+  eventOrganizes(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -10701,16 +10701,16 @@ type Event {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
   # An aggregate relationship
-  eventManagesAggregate(
+  eventOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -10719,11 +10719,11 @@ type Event {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
   # An array relationship
   eventTags(
@@ -12756,8 +12756,8 @@ input EventBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
   finances: FinanceBoolExp
@@ -12847,7 +12847,7 @@ input EventInsertInput {
   eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
   hiddenAt: timestamptz
@@ -13681,902 +13681,6 @@ input EventJoinVarSampOrderBy {
   tenantId: OrderBy
 }
 
-# columns and relationships of "event_manage"
-type EventManage {
-  createdAt: timestamptz!
-
-  # An object relationship
-  createdBy: Individual
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-
-  # An object relationship
-  event: Event!
-  eventId: bigint!
-  hiddenAt: timestamptz
-  id: bigint!
-
-  # An array relationship
-  missions(
-    # distinct select on columns
-    distinctOn: [MissionSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [MissionOrderBy!]
-
-    # filter the rows returned
-    where: MissionBoolExp
-  ): [Mission!]!
-
-  # An aggregate relationship
-  missionsAggregate(
-    # distinct select on columns
-    distinctOn: [MissionSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [MissionOrderBy!]
-
-    # filter the rows returned
-    where: MissionBoolExp
-  ): MissionAggregate!
-
-  # An object relationship
-  project: Project
-  projectId: bigint
-
-  # An array relationship
-  supervisors(
-    # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): [EventManageSupervisors!]!
-
-  # An aggregate relationship
-  supervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): EventManageSupervisorsAggregate!
-
-  # An object relationship
-  team: Team!
-  teamId: bigint!
-
-  # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
-}
-
-# aggregated selection of "event_manage"
-type EventManageAggregate {
-  aggregate: EventManageAggregateFields
-  nodes: [EventManage!]!
-}
-
-input EventManageAggregateBoolExp {
-  count: eventManageAggregateBoolExpCount
-}
-
-input eventManageAggregateBoolExpCount {
-  arguments: [EventManageSelectColumn!]
-  distinct: Boolean
-  filter: EventManageBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_manage"
-type EventManageAggregateFields {
-  avg: EventManageAvgFields
-  count(columns: [EventManageSelectColumn!], distinct: Boolean): Int!
-  max: EventManageMaxFields
-  min: EventManageMinFields
-  stddev: EventManageStddevFields
-  stddevPop: EventManageStddevPopFields
-  stddevSamp: EventManageStddevSampFields
-  sum: EventManageSumFields
-  varPop: EventManageVarPopFields
-  varSamp: EventManageVarSampFields
-  variance: EventManageVarianceFields
-}
-
-# order by aggregate values of table "event_manage"
-input EventManageAggregateOrderBy {
-  avg: EventManageAvgOrderBy
-  count: OrderBy
-  max: EventManageMaxOrderBy
-  min: EventManageMinOrderBy
-  stddev: EventManageStddevOrderBy
-  stddevPop: EventManageStddevPopOrderBy
-  stddevSamp: EventManageStddevSampOrderBy
-  sum: EventManageSumOrderBy
-  varPop: EventManageVarPopOrderBy
-  varSamp: EventManageVarSampOrderBy
-  variance: EventManageVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_manage"
-input EventManageArrRelInsertInput {
-  data: [EventManageInsertInput!]!
-
-  # upsert condition
-  onConflict: EventManageOnConflict
-}
-
-# aggregate avg on columns
-type EventManageAvgFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by avg() on columns of table "event_manage"
-input EventManageAvgOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "event_manage". All fields are combined with a logical 'AND'.
-input EventManageBoolExp {
-  _and: [EventManageBoolExp!]
-  _not: EventManageBoolExp
-  _or: [EventManageBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: IndividualBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  missions: MissionBoolExp
-  missionsAggregate: MissionAggregateBoolExp
-  project: ProjectBoolExp
-  projectId: BigintComparisonExp
-  supervisors: EventManageSupervisorsBoolExp
-  supervisorsAggregate: EventManageSupervisorsAggregateBoolExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_manage"
-enum EventManageConstraint {
-  # unique or primary key constraint on columns "id"
-  event_manage_pkey
-}
-
-# input type for incrementing numeric columns in table "event_manage"
-input EventManageIncInput {
-  createdById: bigint
-  eventId: bigint
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# input type for inserting data into table "event_manage"
-input EventManageInsertInput {
-  createdAt: timestamptz
-  createdBy: IndividualObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  event: EventObjRelInsertInput
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  missions: MissionArrRelInsertInput
-  project: ProjectObjRelInsertInput
-  projectId: bigint
-  supervisors: EventManageSupervisorsArrRelInsertInput
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-}
-
-# aggregate max on columns
-type EventManageMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# order by max() on columns of table "event_manage"
-input EventManageMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate min on columns
-type EventManageMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# order by min() on columns of table "event_manage"
-input EventManageMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# response of any mutation on the table "event_manage"
-type EventManageMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventManage!]!
-}
-
-# input type for inserting object relation for remote table "event_manage"
-input EventManageObjRelInsertInput {
-  data: EventManageInsertInput!
-
-  # upsert condition
-  onConflict: EventManageOnConflict
-}
-
-# on_conflict condition type for table "event_manage"
-input EventManageOnConflict {
-  constraint: EventManageConstraint!
-  updateColumns: [EventManageUpdateColumn!]! = []
-  where: EventManageBoolExp
-}
-
-# Ordering options when selecting data from "event_manage".
-input EventManageOrderBy {
-  createdAt: OrderBy
-  createdBy: IndividualOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  event: EventOrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  missionsAggregate: MissionAggregateOrderBy
-  project: ProjectOrderBy
-  projectId: OrderBy
-  supervisorsAggregate: EventManageSupervisorsAggregateOrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-}
-
-# primary key columns input for table: event_manage
-input EventManagePkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "event_manage"
-enum EventManageSelectColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  eventId
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  projectId
-
-  # column name
-  teamId
-
-  # column name
-  tenantId
-}
-
-# input type for updating data in table "event_manage"
-input EventManageSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# aggregate stddev on columns
-type EventManageStddevFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddev() on columns of table "event_manage"
-input EventManageStddevOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventManageStddevPopFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddevPop() on columns of table "event_manage"
-input EventManageStddevPopOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventManageStddevSampFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddevSamp() on columns of table "event_manage"
-input EventManageStddevSampOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# Streaming cursor of the table "event_manage"
-input EventManageStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventManageStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventManageStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# aggregate sum on columns
-type EventManageSumFields {
-  createdById: bigint
-  eventId: bigint
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# order by sum() on columns of table "event_manage"
-input EventManageSumOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# columns and relationships of "event_manage_supervisors"
-type EventManageSupervisors {
-  # An object relationship
-  eventManage: EventManage!
-  eventManageId: bigint!
-
-  # An object relationship
-  teamMember: TeamMember!
-  teamMemberId: bigint!
-}
-
-# aggregated selection of "event_manage_supervisors"
-type EventManageSupervisorsAggregate {
-  aggregate: EventManageSupervisorsAggregateFields
-  nodes: [EventManageSupervisors!]!
-}
-
-input EventManageSupervisorsAggregateBoolExp {
-  count: eventManageSupervisorsAggregateBoolExpCount
-}
-
-input eventManageSupervisorsAggregateBoolExpCount {
-  arguments: [EventManageSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventManageSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_manage_supervisors"
-type EventManageSupervisorsAggregateFields {
-  avg: EventManageSupervisorsAvgFields
-  count(columns: [EventManageSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventManageSupervisorsMaxFields
-  min: EventManageSupervisorsMinFields
-  stddev: EventManageSupervisorsStddevFields
-  stddevPop: EventManageSupervisorsStddevPopFields
-  stddevSamp: EventManageSupervisorsStddevSampFields
-  sum: EventManageSupervisorsSumFields
-  varPop: EventManageSupervisorsVarPopFields
-  varSamp: EventManageSupervisorsVarSampFields
-  variance: EventManageSupervisorsVarianceFields
-}
-
-# order by aggregate values of table "event_manage_supervisors"
-input EventManageSupervisorsAggregateOrderBy {
-  avg: EventManageSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventManageSupervisorsMaxOrderBy
-  min: EventManageSupervisorsMinOrderBy
-  stddev: EventManageSupervisorsStddevOrderBy
-  stddevPop: EventManageSupervisorsStddevPopOrderBy
-  stddevSamp: EventManageSupervisorsStddevSampOrderBy
-  sum: EventManageSupervisorsSumOrderBy
-  varPop: EventManageSupervisorsVarPopOrderBy
-  varSamp: EventManageSupervisorsVarSampOrderBy
-  variance: EventManageSupervisorsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_manage_supervisors"
-input EventManageSupervisorsArrRelInsertInput {
-  data: [EventManageSupervisorsInsertInput!]!
-
-  # upsert condition
-  onConflict: EventManageSupervisorsOnConflict
-}
-
-# aggregate avg on columns
-type EventManageSupervisorsAvgFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by avg() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsAvgOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "event_manage_supervisors". All fields are combined with a logical 'AND'.
-input EventManageSupervisorsBoolExp {
-  _and: [EventManageSupervisorsBoolExp!]
-  _not: EventManageSupervisorsBoolExp
-  _or: [EventManageSupervisorsBoolExp!]
-  eventManage: EventManageBoolExp
-  eventManageId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_manage_supervisors"
-enum EventManageSupervisorsConstraint {
-  # unique or primary key constraint on columns "event_manage_id", "team_member_id"
-  event_manage_supervisors_pkey
-}
-
-# input type for incrementing numeric columns in table "event_manage_supervisors"
-input EventManageSupervisorsIncInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# input type for inserting data into table "event_manage_supervisors"
-input EventManageSupervisorsInsertInput {
-  eventManage: EventManageObjRelInsertInput
-  eventManageId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
-}
-
-# aggregate max on columns
-type EventManageSupervisorsMaxFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# order by max() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsMaxOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate min on columns
-type EventManageSupervisorsMinFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# order by min() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsMinOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# response of any mutation on the table "event_manage_supervisors"
-type EventManageSupervisorsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventManageSupervisors!]!
-}
-
-# on_conflict condition type for table "event_manage_supervisors"
-input EventManageSupervisorsOnConflict {
-  constraint: EventManageSupervisorsConstraint!
-  updateColumns: [EventManageSupervisorsUpdateColumn!]! = []
-  where: EventManageSupervisorsBoolExp
-}
-
-# Ordering options when selecting data from "event_manage_supervisors".
-input EventManageSupervisorsOrderBy {
-  eventManage: EventManageOrderBy
-  eventManageId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
-}
-
-# primary key columns input for table: event_manage_supervisors
-input EventManageSupervisorsPkColumnsInput {
-  eventManageId: bigint!
-  teamMemberId: bigint!
-}
-
-# select columns of table "event_manage_supervisors"
-enum EventManageSupervisorsSelectColumn {
-  # column name
-  eventManageId
-
-  # column name
-  teamMemberId
-}
-
-# input type for updating data in table "event_manage_supervisors"
-input EventManageSupervisorsSetInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# aggregate stddev on columns
-type EventManageSupervisorsStddevFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by stddev() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsStddevOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventManageSupervisorsStddevPopFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by stddevPop() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsStddevPopOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventManageSupervisorsStddevSampFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by stddevSamp() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsStddevSampOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# Streaming cursor of the table "event_manage_supervisors"
-input EventManageSupervisorsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventManageSupervisorsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventManageSupervisorsStreamCursorValueInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# aggregate sum on columns
-type EventManageSupervisorsSumFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-# order by sum() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsSumOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# update columns of table "event_manage_supervisors"
-enum EventManageSupervisorsUpdateColumn {
-  # column name
-  eventManageId
-
-  # column name
-  teamMemberId
-}
-
-input EventManageSupervisorsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventManageSupervisorsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventManageSupervisorsSetInput
-
-  # filter the rows which have to be updated
-  where: EventManageSupervisorsBoolExp!
-}
-
-# aggregate variance on columns
-type EventManageSupervisorsVarianceFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by variance() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsVarianceOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventManageSupervisorsVarPopFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by varPop() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsVarPopOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventManageSupervisorsVarSampFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-# order by varSamp() on columns of table "event_manage_supervisors"
-input EventManageSupervisorsVarSampOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# update columns of table "event_manage"
-enum EventManageUpdateColumn {
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  description
-
-  # column name
-  eventId
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  projectId
-
-  # column name
-  teamId
-
-  # column name
-  tenantId
-}
-
-input EventManageUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventManageIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventManageSetInput
-
-  # filter the rows which have to be updated
-  where: EventManageBoolExp!
-}
-
-# aggregate variance on columns
-type EventManageVarianceFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by variance() on columns of table "event_manage"
-input EventManageVarianceOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventManageVarPopFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by varPop() on columns of table "event_manage"
-input EventManageVarPopOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventManageVarSampFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by varSamp() on columns of table "event_manage"
-input EventManageVarSampOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
 # aggregate max on columns
 type EventMaxFields {
   bannerId: bigint
@@ -14712,7 +13816,7 @@ input EventOrderBy {
   eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   hiddenAt: OrderBy
@@ -14735,6 +13839,902 @@ input EventOrderBy {
   start: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# columns and relationships of "event_organize"
+type EventOrganize {
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String!
+
+  # An object relationship
+  event: Event!
+  eventId: bigint!
+
+  # An array relationship
+  eventOrganizeSupervisors(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
+
+  # An aggregate relationship
+  eventOrganizeSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): EventOrganizeSupervisorsAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An array relationship
+  missions(
+    # distinct select on columns
+    distinctOn: [MissionSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionOrderBy!]
+
+    # filter the rows returned
+    where: MissionBoolExp
+  ): [Mission!]!
+
+  # An aggregate relationship
+  missionsAggregate(
+    # distinct select on columns
+    distinctOn: [MissionSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [MissionOrderBy!]
+
+    # filter the rows returned
+    where: MissionBoolExp
+  ): MissionAggregate!
+
+  # An object relationship
+  project: Project
+  projectId: bigint
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+# aggregated selection of "event_organize"
+type EventOrganizeAggregate {
+  aggregate: EventOrganizeAggregateFields
+  nodes: [EventOrganize!]!
+}
+
+input EventOrganizeAggregateBoolExp {
+  count: eventOrganizeAggregateBoolExpCount
+}
+
+input eventOrganizeAggregateBoolExpCount {
+  arguments: [EventOrganizeSelectColumn!]
+  distinct: Boolean
+  filter: EventOrganizeBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "event_organize"
+type EventOrganizeAggregateFields {
+  avg: EventOrganizeAvgFields
+  count(columns: [EventOrganizeSelectColumn!], distinct: Boolean): Int!
+  max: EventOrganizeMaxFields
+  min: EventOrganizeMinFields
+  stddev: EventOrganizeStddevFields
+  stddevPop: EventOrganizeStddevPopFields
+  stddevSamp: EventOrganizeStddevSampFields
+  sum: EventOrganizeSumFields
+  varPop: EventOrganizeVarPopFields
+  varSamp: EventOrganizeVarSampFields
+  variance: EventOrganizeVarianceFields
+}
+
+# order by aggregate values of table "event_organize"
+input EventOrganizeAggregateOrderBy {
+  avg: EventOrganizeAvgOrderBy
+  count: OrderBy
+  max: EventOrganizeMaxOrderBy
+  min: EventOrganizeMinOrderBy
+  stddev: EventOrganizeStddevOrderBy
+  stddevPop: EventOrganizeStddevPopOrderBy
+  stddevSamp: EventOrganizeStddevSampOrderBy
+  sum: EventOrganizeSumOrderBy
+  varPop: EventOrganizeVarPopOrderBy
+  varSamp: EventOrganizeVarSampOrderBy
+  variance: EventOrganizeVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "event_organize"
+input EventOrganizeArrRelInsertInput {
+  data: [EventOrganizeInsertInput!]!
+
+  # upsert condition
+  onConflict: EventOrganizeOnConflict
+}
+
+# aggregate avg on columns
+type EventOrganizeAvgFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "event_organize"
+input EventOrganizeAvgOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "event_organize". All fields are combined with a logical 'AND'.
+input EventOrganizeBoolExp {
+  _and: [EventOrganizeBoolExp!]
+  _not: EventOrganizeBoolExp
+  _or: [EventOrganizeBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  event: EventBoolExp
+  eventId: BigintComparisonExp
+  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
+  project: ProjectBoolExp
+  projectId: BigintComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "event_organize"
+enum EventOrganizeConstraint {
+  # unique or primary key constraint on columns "id"
+  event_organize_pkey
+}
+
+# input type for incrementing numeric columns in table "event_organize"
+input EventOrganizeIncInput {
+  createdById: bigint
+  eventId: bigint
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "event_organize"
+input EventOrganizeInsertInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  event: EventObjRelInsertInput
+  eventId: bigint
+  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  missions: MissionArrRelInsertInput
+  project: ProjectObjRelInsertInput
+  projectId: bigint
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+# aggregate max on columns
+type EventOrganizeMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by max() on columns of table "event_organize"
+input EventOrganizeMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type EventOrganizeMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by min() on columns of table "event_organize"
+input EventOrganizeMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "event_organize"
+type EventOrganizeMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [EventOrganize!]!
+}
+
+# input type for inserting object relation for remote table "event_organize"
+input EventOrganizeObjRelInsertInput {
+  data: EventOrganizeInsertInput!
+
+  # upsert condition
+  onConflict: EventOrganizeOnConflict
+}
+
+# on_conflict condition type for table "event_organize"
+input EventOrganizeOnConflict {
+  constraint: EventOrganizeConstraint!
+  updateColumns: [EventOrganizeUpdateColumn!]! = []
+  where: EventOrganizeBoolExp
+}
+
+# Ordering options when selecting data from "event_organize".
+input EventOrganizeOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  event: EventOrderBy
+  eventId: OrderBy
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  missionsAggregate: MissionAggregateOrderBy
+  project: ProjectOrderBy
+  projectId: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# primary key columns input for table: event_organize
+input EventOrganizePkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "event_organize"
+enum EventOrganizeSelectColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  description
+
+  # column name
+  eventId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  projectId
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "event_organize"
+input EventOrganizeSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type EventOrganizeStddevFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "event_organize"
+input EventOrganizeStddevOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type EventOrganizeStddevPopFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "event_organize"
+input EventOrganizeStddevPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type EventOrganizeStddevSampFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "event_organize"
+input EventOrganizeStddevSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "event_organize"
+input EventOrganizeStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: EventOrganizeStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input EventOrganizeStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type EventOrganizeSumFields {
+  createdById: bigint
+  eventId: bigint
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "event_organize"
+input EventOrganizeSumOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# columns and relationships of "event_organize_supervisors"
+type EventOrganizeSupervisors {
+  # An object relationship
+  eventOrganize: EventOrganize!
+  eventOrganizeId: bigint!
+
+  # An object relationship
+  teamMember: TeamMember!
+  teamMemberId: bigint!
+}
+
+# aggregated selection of "event_organize_supervisors"
+type EventOrganizeSupervisorsAggregate {
+  aggregate: EventOrganizeSupervisorsAggregateFields
+  nodes: [EventOrganizeSupervisors!]!
+}
+
+input EventOrganizeSupervisorsAggregateBoolExp {
+  count: eventOrganizeSupervisorsAggregateBoolExpCount
+}
+
+input eventOrganizeSupervisorsAggregateBoolExpCount {
+  arguments: [EventOrganizeSupervisorsSelectColumn!]
+  distinct: Boolean
+  filter: EventOrganizeSupervisorsBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "event_organize_supervisors"
+type EventOrganizeSupervisorsAggregateFields {
+  avg: EventOrganizeSupervisorsAvgFields
+  count(columns: [EventOrganizeSupervisorsSelectColumn!], distinct: Boolean): Int!
+  max: EventOrganizeSupervisorsMaxFields
+  min: EventOrganizeSupervisorsMinFields
+  stddev: EventOrganizeSupervisorsStddevFields
+  stddevPop: EventOrganizeSupervisorsStddevPopFields
+  stddevSamp: EventOrganizeSupervisorsStddevSampFields
+  sum: EventOrganizeSupervisorsSumFields
+  varPop: EventOrganizeSupervisorsVarPopFields
+  varSamp: EventOrganizeSupervisorsVarSampFields
+  variance: EventOrganizeSupervisorsVarianceFields
+}
+
+# order by aggregate values of table "event_organize_supervisors"
+input EventOrganizeSupervisorsAggregateOrderBy {
+  avg: EventOrganizeSupervisorsAvgOrderBy
+  count: OrderBy
+  max: EventOrganizeSupervisorsMaxOrderBy
+  min: EventOrganizeSupervisorsMinOrderBy
+  stddev: EventOrganizeSupervisorsStddevOrderBy
+  stddevPop: EventOrganizeSupervisorsStddevPopOrderBy
+  stddevSamp: EventOrganizeSupervisorsStddevSampOrderBy
+  sum: EventOrganizeSupervisorsSumOrderBy
+  varPop: EventOrganizeSupervisorsVarPopOrderBy
+  varSamp: EventOrganizeSupervisorsVarSampOrderBy
+  variance: EventOrganizeSupervisorsVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "event_organize_supervisors"
+input EventOrganizeSupervisorsArrRelInsertInput {
+  data: [EventOrganizeSupervisorsInsertInput!]!
+
+  # upsert condition
+  onConflict: EventOrganizeSupervisorsOnConflict
+}
+
+# aggregate avg on columns
+type EventOrganizeSupervisorsAvgFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by avg() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsAvgOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "event_organize_supervisors". All fields are combined with a logical 'AND'.
+input EventOrganizeSupervisorsBoolExp {
+  _and: [EventOrganizeSupervisorsBoolExp!]
+  _not: EventOrganizeSupervisorsBoolExp
+  _or: [EventOrganizeSupervisorsBoolExp!]
+  eventOrganize: EventOrganizeBoolExp
+  eventOrganizeId: BigintComparisonExp
+  teamMember: TeamMemberBoolExp
+  teamMemberId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "event_organize_supervisors"
+enum EventOrganizeSupervisorsConstraint {
+  # unique or primary key constraint on columns "event_organize_id", "team_member_id"
+  event_organize_supervisors_pkey
+}
+
+# input type for incrementing numeric columns in table "event_organize_supervisors"
+input EventOrganizeSupervisorsIncInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# input type for inserting data into table "event_organize_supervisors"
+input EventOrganizeSupervisorsInsertInput {
+  eventOrganize: EventOrganizeObjRelInsertInput
+  eventOrganizeId: bigint
+  teamMember: TeamMemberObjRelInsertInput
+  teamMemberId: bigint
+}
+
+# aggregate max on columns
+type EventOrganizeSupervisorsMaxFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# order by max() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsMaxOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate min on columns
+type EventOrganizeSupervisorsMinFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# order by min() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsMinOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# response of any mutation on the table "event_organize_supervisors"
+type EventOrganizeSupervisorsMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [EventOrganizeSupervisors!]!
+}
+
+# on_conflict condition type for table "event_organize_supervisors"
+input EventOrganizeSupervisorsOnConflict {
+  constraint: EventOrganizeSupervisorsConstraint!
+  updateColumns: [EventOrganizeSupervisorsUpdateColumn!]! = []
+  where: EventOrganizeSupervisorsBoolExp
+}
+
+# Ordering options when selecting data from "event_organize_supervisors".
+input EventOrganizeSupervisorsOrderBy {
+  eventOrganize: EventOrganizeOrderBy
+  eventOrganizeId: OrderBy
+  teamMember: TeamMemberOrderBy
+  teamMemberId: OrderBy
+}
+
+# primary key columns input for table: event_organize_supervisors
+input EventOrganizeSupervisorsPkColumnsInput {
+  eventOrganizeId: bigint!
+  teamMemberId: bigint!
+}
+
+# select columns of table "event_organize_supervisors"
+enum EventOrganizeSupervisorsSelectColumn {
+  # column name
+  eventOrganizeId
+
+  # column name
+  teamMemberId
+}
+
+# input type for updating data in table "event_organize_supervisors"
+input EventOrganizeSupervisorsSetInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# aggregate stddev on columns
+type EventOrganizeSupervisorsStddevFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by stddev() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsStddevOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type EventOrganizeSupervisorsStddevPopFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by stddevPop() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsStddevPopOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type EventOrganizeSupervisorsStddevSampFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by stddevSamp() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsStddevSampOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# Streaming cursor of the table "event_organize_supervisors"
+input EventOrganizeSupervisorsStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: EventOrganizeSupervisorsStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input EventOrganizeSupervisorsStreamCursorValueInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# aggregate sum on columns
+type EventOrganizeSupervisorsSumFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+# order by sum() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsSumOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# update columns of table "event_organize_supervisors"
+enum EventOrganizeSupervisorsUpdateColumn {
+  # column name
+  eventOrganizeId
+
+  # column name
+  teamMemberId
+}
+
+input EventOrganizeSupervisorsUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: EventOrganizeSupervisorsIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: EventOrganizeSupervisorsSetInput
+
+  # filter the rows which have to be updated
+  where: EventOrganizeSupervisorsBoolExp!
+}
+
+# aggregate variance on columns
+type EventOrganizeSupervisorsVarianceFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by variance() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsVarianceOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate varPop on columns
+type EventOrganizeSupervisorsVarPopFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by varPop() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsVarPopOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# aggregate varSamp on columns
+type EventOrganizeSupervisorsVarSampFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+# order by varSamp() on columns of table "event_organize_supervisors"
+input EventOrganizeSupervisorsVarSampOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+# update columns of table "event_organize"
+enum EventOrganizeUpdateColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  description
+
+  # column name
+  eventId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  projectId
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+}
+
+input EventOrganizeUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: EventOrganizeIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: EventOrganizeSetInput
+
+  # filter the rows which have to be updated
+  where: EventOrganizeBoolExp!
+}
+
+# aggregate variance on columns
+type EventOrganizeVarianceFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "event_organize"
+input EventOrganizeVarianceOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type EventOrganizeVarPopFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "event_organize"
+input EventOrganizeVarPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type EventOrganizeVarSampFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "event_organize"
+input EventOrganizeVarSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
   tenantId: OrderBy
 }
 
@@ -24808,9 +24808,9 @@ type Individual {
   ): EventJoinAggregate!
 
   # An array relationship
-  createdEventManages(
+  createdEventOrganizes(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24819,16 +24819,16 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
   # An aggregate relationship
-  createdEventManagesAggregate(
+  createdEventOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24837,11 +24837,11 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
   # An array relationship
   createdEvents(
@@ -25996,9 +25996,9 @@ type Individual {
   ): TeamAggregate!
 
   # An array relationship
-  createdTenantManages(
+  createdTenantOrganizes(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26007,16 +26007,16 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
   # An aggregate relationship
-  createdTenantManagesAggregate(
+  createdTenantOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -26025,11 +26025,11 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
 
   # An array relationship
   createdTenants(
@@ -26852,8 +26852,8 @@ input IndividualBoolExp {
   createdEventApprovalsAggregate: EventApprovalAggregateBoolExp
   createdEventJoins: EventJoinBoolExp
   createdEventJoinsAggregate: EventJoinAggregateBoolExp
-  createdEventManages: EventManageBoolExp
-  createdEventManagesAggregate: EventManageAggregateBoolExp
+  createdEventOrganizes: EventOrganizeBoolExp
+  createdEventOrganizesAggregate: EventOrganizeAggregateBoolExp
   createdEvents: EventBoolExp
   createdEventsAggregate: EventAggregateBoolExp
   createdExpenseItems: ExpenseItemBoolExp
@@ -26918,8 +26918,8 @@ input IndividualBoolExp {
   createdTeamMetricsAggregate: TeamMetricAggregateBoolExp
   createdTeams: TeamBoolExp
   createdTeamsAggregate: TeamAggregateBoolExp
-  createdTenantManages: TenantManageBoolExp
-  createdTenantManagesAggregate: TenantManageAggregateBoolExp
+  createdTenantOrganizes: TenantOrganizeBoolExp
+  createdTenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   createdTenants: TenantBoolExp
   createdTenantsAggregate: TenantAggregateBoolExp
   createdThreads: ThreadBoolExp
@@ -27014,7 +27014,7 @@ input IndividualInsertInput {
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
   createdEventJoins: EventJoinArrRelInsertInput
-  createdEventManages: EventManageArrRelInsertInput
+  createdEventOrganizes: EventOrganizeArrRelInsertInput
   createdEvents: EventArrRelInsertInput
   createdExpenseItems: ExpenseItemArrRelInsertInput
   createdExpenses: ExpenseArrRelInsertInput
@@ -27047,7 +27047,7 @@ input IndividualInsertInput {
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
-  createdTenantManages: TenantManageArrRelInsertInput
+  createdTenantOrganizes: TenantOrganizeArrRelInsertInput
   createdTenants: TenantArrRelInsertInput
   createdThreads: ThreadArrRelInsertInput
   createdUsers: UserArrRelInsertInput
@@ -27182,7 +27182,7 @@ input IndividualOrderBy {
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
-  createdEventManagesAggregate: EventManageAggregateOrderBy
+  createdEventOrganizesAggregate: EventOrganizeAggregateOrderBy
   createdEventsAggregate: EventAggregateOrderBy
   createdExpenseItemsAggregate: ExpenseItemAggregateOrderBy
   createdExpensesAggregate: ExpenseAggregateOrderBy
@@ -27215,7 +27215,7 @@ input IndividualOrderBy {
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
-  createdTenantManagesAggregate: TenantManageAggregateOrderBy
+  createdTenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   createdTenantsAggregate: TenantAggregateOrderBy
   createdThreadsAggregate: ThreadAggregateOrderBy
   createdUsersAggregate: UserAggregateOrderBy
@@ -30954,10 +30954,10 @@ type Mission {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  eventManageId: bigint
 
   # An object relationship
-  eventManage: EventManage
-  eventManageId: bigint
+  eventOrganize: EventOrganize
   hiddenAt: timestamptz
   id: bigint!
   isAutoAcceptingMembers: Boolean!
@@ -31124,8 +31124,8 @@ input MissionBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventManage: EventManageBoolExp
   eventManageId: BigintComparisonExp
+  eventOrganize: EventOrganizeBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isAutoAcceptingMembers: BooleanComparisonExp
@@ -31171,8 +31171,8 @@ input MissionInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventManage: EventManageObjRelInsertInput
   eventManageId: bigint
+  eventOrganize: EventOrganizeObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingMembers: Boolean
@@ -32042,8 +32042,8 @@ input MissionOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventManage: EventManageOrderBy
   eventManageId: OrderBy
+  eventOrganize: EventOrganizeOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isAutoAcceptingMembers: OrderBy
@@ -32672,23 +32672,23 @@ type Mutation {
   # delete single row from the table: "event_join"
   deleteEventJoinByPk(id: bigint!): EventJoin
 
-  # delete data from the table: "event_manage"
-  deleteEventManage(
+  # delete data from the table: "event_organize"
+  deleteEventOrganize(
     # filter the rows which have to be deleted
-    where: EventManageBoolExp!
-  ): EventManageMutationResponse
+    where: EventOrganizeBoolExp!
+  ): EventOrganizeMutationResponse
 
-  # delete single row from the table: "event_manage"
-  deleteEventManageByPk(id: bigint!): EventManage
+  # delete single row from the table: "event_organize"
+  deleteEventOrganizeByPk(id: bigint!): EventOrganize
 
-  # delete data from the table: "event_manage_supervisors"
-  deleteEventManageSupervisors(
+  # delete data from the table: "event_organize_supervisors"
+  deleteEventOrganizeSupervisors(
     # filter the rows which have to be deleted
-    where: EventManageSupervisorsBoolExp!
-  ): EventManageSupervisorsMutationResponse
+    where: EventOrganizeSupervisorsBoolExp!
+  ): EventOrganizeSupervisorsMutationResponse
 
-  # delete single row from the table: "event_manage_supervisors"
-  deleteEventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+  # delete single row from the table: "event_organize_supervisors"
+  deleteEventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
 
   # delete data from the table: "event_tags"
   deleteEventTags(
@@ -33104,14 +33104,14 @@ type Mutation {
   # delete single row from the table: "tenant"
   deleteTenantByPk(id: bigint!): Tenant
 
-  # delete data from the table: "tenant_manage"
-  deleteTenantManage(
+  # delete data from the table: "tenant_organize"
+  deleteTenantOrganize(
     # filter the rows which have to be deleted
-    where: TenantManageBoolExp!
-  ): TenantManageMutationResponse
+    where: TenantOrganizeBoolExp!
+  ): TenantOrganizeMutationResponse
 
-  # delete single row from the table: "tenant_manage"
-  deleteTenantManageByPk(id: bigint!): TenantManage
+  # delete single row from the table: "tenant_organize"
+  deleteTenantOrganizeByPk(id: bigint!): TenantOrganize
 
   # delete data from the table: "thread"
   deleteThread(
@@ -33626,42 +33626,6 @@ type Mutation {
     onConflict: EventJoinOnConflict
   ): EventJoin
 
-  # insert data into the table: "event_manage"
-  insertEventManage(
-    # the rows to be inserted
-    objects: [EventManageInsertInput!]!
-
-    # upsert condition
-    onConflict: EventManageOnConflict
-  ): EventManageMutationResponse
-
-  # insert a single row into the table: "event_manage"
-  insertEventManageOne(
-    # the row to be inserted
-    object: EventManageInsertInput!
-
-    # upsert condition
-    onConflict: EventManageOnConflict
-  ): EventManage
-
-  # insert data into the table: "event_manage_supervisors"
-  insertEventManageSupervisors(
-    # the rows to be inserted
-    objects: [EventManageSupervisorsInsertInput!]!
-
-    # upsert condition
-    onConflict: EventManageSupervisorsOnConflict
-  ): EventManageSupervisorsMutationResponse
-
-  # insert a single row into the table: "event_manage_supervisors"
-  insertEventManageSupervisorsOne(
-    # the row to be inserted
-    object: EventManageSupervisorsInsertInput!
-
-    # upsert condition
-    onConflict: EventManageSupervisorsOnConflict
-  ): EventManageSupervisors
-
   # insert a single row into the table: "event"
   insertEventOne(
     # the row to be inserted
@@ -33670,6 +33634,42 @@ type Mutation {
     # upsert condition
     onConflict: EventOnConflict
   ): Event
+
+  # insert data into the table: "event_organize"
+  insertEventOrganize(
+    # the rows to be inserted
+    objects: [EventOrganizeInsertInput!]!
+
+    # upsert condition
+    onConflict: EventOrganizeOnConflict
+  ): EventOrganizeMutationResponse
+
+  # insert a single row into the table: "event_organize"
+  insertEventOrganizeOne(
+    # the row to be inserted
+    object: EventOrganizeInsertInput!
+
+    # upsert condition
+    onConflict: EventOrganizeOnConflict
+  ): EventOrganize
+
+  # insert data into the table: "event_organize_supervisors"
+  insertEventOrganizeSupervisors(
+    # the rows to be inserted
+    objects: [EventOrganizeSupervisorsInsertInput!]!
+
+    # upsert condition
+    onConflict: EventOrganizeSupervisorsOnConflict
+  ): EventOrganizeSupervisorsMutationResponse
+
+  # insert a single row into the table: "event_organize_supervisors"
+  insertEventOrganizeSupervisorsOne(
+    # the row to be inserted
+    object: EventOrganizeSupervisorsInsertInput!
+
+    # upsert condition
+    onConflict: EventOrganizeSupervisorsOnConflict
+  ): EventOrganizeSupervisors
 
   # insert data into the table: "event_tags"
   insertEventTags(
@@ -34490,24 +34490,6 @@ type Mutation {
     onConflict: TenantOnConflict
   ): TenantMutationResponse
 
-  # insert data into the table: "tenant_manage"
-  insertTenantManage(
-    # the rows to be inserted
-    objects: [TenantManageInsertInput!]!
-
-    # upsert condition
-    onConflict: TenantManageOnConflict
-  ): TenantManageMutationResponse
-
-  # insert a single row into the table: "tenant_manage"
-  insertTenantManageOne(
-    # the row to be inserted
-    object: TenantManageInsertInput!
-
-    # upsert condition
-    onConflict: TenantManageOnConflict
-  ): TenantManage
-
   # insert a single row into the table: "tenant"
   insertTenantOne(
     # the row to be inserted
@@ -34516,6 +34498,24 @@ type Mutation {
     # upsert condition
     onConflict: TenantOnConflict
   ): Tenant
+
+  # insert data into the table: "tenant_organize"
+  insertTenantOrganize(
+    # the rows to be inserted
+    objects: [TenantOrganizeInsertInput!]!
+
+    # upsert condition
+    onConflict: TenantOrganizeOnConflict
+  ): TenantOrganizeMutationResponse
+
+  # insert a single row into the table: "tenant_organize"
+  insertTenantOrganizeOne(
+    # the row to be inserted
+    object: TenantOrganizeInsertInput!
+
+    # upsert condition
+    onConflict: TenantOrganizeOnConflict
+  ): TenantOrganize
 
   # insert data into the table: "thread"
   insertThread(
@@ -35379,67 +35379,67 @@ type Mutation {
     updates: [EventJoinUpdates!]!
   ): [EventJoinMutationResponse]
 
-  # update data of the table: "event_manage"
-  updateEventManage(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventManageIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventManageSetInput
-
-    # filter the rows which have to be updated
-    where: EventManageBoolExp!
-  ): EventManageMutationResponse
-
-  # update single row of the table: "event_manage"
-  updateEventManageByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventManageIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventManageSetInput
-    pkColumns: EventManagePkColumnsInput!
-  ): EventManage
-
-  # update multiples rows of table: "event_manage"
-  updateEventManageMany(
-    # updates to execute, in order
-    updates: [EventManageUpdates!]!
-  ): [EventManageMutationResponse]
-
-  # update data of the table: "event_manage_supervisors"
-  updateEventManageSupervisors(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventManageSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventManageSupervisorsSetInput
-
-    # filter the rows which have to be updated
-    where: EventManageSupervisorsBoolExp!
-  ): EventManageSupervisorsMutationResponse
-
-  # update single row of the table: "event_manage_supervisors"
-  updateEventManageSupervisorsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventManageSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventManageSupervisorsSetInput
-    pkColumns: EventManageSupervisorsPkColumnsInput!
-  ): EventManageSupervisors
-
-  # update multiples rows of table: "event_manage_supervisors"
-  updateEventManageSupervisorsMany(
-    # updates to execute, in order
-    updates: [EventManageSupervisorsUpdates!]!
-  ): [EventManageSupervisorsMutationResponse]
-
   # update multiples rows of table: "event"
   updateEventMany(
     # updates to execute, in order
     updates: [EventUpdates!]!
   ): [EventMutationResponse]
+
+  # update data of the table: "event_organize"
+  updateEventOrganize(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventOrganizeIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventOrganizeSetInput
+
+    # filter the rows which have to be updated
+    where: EventOrganizeBoolExp!
+  ): EventOrganizeMutationResponse
+
+  # update single row of the table: "event_organize"
+  updateEventOrganizeByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventOrganizeIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventOrganizeSetInput
+    pkColumns: EventOrganizePkColumnsInput!
+  ): EventOrganize
+
+  # update multiples rows of table: "event_organize"
+  updateEventOrganizeMany(
+    # updates to execute, in order
+    updates: [EventOrganizeUpdates!]!
+  ): [EventOrganizeMutationResponse]
+
+  # update data of the table: "event_organize_supervisors"
+  updateEventOrganizeSupervisors(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventOrganizeSupervisorsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventOrganizeSupervisorsSetInput
+
+    # filter the rows which have to be updated
+    where: EventOrganizeSupervisorsBoolExp!
+  ): EventOrganizeSupervisorsMutationResponse
+
+  # update single row of the table: "event_organize_supervisors"
+  updateEventOrganizeSupervisorsByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventOrganizeSupervisorsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventOrganizeSupervisorsSetInput
+    pkColumns: EventOrganizeSupervisorsPkColumnsInput!
+  ): EventOrganizeSupervisors
+
+  # update multiples rows of table: "event_organize_supervisors"
+  updateEventOrganizeSupervisorsMany(
+    # updates to execute, in order
+    updates: [EventOrganizeSupervisorsUpdates!]!
+  ): [EventOrganizeSupervisorsMutationResponse]
 
   # update data of the table: "event_tags"
   updateEventTags(
@@ -36819,39 +36819,39 @@ type Mutation {
     pkColumns: TenantPkColumnsInput!
   ): Tenant
 
-  # update data of the table: "tenant_manage"
-  updateTenantManage(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TenantManageIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TenantManageSetInput
-
-    # filter the rows which have to be updated
-    where: TenantManageBoolExp!
-  ): TenantManageMutationResponse
-
-  # update single row of the table: "tenant_manage"
-  updateTenantManageByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: TenantManageIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: TenantManageSetInput
-    pkColumns: TenantManagePkColumnsInput!
-  ): TenantManage
-
-  # update multiples rows of table: "tenant_manage"
-  updateTenantManageMany(
-    # updates to execute, in order
-    updates: [TenantManageUpdates!]!
-  ): [TenantManageMutationResponse]
-
   # update multiples rows of table: "tenant"
   updateTenantMany(
     # updates to execute, in order
     updates: [TenantUpdates!]!
   ): [TenantMutationResponse]
+
+  # update data of the table: "tenant_organize"
+  updateTenantOrganize(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TenantOrganizeIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TenantOrganizeSetInput
+
+    # filter the rows which have to be updated
+    where: TenantOrganizeBoolExp!
+  ): TenantOrganizeMutationResponse
+
+  # update single row of the table: "tenant_organize"
+  updateTenantOrganizeByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: TenantOrganizeIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: TenantOrganizeSetInput
+    pkColumns: TenantOrganizePkColumnsInput!
+  ): TenantOrganize
+
+  # update multiples rows of table: "tenant_organize"
+  updateTenantOrganizeMany(
+    # updates to execute, in order
+    updates: [TenantOrganizeUpdates!]!
+  ): [TenantOrganizeMutationResponse]
 
   # update data of the table: "thread"
   updateThread(
@@ -37648,9 +37648,9 @@ type Project {
   description: String!
 
   # An array relationship
-  eventManages(
+  eventOrganizes(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -37659,16 +37659,16 @@ type Project {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
   # An aggregate relationship
-  eventManagesAggregate(
+  eventOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -37677,11 +37677,11 @@ type Project {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
   # An array relationship
   finances(
@@ -37992,8 +37992,8 @@ input ProjectBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grant: GrantBoolExp
@@ -38048,7 +38048,7 @@ input ProjectInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grant: GrantObjRelInsertInput
   grantId: bigint
@@ -38181,7 +38181,7 @@ input ProjectOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grant: GrantOrderBy
   grantId: OrderBy
@@ -40158,10 +40158,10 @@ type Query {
   # fetch data from the table: "event_join" using primary key columns
   eventJoinByPk(id: bigint!): EventJoin
 
-  # fetch data from the table: "event_manage"
-  eventManage(
+  # fetch data from the table: "event_organize"
+  eventOrganize(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40170,16 +40170,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
-  # fetch aggregated fields from the table: "event_manage"
-  eventManageAggregate(
+  # fetch aggregated fields from the table: "event_organize"
+  eventOrganizeAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40188,19 +40188,19 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
-  # fetch data from the table: "event_manage" using primary key columns
-  eventManageByPk(id: bigint!): EventManage
+  # fetch data from the table: "event_organize" using primary key columns
+  eventOrganizeByPk(id: bigint!): EventOrganize
 
-  # fetch data from the table: "event_manage_supervisors"
-  eventManageSupervisors(
+  # An array relationship
+  eventOrganizeSupervisors(
     # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40209,16 +40209,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
 
     # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): [EventManageSupervisors!]!
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
 
-  # fetch aggregated fields from the table: "event_manage_supervisors"
-  eventManageSupervisorsAggregate(
+  # An aggregate relationship
+  eventOrganizeSupervisorsAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40227,14 +40227,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
 
     # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): EventManageSupervisorsAggregate!
+    where: EventOrganizeSupervisorsBoolExp
+  ): EventOrganizeSupervisorsAggregate!
 
-  # fetch data from the table: "event_manage_supervisors" using primary key columns
-  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+  # fetch data from the table: "event_organize_supervisors" using primary key columns
+  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
 
   # An array relationship
   eventTags(
@@ -42030,10 +42030,10 @@ type Query {
   # fetch data from the table: "tenant" using primary key columns
   tenantByPk(id: bigint!): Tenant
 
-  # fetch data from the table: "tenant_manage"
-  tenantManage(
+  # fetch data from the table: "tenant_organize"
+  tenantOrganize(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -42042,16 +42042,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
-  # fetch aggregated fields from the table: "tenant_manage"
-  tenantManageAggregate(
+  # fetch aggregated fields from the table: "tenant_organize"
+  tenantOrganizeAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -42060,14 +42060,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
 
-  # fetch data from the table: "tenant_manage" using primary key columns
-  tenantManageByPk(id: bigint!): TenantManage
+  # fetch data from the table: "tenant_organize" using primary key columns
+  tenantOrganizeByPk(id: bigint!): TenantOrganize
 
   # fetch data from the table: "thread"
   thread(
@@ -47756,10 +47756,10 @@ type Subscription {
     where: EventJoinBoolExp
   ): [EventJoin!]!
 
-  # fetch data from the table: "event_manage"
-  eventManage(
+  # fetch data from the table: "event_organize"
+  eventOrganize(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47768,16 +47768,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
-  # fetch aggregated fields from the table: "event_manage"
-  eventManageAggregate(
+  # fetch aggregated fields from the table: "event_organize"
+  eventOrganizeAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47786,31 +47786,31 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
-  # fetch data from the table: "event_manage" using primary key columns
-  eventManageByPk(id: bigint!): EventManage
+  # fetch data from the table: "event_organize" using primary key columns
+  eventOrganizeByPk(id: bigint!): EventOrganize
 
-  # fetch data from the table in a streaming manner: "event_manage"
-  eventManageStream(
+  # fetch data from the table in a streaming manner: "event_organize"
+  eventOrganizeStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [EventManageStreamCursorInput]!
+    cursor: [EventOrganizeStreamCursorInput]!
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
-  # fetch data from the table: "event_manage_supervisors"
-  eventManageSupervisors(
+  # An array relationship
+  eventOrganizeSupervisors(
     # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47819,16 +47819,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
 
     # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): [EventManageSupervisors!]!
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
 
-  # fetch aggregated fields from the table: "event_manage_supervisors"
-  eventManageSupervisorsAggregate(
+  # An aggregate relationship
+  eventOrganizeSupervisorsAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47837,26 +47837,26 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
 
     # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): EventManageSupervisorsAggregate!
+    where: EventOrganizeSupervisorsBoolExp
+  ): EventOrganizeSupervisorsAggregate!
 
-  # fetch data from the table: "event_manage_supervisors" using primary key columns
-  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+  # fetch data from the table: "event_organize_supervisors" using primary key columns
+  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
 
-  # fetch data from the table in a streaming manner: "event_manage_supervisors"
-  eventManageSupervisorsStream(
+  # fetch data from the table in a streaming manner: "event_organize_supervisors"
+  eventOrganizeSupervisorsStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [EventManageSupervisorsStreamCursorInput]!
+    cursor: [EventOrganizeSupervisorsStreamCursorInput]!
 
     # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): [EventManageSupervisors!]!
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
 
   # fetch data from the table in a streaming manner: "event"
   eventStream(
@@ -50204,10 +50204,10 @@ type Subscription {
   # fetch data from the table: "tenant" using primary key columns
   tenantByPk(id: bigint!): Tenant
 
-  # fetch data from the table: "tenant_manage"
-  tenantManage(
+  # fetch data from the table: "tenant_organize"
+  tenantOrganize(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -50216,16 +50216,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
-  # fetch aggregated fields from the table: "tenant_manage"
-  tenantManageAggregate(
+  # fetch aggregated fields from the table: "tenant_organize"
+  tenantOrganizeAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -50234,26 +50234,26 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
 
-  # fetch data from the table: "tenant_manage" using primary key columns
-  tenantManageByPk(id: bigint!): TenantManage
+  # fetch data from the table: "tenant_organize" using primary key columns
+  tenantOrganizeByPk(id: bigint!): TenantOrganize
 
-  # fetch data from the table in a streaming manner: "tenant_manage"
-  tenantManageStream(
+  # fetch data from the table in a streaming manner: "tenant_organize"
+  tenantOrganizeStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [TenantManageStreamCursorInput]!
+    cursor: [TenantOrganizeStreamCursorInput]!
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
   # fetch data from the table in a streaming manner: "tenant"
   tenantStream(
@@ -51491,9 +51491,9 @@ type Team {
   ): DocumentAggregate!
 
   # An array relationship
-  eventManages(
+  eventOrganizes(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51502,16 +51502,16 @@ type Team {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
   # An aggregate relationship
-  eventManagesAggregate(
+  eventOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51520,11 +51520,11 @@ type Team {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
   # An array relationship
   finances(
@@ -51910,9 +51910,9 @@ type Team {
   tenantId: bigint!
 
   # An array relationship
-  tenantManages(
+  tenantOrganizes(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51921,16 +51921,16 @@ type Team {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
   # An aggregate relationship
-  tenantManagesAggregate(
+  tenantOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51939,11 +51939,11 @@ type Team {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
   type: String!
 
   # An object relationship
@@ -52081,8 +52081,8 @@ input TeamBoolExp {
   directorsCategoryName: StringComparisonExp
   documents: DocumentBoolExp
   documentsAggregate: DocumentAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grantFund: LegalUnitBoolExp
@@ -52118,8 +52118,8 @@ input TeamBoolExp {
   tenant: TenantBoolExp
   tenantGrantFundId: BigintComparisonExp
   tenantId: BigintComparisonExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   type: StringComparisonExp
   video: FileUploadBoolExp
   videoId: BigintComparisonExp
@@ -52647,7 +52647,7 @@ input TeamInsertInput {
   deletedAt: timestamptz
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grantFund: LegalUnitObjRelInsertInput
   grants: GrantArrRelInsertInput
@@ -52673,7 +52673,7 @@ input TeamInsertInput {
   tenant: TenantObjRelInsertInput
   tenantGrantFundId: bigint
   tenantId: bigint
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
   type: String
   video: FileUploadObjRelInsertInput
   videoId: bigint
@@ -53418,46 +53418,46 @@ type TeamMember {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
+
+  # An array relationship
+  eventOrganizeSupervisors(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
+
+  # An aggregate relationship
+  eventOrganizeSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
   startDate: timestamptz!
-
-  # An array relationship
-  supervisedEvents(
-    # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): [EventManageSupervisors!]!
-
-  # An aggregate relationship
-  supervisedEventsAggregate(
-    # distinct select on columns
-    distinctOn: [EventManageSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventManageSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventManageSupervisorsBoolExp
-  ): EventManageSupervisorsAggregate!
 
   # An array relationship
   supervisedProjects(
@@ -53629,12 +53629,12 @@ input TeamMemberBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   endDate: TimestamptzComparisonExp
+  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   startDate: TimestamptzComparisonExp
-  supervisedEvents: EventManageSupervisorsBoolExp
-  supervisedEventsAggregate: EventManageSupervisorsAggregateBoolExp
   supervisedProjects: ProjectSupervisorsBoolExp
   supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
@@ -53670,11 +53670,11 @@ input TeamMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
+  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
   startDate: timestamptz
-  supervisedEvents: EventManageSupervisorsArrRelInsertInput
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -53776,11 +53776,11 @@ input TeamMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   endDate: OrderBy
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   startDate: OrderBy
-  supervisedEventsAggregate: EventManageSupervisorsAggregateOrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -54857,7 +54857,7 @@ input TeamOrderBy {
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grantFund: LegalUnitOrderBy
   grantsAggregate: GrantAggregateOrderBy
@@ -54883,7 +54883,7 @@ input TeamOrderBy {
   tenant: TenantOrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   type: OrderBy
   video: FileUploadOrderBy
   videoId: OrderBy
@@ -56030,9 +56030,9 @@ type Tenant {
   ): EventJoinAggregate!
 
   # An array relationship
-  eventManages(
+  eventOrganizes(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -56041,16 +56041,16 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): [EventManage!]!
+    where: EventOrganizeBoolExp
+  ): [EventOrganize!]!
 
   # An aggregate relationship
-  eventManagesAggregate(
+  eventOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [EventManageSelectColumn!]
+    distinctOn: [EventOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -56059,11 +56059,11 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [EventManageOrderBy!]
+    orderBy: [EventOrganizeOrderBy!]
 
     # filter the rows returned
-    where: EventManageBoolExp
-  ): EventManageAggregate!
+    where: EventOrganizeBoolExp
+  ): EventOrganizeAggregate!
 
   # An object relationship
   eventValidationForm: Form
@@ -57195,9 +57195,9 @@ type Tenant {
   ): TeamAggregate!
 
   # An array relationship
-  tenantManages(
+  tenantOrganizes(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -57206,16 +57206,16 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): [TenantManage!]!
+    where: TenantOrganizeBoolExp
+  ): [TenantOrganize!]!
 
   # An aggregate relationship
-  tenantManagesAggregate(
+  tenantOrganizesAggregate(
     # distinct select on columns
-    distinctOn: [TenantManageSelectColumn!]
+    distinctOn: [TenantOrganizeSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -57224,11 +57224,11 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TenantManageOrderBy!]
+    orderBy: [TenantOrganizeOrderBy!]
 
     # filter the rows returned
-    where: TenantManageBoolExp
-  ): TenantManageAggregate!
+    where: TenantOrganizeBoolExp
+  ): TenantOrganizeAggregate!
 
   # An array relationship
   threads(
@@ -57512,8 +57512,8 @@ input TenantBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   eventValidationForm: FormBoolExp
   eventValidationFormId: BigintComparisonExp
   events: EventBoolExp
@@ -57587,8 +57587,8 @@ input TenantBoolExp {
   teamMetricsAggregate: TeamMetricAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   threads: ThreadBoolExp
   threadsAggregate: ThreadAggregateBoolExp
   users: UserBoolExp
@@ -57650,7 +57650,7 @@ input TenantInsertInput {
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   eventValidationForm: FormObjRelInsertInput
   eventValidationFormId: bigint
   events: EventArrRelInsertInput
@@ -57693,482 +57693,11 @@ input TenantInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
   threads: ThreadArrRelInsertInput
   users: UserArrRelInsertInput
   validations: ValidationArrRelInsertInput
   votes: VoteArrRelInsertInput
-}
-
-# columns and relationships of "tenant_manage"
-type TenantManage {
-  # An object relationship
-  campusCluster: CampusCluster!
-  campusClusterId: bigint!
-  createdAt: timestamptz!
-
-  # An object relationship
-  createdBy: Individual
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-
-  # An object relationship
-  team: Team!
-  teamId: bigint!
-
-  # An object relationship
-  tenant: Tenant!
-  tenantId: bigint!
-  type: String!
-}
-
-# aggregated selection of "tenant_manage"
-type TenantManageAggregate {
-  aggregate: TenantManageAggregateFields
-  nodes: [TenantManage!]!
-}
-
-input TenantManageAggregateBoolExp {
-  count: tenantManageAggregateBoolExpCount
-}
-
-input tenantManageAggregateBoolExpCount {
-  arguments: [TenantManageSelectColumn!]
-  distinct: Boolean
-  filter: TenantManageBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "tenant_manage"
-type TenantManageAggregateFields {
-  avg: TenantManageAvgFields
-  count(columns: [TenantManageSelectColumn!], distinct: Boolean): Int!
-  max: TenantManageMaxFields
-  min: TenantManageMinFields
-  stddev: TenantManageStddevFields
-  stddevPop: TenantManageStddevPopFields
-  stddevSamp: TenantManageStddevSampFields
-  sum: TenantManageSumFields
-  varPop: TenantManageVarPopFields
-  varSamp: TenantManageVarSampFields
-  variance: TenantManageVarianceFields
-}
-
-# order by aggregate values of table "tenant_manage"
-input TenantManageAggregateOrderBy {
-  avg: TenantManageAvgOrderBy
-  count: OrderBy
-  max: TenantManageMaxOrderBy
-  min: TenantManageMinOrderBy
-  stddev: TenantManageStddevOrderBy
-  stddevPop: TenantManageStddevPopOrderBy
-  stddevSamp: TenantManageStddevSampOrderBy
-  sum: TenantManageSumOrderBy
-  varPop: TenantManageVarPopOrderBy
-  varSamp: TenantManageVarSampOrderBy
-  variance: TenantManageVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "tenant_manage"
-input TenantManageArrRelInsertInput {
-  data: [TenantManageInsertInput!]!
-
-  # upsert condition
-  onConflict: TenantManageOnConflict
-}
-
-# aggregate avg on columns
-type TenantManageAvgFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by avg() on columns of table "tenant_manage"
-input TenantManageAvgOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "tenant_manage". All fields are combined with a logical 'AND'.
-input TenantManageBoolExp {
-  _and: [TenantManageBoolExp!]
-  _not: TenantManageBoolExp
-  _or: [TenantManageBoolExp!]
-  campusCluster: CampusClusterBoolExp
-  campusClusterId: BigintComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: IndividualBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  type: StringComparisonExp
-}
-
-# unique or primary key constraints on table "tenant_manage"
-enum TenantManageConstraint {
-  # unique or primary key constraint on columns "id"
-  tenant_manage_pkey
-}
-
-# input type for incrementing numeric columns in table "tenant_manage"
-input TenantManageIncInput {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# input type for inserting data into table "tenant_manage"
-input TenantManageInsertInput {
-  campusCluster: CampusClusterObjRelInsertInput
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdBy: IndividualObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  type: String
-}
-
-# aggregate max on columns
-type TenantManageMaxFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-# order by max() on columns of table "tenant_manage"
-input TenantManageMaxOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# aggregate min on columns
-type TenantManageMinFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-# order by min() on columns of table "tenant_manage"
-input TenantManageMinOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# response of any mutation on the table "tenant_manage"
-type TenantManageMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [TenantManage!]!
-}
-
-# on_conflict condition type for table "tenant_manage"
-input TenantManageOnConflict {
-  constraint: TenantManageConstraint!
-  updateColumns: [TenantManageUpdateColumn!]! = []
-  where: TenantManageBoolExp
-}
-
-# Ordering options when selecting data from "tenant_manage".
-input TenantManageOrderBy {
-  campusCluster: CampusClusterOrderBy
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdBy: IndividualOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-# primary key columns input for table: tenant_manage
-input TenantManagePkColumnsInput {
-  id: bigint!
-}
-
-# select columns of table "tenant_manage"
-enum TenantManageSelectColumn {
-  # column name
-  campusClusterId
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  teamId
-
-  # column name
-  tenantId
-
-  # column name
-  type
-}
-
-# input type for updating data in table "tenant_manage"
-input TenantManageSetInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-# aggregate stddev on columns
-type TenantManageStddevFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddev() on columns of table "tenant_manage"
-input TenantManageStddevOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type TenantManageStddevPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddevPop() on columns of table "tenant_manage"
-input TenantManageStddevPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type TenantManageStddevSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by stddevSamp() on columns of table "tenant_manage"
-input TenantManageStddevSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# Streaming cursor of the table "tenant_manage"
-input TenantManageStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: TenantManageStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input TenantManageStreamCursorValueInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-# aggregate sum on columns
-type TenantManageSumFields {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-# order by sum() on columns of table "tenant_manage"
-input TenantManageSumOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# update columns of table "tenant_manage"
-enum TenantManageUpdateColumn {
-  # column name
-  campusClusterId
-
-  # column name
-  createdAt
-
-  # column name
-  createdById
-
-  # column name
-  deletedAt
-
-  # column name
-  hiddenAt
-
-  # column name
-  id
-
-  # column name
-  teamId
-
-  # column name
-  tenantId
-
-  # column name
-  type
-}
-
-input TenantManageUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: TenantManageIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: TenantManageSetInput
-
-  # filter the rows which have to be updated
-  where: TenantManageBoolExp!
-}
-
-# aggregate variance on columns
-type TenantManageVarianceFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by variance() on columns of table "tenant_manage"
-input TenantManageVarianceOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varPop on columns
-type TenantManageVarPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by varPop() on columns of table "tenant_manage"
-input TenantManageVarPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-# aggregate varSamp on columns
-type TenantManageVarSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-# order by varSamp() on columns of table "tenant_manage"
-input TenantManageVarSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
 }
 
 # aggregate max on columns
@@ -58295,7 +57824,7 @@ input TenantOrderBy {
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   eventValidationForm: FormOrderBy
   eventValidationFormId: OrderBy
   eventsAggregate: EventAggregateOrderBy
@@ -58338,11 +57867,482 @@ input TenantOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   threadsAggregate: ThreadAggregateOrderBy
   usersAggregate: UserAggregateOrderBy
   validationsAggregate: ValidationAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
+}
+
+# columns and relationships of "tenant_organize"
+type TenantOrganize {
+  # An object relationship
+  campusCluster: CampusCluster!
+  campusClusterId: bigint!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  individual: Individual
+
+  # An object relationship
+  team: Team!
+  teamId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+# aggregated selection of "tenant_organize"
+type TenantOrganizeAggregate {
+  aggregate: TenantOrganizeAggregateFields
+  nodes: [TenantOrganize!]!
+}
+
+input TenantOrganizeAggregateBoolExp {
+  count: tenantOrganizeAggregateBoolExpCount
+}
+
+input tenantOrganizeAggregateBoolExpCount {
+  arguments: [TenantOrganizeSelectColumn!]
+  distinct: Boolean
+  filter: TenantOrganizeBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "tenant_organize"
+type TenantOrganizeAggregateFields {
+  avg: TenantOrganizeAvgFields
+  count(columns: [TenantOrganizeSelectColumn!], distinct: Boolean): Int!
+  max: TenantOrganizeMaxFields
+  min: TenantOrganizeMinFields
+  stddev: TenantOrganizeStddevFields
+  stddevPop: TenantOrganizeStddevPopFields
+  stddevSamp: TenantOrganizeStddevSampFields
+  sum: TenantOrganizeSumFields
+  varPop: TenantOrganizeVarPopFields
+  varSamp: TenantOrganizeVarSampFields
+  variance: TenantOrganizeVarianceFields
+}
+
+# order by aggregate values of table "tenant_organize"
+input TenantOrganizeAggregateOrderBy {
+  avg: TenantOrganizeAvgOrderBy
+  count: OrderBy
+  max: TenantOrganizeMaxOrderBy
+  min: TenantOrganizeMinOrderBy
+  stddev: TenantOrganizeStddevOrderBy
+  stddevPop: TenantOrganizeStddevPopOrderBy
+  stddevSamp: TenantOrganizeStddevSampOrderBy
+  sum: TenantOrganizeSumOrderBy
+  varPop: TenantOrganizeVarPopOrderBy
+  varSamp: TenantOrganizeVarSampOrderBy
+  variance: TenantOrganizeVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "tenant_organize"
+input TenantOrganizeArrRelInsertInput {
+  data: [TenantOrganizeInsertInput!]!
+
+  # upsert condition
+  onConflict: TenantOrganizeOnConflict
+}
+
+# aggregate avg on columns
+type TenantOrganizeAvgFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "tenant_organize"
+input TenantOrganizeAvgOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "tenant_organize". All fields are combined with a logical 'AND'.
+input TenantOrganizeBoolExp {
+  _and: [TenantOrganizeBoolExp!]
+  _not: TenantOrganizeBoolExp
+  _or: [TenantOrganizeBoolExp!]
+  campusCluster: CampusClusterBoolExp
+  campusClusterId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+# unique or primary key constraints on table "tenant_organize"
+enum TenantOrganizeConstraint {
+  # unique or primary key constraint on columns "id"
+  tenant_organize_pkey
+}
+
+# input type for incrementing numeric columns in table "tenant_organize"
+input TenantOrganizeIncInput {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "tenant_organize"
+input TenantOrganizeInsertInput {
+  campusCluster: CampusClusterObjRelInsertInput
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+# aggregate max on columns
+type TenantOrganizeMaxFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# order by max() on columns of table "tenant_organize"
+input TenantOrganizeMaxOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# aggregate min on columns
+type TenantOrganizeMinFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# order by min() on columns of table "tenant_organize"
+input TenantOrganizeMinOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# response of any mutation on the table "tenant_organize"
+type TenantOrganizeMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [TenantOrganize!]!
+}
+
+# on_conflict condition type for table "tenant_organize"
+input TenantOrganizeOnConflict {
+  constraint: TenantOrganizeConstraint!
+  updateColumns: [TenantOrganizeUpdateColumn!]! = []
+  where: TenantOrganizeBoolExp
+}
+
+# Ordering options when selecting data from "tenant_organize".
+input TenantOrganizeOrderBy {
+  campusCluster: CampusClusterOrderBy
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+# primary key columns input for table: tenant_organize
+input TenantOrganizePkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "tenant_organize"
+enum TenantOrganizeSelectColumn {
+  # column name
+  campusClusterId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+# input type for updating data in table "tenant_organize"
+input TenantOrganizeSetInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# aggregate stddev on columns
+type TenantOrganizeStddevFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "tenant_organize"
+input TenantOrganizeStddevOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type TenantOrganizeStddevPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "tenant_organize"
+input TenantOrganizeStddevPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type TenantOrganizeStddevSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "tenant_organize"
+input TenantOrganizeStddevSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "tenant_organize"
+input TenantOrganizeStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: TenantOrganizeStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input TenantOrganizeStreamCursorValueInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+# aggregate sum on columns
+type TenantOrganizeSumFields {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "tenant_organize"
+input TenantOrganizeSumOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "tenant_organize"
+enum TenantOrganizeUpdateColumn {
+  # column name
+  campusClusterId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  teamId
+
+  # column name
+  tenantId
+
+  # column name
+  type
+}
+
+input TenantOrganizeUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: TenantOrganizeIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: TenantOrganizeSetInput
+
+  # filter the rows which have to be updated
+  where: TenantOrganizeBoolExp!
+}
+
+# aggregate variance on columns
+type TenantOrganizeVarianceFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "tenant_organize"
+input TenantOrganizeVarianceOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type TenantOrganizeVarPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "tenant_organize"
+input TenantOrganizeVarPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type TenantOrganizeVarSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "tenant_organize"
+input TenantOrganizeVarSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 # primary key columns input for table: tenant

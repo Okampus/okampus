@@ -15,7 +15,7 @@ import {
 
 import { Colors } from '@okampus/shared/enums';
 
-import type { EventManage } from '../event/event-manage/event-manage.entity';
+import type { EventOrganize } from '../event/event-organize/event-organize.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Grant } from '../team/grant/grant.entity';
 import type { Mission } from '../team/mission/mission.entity';
@@ -69,9 +69,9 @@ export class Project extends TenantScopedEntity {
   @TransformCollection()
   supervisors = new Collection<TeamMember>(this);
 
-  @OneToMany({ type: 'EventManage', mappedBy: 'project' })
+  @OneToMany({ type: 'EventOrganize', mappedBy: 'project' })
   @TransformCollection()
-  eventManages = new Collection<EventManage>(this);
+  eventManages = new Collection<EventOrganize>(this);
 
   @OneToMany({ type: 'Mission', mappedBy: 'project' })
   @TransformCollection()

@@ -7,7 +7,7 @@ import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { Form } from '../form/form.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { EventManage } from './event-manage/event-manage.entity';
+import type { EventOrganize } from './event-organize/event-organize.entity';
 import type { Content } from '../content/content.entity';
 import type { Location } from '../actor/location/location.entity';
 
@@ -22,5 +22,5 @@ export type EventOptions = EventProps &
     nextEventApprovalStep?: EventApprovalStep | null;
     tags?: Tag[];
     teams?: Team[];
-    eventManages?: EventManage[];
+    eventManages?: EventOrganize[];
   };

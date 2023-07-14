@@ -7307,7 +7307,7 @@
             "Bot",
             "User",
             "Tenant",
-            "TenantManage",
+            "TenantOrganize",
             "Campus",
             "CampusCluster",
             "Actor",
@@ -7347,7 +7347,7 @@
             "Cohort",
             "Project",
             "Event",
-            "EventManage",
+            "EventOrganize",
             "EventJoin",
             "FileUpload",
             "Favorite",
@@ -7612,11 +7612,11 @@
           "mappedType": "bigint"
         }
       },
-      "name": "event_manage",
+      "name": "event_organize",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "event_manage_pkey",
+          "keyName": "event_organize_pkey",
           "columnNames": [
             "id"
           ],
@@ -7627,12 +7627,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "event_manage_created_by_id_foreign": {
-          "constraintName": "event_manage_created_by_id_foreign",
+        "event_organize_created_by_id_foreign": {
+          "constraintName": "event_organize_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.event_manage",
+          "localTableName": "public.event_organize",
           "referencedColumnNames": [
             "id"
           ],
@@ -7640,48 +7640,48 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "event_manage_tenant_id_foreign": {
-          "constraintName": "event_manage_tenant_id_foreign",
+        "event_organize_tenant_id_foreign": {
+          "constraintName": "event_organize_tenant_id_foreign",
           "columnNames": [
             "tenant_id"
           ],
-          "localTableName": "public.event_manage",
+          "localTableName": "public.event_organize",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "event_manage_event_id_foreign": {
-          "constraintName": "event_manage_event_id_foreign",
+        "event_organize_event_id_foreign": {
+          "constraintName": "event_organize_event_id_foreign",
           "columnNames": [
             "event_id"
           ],
-          "localTableName": "public.event_manage",
+          "localTableName": "public.event_organize",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.event",
           "updateRule": "cascade"
         },
-        "event_manage_team_id_foreign": {
-          "constraintName": "event_manage_team_id_foreign",
+        "event_organize_team_id_foreign": {
+          "constraintName": "event_organize_team_id_foreign",
           "columnNames": [
             "team_id"
           ],
-          "localTableName": "public.event_manage",
+          "localTableName": "public.event_organize",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.team",
           "updateRule": "cascade"
         },
-        "event_manage_project_id_foreign": {
-          "constraintName": "event_manage_project_id_foreign",
+        "event_organize_project_id_foreign": {
+          "constraintName": "event_organize_project_id_foreign",
           "columnNames": [
             "project_id"
           ],
-          "localTableName": "public.event_manage",
+          "localTableName": "public.event_organize",
           "referencedColumnNames": [
             "id"
           ],
@@ -7955,7 +7955,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.event_manage",
+          "referencedTableName": "public.event_organize",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -10931,11 +10931,11 @@
           "mappedType": "enum"
         }
       },
-      "name": "tenant_manage",
+      "name": "tenant_organize",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "tenant_manage_pkey",
+          "keyName": "tenant_organize_pkey",
           "columnNames": [
             "id"
           ],
@@ -10946,12 +10946,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "tenant_manage_created_by_id_foreign": {
-          "constraintName": "tenant_manage_created_by_id_foreign",
+        "tenant_organize_created_by_id_foreign": {
+          "constraintName": "tenant_organize_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.tenant_manage",
+          "localTableName": "public.tenant_organize",
           "referencedColumnNames": [
             "id"
           ],
@@ -10959,36 +10959,36 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "tenant_manage_tenant_id_foreign": {
-          "constraintName": "tenant_manage_tenant_id_foreign",
+        "tenant_organize_tenant_id_foreign": {
+          "constraintName": "tenant_organize_tenant_id_foreign",
           "columnNames": [
             "tenant_id"
           ],
-          "localTableName": "public.tenant_manage",
+          "localTableName": "public.tenant_organize",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "tenant_manage_campus_cluster_id_foreign": {
-          "constraintName": "tenant_manage_campus_cluster_id_foreign",
+        "tenant_organize_campus_cluster_id_foreign": {
+          "constraintName": "tenant_organize_campus_cluster_id_foreign",
           "columnNames": [
             "campus_cluster_id"
           ],
-          "localTableName": "public.tenant_manage",
+          "localTableName": "public.tenant_organize",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.campus_cluster",
           "updateRule": "cascade"
         },
-        "tenant_manage_team_id_foreign": {
-          "constraintName": "tenant_manage_team_id_foreign",
+        "tenant_organize_team_id_foreign": {
+          "constraintName": "tenant_organize_team_id_foreign",
           "columnNames": [
             "team_id"
           ],
-          "localTableName": "public.tenant_manage",
+          "localTableName": "public.tenant_organize",
           "referencedColumnNames": [
             "id"
           ],
@@ -11821,8 +11821,8 @@
     },
     {
       "columns": {
-        "event_manage_id": {
-          "name": "event_manage_id",
+        "event_organize_id": {
+          "name": "event_organize_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -11840,13 +11840,13 @@
           "mappedType": "bigint"
         }
       },
-      "name": "event_manage_supervisors",
+      "name": "event_organize_supervisors",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "event_manage_supervisors_pkey",
+          "keyName": "event_organize_supervisors_pkey",
           "columnNames": [
-            "event_manage_id",
+            "event_organize_id",
             "team_member_id"
           ],
           "composite": true,
@@ -11856,25 +11856,25 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "event_manage_supervisors_event_manage_id_foreign": {
-          "constraintName": "event_manage_supervisors_event_manage_id_foreign",
+        "event_organize_supervisors_event_organize_id_foreign": {
+          "constraintName": "event_organize_supervisors_event_organize_id_foreign",
           "columnNames": [
-            "event_manage_id"
+            "event_organize_id"
           ],
-          "localTableName": "public.event_manage_supervisors",
+          "localTableName": "public.event_organize_supervisors",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.event_manage",
+          "referencedTableName": "public.event_organize",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "event_manage_supervisors_team_member_id_foreign": {
-          "constraintName": "event_manage_supervisors_team_member_id_foreign",
+        "event_organize_supervisors_team_member_id_foreign": {
+          "constraintName": "event_organize_supervisors_team_member_id_foreign",
           "columnNames": [
             "team_member_id"
           ],
-          "localTableName": "public.event_manage_supervisors",
+          "localTableName": "public.event_organize_supervisors",
           "referencedColumnNames": [
             "id"
           ],

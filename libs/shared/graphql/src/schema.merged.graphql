@@ -3468,8 +3468,8 @@ type CampusCluster {
   name: String!
   tenant: Tenant!
   tenantId: bigint!
-  tenantManages(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  tenantManagesAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
+  tenantOrganizes(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  tenantOrganizesAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
 }
 
 type CampusClusterAggregate {
@@ -3548,8 +3548,8 @@ input CampusClusterBoolExp {
   name: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
 }
 
 enum CampusClusterConstraint {
@@ -3573,7 +3573,7 @@ input CampusClusterInsertInput {
   name: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
 }
 
 type CampusClusterMaxFields {
@@ -3643,7 +3643,7 @@ input CampusClusterOrderBy {
   name: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
 }
 
 input CampusClusterPkColumnsInput {
@@ -7617,8 +7617,8 @@ type Event {
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
-  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
@@ -9067,8 +9067,8 @@ input EventBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
   finances: FinanceBoolExp
@@ -9144,7 +9144,7 @@ input EventInsertInput {
   eventApprovalSubmissionId: bigint
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   eventTags: EventTagsArrRelInsertInput
   finances: FinanceArrRelInsertInput
   hiddenAt: timestamptz
@@ -9796,670 +9796,6 @@ input EventJoinVarSampOrderBy {
   tenantId: OrderBy
 }
 
-type EventManage {
-  createdAt: timestamptz!
-  createdBy: Individual
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String!
-  event: Event!
-  eventId: bigint!
-  hiddenAt: timestamptz
-  id: bigint!
-  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
-  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
-  project: Project
-  projectId: bigint
-  supervisors(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
-  supervisorsAggregate(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): EventManageSupervisorsAggregate!
-  team: Team!
-  teamId: bigint!
-  tenant: Tenant!
-  tenantId: bigint!
-}
-
-type EventManageAggregate {
-  aggregate: EventManageAggregateFields
-  nodes: [EventManage!]!
-}
-
-input EventManageAggregateBoolExp {
-  count: eventManageAggregateBoolExpCount
-}
-
-input eventManageAggregateBoolExpCount {
-  arguments: [EventManageSelectColumn!]
-  distinct: Boolean
-  filter: EventManageBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventManageAggregateFields {
-  avg: EventManageAvgFields
-  count(columns: [EventManageSelectColumn!], distinct: Boolean): Int!
-  max: EventManageMaxFields
-  min: EventManageMinFields
-  stddev: EventManageStddevFields
-  stddevPop: EventManageStddevPopFields
-  stddevSamp: EventManageStddevSampFields
-  sum: EventManageSumFields
-  varPop: EventManageVarPopFields
-  varSamp: EventManageVarSampFields
-  variance: EventManageVarianceFields
-}
-
-input EventManageAggregateOrderBy {
-  avg: EventManageAvgOrderBy
-  count: OrderBy
-  max: EventManageMaxOrderBy
-  min: EventManageMinOrderBy
-  stddev: EventManageStddevOrderBy
-  stddevPop: EventManageStddevPopOrderBy
-  stddevSamp: EventManageStddevSampOrderBy
-  sum: EventManageSumOrderBy
-  varPop: EventManageVarPopOrderBy
-  varSamp: EventManageVarSampOrderBy
-  variance: EventManageVarianceOrderBy
-}
-
-input EventManageArrRelInsertInput {
-  data: [EventManageInsertInput!]!
-  onConflict: EventManageOnConflict
-}
-
-type EventManageAvgFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageAvgOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input EventManageBoolExp {
-  _and: [EventManageBoolExp!]
-  _not: EventManageBoolExp
-  _or: [EventManageBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  createdBy: IndividualBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  description: StringComparisonExp
-  event: EventBoolExp
-  eventId: BigintComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  missions: MissionBoolExp
-  missionsAggregate: MissionAggregateBoolExp
-  project: ProjectBoolExp
-  projectId: BigintComparisonExp
-  supervisors: EventManageSupervisorsBoolExp
-  supervisorsAggregate: EventManageSupervisorsAggregateBoolExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-}
-
-enum EventManageConstraint {
-  event_manage_pkey
-}
-
-input EventManageIncInput {
-  createdById: bigint
-  eventId: bigint
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input EventManageInsertInput {
-  createdAt: timestamptz
-  createdBy: IndividualObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  event: EventObjRelInsertInput
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  missions: MissionArrRelInsertInput
-  project: ProjectObjRelInsertInput
-  projectId: bigint
-  supervisors: EventManageSupervisorsArrRelInsertInput
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-}
-
-type EventManageMaxFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input EventManageMaxOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageMinFields {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input EventManageMinOrderBy {
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageMutationResponse {
-  affectedRows: Int!
-  returning: [EventManage!]!
-}
-
-input EventManageObjRelInsertInput {
-  data: EventManageInsertInput!
-  onConflict: EventManageOnConflict
-}
-
-input EventManageOnConflict {
-  constraint: EventManageConstraint!
-  updateColumns: [EventManageUpdateColumn!]! = []
-  where: EventManageBoolExp
-}
-
-input EventManageOrderBy {
-  createdAt: OrderBy
-  createdBy: IndividualOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  description: OrderBy
-  event: EventOrderBy
-  eventId: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  missionsAggregate: MissionAggregateOrderBy
-  project: ProjectOrderBy
-  projectId: OrderBy
-  supervisorsAggregate: EventManageSupervisorsAggregateOrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-}
-
-input EventManagePkColumnsInput {
-  id: bigint!
-}
-
-enum EventManageSelectColumn {
-  createdAt
-  createdById
-  deletedAt
-  description
-  eventId
-  hiddenAt
-  id
-  projectId
-  teamId
-  tenantId
-}
-
-input EventManageSetInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-type EventManageStddevFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageStddevOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageStddevPopFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageStddevPopOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageStddevSampFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageStddevSampOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input EventManageStreamCursorInput {
-  initialValue: EventManageStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventManageStreamCursorValueInput {
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  description: String
-  eventId: bigint
-  hiddenAt: timestamptz
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-type EventManageSumFields {
-  createdById: bigint
-  eventId: bigint
-  id: bigint
-  projectId: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input EventManageSumOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageSupervisors {
-  eventManage: EventManage!
-  eventManageId: bigint!
-  teamMember: TeamMember!
-  teamMemberId: bigint!
-}
-
-type EventManageSupervisorsAggregate {
-  aggregate: EventManageSupervisorsAggregateFields
-  nodes: [EventManageSupervisors!]!
-}
-
-input EventManageSupervisorsAggregateBoolExp {
-  count: eventManageSupervisorsAggregateBoolExpCount
-}
-
-input eventManageSupervisorsAggregateBoolExpCount {
-  arguments: [EventManageSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventManageSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventManageSupervisorsAggregateFields {
-  avg: EventManageSupervisorsAvgFields
-  count(columns: [EventManageSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventManageSupervisorsMaxFields
-  min: EventManageSupervisorsMinFields
-  stddev: EventManageSupervisorsStddevFields
-  stddevPop: EventManageSupervisorsStddevPopFields
-  stddevSamp: EventManageSupervisorsStddevSampFields
-  sum: EventManageSupervisorsSumFields
-  varPop: EventManageSupervisorsVarPopFields
-  varSamp: EventManageSupervisorsVarSampFields
-  variance: EventManageSupervisorsVarianceFields
-}
-
-input EventManageSupervisorsAggregateOrderBy {
-  avg: EventManageSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventManageSupervisorsMaxOrderBy
-  min: EventManageSupervisorsMinOrderBy
-  stddev: EventManageSupervisorsStddevOrderBy
-  stddevPop: EventManageSupervisorsStddevPopOrderBy
-  stddevSamp: EventManageSupervisorsStddevSampOrderBy
-  sum: EventManageSupervisorsSumOrderBy
-  varPop: EventManageSupervisorsVarPopOrderBy
-  varSamp: EventManageSupervisorsVarSampOrderBy
-  variance: EventManageSupervisorsVarianceOrderBy
-}
-
-input EventManageSupervisorsArrRelInsertInput {
-  data: [EventManageSupervisorsInsertInput!]!
-  onConflict: EventManageSupervisorsOnConflict
-}
-
-type EventManageSupervisorsAvgFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsAvgOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-input EventManageSupervisorsBoolExp {
-  _and: [EventManageSupervisorsBoolExp!]
-  _not: EventManageSupervisorsBoolExp
-  _or: [EventManageSupervisorsBoolExp!]
-  eventManage: EventManageBoolExp
-  eventManageId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
-}
-
-enum EventManageSupervisorsConstraint {
-  event_manage_supervisors_pkey
-}
-
-input EventManageSupervisorsIncInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-input EventManageSupervisorsInsertInput {
-  eventManage: EventManageObjRelInsertInput
-  eventManageId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
-}
-
-type EventManageSupervisorsMaxFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-input EventManageSupervisorsMaxOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsMinFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-input EventManageSupervisorsMinOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsMutationResponse {
-  affectedRows: Int!
-  returning: [EventManageSupervisors!]!
-}
-
-input EventManageSupervisorsOnConflict {
-  constraint: EventManageSupervisorsConstraint!
-  updateColumns: [EventManageSupervisorsUpdateColumn!]! = []
-  where: EventManageSupervisorsBoolExp
-}
-
-input EventManageSupervisorsOrderBy {
-  eventManage: EventManageOrderBy
-  eventManageId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
-}
-
-input EventManageSupervisorsPkColumnsInput {
-  eventManageId: bigint!
-  teamMemberId: bigint!
-}
-
-enum EventManageSupervisorsSelectColumn {
-  eventManageId
-  teamMemberId
-}
-
-input EventManageSupervisorsSetInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-type EventManageSupervisorsStddevFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsStddevOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsStddevPopFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsStddevPopOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsStddevSampFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsStddevSampOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-input EventManageSupervisorsStreamCursorInput {
-  initialValue: EventManageSupervisorsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventManageSupervisorsStreamCursorValueInput {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-type EventManageSupervisorsSumFields {
-  eventManageId: bigint
-  teamMemberId: bigint
-}
-
-input EventManageSupervisorsSumOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-enum EventManageSupervisorsUpdateColumn {
-  eventManageId
-  teamMemberId
-}
-
-input EventManageSupervisorsUpdates {
-  _inc: EventManageSupervisorsIncInput
-  _set: EventManageSupervisorsSetInput
-  where: EventManageSupervisorsBoolExp!
-}
-
-type EventManageSupervisorsVarianceFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsVarianceOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsVarPopFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsVarPopOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventManageSupervisorsVarSampFields {
-  eventManageId: Float
-  teamMemberId: Float
-}
-
-input EventManageSupervisorsVarSampOrderBy {
-  eventManageId: OrderBy
-  teamMemberId: OrderBy
-}
-
-enum EventManageUpdateColumn {
-  createdAt
-  createdById
-  deletedAt
-  description
-  eventId
-  hiddenAt
-  id
-  projectId
-  teamId
-  tenantId
-}
-
-input EventManageUpdates {
-  _inc: EventManageIncInput
-  _set: EventManageSetInput
-  where: EventManageBoolExp!
-}
-
-type EventManageVarianceFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageVarianceOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageVarPopFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageVarPopOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type EventManageVarSampFields {
-  createdById: Float
-  eventId: Float
-  id: Float
-  projectId: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input EventManageVarSampOrderBy {
-  createdById: OrderBy
-  eventId: OrderBy
-  id: OrderBy
-  projectId: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
 type EventMaxFields {
   bannerId: bigint
   contentId: bigint
@@ -10582,7 +9918,7 @@ input EventOrderBy {
   eventApprovalSubmissionId: OrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   hiddenAt: OrderBy
@@ -10605,6 +9941,670 @@ input EventOrderBy {
   start: OrderBy
   state: OrderBy
   tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganize {
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String!
+  event: Event!
+  eventId: bigint!
+  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
+  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
+  hiddenAt: timestamptz
+  id: bigint!
+  individual: Individual
+  missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
+  missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
+  project: Project
+  projectId: bigint
+  team: Team!
+  teamId: bigint!
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+type EventOrganizeAggregate {
+  aggregate: EventOrganizeAggregateFields
+  nodes: [EventOrganize!]!
+}
+
+input EventOrganizeAggregateBoolExp {
+  count: eventOrganizeAggregateBoolExpCount
+}
+
+input eventOrganizeAggregateBoolExpCount {
+  arguments: [EventOrganizeSelectColumn!]
+  distinct: Boolean
+  filter: EventOrganizeBoolExp
+  predicate: IntComparisonExp!
+}
+
+type EventOrganizeAggregateFields {
+  avg: EventOrganizeAvgFields
+  count(columns: [EventOrganizeSelectColumn!], distinct: Boolean): Int!
+  max: EventOrganizeMaxFields
+  min: EventOrganizeMinFields
+  stddev: EventOrganizeStddevFields
+  stddevPop: EventOrganizeStddevPopFields
+  stddevSamp: EventOrganizeStddevSampFields
+  sum: EventOrganizeSumFields
+  varPop: EventOrganizeVarPopFields
+  varSamp: EventOrganizeVarSampFields
+  variance: EventOrganizeVarianceFields
+}
+
+input EventOrganizeAggregateOrderBy {
+  avg: EventOrganizeAvgOrderBy
+  count: OrderBy
+  max: EventOrganizeMaxOrderBy
+  min: EventOrganizeMinOrderBy
+  stddev: EventOrganizeStddevOrderBy
+  stddevPop: EventOrganizeStddevPopOrderBy
+  stddevSamp: EventOrganizeStddevSampOrderBy
+  sum: EventOrganizeSumOrderBy
+  varPop: EventOrganizeVarPopOrderBy
+  varSamp: EventOrganizeVarSampOrderBy
+  variance: EventOrganizeVarianceOrderBy
+}
+
+input EventOrganizeArrRelInsertInput {
+  data: [EventOrganizeInsertInput!]!
+  onConflict: EventOrganizeOnConflict
+}
+
+type EventOrganizeAvgFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeAvgOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input EventOrganizeBoolExp {
+  _and: [EventOrganizeBoolExp!]
+  _not: EventOrganizeBoolExp
+  _or: [EventOrganizeBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  event: EventBoolExp
+  eventId: BigintComparisonExp
+  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  missions: MissionBoolExp
+  missionsAggregate: MissionAggregateBoolExp
+  project: ProjectBoolExp
+  projectId: BigintComparisonExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+enum EventOrganizeConstraint {
+  event_organize_pkey
+}
+
+input EventOrganizeIncInput {
+  createdById: bigint
+  eventId: bigint
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input EventOrganizeInsertInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  event: EventObjRelInsertInput
+  eventId: bigint
+  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  missions: MissionArrRelInsertInput
+  project: ProjectObjRelInsertInput
+  projectId: bigint
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+type EventOrganizeMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input EventOrganizeMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input EventOrganizeMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  eventId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeMutationResponse {
+  affectedRows: Int!
+  returning: [EventOrganize!]!
+}
+
+input EventOrganizeObjRelInsertInput {
+  data: EventOrganizeInsertInput!
+  onConflict: EventOrganizeOnConflict
+}
+
+input EventOrganizeOnConflict {
+  constraint: EventOrganizeConstraint!
+  updateColumns: [EventOrganizeUpdateColumn!]! = []
+  where: EventOrganizeBoolExp
+}
+
+input EventOrganizeOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  description: OrderBy
+  event: EventOrderBy
+  eventId: OrderBy
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  missionsAggregate: MissionAggregateOrderBy
+  project: ProjectOrderBy
+  projectId: OrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+input EventOrganizePkColumnsInput {
+  id: bigint!
+}
+
+enum EventOrganizeSelectColumn {
+  createdAt
+  createdById
+  deletedAt
+  description
+  eventId
+  hiddenAt
+  id
+  projectId
+  teamId
+  tenantId
+}
+
+input EventOrganizeSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+type EventOrganizeStddevFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeStddevOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeStddevPopFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeStddevPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeStddevSampFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeStddevSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input EventOrganizeStreamCursorInput {
+  initialValue: EventOrganizeStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input EventOrganizeStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  description: String
+  eventId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+type EventOrganizeSumFields {
+  createdById: bigint
+  eventId: bigint
+  id: bigint
+  projectId: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input EventOrganizeSumOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeSupervisors {
+  eventOrganize: EventOrganize!
+  eventOrganizeId: bigint!
+  teamMember: TeamMember!
+  teamMemberId: bigint!
+}
+
+type EventOrganizeSupervisorsAggregate {
+  aggregate: EventOrganizeSupervisorsAggregateFields
+  nodes: [EventOrganizeSupervisors!]!
+}
+
+input EventOrganizeSupervisorsAggregateBoolExp {
+  count: eventOrganizeSupervisorsAggregateBoolExpCount
+}
+
+input eventOrganizeSupervisorsAggregateBoolExpCount {
+  arguments: [EventOrganizeSupervisorsSelectColumn!]
+  distinct: Boolean
+  filter: EventOrganizeSupervisorsBoolExp
+  predicate: IntComparisonExp!
+}
+
+type EventOrganizeSupervisorsAggregateFields {
+  avg: EventOrganizeSupervisorsAvgFields
+  count(columns: [EventOrganizeSupervisorsSelectColumn!], distinct: Boolean): Int!
+  max: EventOrganizeSupervisorsMaxFields
+  min: EventOrganizeSupervisorsMinFields
+  stddev: EventOrganizeSupervisorsStddevFields
+  stddevPop: EventOrganizeSupervisorsStddevPopFields
+  stddevSamp: EventOrganizeSupervisorsStddevSampFields
+  sum: EventOrganizeSupervisorsSumFields
+  varPop: EventOrganizeSupervisorsVarPopFields
+  varSamp: EventOrganizeSupervisorsVarSampFields
+  variance: EventOrganizeSupervisorsVarianceFields
+}
+
+input EventOrganizeSupervisorsAggregateOrderBy {
+  avg: EventOrganizeSupervisorsAvgOrderBy
+  count: OrderBy
+  max: EventOrganizeSupervisorsMaxOrderBy
+  min: EventOrganizeSupervisorsMinOrderBy
+  stddev: EventOrganizeSupervisorsStddevOrderBy
+  stddevPop: EventOrganizeSupervisorsStddevPopOrderBy
+  stddevSamp: EventOrganizeSupervisorsStddevSampOrderBy
+  sum: EventOrganizeSupervisorsSumOrderBy
+  varPop: EventOrganizeSupervisorsVarPopOrderBy
+  varSamp: EventOrganizeSupervisorsVarSampOrderBy
+  variance: EventOrganizeSupervisorsVarianceOrderBy
+}
+
+input EventOrganizeSupervisorsArrRelInsertInput {
+  data: [EventOrganizeSupervisorsInsertInput!]!
+  onConflict: EventOrganizeSupervisorsOnConflict
+}
+
+type EventOrganizeSupervisorsAvgFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsAvgOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+input EventOrganizeSupervisorsBoolExp {
+  _and: [EventOrganizeSupervisorsBoolExp!]
+  _not: EventOrganizeSupervisorsBoolExp
+  _or: [EventOrganizeSupervisorsBoolExp!]
+  eventOrganize: EventOrganizeBoolExp
+  eventOrganizeId: BigintComparisonExp
+  teamMember: TeamMemberBoolExp
+  teamMemberId: BigintComparisonExp
+}
+
+enum EventOrganizeSupervisorsConstraint {
+  event_organize_supervisors_pkey
+}
+
+input EventOrganizeSupervisorsIncInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+input EventOrganizeSupervisorsInsertInput {
+  eventOrganize: EventOrganizeObjRelInsertInput
+  eventOrganizeId: bigint
+  teamMember: TeamMemberObjRelInsertInput
+  teamMemberId: bigint
+}
+
+type EventOrganizeSupervisorsMaxFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+input EventOrganizeSupervisorsMaxOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsMinFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+input EventOrganizeSupervisorsMinOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsMutationResponse {
+  affectedRows: Int!
+  returning: [EventOrganizeSupervisors!]!
+}
+
+input EventOrganizeSupervisorsOnConflict {
+  constraint: EventOrganizeSupervisorsConstraint!
+  updateColumns: [EventOrganizeSupervisorsUpdateColumn!]! = []
+  where: EventOrganizeSupervisorsBoolExp
+}
+
+input EventOrganizeSupervisorsOrderBy {
+  eventOrganize: EventOrganizeOrderBy
+  eventOrganizeId: OrderBy
+  teamMember: TeamMemberOrderBy
+  teamMemberId: OrderBy
+}
+
+input EventOrganizeSupervisorsPkColumnsInput {
+  eventOrganizeId: bigint!
+  teamMemberId: bigint!
+}
+
+enum EventOrganizeSupervisorsSelectColumn {
+  eventOrganizeId
+  teamMemberId
+}
+
+input EventOrganizeSupervisorsSetInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+type EventOrganizeSupervisorsStddevFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsStddevOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsStddevPopFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsStddevPopOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsStddevSampFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsStddevSampOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+input EventOrganizeSupervisorsStreamCursorInput {
+  initialValue: EventOrganizeSupervisorsStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input EventOrganizeSupervisorsStreamCursorValueInput {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+type EventOrganizeSupervisorsSumFields {
+  eventOrganizeId: bigint
+  teamMemberId: bigint
+}
+
+input EventOrganizeSupervisorsSumOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+enum EventOrganizeSupervisorsUpdateColumn {
+  eventOrganizeId
+  teamMemberId
+}
+
+input EventOrganizeSupervisorsUpdates {
+  _inc: EventOrganizeSupervisorsIncInput
+  _set: EventOrganizeSupervisorsSetInput
+  where: EventOrganizeSupervisorsBoolExp!
+}
+
+type EventOrganizeSupervisorsVarianceFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsVarianceOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsVarPopFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsVarPopOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+type EventOrganizeSupervisorsVarSampFields {
+  eventOrganizeId: Float
+  teamMemberId: Float
+}
+
+input EventOrganizeSupervisorsVarSampOrderBy {
+  eventOrganizeId: OrderBy
+  teamMemberId: OrderBy
+}
+
+enum EventOrganizeUpdateColumn {
+  createdAt
+  createdById
+  deletedAt
+  description
+  eventId
+  hiddenAt
+  id
+  projectId
+  teamId
+  tenantId
+}
+
+input EventOrganizeUpdates {
+  _inc: EventOrganizeIncInput
+  _set: EventOrganizeSetInput
+  where: EventOrganizeBoolExp!
+}
+
+type EventOrganizeVarianceFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeVarianceOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeVarPopFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeVarPopOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type EventOrganizeVarSampFields {
+  createdById: Float
+  eventId: Float
+  id: Float
+  projectId: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input EventOrganizeVarSampOrderBy {
+  createdById: OrderBy
+  eventId: OrderBy
+  id: OrderBy
+  projectId: OrderBy
+  teamId: OrderBy
   tenantId: OrderBy
 }
 
@@ -17262,8 +17262,8 @@ type Individual {
   createdEventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   createdEventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   createdEventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
-  createdEventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  createdEventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  createdEventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  createdEventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   createdEvents(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
   createdEventsAggregate(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): EventAggregate!
   createdExpenseItems(distinctOn: [ExpenseItemSelectColumn!], limit: Int, offset: Int, orderBy: [ExpenseItemOrderBy!], where: ExpenseItemBoolExp): [ExpenseItem!]!
@@ -17328,8 +17328,8 @@ type Individual {
   createdTeamMetricsAggregate(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): TeamMetricAggregate!
   createdTeams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   createdTeamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
-  createdTenantManages(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  createdTenantManagesAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
+  createdTenantOrganizes(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  createdTenantOrganizesAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
   createdTenants(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): [Tenant!]!
   createdTenantsAggregate(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): TenantAggregate!
   createdThreads(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
@@ -17493,8 +17493,8 @@ input IndividualBoolExp {
   createdEventApprovalsAggregate: EventApprovalAggregateBoolExp
   createdEventJoins: EventJoinBoolExp
   createdEventJoinsAggregate: EventJoinAggregateBoolExp
-  createdEventManages: EventManageBoolExp
-  createdEventManagesAggregate: EventManageAggregateBoolExp
+  createdEventOrganizes: EventOrganizeBoolExp
+  createdEventOrganizesAggregate: EventOrganizeAggregateBoolExp
   createdEvents: EventBoolExp
   createdEventsAggregate: EventAggregateBoolExp
   createdExpenseItems: ExpenseItemBoolExp
@@ -17559,8 +17559,8 @@ input IndividualBoolExp {
   createdTeamMetricsAggregate: TeamMetricAggregateBoolExp
   createdTeams: TeamBoolExp
   createdTeamsAggregate: TeamAggregateBoolExp
-  createdTenantManages: TenantManageBoolExp
-  createdTenantManagesAggregate: TenantManageAggregateBoolExp
+  createdTenantOrganizes: TenantOrganizeBoolExp
+  createdTenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   createdTenants: TenantBoolExp
   createdTenantsAggregate: TenantAggregateBoolExp
   createdThreads: ThreadBoolExp
@@ -17649,7 +17649,7 @@ input IndividualInsertInput {
   createdEventApprovalSteps: EventApprovalStepArrRelInsertInput
   createdEventApprovals: EventApprovalArrRelInsertInput
   createdEventJoins: EventJoinArrRelInsertInput
-  createdEventManages: EventManageArrRelInsertInput
+  createdEventOrganizes: EventOrganizeArrRelInsertInput
   createdEvents: EventArrRelInsertInput
   createdExpenseItems: ExpenseItemArrRelInsertInput
   createdExpenses: ExpenseArrRelInsertInput
@@ -17682,7 +17682,7 @@ input IndividualInsertInput {
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
-  createdTenantManages: TenantManageArrRelInsertInput
+  createdTenantOrganizes: TenantOrganizeArrRelInsertInput
   createdTenants: TenantArrRelInsertInput
   createdThreads: ThreadArrRelInsertInput
   createdUsers: UserArrRelInsertInput
@@ -17804,7 +17804,7 @@ input IndividualOrderBy {
   createdEventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
-  createdEventManagesAggregate: EventManageAggregateOrderBy
+  createdEventOrganizesAggregate: EventOrganizeAggregateOrderBy
   createdEventsAggregate: EventAggregateOrderBy
   createdExpenseItemsAggregate: ExpenseItemAggregateOrderBy
   createdExpensesAggregate: ExpenseAggregateOrderBy
@@ -17837,7 +17837,7 @@ input IndividualOrderBy {
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
-  createdTenantManagesAggregate: TenantManageAggregateOrderBy
+  createdTenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   createdTenantsAggregate: TenantAggregateOrderBy
   createdThreadsAggregate: ThreadAggregateOrderBy
   createdUsersAggregate: UserAggregateOrderBy
@@ -20485,8 +20485,8 @@ type Mission {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
-  eventManage: EventManage
   eventManageId: bigint
+  eventOrganize: EventOrganize
   hiddenAt: timestamptz
   id: bigint!
   isAutoAcceptingMembers: Boolean!
@@ -20604,8 +20604,8 @@ input MissionBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventManage: EventManageBoolExp
   eventManageId: BigintComparisonExp
+  eventOrganize: EventOrganizeBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isAutoAcceptingMembers: BooleanComparisonExp
@@ -20647,8 +20647,8 @@ input MissionInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventManage: EventManageObjRelInsertInput
   eventManageId: bigint
+  eventOrganize: EventOrganizeObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isAutoAcceptingMembers: Boolean
@@ -21336,8 +21336,8 @@ input MissionOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventManage: EventManageOrderBy
   eventManageId: OrderBy
+  eventOrganize: EventOrganizeOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isAutoAcceptingMembers: OrderBy
@@ -21681,10 +21681,10 @@ type Mutation {
   deleteEventByPk(id: bigint!): Event
   deleteEventJoin(where: EventJoinBoolExp!): EventJoinMutationResponse
   deleteEventJoinByPk(id: bigint!): EventJoin
-  deleteEventManage(where: EventManageBoolExp!): EventManageMutationResponse
-  deleteEventManageByPk(id: bigint!): EventManage
-  deleteEventManageSupervisors(where: EventManageSupervisorsBoolExp!): EventManageSupervisorsMutationResponse
-  deleteEventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+  deleteEventOrganize(where: EventOrganizeBoolExp!): EventOrganizeMutationResponse
+  deleteEventOrganizeByPk(id: bigint!): EventOrganize
+  deleteEventOrganizeSupervisors(where: EventOrganizeSupervisorsBoolExp!): EventOrganizeSupervisorsMutationResponse
+  deleteEventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
   deleteEventTags(where: EventTagsBoolExp!): EventTagsMutationResponse
   deleteEventTagsByPk(eventId: bigint!, tagId: bigint!): EventTags
   deleteExpense(where: ExpenseBoolExp!): ExpenseMutationResponse
@@ -21777,8 +21777,8 @@ type Mutation {
   deleteTeamMetricByPk(id: bigint!): TeamMetric
   deleteTenant(where: TenantBoolExp!): TenantMutationResponse
   deleteTenantByPk(id: bigint!): Tenant
-  deleteTenantManage(where: TenantManageBoolExp!): TenantManageMutationResponse
-  deleteTenantManageByPk(id: bigint!): TenantManage
+  deleteTenantOrganize(where: TenantOrganizeBoolExp!): TenantOrganizeMutationResponse
+  deleteTenantOrganizeByPk(id: bigint!): TenantOrganize
   deleteThread(where: ThreadBoolExp!): ThreadMutationResponse
   deleteThreadByPk(id: bigint!): Thread
   deleteThreadContributors(where: ThreadContributorsBoolExp!): ThreadContributorsMutationResponse
@@ -21842,11 +21842,11 @@ type Mutation {
   insertEventApprovalStepValidatorsOne(object: EventApprovalStepValidatorsInsertInput!, onConflict: EventApprovalStepValidatorsOnConflict): EventApprovalStepValidators
   insertEventJoin(objects: [EventJoinInsertInput!]!, onConflict: EventJoinOnConflict): EventJoinMutationResponse
   insertEventJoinOne(object: EventJoinInsertInput!, onConflict: EventJoinOnConflict): EventJoin
-  insertEventManage(objects: [EventManageInsertInput!]!, onConflict: EventManageOnConflict): EventManageMutationResponse
-  insertEventManageOne(object: EventManageInsertInput!, onConflict: EventManageOnConflict): EventManage
-  insertEventManageSupervisors(objects: [EventManageSupervisorsInsertInput!]!, onConflict: EventManageSupervisorsOnConflict): EventManageSupervisorsMutationResponse
-  insertEventManageSupervisorsOne(object: EventManageSupervisorsInsertInput!, onConflict: EventManageSupervisorsOnConflict): EventManageSupervisors
   insertEventOne(object: EventInsertInput!, onConflict: EventOnConflict): Event
+  insertEventOrganize(objects: [EventOrganizeInsertInput!]!, onConflict: EventOrganizeOnConflict): EventOrganizeMutationResponse
+  insertEventOrganizeOne(object: EventOrganizeInsertInput!, onConflict: EventOrganizeOnConflict): EventOrganize
+  insertEventOrganizeSupervisors(objects: [EventOrganizeSupervisorsInsertInput!]!, onConflict: EventOrganizeSupervisorsOnConflict): EventOrganizeSupervisorsMutationResponse
+  insertEventOrganizeSupervisorsOne(object: EventOrganizeSupervisorsInsertInput!, onConflict: EventOrganizeSupervisorsOnConflict): EventOrganizeSupervisors
   insertEventTags(objects: [EventTagsInsertInput!]!, onConflict: EventTagsOnConflict): EventTagsMutationResponse
   insertEventTagsOne(object: EventTagsInsertInput!, onConflict: EventTagsOnConflict): EventTags
   insertExpense(objects: [ExpenseInsertInput!]!, onConflict: ExpenseOnConflict): ExpenseMutationResponse
@@ -21938,9 +21938,9 @@ type Mutation {
   insertTeamMetricOne(object: TeamMetricInsertInput!, onConflict: TeamMetricOnConflict): TeamMetric
   insertTeamOne(object: TeamInsertInput!, onConflict: TeamOnConflict): Team
   insertTenant(objects: [TenantInsertInput!]!, onConflict: TenantOnConflict): TenantMutationResponse
-  insertTenantManage(objects: [TenantManageInsertInput!]!, onConflict: TenantManageOnConflict): TenantManageMutationResponse
-  insertTenantManageOne(object: TenantManageInsertInput!, onConflict: TenantManageOnConflict): TenantManage
   insertTenantOne(object: TenantInsertInput!, onConflict: TenantOnConflict): Tenant
+  insertTenantOrganize(objects: [TenantOrganizeInsertInput!]!, onConflict: TenantOrganizeOnConflict): TenantOrganizeMutationResponse
+  insertTenantOrganizeOne(object: TenantOrganizeInsertInput!, onConflict: TenantOrganizeOnConflict): TenantOrganize
   insertThread(objects: [ThreadInsertInput!]!, onConflict: ThreadOnConflict): ThreadMutationResponse
   insertThreadContributors(objects: [ThreadContributorsInsertInput!]!, onConflict: ThreadContributorsOnConflict): ThreadContributorsMutationResponse
   insertThreadContributorsOne(object: ThreadContributorsInsertInput!, onConflict: ThreadContributorsOnConflict): ThreadContributors
@@ -22030,13 +22030,13 @@ type Mutation {
   updateEventJoin(_inc: EventJoinIncInput, _set: EventJoinSetInput, where: EventJoinBoolExp!): EventJoinMutationResponse
   updateEventJoinByPk(_inc: EventJoinIncInput, _set: EventJoinSetInput, pkColumns: EventJoinPkColumnsInput!): EventJoin
   updateEventJoinMany(updates: [EventJoinUpdates!]!): [EventJoinMutationResponse]
-  updateEventManage(_inc: EventManageIncInput, _set: EventManageSetInput, where: EventManageBoolExp!): EventManageMutationResponse
-  updateEventManageByPk(_inc: EventManageIncInput, _set: EventManageSetInput, pkColumns: EventManagePkColumnsInput!): EventManage
-  updateEventManageMany(updates: [EventManageUpdates!]!): [EventManageMutationResponse]
-  updateEventManageSupervisors(_inc: EventManageSupervisorsIncInput, _set: EventManageSupervisorsSetInput, where: EventManageSupervisorsBoolExp!): EventManageSupervisorsMutationResponse
-  updateEventManageSupervisorsByPk(_inc: EventManageSupervisorsIncInput, _set: EventManageSupervisorsSetInput, pkColumns: EventManageSupervisorsPkColumnsInput!): EventManageSupervisors
-  updateEventManageSupervisorsMany(updates: [EventManageSupervisorsUpdates!]!): [EventManageSupervisorsMutationResponse]
   updateEventMany(updates: [EventUpdates!]!): [EventMutationResponse]
+  updateEventOrganize(_inc: EventOrganizeIncInput, _set: EventOrganizeSetInput, where: EventOrganizeBoolExp!): EventOrganizeMutationResponse
+  updateEventOrganizeByPk(_inc: EventOrganizeIncInput, _set: EventOrganizeSetInput, pkColumns: EventOrganizePkColumnsInput!): EventOrganize
+  updateEventOrganizeMany(updates: [EventOrganizeUpdates!]!): [EventOrganizeMutationResponse]
+  updateEventOrganizeSupervisors(_inc: EventOrganizeSupervisorsIncInput, _set: EventOrganizeSupervisorsSetInput, where: EventOrganizeSupervisorsBoolExp!): EventOrganizeSupervisorsMutationResponse
+  updateEventOrganizeSupervisorsByPk(_inc: EventOrganizeSupervisorsIncInput, _set: EventOrganizeSupervisorsSetInput, pkColumns: EventOrganizeSupervisorsPkColumnsInput!): EventOrganizeSupervisors
+  updateEventOrganizeSupervisorsMany(updates: [EventOrganizeSupervisorsUpdates!]!): [EventOrganizeSupervisorsMutationResponse]
   updateEventTags(_inc: EventTagsIncInput, _set: EventTagsSetInput, where: EventTagsBoolExp!): EventTagsMutationResponse
   updateEventTagsByPk(_inc: EventTagsIncInput, _set: EventTagsSetInput, pkColumns: EventTagsPkColumnsInput!): EventTags
   updateEventTagsMany(updates: [EventTagsUpdates!]!): [EventTagsMutationResponse]
@@ -22174,10 +22174,10 @@ type Mutation {
   updateTeamMetricMany(updates: [TeamMetricUpdates!]!): [TeamMetricMutationResponse]
   updateTenant(_inc: TenantIncInput, _set: TenantSetInput, where: TenantBoolExp!): TenantMutationResponse
   updateTenantByPk(_inc: TenantIncInput, _set: TenantSetInput, pkColumns: TenantPkColumnsInput!): Tenant
-  updateTenantManage(_inc: TenantManageIncInput, _set: TenantManageSetInput, where: TenantManageBoolExp!): TenantManageMutationResponse
-  updateTenantManageByPk(_inc: TenantManageIncInput, _set: TenantManageSetInput, pkColumns: TenantManagePkColumnsInput!): TenantManage
-  updateTenantManageMany(updates: [TenantManageUpdates!]!): [TenantManageMutationResponse]
   updateTenantMany(updates: [TenantUpdates!]!): [TenantMutationResponse]
+  updateTenantOrganize(_inc: TenantOrganizeIncInput, _set: TenantOrganizeSetInput, where: TenantOrganizeBoolExp!): TenantOrganizeMutationResponse
+  updateTenantOrganizeByPk(_inc: TenantOrganizeIncInput, _set: TenantOrganizeSetInput, pkColumns: TenantOrganizePkColumnsInput!): TenantOrganize
+  updateTenantOrganizeMany(updates: [TenantOrganizeUpdates!]!): [TenantOrganizeMutationResponse]
   updateThread(_inc: ThreadIncInput, _set: ThreadSetInput, where: ThreadBoolExp!): ThreadMutationResponse
   updateThreadByPk(_inc: ThreadIncInput, _set: ThreadSetInput, pkColumns: ThreadPkColumnsInput!): Thread
   updateThreadContributors(_inc: ThreadContributorsIncInput, _set: ThreadContributorsSetInput, where: ThreadContributorsBoolExp!): ThreadContributorsMutationResponse
@@ -22634,8 +22634,8 @@ type Project {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
-  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   grant: Grant
@@ -22761,8 +22761,8 @@ input ProjectBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grant: GrantBoolExp
@@ -22813,7 +22813,7 @@ input ProjectInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grant: GrantObjRelInsertInput
   grantId: bigint
@@ -22933,7 +22933,7 @@ input ProjectOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grant: GrantOrderBy
   grantId: OrderBy
@@ -23750,12 +23750,12 @@ type Query {
   eventJoin(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   eventJoinByPk(id: bigint!): EventJoin
-  eventManage(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManageAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
-  eventManageByPk(id: bigint!): EventManage
-  eventManageSupervisors(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
-  eventManageSupervisorsAggregate(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): EventManageSupervisorsAggregate!
-  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
+  eventOrganize(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizeAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
+  eventOrganizeByPk(id: bigint!): EventOrganize
+  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
+  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
+  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
   eventTagsByPk(eventId: bigint!, tagId: bigint!): EventTags
@@ -23894,9 +23894,9 @@ type Query {
   tenant(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): [Tenant!]!
   tenantAggregate(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): TenantAggregate!
   tenantByPk(id: bigint!): Tenant
-  tenantManage(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  tenantManageAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
-  tenantManageByPk(id: bigint!): TenantManage
+  tenantOrganize(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  tenantOrganizeAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
+  tenantOrganizeByPk(id: bigint!): TenantOrganize
   thread(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
   threadAggregate(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): ThreadAggregate!
   threadByPk(id: bigint!): Thread
@@ -27135,14 +27135,14 @@ type Subscription {
   eventJoinAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   eventJoinByPk(id: bigint!): EventJoin
   eventJoinStream(batchSize: Int!, cursor: [EventJoinStreamCursorInput]!, where: EventJoinBoolExp): [EventJoin!]!
-  eventManage(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManageAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
-  eventManageByPk(id: bigint!): EventManage
-  eventManageStream(batchSize: Int!, cursor: [EventManageStreamCursorInput]!, where: EventManageBoolExp): [EventManage!]!
-  eventManageSupervisors(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
-  eventManageSupervisorsAggregate(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): EventManageSupervisorsAggregate!
-  eventManageSupervisorsByPk(eventManageId: bigint!, teamMemberId: bigint!): EventManageSupervisors
-  eventManageSupervisorsStream(batchSize: Int!, cursor: [EventManageSupervisorsStreamCursorInput]!, where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
+  eventOrganize(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizeAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
+  eventOrganizeByPk(id: bigint!): EventOrganize
+  eventOrganizeStream(batchSize: Int!, cursor: [EventOrganizeStreamCursorInput]!, where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
+  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
+  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
+  eventOrganizeSupervisorsStream(batchSize: Int!, cursor: [EventOrganizeSupervisorsStreamCursorInput]!, where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
   eventStream(batchSize: Int!, cursor: [EventStreamCursorInput]!, where: EventBoolExp): [Event!]!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
@@ -27327,10 +27327,10 @@ type Subscription {
   tenant(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): [Tenant!]!
   tenantAggregate(distinctOn: [TenantSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrderBy!], where: TenantBoolExp): TenantAggregate!
   tenantByPk(id: bigint!): Tenant
-  tenantManage(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  tenantManageAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
-  tenantManageByPk(id: bigint!): TenantManage
-  tenantManageStream(batchSize: Int!, cursor: [TenantManageStreamCursorInput]!, where: TenantManageBoolExp): [TenantManage!]!
+  tenantOrganize(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  tenantOrganizeAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
+  tenantOrganizeByPk(id: bigint!): TenantOrganize
+  tenantOrganizeStream(batchSize: Int!, cursor: [TenantOrganizeStreamCursorInput]!, where: TenantOrganizeBoolExp): [TenantOrganize!]!
   tenantStream(batchSize: Int!, cursor: [TenantStreamCursorInput]!, where: TenantBoolExp): [Tenant!]!
   thread(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
   threadAggregate(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): ThreadAggregate!
@@ -27815,8 +27815,8 @@ type Team {
   directorsCategoryName: String!
   documents(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): [Document!]!
   documentsAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
-  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   grantFund: LegalUnit
@@ -27852,8 +27852,8 @@ type Team {
   tenant: Tenant!
   tenantGrantFundId: bigint
   tenantId: bigint!
-  tenantManages(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  tenantManagesAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
+  tenantOrganizes(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  tenantOrganizesAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
   type: String!
   video: FileUpload
   videoId: bigint
@@ -27980,8 +27980,8 @@ input TeamBoolExp {
   directorsCategoryName: StringComparisonExp
   documents: DocumentBoolExp
   documentsAggregate: DocumentAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grantFund: LegalUnitBoolExp
@@ -28017,8 +28017,8 @@ input TeamBoolExp {
   tenant: TenantBoolExp
   tenantGrantFundId: BigintComparisonExp
   tenantId: BigintComparisonExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   type: StringComparisonExp
   video: FileUploadBoolExp
   videoId: BigintComparisonExp
@@ -28436,7 +28436,7 @@ input TeamInsertInput {
   deletedAt: timestamptz
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grantFund: LegalUnitObjRelInsertInput
   grants: GrantArrRelInsertInput
@@ -28462,7 +28462,7 @@ input TeamInsertInput {
   tenant: TenantObjRelInsertInput
   tenantGrantFundId: bigint
   tenantId: bigint
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
   type: String
   video: FileUploadObjRelInsertInput
   videoId: bigint
@@ -29075,12 +29075,12 @@ type TeamMember {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
+  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
+  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
   startDate: timestamptz!
-  supervisedEvents(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): [EventManageSupervisors!]!
-  supervisedEventsAggregate(distinctOn: [EventManageSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageSupervisorsOrderBy!], where: EventManageSupervisorsBoolExp): EventManageSupervisorsAggregate!
   supervisedProjects(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
   supervisedProjectsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   team: Team!
@@ -29169,12 +29169,12 @@ input TeamMemberBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   endDate: TimestamptzComparisonExp
+  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
   startDate: TimestamptzComparisonExp
-  supervisedEvents: EventManageSupervisorsBoolExp
-  supervisedEventsAggregate: EventManageSupervisorsAggregateBoolExp
   supervisedProjects: ProjectSupervisorsBoolExp
   supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
@@ -29206,11 +29206,11 @@ input TeamMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
+  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
   startDate: timestamptz
-  supervisedEvents: EventManageSupervisorsArrRelInsertInput
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -29299,11 +29299,11 @@ input TeamMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   endDate: OrderBy
+  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
   startDate: OrderBy
-  supervisedEventsAggregate: EventManageSupervisorsAggregateOrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -30152,7 +30152,7 @@ input TeamOrderBy {
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grantFund: LegalUnitOrderBy
   grantsAggregate: GrantAggregateOrderBy
@@ -30178,7 +30178,7 @@ input TeamOrderBy {
   tenant: TenantOrderBy
   tenantGrantFundId: OrderBy
   tenantId: OrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   type: OrderBy
   video: FileUploadOrderBy
   videoId: OrderBy
@@ -30559,8 +30559,8 @@ type Tenant {
   eventApprovalsAggregate(distinctOn: [EventApprovalSelectColumn!], limit: Int, offset: Int, orderBy: [EventApprovalOrderBy!], where: EventApprovalBoolExp): EventApprovalAggregate!
   eventJoins(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): [EventJoin!]!
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
-  eventManages(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): [EventManage!]!
-  eventManagesAggregate(distinctOn: [EventManageSelectColumn!], limit: Int, offset: Int, orderBy: [EventManageOrderBy!], where: EventManageBoolExp): EventManageAggregate!
+  eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
+  eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   eventValidationForm: Form
   eventValidationFormId: bigint
   events(distinctOn: [EventSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrderBy!], where: EventBoolExp): [Event!]!
@@ -30634,8 +30634,8 @@ type Tenant {
   teamMetricsAggregate(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): TeamMetricAggregate!
   teams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   teamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
-  tenantManages(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): [TenantManage!]!
-  tenantManagesAggregate(distinctOn: [TenantManageSelectColumn!], limit: Int, offset: Int, orderBy: [TenantManageOrderBy!], where: TenantManageBoolExp): TenantManageAggregate!
+  tenantOrganizes(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): [TenantOrganize!]!
+  tenantOrganizesAggregate(distinctOn: [TenantOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [TenantOrganizeOrderBy!], where: TenantOrganizeBoolExp): TenantOrganizeAggregate!
   threads(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): [Thread!]!
   threadsAggregate(distinctOn: [ThreadSelectColumn!], limit: Int, offset: Int, orderBy: [ThreadOrderBy!], where: ThreadBoolExp): ThreadAggregate!
   users(distinctOn: [UserSelectColumn!], limit: Int, offset: Int, orderBy: [UserOrderBy!], where: UserBoolExp): [User!]!
@@ -30774,8 +30774,8 @@ input TenantBoolExp {
   eventApprovalsAggregate: EventApprovalAggregateBoolExp
   eventJoins: EventJoinBoolExp
   eventJoinsAggregate: EventJoinAggregateBoolExp
-  eventManages: EventManageBoolExp
-  eventManagesAggregate: EventManageAggregateBoolExp
+  eventOrganizes: EventOrganizeBoolExp
+  eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   eventValidationForm: FormBoolExp
   eventValidationFormId: BigintComparisonExp
   events: EventBoolExp
@@ -30849,8 +30849,8 @@ input TenantBoolExp {
   teamMetricsAggregate: TeamMetricAggregateBoolExp
   teams: TeamBoolExp
   teamsAggregate: TeamAggregateBoolExp
-  tenantManages: TenantManageBoolExp
-  tenantManagesAggregate: TenantManageAggregateBoolExp
+  tenantOrganizes: TenantOrganizeBoolExp
+  tenantOrganizesAggregate: TenantOrganizeAggregateBoolExp
   threads: ThreadBoolExp
   threadsAggregate: ThreadAggregateBoolExp
   users: UserBoolExp
@@ -30902,7 +30902,7 @@ input TenantInsertInput {
   eventApprovalSteps: EventApprovalStepArrRelInsertInput
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
-  eventManages: EventManageArrRelInsertInput
+  eventOrganizes: EventOrganizeArrRelInsertInput
   eventValidationForm: FormObjRelInsertInput
   eventValidationFormId: bigint
   events: EventArrRelInsertInput
@@ -30945,389 +30945,11 @@ input TenantInsertInput {
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
-  tenantManages: TenantManageArrRelInsertInput
+  tenantOrganizes: TenantOrganizeArrRelInsertInput
   threads: ThreadArrRelInsertInput
   users: UserArrRelInsertInput
   validations: ValidationArrRelInsertInput
   votes: VoteArrRelInsertInput
-}
-
-type TenantManage {
-  campusCluster: CampusCluster!
-  campusClusterId: bigint!
-  createdAt: timestamptz!
-  createdBy: Individual
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint!
-  team: Team!
-  teamId: bigint!
-  tenant: Tenant!
-  tenantId: bigint!
-  type: String!
-}
-
-type TenantManageAggregate {
-  aggregate: TenantManageAggregateFields
-  nodes: [TenantManage!]!
-}
-
-input TenantManageAggregateBoolExp {
-  count: tenantManageAggregateBoolExpCount
-}
-
-input tenantManageAggregateBoolExpCount {
-  arguments: [TenantManageSelectColumn!]
-  distinct: Boolean
-  filter: TenantManageBoolExp
-  predicate: IntComparisonExp!
-}
-
-type TenantManageAggregateFields {
-  avg: TenantManageAvgFields
-  count(columns: [TenantManageSelectColumn!], distinct: Boolean): Int!
-  max: TenantManageMaxFields
-  min: TenantManageMinFields
-  stddev: TenantManageStddevFields
-  stddevPop: TenantManageStddevPopFields
-  stddevSamp: TenantManageStddevSampFields
-  sum: TenantManageSumFields
-  varPop: TenantManageVarPopFields
-  varSamp: TenantManageVarSampFields
-  variance: TenantManageVarianceFields
-}
-
-input TenantManageAggregateOrderBy {
-  avg: TenantManageAvgOrderBy
-  count: OrderBy
-  max: TenantManageMaxOrderBy
-  min: TenantManageMinOrderBy
-  stddev: TenantManageStddevOrderBy
-  stddevPop: TenantManageStddevPopOrderBy
-  stddevSamp: TenantManageStddevSampOrderBy
-  sum: TenantManageSumOrderBy
-  varPop: TenantManageVarPopOrderBy
-  varSamp: TenantManageVarSampOrderBy
-  variance: TenantManageVarianceOrderBy
-}
-
-input TenantManageArrRelInsertInput {
-  data: [TenantManageInsertInput!]!
-  onConflict: TenantManageOnConflict
-}
-
-type TenantManageAvgFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageAvgOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input TenantManageBoolExp {
-  _and: [TenantManageBoolExp!]
-  _not: TenantManageBoolExp
-  _or: [TenantManageBoolExp!]
-  campusCluster: CampusClusterBoolExp
-  campusClusterId: BigintComparisonExp
-  createdAt: TimestamptzComparisonExp
-  createdBy: IndividualBoolExp
-  createdById: BigintComparisonExp
-  deletedAt: TimestamptzComparisonExp
-  hiddenAt: TimestamptzComparisonExp
-  id: BigintComparisonExp
-  team: TeamBoolExp
-  teamId: BigintComparisonExp
-  tenant: TenantBoolExp
-  tenantId: BigintComparisonExp
-  type: StringComparisonExp
-}
-
-enum TenantManageConstraint {
-  tenant_manage_pkey
-}
-
-input TenantManageIncInput {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input TenantManageInsertInput {
-  campusCluster: CampusClusterObjRelInsertInput
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdBy: IndividualObjRelInsertInput
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  team: TeamObjRelInsertInput
-  teamId: bigint
-  tenant: TenantObjRelInsertInput
-  tenantId: bigint
-  type: String
-}
-
-type TenantManageMaxFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-input TenantManageMaxOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-type TenantManageMinFields {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-input TenantManageMinOrderBy {
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-type TenantManageMutationResponse {
-  affectedRows: Int!
-  returning: [TenantManage!]!
-}
-
-input TenantManageOnConflict {
-  constraint: TenantManageConstraint!
-  updateColumns: [TenantManageUpdateColumn!]! = []
-  where: TenantManageBoolExp
-}
-
-input TenantManageOrderBy {
-  campusCluster: CampusClusterOrderBy
-  campusClusterId: OrderBy
-  createdAt: OrderBy
-  createdBy: IndividualOrderBy
-  createdById: OrderBy
-  deletedAt: OrderBy
-  hiddenAt: OrderBy
-  id: OrderBy
-  team: TeamOrderBy
-  teamId: OrderBy
-  tenant: TenantOrderBy
-  tenantId: OrderBy
-  type: OrderBy
-}
-
-input TenantManagePkColumnsInput {
-  id: bigint!
-}
-
-enum TenantManageSelectColumn {
-  campusClusterId
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  teamId
-  tenantId
-  type
-}
-
-input TenantManageSetInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-type TenantManageStddevFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageStddevOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type TenantManageStddevPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageStddevPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type TenantManageStddevSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageStddevSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-input TenantManageStreamCursorInput {
-  initialValue: TenantManageStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input TenantManageStreamCursorValueInput {
-  campusClusterId: bigint
-  createdAt: timestamptz
-  createdById: bigint
-  deletedAt: timestamptz
-  hiddenAt: timestamptz
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-  type: String
-}
-
-type TenantManageSumFields {
-  campusClusterId: bigint
-  createdById: bigint
-  id: bigint
-  teamId: bigint
-  tenantId: bigint
-}
-
-input TenantManageSumOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-enum TenantManageUpdateColumn {
-  campusClusterId
-  createdAt
-  createdById
-  deletedAt
-  hiddenAt
-  id
-  teamId
-  tenantId
-  type
-}
-
-input TenantManageUpdates {
-  _inc: TenantManageIncInput
-  _set: TenantManageSetInput
-  where: TenantManageBoolExp!
-}
-
-type TenantManageVarianceFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageVarianceOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type TenantManageVarPopFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageVarPopOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
-}
-
-type TenantManageVarSampFields {
-  campusClusterId: Float
-  createdById: Float
-  id: Float
-  teamId: Float
-  tenantId: Float
-}
-
-input TenantManageVarSampOrderBy {
-  campusClusterId: OrderBy
-  createdById: OrderBy
-  id: OrderBy
-  teamId: OrderBy
-  tenantId: OrderBy
 }
 
 type TenantMaxFields {
@@ -31441,7 +31063,7 @@ input TenantOrderBy {
   eventApprovalStepsAggregate: EventApprovalStepAggregateOrderBy
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
-  eventManagesAggregate: EventManageAggregateOrderBy
+  eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   eventValidationForm: FormOrderBy
   eventValidationFormId: OrderBy
   eventsAggregate: EventAggregateOrderBy
@@ -31484,11 +31106,389 @@ input TenantOrderBy {
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy
-  tenantManagesAggregate: TenantManageAggregateOrderBy
+  tenantOrganizesAggregate: TenantOrganizeAggregateOrderBy
   threadsAggregate: ThreadAggregateOrderBy
   usersAggregate: UserAggregateOrderBy
   validationsAggregate: ValidationAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
+}
+
+type TenantOrganize {
+  campusCluster: CampusCluster!
+  campusClusterId: bigint!
+  createdAt: timestamptz!
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+  individual: Individual
+  team: Team!
+  teamId: bigint!
+  tenant: Tenant!
+  tenantId: bigint!
+  type: String!
+}
+
+type TenantOrganizeAggregate {
+  aggregate: TenantOrganizeAggregateFields
+  nodes: [TenantOrganize!]!
+}
+
+input TenantOrganizeAggregateBoolExp {
+  count: tenantOrganizeAggregateBoolExpCount
+}
+
+input tenantOrganizeAggregateBoolExpCount {
+  arguments: [TenantOrganizeSelectColumn!]
+  distinct: Boolean
+  filter: TenantOrganizeBoolExp
+  predicate: IntComparisonExp!
+}
+
+type TenantOrganizeAggregateFields {
+  avg: TenantOrganizeAvgFields
+  count(columns: [TenantOrganizeSelectColumn!], distinct: Boolean): Int!
+  max: TenantOrganizeMaxFields
+  min: TenantOrganizeMinFields
+  stddev: TenantOrganizeStddevFields
+  stddevPop: TenantOrganizeStddevPopFields
+  stddevSamp: TenantOrganizeStddevSampFields
+  sum: TenantOrganizeSumFields
+  varPop: TenantOrganizeVarPopFields
+  varSamp: TenantOrganizeVarSampFields
+  variance: TenantOrganizeVarianceFields
+}
+
+input TenantOrganizeAggregateOrderBy {
+  avg: TenantOrganizeAvgOrderBy
+  count: OrderBy
+  max: TenantOrganizeMaxOrderBy
+  min: TenantOrganizeMinOrderBy
+  stddev: TenantOrganizeStddevOrderBy
+  stddevPop: TenantOrganizeStddevPopOrderBy
+  stddevSamp: TenantOrganizeStddevSampOrderBy
+  sum: TenantOrganizeSumOrderBy
+  varPop: TenantOrganizeVarPopOrderBy
+  varSamp: TenantOrganizeVarSampOrderBy
+  variance: TenantOrganizeVarianceOrderBy
+}
+
+input TenantOrganizeArrRelInsertInput {
+  data: [TenantOrganizeInsertInput!]!
+  onConflict: TenantOrganizeOnConflict
+}
+
+type TenantOrganizeAvgFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeAvgOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input TenantOrganizeBoolExp {
+  _and: [TenantOrganizeBoolExp!]
+  _not: TenantOrganizeBoolExp
+  _or: [TenantOrganizeBoolExp!]
+  campusCluster: CampusClusterBoolExp
+  campusClusterId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  individual: IndividualBoolExp
+  team: TeamBoolExp
+  teamId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  type: StringComparisonExp
+}
+
+enum TenantOrganizeConstraint {
+  tenant_organize_pkey
+}
+
+input TenantOrganizeIncInput {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input TenantOrganizeInsertInput {
+  campusCluster: CampusClusterObjRelInsertInput
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  individual: IndividualObjRelInsertInput
+  team: TeamObjRelInsertInput
+  teamId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  type: String
+}
+
+type TenantOrganizeMaxFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+input TenantOrganizeMaxOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type TenantOrganizeMinFields {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+input TenantOrganizeMinOrderBy {
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+type TenantOrganizeMutationResponse {
+  affectedRows: Int!
+  returning: [TenantOrganize!]!
+}
+
+input TenantOrganizeOnConflict {
+  constraint: TenantOrganizeConstraint!
+  updateColumns: [TenantOrganizeUpdateColumn!]! = []
+  where: TenantOrganizeBoolExp
+}
+
+input TenantOrganizeOrderBy {
+  campusCluster: CampusClusterOrderBy
+  campusClusterId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  individual: IndividualOrderBy
+  team: TeamOrderBy
+  teamId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  type: OrderBy
+}
+
+input TenantOrganizePkColumnsInput {
+  id: bigint!
+}
+
+enum TenantOrganizeSelectColumn {
+  campusClusterId
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  teamId
+  tenantId
+  type
+}
+
+input TenantOrganizeSetInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+type TenantOrganizeStddevFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeStddevOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type TenantOrganizeStddevPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeStddevPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type TenantOrganizeStddevSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeStddevSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+input TenantOrganizeStreamCursorInput {
+  initialValue: TenantOrganizeStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input TenantOrganizeStreamCursorValueInput {
+  campusClusterId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+  type: String
+}
+
+type TenantOrganizeSumFields {
+  campusClusterId: bigint
+  createdById: bigint
+  id: bigint
+  teamId: bigint
+  tenantId: bigint
+}
+
+input TenantOrganizeSumOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+enum TenantOrganizeUpdateColumn {
+  campusClusterId
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
+  teamId
+  tenantId
+  type
+}
+
+input TenantOrganizeUpdates {
+  _inc: TenantOrganizeIncInput
+  _set: TenantOrganizeSetInput
+  where: TenantOrganizeBoolExp!
+}
+
+type TenantOrganizeVarianceFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeVarianceOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type TenantOrganizeVarPopFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeVarPopOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
+}
+
+type TenantOrganizeVarSampFields {
+  campusClusterId: Float
+  createdById: Float
+  id: Float
+  teamId: Float
+  tenantId: Float
+}
+
+input TenantOrganizeVarSampOrderBy {
+  campusClusterId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  teamId: OrderBy
+  tenantId: OrderBy
 }
 
 input TenantPkColumnsInput {

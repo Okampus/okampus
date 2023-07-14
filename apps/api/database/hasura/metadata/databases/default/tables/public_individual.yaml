@@ -173,12 +173,12 @@ array_relationships:
         table:
           name: event_join
           schema: public
-  - name: createdEventManages
+  - name: createdEventOrganizes
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: event_manage
+          name: event_organize
           schema: public
   - name: createdEvents
     using:
@@ -404,12 +404,12 @@ array_relationships:
         table:
           name: team
           schema: public
-  - name: createdTenantManages
+  - name: createdTenantOrganizes
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: tenant_manage
+          name: tenant_organize
           schema: public
   - name: createdTenants
     using:

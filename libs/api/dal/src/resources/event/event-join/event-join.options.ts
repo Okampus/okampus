@@ -5,7 +5,7 @@ import type { EventJoinProps } from '@okampus/shared/dtos';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { User } from '../../individual/user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { EventManage } from '../event-manage/event-manage.entity';
+import type { EventOrganize } from '../event-organize/event-organize.entity';
 import type { ProcessedVia } from '@okampus/shared/enums';
 import type { Individual } from '../../individual/individual.entity';
 
@@ -19,7 +19,7 @@ export type EventJoinOptions = EventJoinProps &
     participationProcessedVia?: ProcessedVia | null;
     event: Event;
     joinedBy: User;
-    joinedFor?: EventManage | null;
+    joinedFor?: EventOrganize | null;
     qrCode?: FileUpload | null;
     actions?: Action[];
     formSubmission?: FormSubmission | null;

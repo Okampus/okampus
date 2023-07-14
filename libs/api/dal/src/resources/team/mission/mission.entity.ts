@@ -17,7 +17,7 @@ import { Colors } from '@okampus/shared/enums';
 import type { MissionOptions } from './mission.options';
 import type { Team } from '../team.entity';
 import type { MissionJoin } from '../mission-join/mission-join.entity';
-import type { EventManage } from '../../event/event-manage/event-manage.entity';
+import type { EventOrganize } from '../../event/event-organize/event-organize.entity';
 import type { Project } from '../../project/project.entity';
 
 @Entity({ customRepository: () => MissionRepository })
@@ -51,8 +51,8 @@ export class Mission extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'EventManage', nullable: true, default: null })
-  eventManage: EventManage | null = null;
+  @ManyToOne({ type: 'EventOrganize', nullable: true, default: null })
+  eventManage: EventOrganize | null = null;
 
   @ManyToOne({ type: 'Project', nullable: true, default: null })
   project: Project | null = null;

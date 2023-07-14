@@ -15,12 +15,12 @@ object_relationships:
     using:
       foreign_key_constraint_on: user_id
 array_relationships:
-  - name: supervisedEvents
+  - name: eventOrganizeSupervisors
     using:
       foreign_key_constraint_on:
         column: team_member_id
         table:
-          name: event_manage_supervisors
+          name: event_organize_supervisors
           schema: public
   - name: supervisedProjects
     using:

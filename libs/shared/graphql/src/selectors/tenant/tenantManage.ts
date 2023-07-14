@@ -1,4 +1,4 @@
-import { tenantManageBaseInfo } from './tenantManage/tenantManageBase';
+import { tenantOrganizeBaseInfo } from './tenantOrganize/tenantOrganizeBase';
 import { tenantDetailsInfo } from './tenantDetails';
 import { teamManageInfo } from '../team/teamManage';
 import { Selector } from '../../zeus';
@@ -7,6 +7,6 @@ import type { GraphQLTypes, InputType } from '../../zeus';
 export const tenantManageInfo = Selector('Tenant')({
   ...tenantDetailsInfo,
   adminTeam: teamManageInfo,
-  tenantManages: [{}, tenantManageBaseInfo],
+  tenantOrganizes: [{}, tenantOrganizeBaseInfo],
 });
-export type TenantManageInfo = InputType<GraphQLTypes['Tenant'], typeof tenantManageInfo>;
+export type TenantOrganizeInfo = InputType<GraphQLTypes['Tenant'], typeof tenantManageInfo>;
