@@ -3,6 +3,7 @@ import { Selector } from '../../../zeus';
 import { individualBaseInfo } from '../../individual/individualBase';
 
 import { formSubmissionBaseInfo } from '../../formSubmission/formSubmissionBase';
+import { individualWithUserInfo } from '../../individual/individualWithUser';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
 export const eventJoinDetailsInfo = Selector('EventJoin')({
@@ -12,7 +13,7 @@ export const eventJoinDetailsInfo = Selector('EventJoin')({
   processedAt: true,
   participationProcessedVia: true,
   participationProcessedAt: true,
-  participationProcessedBy: individualBaseInfo,
+  participationProcessedBy: individualWithUserInfo,
   isPresent: true,
   state: true,
 });

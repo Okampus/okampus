@@ -84,7 +84,7 @@ export class EventsService extends RequestContext {
     this.hasuraService.expectNestedRelationship(props, [
       { path: 'content' },
       { path: 'location' },
-      { path: 'eventManages' },
+      { path: 'eventOrganizes' },
     ]);
 
     return true;

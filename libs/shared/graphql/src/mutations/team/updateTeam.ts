@@ -5,7 +5,6 @@ import { typedGql } from '../../zeus/typedDocumentNode';
 
 import type { ValueTypes } from '../../zeus';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const updateTeamMutation = typedGql('mutation')({
   updateTeamByPk: [

@@ -123,9 +123,9 @@ export class HasuraService extends RequestContext {
 
   async makeOperation(operation: string) {
     const headers = { 'X-Hasura-Role': 'admin' };
-    this.logger.log(`Request — ${JSON.stringify(operation)}`);
+    this.logger.debug(`Request — ${JSON.stringify(operation)}`);
     const response = await this.axiosInstance.request({ data: { query: operation }, headers });
-    this.logger.log(`Response — ${JSON.stringify(response.data)}`);
+    this.logger.debug(`Response — ${JSON.stringify(response.data)}`);
 
     if (response.data.errors) throw new BadRequestException(response.data.errors);
     return response.data.data;

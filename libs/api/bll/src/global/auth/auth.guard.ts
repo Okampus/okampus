@@ -6,7 +6,7 @@ import { requestContext } from '@fastify/request-context';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
@@ -51,6 +51,8 @@ type AuthInfo = { token: string; tokenType: Exclude<TokenType, TokenType.MeiliSe
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  logger = new Logger(AuthGuard.name);
+
   issuer: string;
   reflector: Reflector;
 

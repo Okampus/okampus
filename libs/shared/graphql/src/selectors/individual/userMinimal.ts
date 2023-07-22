@@ -1,13 +1,14 @@
 import { Selector } from '../../zeus';
-
 import { entityBase } from '../entityBase';
-import { actorImageBaseInfo } from '../actor/actorImage/actorImageBase';
+import { actorMinimalInfo } from '../actor/actorMinimal';
+
 import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const userMinimalInfo = Selector('User')({
   ...entityBase,
-  individual: {
-    actor: { actorImages: [{ where: { lastActiveDate: { _isNull: true } } }, actorImageBaseInfo], name: true },
-  },
+  firstName: true,
+  lastName: true,
+  tenantId: true,
+  individual: { ...entityBase, actor: actorMinimalInfo },
 });
 export type UserMinimalInfo = InputType<GraphQLTypes['User'], typeof userMinimalInfo>;
