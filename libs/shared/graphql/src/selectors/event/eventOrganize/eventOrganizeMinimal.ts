@@ -6,10 +6,10 @@ import { teamMemberWithUser } from '../../team/teamMember/teamMemberWithUser';
 
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
-export const eventManageMinimalInfo = Selector('EventOrganize')({
+export const eventOrganizeMinimalInfo = Selector('EventOrganize')({
   ...entityBase,
   team: teamBaseInfo,
   project: projectMinimalInfo,
   supervisors: [{}, { teamMember: teamMemberWithUser }],
 });
-export type EventOrganizeMinimalInfo = InputType<GraphQLTypes['EventOrganize'], typeof eventManageMinimalInfo>;
+export type EventOrganizeMinimalInfo = InputType<GraphQLTypes['EventOrganize'], typeof eventOrganizeMinimalInfo>;

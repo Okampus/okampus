@@ -71,7 +71,7 @@ export class Project extends TenantScopedEntity {
 
   @OneToMany({ type: 'EventOrganize', mappedBy: 'project' })
   @TransformCollection()
-  eventManages = new Collection<EventOrganize>(this);
+  eventOrganizes = new Collection<EventOrganize>(this);
 
   @OneToMany({ type: 'Mission', mappedBy: 'project' })
   @TransformCollection()

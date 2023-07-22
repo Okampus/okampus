@@ -113,7 +113,7 @@ export class Event extends TenantScopedEntity implements Searchable {
 
   @OneToMany({ type: 'EventOrganize', mappedBy: 'event' })
   @TransformCollection()
-  eventManages = new Collection<EventOrganize>(this);
+  eventOrganizes = new Collection<EventOrganize>(this);
 
   constructor(options: EventOptions) {
     super(options);
