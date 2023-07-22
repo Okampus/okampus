@@ -1,0 +1,36 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px #ffe57c inset !important;
+
+  -webkit-text-fill-color: var(--text-0) !important;
+
+  .dark & {
+    box-shadow: 0 0 0 30px #857222 inset !important;
+  }
+}
+
+.input {
+  @apply rounded-md px-3.5 tracking-tight text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)];
+  &[type='date'] {
+    @apply px-2.5;
+  }
+}
+
+.input-label {
+  transition: background-color 0.25s, color 0.25s, top 0.25s, font-weight 0.25s, font-size 0.25s !important;
+  @apply absolute opacity-50 w-[calc(100%-0.75rem)] px-3 left-[2px] right-2 top-3.5 text-[var(--text-1)] font-medium line-clamp-1 pointer-events-none text-left rounded-t-lg;
+}
+
+input:not(:placeholder-shown) ~ .input-label,
+textarea:not(:placeholder-shown) ~ .input-label,
+.input:focus ~ .input-label,
+.input:hover ~ .input-label,
+.selected.input-label {
+  @apply top-0 pb-1 pt-1.5 text-xs text-[var(--text-2)] opacity-100;
+}
+
+[type='checkbox']:checked {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 16 16' fill='%23fff' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L6.5 9.086l4.293-4.293a1 1 0 0 1 1.414 0z'/%3E%3C/svg%3E");
+}

@@ -1,0 +1,21 @@
+{
+  "actions": {
+    "Create": "created {{entityName, determiner_definite}})",
+    "Delete": "deleted {{entityName, determiner_definite}}",
+    "Hide": "hid {{entityName, determiner_definite}}",
+    "Update": {
+      "default": "modified {{fieldName, determiner_definite}}",
+      "fields": "modified {{count}} fields"
+    }
+  },
+  "manage": {
+    "team": "Manage team",
+    "event": "Manage event",
+    "tenant": "Manage portal"
+  },
+  "public": {
+    "event": "View event",
+    "team": "View team",
+    "tenant": "View portal"
+  }
+}

@@ -1,7 +1,6 @@
 import { ReactComponent as PlusFilledIcon } from '@okampus/assets/svg/icons/material/outlined/add.svg';
 
 import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Handle, Position } from 'reactflow';
 
 import type { EventApprovalStepDetailsInfo } from '@okampus/shared/graphql';
@@ -12,7 +11,7 @@ export type EventApprovalStepNodeProps = {
 };
 // { eventApprovalStep: EventApprovalStepDetailsInfo };
 function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectable }: EventApprovalStepNodeProps) {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   const nextStepsCount = eventApprovalStep.nextSteps.length;
   const nextHandles = eventApprovalStep.nextSteps.map((nextStep, i) => (
@@ -49,7 +48,7 @@ function EventApprovalStepNodeWrapper({ data: { eventApprovalStep }, isConnectab
           <div className="title-sm">{eventApprovalStep.name}</div>
           <div className="subtitle-sm">{eventApprovalStep.name}</div>
           <div className="subtitle-sm !text-[var(--text-0)]">
-            {t('validator', { count: validatorsCount })} • {t('notifiee', { count: notifieesCount })}
+            {/* {t('validator', { count: validatorsCount })} • {t('notifiee', { count: notifieesCount })} */}
           </div>
         </div>
         {eventApprovalStep.nextSteps.length === 0 && (

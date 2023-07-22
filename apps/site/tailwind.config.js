@@ -6,21 +6,14 @@ const { join } = require('node:path');
 module.exports = {
   darkMode: 'class', // or 'media' or 'class's
   content: [
-    join(__dirname, '{src,pages,components}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
+    join(__dirname, '{app,components}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
     extend: {
-      gap: {
-        item: '.85rem',
-      },
       fontSize: {
         xxs: '.625rem',
         modest: '0.925rem',
-      },
-      fontFamily: {
-        sans: ['ClarityCity', ...defaultTheme.fontFamily.sans],
-        mono: ['ChivoMono', ...defaultTheme.fontFamily.mono],
       },
       screens: {
         xxs: '361px',
@@ -28,7 +21,7 @@ module.exports = {
         ...defaultTheme.screens,
         md: '896px',
         xl: '1250px',
-        '3xl': '1800px',
+        '3xl': '1700px',
         'xxs-max': { max: '360px' },
         'xs-max': { max: '407px' },
         'sm-max': { max: '639px' },
@@ -36,9 +29,9 @@ module.exports = {
         'lg-max': { max: '1023px' },
         'xl-max': { max: '1249px' },
         '2xl-max': { max: '1535px' },
-        '3xl-max': { max: '1799px' },
-        short: { raw: '(max-height: 500px)' },
-        tall: { raw: '(min-height: 500px)' },
+        '3xl-max': { max: '1699px' },
+        short: { raw: '(max-height: 400px)' },
+        tall: { raw: '(min-height: 400px)' },
       },
     },
   },

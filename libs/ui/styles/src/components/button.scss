@@ -48,7 +48,7 @@
 
 .button-circle-bordered {
   @extend %button-circle;
-  @apply border border-[var(--border-5)];
+  @apply border border-[var(--border-light)];
 }
 
 .button-list {

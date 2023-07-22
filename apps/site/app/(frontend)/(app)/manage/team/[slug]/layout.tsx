@@ -1,0 +1,39 @@
+import SideBar from '../../../../../../components/layouts/SideBar';
+import EventManageButton from '../../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
+import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarBanner';
+import TeamManageNavigation from '../../../../../../components/layouts/SideBar/TeamManageNavigation';
+import TeamManageSidePanel from '../../../../../../components/layouts/SidePanel/TeamManageSidePanel';
+
+import ApolloSubscribe from '../../../../../../components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteCache';
+
+import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
+import { getBanner } from '../../../../../../utils/actor-image/get-banner';
+
+import { teamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '@okampus/shared/graphql';
+
+type ManageTeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
+export default async function ManageTeamLayout({ children, params }: ManageTeamLayoutProps) {
+  const query = [{ where: { actor: { slug: { _eq: params.slug } } }, limit: 1 }, teamManageInfo];
+  const [teamManage] = await getApolloQuery<TeamManageInfo[]>('team', query, true).catch((error) => {
+    console.error(error);
+    return [];
+  });
+
+  if (!teamManage) return null;
+
+  return (
+    <>
+      <ApolloWriteCache values={[[teamManage, teamManageInfo]]} />
+      <ApolloSubscribe selector={{ teamByPk: [{ id: teamManage.id }, teamManageInfo] }} />
+      <SideBar>
+        <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />
+        <EventManageButton slug={params.slug} manage={false} />
+        <TeamManageNavigation slug={params.slug} />
+      </SideBar>
+      {children}
+      <TeamManageSidePanel id={teamManage.id} />
+    </>
+  );
+}
