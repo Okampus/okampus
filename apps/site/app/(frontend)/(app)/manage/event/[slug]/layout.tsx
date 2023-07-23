@@ -1,5 +1,6 @@
 import GroupItem from '../../../../../../components/atoms/Item/GroupItem';
 import SideBar from '../../../../../../components/layouts/SideBar';
+import EventManageSidePanel from '../../../../../../components/layouts/SidePanel/EventManageSidePanel';
 import EventManageButton from '../../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
 import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarBanner';
 import LinkList from '../../../../../../components/molecules/List/LinkList';
@@ -63,6 +64,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         />
       </SideBar>
       {children}
+      <EventManageSidePanel id={eventManage.id} />
     </>
   );
 }

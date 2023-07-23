@@ -23,8 +23,6 @@ export function useTranslation() {
   const [formatters, setFormatters] = useAtom(formattersAtom);
   const [determiners] = useAtom(determinersAtom);
 
-  console.log('Dict', dict);
-
   const format: Format = (key, data) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (formatters[key]) return formatters[key].format(data as any);

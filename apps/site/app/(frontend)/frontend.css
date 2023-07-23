@@ -49,6 +49,10 @@ body {
   @apply w-fit relative font-medium text-[var(--text-0)] hover:bg-[var(--bg-2)] rounded-sm text-sm p-[1px] cursor-pointer after:h-px after:absolute after:w-full after:-bottom-px after:left-0 after:bg-[var(--bg-opposite)];
 }
 
+.more-button {
+  @apply w-fit relative font-semibold text-blue-400 text-base;
+}
+
 .icon-sm {
   @apply h-5 aspect-square;
 }

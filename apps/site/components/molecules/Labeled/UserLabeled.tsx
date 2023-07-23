@@ -2,11 +2,11 @@ import AvatarLabeled from './AvatarLabeled';
 import UserPopoverCard from '../PopoverCard/UserPopoverCard';
 
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import type { IndividualBaseInfo } from '@okampus/shared/graphql';
+import type { IndividualMinimalInfo } from '@okampus/shared/graphql';
 
 export type UserLabeledProps = {
   id: string;
-  individual?: IndividualBaseInfo;
+  individual?: IndividualMinimalInfo;
   label?: React.ReactNode;
   full?: boolean;
   content?: React.ReactNode;

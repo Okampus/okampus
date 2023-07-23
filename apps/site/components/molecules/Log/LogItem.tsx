@@ -40,14 +40,14 @@ function getPayload(
     const count = diffFields.length;
     if (count > 1) {
       const entityName = t(`entities.entityNames.${log.entityName}`, {});
-      return { actionType: `common:actions.Update.fields`, payload: { entityName, count } };
+      return { actionType: `common.actions.Update.fields`, payload: { entityName, count } };
     }
     const fieldName = t(`entities.fieldNames.${diffFields[0]}`, {});
-    return { actionType: `common:actions.Update.default`, payload: { fieldName } };
+    return { actionType: `common.actions.Update.default`, payload: { fieldName } };
   }
 
   return {
-    actionType: `common:actions.${log.eventType}`,
+    actionType: `common.actions.${log.eventType}`,
     payload: { entityName: t(`entities.entityNames.${log.entityName}`, {}) },
   };
 }
