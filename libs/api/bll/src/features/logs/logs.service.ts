@@ -13,11 +13,13 @@ import {
   FinanceRepository,
   TeamRepository,
   TenantRepository,
+  EventRepository,
 } from '@okampus/api/dal';
 
 import {
   // ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -40,9 +42,12 @@ export type LogContext = {
 
 @Injectable()
 export class LogsService extends RequestContext {
+  private readonly logger = new Logger(LogsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly logRepository: LogRepository,
+    private readonly eventRepository: EventRepository,
     private readonly financeRepository: FinanceRepository,
     private readonly teamRepository: TeamRepository,
     private readonly tenantRepository: TenantRepository
@@ -158,11 +163,13 @@ export class LogsService extends RequestContext {
 
     // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
 
-    const event = await this.financeRepository.findOne({ id });
+    const event = await this.eventRepository.findOne({ id });
     if (!event) throw new NotFoundException(`Event (${id}) not found.`);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return await this.logRepository.find({ event: { id } }, { populate: this.autoPopulate() as any });
+    const logs = await this.logRepository.find({ event: { id } }, { populate: this.autoPopulate() as any });
+    this.logger.log('Log', logs);
+    return logs;
   }
 
   public async getFinanceLogs(id: string) {

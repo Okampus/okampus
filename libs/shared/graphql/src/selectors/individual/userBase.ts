@@ -1,11 +1,11 @@
 import { userMinimalInfo } from './userMinimal';
-import { individualMinimalInfo } from './individualMinimal';
+import { individualBaseInfo } from './individualBase';
 import { Selector } from '../../zeus';
 
 import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const userBaseInfo = Selector('User')({
   ...userMinimalInfo,
-  individual: individualMinimalInfo,
+  individual: individualBaseInfo,
 });
 export type UserBaseInfo = InputType<GraphQLTypes['User'], typeof userBaseInfo>;

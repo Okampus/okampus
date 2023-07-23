@@ -6,6 +6,7 @@ import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const actorMinimalInfo = Selector('Actor')({
   ...entityBase,
+  email: true,
   name: true,
   slug: true,
   website: true,
