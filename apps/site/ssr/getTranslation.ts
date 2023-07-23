@@ -21,7 +21,10 @@ import path from 'node:path';
 import type { Format, Formatters } from '../locales/i18n';
 import type { TOptions } from '../utils/i18n/translate';
 
-const localePathBase = path.join(process.cwd(), 'locales');
+const localePathBase = path.join(
+  process.cwd().split('okampus').slice(0, -1).join('okampus'),
+  'okampus/apps/site/locales'
+);
 
 const loadPath = async (lang: string, subPath: string) => {
   try {
