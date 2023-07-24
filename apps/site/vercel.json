@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/locales/route.ts": {
+      "includeFiles": "locales/**"
+    }
+  }
+}

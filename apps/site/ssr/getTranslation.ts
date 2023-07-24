@@ -21,20 +21,10 @@ import path from 'node:path';
 import type { Format, Formatters } from '../config/i18n';
 import type { TOptions } from '../utils/i18n/translate';
 
-const localePathBase = path.join(process.cwd(), process.env.NEXT_PUBLIC_STATIC_FOLDER_PATH ?? '', 'locales');
+const localePathBase = path.join(process.cwd(), 'locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
-    const dict = await fs.readFile(path.join(localePathBase, lang, subPath), 'utf8');
-    return JSON.parse(dict);
-  } catch {
-    return {};
-  }
-};
-
-const loadFolderPath = async (lang: string, folder: string, subPath: string) => {
-  try {
-    const dict = await fs.readFile(path.join(localePathBase, lang, folder, subPath), 'utf8');
-    return JSON.parse(dict);
+    return await fetch(`/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());
   } catch {
     return {};
   }
@@ -67,14 +57,14 @@ const cachedDict = cache(async function getDict(lang: string) {
   );
 
   await Promise.all(
-    subPaths.filter(isNotNull).flatMap(async ([path, subPaths]) => {
+    subPaths.filter(isNotNull).flatMap(async ([_path, subPaths]) => {
       const promise =
         subPaths.length === 0
-          ? loadPath(lang, path).then((dict) => (dicts[path.split('.json')[0]] = dict))
+          ? loadPath(lang, _path).then((dict) => (dicts[_path.split('.json')[0]] = dict))
           : Promise.all(
               subPaths.map((subPath) =>
-                loadFolderPath(lang, path, subPath).then(
-                  (dict) => (dicts[`${path}.${subPath.split('.json')[0]}`] = dict)
+                loadPath(lang, path.join(_path, subPath)).then(
+                  (dict) => (dicts[`${_path}.${subPath.split('.json')[0]}`] = dict)
                 )
               )
               // eslint-disable-next-line @typescript-eslint/no-empty-function
