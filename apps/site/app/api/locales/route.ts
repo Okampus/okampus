@@ -2,23 +2,23 @@ import { availableLocales, fallbackBaseLocales } from '../../../config/i18n';
 import { isIn, isKey } from '@okampus/shared/utils';
 
 import { promises as fs } from 'node:fs';
-import * as nodePath from 'node:path';
+import path from 'node:path';
 
 export async function GET(request: Request) {
+  const basePath = path.resolve('locales');
+
   const { searchParams } = new URL(request.url);
   let lang = searchParams.get('lang');
   if (!lang) return new Response('Missing lang', { status: 400 });
-
-  let path = searchParams.get('path');
-  if (!path) return new Response('Missing path', { status: 400 });
 
   if (!isIn(lang, availableLocales)) {
     if (isKey(lang, fallbackBaseLocales)) lang = fallbackBaseLocales[lang];
     else return new Response(`Invalid locale: ${lang}`, { status: 400 });
   }
 
-  path = nodePath.posix.normalize(path);
+  const dictPath = searchParams.get('dictPath');
+  if (!dictPath) return new Response('Missing dictPath', { status: 400 });
 
-  const dict = await fs.readFile(nodePath.join(process.cwd(), 'locales', lang, path), 'utf8');
+  const dict = await fs.readFile(path.join(basePath, lang, path.posix.normalize(dictPath)), 'utf8');
   return new Response(dict, { headers: { 'Content-Type': 'application/json' } });
 }
