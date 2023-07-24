@@ -1,4 +1,4 @@
-import { availableLocales, fallbackBaseLocale, fallbackLocale } from '../config/i18n';
+import { availableLocales, fallbackBaseLocales, fallbackLocale } from '../config/i18n';
 import { includes, isKey, isNotNull } from '@okampus/shared/utils';
 import { cookies, headers } from 'next/headers';
 
@@ -24,11 +24,11 @@ function getAcceptLanguage(): typeof availableLocales[number] {
   const langsFallback = [];
   for (const { ietf } of langs) {
     if (includes(ietf, availableLocales)) return ietf;
-    if (isKey(ietf, fallbackBaseLocale)) langsFallback.push(fallbackBaseLocale[ietf]);
+    if (isKey(ietf, fallbackBaseLocales)) langsFallback.push(fallbackBaseLocales[ietf]);
     langsFallback.push(ietf.split('-')[0]);
   }
 
-  for (const lang of langsFallback) if (isKey(lang, fallbackBaseLocale)) langsFallback.push(fallbackBaseLocale[lang]);
+  for (const lang of langsFallback) if (isKey(lang, fallbackBaseLocales)) langsFallback.push(fallbackBaseLocales[lang]);
 
   return fallbackLocale;
 }
@@ -44,6 +44,6 @@ export async function getLang(): Promise<typeof availableLocales[number]> {
   }
 
   if (includes(cookieLocale, availableLocales)) return cookieLocale;
-  if (isKey(cookieLocale, fallbackBaseLocale)) return fallbackBaseLocale[cookieLocale];
+  if (isKey(cookieLocale, fallbackBaseLocales)) return fallbackBaseLocales[cookieLocale];
   return fallbackLocale;
 }

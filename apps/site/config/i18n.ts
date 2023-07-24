@@ -1,7 +1,7 @@
 import { objectKeys } from '@okampus/shared/utils';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
-export const fallbackBaseLocale = { fr: 'fr-FR', en: 'en-US' } as const;
+export const fallbackBaseLocales = { fr: 'fr-FR', en: 'en-US' } as const;
 export const fallbackLocale = 'fr-FR';
 
 export const numberFormatters = {
