@@ -19,5 +19,5 @@
     "types": ["jest", "node"]
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "../../dist/apps/site/.next/types/**/*.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../apps/site/.next/types/**/*.ts"]
 }
