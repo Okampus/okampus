@@ -1,6 +1,6 @@
 import { langAtom } from '../../context/global';
 import { useAtom } from 'jotai';
-import type { availableLocales } from '../../locales/i18n';
+import type { availableLocales } from '../../config/i18n';
 
 export function useLocale() {
   const [lang, setLang] = useAtom(langAtom);

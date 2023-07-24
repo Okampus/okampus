@@ -6,7 +6,7 @@ import {
   pluralFormatters,
   cutoffs,
   units,
-} from '../../locales/i18n';
+} from '../../config/i18n';
 
 import { determinersAtom, dictsAtom, formattersAtom, langAtom } from '../../context/global';
 import { translate } from '../../utils/i18n/translate';
@@ -14,7 +14,7 @@ import { translate } from '../../utils/i18n/translate';
 import { isKey } from '@okampus/shared/utils';
 import { useAtom } from 'jotai';
 
-import type { Format } from '../../locales/i18n';
+import type { Format } from '../../config/i18n';
 import type { TOptions } from '../../utils/i18n/translate';
 
 export function useTranslation() {

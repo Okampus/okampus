@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Format } from '../../locales/i18n';
+import type { Format } from '../../config/i18n';
 
 export type ServerInviteData = {
   code: string;

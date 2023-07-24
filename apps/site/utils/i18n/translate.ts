@@ -1,7 +1,7 @@
-import { allFormatters } from '../../locales/i18n';
+import { allFormatters } from '../../config/i18n';
 import { isNonNullObject, includes } from '@okampus/shared/utils';
 
-import type { Format } from '../../locales/i18n';
+import type { Format } from '../../config/i18n';
 import type { DeterminerType, Determiners } from '../../ssr/getTranslation';
 
 export function interpolate(

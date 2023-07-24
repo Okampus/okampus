@@ -1,7 +1,7 @@
-import { fallbackLocale } from '../locales/i18n';
+import { fallbackLocale } from '../config/i18n';
 import { atom } from 'jotai/vanilla';
 
-import type { Formatters } from '../locales/i18n';
+import type { Formatters } from '../config/i18n';
 import type { Determiners, Dicts } from '../ssr/getTranslation';
 import type { ToastProps } from '@okampus/shared/types';
 import type { IMessage } from '@novu/shared';

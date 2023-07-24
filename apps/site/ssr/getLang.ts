@@ -1,4 +1,4 @@
-import { availableLocales, fallbackBaseLocale, fallbackLocale } from '../locales/i18n';
+import { availableLocales, fallbackBaseLocale, fallbackLocale } from '../config/i18n';
 import { includes, isKey, isNotNull } from '@okampus/shared/utils';
 import { cookies, headers } from 'next/headers';
 
