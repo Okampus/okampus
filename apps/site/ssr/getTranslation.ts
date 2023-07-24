@@ -24,8 +24,9 @@ import type { TOptions } from '../utils/i18n/translate';
 const localePathBase = path.resolve('locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
-    return await fetch(`/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());
-  } catch {
+    return await fs.readFile(path.join(localePathBase, lang, subPath), 'utf8').then(JSON.parse);
+  } catch (error) {
+    console.error(error);
     return {};
   }
 };
