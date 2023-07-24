@@ -1,7 +1,6 @@
 import 'server-only';
 
 import { getLang } from './getLang';
-import { translate } from '../utils/i18n/translate';
 import {
   cutoffs,
   dateFormatters,
@@ -11,6 +10,8 @@ import {
   timeFormatters,
   units,
 } from '../config/i18n';
+import { SITE_URL } from '../context/consts';
+import { translate } from '../utils/i18n/translate';
 
 import { isNotNull, mapObject } from '@okampus/shared/utils';
 
@@ -24,9 +25,8 @@ import type { TOptions } from '../utils/i18n/translate';
 const localePathBase = path.resolve('locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
-    return await fs.readFile(path.join(localePathBase, lang, subPath), 'utf8').then(JSON.parse);
-  } catch (error) {
-    console.error(error);
+    return await fetch(`${SITE_URL}/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());
+  } catch {
     return {};
   }
 };
