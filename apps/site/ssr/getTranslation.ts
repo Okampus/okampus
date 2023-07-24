@@ -21,7 +21,7 @@ import path from 'node:path';
 import type { Format, Formatters } from '../config/i18n';
 import type { TOptions } from '../utils/i18n/translate';
 
-const localePathBase = path.join(process.cwd(), 'locales');
+const localePathBase = path.resolve('locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
     return await fetch(`/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());

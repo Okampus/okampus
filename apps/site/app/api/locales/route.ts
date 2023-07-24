@@ -4,7 +4,7 @@ import { isIn, isKey } from '@okampus/shared/utils';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const basePath = path.join(process.cwd(), 'locales');
+const basePath = path.resolve('locales');
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   let lang = searchParams.get('lang');
