@@ -4,9 +4,8 @@ import { isIn, isKey } from '@okampus/shared/utils';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+const basePath = path.join(process.cwd(), process.env.NEXT_PUBLIC_STATIC_FOLDER_PATH ?? '', 'locales');
 export async function GET(request: Request) {
-  const basePath = path.resolve('locales');
-
   const { searchParams } = new URL(request.url);
   let lang = searchParams.get('lang');
   if (!lang) return new Response('Missing lang', { status: 400 });

@@ -194,7 +194,6 @@
     "autoprefixer": "^10.4.0",
     "babel-jest": "^29.5.0",
     "babel-preset-expo": "^9.3.0",
-    "copy-webpack-plugin": "^11.0.0",
     "detox": "^20.9.0",
     "eas-cli": "^3.8.0",
     "eslint": "^8.41.0",

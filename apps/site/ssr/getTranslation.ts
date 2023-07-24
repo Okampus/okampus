@@ -21,7 +21,7 @@ import path from 'node:path';
 import type { Format, Formatters } from '../config/i18n';
 import type { TOptions } from '../utils/i18n/translate';
 
-const localePathBase = path.join(process.cwd(), 'locales');
+const localePathBase = path.join(process.cwd(), process.env.NEXT_PUBLIC_STATIC_FOLDER_PATH ?? '', 'locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
     const dict = await fs.readFile(path.join(localePathBase, lang, subPath), 'utf8');
