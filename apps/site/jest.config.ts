@@ -1,4 +1,5 @@
-const config = {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
   displayName: 'site',
   preset: '../../jest.preset.js',
   transform: {
@@ -8,5 +9,3 @@ const config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/site',
 };
-
-export default config;

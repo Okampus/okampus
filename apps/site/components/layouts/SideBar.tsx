@@ -62,7 +62,7 @@ export default function SideBar({ children }: SideBarProps) {
     isAtLeastDesktop ? 'relative' : 'absolute top-0 left-0'
   );
 
-  const width = children ? 'var(--w-sidepanel)' : 'var(--w-tabbar)';
+  // const width = children ? 'var(--w-sidepanel)' : 'var(--w-tabbar)';
   // const initial = { x: -width, width: 0 };
   // const animate = { x: 0, width };
 

@@ -52,7 +52,7 @@ function getPayload(
   };
 }
 
-function renderValue(field: JSONType, type: DiffType, entityName?: string) {
+function renderValue(field: JSONType, type: DiffType, relType?: string) {
   if (type === DiffType.Number) return <span className="font-bold text-0">{(field as number).toFixed(2)}</span>;
   if (type === DiffType.Boolean)
     return (
@@ -62,7 +62,12 @@ function renderValue(field: JSONType, type: DiffType, entityName?: string) {
     );
 
   if (type === DiffType.String) return <span className="font-bold text-0">{field as string}</span>;
-  if (type === DiffType.Rel) return <span className="font-bold text-0">&lt;@{field as string}&gt;</span>;
+  if (type === DiffType.Rel)
+    return (
+      <span className="font-bold text-0">
+        {relType} &lt;@{field as string}&gt;
+      </span>
+    );
 
   if (isNonNullObject(field)) {
     return (

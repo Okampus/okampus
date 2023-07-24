@@ -20,7 +20,8 @@ export default async function EventLayout({ children, params }: EventLayoutProps
 
   if (!event) return null;
 
-  const eventRoute = (route: string) => `/event/${event.slug}/${route}`;
+  const baseRoute = `/event/${params.slug}`;
+  const eventRoute = (route: string) => `${baseRoute}/${route}`;
   return (
     <>
       <ApolloWriteCache values={[[event, eventDetailsInfo]]} />
@@ -30,7 +31,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
         <EventManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[
-            { label: 'Informations', href: `/event/${event.slug}`, icon: <IconInfoHexagon /> },
+            { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
             { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
           ]}
         />

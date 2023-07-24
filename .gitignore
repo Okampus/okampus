@@ -64,3 +64,4 @@ apps/mobile/e2e/artifacts
 
 # Next.js
 .next
+apps/site/tsconfig.tsbuildinfo

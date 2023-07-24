@@ -80,7 +80,7 @@
       }
     },
     "ts-check": {
-      "command": "tsc --pretty --noEmit -p apps/site/tsconfig.json"
+      "command": "tsc --pretty --noEmit -p apps/site/tsconfig.app.json"
     },
     "ts-check-spec": {
       "command": "tsc --pretty --noEmit -p apps/site/tsconfig.spec.json"

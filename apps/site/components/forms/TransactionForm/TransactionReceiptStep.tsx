@@ -8,12 +8,13 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 import { validateWebsite } from '../../../utils/form-validation/website';
 
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
-import { TeamManageInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
+import { useTypedLazyQuery } from '@okampus/shared/graphql';
 
 import { useEffect, useMemo } from 'react';
 
-import type { FormStepContext } from '../../molecules/Form/MultiStepForm';
 import type { transactionFormDefaultValues } from './TransactionForm';
+import type { FormStepContext } from '../../molecules/Form/MultiStepForm';
+import type { TeamManageInfo } from '@okampus/shared/graphql';
 
 type Context = FormStepContext<typeof transactionFormDefaultValues>;
 type ReceiptStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };

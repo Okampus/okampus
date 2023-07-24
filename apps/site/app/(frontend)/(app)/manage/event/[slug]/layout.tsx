@@ -22,12 +22,11 @@ export default async function ManageEventLayout({ children, params }: ManageEven
 
   if (!eventManage) return null;
 
-  const teams = unique(
-    eventManage?.eventOrganizes.map((eventManage) => eventManage.team),
-    (item) => item.id
-  );
+  const managingTeams = eventManage?.eventOrganizes.map((eventManage) => eventManage.team);
+  const teams = unique(managingTeams, (item) => item.id);
 
   const manageEventRoute = (route: string) => `/manage/event/${eventManage?.slug}/${route}`;
+
   return (
     <>
       <ApolloWriteCache values={[[eventManage, eventManageInfo]]} />

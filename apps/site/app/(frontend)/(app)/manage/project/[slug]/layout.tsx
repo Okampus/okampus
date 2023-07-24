@@ -1,31 +1,40 @@
-'use client';
+import SideBar from '../../../../../../components/layouts/SideBar';
+import ProjectManageButton from '../../../../../../components/layouts/SideBar/ManageButton/ProjectManageButton';
+import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarBanner';
+import LinkList from '../../../../../../components/molecules/List/LinkList';
+import ApolloSubscribe from '../../../../../../components/wrappers/ApolloSubscribe';
+import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteCache';
+import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 
-// import LinkList from '../../../../../../../components/molecules/List/LinkList';
+import { projectManageInfo } from '@okampus/shared/graphql';
+import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
 
-// import { IconListDetails, IconUsers } from '@tabler/icons-react';
-// import { usePathname } from 'next/navigation';
-// import { useEffect } from 'react';
+import type { ProjectManageInfo } from '@okampus/shared/graphql';
 
-type ProjectLayoutProps = { children: React.ReactNode; params: { slug: string } };
-export default function ManageProjectLayout({ children, params }: ProjectLayoutProps) {
-  // const pathname = usePathname();
-  // const teamRoute = (route: string) => `/team/${params.slug}/${route}`;
+type ProjectManageLayoutProps = { children: React.ReactNode; params: { slug: string } };
+export default async function ProjectManageLayout({ children, params }: ProjectManageLayoutProps) {
+  const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, projectManageInfo];
+  const [project] = await getApolloQuery<ProjectManageInfo[]>('project', query, true).catch(() => []);
 
-  // const setSidebarInner = useNavigation((state) => state.setSidebarInner);
-  // const removeSidebarInner = useNavigation((state) => state.removeSidebarInner);
+  if (!project) return null;
 
-  // const items = [
-  //   { pathname, label: 'Présentation', href: teamRoute('profile'), icon: <IconUsers /> },
-  //   { pathname, label: 'Projets', href: teamRoute('projects'), icon: <IconListDetails /> },
-  // ];
-
-  // useEffect(() => {
-  //   setSidebarInner({ id: 'projectManage', sidebar: <LinkList items={items} />, priority: 1 });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [setSidebarInner]);
-
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // useEffect(() => () => removeSidebarInner('projectManage'), []);
-
-  return children;
+  const baseRoute = `/project/manage/${params.slug}`;
+  const projectManageRoute = (route: string) => `${baseRoute}/${route}`;
+  return (
+    <>
+      <ApolloWriteCache values={[[project, projectManageInfo]]} />
+      <ApolloSubscribe selector={{ projectByPk: [{ id: project.id }, projectManageInfo] }} />
+      <SideBar>
+        <SidebarBanner name={project.name} banner={project.banner?.url} />
+        <ProjectManageButton slug={params.slug} manage={true} />
+        <LinkList
+          items={[
+            { label: 'Présentation', href: baseRoute, icon: <IconUsers /> },
+            { label: 'Événements', href: projectManageRoute('events'), icon: <IconCalendarCog /> },
+          ]}
+        />
+      </SideBar>
+      {children}
+    </>
+  );
 }

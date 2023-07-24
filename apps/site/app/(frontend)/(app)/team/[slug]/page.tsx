@@ -60,7 +60,6 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                       rel="noopener noreferrer"
                       className="font-medium"
                     >
-                      {/* {social.type} */}
                       <SocialIcon
                         className="!h-8 !w-8"
                         small={true}
@@ -98,7 +97,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
             heading="Les derniers événements"
             groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-8"
           >
-            {data.event?.map((event, i) => (
+            {data.event?.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </GroupItem>

@@ -9,6 +9,7 @@ import {
   eventDetailsInfo,
   userLoginInfo,
   teamWithMembersInfo,
+  projectManageInfo,
 } from '@okampus/shared/graphql';
 
 import { useAtom } from 'jotai';
@@ -22,6 +23,7 @@ import type {
   EventDetailsInfo,
   UserLoginInfo,
   TeamWithMembersInfo,
+  ProjectManageInfo,
 } from '@okampus/shared/graphql';
 
 export function useMe() {
@@ -82,8 +84,24 @@ export function useTeamManage(slug: string) {
 }
 
 export function useProject(slug: string) {
+  const me = useMe();
+
   const selector = projectBaseInfo;
   const project = useTypedFragment<ProjectBaseInfo>({ __typename: 'Project', selector, where: { slug } });
+
+  if (!project) return { project: null, canManage: false };
+
+  const canManage = me
+    ? me.canManageTenant || me.user.teamMembers.some((teamMember) => teamMember.team.id === project.team.id)
+    : false;
+
+  return { project, canManage };
+}
+
+export function useProjectManage(slug: string) {
+  const selector = projectManageInfo;
+  const project = useTypedFragment<ProjectManageInfo>({ __typename: 'Project', selector, where: { slug } });
+
   return { project };
 }
 

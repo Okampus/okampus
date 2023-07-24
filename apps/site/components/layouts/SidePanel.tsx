@@ -9,9 +9,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
-const initial = { x: 'var(--w-sidepanel)', width: 0 };
-const animate = { x: 0, width: 'var(--w-sidepanel)' };
-const transition = { ease: 'easeInOut', duration: 0.3 };
+// const initial = { x: 'var(--w-sidepanel)', width: 0 };
+// const animate = { x: 0, width: 'var(--w-sidepanel)' };
+// const transition = { ease: 'easeInOut', duration: 0.3 };
 
 export type SidePanelProps = { children: React.ReactNode };
 export default function SidePanel({ children }: SidePanelProps) {

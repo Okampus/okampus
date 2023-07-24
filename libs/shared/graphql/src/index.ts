@@ -79,7 +79,7 @@ export * from './selectors/log/logBase';
 export * from './selectors/project/projectBase';
 export * from './selectors/project/projectDetails';
 export * from './selectors/project/projectMinimal';
-export * from './selectors/project/projectWithFinance';
+export * from './selectors/project/projectManage';
 export * from './selectors/project/projectWithTeam';
 export * from './selectors/team/account/accountBase';
 export * from './selectors/team/account/accountMinimal';
