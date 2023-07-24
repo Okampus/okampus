@@ -109,7 +109,7 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @OneToMany({ type: 'EventOrganize', mappedBy: 'team' })
   @TransformCollection()
-  eventManages = new Collection<EventOrganize>(this);
+  eventOrganizes = new Collection<EventOrganize>(this);
 
   @OneToMany({ type: 'TeamHistory', mappedBy: 'team' })
   @TransformCollection()

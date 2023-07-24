@@ -13852,42 +13852,6 @@ type EventOrganize {
   # An object relationship
   event: Event!
   eventId: bigint!
-
-  # An array relationship
-  eventOrganizeSupervisors(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
-  # An aggregate relationship
-  eventOrganizeSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -13933,6 +13897,42 @@ type EventOrganize {
   # An object relationship
   project: Project
   projectId: bigint
+
+  # An array relationship
+  supervisors(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): [EventOrganizeSupervisors!]!
+
+  # An aggregate relationship
+  supervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventOrganizeSupervisorsOrderBy!]
+
+    # filter the rows returned
+    where: EventOrganizeSupervisorsBoolExp
+  ): EventOrganizeSupervisorsAggregate!
 
   # An object relationship
   team: Team!
@@ -14029,8 +14029,6 @@ input EventOrganizeBoolExp {
   description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
-  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -14038,6 +14036,8 @@ input EventOrganizeBoolExp {
   missionsAggregate: MissionAggregateBoolExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
+  supervisors: EventOrganizeSupervisorsBoolExp
+  supervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -14068,13 +14068,13 @@ input EventOrganizeInsertInput {
   description: String
   event: EventObjRelInsertInput
   eventId: bigint
-  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   missions: MissionArrRelInsertInput
   project: ProjectObjRelInsertInput
   projectId: bigint
+  supervisors: EventOrganizeSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -14169,13 +14169,13 @@ input EventOrganizeOrderBy {
   description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   missionsAggregate: MissionAggregateOrderBy
   project: ProjectOrderBy
   projectId: OrderBy
+  supervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy

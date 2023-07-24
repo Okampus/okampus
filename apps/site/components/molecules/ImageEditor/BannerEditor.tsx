@@ -1,0 +1,105 @@
+'use client';
+
+import ActorImageEditorForm from './ActorImageEditorForm';
+import ModalLayout from '../../atoms/Layout/ModalLayout';
+
+import { notificationAtom } from '../../../context/global';
+import { useModal } from '../../../hooks/context/useModal';
+import { getBanner } from '../../../utils/actor-image/get-banner';
+import { mergeCache } from '../../../utils/apollo/merge-cache';
+
+import BannerImage from '../../atoms/Image/BannerImage';
+import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
+import { ActorImageType } from '@okampus/shared/enums';
+import { insertActorImageMutation, singleUploadMutation } from '@okampus/shared/graphql';
+import { ToastType } from '@okampus/shared/types';
+
+import { useMutation } from '@apollo/client';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+
+import type { CropperProps } from './Cropper/Cropper';
+import type { ActorBaseInfo } from '@okampus/shared/graphql';
+
+export type BannerEditorProps = {
+  showEditor: boolean;
+  cropperProps?: CropperProps;
+  setShowEditor: (show: boolean) => void;
+  actor: ActorBaseInfo;
+};
+
+export default function BannerEditor({ showEditor, setShowEditor, actor }: BannerEditorProps) {
+  const [, setNotification] = useAtom(notificationAtom);
+
+  const context = { fetchOptions: { credentials: 'include', useUpload: true } };
+  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  // @ts-ignore
+  const [insertActorImage] = useMutation(insertActorImageMutation);
+
+  const onUpload = (file: File) => {
+    insertUpload({
+      variables: { file },
+      onCompleted: ({ singleUpload }) => {
+        if (singleUpload) {
+          const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Banner } };
+          insertActorImage({
+            // @ts-ignore
+            variables,
+            onCompleted: ({ insertActorImageOne }) => {
+              if (insertActorImageOne) {
+                setNotification({ type: ToastType.Success, message: 'Bannière mise à jour !' });
+                setShowEditor(false);
+                mergeCache(
+                  { __typename: 'Actor', id: actor.id },
+                  { fieldName: 'actorImages', fragmentOn: 'ActorImage', data: insertActorImageOne }
+                );
+              } else {
+                setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
+              }
+            },
+          });
+        } else {
+          setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
+        }
+      },
+    });
+  };
+
+  const { openModal, closeModal, isModalOpen } = useModal();
+  const banner = getBanner(actor.actorImages)?.image.url;
+
+  useEffect(() => {
+    if (showEditor && !isModalOpen) setShowEditor(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    if (showEditor) {
+      openModal(
+        <ModalLayout header="Modifier la bannière">
+          <ActorImageEditorForm
+            actor={actor}
+            actorImageType={ActorImageType.Banner}
+            imageType="team"
+            onUpload={onUpload}
+          />
+        </ModalLayout>
+      );
+    } else {
+      closeModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showEditor, actor, openModal]);
+
+  return (
+    <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
+      <BannerImage src={banner} />
+      <div
+        onClick={() => setShowEditor(true)}
+        className="p-5 absolute -inset-px opacity-0 hover:opacity-75 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
+      >
+        <div className="font-semibold text-center">Changer de bannière</div>
+      </div>
+    </span>
+  );
+}

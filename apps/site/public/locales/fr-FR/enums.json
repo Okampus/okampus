@@ -1,0 +1,42 @@
+{
+  "FinanceCategory": {
+    "Entertainment": "Divertissement",
+    "Equipment": "Équipement",
+    "Errands": "Courses",
+    "MemberReimbursement": "Note de frais",
+    "MembershipFees": "Cotisation",
+    "Subvention": "Subvention",
+    "Marketing": "Marketing",
+    "Subscriptions": "Abonnements",
+    "Transportation": "Transport",
+    "Other": "Autre"
+  },
+  "PaymentMethod": {
+    "Cash": "Espèces",
+    "Check": "Chèque",
+    "DirectDebit": "Prélèvement",
+    "Transfer": "Virement",
+    "CreditCard": "Carte de crédit",
+    "MobilePayment": "Paiement mobile",
+    "Other": "Autre"
+  },
+  "PayedByType": {
+    "Unknown": "Incertain",
+    "Automatic": "Dépense automatique",
+    "Manual": "Membre de l'équipe",
+    "Outsider": "Membre externe"
+  },
+  "ApprovalState": {
+    "Pending": "En attente",
+    "Approved": "Admis",
+    "Rejected": "Refusé",
+    "Canceled": "Annulé"
+  },
+  "EventState": {
+    "Draft": "Brouillon",
+    "Submitted": "En attente de validation",
+    "Rejected": "Refusé",
+    "Approved": "Accepté",
+    "Published": "Publié"
+  }
+}

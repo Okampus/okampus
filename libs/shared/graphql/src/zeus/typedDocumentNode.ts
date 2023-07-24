@@ -17,7 +17,7 @@ import { Ops } from './const';
 export const typedGql =
   <O extends keyof typeof Ops, SCLR extends ScalarDefinition, R extends keyof ValueTypes = GenericOperation<O>>(
     operation: O,
-    graphqlOptions?: ThunderGraphQLOptions<SCLR>
+    graphqlOptions?: ThunderGraphQLOptions<SCLR>,
   ) =>
   <Z extends ValueTypes[R]>(o: Z | ValueTypes[R], ops?: OperationOptions) => {
     const str = Zeus(operation, o, {

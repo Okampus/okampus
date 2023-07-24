@@ -1,11 +1,11 @@
 import { TokenExpiration, TokenType } from '@okampus/shared/enums';
 
 export const COOKIE_NAMES = {
-  [TokenType.Access]: 'access_token',
-  [TokenType.Refresh]: 'refresh_token',
-  [TokenType.MeiliSearch]: 'meilisearch_key',
-  [TokenType.WebSocket]: 'ws_token',
-  [TokenType.Bot]: 'bot_token',
-  [TokenExpiration.AccessExpiration]: 'access_exp',
-  [TokenExpiration.RefreshExpiration]: 'refresh_exp',
+  [TokenType.Access]: 'OKAMPUS_ACCESS_TOKEN',
+  [TokenType.Refresh]: 'OKAMPUS_REFRESH_TOKEN',
+  [TokenType.MeiliSearch]: 'OKAMPUS_MEILI_TOKEN',
+  [TokenType.WebSocket]: 'OKAMPUS_WS_TOKEN',
+  [TokenType.Bot]: 'OKAMPUS_BOT_TOKEN',
+  [TokenExpiration.AccessExpiration]: 'OKAMPUS_ACCESS_EXPIRES',
+  [TokenExpiration.RefreshExpiration]: 'OKAMPUS_REFRESH_EXPIRES',
 };

@@ -6,7 +6,7 @@ import type { InputType, GraphQLTypes } from '../../zeus';
 
 export const individualBaseInfo = Selector('Individual')({
   ...entityBase,
-  user: userMinimalInfo,
   actor: actorBaseInfo,
+  user: userMinimalInfo,
 });
 export type IndividualBaseInfo = InputType<GraphQLTypes['Individual'], typeof individualBaseInfo>;

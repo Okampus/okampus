@@ -1,0 +1,40 @@
+%button-disabled,
+.button-disabled {
+  @apply opacity-75 cursor-not-allowed;
+}
+
+%button {
+  @apply h-[var(--h-input)] rounded-md text-base font-semibold tracking-tight flex justify-center items-center gap-2 shrink-0;
+
+  &:not(:disabled):hover {
+    @apply cursor-pointer contrast-[1.05];
+  }
+
+  &:disabled {
+    @extend %button-disabled;
+  }
+}
+
+.button {
+  @extend %button;
+  @apply px-5;
+}
+
+.icon-button {
+  @extend %button;
+  @apply aspect-square p-3;
+}
+
+%button-circle,
+.button-circle {
+  @apply rounded-2xl aspect-square p-2;
+
+  &:disabled {
+    @extend %button-disabled;
+  }
+
+  &:not(:disabled):hover {
+    filter: contrast(1.25);
+    @apply cursor-pointer;
+  }
+}

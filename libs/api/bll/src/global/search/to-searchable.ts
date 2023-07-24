@@ -51,10 +51,10 @@ export function teamToSearchable(team: Team): BaseSearchable {
 }
 
 export function eventToSearchable(event: Event): BaseSearchable {
-  if (!event.content || !event.eventManages) throw new Error('Event is not fully loaded.');
+  if (!event.content || !event.eventOrganizes) throw new Error('Event is not fully loaded.');
 
   const tags = load(event.tags).map((tag) => tag.name);
-  const teams = load(event.eventManages).map((manage) => manage.team.actor.name);
+  const teams = load(event.eventOrganizes).map((manage) => manage.team.actor.name);
 
   return {
     slug: event.slug,

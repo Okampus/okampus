@@ -9951,8 +9951,6 @@ type EventOrganize {
   description: String!
   event: Event!
   eventId: bigint!
-  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
-  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   individual: Individual
@@ -9960,6 +9958,8 @@ type EventOrganize {
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   project: Project
   projectId: bigint
+  supervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
+  supervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
   team: Team!
   teamId: bigint!
   tenant: Tenant!
@@ -10043,8 +10043,6 @@ input EventOrganizeBoolExp {
   description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
-  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -10052,6 +10050,8 @@ input EventOrganizeBoolExp {
   missionsAggregate: MissionAggregateBoolExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
+  supervisors: EventOrganizeSupervisorsBoolExp
+  supervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -10078,13 +10078,13 @@ input EventOrganizeInsertInput {
   description: String
   event: EventObjRelInsertInput
   eventId: bigint
-  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   missions: MissionArrRelInsertInput
   project: ProjectObjRelInsertInput
   projectId: bigint
+  supervisors: EventOrganizeSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -10166,13 +10166,13 @@ input EventOrganizeOrderBy {
   description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   missionsAggregate: MissionAggregateOrderBy
   project: ProjectOrderBy
   projectId: OrderBy
+  supervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -23915,7 +23915,10 @@ type Query {
   vote(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): [Vote!]!
   voteAggregate(distinctOn: [VoteSelectColumn!], limit: Int, offset: Int, orderBy: [VoteOrderBy!], where: VoteBoolExp): VoteAggregate!
   voteByPk(id: bigint!): Vote
-  financeLogs(id: bigint, teamId: bigint): [Log!]!
+  eventLogs(id: bigint!): [Log!]!
+  financeLogs(id: bigint!): [Log!]!
+  teamLogs(id: bigint!): [Log!]!
+  tenantLogs(id: bigint!): [Log!]!
   me: UserLogin!
   searchLocation(query: String!): [GeocodeAddress!]!
   getFirstResultLink(query: String!): String!

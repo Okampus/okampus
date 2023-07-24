@@ -1,0 +1,14 @@
+{
+  "short": {
+    "indefinite": "a ",
+    "indefinite_plural": "",
+    "definite": "the ",
+    "definite_plural": "the "
+  },
+  "long": {
+    "indefinite": "an ",
+    "indefinite_plural": "",
+    "definite": "the ",
+    "definite_plural": "the "
+  }
+}

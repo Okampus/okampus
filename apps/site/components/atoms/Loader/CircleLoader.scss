@@ -1,0 +1,82 @@
+.circle-loader *,
+.circle-loader *::after,
+.circle-loader *::before {
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+.circle-loader {
+  --duration: 3s;
+  position: relative;
+
+  display: inline-block;
+
+  width: 44px;
+  height: 44px;
+  margin: 0 16px;
+  &::before {
+    content: '';
+
+    position: absolute;
+    top: 37px;
+    left: 19px;
+    transform: translate(-18px, -18px);
+
+    display: block;
+
+    width: 6px;
+    height: 6px;
+
+    background: var(--primary);
+    border-radius: 50%;
+
+    animation: dot-circle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    circle {
+      fill: none;
+      stroke: var(--bg-opposite);
+      stroke-dasharray: (150) (50) (150) (50);
+      stroke-dashoffset: 75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 10px;
+
+      animation: path-circle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+    }
+  }
+}
+
+@keyframes path-circle {
+  25% {
+    stroke-dashoffset: 125;
+  }
+  50% {
+    stroke-dashoffset: 175;
+  }
+  75% {
+    stroke-dashoffset: 225;
+  }
+  100% {
+    stroke-dashoffset: 275;
+  }
+}
+
+@keyframes dot-circle {
+  25% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(18px, -18px);
+  }
+  75% {
+    transform: translate(0, -36px);
+  }
+  100% {
+    transform: translate(-18px, -18px);
+  }
+}

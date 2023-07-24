@@ -3,11 +3,23 @@ import { RequestContext } from '../../shards/abstract/request-context';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { BaseEntity, Individual, Log, LogRepository, Team, Event, FinanceRepository } from '@okampus/api/dal';
+import {
+  BaseEntity,
+  Individual,
+  Log,
+  LogRepository,
+  Team,
+  Event,
+  FinanceRepository,
+  TeamRepository,
+  TenantRepository,
+  EventRepository,
+} from '@okampus/api/dal';
 
 import {
   // ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -30,10 +42,15 @@ export type LogContext = {
 
 @Injectable()
 export class LogsService extends RequestContext {
+  private readonly logger = new Logger(LogsService.name);
+
   constructor(
     private readonly em: EntityManager,
     private readonly logRepository: LogRepository,
-    private readonly financeRepository: FinanceRepository
+    private readonly eventRepository: EventRepository,
+    private readonly financeRepository: FinanceRepository,
+    private readonly teamRepository: TeamRepository,
+    private readonly tenantRepository: TenantRepository
   ) {
     super();
   }
@@ -132,7 +149,31 @@ export class LogsService extends RequestContext {
     }
   }
 
+  public async getEventLogs(id: string) {
+    // TODO: permissions
+    // const isAllowed = await this.em.findOne(Team, {
+    //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
+    //   tenant: {
+    //     adminRoles: {
+    //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
+    //       individual: { id: this.requester().id },
+    //     },
+    //   },
+    // });
+
+    // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
+
+    const event = await this.eventRepository.findOne({ id });
+    if (!event) throw new NotFoundException(`Event (${id}) not found.`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const logs = await this.logRepository.find({ event: { id } }, { populate: this.autoPopulate() as any });
+    this.logger.log('Log', logs);
+    return logs;
+  }
+
   public async getFinanceLogs(id: string) {
+    // TODO: permissions
     // const isAllowed = await this.em.findOne(Team, {
     //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
     //   tenant: {
@@ -148,10 +189,52 @@ export class LogsService extends RequestContext {
     const finance = await this.financeRepository.findOne({ id });
     if (!finance) throw new NotFoundException(`Finance (${id}) not found.`);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return await this.logRepository.find<any>(
+    return await this.logRepository.find(
       { entityId: id, entityName: EntityName.Finance },
-      { populate: this.autoPopulate() }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { populate: this.autoPopulate() as any }
     );
+  }
+
+  public async getTeamLogs(id: string) {
+    // TODO: permissions
+    // const isAllowed = await this.em.findOne(Team, {
+    //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
+    //   tenant: {
+    //     adminRoles: {
+    //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
+    //       individual: { id: this.requester().id },
+    //     },
+    //   },
+    // });
+
+    // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
+
+    const team = await this.teamRepository.findOne({ id });
+    if (!team) throw new NotFoundException(`Team (${id}) not found.`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await this.logRepository.find({ team: { id } }, { populate: this.autoPopulate() as any });
+  }
+
+  public async getTenantLogs(id: string) {
+    // TODO: permissions
+    // const isAllowed = await this.em.findOne(Team, {
+    //   // teamMembers: { user: { id: this.requester().user?.id }, permissions: { $in: [TeamPermissions.ManageTreasury] } },
+    //   tenant: {
+    //     adminRoles: {
+    //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
+    //       individual: { id: this.requester().id },
+    //     },
+    //   },
+    // });
+
+    // if (!isAllowed) throw new ForbiddenException('You are not allowed to access this resource.');
+
+    const tenant = await this.tenantRepository.findOne({ id });
+    if (!tenant) throw new NotFoundException(`Tenant (${id}) not found.`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await this.logRepository.find({ tenant: { id } }, { populate: this.autoPopulate() as any });
   }
 }

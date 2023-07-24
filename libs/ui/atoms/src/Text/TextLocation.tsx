@@ -11,7 +11,7 @@ export function TextLocation({ location, className }: TextLocationProps) {
   return location ? (
     location.onlineLink ? (
       <Link to={location.onlineLink} className={className}>
-        {location.type === LocationType.Online ? location.name : <TextAddress address={location.address} />}
+        {location.type === LocationType.Online ? location.locationDetails : <TextAddress address={location.address} />}
       </Link>
     ) : (
       <TextAddress address={location.address} className={className} />

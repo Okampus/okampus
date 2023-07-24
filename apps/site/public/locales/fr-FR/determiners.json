@@ -1,0 +1,26 @@
+{
+  "masculine": {
+    "indefinite": "un ",
+    "indefinite_plural": "des ",
+    "definite": "le ",
+    "definite_plural": "les "
+  },
+  "masculine_short": {
+    "indefinite": "un ",
+    "indefinite_plural": "des ",
+    "definite": "l'",
+    "definite_plural": "les "
+  },
+  "feminine": {
+    "indefinite": "une ",
+    "indefinite_plural": "des ",
+    "definite": "la ",
+    "definite_plural": "les "
+  },
+  "feminine_short": {
+    "indefinite": "une ",
+    "indefinite_plural": "des ",
+    "definite": "l'",
+    "definite_plural": "les "
+  }
+}

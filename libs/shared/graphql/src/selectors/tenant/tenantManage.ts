@@ -9,4 +9,4 @@ export const tenantManageInfo = Selector('Tenant')({
   adminTeam: teamManageInfo,
   tenantOrganizes: [{}, tenantOrganizeBaseInfo],
 });
-export type TenantOrganizeInfo = InputType<GraphQLTypes['Tenant'], typeof tenantManageInfo>;
+export type TenantManageInfo = InputType<GraphQLTypes['Tenant'], typeof tenantManageInfo>;

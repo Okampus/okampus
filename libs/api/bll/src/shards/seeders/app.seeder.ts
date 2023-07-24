@@ -763,7 +763,7 @@ export class DatabaseSeeder extends Seeder {
             return event;
           });
 
-          const eventManages = events.map((event) => {
+          const eventOrganizes = events.map((event) => {
             const createdBy = pickOneFromArray(teamMembers).user.individual;
             const supervisors = randomFromArray(teamMembers, 1, 3);
             const eventManage = new EventOrganize({ team, event, createdBy, tenant, supervisors, project });
@@ -772,7 +772,7 @@ export class DatabaseSeeder extends Seeder {
             return eventManage;
           });
 
-          team.eventManages.add(eventManages);
+          team.eventOrganizes.add(eventOrganizes);
 
           if (team.accounts.getItems().length > 0) {
             const finances = await Promise.all(
@@ -820,7 +820,7 @@ export class DatabaseSeeder extends Seeder {
               mission.createdAt = new Date(event.createdAt);
 
               mission.quantity = randomInt(1, 3);
-              event.eventManages[0].missions.add(mission);
+              event.eventOrganizes[0].missions.add(mission);
               missions.push([mission, mission.quantity]);
             }
 

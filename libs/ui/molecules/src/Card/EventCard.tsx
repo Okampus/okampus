@@ -6,17 +6,17 @@ import { getAvatar } from '@okampus/ui/utils';
 
 import { Link } from 'react-router-dom';
 
-import type { EventManageBaseInfo } from '@okampus/shared/graphql';
+import type { EventManageInfo } from '@okampus/shared/graphql';
 
 type EventCardProps = {
-  event: EventManageBaseInfo;
+  event: EventManageInfo;
   link: string;
 };
 
 export function EventCard({ event, link }: EventCardProps) {
   const dateRange = formatDateRangeDayOfWeek(event.start as string, event.end as string);
 
-  const team = event.eventManages[0].team;
+  const team = event.eventOrganizes[0].team;
   return (
     <div className="w-[45rem] relative flex flex-col gap-2 border border-color-2 rounded-lg bg-2 py-2 px-4">
       <Link to={link} className="card-link" />
@@ -36,7 +36,7 @@ export function EventCard({ event, link }: EventCardProps) {
           <div className="rounded-lg bg-red-400 text-white py-0.5 px-2">Refusé</div>
         ) : event.state === EventState.Submitted ? (
           <div className="rounded-lg bg-opposite text-opposite py-0.5 px-2">
-            En attente de validation / {event.lastEventApprovalStep?.name ?? 'Validation initiale'}
+            En attente de validation / {event.nextEventApprovalStep?.name ?? 'Validation initiale'}
           </div>
         ) : event.state === EventState.Draft ? (
           <div className="rounded-lg bg-yellow-500 text-white py-0.5 px-2">Brouillon</div>

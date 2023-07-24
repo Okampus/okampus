@@ -21,7 +21,7 @@
   --border-2: #cdcdcdcc;
   --border-3: #999c;
   --border-4: #555c;
-  --border-5: #333c;
+  --border-light: #333c;
 
   &.dark {
     --bg-label: #000a;
@@ -41,7 +41,7 @@
     --border-2: #444c;
     --border-3: #666c;
     --border-4: #999c;
-    --border-5: #dddc;
+    --border-light: #dddc;
   }
 }
 
@@ -222,7 +222,7 @@
 }
 
 .border-color-5 {
-  @apply border-[var(--border-5)];
+  @apply border-[var(--border-light)];
 }
 
 .divide-color-1 {

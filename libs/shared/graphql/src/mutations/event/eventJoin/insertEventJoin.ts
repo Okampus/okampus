@@ -4,7 +4,6 @@ import { eventJoinWithEventInfo } from '../../../selectors/event/eventJoin/event
 
 import type { ValueTypes } from '../../../zeus';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const insertEventJoinMutation = typedGql('mutation')({
   insertEventJoinOne: [

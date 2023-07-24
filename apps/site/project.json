@@ -1,17 +1,62 @@
 {
   "name": "site",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/site/src",
+  "sourceRoot": "apps/site",
   "projectType": "application",
   "targets": {
     "build": {
-      "command": "vite build --config apps/site/vite.config.ts --mode production"
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/site",
+        "outputPath": "dist/apps/site"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "apps/site"
+        },
+        "production": {}
+      }
     },
     "serve": {
-      "command": "vite --config apps/site/vite.config.ts"
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "site:build",
+        "dev": true,
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "site:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "site:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nx/next:export",
+      "options": {
+        "buildTarget": "site:build:production"
+      }
     },
     "test": {
-      "command": "vitest --config apps/site/vite.config.ts"
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/site/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
     },
     "lint": {
       "executor": "nx:run-commands",

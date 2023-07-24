@@ -4,6 +4,7 @@ import { entityBase } from '../../entityBase';
 import { eventBaseInfo } from '../../event/eventBase';
 import { fileUploadBaseInfo } from '../../fileUpload/fileUploadBase';
 import { individualBaseInfo } from '../../individual/individualBase';
+import { individualWithUserInfo } from '../../individual/individualWithUser';
 import { actorWithTeamInfo } from '../../actor/actorWithTeam';
 import type { InputType, GraphQLTypes } from '../../../zeus';
 
@@ -11,7 +12,7 @@ export const financeBaseInfo = Selector('Finance')({
   ...entityBase,
   payedAt: true,
   payedBy: actorWithTeamInfo,
-  initiatedBy: individualBaseInfo,
+  initiatedBy: individualWithUserInfo,
   receivedBy: actorWithTeamInfo,
   financeAttachments: [{}, { fileUpload: fileUploadBaseInfo }],
   amount: true,

@@ -22,5 +22,5 @@ export type EventOptions = EventProps &
     nextEventApprovalStep?: EventApprovalStep | null;
     tags?: Tag[];
     teams?: Team[];
-    eventManages?: EventOrganize[];
+    eventOrganizes?: EventOrganize[];
   };

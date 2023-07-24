@@ -116,15 +116,7 @@ export class TextractService {
     const sum = lineItems?.reduce((acc, { price, quantity }) => acc + price * quantity, 0) ?? 0;
     if (amount && sum < amount) lineItems.push({ name: 'Inconnu', price: amount - sum, quantity: 1 });
 
-    this.logger.log({
-      lineItems,
-      address,
-      amount,
-      tax,
-      vendorName,
-      date,
-      phone,
-    });
+    this.logger.debug('Textract result', { lineItems, address, amount, tax, vendorName, date, phone });
     return { lineItems, address, amount, tax, vendorName, date, phone };
   }
 }

@@ -1,11 +1,13 @@
-import { userMeInfo } from '../../../selectors/individual/userMe';
+import { userLoginInfo } from '../../../selectors/individual/userLogin';
 import { typedGql } from '../../../zeus/typedDocumentNode';
 import { $ } from '../../../zeus';
 import { id } from '../../id';
 import type { ValueTypes } from '../../../zeus';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const updateMeMutation = typedGql('mutation')({
-  updateUserByPk: [{ pkColumns: { id }, _set: $('update', 'UserSetInput!') as ValueTypes['UserSetInput'] }, userMeInfo],
+  updateUserByPk: [
+    { pkColumns: { id }, _set: $('update', 'UserSetInput!') as ValueTypes['UserSetInput'] },
+    userLoginInfo,
+  ],
 });

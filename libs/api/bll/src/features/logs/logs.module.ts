@@ -7,11 +7,11 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 
-import { Log, Finance } from '@okampus/api/dal';
+import { Event, Finance, Log, Team, Tenant } from '@okampus/api/dal';
 
 @Global()
 @Module({
-  imports: [ConfigModule, MikroOrmModule.forFeature([Log, Finance])],
+  imports: [ConfigModule, MikroOrmModule.forFeature([Event, Finance, Log, Team, Tenant])],
   providers: [LogsService, LogsResolver],
   exports: [LogsService],
 })

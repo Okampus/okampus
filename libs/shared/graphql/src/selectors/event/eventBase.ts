@@ -27,7 +27,7 @@ export const eventBaseInfo = Selector('Event')({
   banner: fileUploadBaseInfo,
   isPrivate: true,
   eventTags: [{}, { tag: tagBaseInfo }],
-  eventManages: [
+  eventOrganizes: [
     {},
     { team: teamBaseInfo, project: projectMinimalInfo, supervisors: [{}, { teamMember: teamMemberWithUser }] },
   ],
