@@ -8,11 +8,6 @@ const { composePlugins, withNx } = require('@nx/next');
  **/
 const nextConfig = {
   nx: { svgr: true },
-  i18n: {
-    locales: ['en', 'fr'],
-    defaultLocale: 'fr',
-    localeDetection: false,
-  },
   webpack: (config) => {
     config.optimization.minimize = false;
     config.externals.push({
