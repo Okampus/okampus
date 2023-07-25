@@ -610,6 +610,9 @@ devDependencies:
   happy-dom:
     specifier: ^9.20.0
     version: 9.20.0
+  hasura-cli:
+    specifier: ^2.29.0
+    version: 2.30.0
   husky:
     specifier: ^8.0.0
     version: 8.0.0
@@ -15640,6 +15643,18 @@ packages:
     dependencies:
       is-stream: 2.0.1
       type-fest: 0.8.1
+    dev: true
+
+  /hasura-cli@2.30.0:
+    resolution: {integrity: sha512-qlrpAnIK1V8vD/a0RU3SLTqiQW9rslYBQhwlqODzXWV0tLpfZQIXUFQgUZabPRhowmABYBr+McIuuuDPDJMXSw==}
+    engines: {node: '>=8'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      axios: 0.21.4
+      chalk: 2.4.2
+    transitivePeerDependencies:
+      - debug
     dev: true
 
   /he@1.2.0:

@@ -1,5 +1,4 @@
 FROM node:current-alpine
-RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
 WORKDIR /app
 RUN adduser -D --uid 1111 api
@@ -32,4 +31,4 @@ USER api
 
 EXPOSE 8081
 
-CMD /wait && pnpm cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && cd apps/api/database/hasura && hasura metadata apply && cd ../../../../ && node dist/apps/api/main.mjs
+CMD /wait && pnpm cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && pnpm run hasura:apply && node dist/apps/api/main.mjs
