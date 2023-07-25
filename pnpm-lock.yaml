@@ -611,7 +611,7 @@ devDependencies:
     specifier: ^9.20.0
     version: 9.20.0
   hasura-cli:
-    specifier: ^2.29.0
+    specifier: ^2.30.0
     version: 2.30.0
   husky:
     specifier: ^8.0.0
