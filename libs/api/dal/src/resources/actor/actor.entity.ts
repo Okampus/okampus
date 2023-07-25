@@ -19,7 +19,6 @@ import type { BankInfo } from './bank-info/bank-info.entity';
 import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
 import type { Report } from '../content/report/report.entity';
-import type { Favorite } from '../content/favorite/favorite.entity';
 import type { Individual } from '../individual/individual.entity';
 import type { Team } from '../team/team.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
@@ -85,10 +84,6 @@ export class Actor extends TenantScopedEntity {
   @OneToMany({ type: 'Report', mappedBy: 'actor' })
   @TransformCollection()
   reports = new Collection<Report>(this);
-
-  @OneToMany({ type: 'Favorite', mappedBy: 'actor' })
-  @TransformCollection()
-  favorites = new Collection<Favorite>(this);
 
   constructor(options: ActorOptions) {
     super(options);

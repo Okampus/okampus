@@ -19,7 +19,6 @@ export * from './resources/class-group/subject/subject.props';
 export * from './resources/cohort/cohort.props';
 export * from './resources/content/content-edit/content-edit.props';
 export * from './resources/content/content.props';
-export * from './resources/content/favorite/favorite.props';
 export * from './resources/content/reaction/reaction.props';
 export * from './resources/content/report/report.props';
 export * from './resources/content/thread/thread.props';

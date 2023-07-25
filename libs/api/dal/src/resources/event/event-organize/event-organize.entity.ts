@@ -2,13 +2,13 @@ import { EventOrganizeRepository } from './event-organize.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
+import type { EventSupervisor } from '../event-supervisor/event-supervisor.entity';
 
 import type { EventOrganizeOptions } from './event-organize.options';
 import type { Event } from '../event.entity';
 import type { Mission } from '../../team/mission/mission.entity';
 import type { Project } from '../../project/project.entity';
 import type { Team } from '../../team/team.entity';
-import type { TeamMember } from '../../team/team-member/team-member.entity';
 
 @Entity({ customRepository: () => EventOrganizeRepository })
 export class EventOrganize extends TenantScopedEntity {
@@ -32,7 +32,7 @@ export class EventOrganize extends TenantScopedEntity {
 
   @ManyToMany({ type: 'TeamMember' })
   @TransformCollection()
-  supervisors = new Collection<TeamMember>(this);
+  supervisors = new Collection<EventSupervisor>(this);
 
   constructor(options: EventOrganizeOptions) {
     super(options);

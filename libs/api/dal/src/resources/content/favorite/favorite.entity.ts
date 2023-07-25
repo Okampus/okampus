@@ -3,7 +3,6 @@ import { WithActive } from '../../../shards/filters/with-active';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
-import type { Actor } from '../../actor/actor.entity';
 import type { FavoriteOptions } from './favorite.options';
 import type { Content } from '../content.entity';
 
@@ -17,9 +16,6 @@ export class Favorite extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Content', nullable: true, default: null })
   content: Content | null = null;
-
-  @ManyToOne({ type: 'Actor', nullable: true, default: null })
-  actor: Actor | null = null;
 
   constructor(options: FavoriteOptions) {
     super(options);

@@ -1,5 +1,5 @@
 table:
-  name: favorite
+  name: view
   schema: public
 object_relationships:
   - name: content

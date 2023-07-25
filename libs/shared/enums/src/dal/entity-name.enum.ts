@@ -51,35 +51,35 @@ export enum EntityName {
 
   ClassGroup = 'ClassGroup',
   ClassGroupTeacher = 'ClassGroupTeacher',
-
   Cohort = 'Cohort',
 
   Project = 'Project',
 
   Event = 'Event',
-  EventOrganize = 'EventOrganize',
+  EventApproval = 'EventApproval',
+  EventApprovalStep = 'EventApprovalStep',
   EventJoin = 'EventJoin',
+  EventOrganize = 'EventOrganize',
+  EventSupervisor = 'EventSupervisor',
 
   FileUpload = 'FileUpload',
+
+  Form = 'Form',
+  FormSubmission = 'FormSubmission',
+
+  Content = 'Content',
+  Thread = 'Thread',
+  Issue = 'Issue',
 
   Favorite = 'Favorite',
   Reaction = 'Reaction',
   Report = 'Report',
   Validation = 'Validation',
+  View = 'View',
   Vote = 'Vote',
-
-  EventApproval = 'EventApproval',
-  EventApprovalStep = 'EventApprovalStep',
-
-  Content = 'Content',
-  ContentMaster = 'ContentMaster',
-  Issue = 'Issue',
 
   Document = 'Document',
   Subject = 'Subject',
-
-  Form = 'Form',
-  FormSubmission = 'FormSubmission',
 }
 
 // TODO: add test to match all *.entity.ts files with this list (all entities except Log)

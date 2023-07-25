@@ -12,6 +12,9 @@ object_relationships:
         table:
           name: event
           schema: public
+  - name: eventByEventId
+    using:
+      foreign_key_constraint_on: event_id
   - name: issue
     using:
       foreign_key_constraint_on:
@@ -87,6 +90,13 @@ array_relationships:
         column: content_id
         table:
           name: validation
+          schema: public
+  - name: views
+    using:
+      foreign_key_constraint_on:
+        column: content_id
+        table:
+          name: view
           schema: public
   - name: votes
     using:

@@ -1,16 +1,26 @@
 import { ContentRepository } from './content.repository';
 import { TenantScopedEntity } from '../tenant-scoped.entity';
 
-import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  EntityRepositoryType,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  Property,
+} from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
-import type { Team } from '../team/team.entity';
-import type { Favorite } from './favorite/favorite.entity';
-import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { ContentOptions } from './content.options';
+import type { Favorite } from './favorite/favorite.entity';
 import type { Reaction } from './reaction/reaction.entity';
 import type { Report } from './report/report.entity';
 import type { Vote } from './vote/vote.entity';
+import type { Team } from '../team/team.entity';
+import type { Event } from '../event/event.entity';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => ContentRepository })
 export class Content extends TenantScopedEntity {
@@ -54,6 +64,9 @@ export class Content extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Team', nullable: true, default: null })
   team: Team | null = null;
+
+  @OneToOne({ type: 'Event', inversedBy: 'content', nullable: true, default: null })
+  event: Event | null = null;
 
   constructor(options: ContentOptions) {
     super(options);

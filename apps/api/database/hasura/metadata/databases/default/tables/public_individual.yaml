@@ -180,6 +180,13 @@ array_relationships:
         table:
           name: event_organize
           schema: public
+  - name: createdEventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_supervisor
+          schema: public
   - name: createdEvents
     using:
       foreign_key_constraint_on:
@@ -543,4 +550,11 @@ array_relationships:
         column: individual_id
         table:
           name: event_approval_step_validators
+          schema: public
+  - name: viewed
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: view
           schema: public
