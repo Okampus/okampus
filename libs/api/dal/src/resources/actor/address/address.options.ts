@@ -1,3 +1,3 @@
-import type { AddressProps } from '@okampus/shared/dtos';
+import type { AddressProps } from './address.props';
 
 export type AddressOptions = AddressProps;

@@ -1,6 +1,6 @@
 import type { Team } from '../team.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { GrantProps } from '@okampus/shared/dtos';
+import type { GrantProps } from './grant.props';
 import type { Individual } from '../../individual/individual.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Project } from '../../project/project.entity';

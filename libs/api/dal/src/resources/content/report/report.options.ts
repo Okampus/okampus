@@ -1,7 +1,7 @@
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Actor } from '../../actor/actor.entity';
 import type { Content } from '../content.entity';
-import type { ReportProps } from '@okampus/shared/dtos';
+import type { ReportProps } from './report.props';
 
 export type ReportOptions = ReportProps &
   TenantScopedOptions & {

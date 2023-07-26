@@ -77,6 +77,6 @@ export * from './strings/to-camelcase';
 export * from './strings/to-kebabcase';
 export * from './strings/to-slug';
 export * from './strings/to-titlecase';
-export * from './validators/diff-validator';
-export * from './validators/formkit-schema-validator';
+export * from './validators/diff.validator';
+export * from './validators/iso-8601-duration.validator';
 // @endindex

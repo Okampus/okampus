@@ -1,7 +1,18 @@
 import { registerDecorator, ValidatorConstraint } from 'class-validator';
-import { validateDiff } from '@okampus/shared/utils';
-
+import { z } from 'zod';
 import type { ValidationArguments, ValidationOptions, ValidatorConstraintInterface } from 'class-validator';
+
+const diffSchema = z.object({
+  count: z.number(),
+  value: z.string(),
+  added: z.optional(z.boolean()),
+  removed: z.optional(z.boolean()),
+});
+const fullDiffSchema = diffSchema.array();
+
+export function validateDiff(form: unknown): form is object {
+  return fullDiffSchema.safeParse(form).success;
+}
 
 @ValidatorConstraint()
 export class DiffConstraint implements ValidatorConstraintInterface {

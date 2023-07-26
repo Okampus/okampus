@@ -1,4 +1,4 @@
-import type { VoteProps } from '@okampus/shared/dtos';
+import type { VoteProps } from './vote.props';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Content } from '../content.entity';
 

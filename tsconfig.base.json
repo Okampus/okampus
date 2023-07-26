@@ -37,7 +37,6 @@
       "@okampus/api/shards": ["libs/api/shards/src/index.ts"],
       "@okampus/assets/*": ["libs/assets/src/*"],
       "@okampus/shared/consts": ["libs/shared/consts/src/index.ts"],
-      "@okampus/shared/dtos": ["libs/shared/dtos/src/index.ts"],
       "@okampus/shared/enums": ["libs/shared/enums/src/index.ts"],
       "@okampus/shared/graphql": ["libs/shared/graphql/src/index.ts"],
       "@okampus/shared/types": ["libs/shared/types/src/index.ts"],

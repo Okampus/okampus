@@ -1,15 +1,10 @@
 import { registerDecorator, ValidatorConstraint } from 'class-validator';
-import type {
-  ValidationArguments,
-  ValidationOptions,
-  ValidatorConstraintInterface,
-} from 'class-validator';
+import type { ValidationArguments, ValidationOptions, ValidatorConstraintInterface } from 'class-validator';
 
 @ValidatorConstraint()
 export class Iso8601DurationConstraint implements ValidatorConstraintInterface {
   // eslint-disable-next-line prefer-named-capture-group
-  private static readonly regex =
-    /^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d+[HMS])(\d+H)?(\d+M)?(\d+S)?)?$/;
+  private static readonly regex = /^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d+[HMS])(\d+H)?(\d+M)?(\d+S)?)?$/;
 
   public validate(value: unknown, _args: ValidationArguments): boolean {
     if (typeof value !== 'string') return false;

@@ -1,5 +1,5 @@
 import type { Actor } from '../../actor/actor.entity';
-import type { ShortcutProps } from '@okampus/shared/dtos';
+import type { ShortcutProps } from './shortcut.props';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { User } from '../user/user.entity';
 

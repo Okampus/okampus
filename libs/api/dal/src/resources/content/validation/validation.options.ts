@@ -1,4 +1,4 @@
-import type { ValidationProps } from '@okampus/shared/dtos';
+import type { ValidationProps } from './validation.props';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Content } from '../content.entity';
 

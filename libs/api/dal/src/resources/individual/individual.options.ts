@@ -1,7 +1,7 @@
 import type { ActorOptions } from '../actor/actor.options';
 import type { UserOptions } from './user/user.options';
 import type { Tag } from '../actor/tag/tag.entity';
-import type { IndividualProps } from '@okampus/shared/dtos';
+import type { IndividualProps } from './individual.props';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
 import type { BotOptions } from './bot/bot.options';
 

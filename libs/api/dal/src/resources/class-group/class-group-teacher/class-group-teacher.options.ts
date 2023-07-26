@@ -1,4 +1,4 @@
-import type { ClassGroupTeacherProps } from '@okampus/shared/dtos';
+import type { ClassGroupTeacherProps } from './class-group-teacher.props';
 import type { Subject } from '../subject/subject.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { ClassGroup } from '../class-group.entity';

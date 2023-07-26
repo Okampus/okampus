@@ -1,4 +1,4 @@
-import type { PoleProps } from '@okampus/shared/dtos';
+import type { PoleProps } from './pole.props';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Team } from '../team.entity';
 

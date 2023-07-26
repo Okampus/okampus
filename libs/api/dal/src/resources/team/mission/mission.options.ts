@@ -1,7 +1,7 @@
 import type { Project } from '../../project/project.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Team } from '../team.entity';
-import type { MissionProps } from '@okampus/shared/dtos';
+import type { MissionProps } from './mission.props';
 import type { EventOrganize } from '../../event/event-organize/event-organize.entity';
 
 export type MissionOptions = TenantScopedOptions &

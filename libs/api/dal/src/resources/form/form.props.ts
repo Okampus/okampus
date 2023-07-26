@@ -1,4 +1,3 @@
-import { IsFormKitSchema } from '../../validators/formkit-schema.validator';
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-scalars';
 import { FormType } from '@okampus/shared/enums';
@@ -14,7 +13,6 @@ export class FormProps {
   name!: string;
 
   @Field(() => GraphQLJSON)
-  @IsFormKitSchema()
   schema!: FormField[];
 
   @Field(() => FormType)
