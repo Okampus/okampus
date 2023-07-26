@@ -9,12 +9,16 @@ on:
     paths:
       - 'apps/api/**'
       - 'libs/api/**'
+      - package.json
+      - pnpm-lock.yaml
       - '!*/**/*.md'
       - '.github/workflows/backend-test.yml'
   pull_request:
     paths:
       - 'apps/api/**'
       - 'libs/api/**'
+      - package.json
+      - pnpm-lock.yaml
       - '!*/**/*.md'
       - '.github/workflows/backend-test.yml'
 
