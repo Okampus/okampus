@@ -49,9 +49,11 @@ export type ApiConfig = {
   };
   readonly s3: {
     readonly isEnabled: boolean;
-    readonly accessKey: string;
-    readonly secretKey: string;
-    readonly endPoint: string;
+    readonly credentials: {
+      readonly accessKeyId: string;
+      readonly secretAccessKey: string;
+    };
+    readonly endpoint: string;
     readonly region: string;
     readonly buckets: Record<Buckets, string>;
   };

@@ -394,24 +394,33 @@ export class DatabaseSeeder extends Seeder {
     const categoriesData = (await loadCategoriesFromYaml()) ?? seedingConfig.DEFAULT_CATEGORIES;
     const categories = await Promise.all(
       categoriesData.map(async ({ icon, name, color, slug }) => {
+        this.logger.log(`Uploaded ${name} icon`);
+        await em.persistAndFlush(new Tag({ color, slug, type: TagType.TeamCategory, name, ...scopedOptions }));
+
+        const tag = await em.findOneOrFail(Tag, { slug });
         const buffer = icon && (await readIcon(icon));
 
-        let image;
         if (buffer) {
-          const fileData = { buffer, size: buffer.length, filename: name, encoding: '7bit', typetype: 'image/webp' };
-          const upload = { ...fileData, fieldname: 'iconImage', fileLastModifiedAt: createdAt };
+          const fileData = { buffer, size: buffer.length, filename: name, encoding: '7bit', type: 'image/webp' };
+          const upload = { ...fileData, fieldname: 'icon', fileLastModifiedAt: createdAt };
 
-          image = await DatabaseSeeder.upload.createUpload(upload, Buckets.Tenants, scopedOptions);
-          await em.persistAndFlush(image);
+          const image = await DatabaseSeeder.upload.uploadThumbnail(
+            upload,
+            EntityName.Tag,
+            tag.id,
+            scopedOptions.createdBy,
+            scopedOptions.tenant
+          );
+
+          tag.image = image;
+          await em.persistAndFlush([tag, image]);
         }
 
-        this.logger.log(`Uploaded ${name} icon`);
-        return new Tag({ color, slug, type: TagType.TeamCategory, name, image, ...scopedOptions });
+        return tag;
       })
     );
 
     this.logger.log('Seeding teams..');
-
     const teamsData = (await loadTeamsFromYaml(tenant, categories)) ?? fakeTeamsData(tenant, categories);
     const teamsWithParent = await Promise.all(
       teamsData.map(async (teamData) => {
@@ -430,11 +439,11 @@ export class DatabaseSeeder extends Seeder {
             teamData.originalCreationMonth || 0,
             teamData.originalCreationDay || 0
           );
-          const approximateDate = teamData.originalCreationDay
-            ? ApproximateDate.Day
-            : teamData.originalCreationMonth
-            ? ApproximateDate.Month
-            : ApproximateDate.Year;
+
+          let approximateDate;
+          if (teamData.originalCreationDay) approximateDate = ApproximateDate.Day;
+          else if (teamData.originalCreationMonth) approximateDate = ApproximateDate.Month;
+          else approximateDate = ApproximateDate.Year;
 
           const creation = new TeamHistory({
             team,
@@ -450,13 +459,13 @@ export class DatabaseSeeder extends Seeder {
 
         const eventType = TeamHistoryEventType.OkampusStart;
         const approximateDate = ApproximateDate.Exact;
-        team.history.add(
-          new TeamHistory({ team, tenant, eventType, approximateDate, eventDate: createdAt, createdBy: null })
-        );
+
+        const teamHistory = { team, tenant, eventType, approximateDate, eventDate: createdAt, createdBy: null };
+        team.history.add(new TeamHistory(teamHistory));
 
         team.actor.socials.add(
-          teamData.socials.map((social, i) => {
-            const teamSocial = new Social({ actor: team.actor, order: i, ...social, ...scopedOptions });
+          teamData.socials.map((social, order) => {
+            const teamSocial = new Social({ actor: team.actor, order, ...social, ...scopedOptions });
             return teamSocial;
           })
         );
@@ -472,15 +481,6 @@ export class DatabaseSeeder extends Seeder {
           ...scopedOptions,
         });
         team.poles.add(pole);
-
-        if (teamData.avatar) {
-          const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
-          const file = { ...fileData, encoding: '7bit', typetype: 'image/webp', fieldname: teamData.name };
-          const image = await DatabaseSeeder.upload.createUpload(file, Buckets.Teams, scopedOptions);
-
-          const type = ActorImageType.Avatar;
-          team.actor.actorImages.add(new ActorImage({ actor: team.actor, image, type, ...scopedOptions }));
-        }
 
         if (teamData.slug !== 'efrei-international' && !teamData.parent) {
           const bankLocation = pickOneFromArray(bankLocations);
@@ -523,6 +523,27 @@ export class DatabaseSeeder extends Seeder {
         }
 
         await em.persistAndFlush([team]);
+        const createdTeam = await em.findOneOrFail(
+          Team,
+          { actor: { slug: team.actor.slug } },
+          { populate: ['actor', 'actor.actorImages'] }
+        );
+
+        if (teamData.avatar) {
+          const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
+          const file = { ...fileData, encoding: '7bit', type: 'image/webp', fieldname: teamData.name };
+          const image = await DatabaseSeeder.upload.createUpload(file, Buckets.ActorImages, {
+            ...scopedOptions,
+            entityName: EntityName.Team,
+            entityId: createdTeam.id,
+          });
+
+          const type = ActorImageType.Avatar;
+          const actorImage = new ActorImage({ actor: createdTeam.actor, image, type, ...scopedOptions });
+          createdTeam.actor.actorImages.add(actorImage);
+          await em.persistAndFlush([createdTeam, actorImage]);
+        }
+
         return { team, parent: teamData.parent };
       })
     );
@@ -601,7 +622,7 @@ export class DatabaseSeeder extends Seeder {
     if (!sampleReceiptFile) throw new Error('No example receipt file found.');
 
     const receiptFileData = { buffer: sampleReceiptFile, size: sampleReceiptFile.length, filename, encoding: '7bit' };
-    const sampleReceipt = { ...receiptFileData, typetype: 'application/pdf', fieldname: 'receipt' };
+    const sampleReceipt = { ...receiptFileData, type: 'application/pdf', fieldname: 'receipt' };
 
     const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
     for (const team of teams) {
@@ -733,11 +754,11 @@ export class DatabaseSeeder extends Seeder {
             event.createdAt = new Date(event.start);
             event.createdAt.setDate(createdAt.getDate() - 7);
 
-            const lastStepIdx = event.nextEventApprovalStep
-              ? event.state === EventState.Rejected
-                ? event.nextEventApprovalStep.order
-                : event.nextEventApprovalStep.order - 1
-              : approvalSteps.length;
+            let lastStepIdx = approvalSteps.length;
+            if (event.nextEventApprovalStep) {
+              const order = event.nextEventApprovalStep.order;
+              lastStepIdx = event.state === EventState.Rejected ? order : order - 1;
+            }
 
             if (
               event.state === EventState.Rejected ||
@@ -778,11 +799,6 @@ export class DatabaseSeeder extends Seeder {
             const finances = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
-
-                let upload;
-                if (Math.random() > 0.92)
-                  upload = await DatabaseSeeder.upload.createUpload(sampleReceipt, Buckets.Receipts, scopedOptions);
-
                 const event = pickOneFromArray(events);
                 const category = randomEnum(FinanceCategory);
 
@@ -801,14 +817,26 @@ export class DatabaseSeeder extends Seeder {
                   state: FinanceState.Completed,
                   tenant,
                   receivedBy: pickOneFromArray(companies).actor,
-                  attachments: upload ? [upload] : [],
                 });
 
                 return finance;
               })
             ).then((finances) => finances.filter(isNotNull));
 
-            teamPromises.push(em.persistAndFlush(finances));
+            teamPromises.push(async () => {
+              await em.persistAndFlush(finances);
+              for (const finance in finances) {
+                if (Math.random() > 0.92) {
+                  const createdFinance = await em.findOne(Finance, finance);
+
+                  if (createdFinance) {
+                    const context = { ...scopedOptions, entityName: EntityName.Finance, entityId: createdFinance.id };
+                    const upload = await DatabaseSeeder.upload.createUpload(sampleReceipt, Buckets.Receipts, context);
+                    createdFinance.attachments.add(upload);
+                  }
+                }
+              }
+            });
           }
 
           const eventJoins = [];
@@ -831,7 +859,8 @@ export class DatabaseSeeder extends Seeder {
 
                 const entities: BaseEntity[] = [];
 
-                const presence = Math.random() > 0.2 ? (Math.random() > 0.2 ? true : false) : null;
+                let presence = null;
+                if (Math.random() > 0.2) presence = Math.random() > 0.2 ? true : false;
 
                 let action = null;
                 if (presence && Math.random() > 0.5) {
@@ -859,15 +888,13 @@ export class DatabaseSeeder extends Seeder {
                 const pointsProcessedAt = new Date(event.createdAt);
                 pointsProcessedAt.setDate(pointsProcessedAt.getDate() + randomInt(1, 6));
 
+                let state = ApprovalState.Approved;
+                if (presence === null) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
+
                 const eventJoin = new EventJoin({
                   actions: action ? [action] : [],
                   joinedBy: individual.user,
-                  state:
-                    presence === null
-                      ? Math.random() > 0.2
-                        ? ApprovalState.Approved
-                        : ApprovalState.Rejected
-                      : ApprovalState.Approved,
+                  state,
                   processedBy: pickOneFromArray(managers),
                   processedAt: pointsProcessedAt,
                   event: event,
@@ -900,13 +927,9 @@ export class DatabaseSeeder extends Seeder {
                   const mission = missions.find((mission) => mission[1] > 0);
                   if (mission) {
                     const completed = Math.random() > 0.5;
-                    const state = completed
-                      ? ApprovalState.Approved
-                      : Math.random() > 0.5
-                      ? ApprovalState.Pending
-                      : Math.random() > 0.5
-                      ? ApprovalState.Rejected
-                      : ApprovalState.Approved;
+
+                    let state = ApprovalState.Approved;
+                    if (!completed) state = Math.random() > 0.5 ? ApprovalState.Pending : ApprovalState.Rejected;
 
                     mission[1]--;
 

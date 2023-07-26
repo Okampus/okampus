@@ -22,25 +22,20 @@ import type { OnModuleInit } from '@nestjs/common';
   exports: [UploadsService],
 })
 export class UploadsModule implements OnModuleInit {
-  isEnabled: boolean;
-  s3EndPoint: string;
-  uploadLocalPath: string;
-  constructor(private readonly configService: ConfigService) {
-    this.isEnabled = loadConfig<boolean>(this.configService, 's3.isEnabled');
-    this.s3EndPoint = loadConfig<string>(this.configService, 's3.endPoint');
-    this.uploadLocalPath = loadConfig<string>(this.configService, 'upload.localPath');
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   public async onModuleInit(): Promise<void> {
     const { mkdir } = promises;
     const logger = new Logger(UploadsModule.name);
 
-    if (this.isEnabled) {
-      logger.log(`Distant storage is enabled, uploading to ${this.s3EndPoint}`);
+    if (loadConfig<boolean>(this.configService, 's3.isEnabled')) {
+      logger.log(`Distant storage is enabled, uploading to ${loadConfig<string>(this.configService, 's3.endpoint')}`);
     } else {
-      logger.log(`Distant storage is disabled, uploading to local file system. ${this.uploadLocalPath}`);
+      const uploadPath = loadConfig<string>(this.configService, 'upload.localPath');
+
+      logger.log(`Distant storage is disabled, uploading to local file system. ${uploadPath}`);
       const makeDir = (dir: string) => mkdir(dir, { recursive: true });
-      await Promise.all(Object.keys(Buckets).map((value) => makeDir(path.join(this.uploadLocalPath, value))));
+      await Promise.all(Object.keys(Buckets).map((value) => makeDir(path.join(uploadPath, value))));
     }
   }
 }

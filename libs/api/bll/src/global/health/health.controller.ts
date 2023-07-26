@@ -7,6 +7,8 @@ import { MeiliSearchService } from '../search/meilisearch.service';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { loadConfig } from '../../shards/utils/load-config';
 
+import { ListBucketsCommand } from '@aws-sdk/client-s3';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -16,23 +18,17 @@ import {
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
   HealthIndicatorFunction,
+  HealthCheck,
 } from '@nestjs/terminus';
 
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { HealthCheck } from '@nestjs/terminus';
+
 import { Public } from '@okampus/api/shards';
 import { toKebabCase } from '@okampus/shared/utils';
 
-import { Buckets } from '@okampus/shared/enums';
-
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
-
 import type { ApiConfig } from '@okampus/shared/types';
-
-function getBucketStatus(bucket: string, isOk: boolean): HealthIndicatorResult {
-  return { [`s3-${toKebabCase(bucket)}`]: { status: isOk ? 'up' : 'down' } };
-}
 
 @ApiTags('Health')
 @Controller({ path: 'health' })
@@ -57,17 +53,24 @@ export class HealthController {
     // S3 storage or local storage
     if (this.configService.get('s3.isEnabled')) {
       const bucketNames = loadConfig<ApiConfig['s3']['buckets']>(this.configService, 's3.buckets');
-      this.healthChecks.push(
-        ...Object.values(Buckets).map((bucket) => {
-          return async () => {
-            if (!this.uploadService.minioClient) return getBucketStatus(bucket, false);
-            return await this.uploadService.minioClient
-              .bucketExists(bucketNames[bucket])
-              .then((exists) => getBucketStatus(bucket, exists))
-              .catch(() => getBucketStatus(bucket, false));
-          };
-        })
-      );
+      this.healthChecks.push(async () => {
+        const result: HealthIndicatorResult = {};
+        const buckets = Object.values(bucketNames);
+
+        if (this.uploadService.s3Client) {
+          const command = new ListBucketsCommand({});
+          const exists = await this.uploadService.s3Client.send(command);
+          for (const bucket of buckets) {
+            const status = exists.Buckets?.some((bucket) => bucket.Name === bucket) ? 'up' : 'down';
+            result[`s3-${toKebabCase(bucket)}`] = { status };
+          }
+
+          return result;
+        }
+
+        for (const bucket of buckets) result[`s3-${toKebabCase(bucket)}`] = { status: 'down' };
+        return result;
+      });
     } else {
       const path = loadConfig<string>(this.configService, 'upload.localPath');
       this.healthChecks.push(() => this.disk.checkStorage('disk', { path, thresholdPercent: 0.75 }));
