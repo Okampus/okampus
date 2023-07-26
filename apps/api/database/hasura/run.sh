@@ -9,4 +9,4 @@ echo "Creating okampus-hasura..." && . apps/api/.env 2>/dev/null && docker run $
 -e HASURA_GRAPHQL_ENABLE_CONSOLE=true \
 -e HASURA_GRAPHQL_DEV_MODE=true \
 -e HASURA_GRAPHQL_STRINGIFY_NUMERIC_TYPES=true \
-hasura/graphql-engine:v2.21.0 | pnpm pino-pretty -c -t
+hasura/graphql-engine:v2.30.0 | pnpm pino-pretty -c -t
