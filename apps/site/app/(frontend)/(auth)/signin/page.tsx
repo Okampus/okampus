@@ -1,24 +1,23 @@
 'use client';
 
+import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
 import TextInput from '../../../../components/molecules/Input/TextInput';
 import ActionButton from '../../../../components/molecules/Button/ActionButton';
 
+import { API_URL } from '../../../../context/consts';
 import { meSlugAtom } from '../../../../context/global';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
-import { loginMutation } from '@okampus/shared/graphql';
+import { loginMutation, tenantOidcInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { useMutation } from '@apollo/client';
 
 import { IconArrowRight } from '@tabler/icons-react';
-import { useAtom } from 'jotai';
-import Image from 'next/image';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
-const OAuthSrcLink =
-  'https://media.discordapp.net/attachments/965927279643488297/1060235625623732244/logo-efrei-print-efrei-web.png';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SigninPage() {
   const [, setMeSlug] = useAtom(meSlugAtom);
@@ -26,6 +25,8 @@ export default function SigninPage() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const { data } = useTypedQuery({ tenant: [{}, tenantOidcInfo] });
 
   // @ts-ignore - Type instantiation is excessively deep and possibly infinite.
   const [login] = useMutation(loginMutation, {
@@ -50,24 +51,24 @@ export default function SigninPage() {
               <h1 className="text-2xl text-left font-semibold text-0 tracking-tighter">Bienvenue 👋</h1>
             </div>
 
-            <ActionButton
-              className="!h-[4.5rem] !text-xl gap-4"
-              action={{
-                type: ActionType.Action,
-                label: 'Continuer avec myEfrei',
-                iconOrSwitch: (
-                  <Image
-                    src={OAuthSrcLink}
-                    className="w-9 h-9 pb-0.5"
-                    alt="Logo Efrei"
-                    width={30}
-                    height={30}
-                    unoptimized
-                  />
-                ),
-                linkOrActionOrMenu: () => console.log('TODO: OAuth/OIDC login'),
-              }}
-            />
+            <div className="flex flex-col gap-4">
+              {data?.tenant.map(
+                (tenant) =>
+                  tenant.isOidcEnabled &&
+                  tenant.oidcName && (
+                    <ActionButton
+                      key={tenant.id}
+                      className="!h-[4.5rem] !text-xl gap-4"
+                      action={{
+                        type: ActionType.Action,
+                        label: `Continuer avec ${tenant.oidcName}`,
+                        iconOrSwitch: <AvatarImage actor={tenant.adminTeam?.actor} />,
+                        linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
+                      }}
+                    />
+                  )
+              )}
+            </div>
             <div className="flex items-center gap-1.5 text-xs text-1 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">
               OU
             </div>
