@@ -15,6 +15,7 @@ ADD --chown=api:api package.json ./package.json
 ADD --chown=api:api pnpm-lock.yaml ./pnpm-lock.yaml
 
 RUN pnpm i --frozen-lockfile
+RUN pnpm hasura plugins install cli-ext
 
 ADD --chown=api:api nx.json ./nx.json
 ADD --chown=api:api tsconfig.json ./tsconfig.json
