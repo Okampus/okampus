@@ -54,21 +54,23 @@ export class HealthController {
     if (this.configService.get('s3.isEnabled')) {
       const bucketNames = loadConfig<ApiConfig['s3']['buckets']>(this.configService, 's3.buckets');
       this.healthChecks.push(async () => {
-        const result: HealthIndicatorResult = {};
+        const result: HealthIndicatorResult = { s3: { status: 'down' } };
         const buckets = Object.values(bucketNames);
 
         if (this.uploadService.s3Client) {
           const command = new ListBucketsCommand({});
           const exists = await this.uploadService.s3Client.send(command);
+          if (!exists.Buckets) return result;
+
+          result.s3.status = 'up';
           for (const bucket of buckets) {
             const status = exists.Buckets?.some((bucket) => bucket.Name === bucket) ? 'up' : 'down';
-            result[`s3-${toKebabCase(bucket)}`] = { status };
+            result.s3[toKebabCase(bucket)] = { status };
           }
 
           return result;
         }
 
-        for (const bucket of buckets) result[`s3-${toKebabCase(bucket)}`] = { status: 'down' };
         return result;
       });
     } else {
