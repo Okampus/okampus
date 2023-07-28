@@ -333,19 +333,19 @@ export class DatabaseSeeder extends Seeder {
       });
 
       for (const _ of Array.from({ length: randomInt(1, 3) })) {
-        const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
+        const [streetNumber, ...rest] = faker.location.streetAddress().split(' ');
         const location = new Location({
           type: LocationType.Address,
           actor: campusClusterManageTeam.actor,
           address: new Address({
-            city: faker.address.city(),
+            city: faker.location.city(),
             country: Countries.France,
-            latitude: Number.parseFloat(faker.address.latitude()),
-            longitude: Number.parseFloat(faker.address.longitude()),
-            state: faker.address.state(),
+            latitude: faker.location.latitude(),
+            longitude: faker.location.longitude(),
+            state: faker.location.state(),
             streetNumber,
             street: rest.join(' '),
-            zip: faker.address.zipCode(),
+            zip: faker.location.zipCode(),
           }),
           createdBy: null,
           tenant,

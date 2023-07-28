@@ -48,7 +48,7 @@ export class EventSeeder extends Factory<Event> {
     const name = faker.commerce.productName();
 
     const payedEvent = Math.random() > 0.5;
-    const [streetNumber, ...rest] = faker.address.streetAddress().split(' ');
+    const [streetNumber, ...rest] = faker.location.streetAddress().split(' ');
 
     const isOnline = Math.random() > 0.5;
     const location = isOnline
@@ -67,14 +67,14 @@ export class EventSeeder extends Factory<Event> {
           createdBy: null,
           tenant: this.team.tenant,
           address: new Address({
-            city: faker.address.city(),
+            city: faker.location.city(),
             country: Countries.France,
-            latitude: Number.parseFloat(faker.address.latitude()),
-            longitude: Number.parseFloat(faker.address.longitude()),
-            state: faker.address.state(),
+            latitude: faker.location.latitude(),
+            longitude: faker.location.longitude(),
+            state: faker.location.state(),
             streetNumber,
             street: rest.join(' '),
-            zip: faker.address.zipCode(),
+            zip: faker.location.zipCode(),
           }),
         });
 
