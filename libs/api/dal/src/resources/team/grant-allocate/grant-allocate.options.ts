@@ -1,5 +1,5 @@
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { GrantAllocateProps } from '@okampus/shared/dtos';
+import type { GrantAllocateProps } from './grant-allocate.props';
 import type { Individual } from '../../individual/individual.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Grant } from '../grant/grant.entity';

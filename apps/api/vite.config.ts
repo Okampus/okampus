@@ -33,7 +33,6 @@ export default defineConfig({
         _('libs/api/dal'),
         _('libs/api/bll'),
         _('libs/shared/consts'),
-        _('libs/shared/dtos'),
         _('libs/shared/enums'),
         _('libs/shared/types'),
         _('libs/shared/utils'),

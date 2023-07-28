@@ -20,12 +20,12 @@ import type { FinanceOptions } from './finance.options';
 import type { Expense } from '../expense/expense.entity';
 import type { Event } from '../../event/event.entity';
 import type { Project } from '../../project/project.entity';
-import type { FileUpload } from 'graphql-upload-minimal';
 import type { Actor } from '../../actor/actor.entity';
 import type { Account } from '../account/account.entity';
 import type { Tag } from '../../actor/tag/tag.entity';
 import type { Location } from '../../actor/location/location.entity';
 import type { Individual } from '../../individual/individual.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => FinanceRepository })
 export class Finance extends TenantScopedEntity {

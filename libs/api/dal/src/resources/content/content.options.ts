@@ -1,7 +1,7 @@
 import type { Team } from '../team/team.entity';
 import type { Vote } from './vote/vote.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
-import type { ContentProps } from '@okampus/shared/dtos';
+import type { ContentProps } from './content.props';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Content } from './content.entity';
 import type { Report } from './report/report.entity';

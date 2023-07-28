@@ -58,13 +58,6 @@ array_relationships:
         table:
           name: bank_info
           schema: public
-  - name: favorites
-    using:
-      foreign_key_constraint_on:
-        column: actor_id
-        table:
-          name: favorite
-          schema: public
   - name: followers
     using:
       foreign_key_constraint_on:

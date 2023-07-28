@@ -3,7 +3,7 @@ import type { FormSubmission } from '../../form-submission/form-submission.entit
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';
-import type { ExpenseProps } from '@okampus/shared/dtos';
+import type { ExpenseProps } from './expense.props';
 
 export type ExpenseOptions = ExpenseProps &
   TenantScopedOptions & {

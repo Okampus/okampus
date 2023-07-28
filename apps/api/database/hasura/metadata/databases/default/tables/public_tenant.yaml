@@ -152,6 +152,13 @@ array_relationships:
         table:
           name: event_organize
           schema: public
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_supervisor
+          schema: public
   - name: events
     using:
       foreign_key_constraint_on:
@@ -396,6 +403,13 @@ array_relationships:
         column: tenant_id
         table:
           name: validation
+          schema: public
+  - name: views
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: view
           schema: public
   - name: votes
     using:

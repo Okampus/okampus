@@ -1,4 +1,4 @@
-import type { FileUploadProps } from '@okampus/shared/dtos';
+import type { FileUploadProps } from './file-upload.props';
 
 import type { TenantScopedOptions } from '../tenant-scoped.options';
 

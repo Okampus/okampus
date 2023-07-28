@@ -60,6 +60,8 @@ import { Account } from './team/account/account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
 import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
+import { View } from './content/view/view.entity';
+import { EventSupervisor } from './event/event-supervisor/event-supervisor.entity';
 
 export const allEntities = [
   Log,
@@ -116,35 +118,35 @@ export const allEntities = [
 
   ClassGroup,
   ClassGroupTeacher,
-
   Cohort,
 
   Project,
 
   Event,
-  EventOrganize,
+  EventApproval,
+  EventApprovalStep,
   EventJoin,
+  EventOrganize,
+  EventSupervisor,
 
   FileUpload,
 
-  Favorite,
-  Reaction,
-  Report,
-  Validation,
-  Vote,
-
-  EventApproval,
-  EventApprovalStep,
+  Form,
+  FormSubmission,
 
   Content,
   Thread,
   Issue,
 
+  Favorite,
+  Reaction,
+  Report,
+  Validation,
+  View,
+  Vote,
+
   Document,
   Subject,
-
-  Form,
-  FormSubmission,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

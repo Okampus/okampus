@@ -2,7 +2,7 @@ import type { Event } from '../../event/event.entity';
 import type { Project } from '../../project/project.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Team } from '../team.entity';
-import type { ActionProps } from '@okampus/shared/dtos';
+import type { ActionProps } from './action.props';
 import type { User } from '../../individual/user/user.entity';
 import type { Individual } from '../../individual/individual.entity';
 

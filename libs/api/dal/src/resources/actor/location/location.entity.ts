@@ -14,10 +14,10 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { LocationType } from '@okampus/shared/enums';
 
+import type { LocationOptions } from './location.options';
 import type { Actor } from '../actor.entity';
 import type { Address } from '../address/address.entity';
-import type { LocationOptions } from './location.options';
-import type { FileUpload } from 'graphql-upload-minimal';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => LocationRepository })
 export class Location extends TenantScopedEntity {

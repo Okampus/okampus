@@ -1,4 +1,4 @@
-import type { TenantProps } from '@okampus/shared/dtos';
+import type { TenantProps } from './tenant.props';
 import type { Form } from '../form/form.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 

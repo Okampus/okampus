@@ -1,4 +1,4 @@
-const typeTypes = [
+const types = [
   'audio/.*',
   'image/.*',
   'video/.*',
@@ -25,7 +25,7 @@ const typeTypes = [
   'application/zip',
 ];
 
-export const MIME_REGEX = new RegExp(`^(${typeTypes.join('|')})$`, 'i');
+export const MIME_REGEX = new RegExp(`^(${types.join('|')})$`, 'i');
 
 const simpleImageMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml'];
 

@@ -72,14 +72,6 @@
                 "onlyDependOnLibsWithTags": ["scope:shared", "scope:site"]
               },
               {
-                "sourceTag": "scope:mobile",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:mobile"]
-              },
-              {
-                "sourceTag": "scope:mobile-e2e",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:mobile-e2e", "scope:mobile"]
-              },
-              {
                 "sourceTag": "scope:site-e2e",
                 "onlyDependOnLibsWithTags": ["scope:shared", "scope:site-e2e", "scope:site"]
               },

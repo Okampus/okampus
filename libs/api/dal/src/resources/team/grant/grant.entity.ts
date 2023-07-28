@@ -19,7 +19,7 @@ import type { Team } from '../team.entity';
 import type { GrantOptions } from './grant.options';
 import type { Project } from '../../project/project.entity';
 import type { Individual } from '../../individual/individual.entity';
-import type { FileUpload } from 'graphql-upload-minimal';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => GrantRepository })
 export class Grant extends TenantScopedEntity {

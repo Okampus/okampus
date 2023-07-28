@@ -2,7 +2,9 @@ export enum Buckets {
   Attachments = 'Attachments',
   QR = 'QR',
   Receipts = 'Receipts',
-  Teams = 'Teams',
-  Tenants = 'Tenants',
-  Users = 'Users',
+  Signatures = 'Signatures',
+  Thumbnails = 'Thumbnails',
+  ActorDocuments = 'ActorDocuments',
+  ActorImages = 'ActorImages',
+  ActorVideos = 'ActorVideos',
 }

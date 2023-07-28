@@ -4,7 +4,7 @@ import type { FormSubmission } from '../../form-submission/form-submission.entit
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';
-import type { TeamJoinProps } from '@okampus/shared/dtos';
+import type { TeamJoinProps } from './team-join.props';
 import type { Pole } from '../pole/pole.entity';
 import type { Individual } from '../../individual/individual.entity';
 

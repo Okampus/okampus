@@ -25,10 +25,6 @@
       "path": "../apps/api"
     },
     {
-      "name": "mobile",
-      "path": "../apps/mobile"
-    },
-    {
       "name": "strapi",
       "path": "../apps/strapi"
     },
@@ -43,10 +39,6 @@
     {
       "name": "libs-api",
       "path": "../libs/api"
-    },
-    {
-      "name": "libs-mobile",
-      "path": "../libs/mobile"
     },
     {
       "name": "/",
@@ -82,8 +74,7 @@
       "strapi",
       "libs-shared",
       "libs-site",
-      "libs-api",
-      "libs-mobile"
+      "libs-api"
     ]
   }
 }

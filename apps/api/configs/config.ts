@@ -86,17 +86,21 @@ export const config: ApiConfig = {
   },
   s3: {
     isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
-    accessKey: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
-    secretKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
-    endPoint: process.env.S3_ENDPOINT ?? 'endpoint',
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
+    },
+    endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
     buckets: {
       [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'bucket-attachments',
       [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'bucket-qr',
       [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'bucket-receipts',
-      [Buckets.Teams]: process.env.S3_BUCKET_NAME_TEAMS ?? 'bucket-teams',
-      [Buckets.Tenants]: process.env.S3_BUCKET_NAME_TENANTS ?? 'bucket-tenants',
-      [Buckets.Users]: process.env.S3_BUCKET_NAME_USERS ?? 'bucket-users',
+      [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'bucket-signatures',
+      [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'bucket-thumbnails',
+      [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'bucket-actor-documents',
+      [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'bucket-actor-images',
+      [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'bucket-actor-videos',
     },
   },
   redis: {

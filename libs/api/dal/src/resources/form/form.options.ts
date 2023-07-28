@@ -1,6 +1,6 @@
 import type { Team } from '../team/team.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
-import type { FormProps } from '@okampus/shared/dtos';
+import type { FormProps } from './form.props';
 
 export type FormOptions = FormProps &
   TenantScopedOptions & {

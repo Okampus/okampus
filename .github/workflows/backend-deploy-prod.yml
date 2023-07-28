@@ -7,6 +7,8 @@ on:
     paths:
       - 'apps/api/**'
       - 'libs/api/**'
+      - package.json
+      - pnpm-lock.yaml
       - '!*/**/*.md'
       - '.github/workflows/backend-deploy-prod.yml'
 

@@ -3,7 +3,7 @@ import type { Team } from '../team/team.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
 import type { Tag } from './tag/tag.entity';
-import type { ActorProps } from '@okampus/shared/dtos';
+import type { ActorProps } from './actor.props';
 
 export type ActorOptions = ActorProps &
   TenantScopedOptions & {

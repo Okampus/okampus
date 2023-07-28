@@ -2,9 +2,6 @@ table:
   name: favorite
   schema: public
 object_relationships:
-  - name: actor
-    using:
-      foreign_key_constraint_on: actor_id
   - name: content
     using:
       foreign_key_constraint_on: content_id

@@ -54,6 +54,13 @@ array_relationships:
         table:
           name: shortcut
           schema: public
+  - name: supervisedEvents
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: event_supervisor
+          schema: public
   - name: teamJoins
     using:
       foreign_key_constraint_on:

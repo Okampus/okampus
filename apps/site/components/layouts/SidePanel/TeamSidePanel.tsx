@@ -60,7 +60,7 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
       {pathname !== `/team/${team.actor.slug}` && (
         <Profile type="team" actor={team.actor} socials={team.actor.socials} />
       )}
-      <section className="pt-[var(--py-content)]">
+      <section className="pt-[var(--py-content)] px-3">
         {renderCategories([
           [team.directorsCategoryName || 'Directeurs', directors],
           [team.managersCategoryName || 'Gestionnaires', managers],

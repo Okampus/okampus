@@ -26,6 +26,7 @@
 - "!include public_event_join.yaml"
 - "!include public_event_organize.yaml"
 - "!include public_event_organize_supervisors.yaml"
+- "!include public_event_supervisor.yaml"
 - "!include public_event_tags.yaml"
 - "!include public_expense.yaml"
 - "!include public_expense_item.yaml"
@@ -78,4 +79,5 @@
 - "!include public_thread_tags.yaml"
 - "!include public_user.yaml"
 - "!include public_validation.yaml"
+- "!include public_view.yaml"
 - "!include public_vote.yaml"

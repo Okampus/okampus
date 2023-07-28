@@ -38,8 +38,7 @@ import { objectContains, randomId } from '@okampus/shared/utils';
 import type { LoginDto } from './auth.types';
 
 import type { JwtSignOptions } from '@nestjs/jwt';
-import type { IndividualOptions } from '@okampus/api/dal';
-import type { SessionProps } from '@okampus/shared/dtos';
+import type { IndividualOptions, SessionProps } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';

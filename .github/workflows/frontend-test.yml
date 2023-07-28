@@ -9,12 +9,16 @@ on:
     paths:
       - 'apps/site/**'
       - 'libs/ui/**'
+      - package.json
+      - pnpm-lock.yaml
       - '!*/**/*.md'
       - '.github/workflows/frontend-test.yml'
   pull_request:
     paths:
       - 'apps/site/**'
       - 'libs/ui/**'
+      - package.json
+      - pnpm-lock.yaml
       - '!*/**/*.md'
       - '.github/workflows/frontend-test.yml'
 

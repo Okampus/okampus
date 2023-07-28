@@ -1,4 +1,5 @@
 FROM node:current-alpine
+RUN apk add gcompat
 
 WORKDIR /app
 RUN adduser -D --uid 1111 api
@@ -31,4 +32,4 @@ USER api
 
 EXPOSE 8081
 
-CMD /wait && pnpm cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && node dist/apps/api/main.mjs
+CMD /wait && pnpm cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs && pnpm run hasura:apply && node dist/apps/api/main.mjs
