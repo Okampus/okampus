@@ -45,23 +45,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Expo
-node_modules/
-.expo/
-.yarn/
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-
-# Detox
-apps/mobile/e2e/artifacts
-
 # Next.js
 .next
 apps/site/tsconfig.tsbuildinfo

@@ -29,9 +29,6 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "#mobile/assets/*": ["apps/mobile/src/assets/*"],
-      "#mobile/components/*": ["apps/mobile/src/app/components/*"],
-      "#mobile/src/*": ["apps/mobile/src/*"],
       "@okampus/api/bll": ["libs/api/bll/src/index.ts"],
       "@okampus/api/dal": ["libs/api/dal/src/index.ts"],
       "@okampus/api/shards": ["libs/api/shards/src/index.ts"],
