@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@apollo/client": "beta",
-    "@aws-sdk/client-textract": "^3.377.0",
     "@aws-sdk/client-s3": "^3.377.0",
+    "@aws-sdk/client-textract": "^3.377.0",
     "@fastify/cookie": "^8.3.0",
     "@fastify/cors": "^8.3.0",
     "@fastify/passport": "^2.3.0",
@@ -23,6 +23,7 @@
     "@fastify/secure-session": "^6.1.0",
     "@floating-ui/react": "^0.24.0",
     "@hookform/resolvers": "^3.1.0",
+    "@imbios/next-pwa": "^1.1.1",
     "@mercuriusjs/gateway": "^2.0.0",
     "@mikro-orm/core": "^5.7.12",
     "@mikro-orm/migrations": "^5.7.12",
