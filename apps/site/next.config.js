@@ -19,7 +19,11 @@ const nextConfig = {
 
     return config;
   },
-  experimental: { esmExternals: false, serverActions: true },
+  experimental: {
+    esmExternals: false,
+    serverActions: true,
+    outputFileTracingIgnores: ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+  },
   images: {
     formats: ['image/webp'],
     remotePatterns: [
