@@ -1,4 +1,4 @@
-import { rootPath } from './config';
+import { rootPath } from '../config';
 import { MercuriusDriver } from '@nestjs/mercurius';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 
