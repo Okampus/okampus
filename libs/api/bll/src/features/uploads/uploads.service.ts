@@ -31,6 +31,22 @@ type UploadContext = {
 const ACL = 'public-read';
 const nowString = () => new Date().toISOString().split('.')[0].replace('T', '-');
 
+// Writefile and create parent directories if they don't exist
+const writeFile = async (path: string, data: Buffer) => {
+  const dir = path.split('/').slice(0, -1).join('/');
+  try {
+    await fs.mkdir(dir, { recursive: true });
+  } catch (error) {
+    console.error(error);
+  }
+
+  try {
+    await fs.writeFile(path, data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 @Injectable()
 export class UploadsService extends RequestContext {
   isEnabled: boolean;
@@ -68,7 +84,7 @@ export class UploadsService extends RequestContext {
     if (!this.isEnabled) {
       const buffer = await streamToBuffer(stream);
       const localPath = loadConfig<string>(this.configService, 'upload.localPath');
-      await fs.writeFile(`${localPath}/${Key}`, buffer);
+      await writeFile(`${localPath}/${Bucket}/${Key}`, buffer);
 
       const url = `${loadConfig<string>(this.configService, 'network.apiUrl')}/uploads/${Bucket}/${Key}`;
       return { url, etag: key, size: ContentLength };
@@ -98,7 +114,7 @@ export class UploadsService extends RequestContext {
     else throw new BadRequestException('File missing a stream or a buffer');
 
     const type = file.type ?? 'application/octet-stream';
-    const createdById = context.createdBy?.id;
+    const createdById = context.createdBy?.id ?? null;
     const slug = toSlug(file.filename ?? file.fieldname);
     const key = `${slug}-${createdById ?? EventContext.System}-${nowString()}-${randomId()}`;
 
