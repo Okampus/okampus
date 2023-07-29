@@ -673,16 +673,9 @@
           "enumItems": [
             "MemberInOrgAndChildrenCount",
             "MemberInOrgAndChildrenUniqueCount",
-            "MemberInOrgAndChildrenUniqueCount",
-            "EventOccuringCount",
-            "EventCreatedCount",
             "EventOccuringCount",
             "EventCreatedCount",
             "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ContentCreatedCount",
             "ContentCreatedCount",
             "ChildOrgCount"
           ],

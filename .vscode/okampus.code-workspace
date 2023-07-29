@@ -62,19 +62,6 @@
       "tools": true,
       "tmp": true,
       "node_modules": true
-    },
-    "jest.autoRun": "off",
-    "jest.disabledWorkspaceFolders": [
-      "site",
-      "ui-atoms",
-      "ui-molecules",
-      "ui-organisms",
-      "ui-templates",
-      "api",
-      "strapi",
-      "libs-shared",
-      "libs-site",
-      "libs-api"
-    ]
+    }
   }
 }

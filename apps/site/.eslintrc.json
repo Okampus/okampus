@@ -9,8 +9,5 @@
     "unicorn/filename-case": "off",
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/ban-ts-comment": "off"
-  },
-  "env": {
-    "jest": true
   }
 }
