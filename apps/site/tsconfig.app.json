@@ -9,6 +9,7 @@
     "**/*.tsx",
     "../../apps/site/.next/types/**/*.ts",
     "../../dist/apps/site/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "next.config.js"
   ]
 }

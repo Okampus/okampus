@@ -13,7 +13,6 @@ import type {
   FindByPkTeamJoinArgsType,
   AggregateTeamJoinArgsType,
 } from './team-joins.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('TeamJoinMutationResponse')

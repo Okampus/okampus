@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import type { ApiConfig } from '@okampus/shared/types';
 
 const _dirname = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
-export const rootPath = `${_dirname}/../../..`;
+export const rootPath = `${_dirname}/../../../..`;
 const appPath = `${rootPath}/apps/api`;
 
 dotenv.config({ path: `${appPath}/.env` });

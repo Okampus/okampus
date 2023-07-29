@@ -13,7 +13,6 @@ import type {
   FindByPkEventApprovalStepArgsType,
   AggregateEventApprovalStepArgsType,
 } from './event-approval-steps.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('EventApprovalStepMutationResponse')

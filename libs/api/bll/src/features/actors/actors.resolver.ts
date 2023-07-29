@@ -13,7 +13,6 @@ import type {
   FindByPkActorArgsType,
   AggregateActorArgsType,
 } from './actors.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('ActorMutationResponse')

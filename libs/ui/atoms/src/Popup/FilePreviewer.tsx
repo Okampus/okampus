@@ -20,7 +20,7 @@ export type FilePreviewerProps = {
 };
 
 export function FilePreviewer({ file, onClose }: FilePreviewerProps) {
-  const [preview, setPreview] = useState<JSX.Element | null>(null);
+  const [preview, setPreview] = useState<React.JSX.Element | null>(null);
   const [numPages, setNumPages] = useState(0);
   // const [pageNumber, setPageNumber] = useState(1);
 

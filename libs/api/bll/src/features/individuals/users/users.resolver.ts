@@ -13,7 +13,6 @@ import type {
   FindByPkUserArgsType,
   AggregateUserArgsType,
 } from './users.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('UserMutationResponse')

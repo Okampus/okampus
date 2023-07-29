@@ -13,7 +13,6 @@ import type {
   FindByPkSocialArgsType,
   AggregateSocialArgsType,
 } from './socials.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('SocialMutationResponse')

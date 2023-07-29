@@ -1,10 +1,15 @@
 {
   "extends": ["../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./libs/shared/graphql/tsconfig.lib.json", "./libs/shared/graphql/tsconfig.spec.json"]
+  },
   "rules": {
     "unicorn/filename-case": "off",
     "unicorn/no-abusive-eslint-disable": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "overrides": [
     {

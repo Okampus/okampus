@@ -13,7 +13,6 @@ import type {
   FindByPkProjectArgsType,
   AggregateProjectArgsType,
 } from './projects.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('ProjectMutationResponse')

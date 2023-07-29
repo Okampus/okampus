@@ -14,12 +14,13 @@ export class UserSeeder extends Factory<Individual> {
   }
 
   public definition(): IndividualOptions {
-    const firstName = faker.name.firstName();
-    const lastName = faker.name.lastName();
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    const name = `${firstName} ${lastName}`;
 
     return {
-      slug: `${toSlug(`${firstName}-${lastName}`)}-${randomId()}`,
-      name: `${firstName} ${lastName}`,
+      slug: toSlug(`${name}-${randomId()}`),
+      name,
       userProps: { firstName, lastName },
       passwordHash: this.passwordHash,
       email: `${toSlug(firstName)}.${toSlug(lastName)}@${toSlug(this.tenant.domain)}.fr`,

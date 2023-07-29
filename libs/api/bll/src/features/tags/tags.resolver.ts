@@ -13,7 +13,6 @@ import type {
   FindByPkTagArgsType,
   AggregateTagArgsType,
 } from './tags.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('TagMutationResponse')

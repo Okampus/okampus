@@ -13,7 +13,6 @@ import type {
   FindByPkMissionJoinArgsType,
   AggregateMissionJoinArgsType,
 } from './mission-joins.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('MissionJoinMutationResponse')

@@ -36,6 +36,8 @@ import {
   BankInfo,
   EventApproval,
   Log,
+  Location,
+  Mission,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -81,10 +83,8 @@ import { ConsoleLogger } from '@nestjs/common';
 import { hash } from 'argon2';
 import YAML from 'yaml';
 
-import { Mission } from '@okampus/api/dal';
-import { Location } from '@okampus/api/dal';
 import { readFile as readFileAsync, stat } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import type { EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
@@ -93,7 +93,12 @@ import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
 
 const createdAt = new Date();
-const seederFolder = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
+
+const relativeAssetsPath = `../../../../../assets/src/`;
+const seederFolder = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
+
+const receiptExampleFilename = 'receipt-example.pdf';
+const receiptExamplePath = path.join(seederFolder, relativeAssetsPath, 'documents', receiptExampleFilename);
 
 const seedingConfig = {
   N_ADMINS: 10,
@@ -186,7 +191,7 @@ function randomMission(project: Project, tenant: Tenant): Mission {
 }
 
 async function readIcon(iconFileName: string) {
-  const icon = await readFile(`${seederFolder}/../../../../../assets/src/images/team-category/${iconFileName}`);
+  const icon = await readFile(path.join(seederFolder, relativeAssetsPath, 'images/team-category', iconFileName));
   if (!icon) return await readFile(`${seederFolder}/custom/icons/${iconFileName}`);
   return icon;
 }
@@ -245,8 +250,6 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
 }
 
 async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<TeamData[] | null> {
-  const seederFolder = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
-
   let teams = await readYaml(`${seederFolder}/custom/teams.yaml`);
   if (!Array.isArray(teams)) return null;
 
@@ -302,6 +305,7 @@ export class DatabaseSeeder extends Seeder {
 
   public async run(em: EntityManager): Promise<void> {
     this.logger.log(`Seeding launched for tenant ${DatabaseSeeder.targetTenant}...`);
+    this.logger.log(`Seeder folder: ${seederFolder}, receipt example path: ${receiptExamplePath}`);
 
     const start = new Date('2023-05-01T00:00:00.000Z');
 
@@ -617,11 +621,15 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log('Teams created...');
     const teamPromises = [];
 
-    const filename = 'receipt-example.pdf';
-    const sampleReceiptFile = await readFile(`${seederFolder}/../../../../../assets/src/documents/${filename}`);
-    if (!sampleReceiptFile) throw new Error('No example receipt file found.');
+    const receiptExampleFile = await readFile(receiptExamplePath);
+    if (!receiptExampleFile) throw new Error('No example receipt file found.');
 
-    const receiptFileData = { buffer: sampleReceiptFile, size: sampleReceiptFile.length, filename, encoding: '7bit' };
+    const receiptFileData = {
+      buffer: receiptExampleFile,
+      size: receiptExampleFile.length,
+      filename: receiptExampleFilename,
+      encoding: '7bit',
+    };
     const sampleReceipt = { ...receiptFileData, type: 'application/pdf', fieldname: 'receipt' };
 
     const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
@@ -812,7 +820,7 @@ export class DatabaseSeeder extends Seeder {
                   payedBy: pickOneFromArray(teamMembers).user.individual.actor,
                   initiatedBy: pickOneFromArray(teamMembers).user.individual,
                   createdBy: pickOneFromArray(teamMembers).user.individual,
-                  payedAt: faker.date.between(start, createdAt),
+                  payedAt: faker.date.between({ from: start, to: createdAt }),
                   method: randomEnum(PaymentMethod),
                   state: FinanceState.Completed,
                   tenant,

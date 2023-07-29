@@ -13,7 +13,6 @@ import type {
   FindByPkBotArgsType,
   AggregateBotArgsType,
 } from './bots.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('BotMutationResponse')

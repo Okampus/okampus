@@ -13,7 +13,6 @@ import type {
   FindByPkActorImageArgsType,
   AggregateActorImageArgsType,
 } from './actor-images.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('ActorImageMutationResponse')

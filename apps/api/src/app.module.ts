@@ -1,8 +1,8 @@
 import { AppController } from './app.controller';
-import { config } from '../configs/config';
+import { config } from './configs/config';
 
-import graphqlConfig from '../configs/graphql.config';
-import mikroOrmConfig from '../configs/mikro-orm.config';
+import graphqlConfig from './configs/graphql.config';
+import mikroOrmConfig from './configs/mikro-orm.config';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {

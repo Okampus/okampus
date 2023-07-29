@@ -13,7 +13,6 @@ import type {
   FindByPkEventArgsType,
   AggregateEventArgsType,
 } from './events.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('EventMutationResponse')

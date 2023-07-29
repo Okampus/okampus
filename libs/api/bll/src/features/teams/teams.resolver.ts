@@ -13,7 +13,6 @@ import type {
   FindByPkTeamArgsType,
   AggregateTeamArgsType,
 } from './teams.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('TeamMutationResponse')

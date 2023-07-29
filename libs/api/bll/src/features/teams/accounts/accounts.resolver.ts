@@ -13,7 +13,6 @@ import type {
   FindByPkAccountArgsType,
   AggregateAccountArgsType,
 } from './accounts.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('AccountMutationResponse')

@@ -17,7 +17,7 @@ import type { FileLike } from '@okampus/shared/types';
 export type FilePreviewerProps = { file: FileLike; onClose: () => void };
 
 export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
-  const [preview, setPreview] = useState<JSX.Element | null>(null);
+  const [preview, setPreview] = useState<React.JSX.Element | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [fileSrc, setFileSrc] = useState<string | ArrayBuffer | null>(null);
 

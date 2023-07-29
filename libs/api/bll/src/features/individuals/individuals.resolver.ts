@@ -13,7 +13,6 @@ import type {
   FindByPkIndividualArgsType,
   AggregateIndividualArgsType,
 } from './individuals.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('IndividualMutationResponse')

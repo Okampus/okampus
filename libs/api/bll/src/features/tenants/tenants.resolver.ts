@@ -13,7 +13,6 @@ import type {
   FindByPkTenantArgsType,
   AggregateTenantArgsType,
 } from './tenants.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('TenantMutationResponse')

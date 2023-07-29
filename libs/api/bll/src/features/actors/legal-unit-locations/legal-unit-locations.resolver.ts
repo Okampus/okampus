@@ -13,7 +13,6 @@ import type {
   FindByPkLegalUnitLocationArgsType,
   AggregateLegalUnitLocationArgsType,
 } from './legal-unit-locations.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('LegalUnitLocationMutationResponse')

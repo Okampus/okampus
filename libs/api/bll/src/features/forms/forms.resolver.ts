@@ -13,7 +13,6 @@ import type {
   FindByPkFormArgsType,
   AggregateFormArgsType,
 } from './forms.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('FormMutationResponse')

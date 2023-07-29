@@ -13,7 +13,6 @@ import type {
   FindByPk<%= className %>ArgsType,
   Aggregate<%= className %>ArgsType
 } from './<%= fileName %>.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('<%= className %>MutationResponse')

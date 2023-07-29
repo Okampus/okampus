@@ -4,6 +4,10 @@
   "rules": {
     "unicorn/filename-case": "off"
   },
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./libs/ui/atoms/tsconfig.lib.json", "./libs/ui/atoms/tsconfig.spec.json"]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

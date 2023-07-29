@@ -13,7 +13,6 @@ import type {
   FindByPkFinanceArgsType,
   AggregateFinanceArgsType,
 } from './finances.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('FinanceMutationResponse')

@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export type TabsViewProps<T> = {
   basePath: string;
-  menus: { key: T; element: () => JSX.Element | null; label: React.ReactNode }[]; // TODO: context?
+  menus: { key: T; element: () => React.JSX.Element | null; label: React.ReactNode }[]; // TODO: context?
   topbarPrefix?: React.ReactNode;
   noMargin?: boolean;
 };

@@ -13,7 +13,6 @@ import type {
   FindByPkFollowArgsType,
   AggregateFollowArgsType,
 } from './follows.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('FollowMutationResponse')

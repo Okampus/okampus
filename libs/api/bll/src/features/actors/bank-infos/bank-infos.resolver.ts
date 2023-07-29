@@ -13,7 +13,6 @@ import type {
   FindByPkBankInfoArgsType,
   AggregateBankInfoArgsType,
 } from './bank-infos.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('BankInfoMutationResponse')

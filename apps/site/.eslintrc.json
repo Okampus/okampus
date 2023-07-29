@@ -1,17 +1,14 @@
 {
   "extends": ["plugin:@nx/react-typescript", "next", "next/core-web-vitals", "../../.eslintrc.json"],
   "ignorePatterns": ["!**/*", ".next/**/*"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": "off"
-      }
-    }
-  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./apps/site/tsconfig.app.json", "./apps/site/tsconfig.spec.json"]
+  },
   "rules": {
+    "unicorn/filename-case": "off",
     "@next/next/no-html-link-for-pages": "off",
-    "unicorn/filename-case": "off"
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "env": {
     "jest": true
