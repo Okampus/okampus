@@ -1,11 +1,4 @@
 {
-  "ts-node": {
-    "require": ["tsconfig-paths/register"],
-    "compilerOptions": {
-      "module": "commonjs",
-      "esModuleInterop": true
-    }
-  },
   "compileOnSave": false,
   "compilerOptions": {
     "strict": true,
@@ -20,9 +13,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "incremental": true,
+    "target": "es2022",
     "module": "commonjs",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
     "types": ["node", "vite/client"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
@@ -49,5 +43,12 @@
     },
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "tmp", "dist"]
+  "exclude": ["node_modules", "tmp", "dist"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs",
+      "esModuleInterop": true
+    }
+  }
 }
