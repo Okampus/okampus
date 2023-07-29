@@ -1,6 +1,6 @@
 import { bootstrap } from './bootstrap/bootstrap';
-import { config } from '../configs/config';
-import mikroOrmConfig from '../configs/mikro-orm.config';
+import { config } from './configs/config';
+import mikroOrmConfig from './configs/mikro-orm.config';
 
 import { MikroORM } from '@mikro-orm/core';
 

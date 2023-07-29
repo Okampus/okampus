@@ -1,4 +1,4 @@
-import { config } from '../../configs/config';
+import { config } from '../configs/config';
 import type { OriginFunction } from '@fastify/cors';
 
 export const corsValidation: OriginFunction = (origin, cb) => {

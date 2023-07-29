@@ -10,6 +10,6 @@ export const actorMinimalInfo = Selector('Actor')({
   name: true,
   slug: true,
   website: true,
-  actorImages: [{ where: { lastActiveDate: { _isNull: true } } }, actorImageBaseInfo],
+  actorImages: [{}, actorImageBaseInfo],
 });
 export type ActorMinimalInfo = InputType<GraphQLTypes['Actor'], typeof actorMinimalInfo>;

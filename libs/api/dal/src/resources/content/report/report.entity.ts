@@ -17,9 +17,6 @@ export class Report extends TenantScopedEntity {
   @Property({ type: 'text', default: '' })
   reason = '';
 
-  @Property({ type: 'datetime', nullable: true, default: null })
-  lastActiveDate: Date | null = null;
-
   @ManyToOne({ type: 'Actor', nullable: true, default: null })
   actor: Actor | null = null;
 

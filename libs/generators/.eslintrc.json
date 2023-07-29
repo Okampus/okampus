@@ -1,6 +1,10 @@
 {
   "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./libs/generators/tsconfig.lib.json", "./libs/generators/tsconfig.spec.json"]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

@@ -2,7 +2,7 @@ import { ActorImageRepository } from './actor-image.repository';
 import { TenantScopedEntity } from '../..';
 import { WithActive } from '../../../shards/filters/with-active';
 
-import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
+import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne } from '@mikro-orm/core';
 import { ActorImageType } from '@okampus/shared/enums';
 
 import type { FileUpload } from '../../file-upload/file-upload.entity';
@@ -22,9 +22,6 @@ export class ActorImage extends TenantScopedEntity {
 
   @Enum({ items: () => ActorImageType, type: EnumType })
   type!: ActorImageType;
-
-  @Property({ type: 'datetime', nullable: true, default: null })
-  lastActiveDate: Date | null = null;
 
   constructor(options: ActorImageOptions) {
     super(options);

@@ -26,14 +26,6 @@
     },
     "eslint": {
       "command": "eslint libs/api/bll --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/api/bll/jest.config.ts",
-        "passWithNoTests": true
-      }
     }
   },
   "tags": ["scope:api", "type:layer", "layer:bll"]

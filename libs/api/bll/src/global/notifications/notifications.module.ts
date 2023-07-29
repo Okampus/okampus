@@ -1,6 +1,6 @@
 import { NotificationsService } from './notifications.service';
 import { Global, Module } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Global()

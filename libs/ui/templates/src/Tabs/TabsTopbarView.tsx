@@ -8,7 +8,7 @@ import { TopbarTabsList } from '@okampus/ui/molecules';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-type TabMenu<T> = { key: T; element: () => JSX.Element | null; label: React.ReactNode };
+type TabMenu<T> = { key: T; element: () => React.JSX.Element | null; label: React.ReactNode };
 
 type TopbarContentProps<T> = {
   basePath: string;

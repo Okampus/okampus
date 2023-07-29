@@ -1,6 +1,10 @@
 {
   "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./apps/api/tsconfig.app.json", "./apps/api/tsconfig.migrations.json"]
+  },
   "overrides": [
     { "files": ["database/**/*.ts"], "rules": { "unicorn/filename-case": "off" } },
     {

@@ -1,19 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { AuthService } from './auth.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { HasuraService } from '../graphql/hasura.service';
 import { Requester } from '../../shards/decorators/requester.decorator';
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ReqTenant } from '../../shards/decorators/tenant.decorator';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Individual, IndividualRepository } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';

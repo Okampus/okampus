@@ -14,9 +14,6 @@ export class Vote extends TenantScopedEntity {
   @Property({ type: 'smallint' })
   value!: -1 | 0 | 1;
 
-  @Property({ type: 'datetime', nullable: true, default: null })
-  lastActiveDate: Date | null = null;
-
   @ManyToOne({ type: 'Content', nullable: true, default: null })
   content: Content | null = null;
 

@@ -1,8 +1,7 @@
 import { RequestContext } from '../../shards/abstract/request-context';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import {
   BaseEntity,
   Individual,

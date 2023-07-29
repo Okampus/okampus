@@ -7,5 +7,4 @@ export type ActorImageOptions = ActorImageProps &
   TenantScopedOptions & {
     actor: Actor;
     image: FileUpload;
-    lastActiveDate?: Date | null;
   };

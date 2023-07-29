@@ -912,11 +912,6 @@
       "one": "formulaire de participation",
       "other": "formulaires de participation"
     },
-    "lastActiveDate": {
-      "determinerType": "feminine",
-      "one": "dernière date d'activité",
-      "other": "dernières dates d'activité"
-    },
     "lastActivityAt": {
       "determinerType": "feminine",
       "one": "dernière activité",

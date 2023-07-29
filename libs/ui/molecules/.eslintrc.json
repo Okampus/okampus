@@ -1,6 +1,10 @@
 {
   "extends": ["../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./libs/ui/molecules/tsconfig.lib.json", "./libs/ui/molecules/tsconfig.spec.json"]
+  },
   "rules": {
     "unicorn/filename-case": "off"
   },

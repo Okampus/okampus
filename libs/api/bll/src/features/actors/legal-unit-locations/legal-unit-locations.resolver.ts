@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LegalUnitLocationsService } from './legal-unit-locations.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
@@ -13,7 +12,6 @@ import type {
   FindByPkLegalUnitLocationArgsType,
   AggregateLegalUnitLocationArgsType,
 } from './legal-unit-locations.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('LegalUnitLocationMutationResponse')

@@ -25,7 +25,7 @@ export class EventSeeder extends Factory<Event> {
   }
 
   public definition(): EventOptions {
-    const start = getRoundedDate(30, faker.date.between(new Date('2022-09-01'), new Date('2024-09-01')));
+    const start = getRoundedDate(30, faker.date.between({ from: new Date('2022-09-01'), to: new Date('2024-09-01') }));
     const end = new Date(start.getTime() + 1000 * 60 * 60 * randomInt(1, 48));
 
     const submitted = Math.random() > 0.5;

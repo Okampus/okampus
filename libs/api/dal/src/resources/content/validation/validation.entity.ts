@@ -15,9 +15,6 @@ export class Validation extends TenantScopedEntity {
   @Property()
   type!: ValidationType;
 
-  @Property({ type: 'datetime', nullable: true, default: null })
-  lastActiveDate: Date | null = null;
-
   @ManyToOne({ type: 'Content', nullable: true, default: null })
   content: Content | null = null;
 

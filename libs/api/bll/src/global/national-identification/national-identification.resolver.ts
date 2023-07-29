@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { NationalIdentificationService } from './national-identification.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import type { AddressInfo, CompanyInfo } from '@okampus/shared/types';

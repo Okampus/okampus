@@ -1,7 +1,6 @@
 import { SentryService } from './sentry.service';
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 

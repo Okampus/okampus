@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EventApprovalStepsService } from './event-approval-steps.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
@@ -13,7 +12,6 @@ import type {
   FindByPkEventApprovalStepArgsType,
   AggregateEventApprovalStepArgsType,
 } from './event-approval-steps.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('EventApprovalStepMutationResponse')

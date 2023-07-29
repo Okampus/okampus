@@ -1,10 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { AuthService } from './auth.service';
 import { loadConfig } from '../../shards/utils/load-config';
 
 import { requestContext } from '@fastify/request-context';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 import { Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

@@ -114,3 +114,19 @@ array_relationships:
         table:
           name: social
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - bio
+        - created_at
+        - email
+        - id
+        - name
+        - slug
+        - website
+      filter:
+        deleted_at:
+          _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []

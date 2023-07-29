@@ -6,10 +6,5 @@
     {
       "path": "./tsconfig.lib.json"
     }
-  ],
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noFallthroughCasesInSwitch": true
-  }
+  ]
 }

@@ -2,9 +2,8 @@ import { UploadsService } from './uploads.service';
 import { UploadsResolver } from './uploads.resolver';
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraModule } from '../../global/graphql/hasura.module';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Global, Logger, Module } from '@nestjs/common';
 

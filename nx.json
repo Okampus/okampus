@@ -13,9 +13,6 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
-    },
     "eslint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     },
@@ -32,7 +29,6 @@
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/.storybook/**/*",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)"
@@ -43,21 +39,6 @@
   "generators": {
     "@nx/next": {
       "application": {
-        "style": "scss",
-        "linter": "eslint"
-      }
-    },
-    "@nx/react": {
-      "application": {
-        "style": "scss",
-        "linter": "eslint",
-        "bundler": "vite",
-        "babel": true
-      },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
         "style": "scss",
         "linter": "eslint"
       }

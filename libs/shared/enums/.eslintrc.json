@@ -1,6 +1,10 @@
 {
   "extends": ["../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./libs/shared/enums/tsconfig.lib.json", "./libs/shared/enums/tsconfig.spec.json"]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

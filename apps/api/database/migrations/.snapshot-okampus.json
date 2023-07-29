@@ -673,16 +673,9 @@
           "enumItems": [
             "MemberInOrgAndChildrenCount",
             "MemberInOrgAndChildrenUniqueCount",
-            "MemberInOrgAndChildrenUniqueCount",
-            "EventOccuringCount",
-            "EventCreatedCount",
             "EventOccuringCount",
             "EventCreatedCount",
             "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ProjectCreatedCount",
-            "ContentCreatedCount",
             "ContentCreatedCount",
             "ChildOrgCount"
           ],
@@ -848,17 +841,6 @@
             "Programming"
           ],
           "mappedType": "enum"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         }
       },
       "name": "subject",
@@ -6226,17 +6208,6 @@
           "default": "''",
           "mappedType": "text"
         },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "actor_id": {
           "name": "actor_id",
           "type": "bigint",
@@ -6409,17 +6380,6 @@
             "Perfect"
           ],
           "mappedType": "enum"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "content_id": {
           "name": "content_id",
@@ -6837,17 +6797,6 @@
         },
         "hidden_at": {
           "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -9610,17 +9559,6 @@
             "Profile"
           ],
           "mappedType": "enum"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         }
       },
       "name": "actor_image",
@@ -13944,17 +13882,6 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
         "content_id": {
           "name": "content_id",
           "type": "bigint",
@@ -14223,17 +14150,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "smallint"
-        },
-        "last_active_date": {
-          "name": "last_active_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
         },
         "content_id": {
           "name": "content_id",

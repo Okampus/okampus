@@ -1,6 +1,5 @@
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 

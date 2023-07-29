@@ -1,9 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { AuthService } from './auth.service';
 import { Requester } from '../../shards/decorators/requester.decorator';
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 
 import { BadRequestException, Controller, Get, HttpCode, Param, Post, Req, Res } from '@nestjs/common';

@@ -12,3 +12,4 @@
 *.yaml
 *.yml
 .next
+apps/site/public

@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { MeiliSearchService } from '../search/meilisearch.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { HasuraService } from '../graphql/hasura.service';
 
 import { RequestContext } from '../../shards/abstract/request-context';
@@ -13,7 +12,6 @@ import jsonwebtoken from 'jsonwebtoken';
 import fastifyCookie from '@fastify/cookie';
 import { requestContext } from '@fastify/request-context';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 
 import {
@@ -24,10 +22,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { JwtService } from '@nestjs/jwt';
 
 import { Individual, Session, Tenant, User } from '@okampus/api/dal';

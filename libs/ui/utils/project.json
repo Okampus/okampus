@@ -18,14 +18,6 @@
       },
       "dependsOn": ["build"]
     },
-    "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/libs/ui/utils"],
-      "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../../coverage/libs/ui/utils"
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

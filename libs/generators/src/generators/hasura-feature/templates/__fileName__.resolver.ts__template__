@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { <%= pluralClassName %>Service } from './<%= fileName %>.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
@@ -13,7 +12,6 @@ import type {
   FindByPk<%= className %>ArgsType,
   Aggregate<%= className %>ArgsType
 } from './<%= fileName %>.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('<%= className %>MutationResponse')

@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import type { ApiConfig } from '@okampus/shared/types';
 
 const _dirname = typeof __dirname === 'undefined' ? dirname(fileURLToPath(import.meta.url)) : __dirname;
-export const rootPath = `${_dirname}/../../..`;
+export const rootPath = `${_dirname}/../../../..`;
 const appPath = `${rootPath}/apps/api`;
 
 dotenv.config({ path: `${appPath}/.env` });
@@ -93,14 +93,14 @@ export const config: ApiConfig = {
     endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
     region: process.env.S3_REGION ?? 'region',
     buckets: {
-      [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'bucket-attachments',
-      [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'bucket-qr',
-      [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'bucket-receipts',
-      [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'bucket-signatures',
-      [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'bucket-thumbnails',
-      [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'bucket-actor-documents',
-      [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'bucket-actor-images',
-      [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'bucket-actor-videos',
+      [Buckets.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
+      [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
+      [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
+      [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
+      [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
+      [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
+      [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',
+      [Buckets.Thumbnails]: process.env.S3_BUCKET_NAME_THUMBNAILS ?? 'thumbnails',
     },
   },
   redis: {

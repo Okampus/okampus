@@ -1,6 +1,10 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["./tsconfig.base.json", "./tsconfig.spec.json"]
+  },
   "plugins": ["@nx", "import", "unused-imports"],
   "settings": {
     "import/parsers": {
@@ -13,10 +17,13 @@
       }
     }
   },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "extends": ["plugin:unicorn/recommended"],
+      "extends": ["plugin:unicorn/recommended", "plugin:deprecation/recommended"],
       "rules": {
         "import/no-cycle": [
           "error",
@@ -182,9 +189,6 @@
     },
     {
       "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
-      },
       "rules": {}
     },
     {

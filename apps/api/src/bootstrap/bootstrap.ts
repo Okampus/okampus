@@ -5,7 +5,7 @@ import { tenantCallbackValidation, tenantStrategyValidation } from './tenant.val
 import { uploadPreValidation } from './upload.validation';
 
 import { AppModule } from '../app.module';
-import { config } from '../../configs/config';
+import { config } from '../configs/config';
 
 import { AuthService, OIDCCacheService } from '@okampus/api/bll';
 
@@ -13,8 +13,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
-
-import SentryTracing from '@sentry/tracing';
 
 import YAML from 'yaml';
 
@@ -42,8 +40,6 @@ const transformOptions = { enableImplicitConversion: true };
 const validationPipeOptions = { transform: true, transformOptions, forbidNonWhitelisted: true, whitelist: true };
 
 export async function bootstrap(logger: Logger): Promise<INestApplication> {
-  if (config.sentry.isEnabled) SentryTracing.addExtensionMethods();
-
   const fastifyInstance = fastify({ trustProxy: false });
   fastifyInstance.addHook('preValidation', uploadPreValidation);
 

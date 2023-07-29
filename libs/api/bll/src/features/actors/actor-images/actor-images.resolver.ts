@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActorImagesService } from './actor-images.service';
 import { Query, Mutation, Resolver, Info } from '@nestjs/graphql';
 import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
@@ -13,7 +12,6 @@ import type {
   FindByPkActorImageArgsType,
   AggregateActorImageArgsType,
 } from './actor-images.types';
-
 import type { GraphQLResolveInfo } from 'graphql';
 
 @Resolver('ActorImageMutationResponse')

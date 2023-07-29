@@ -10,7 +10,7 @@ const _ = (dir: string) => path.resolve(path.resolve(__dirname, '../../'), dir);
 /** @type {import('vite').Plugin} */
 const hexLoader = {
   name: 'hex-loader',
-  transform(code, id) {
+  transform(_: unknown, id: string) {
     const [path, query] = id.split('?');
     if (query != 'raw-hex') return null;
 

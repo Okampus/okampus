@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { GeocodeService } from './geocode.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 

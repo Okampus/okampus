@@ -7,21 +7,6 @@ directive @cached(
   refresh: Boolean! = false
 ) on QUERY
 
-scalar _text
-
-# Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'.
-input _textComparisonExp {
-  _eq: _text
-  _gt: _text
-  _gte: _text
-  _in: [_text!]
-  _isNull: Boolean
-  _lt: _text
-  _lte: _text
-  _neq: _text
-  _nin: [_text!]
-}
-
 # columns and relationships of "account"
 type Account {
   # An object relationship
@@ -1425,42 +1410,6 @@ type Actor {
   email: String!
 
   # An array relationship
-  favorites(
-    # distinct select on columns
-    distinctOn: [FavoriteSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FavoriteOrderBy!]
-
-    # filter the rows returned
-    where: FavoriteBoolExp
-  ): [Favorite!]!
-
-  # An aggregate relationship
-  favoritesAggregate(
-    # distinct select on columns
-    distinctOn: [FavoriteSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FavoriteOrderBy!]
-
-    # filter the rows returned
-    where: FavoriteBoolExp
-  ): FavoriteAggregate!
-
-  # An array relationship
   followers(
     # distinct select on columns
     distinctOn: [FollowSelectColumn!]
@@ -1858,8 +1807,6 @@ input ActorBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   email: StringComparisonExp
-  favorites: FavoriteBoolExp
-  favoritesAggregate: FavoriteAggregateBoolExp
   followers: FollowBoolExp
   followersAggregate: FollowAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -1920,7 +1867,6 @@ type ActorImage {
   # An object relationship
   image: FileUpload!
   imageId: bigint!
-  lastActiveDate: timestamptz
 
   # An object relationship
   tenant: Tenant!
@@ -2016,7 +1962,6 @@ input ActorImageBoolExp {
   id: BigintComparisonExp
   image: FileUploadBoolExp
   imageId: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
@@ -2052,7 +1997,6 @@ input ActorImageInsertInput {
   id: bigint
   image: FileUploadObjRelInsertInput
   imageId: bigint
-  lastActiveDate: timestamptz
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
@@ -2067,7 +2011,6 @@ type ActorImageMaxFields {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -2081,7 +2024,6 @@ input ActorImageMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   imageId: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -2095,7 +2037,6 @@ type ActorImageMinFields {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -2109,7 +2050,6 @@ input ActorImageMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   imageId: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -2150,7 +2090,6 @@ input ActorImageOrderBy {
   id: OrderBy
   image: FileUploadOrderBy
   imageId: OrderBy
-  lastActiveDate: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -2185,9 +2124,6 @@ enum ActorImageSelectColumn {
   imageId
 
   # column name
-  lastActiveDate
-
-  # column name
   tenantId
 
   # column name
@@ -2203,7 +2139,6 @@ input ActorImageSetInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -2280,7 +2215,6 @@ input ActorImageStreamCursorValueInput {
   hiddenAt: timestamptz
   id: bigint
   imageId: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -2325,9 +2259,6 @@ enum ActorImageUpdateColumn {
 
   # column name
   imageId
-
-  # column name
-  lastActiveDate
 
   # column name
   tenantId
@@ -2419,7 +2350,6 @@ input ActorInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   email: String
-  favorites: FavoriteArrRelInsertInput
   followers: FollowArrRelInsertInput
   hiddenAt: timestamptz
   ical: String
@@ -2546,7 +2476,6 @@ input ActorOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   email: OrderBy
-  favoritesAggregate: FavoriteAggregateOrderBy
   followersAggregate: FollowAggregateOrderBy
   hiddenAt: OrderBy
   ical: OrderBy
@@ -7980,7 +7909,7 @@ input ClassGroupTeacherSubjectsBoolExp {
 
 # unique or primary key constraints on table "class_group_teacher_subjects"
 enum ClassGroupTeacherSubjectsConstraint {
-  # unique or primary key constraint on columns "class_group_teacher_id", "subject_id"
+  # unique or primary key constraint on columns "subject_id", "class_group_teacher_id"
   class_group_teacher_subjects_pkey
 }
 
@@ -8890,6 +8819,10 @@ type Content {
   # An object relationship
   event: Event
 
+  # An object relationship
+  eventByEventId: Event
+  eventId: bigint
+
   # An array relationship
   favorites(
     # distinct select on columns
@@ -9097,6 +9030,42 @@ type Content {
   ): ValidationAggregate!
 
   # An array relationship
+  views(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
+
+  # An aggregate relationship
+  viewsAggregate(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): ViewAggregate!
+
+  # An array relationship
   votes(
     # distinct select on columns
     distinctOn: [VoteSelectColumn!]
@@ -9295,7 +9264,7 @@ input ContentAttachmentsBoolExp {
 
 # unique or primary key constraints on table "content_attachments"
 enum ContentAttachmentsConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "content_id"
+  # unique or primary key constraint on columns "content_id", "file_upload_id"
   content_attachments_pkey
 }
 
@@ -9504,6 +9473,7 @@ input ContentAttachmentsVarSampOrderBy {
 # aggregate avg on columns
 type ContentAvgFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9514,6 +9484,7 @@ type ContentAvgFields {
 # order by avg() on columns of table "content"
 input ContentAvgOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9535,6 +9506,8 @@ input ContentBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   event: EventBoolExp
+  eventByEventId: EventBoolExp
+  eventId: BigintComparisonExp
   favorites: FavoriteBoolExp
   favoritesAggregate: FavoriteAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -9559,12 +9532,17 @@ input ContentBoolExp {
   thread: ThreadBoolExp
   validations: ValidationBoolExp
   validationsAggregate: ValidationAggregateBoolExp
+  views: ViewBoolExp
+  viewsAggregate: ViewAggregateBoolExp
   votes: VoteBoolExp
   votesAggregate: VoteAggregateBoolExp
 }
 
 # unique or primary key constraints on table "content"
 enum ContentConstraint {
+  # unique or primary key constraint on columns "event_id"
+  content_event_id_unique
+
   # unique or primary key constraint on columns "id"
   content_pkey
 }
@@ -9572,6 +9550,7 @@ enum ContentConstraint {
 # input type for incrementing numeric columns in table "content"
 input ContentIncInput {
   createdById: bigint
+  eventId: bigint
   id: bigint
   parentId: bigint
   replyingToId: bigint
@@ -9588,6 +9567,8 @@ input ContentInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   event: EventObjRelInsertInput
+  eventByEventId: EventObjRelInsertInput
+  eventId: bigint
   favorites: FavoriteArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -9607,6 +9588,7 @@ input ContentInsertInput {
   text: String
   thread: ThreadObjRelInsertInput
   validations: ValidationArrRelInsertInput
+  views: ViewArrRelInsertInput
   votes: VoteArrRelInsertInput
 }
 
@@ -9615,6 +9597,7 @@ type ContentMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   parentId: bigint
@@ -9629,6 +9612,7 @@ input ContentMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -9643,6 +9627,7 @@ type ContentMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   parentId: bigint
@@ -9657,6 +9642,7 @@ input ContentMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  eventId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -9699,6 +9685,8 @@ input ContentOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   event: EventOrderBy
+  eventByEventId: EventOrderBy
+  eventId: OrderBy
   favoritesAggregate: FavoriteAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -9718,6 +9706,7 @@ input ContentOrderBy {
   text: OrderBy
   thread: ThreadOrderBy
   validationsAggregate: ValidationAggregateOrderBy
+  viewsAggregate: ViewAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
 }
 
@@ -9736,6 +9725,9 @@ enum ContentSelectColumn {
 
   # column name
   deletedAt
+
+  # column name
+  eventId
 
   # column name
   hiddenAt
@@ -9779,6 +9771,7 @@ input ContentSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAnonymous: Boolean
@@ -9792,6 +9785,7 @@ input ContentSetInput {
 # aggregate stddev on columns
 type ContentStddevFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9802,6 +9796,7 @@ type ContentStddevFields {
 # order by stddev() on columns of table "content"
 input ContentStddevOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9812,6 +9807,7 @@ input ContentStddevOrderBy {
 # aggregate stddevPop on columns
 type ContentStddevPopFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9822,6 +9818,7 @@ type ContentStddevPopFields {
 # order by stddevPop() on columns of table "content"
 input ContentStddevPopOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9832,6 +9829,7 @@ input ContentStddevPopOrderBy {
 # aggregate stddevSamp on columns
 type ContentStddevSampFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9842,6 +9840,7 @@ type ContentStddevSampFields {
 # order by stddevSamp() on columns of table "content"
 input ContentStddevSampOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9863,6 +9862,7 @@ input ContentStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  eventId: bigint
   hiddenAt: timestamptz
   id: bigint
   isAnonymous: Boolean
@@ -9876,6 +9876,7 @@ input ContentStreamCursorValueInput {
 # aggregate sum on columns
 type ContentSumFields {
   createdById: bigint
+  eventId: bigint
   id: bigint
   parentId: bigint
   replyingToId: bigint
@@ -9886,6 +9887,7 @@ type ContentSumFields {
 # order by sum() on columns of table "content"
 input ContentSumOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9903,6 +9905,9 @@ enum ContentUpdateColumn {
 
   # column name
   deletedAt
+
+  # column name
+  eventId
 
   # column name
   hiddenAt
@@ -9943,6 +9948,7 @@ input ContentUpdates {
 # aggregate variance on columns
 type ContentVarianceFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9953,6 +9959,7 @@ type ContentVarianceFields {
 # order by variance() on columns of table "content"
 input ContentVarianceOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9963,6 +9970,7 @@ input ContentVarianceOrderBy {
 # aggregate varPop on columns
 type ContentVarPopFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9973,6 +9981,7 @@ type ContentVarPopFields {
 # order by varPop() on columns of table "content"
 input ContentVarPopOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -9983,6 +9992,7 @@ input ContentVarPopOrderBy {
 # aggregate varSamp on columns
 type ContentVarSampFields {
   createdById: Float
+  eventId: Float
   id: Float
   parentId: Float
   replyingToId: Float
@@ -9993,6 +10003,7 @@ type ContentVarSampFields {
 # order by varSamp() on columns of table "content"
 input ContentVarSampOrderBy {
   createdById: OrderBy
+  eventId: OrderBy
   id: OrderBy
   parentId: OrderBy
   replyingToId: OrderBy
@@ -10604,6 +10615,9 @@ type Event {
 
   # An object relationship
   content: Content!
+
+  # An object relationship
+  contentById: Content
   contentId: bigint!
   createdAt: timestamptz!
 
@@ -12744,6 +12758,7 @@ input EventBoolExp {
   banner: FileUploadBoolExp
   bannerId: BigintComparisonExp
   content: ContentBoolExp
+  contentById: ContentBoolExp
   contentId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -12837,6 +12852,7 @@ input EventInsertInput {
   banner: FileUploadObjRelInsertInput
   bannerId: bigint
   content: ContentObjRelInsertInput
+  contentById: ContentObjRelInsertInput
   contentId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -13806,6 +13822,7 @@ input EventOrderBy {
   banner: FileUploadOrderBy
   bannerId: OrderBy
   content: ContentOrderBy
+  contentById: ContentOrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -13852,6 +13869,42 @@ type EventOrganize {
   # An object relationship
   event: Event!
   eventId: bigint!
+
+  # An array relationship
+  eventSupervisors(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # An aggregate relationship
+  eventSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -14029,6 +14082,8 @@ input EventOrganizeBoolExp {
   description: StringComparisonExp
   event: EventBoolExp
   eventId: BigintComparisonExp
+  eventSupervisors: EventSupervisorBoolExp
+  eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   individual: IndividualBoolExp
@@ -14068,6 +14123,7 @@ input EventOrganizeInsertInput {
   description: String
   event: EventObjRelInsertInput
   eventId: bigint
+  eventSupervisors: EventSupervisorArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
@@ -14169,6 +14225,7 @@ input EventOrganizeOrderBy {
   description: OrderBy
   event: EventOrderBy
   eventId: OrderBy
+  eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
@@ -15040,6 +15097,478 @@ input EventSumOrderBy {
   tenantId: OrderBy
 }
 
+# columns and relationships of "event_supervisor"
+type EventSupervisor {
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+
+  # An object relationship
+  eventOrganize: EventOrganize!
+  eventOrganizeId: bigint!
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+  title: String!
+
+  # An object relationship
+  user: User!
+  userId: bigint!
+}
+
+# aggregated selection of "event_supervisor"
+type EventSupervisorAggregate {
+  aggregate: EventSupervisorAggregateFields
+  nodes: [EventSupervisor!]!
+}
+
+input EventSupervisorAggregateBoolExp {
+  count: eventSupervisorAggregateBoolExpCount
+}
+
+input eventSupervisorAggregateBoolExpCount {
+  arguments: [EventSupervisorSelectColumn!]
+  distinct: Boolean
+  filter: EventSupervisorBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "event_supervisor"
+type EventSupervisorAggregateFields {
+  avg: EventSupervisorAvgFields
+  count(columns: [EventSupervisorSelectColumn!], distinct: Boolean): Int!
+  max: EventSupervisorMaxFields
+  min: EventSupervisorMinFields
+  stddev: EventSupervisorStddevFields
+  stddevPop: EventSupervisorStddevPopFields
+  stddevSamp: EventSupervisorStddevSampFields
+  sum: EventSupervisorSumFields
+  varPop: EventSupervisorVarPopFields
+  varSamp: EventSupervisorVarSampFields
+  variance: EventSupervisorVarianceFields
+}
+
+# order by aggregate values of table "event_supervisor"
+input EventSupervisorAggregateOrderBy {
+  avg: EventSupervisorAvgOrderBy
+  count: OrderBy
+  max: EventSupervisorMaxOrderBy
+  min: EventSupervisorMinOrderBy
+  stddev: EventSupervisorStddevOrderBy
+  stddevPop: EventSupervisorStddevPopOrderBy
+  stddevSamp: EventSupervisorStddevSampOrderBy
+  sum: EventSupervisorSumOrderBy
+  varPop: EventSupervisorVarPopOrderBy
+  varSamp: EventSupervisorVarSampOrderBy
+  variance: EventSupervisorVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "event_supervisor"
+input EventSupervisorArrRelInsertInput {
+  data: [EventSupervisorInsertInput!]!
+
+  # upsert condition
+  onConflict: EventSupervisorOnConflict
+}
+
+# aggregate avg on columns
+type EventSupervisorAvgFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by avg() on columns of table "event_supervisor"
+input EventSupervisorAvgOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "event_supervisor". All fields are combined with a logical 'AND'.
+input EventSupervisorBoolExp {
+  _and: [EventSupervisorBoolExp!]
+  _not: EventSupervisorBoolExp
+  _or: [EventSupervisorBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  eventOrganize: EventOrganizeBoolExp
+  eventOrganizeId: BigintComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+  title: StringComparisonExp
+  user: UserBoolExp
+  userId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "event_supervisor"
+enum EventSupervisorConstraint {
+  # unique or primary key constraint on columns "id"
+  event_supervisor_pkey
+}
+
+# input type for incrementing numeric columns in table "event_supervisor"
+input EventSupervisorIncInput {
+  createdById: bigint
+  eventOrganizeId: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# input type for inserting data into table "event_supervisor"
+input EventSupervisorInsertInput {
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  eventOrganize: EventOrganizeObjRelInsertInput
+  eventOrganizeId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+  title: String
+  user: UserObjRelInsertInput
+  userId: bigint
+}
+
+# aggregate max on columns
+type EventSupervisorMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventOrganizeId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  title: String
+  userId: bigint
+}
+
+# order by max() on columns of table "event_supervisor"
+input EventSupervisorMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventOrganizeId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  title: OrderBy
+  userId: OrderBy
+}
+
+# aggregate min on columns
+type EventSupervisorMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventOrganizeId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  title: String
+  userId: bigint
+}
+
+# order by min() on columns of table "event_supervisor"
+input EventSupervisorMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventOrganizeId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  title: OrderBy
+  userId: OrderBy
+}
+
+# response of any mutation on the table "event_supervisor"
+type EventSupervisorMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [EventSupervisor!]!
+}
+
+# on_conflict condition type for table "event_supervisor"
+input EventSupervisorOnConflict {
+  constraint: EventSupervisorConstraint!
+  updateColumns: [EventSupervisorUpdateColumn!]! = []
+  where: EventSupervisorBoolExp
+}
+
+# Ordering options when selecting data from "event_supervisor".
+input EventSupervisorOrderBy {
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  eventOrganize: EventOrganizeOrderBy
+  eventOrganizeId: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  title: OrderBy
+  user: UserOrderBy
+  userId: OrderBy
+}
+
+# primary key columns input for table: event_supervisor
+input EventSupervisorPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "event_supervisor"
+enum EventSupervisorSelectColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  eventOrganizeId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+
+  # column name
+  title
+
+  # column name
+  userId
+}
+
+# input type for updating data in table "event_supervisor"
+input EventSupervisorSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventOrganizeId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  title: String
+  userId: bigint
+}
+
+# aggregate stddev on columns
+type EventSupervisorStddevFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddev() on columns of table "event_supervisor"
+input EventSupervisorStddevOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type EventSupervisorStddevPopFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddevPop() on columns of table "event_supervisor"
+input EventSupervisorStddevPopOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type EventSupervisorStddevSampFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by stddevSamp() on columns of table "event_supervisor"
+input EventSupervisorStddevSampOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# Streaming cursor of the table "event_supervisor"
+input EventSupervisorStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: EventSupervisorStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input EventSupervisorStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  eventOrganizeId: bigint
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+  title: String
+  userId: bigint
+}
+
+# aggregate sum on columns
+type EventSupervisorSumFields {
+  createdById: bigint
+  eventOrganizeId: bigint
+  id: bigint
+  tenantId: bigint
+  userId: bigint
+}
+
+# order by sum() on columns of table "event_supervisor"
+input EventSupervisorSumOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# update columns of table "event_supervisor"
+enum EventSupervisorUpdateColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  eventOrganizeId
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+
+  # column name
+  title
+
+  # column name
+  userId
+}
+
+input EventSupervisorUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: EventSupervisorIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: EventSupervisorSetInput
+
+  # filter the rows which have to be updated
+  where: EventSupervisorBoolExp!
+}
+
+# aggregate variance on columns
+type EventSupervisorVarianceFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by variance() on columns of table "event_supervisor"
+input EventSupervisorVarianceOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varPop on columns
+type EventSupervisorVarPopFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by varPop() on columns of table "event_supervisor"
+input EventSupervisorVarPopOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
+# aggregate varSamp on columns
+type EventSupervisorVarSampFields {
+  createdById: Float
+  eventOrganizeId: Float
+  id: Float
+  tenantId: Float
+  userId: Float
+}
+
+# order by varSamp() on columns of table "event_supervisor"
+input EventSupervisorVarSampOrderBy {
+  createdById: OrderBy
+  eventOrganizeId: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  userId: OrderBy
+}
+
 # columns and relationships of "event_tags"
 type EventTags {
   # An object relationship
@@ -15131,7 +15660,7 @@ input EventTagsBoolExp {
 
 # unique or primary key constraints on table "event_tags"
 enum EventTagsConstraint {
-  # unique or primary key constraint on columns "event_id", "tag_id"
+  # unique or primary key constraint on columns "tag_id", "event_id"
   event_tags_pkey
 }
 
@@ -15960,7 +16489,7 @@ input ExpenseItemAttachmentsBoolExp {
 
 # unique or primary key constraints on table "expense_item_attachments"
 enum ExpenseItemAttachmentsConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "expense_item_id"
+  # unique or primary key constraint on columns "expense_item_id", "file_upload_id"
   expense_item_attachments_pkey
 }
 
@@ -17081,10 +17610,6 @@ input ExpenseVarSampOrderBy {
 # columns and relationships of "favorite"
 type Favorite {
   # An object relationship
-  actor: Actor
-  actorId: bigint
-
-  # An object relationship
   content: Content
   contentId: bigint
   createdAt: timestamptz!
@@ -17095,7 +17620,6 @@ type Favorite {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
 
   # An object relationship
   tenant: Tenant!
@@ -17159,7 +17683,6 @@ input FavoriteArrRelInsertInput {
 
 # aggregate avg on columns
 type FavoriteAvgFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17168,7 +17691,6 @@ type FavoriteAvgFields {
 
 # order by avg() on columns of table "favorite"
 input FavoriteAvgOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17180,8 +17702,6 @@ input FavoriteBoolExp {
   _and: [FavoriteBoolExp!]
   _not: FavoriteBoolExp
   _or: [FavoriteBoolExp!]
-  actor: ActorBoolExp
-  actorId: BigintComparisonExp
   content: ContentBoolExp
   contentId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -17190,7 +17710,6 @@ input FavoriteBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
@@ -17203,7 +17722,6 @@ enum FavoriteConstraint {
 
 # input type for incrementing numeric columns in table "favorite"
 input FavoriteIncInput {
-  actorId: bigint
   contentId: bigint
   createdById: bigint
   id: bigint
@@ -17212,8 +17730,6 @@ input FavoriteIncInput {
 
 # input type for inserting data into table "favorite"
 input FavoriteInsertInput {
-  actor: ActorObjRelInsertInput
-  actorId: bigint
   content: ContentObjRelInsertInput
   contentId: bigint
   createdAt: timestamptz
@@ -17222,60 +17738,51 @@ input FavoriteInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
 # aggregate max on columns
 type FavoriteMaxFields {
-  actorId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
 }
 
 # order by max() on columns of table "favorite"
 input FavoriteMaxOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate min on columns
 type FavoriteMinFields {
-  actorId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
 }
 
 # order by min() on columns of table "favorite"
 input FavoriteMinOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
 }
 
@@ -17297,8 +17804,6 @@ input FavoriteOnConflict {
 
 # Ordering options when selecting data from "favorite".
 input FavoriteOrderBy {
-  actor: ActorOrderBy
-  actorId: OrderBy
   content: ContentOrderBy
   contentId: OrderBy
   createdAt: OrderBy
@@ -17307,7 +17812,6 @@ input FavoriteOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
@@ -17319,9 +17823,6 @@ input FavoritePkColumnsInput {
 
 # select columns of table "favorite"
 enum FavoriteSelectColumn {
-  # column name
-  actorId
-
   # column name
   contentId
 
@@ -17341,28 +17842,22 @@ enum FavoriteSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   tenantId
 }
 
 # input type for updating data in table "favorite"
 input FavoriteSetInput {
-  actorId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
 }
 
 # aggregate stddev on columns
 type FavoriteStddevFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17371,7 +17866,6 @@ type FavoriteStddevFields {
 
 # order by stddev() on columns of table "favorite"
 input FavoriteStddevOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17380,7 +17874,6 @@ input FavoriteStddevOrderBy {
 
 # aggregate stddevPop on columns
 type FavoriteStddevPopFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17389,7 +17882,6 @@ type FavoriteStddevPopFields {
 
 # order by stddevPop() on columns of table "favorite"
 input FavoriteStddevPopOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17398,7 +17890,6 @@ input FavoriteStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type FavoriteStddevSampFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17407,7 +17898,6 @@ type FavoriteStddevSampFields {
 
 # order by stddevSamp() on columns of table "favorite"
 input FavoriteStddevSampOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17425,20 +17915,17 @@ input FavoriteStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input FavoriteStreamCursorValueInput {
-  actorId: bigint
   contentId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
 }
 
 # aggregate sum on columns
 type FavoriteSumFields {
-  actorId: bigint
   contentId: bigint
   createdById: bigint
   id: bigint
@@ -17447,7 +17934,6 @@ type FavoriteSumFields {
 
 # order by sum() on columns of table "favorite"
 input FavoriteSumOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17456,9 +17942,6 @@ input FavoriteSumOrderBy {
 
 # update columns of table "favorite"
 enum FavoriteUpdateColumn {
-  # column name
-  actorId
-
   # column name
   contentId
 
@@ -17476,9 +17959,6 @@ enum FavoriteUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   tenantId
@@ -17497,7 +17977,6 @@ input FavoriteUpdates {
 
 # aggregate variance on columns
 type FavoriteVarianceFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17506,7 +17985,6 @@ type FavoriteVarianceFields {
 
 # order by variance() on columns of table "favorite"
 input FavoriteVarianceOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17515,7 +17993,6 @@ input FavoriteVarianceOrderBy {
 
 # aggregate varPop on columns
 type FavoriteVarPopFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17524,7 +18001,6 @@ type FavoriteVarPopFields {
 
 # order by varPop() on columns of table "favorite"
 input FavoriteVarPopOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -17533,7 +18009,6 @@ input FavoriteVarPopOrderBy {
 
 # aggregate varSamp on columns
 type FavoriteVarSampFields {
-  actorId: Float
   contentId: Float
   createdById: Float
   id: Float
@@ -17542,7 +18017,6 @@ type FavoriteVarSampFields {
 
 # order by varSamp() on columns of table "favorite"
 input FavoriteVarSampOrderBy {
-  actorId: OrderBy
   contentId: OrderBy
   createdById: OrderBy
   id: OrderBy
@@ -19012,7 +19486,7 @@ input FinanceAttachmentsBoolExp {
 
 # unique or primary key constraints on table "finance_attachments"
 enum FinanceAttachmentsConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "finance_id"
+  # unique or primary key constraint on columns "finance_id", "file_upload_id"
   finance_attachments_pkey
 }
 
@@ -22376,7 +22850,7 @@ input GrantAllocateAttachmentsBoolExp {
 
 # unique or primary key constraints on table "grant_allocate_attachments"
 enum GrantAllocateAttachmentsConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "grant_allocate_id"
+  # unique or primary key constraint on columns "grant_allocate_id", "file_upload_id"
   grant_allocate_attachments_pkey
 }
 
@@ -23269,7 +23743,7 @@ input GrantAttachmentsBoolExp {
 
 # unique or primary key constraints on table "grant_attachments"
 enum GrantAttachmentsConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "grant_id"
+  # unique or primary key constraint on columns "grant_id", "file_upload_id"
   grant_attachments_pkey
 }
 
@@ -24842,6 +25316,42 @@ type Individual {
     # filter the rows returned
     where: EventOrganizeBoolExp
   ): EventOrganizeAggregate!
+
+  # An array relationship
+  createdEventSupervisors(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # An aggregate relationship
+  createdEventSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
 
   # An array relationship
   createdEvents(
@@ -26725,6 +27235,42 @@ type Individual {
     # filter the rows returned
     where: EventApprovalStepValidatorsBoolExp
   ): EventApprovalStepValidatorsAggregate!
+
+  # An array relationship
+  viewed(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
+
+  # An aggregate relationship
+  viewedAggregate(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): ViewAggregate!
 }
 
 # aggregated selection of "individual"
@@ -26854,6 +27400,8 @@ input IndividualBoolExp {
   createdEventJoinsAggregate: EventJoinAggregateBoolExp
   createdEventOrganizes: EventOrganizeBoolExp
   createdEventOrganizesAggregate: EventOrganizeAggregateBoolExp
+  createdEventSupervisors: EventSupervisorBoolExp
+  createdEventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   createdEvents: EventBoolExp
   createdEventsAggregate: EventAggregateBoolExp
   createdExpenseItems: ExpenseItemBoolExp
@@ -26965,6 +27513,8 @@ input IndividualBoolExp {
   user: UserBoolExp
   validatorEventApprovalStep: EventApprovalStepValidatorsBoolExp
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateBoolExp
+  viewed: ViewBoolExp
+  viewedAggregate: ViewAggregateBoolExp
 }
 
 # unique or primary key constraints on table "individual"
@@ -27015,6 +27565,7 @@ input IndividualInsertInput {
   createdEventApprovals: EventApprovalArrRelInsertInput
   createdEventJoins: EventJoinArrRelInsertInput
   createdEventOrganizes: EventOrganizeArrRelInsertInput
+  createdEventSupervisors: EventSupervisorArrRelInsertInput
   createdEvents: EventArrRelInsertInput
   createdExpenseItems: ExpenseItemArrRelInsertInput
   createdExpenses: ExpenseArrRelInsertInput
@@ -27074,6 +27625,7 @@ input IndividualInsertInput {
   threadContributors: ThreadContributorsArrRelInsertInput
   user: UserObjRelInsertInput
   validatorEventApprovalStep: EventApprovalStepValidatorsArrRelInsertInput
+  viewed: ViewArrRelInsertInput
 }
 
 # aggregate max on columns
@@ -27183,6 +27735,7 @@ input IndividualOrderBy {
   createdEventApprovalsAggregate: EventApprovalAggregateOrderBy
   createdEventJoinsAggregate: EventJoinAggregateOrderBy
   createdEventOrganizesAggregate: EventOrganizeAggregateOrderBy
+  createdEventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   createdEventsAggregate: EventAggregateOrderBy
   createdExpenseItemsAggregate: ExpenseItemAggregateOrderBy
   createdExpensesAggregate: ExpenseAggregateOrderBy
@@ -27242,6 +27795,7 @@ input IndividualOrderBy {
   threadContributorsAggregate: ThreadContributorsAggregateOrderBy
   user: UserOrderBy
   validatorEventApprovalStepAggregate: EventApprovalStepValidatorsAggregateOrderBy
+  viewedAggregate: ViewAggregateOrderBy
 }
 
 # primary key columns input for table: individual
@@ -27767,7 +28321,7 @@ input IssueContributorsBoolExp {
 
 # unique or primary key constraints on table "issue_contributors"
 enum IssueContributorsConstraint {
-  # unique or primary key constraint on columns "issue_id", "individual_id"
+  # unique or primary key constraint on columns "individual_id", "issue_id"
   issue_contributors_pkey
 }
 
@@ -28318,7 +28872,7 @@ input IssueTagsBoolExp {
 
 # unique or primary key constraints on table "issue_tags"
 enum IssueTagsConstraint {
-  # unique or primary key constraint on columns "issue_id", "tag_id"
+  # unique or primary key constraint on columns "tag_id", "issue_id"
   issue_tags_pkey
 }
 
@@ -30344,7 +30898,7 @@ input LocationImagesBoolExp {
 
 # unique or primary key constraints on table "location_images"
 enum LocationImagesConstraint {
-  # unique or primary key constraint on columns "file_upload_id", "location_id"
+  # unique or primary key constraint on columns "location_id", "file_upload_id"
   location_images_pkey
 }
 
@@ -32690,6 +33244,15 @@ type Mutation {
   # delete single row from the table: "event_organize_supervisors"
   deleteEventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
 
+  # delete data from the table: "event_supervisor"
+  deleteEventSupervisor(
+    # filter the rows which have to be deleted
+    where: EventSupervisorBoolExp!
+  ): EventSupervisorMutationResponse
+
+  # delete single row from the table: "event_supervisor"
+  deleteEventSupervisorByPk(id: bigint!): EventSupervisor
+
   # delete data from the table: "event_tags"
   deleteEventTags(
     # filter the rows which have to be deleted
@@ -33157,6 +33720,15 @@ type Mutation {
 
   # delete single row from the table: "validation"
   deleteValidationByPk(id: bigint!): Validation
+
+  # delete data from the table: "view"
+  deleteView(
+    # filter the rows which have to be deleted
+    where: ViewBoolExp!
+  ): ViewMutationResponse
+
+  # delete single row from the table: "view"
+  deleteViewByPk(id: bigint!): View
 
   # delete data from the table: "vote"
   deleteVote(
@@ -33670,6 +34242,24 @@ type Mutation {
     # upsert condition
     onConflict: EventOrganizeSupervisorsOnConflict
   ): EventOrganizeSupervisors
+
+  # insert data into the table: "event_supervisor"
+  insertEventSupervisor(
+    # the rows to be inserted
+    objects: [EventSupervisorInsertInput!]!
+
+    # upsert condition
+    onConflict: EventSupervisorOnConflict
+  ): EventSupervisorMutationResponse
+
+  # insert a single row into the table: "event_supervisor"
+  insertEventSupervisorOne(
+    # the row to be inserted
+    object: EventSupervisorInsertInput!
+
+    # upsert condition
+    onConflict: EventSupervisorOnConflict
+  ): EventSupervisor
 
   # insert data into the table: "event_tags"
   insertEventTags(
@@ -34607,6 +35197,24 @@ type Mutation {
     onConflict: ValidationOnConflict
   ): Validation
 
+  # insert data into the table: "view"
+  insertView(
+    # the rows to be inserted
+    objects: [ViewInsertInput!]!
+
+    # upsert condition
+    onConflict: ViewOnConflict
+  ): ViewMutationResponse
+
+  # insert a single row into the table: "view"
+  insertViewOne(
+    # the row to be inserted
+    object: ViewInsertInput!
+
+    # upsert condition
+    onConflict: ViewOnConflict
+  ): View
+
   # insert data into the table: "vote"
   insertVote(
     # the rows to be inserted
@@ -35440,6 +36048,34 @@ type Mutation {
     # updates to execute, in order
     updates: [EventOrganizeSupervisorsUpdates!]!
   ): [EventOrganizeSupervisorsMutationResponse]
+
+  # update data of the table: "event_supervisor"
+  updateEventSupervisor(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventSupervisorIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventSupervisorSetInput
+
+    # filter the rows which have to be updated
+    where: EventSupervisorBoolExp!
+  ): EventSupervisorMutationResponse
+
+  # update single row of the table: "event_supervisor"
+  updateEventSupervisorByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: EventSupervisorIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: EventSupervisorSetInput
+    pkColumns: EventSupervisorPkColumnsInput!
+  ): EventSupervisor
+
+  # update multiples rows of table: "event_supervisor"
+  updateEventSupervisorMany(
+    # updates to execute, in order
+    updates: [EventSupervisorUpdates!]!
+  ): [EventSupervisorMutationResponse]
 
   # update data of the table: "event_tags"
   updateEventTags(
@@ -36992,6 +37628,34 @@ type Mutation {
     # updates to execute, in order
     updates: [ValidationUpdates!]!
   ): [ValidationMutationResponse]
+
+  # update data of the table: "view"
+  updateView(
+    # increments the numeric columns with given value of the filtered values
+    _inc: ViewIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: ViewSetInput
+
+    # filter the rows which have to be updated
+    where: ViewBoolExp!
+  ): ViewMutationResponse
+
+  # update single row of the table: "view"
+  updateViewByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: ViewIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: ViewSetInput
+    pkColumns: ViewPkColumnsInput!
+  ): View
+
+  # update multiples rows of table: "view"
+  updateViewMany(
+    # updates to execute, in order
+    updates: [ViewUpdates!]!
+  ): [ViewMutationResponse]
 
   # update data of the table: "vote"
   updateVote(
@@ -40236,6 +40900,45 @@ type Query {
   # fetch data from the table: "event_organize_supervisors" using primary key columns
   eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
 
+  # fetch data from the table: "event_supervisor"
+  eventSupervisor(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # fetch aggregated fields from the table: "event_supervisor"
+  eventSupervisorAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
+
+  # fetch data from the table: "event_supervisor" using primary key columns
+  eventSupervisorByPk(id: bigint!): EventSupervisor
+
   # An array relationship
   eventTags(
     # distinct select on columns
@@ -42264,6 +42967,45 @@ type Query {
   # fetch data from the table: "validation" using primary key columns
   validationByPk(id: bigint!): Validation
 
+  # fetch data from the table: "view"
+  view(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
+
+  # fetch aggregated fields from the table: "view"
+  viewAggregate(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): ViewAggregate!
+
+  # fetch data from the table: "view" using primary key columns
+  viewByPk(id: bigint!): View
+
   # fetch data from the table: "vote"
   vote(
     # distinct select on columns
@@ -42317,7 +43059,6 @@ type Reaction {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
   reactionType: String!
 
   # An object relationship
@@ -42409,7 +43150,6 @@ input ReactionBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   reactionType: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -42439,7 +43179,6 @@ input ReactionInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reactionType: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -42453,7 +43192,6 @@ type ReactionMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reactionType: String
   tenantId: bigint
 }
@@ -42466,7 +43204,6 @@ input ReactionMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reactionType: OrderBy
   tenantId: OrderBy
 }
@@ -42479,7 +43216,6 @@ type ReactionMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reactionType: String
   tenantId: bigint
 }
@@ -42492,7 +43228,6 @@ input ReactionMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reactionType: OrderBy
   tenantId: OrderBy
 }
@@ -42523,7 +43258,6 @@ input ReactionOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reactionType: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -42555,9 +43289,6 @@ enum ReactionSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   reactionType
 
   # column name
@@ -42572,7 +43303,6 @@ input ReactionSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reactionType: String
   tenantId: bigint
 }
@@ -42642,7 +43372,6 @@ input ReactionStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reactionType: String
   tenantId: bigint
 }
@@ -42682,9 +43411,6 @@ enum ReactionUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   reactionType
@@ -42769,7 +43495,6 @@ type Report {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
   reason: String!
 
   # An object relationship
@@ -42866,7 +43591,6 @@ input ReportBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   reason: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
@@ -42900,7 +43624,6 @@ input ReportInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reason: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
@@ -42916,7 +43639,6 @@ type ReportMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reason: String
   tenantId: bigint
   type: String
@@ -42931,7 +43653,6 @@ input ReportMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reason: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -42946,7 +43667,6 @@ type ReportMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reason: String
   tenantId: bigint
   type: String
@@ -42961,7 +43681,6 @@ input ReportMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reason: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -42995,7 +43714,6 @@ input ReportOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   reason: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
@@ -43031,9 +43749,6 @@ enum ReportSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   reason
 
   # column name
@@ -43052,7 +43767,6 @@ input ReportSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reason: String
   tenantId: bigint
   type: String
@@ -43130,7 +43844,6 @@ input ReportStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   reason: String
   tenantId: bigint
   type: String
@@ -43176,9 +43889,6 @@ enum ReportUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   reason
@@ -43303,7 +44013,7 @@ type Role {
   id: bigint!
   isRequired: Boolean!
   name: String!
-  permissions: _text!
+  permissions: [String!]!
 
   # An object relationship
   team: Team!
@@ -43490,7 +44200,7 @@ input RoleBoolExp {
   id: BigintComparisonExp
   isRequired: BooleanComparisonExp
   name: StringComparisonExp
-  permissions: _textComparisonExp
+  permissions: StringArrayComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
@@ -43528,7 +44238,7 @@ input RoleInsertInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: _text
+  permissions: [String!]
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
@@ -43547,6 +44257,7 @@ type RoleMaxFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  permissions: [String!]
   teamId: bigint
   tenantId: bigint
   type: String
@@ -43561,6 +44272,7 @@ input RoleMaxOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -43575,6 +44287,7 @@ type RoleMinFields {
   hiddenAt: timestamptz
   id: bigint
   name: String
+  permissions: [String!]
   teamId: bigint
   tenantId: bigint
   type: String
@@ -43589,6 +44302,7 @@ input RoleMinOrderBy {
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
+  permissions: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -43706,7 +44420,7 @@ input RoleSetInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: _text
+  permissions: [String!]
   teamId: bigint
   tenantId: bigint
   type: String
@@ -43779,7 +44493,7 @@ input RoleStreamCursorValueInput {
   id: bigint
   isRequired: Boolean
   name: String
-  permissions: _text
+  permissions: [String!]
   teamId: bigint
   tenantId: bigint
   type: String
@@ -45501,6 +46215,24 @@ input SocialVarSampOrderBy {
 }
 
 # Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+input StringArrayComparisonExp {
+  # is the array contained in the given array value
+  _containedIn: [String!]
+
+  # does the array contain the given value
+  _contains: [String!]
+  _eq: [String!]
+  _gt: [String!]
+  _gte: [String!]
+  _in: [[String!]!]
+  _isNull: Boolean
+  _lt: [String!]
+  _lte: [String!]
+  _neq: [String!]
+  _nin: [[String!]!]
+}
+
+# Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 input StringComparisonExp {
   _eq: String
   _gt: String
@@ -45627,7 +46359,6 @@ type Subject {
   englishName: String!
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
   name: String!
 
   # An array relationship
@@ -45759,7 +46490,6 @@ input SubjectBoolExp {
   englishName: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   name: StringComparisonExp
   subjectClassGroups: SubjectClassGroupsBoolExp
   subjectClassGroupsAggregate: SubjectClassGroupsAggregateBoolExp
@@ -45859,7 +46589,7 @@ input SubjectClassGroupsBoolExp {
 
 # unique or primary key constraints on table "subject_class_groups"
 enum SubjectClassGroupsConstraint {
-  # unique or primary key constraint on columns "class_group_id", "subject_id"
+  # unique or primary key constraint on columns "subject_id", "class_group_id"
   subject_class_groups_pkey
 }
 
@@ -46091,7 +46821,6 @@ input SubjectInsertInput {
   englishName: String
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   name: String
   subjectClassGroups: SubjectClassGroupsArrRelInsertInput
   tenant: TenantObjRelInsertInput
@@ -46109,7 +46838,6 @@ type SubjectMaxFields {
   englishName: String
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   name: String
   tenantId: bigint
   type: String
@@ -46125,7 +46853,6 @@ input SubjectMaxOrderBy {
   englishName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   name: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -46141,7 +46868,6 @@ type SubjectMinFields {
   englishName: String
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   name: String
   tenantId: bigint
   type: String
@@ -46157,7 +46883,6 @@ input SubjectMinOrderBy {
   englishName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   name: OrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -46200,7 +46925,6 @@ input SubjectOrderBy {
   englishName: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   name: OrderBy
   subjectClassGroupsAggregate: SubjectClassGroupsAggregateOrderBy
   tenant: TenantOrderBy
@@ -46240,9 +46964,6 @@ enum SubjectSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   name
 
   # column name
@@ -46262,7 +46983,6 @@ input SubjectSetInput {
   englishName: String
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   name: String
   tenantId: bigint
   type: String
@@ -46329,7 +47049,6 @@ input SubjectStreamCursorValueInput {
   englishName: String
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   name: String
   tenantId: bigint
   type: String
@@ -46374,9 +47093,6 @@ enum SubjectUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   name
@@ -47869,6 +48585,57 @@ type Subscription {
     # filter the rows returned
     where: EventBoolExp
   ): [Event!]!
+
+  # fetch data from the table: "event_supervisor"
+  eventSupervisor(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # fetch aggregated fields from the table: "event_supervisor"
+  eventSupervisorAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
+
+  # fetch data from the table: "event_supervisor" using primary key columns
+  eventSupervisorByPk(id: bigint!): EventSupervisor
+
+  # fetch data from the table in a streaming manner: "event_supervisor"
+  eventSupervisorStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [EventSupervisorStreamCursorInput]!
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
 
   # An array relationship
   eventTags(
@@ -50521,6 +51288,57 @@ type Subscription {
     # filter the rows returned
     where: ValidationBoolExp
   ): [Validation!]!
+
+  # fetch data from the table: "view"
+  view(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
+
+  # fetch aggregated fields from the table: "view"
+  viewAggregate(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): ViewAggregate!
+
+  # fetch data from the table: "view" using primary key columns
+  viewByPk(id: bigint!): View
+
+  # fetch data from the table in a streaming manner: "view"
+  viewStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [ViewStreamCursorInput]!
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
 
   # fetch data from the table: "vote"
   vote(
@@ -56065,6 +56883,42 @@ type Tenant {
     where: EventOrganizeBoolExp
   ): EventOrganizeAggregate!
 
+  # An array relationship
+  eventSupervisors(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # An aggregate relationship
+  eventSupervisorsAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
+
   # An object relationship
   eventValidationForm: Form
   eventValidationFormId: bigint
@@ -57339,6 +58193,42 @@ type Tenant {
   ): ValidationAggregate!
 
   # An array relationship
+  views(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): [View!]!
+
+  # An aggregate relationship
+  viewsAggregate(
+    # distinct select on columns
+    distinctOn: [ViewSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [ViewOrderBy!]
+
+    # filter the rows returned
+    where: ViewBoolExp
+  ): ViewAggregate!
+
+  # An array relationship
   votes(
     # distinct select on columns
     distinctOn: [VoteSelectColumn!]
@@ -57514,6 +58404,8 @@ input TenantBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   eventOrganizes: EventOrganizeBoolExp
   eventOrganizesAggregate: EventOrganizeAggregateBoolExp
+  eventSupervisors: EventSupervisorBoolExp
+  eventSupervisorsAggregate: EventSupervisorAggregateBoolExp
   eventValidationForm: FormBoolExp
   eventValidationFormId: BigintComparisonExp
   events: EventBoolExp
@@ -57595,6 +58487,8 @@ input TenantBoolExp {
   usersAggregate: UserAggregateBoolExp
   validations: ValidationBoolExp
   validationsAggregate: ValidationAggregateBoolExp
+  views: ViewBoolExp
+  viewsAggregate: ViewAggregateBoolExp
   votes: VoteBoolExp
   votesAggregate: VoteAggregateBoolExp
 }
@@ -57651,6 +58545,7 @@ input TenantInsertInput {
   eventApprovals: EventApprovalArrRelInsertInput
   eventJoins: EventJoinArrRelInsertInput
   eventOrganizes: EventOrganizeArrRelInsertInput
+  eventSupervisors: EventSupervisorArrRelInsertInput
   eventValidationForm: FormObjRelInsertInput
   eventValidationFormId: bigint
   events: EventArrRelInsertInput
@@ -57697,6 +58592,7 @@ input TenantInsertInput {
   threads: ThreadArrRelInsertInput
   users: UserArrRelInsertInput
   validations: ValidationArrRelInsertInput
+  views: ViewArrRelInsertInput
   votes: VoteArrRelInsertInput
 }
 
@@ -57825,6 +58721,7 @@ input TenantOrderBy {
   eventApprovalsAggregate: EventApprovalAggregateOrderBy
   eventJoinsAggregate: EventJoinAggregateOrderBy
   eventOrganizesAggregate: EventOrganizeAggregateOrderBy
+  eventSupervisorsAggregate: EventSupervisorAggregateOrderBy
   eventValidationForm: FormOrderBy
   eventValidationFormId: OrderBy
   eventsAggregate: EventAggregateOrderBy
@@ -57871,6 +58768,7 @@ input TenantOrderBy {
   threadsAggregate: ThreadAggregateOrderBy
   usersAggregate: UserAggregateOrderBy
   validationsAggregate: ValidationAggregateOrderBy
+  viewsAggregate: ViewAggregateOrderBy
   votesAggregate: VoteAggregateOrderBy
 }
 
@@ -58915,7 +59813,7 @@ input ThreadContributorsBoolExp {
 
 # unique or primary key constraints on table "thread_contributors"
 enum ThreadContributorsConstraint {
-  # unique or primary key constraint on columns "individual_id", "thread_id"
+  # unique or primary key constraint on columns "thread_id", "individual_id"
   thread_contributors_pkey
 }
 
@@ -59466,7 +60364,7 @@ input ThreadTagsBoolExp {
 
 # unique or primary key constraints on table "thread_tags"
 enum ThreadTagsConstraint {
-  # unique or primary key constraint on columns "tag_id", "thread_id"
+  # unique or primary key constraint on columns "thread_id", "tag_id"
   thread_tags_pkey
 }
 
@@ -59904,7 +60802,7 @@ type User {
   isIntroductionFinished: Boolean!
   isOnboardingFinished: Boolean!
   lastName: String!
-  middleNames: _text!
+  middleNames: [String!]!
 
   # An array relationship
   missionJoins(
@@ -60014,6 +60912,42 @@ type User {
     # filter the rows returned
     where: ShortcutBoolExp
   ): ShortcutAggregate!
+
+  # An array relationship
+  supervisedEvents(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): [EventSupervisor!]!
+
+  # An aggregate relationship
+  supervisedEventsAggregate(
+    # distinct select on columns
+    distinctOn: [EventSupervisorSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [EventSupervisorOrderBy!]
+
+    # filter the rows returned
+    where: EventSupervisorBoolExp
+  ): EventSupervisorAggregate!
 
   # An array relationship
   teamJoins(
@@ -60207,7 +61141,7 @@ input UserBoolExp {
   isIntroductionFinished: BooleanComparisonExp
   isOnboardingFinished: BooleanComparisonExp
   lastName: StringComparisonExp
-  middleNames: _textComparisonExp
+  middleNames: StringArrayComparisonExp
   missionJoins: MissionJoinBoolExp
   missionJoinsAggregate: MissionJoinAggregateBoolExp
   points: FloatComparisonExp
@@ -60215,6 +61149,8 @@ input UserBoolExp {
   sessionsAggregate: SessionAggregateBoolExp
   shortcuts: ShortcutBoolExp
   shortcutsAggregate: ShortcutAggregateBoolExp
+  supervisedEvents: EventSupervisorBoolExp
+  supervisedEventsAggregate: EventSupervisorAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
   teamMembers: TeamMemberBoolExp
@@ -60261,11 +61197,12 @@ input UserInsertInput {
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
-  middleNames: _text
+  middleNames: [String!]
   missionJoins: MissionJoinArrRelInsertInput
   points: Float
   sessions: SessionArrRelInsertInput
   shortcuts: ShortcutArrRelInsertInput
+  supervisedEvents: EventSupervisorArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   tenant: TenantObjRelInsertInput
@@ -60282,6 +61219,7 @@ type UserMaxFields {
   id: bigint
   individualId: bigint
   lastName: String
+  middleNames: [String!]
   points: Float
   tenantId: bigint
 }
@@ -60296,6 +61234,7 @@ input UserMaxOrderBy {
   id: OrderBy
   individualId: OrderBy
   lastName: OrderBy
+  middleNames: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -60310,6 +61249,7 @@ type UserMinFields {
   id: bigint
   individualId: bigint
   lastName: String
+  middleNames: [String!]
   points: Float
   tenantId: bigint
 }
@@ -60324,6 +61264,7 @@ input UserMinOrderBy {
   id: OrderBy
   individualId: OrderBy
   lastName: OrderBy
+  middleNames: OrderBy
   points: OrderBy
   tenantId: OrderBy
 }
@@ -60377,6 +61318,7 @@ input UserOrderBy {
   points: OrderBy
   sessionsAggregate: SessionAggregateOrderBy
   shortcutsAggregate: ShortcutAggregateOrderBy
+  supervisedEventsAggregate: EventSupervisorAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   tenant: TenantOrderBy
@@ -60490,7 +61432,7 @@ input UserSetInput {
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
-  middleNames: _text
+  middleNames: [String!]
   points: Float
   tenantId: bigint
 }
@@ -60573,7 +61515,7 @@ input UserStreamCursorValueInput {
   isIntroductionFinished: Boolean
   isOnboardingFinished: Boolean
   lastName: String
-  middleNames: _text
+  middleNames: [String!]
   points: Float
   tenantId: bigint
 }
@@ -60725,7 +61667,6 @@ type Validation {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
 
   # An object relationship
   tenant: Tenant!
@@ -60817,7 +61758,6 @@ input ValidationBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
@@ -60847,7 +61787,6 @@ input ValidationInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
@@ -60861,7 +61800,6 @@ type ValidationMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -60874,7 +61812,6 @@ input ValidationMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -60887,7 +61824,6 @@ type ValidationMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -60900,7 +61836,6 @@ input ValidationMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -60931,7 +61866,6 @@ input ValidationOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -60963,9 +61897,6 @@ enum ValidationSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   tenantId
 
   # column name
@@ -60980,7 +61911,6 @@ input ValidationSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -61050,7 +61980,6 @@ input ValidationStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   type: String
 }
@@ -61090,9 +62019,6 @@ enum ValidationUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   tenantId
@@ -61160,6 +62086,422 @@ input ValidationVarSampOrderBy {
   tenantId: OrderBy
 }
 
+# columns and relationships of "view"
+type View {
+  # An object relationship
+  content: Content
+  contentId: bigint
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
+}
+
+# aggregated selection of "view"
+type ViewAggregate {
+  aggregate: ViewAggregateFields
+  nodes: [View!]!
+}
+
+input ViewAggregateBoolExp {
+  count: viewAggregateBoolExpCount
+}
+
+input viewAggregateBoolExpCount {
+  arguments: [ViewSelectColumn!]
+  distinct: Boolean
+  filter: ViewBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "view"
+type ViewAggregateFields {
+  avg: ViewAvgFields
+  count(columns: [ViewSelectColumn!], distinct: Boolean): Int!
+  max: ViewMaxFields
+  min: ViewMinFields
+  stddev: ViewStddevFields
+  stddevPop: ViewStddevPopFields
+  stddevSamp: ViewStddevSampFields
+  sum: ViewSumFields
+  varPop: ViewVarPopFields
+  varSamp: ViewVarSampFields
+  variance: ViewVarianceFields
+}
+
+# order by aggregate values of table "view"
+input ViewAggregateOrderBy {
+  avg: ViewAvgOrderBy
+  count: OrderBy
+  max: ViewMaxOrderBy
+  min: ViewMinOrderBy
+  stddev: ViewStddevOrderBy
+  stddevPop: ViewStddevPopOrderBy
+  stddevSamp: ViewStddevSampOrderBy
+  sum: ViewSumOrderBy
+  varPop: ViewVarPopOrderBy
+  varSamp: ViewVarSampOrderBy
+  variance: ViewVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "view"
+input ViewArrRelInsertInput {
+  data: [ViewInsertInput!]!
+
+  # upsert condition
+  onConflict: ViewOnConflict
+}
+
+# aggregate avg on columns
+type ViewAvgFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by avg() on columns of table "view"
+input ViewAvgOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "view". All fields are combined with a logical 'AND'.
+input ViewBoolExp {
+  _and: [ViewBoolExp!]
+  _not: ViewBoolExp
+  _or: [ViewBoolExp!]
+  content: ContentBoolExp
+  contentId: BigintComparisonExp
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "view"
+enum ViewConstraint {
+  # unique or primary key constraint on columns "id"
+  view_pkey
+}
+
+# input type for incrementing numeric columns in table "view"
+input ViewIncInput {
+  contentId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# input type for inserting data into table "view"
+input ViewInsertInput {
+  content: ContentObjRelInsertInput
+  contentId: bigint
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
+}
+
+# aggregate max on columns
+type ViewMaxFields {
+  contentId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+}
+
+# order by max() on columns of table "view"
+input ViewMaxOrderBy {
+  contentId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate min on columns
+type ViewMinFields {
+  contentId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+}
+
+# order by min() on columns of table "view"
+input ViewMinOrderBy {
+  contentId: OrderBy
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# response of any mutation on the table "view"
+type ViewMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [View!]!
+}
+
+# on_conflict condition type for table "view"
+input ViewOnConflict {
+  constraint: ViewConstraint!
+  updateColumns: [ViewUpdateColumn!]! = []
+  where: ViewBoolExp
+}
+
+# Ordering options when selecting data from "view".
+input ViewOrderBy {
+  content: ContentOrderBy
+  contentId: OrderBy
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+}
+
+# primary key columns input for table: view
+input ViewPkColumnsInput {
+  id: bigint!
+}
+
+# select columns of table "view"
+enum ViewSelectColumn {
+  # column name
+  contentId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+}
+
+# input type for updating data in table "view"
+input ViewSetInput {
+  contentId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+}
+
+# aggregate stddev on columns
+type ViewStddevFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddev() on columns of table "view"
+input ViewStddevOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type ViewStddevPopFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevPop() on columns of table "view"
+input ViewStddevPopOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type ViewStddevSampFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by stddevSamp() on columns of table "view"
+input ViewStddevSampOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# Streaming cursor of the table "view"
+input ViewStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: ViewStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input ViewStreamCursorValueInput {
+  contentId: bigint
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
+  tenantId: bigint
+}
+
+# aggregate sum on columns
+type ViewSumFields {
+  contentId: bigint
+  createdById: bigint
+  id: bigint
+  tenantId: bigint
+}
+
+# order by sum() on columns of table "view"
+input ViewSumOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# update columns of table "view"
+enum ViewUpdateColumn {
+  # column name
+  contentId
+
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
+  # column name
+  tenantId
+}
+
+input ViewUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: ViewIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: ViewSetInput
+
+  # filter the rows which have to be updated
+  where: ViewBoolExp!
+}
+
+# aggregate variance on columns
+type ViewVarianceFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by variance() on columns of table "view"
+input ViewVarianceOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varPop on columns
+type ViewVarPopFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by varPop() on columns of table "view"
+input ViewVarPopOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
+# aggregate varSamp on columns
+type ViewVarSampFields {
+  contentId: Float
+  createdById: Float
+  id: Float
+  tenantId: Float
+}
+
+# order by varSamp() on columns of table "view"
+input ViewVarSampOrderBy {
+  contentId: OrderBy
+  createdById: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+}
+
 # columns and relationships of "vote"
 type Vote {
   # An object relationship
@@ -61173,7 +62515,6 @@ type Vote {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  lastActiveDate: timestamptz
 
   # An object relationship
   tenant: Tenant!
@@ -61267,7 +62608,6 @@ input VoteBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  lastActiveDate: TimestamptzComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   value: SmallintComparisonExp
@@ -61298,7 +62638,6 @@ input VoteInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   value: smallint
@@ -61312,7 +62651,6 @@ type VoteMaxFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   value: smallint
 }
@@ -61325,7 +62663,6 @@ input VoteMaxOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   value: OrderBy
 }
@@ -61338,7 +62675,6 @@ type VoteMinFields {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   value: smallint
 }
@@ -61351,7 +62687,6 @@ input VoteMinOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenantId: OrderBy
   value: OrderBy
 }
@@ -61382,7 +62717,6 @@ input VoteOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  lastActiveDate: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   value: OrderBy
@@ -61414,9 +62748,6 @@ enum VoteSelectColumn {
   id
 
   # column name
-  lastActiveDate
-
-  # column name
   tenantId
 
   # column name
@@ -61431,7 +62762,6 @@ input VoteSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   value: smallint
 }
@@ -61507,7 +62837,6 @@ input VoteStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  lastActiveDate: timestamptz
   tenantId: bigint
   value: smallint
 }
@@ -61549,9 +62878,6 @@ enum VoteUpdateColumn {
 
   # column name
   id
-
-  # column name
-  lastActiveDate
 
   # column name
   tenantId

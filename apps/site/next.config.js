@@ -1,8 +1,6 @@
-//@ts-check
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
-const withPwa = require('@imbios/next-pwa')({ dest: 'public' });
+const withPwa = require('@imbios/next-pwa')({ dest: 'public', disable: process.env.NODE_ENV !== 'production' });
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -22,7 +20,9 @@ const nextConfig = {
   experimental: {
     esmExternals: false,
     serverActions: true,
-    outputFileTracingIgnores: ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+    outputFileTracingExcludes: {
+      '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+    },
   },
   images: {
     formats: ['image/webp'],

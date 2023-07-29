@@ -1,17 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { RedisService } from '../cache/redis.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { UploadsService } from '../../features/uploads/uploads.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { MeiliSearchService } from '../search/meilisearch.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { loadConfig } from '../../shards/utils/load-config';
 
 import { ListBucketsCommand } from '@aws-sdk/client-s3';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import {
   HealthCheckService,
   DiskHealthIndicator,
