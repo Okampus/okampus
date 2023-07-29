@@ -3,7 +3,6 @@ import { LogsResolver } from './logs.resolver';
 
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigModule } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 

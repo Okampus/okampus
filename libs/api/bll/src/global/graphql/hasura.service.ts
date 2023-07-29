@@ -1,6 +1,6 @@
 import { RequestContext } from '../../shards/abstract/request-context';
 import { loadConfig } from '../../shards/utils/load-config';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { EntityManager } from '@mikro-orm/core';
 
 import {
@@ -11,10 +11,8 @@ import {
   Logger,
 } from '@nestjs/common';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TeamMemberRepository } from '@okampus/api/dal';
 import { GraphQLEnum, isNonNullObject, randomId, toSlug } from '@okampus/shared/utils';
 import axios from 'axios';

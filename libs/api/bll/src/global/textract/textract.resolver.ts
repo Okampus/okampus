@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { TextractService } from './textract.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 

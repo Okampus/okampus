@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { GoogleService } from './google.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 

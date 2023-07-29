@@ -1,5 +1,5 @@
 import { MeiliSearchService } from './meilisearch.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { Global, Module } from '@nestjs/common';

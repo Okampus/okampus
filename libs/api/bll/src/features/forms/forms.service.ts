@@ -1,14 +1,10 @@
 import { RequestContext } from '../../shards/abstract/request-context';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../global/graphql/hasura.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { FormRepository, Form } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 
 import type { ValueTypes } from '@okampus/shared/graphql';

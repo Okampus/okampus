@@ -4,7 +4,6 @@ import { config } from './configs/config';
 import graphqlConfig from './configs/graphql.config';
 import mikroOrmConfig from './configs/mikro-orm.config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   AuthGuard,
   AuthModule,
@@ -71,7 +70,6 @@ import { AdminPermissions, ControlType, FormType, TeamType } from '@okampus/shar
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
@@ -83,7 +81,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import Sentry from '@sentry/node';
 import { redisStore } from 'cache-manager-redis-yet';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 

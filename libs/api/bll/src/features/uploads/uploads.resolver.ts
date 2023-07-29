@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { UploadsService } from './uploads.service';
 import { RequestContext } from '../../shards/abstract/request-context';
 

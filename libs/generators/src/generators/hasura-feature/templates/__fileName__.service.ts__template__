@@ -1,14 +1,10 @@
 import { RequestContext } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../shards/abstract/request-context';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../../global/graphql/hasura.service';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { LogsService } from '<% for(const _ of Array.from({ length: subfolder.split('/').length-1 })) { %>../<% } %>../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { <%= className %>Repository, <%= className %> } from '@okampus/api/dal';
 import { EntityName, AdminPermissions<% for(const _enum of enums) { %>, <%= _enum %><% } %> } from '@okampus/shared/enums';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
 
 import type { ValueTypes } from '@okampus/shared/graphql';

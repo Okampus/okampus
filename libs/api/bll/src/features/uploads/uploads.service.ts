@@ -1,12 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HasuraService } from '../../global/graphql/hasura.service';
 import { RequestContext } from '../../shards/abstract/request-context';
 import { loadConfig } from '../../shards/utils/load-config';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { EntityManager } from '@mikro-orm/core';
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 
