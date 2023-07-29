@@ -1,17 +1,6 @@
 /* eslint-disable */
 
 export const AllTypesProps: Record<string,any> = {
-	_text: `scalar._text` as const,
-	_textComparisonExp:{
-		_eq:"_text",
-		_gt:"_text",
-		_gte:"_text",
-		_in:"_text",
-		_lt:"_text",
-		_lte:"_text",
-		_neq:"_text",
-		_nin:"_text"
-	},
 	Account:{
 		children:{
 			distinctOn:"AccountSelectColumn",
@@ -592,16 +581,6 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"BankInfoOrderBy",
 			where:"BankInfoBoolExp"
 		},
-		favorites:{
-			distinctOn:"FavoriteSelectColumn",
-			orderBy:"FavoriteOrderBy",
-			where:"FavoriteBoolExp"
-		},
-		favoritesAggregate:{
-			distinctOn:"FavoriteSelectColumn",
-			orderBy:"FavoriteOrderBy",
-			where:"FavoriteBoolExp"
-		},
 		followers:{
 			distinctOn:"FollowSelectColumn",
 			orderBy:"FollowOrderBy",
@@ -734,8 +713,6 @@ export const AllTypesProps: Record<string,any> = {
 		createdById:"BigintComparisonExp",
 		deletedAt:"TimestamptzComparisonExp",
 		email:"StringComparisonExp",
-		favorites:"FavoriteBoolExp",
-		favoritesAggregate:"FavoriteAggregateBoolExp",
 		followers:"FollowBoolExp",
 		followersAggregate:"FollowAggregateBoolExp",
 		hiddenAt:"TimestamptzComparisonExp",
@@ -818,7 +795,6 @@ export const AllTypesProps: Record<string,any> = {
 		id:"BigintComparisonExp",
 		image:"FileUploadBoolExp",
 		imageId:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp",
 		type:"StringComparisonExp"
@@ -842,7 +818,6 @@ export const AllTypesProps: Record<string,any> = {
 		id:"bigint",
 		image:"FileUploadObjRelInsertInput",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
 	},
@@ -854,7 +829,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		imageId:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
 	},
@@ -866,7 +840,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		imageId:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
 	},
@@ -890,7 +863,6 @@ export const AllTypesProps: Record<string,any> = {
 		id:"OrderBy",
 		image:"FileUploadOrderBy",
 		imageId:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -907,7 +879,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ActorImageStddevOrderBy:{
@@ -943,7 +914,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ActorImageSumOrderBy:{
@@ -993,7 +963,6 @@ export const AllTypesProps: Record<string,any> = {
 		createdBy:"IndividualObjRelInsertInput",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
-		favorites:"FavoriteArrRelInsertInput",
 		followers:"FollowArrRelInsertInput",
 		hiddenAt:"timestamptz",
 		id:"bigint",
@@ -1060,7 +1029,6 @@ export const AllTypesProps: Record<string,any> = {
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
 		email:"OrderBy",
-		favoritesAggregate:"FavoriteAggregateOrderBy",
 		followersAggregate:"FollowAggregateOrderBy",
 		hiddenAt:"OrderBy",
 		ical:"OrderBy",
@@ -3720,6 +3688,16 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"ValidationOrderBy",
 			where:"ValidationBoolExp"
 		},
+		views:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewsAggregate:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
 		votes:{
 			distinctOn:"VoteSelectColumn",
 			orderBy:"VoteOrderBy",
@@ -3899,6 +3877,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentAvgOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -3918,6 +3897,8 @@ export const AllTypesProps: Record<string,any> = {
 		createdById:"BigintComparisonExp",
 		deletedAt:"TimestamptzComparisonExp",
 		event:"EventBoolExp",
+		eventByEventId:"EventBoolExp",
+		eventId:"BigintComparisonExp",
 		favorites:"FavoriteBoolExp",
 		favoritesAggregate:"FavoriteAggregateBoolExp",
 		hiddenAt:"TimestamptzComparisonExp",
@@ -3942,12 +3923,15 @@ export const AllTypesProps: Record<string,any> = {
 		thread:"ThreadBoolExp",
 		validations:"ValidationBoolExp",
 		validationsAggregate:"ValidationAggregateBoolExp",
+		views:"ViewBoolExp",
+		viewsAggregate:"ViewAggregateBoolExp",
 		votes:"VoteBoolExp",
 		votesAggregate:"VoteAggregateBoolExp"
 	},
 	ContentConstraint: "enum" as const,
 	ContentIncInput:{
 		createdById:"bigint",
+		eventId:"bigint",
 		id:"bigint",
 		parentId:"bigint",
 		replyingToId:"bigint",
@@ -3962,6 +3946,8 @@ export const AllTypesProps: Record<string,any> = {
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		event:"EventObjRelInsertInput",
+		eventByEventId:"EventObjRelInsertInput",
+		eventId:"bigint",
 		favorites:"FavoriteArrRelInsertInput",
 		hiddenAt:"timestamptz",
 		id:"bigint",
@@ -3979,12 +3965,14 @@ export const AllTypesProps: Record<string,any> = {
 		tenantId:"bigint",
 		thread:"ThreadObjRelInsertInput",
 		validations:"ValidationArrRelInsertInput",
+		views:"ViewArrRelInsertInput",
 		votes:"VoteArrRelInsertInput"
 	},
 	ContentMaxOrderBy:{
 		createdAt:"OrderBy",
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
+		eventId:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
@@ -3997,6 +3985,7 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"OrderBy",
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
+		eventId:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
@@ -4022,6 +4011,8 @@ export const AllTypesProps: Record<string,any> = {
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
 		event:"EventOrderBy",
+		eventByEventId:"EventOrderBy",
+		eventId:"OrderBy",
 		favoritesAggregate:"FavoriteAggregateOrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
@@ -4041,6 +4032,7 @@ export const AllTypesProps: Record<string,any> = {
 		text:"OrderBy",
 		thread:"ThreadOrderBy",
 		validationsAggregate:"ValidationAggregateOrderBy",
+		viewsAggregate:"ViewAggregateOrderBy",
 		votesAggregate:"VoteAggregateOrderBy"
 	},
 	ContentPkColumnsInput:{
@@ -4053,6 +4045,7 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
+		eventId:"bigint",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		parentId:"bigint",
@@ -4062,6 +4055,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentStddevOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4070,6 +4064,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentStddevPopOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4078,6 +4073,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentStddevSampOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4092,6 +4088,7 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
+		eventId:"bigint",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		parentId:"bigint",
@@ -4101,6 +4098,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentSumOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4115,6 +4113,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentVarianceOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4123,6 +4122,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentVarPopOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -4131,6 +4131,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ContentVarSampOrderBy:{
 		createdById:"OrderBy",
+		eventId:"OrderBy",
 		id:"OrderBy",
 		parentId:"OrderBy",
 		replyingToId:"OrderBy",
@@ -5249,6 +5250,7 @@ export const AllTypesProps: Record<string,any> = {
 		banner:"FileUploadBoolExp",
 		bannerId:"BigintComparisonExp",
 		content:"ContentBoolExp",
+		contentById:"ContentBoolExp",
 		contentId:"BigintComparisonExp",
 		createdAt:"TimestamptzComparisonExp",
 		createdBy:"IndividualBoolExp",
@@ -5315,6 +5317,7 @@ export const AllTypesProps: Record<string,any> = {
 		banner:"FileUploadObjRelInsertInput",
 		bannerId:"bigint",
 		content:"ContentObjRelInsertInput",
+		contentById:"ContentObjRelInsertInput",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdBy:"IndividualObjRelInsertInput",
@@ -5753,6 +5756,7 @@ export const AllTypesProps: Record<string,any> = {
 		banner:"FileUploadOrderBy",
 		bannerId:"OrderBy",
 		content:"ContentOrderBy",
+		contentById:"ContentOrderBy",
 		contentId:"OrderBy",
 		createdAt:"OrderBy",
 		createdBy:"IndividualOrderBy",
@@ -5789,6 +5793,16 @@ export const AllTypesProps: Record<string,any> = {
 		tenantId:"OrderBy"
 	},
 	EventOrganize:{
+		eventSupervisors:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorsAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
 		missions:{
 			distinctOn:"MissionSelectColumn",
 			orderBy:"MissionOrderBy",
@@ -5858,6 +5872,8 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringComparisonExp",
 		event:"EventBoolExp",
 		eventId:"BigintComparisonExp",
+		eventSupervisors:"EventSupervisorBoolExp",
+		eventSupervisorsAggregate:"EventSupervisorAggregateBoolExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
 		individual:"IndividualBoolExp",
@@ -5887,6 +5903,7 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		event:"EventObjRelInsertInput",
 		eventId:"bigint",
+		eventSupervisors:"EventSupervisorArrRelInsertInput",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		individual:"IndividualObjRelInsertInput",
@@ -5939,6 +5956,7 @@ export const AllTypesProps: Record<string,any> = {
 		description:"OrderBy",
 		event:"EventOrderBy",
 		eventId:"OrderBy",
+		eventSupervisorsAggregate:"EventSupervisorAggregateOrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		individual:"IndividualOrderBy",
@@ -6271,6 +6289,208 @@ export const AllTypesProps: Record<string,any> = {
 		pointsAwardedForAttendance:"OrderBy",
 		price:"OrderBy",
 		tenantId:"OrderBy"
+	},
+	EventSupervisorAggregateBoolExp:{
+		count:"eventSupervisorAggregateBoolExpCount"
+	},
+	eventSupervisorAggregateBoolExpCount:{
+		arguments:"EventSupervisorSelectColumn",
+		filter:"EventSupervisorBoolExp",
+		predicate:"IntComparisonExp"
+	},
+	EventSupervisorAggregateFields:{
+		count:{
+			columns:"EventSupervisorSelectColumn"
+		}
+	},
+	EventSupervisorAggregateOrderBy:{
+		avg:"EventSupervisorAvgOrderBy",
+		count:"OrderBy",
+		max:"EventSupervisorMaxOrderBy",
+		min:"EventSupervisorMinOrderBy",
+		stddev:"EventSupervisorStddevOrderBy",
+		stddevPop:"EventSupervisorStddevPopOrderBy",
+		stddevSamp:"EventSupervisorStddevSampOrderBy",
+		sum:"EventSupervisorSumOrderBy",
+		varPop:"EventSupervisorVarPopOrderBy",
+		varSamp:"EventSupervisorVarSampOrderBy",
+		variance:"EventSupervisorVarianceOrderBy"
+	},
+	EventSupervisorArrRelInsertInput:{
+		data:"EventSupervisorInsertInput",
+		onConflict:"EventSupervisorOnConflict"
+	},
+	EventSupervisorAvgOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorBoolExp:{
+		_and:"EventSupervisorBoolExp",
+		_not:"EventSupervisorBoolExp",
+		_or:"EventSupervisorBoolExp",
+		createdAt:"TimestamptzComparisonExp",
+		createdBy:"IndividualBoolExp",
+		createdById:"BigintComparisonExp",
+		deletedAt:"TimestamptzComparisonExp",
+		eventOrganize:"EventOrganizeBoolExp",
+		eventOrganizeId:"BigintComparisonExp",
+		hiddenAt:"TimestamptzComparisonExp",
+		id:"BigintComparisonExp",
+		tenant:"TenantBoolExp",
+		tenantId:"BigintComparisonExp",
+		title:"StringComparisonExp",
+		user:"UserBoolExp",
+		userId:"BigintComparisonExp"
+	},
+	EventSupervisorConstraint: "enum" as const,
+	EventSupervisorIncInput:{
+		createdById:"bigint",
+		eventOrganizeId:"bigint",
+		id:"bigint",
+		tenantId:"bigint",
+		userId:"bigint"
+	},
+	EventSupervisorInsertInput:{
+		createdAt:"timestamptz",
+		createdBy:"IndividualObjRelInsertInput",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganize:"EventOrganizeObjRelInsertInput",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenant:"TenantObjRelInsertInput",
+		tenantId:"bigint",
+		user:"UserObjRelInsertInput",
+		userId:"bigint"
+	},
+	EventSupervisorMaxOrderBy:{
+		createdAt:"OrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		title:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorMinOrderBy:{
+		createdAt:"OrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		title:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorOnConflict:{
+		constraint:"EventSupervisorConstraint",
+		updateColumns:"EventSupervisorUpdateColumn",
+		where:"EventSupervisorBoolExp"
+	},
+	EventSupervisorOrderBy:{
+		createdAt:"OrderBy",
+		createdBy:"IndividualOrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		eventOrganize:"EventOrganizeOrderBy",
+		eventOrganizeId:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenant:"TenantOrderBy",
+		tenantId:"OrderBy",
+		title:"OrderBy",
+		user:"UserOrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorPkColumnsInput:{
+		id:"bigint"
+	},
+	EventSupervisorSelectColumn: "enum" as const,
+	EventSupervisorSetInput:{
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint",
+		userId:"bigint"
+	},
+	EventSupervisorStddevOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorStddevPopOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorStddevSampOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorStreamCursorInput:{
+		initialValue:"EventSupervisorStreamCursorValueInput",
+		ordering:"CursorOrdering"
+	},
+	EventSupervisorStreamCursorValueInput:{
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint",
+		userId:"bigint"
+	},
+	EventSupervisorSumOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorUpdateColumn: "enum" as const,
+	EventSupervisorUpdates:{
+		_inc:"EventSupervisorIncInput",
+		_set:"EventSupervisorSetInput",
+		where:"EventSupervisorBoolExp"
+	},
+	EventSupervisorVarianceOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorVarPopOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
+	},
+	EventSupervisorVarSampOrderBy:{
+		createdById:"OrderBy",
+		eventOrganizeId:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy",
+		userId:"OrderBy"
 	},
 	EventTagsAggregateBoolExp:{
 		count:"eventTagsAggregateBoolExpCount"
@@ -7131,7 +7351,6 @@ export const AllTypesProps: Record<string,any> = {
 		onConflict:"FavoriteOnConflict"
 	},
 	FavoriteAvgOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
@@ -7141,8 +7360,6 @@ export const AllTypesProps: Record<string,any> = {
 		_and:"FavoriteBoolExp",
 		_not:"FavoriteBoolExp",
 		_or:"FavoriteBoolExp",
-		actor:"ActorBoolExp",
-		actorId:"BigintComparisonExp",
 		content:"ContentBoolExp",
 		contentId:"BigintComparisonExp",
 		createdAt:"TimestamptzComparisonExp",
@@ -7151,21 +7368,17 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"TimestamptzComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp"
 	},
 	FavoriteConstraint: "enum" as const,
 	FavoriteIncInput:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdById:"bigint",
 		id:"bigint",
 		tenantId:"bigint"
 	},
 	FavoriteInsertInput:{
-		actor:"ActorObjRelInsertInput",
-		actorId:"bigint",
 		content:"ContentObjRelInsertInput",
 		contentId:"bigint",
 		createdAt:"timestamptz",
@@ -7174,30 +7387,25 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
 	},
 	FavoriteMaxOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdAt:"OrderBy",
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteMinOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdAt:"OrderBy",
 		createdById:"OrderBy",
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteOnConflict:{
@@ -7206,8 +7414,6 @@ export const AllTypesProps: Record<string,any> = {
 		where:"FavoriteBoolExp"
 	},
 	FavoriteOrderBy:{
-		actor:"ActorOrderBy",
-		actorId:"OrderBy",
 		content:"ContentOrderBy",
 		contentId:"OrderBy",
 		createdAt:"OrderBy",
@@ -7216,7 +7422,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy"
 	},
@@ -7225,32 +7430,27 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	FavoriteSelectColumn: "enum" as const,
 	FavoriteSetInput:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	FavoriteStddevOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteStddevPopOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteStddevSampOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
@@ -7261,18 +7461,15 @@ export const AllTypesProps: Record<string,any> = {
 		ordering:"CursorOrdering"
 	},
 	FavoriteStreamCursorValueInput:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	FavoriteSumOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
@@ -7285,21 +7482,18 @@ export const AllTypesProps: Record<string,any> = {
 		where:"FavoriteBoolExp"
 	},
 	FavoriteVarianceOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteVarPopOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
 		tenantId:"OrderBy"
 	},
 	FavoriteVarSampOrderBy:{
-		actorId:"OrderBy",
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
@@ -10196,6 +10390,16 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"EventOrganizeOrderBy",
 			where:"EventOrganizeBoolExp"
 		},
+		createdEventSupervisors:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		createdEventSupervisorsAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
 		createdEvents:{
 			distinctOn:"EventSelectColumn",
 			orderBy:"EventOrderBy",
@@ -10715,6 +10919,16 @@ export const AllTypesProps: Record<string,any> = {
 			distinctOn:"EventApprovalStepValidatorsSelectColumn",
 			orderBy:"EventApprovalStepValidatorsOrderBy",
 			where:"EventApprovalStepValidatorsBoolExp"
+		},
+		viewed:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewedAggregate:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
 		}
 	},
 	IndividualAggregateBoolExp:{
@@ -10808,6 +11022,8 @@ export const AllTypesProps: Record<string,any> = {
 		createdEventJoinsAggregate:"EventJoinAggregateBoolExp",
 		createdEventOrganizes:"EventOrganizeBoolExp",
 		createdEventOrganizesAggregate:"EventOrganizeAggregateBoolExp",
+		createdEventSupervisors:"EventSupervisorBoolExp",
+		createdEventSupervisorsAggregate:"EventSupervisorAggregateBoolExp",
 		createdEvents:"EventBoolExp",
 		createdEventsAggregate:"EventAggregateBoolExp",
 		createdExpenseItems:"ExpenseItemBoolExp",
@@ -10918,7 +11134,9 @@ export const AllTypesProps: Record<string,any> = {
 		threadContributorsAggregate:"ThreadContributorsAggregateBoolExp",
 		user:"UserBoolExp",
 		validatorEventApprovalStep:"EventApprovalStepValidatorsBoolExp",
-		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregateBoolExp"
+		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregateBoolExp",
+		viewed:"ViewBoolExp",
+		viewedAggregate:"ViewAggregateBoolExp"
 	},
 	IndividualConstraint: "enum" as const,
 	IndividualIncInput:{
@@ -10956,6 +11174,7 @@ export const AllTypesProps: Record<string,any> = {
 		createdEventApprovals:"EventApprovalArrRelInsertInput",
 		createdEventJoins:"EventJoinArrRelInsertInput",
 		createdEventOrganizes:"EventOrganizeArrRelInsertInput",
+		createdEventSupervisors:"EventSupervisorArrRelInsertInput",
 		createdEvents:"EventArrRelInsertInput",
 		createdExpenseItems:"ExpenseItemArrRelInsertInput",
 		createdExpenses:"ExpenseArrRelInsertInput",
@@ -11013,7 +11232,8 @@ export const AllTypesProps: Record<string,any> = {
 		tenantId:"bigint",
 		threadContributors:"ThreadContributorsArrRelInsertInput",
 		user:"UserObjRelInsertInput",
-		validatorEventApprovalStep:"EventApprovalStepValidatorsArrRelInsertInput"
+		validatorEventApprovalStep:"EventApprovalStepValidatorsArrRelInsertInput",
+		viewed:"ViewArrRelInsertInput"
 	},
 	IndividualMaxOrderBy:{
 		actorId:"OrderBy",
@@ -11076,6 +11296,7 @@ export const AllTypesProps: Record<string,any> = {
 		createdEventApprovalsAggregate:"EventApprovalAggregateOrderBy",
 		createdEventJoinsAggregate:"EventJoinAggregateOrderBy",
 		createdEventOrganizesAggregate:"EventOrganizeAggregateOrderBy",
+		createdEventSupervisorsAggregate:"EventSupervisorAggregateOrderBy",
 		createdEventsAggregate:"EventAggregateOrderBy",
 		createdExpenseItemsAggregate:"ExpenseItemAggregateOrderBy",
 		createdExpensesAggregate:"ExpenseAggregateOrderBy",
@@ -11134,7 +11355,8 @@ export const AllTypesProps: Record<string,any> = {
 		tenantId:"OrderBy",
 		threadContributorsAggregate:"ThreadContributorsAggregateOrderBy",
 		user:"UserOrderBy",
-		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregateOrderBy"
+		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregateOrderBy",
+		viewedAggregate:"ViewAggregateOrderBy"
 	},
 	IndividualPkColumnsInput:{
 		id:"bigint"
@@ -13436,6 +13658,12 @@ export const AllTypesProps: Record<string,any> = {
 			eventOrganizeId:"bigint",
 			teamMemberId:"bigint"
 		},
+		deleteEventSupervisor:{
+			where:"EventSupervisorBoolExp"
+		},
+		deleteEventSupervisorByPk:{
+			id:"bigint"
+		},
 		deleteEventTags:{
 			where:"EventTagsBoolExp"
 		},
@@ -13763,6 +13991,12 @@ export const AllTypesProps: Record<string,any> = {
 		deleteValidationByPk:{
 			id:"bigint"
 		},
+		deleteView:{
+			where:"ViewBoolExp"
+		},
+		deleteViewByPk:{
+			id:"bigint"
+		},
 		deleteVote:{
 			where:"VoteBoolExp"
 		},
@@ -13992,6 +14226,14 @@ export const AllTypesProps: Record<string,any> = {
 		insertEventOrganizeSupervisorsOne:{
 			object:"EventOrganizeSupervisorsInsertInput",
 			onConflict:"EventOrganizeSupervisorsOnConflict"
+		},
+		insertEventSupervisor:{
+			objects:"EventSupervisorInsertInput",
+			onConflict:"EventSupervisorOnConflict"
+		},
+		insertEventSupervisorOne:{
+			object:"EventSupervisorInsertInput",
+			onConflict:"EventSupervisorOnConflict"
 		},
 		insertEventTags:{
 			objects:"EventTagsInsertInput",
@@ -14409,6 +14651,14 @@ export const AllTypesProps: Record<string,any> = {
 			object:"ValidationInsertInput",
 			onConflict:"ValidationOnConflict"
 		},
+		insertView:{
+			objects:"ViewInsertInput",
+			onConflict:"ViewOnConflict"
+		},
+		insertViewOne:{
+			object:"ViewInsertInput",
+			onConflict:"ViewOnConflict"
+		},
 		insertVote:{
 			objects:"VoteInsertInput",
 			onConflict:"VoteOnConflict"
@@ -14790,6 +15040,19 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		updateEventOrganizeSupervisorsMany:{
 			updates:"EventOrganizeSupervisorsUpdates"
+		},
+		updateEventSupervisor:{
+			_inc:"EventSupervisorIncInput",
+			_set:"EventSupervisorSetInput",
+			where:"EventSupervisorBoolExp"
+		},
+		updateEventSupervisorByPk:{
+			_inc:"EventSupervisorIncInput",
+			_set:"EventSupervisorSetInput",
+			pkColumns:"EventSupervisorPkColumnsInput"
+		},
+		updateEventSupervisorMany:{
+			updates:"EventSupervisorUpdates"
 		},
 		updateEventTags:{
 			_inc:"EventTagsIncInput",
@@ -15496,6 +15759,19 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		updateValidationMany:{
 			updates:"ValidationUpdates"
+		},
+		updateView:{
+			_inc:"ViewIncInput",
+			_set:"ViewSetInput",
+			where:"ViewBoolExp"
+		},
+		updateViewByPk:{
+			_inc:"ViewIncInput",
+			_set:"ViewSetInput",
+			pkColumns:"ViewPkColumnsInput"
+		},
+		updateViewMany:{
+			updates:"ViewUpdates"
 		},
 		updateVote:{
 			_inc:"VoteIncInput",
@@ -16735,6 +17011,19 @@ export const AllTypesProps: Record<string,any> = {
 			eventOrganizeId:"bigint",
 			teamMemberId:"bigint"
 		},
+		eventSupervisor:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorByPk:{
+			id:"bigint"
+		},
 		eventTags:{
 			distinctOn:"EventTagsSelectColumn",
 			orderBy:"EventTagsOrderBy",
@@ -17426,6 +17715,19 @@ export const AllTypesProps: Record<string,any> = {
 		validationByPk:{
 			id:"bigint"
 		},
+		view:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewAggregate:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewByPk:{
+			id:"bigint"
+		},
 		vote:{
 			distinctOn:"VoteSelectColumn",
 			orderBy:"VoteOrderBy",
@@ -17512,7 +17814,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"TimestamptzComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		reactionType:"StringComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp"
@@ -17533,7 +17834,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
 	},
@@ -17544,7 +17844,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reactionType:"OrderBy",
 		tenantId:"OrderBy"
 	},
@@ -17555,7 +17854,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reactionType:"OrderBy",
 		tenantId:"OrderBy"
 	},
@@ -17573,7 +17871,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reactionType:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy"
@@ -17589,7 +17886,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ReactionStddevOrderBy:{
@@ -17621,7 +17917,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ReactionSumOrderBy:{
@@ -17705,7 +18000,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"TimestamptzComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		reason:"StringComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp",
@@ -17730,7 +18024,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
 	},
@@ -17742,7 +18035,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reason:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -17755,7 +18047,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reason:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -17776,7 +18067,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		reason:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy",
@@ -17794,7 +18084,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ReportStddevOrderBy:{
@@ -17830,7 +18119,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ReportSumOrderBy:{
@@ -17962,7 +18250,7 @@ export const AllTypesProps: Record<string,any> = {
 		id:"BigintComparisonExp",
 		isRequired:"BooleanComparisonExp",
 		name:"StringComparisonExp",
-		permissions:"_textComparisonExp",
+		permissions:"StringArrayComparisonExp",
 		team:"TeamBoolExp",
 		teamId:"BigintComparisonExp",
 		teamJoins:"TeamJoinBoolExp",
@@ -17988,7 +18276,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		permissions:"_text",
 		team:"TeamObjRelInsertInput",
 		teamId:"bigint",
 		teamJoins:"TeamJoinArrRelInsertInput",
@@ -18004,6 +18291,7 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		name:"OrderBy",
+		permissions:"OrderBy",
 		teamId:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -18016,6 +18304,7 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
 		name:"OrderBy",
+		permissions:"OrderBy",
 		teamId:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -18061,7 +18350,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		permissions:"_text",
 		teamId:"bigint",
 		tenantId:"bigint"
 	},
@@ -18093,7 +18381,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		permissions:"_text",
 		teamId:"bigint",
 		tenantId:"bigint"
 	},
@@ -18804,6 +19091,9 @@ export const AllTypesProps: Record<string,any> = {
 		order:"OrderBy",
 		tenantId:"OrderBy"
 	},
+	StringArrayComparisonExp:{
+
+	},
 	StringComparisonExp:{
 
 	},
@@ -18891,7 +19181,6 @@ export const AllTypesProps: Record<string,any> = {
 		englishName:"StringComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		name:"StringComparisonExp",
 		subjectClassGroups:"SubjectClassGroupsBoolExp",
 		subjectClassGroupsAggregate:"SubjectClassGroupsAggregateBoolExp",
@@ -19038,7 +19327,6 @@ export const AllTypesProps: Record<string,any> = {
 		documents:"DocumentArrRelInsertInput",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		subjectClassGroups:"SubjectClassGroupsArrRelInsertInput",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
@@ -19052,7 +19340,6 @@ export const AllTypesProps: Record<string,any> = {
 		englishName:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		name:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -19066,7 +19353,6 @@ export const AllTypesProps: Record<string,any> = {
 		englishName:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		name:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -19092,7 +19378,6 @@ export const AllTypesProps: Record<string,any> = {
 		englishName:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		name:"OrderBy",
 		subjectClassGroupsAggregate:"SubjectClassGroupsAggregateOrderBy",
 		tenant:"TenantOrderBy",
@@ -19109,7 +19394,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	SubjectStddevOrderBy:{
@@ -19137,7 +19421,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	SubjectSumOrderBy:{
@@ -19648,6 +19931,23 @@ export const AllTypesProps: Record<string,any> = {
 		eventStream:{
 			cursor:"EventStreamCursorInput",
 			where:"EventBoolExp"
+		},
+		eventSupervisor:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorByPk:{
+			id:"bigint"
+		},
+		eventSupervisorStream:{
+			cursor:"EventSupervisorStreamCursorInput",
+			where:"EventSupervisorBoolExp"
 		},
 		eventTags:{
 			distinctOn:"EventTagsSelectColumn",
@@ -20547,6 +20847,23 @@ export const AllTypesProps: Record<string,any> = {
 		validationStream:{
 			cursor:"ValidationStreamCursorInput",
 			where:"ValidationBoolExp"
+		},
+		view:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewAggregate:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewByPk:{
+			id:"bigint"
+		},
+		viewStream:{
+			cursor:"ViewStreamCursorInput",
+			where:"ViewBoolExp"
 		},
 		vote:{
 			distinctOn:"VoteSelectColumn",
@@ -22711,6 +23028,16 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"EventOrganizeOrderBy",
 			where:"EventOrganizeBoolExp"
 		},
+		eventSupervisors:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		eventSupervisorsAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
 		events:{
 			distinctOn:"EventSelectColumn",
 			orderBy:"EventOrderBy",
@@ -23061,6 +23388,16 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"ValidationOrderBy",
 			where:"ValidationBoolExp"
 		},
+		views:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
+		viewsAggregate:{
+			distinctOn:"ViewSelectColumn",
+			orderBy:"ViewOrderBy",
+			where:"ViewBoolExp"
+		},
 		votes:{
 			distinctOn:"VoteSelectColumn",
 			orderBy:"VoteOrderBy",
@@ -23171,6 +23508,8 @@ export const AllTypesProps: Record<string,any> = {
 		eventJoinsAggregate:"EventJoinAggregateBoolExp",
 		eventOrganizes:"EventOrganizeBoolExp",
 		eventOrganizesAggregate:"EventOrganizeAggregateBoolExp",
+		eventSupervisors:"EventSupervisorBoolExp",
+		eventSupervisorsAggregate:"EventSupervisorAggregateBoolExp",
 		eventValidationForm:"FormBoolExp",
 		eventValidationFormId:"BigintComparisonExp",
 		events:"EventBoolExp",
@@ -23252,6 +23591,8 @@ export const AllTypesProps: Record<string,any> = {
 		usersAggregate:"UserAggregateBoolExp",
 		validations:"ValidationBoolExp",
 		validationsAggregate:"ValidationAggregateBoolExp",
+		views:"ViewBoolExp",
+		viewsAggregate:"ViewAggregateBoolExp",
 		votes:"VoteBoolExp",
 		votesAggregate:"VoteAggregateBoolExp"
 	},
@@ -23289,6 +23630,7 @@ export const AllTypesProps: Record<string,any> = {
 		eventApprovals:"EventApprovalArrRelInsertInput",
 		eventJoins:"EventJoinArrRelInsertInput",
 		eventOrganizes:"EventOrganizeArrRelInsertInput",
+		eventSupervisors:"EventSupervisorArrRelInsertInput",
 		eventValidationForm:"FormObjRelInsertInput",
 		eventValidationFormId:"bigint",
 		events:"EventArrRelInsertInput",
@@ -23327,6 +23669,7 @@ export const AllTypesProps: Record<string,any> = {
 		threads:"ThreadArrRelInsertInput",
 		users:"UserArrRelInsertInput",
 		validations:"ValidationArrRelInsertInput",
+		views:"ViewArrRelInsertInput",
 		votes:"VoteArrRelInsertInput"
 	},
 	TenantMaxOrderBy:{
@@ -23398,6 +23741,7 @@ export const AllTypesProps: Record<string,any> = {
 		eventApprovalsAggregate:"EventApprovalAggregateOrderBy",
 		eventJoinsAggregate:"EventJoinAggregateOrderBy",
 		eventOrganizesAggregate:"EventOrganizeAggregateOrderBy",
+		eventSupervisorsAggregate:"EventSupervisorAggregateOrderBy",
 		eventValidationForm:"FormOrderBy",
 		eventValidationFormId:"OrderBy",
 		eventsAggregate:"EventAggregateOrderBy",
@@ -23444,6 +23788,7 @@ export const AllTypesProps: Record<string,any> = {
 		threadsAggregate:"ThreadAggregateOrderBy",
 		usersAggregate:"UserAggregateOrderBy",
 		validationsAggregate:"ValidationAggregateOrderBy",
+		viewsAggregate:"ViewAggregateOrderBy",
 		votesAggregate:"VoteAggregateOrderBy"
 	},
 	TenantOrganizeAggregateBoolExp:{
@@ -24263,6 +24608,16 @@ export const AllTypesProps: Record<string,any> = {
 			orderBy:"ShortcutOrderBy",
 			where:"ShortcutBoolExp"
 		},
+		supervisedEvents:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
+		supervisedEventsAggregate:{
+			distinctOn:"EventSupervisorSelectColumn",
+			orderBy:"EventSupervisorOrderBy",
+			where:"EventSupervisorBoolExp"
+		},
 		teamJoins:{
 			distinctOn:"TeamJoinSelectColumn",
 			orderBy:"TeamJoinOrderBy",
@@ -24358,7 +24713,7 @@ export const AllTypesProps: Record<string,any> = {
 		isIntroductionFinished:"BooleanComparisonExp",
 		isOnboardingFinished:"BooleanComparisonExp",
 		lastName:"StringComparisonExp",
-		middleNames:"_textComparisonExp",
+		middleNames:"StringArrayComparisonExp",
 		missionJoins:"MissionJoinBoolExp",
 		missionJoinsAggregate:"MissionJoinAggregateBoolExp",
 		points:"FloatComparisonExp",
@@ -24366,6 +24721,8 @@ export const AllTypesProps: Record<string,any> = {
 		sessionsAggregate:"SessionAggregateBoolExp",
 		shortcuts:"ShortcutBoolExp",
 		shortcutsAggregate:"ShortcutAggregateBoolExp",
+		supervisedEvents:"EventSupervisorBoolExp",
+		supervisedEventsAggregate:"EventSupervisorAggregateBoolExp",
 		teamJoins:"TeamJoinBoolExp",
 		teamJoinsAggregate:"TeamJoinAggregateBoolExp",
 		teamMembers:"TeamMemberBoolExp",
@@ -24392,10 +24749,10 @@ export const AllTypesProps: Record<string,any> = {
 		id:"bigint",
 		individual:"IndividualObjRelInsertInput",
 		individualId:"bigint",
-		middleNames:"_text",
 		missionJoins:"MissionJoinArrRelInsertInput",
 		sessions:"SessionArrRelInsertInput",
 		shortcuts:"ShortcutArrRelInsertInput",
+		supervisedEvents:"EventSupervisorArrRelInsertInput",
 		teamJoins:"TeamJoinArrRelInsertInput",
 		teamMembers:"TeamMemberArrRelInsertInput",
 		tenant:"TenantObjRelInsertInput",
@@ -24410,6 +24767,7 @@ export const AllTypesProps: Record<string,any> = {
 		id:"OrderBy",
 		individualId:"OrderBy",
 		lastName:"OrderBy",
+		middleNames:"OrderBy",
 		points:"OrderBy",
 		tenantId:"OrderBy"
 	},
@@ -24422,6 +24780,7 @@ export const AllTypesProps: Record<string,any> = {
 		id:"OrderBy",
 		individualId:"OrderBy",
 		lastName:"OrderBy",
+		middleNames:"OrderBy",
 		points:"OrderBy",
 		tenantId:"OrderBy"
 	},
@@ -24458,6 +24817,7 @@ export const AllTypesProps: Record<string,any> = {
 		points:"OrderBy",
 		sessionsAggregate:"SessionAggregateOrderBy",
 		shortcutsAggregate:"ShortcutAggregateOrderBy",
+		supervisedEventsAggregate:"EventSupervisorAggregateOrderBy",
 		teamJoinsAggregate:"TeamJoinAggregateOrderBy",
 		teamMembersAggregate:"TeamMemberAggregateOrderBy",
 		tenant:"TenantOrderBy",
@@ -24476,7 +24836,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		individualId:"bigint",
-		middleNames:"_text",
 		tenantId:"bigint"
 	},
 	UserStddevOrderBy:{
@@ -24511,7 +24870,6 @@ export const AllTypesProps: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		individualId:"bigint",
-		middleNames:"_text",
 		tenantId:"bigint"
 	},
 	UserSumOrderBy:{
@@ -24596,7 +24954,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"TimestamptzComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp",
 		type:"StringComparisonExp"
@@ -24617,7 +24974,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint"
 	},
@@ -24628,7 +24984,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
 	},
@@ -24639,7 +24994,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
 	},
@@ -24657,7 +25011,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy",
 		type:"OrderBy"
@@ -24673,7 +25026,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ValidationStddevOrderBy:{
@@ -24705,7 +25057,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	ValidationSumOrderBy:{
@@ -24733,6 +25084,185 @@ export const AllTypesProps: Record<string,any> = {
 		tenantId:"OrderBy"
 	},
 	ValidationVarSampOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewAggregateBoolExp:{
+		count:"viewAggregateBoolExpCount"
+	},
+	viewAggregateBoolExpCount:{
+		arguments:"ViewSelectColumn",
+		filter:"ViewBoolExp",
+		predicate:"IntComparisonExp"
+	},
+	ViewAggregateFields:{
+		count:{
+			columns:"ViewSelectColumn"
+		}
+	},
+	ViewAggregateOrderBy:{
+		avg:"ViewAvgOrderBy",
+		count:"OrderBy",
+		max:"ViewMaxOrderBy",
+		min:"ViewMinOrderBy",
+		stddev:"ViewStddevOrderBy",
+		stddevPop:"ViewStddevPopOrderBy",
+		stddevSamp:"ViewStddevSampOrderBy",
+		sum:"ViewSumOrderBy",
+		varPop:"ViewVarPopOrderBy",
+		varSamp:"ViewVarSampOrderBy",
+		variance:"ViewVarianceOrderBy"
+	},
+	ViewArrRelInsertInput:{
+		data:"ViewInsertInput",
+		onConflict:"ViewOnConflict"
+	},
+	ViewAvgOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewBoolExp:{
+		_and:"ViewBoolExp",
+		_not:"ViewBoolExp",
+		_or:"ViewBoolExp",
+		content:"ContentBoolExp",
+		contentId:"BigintComparisonExp",
+		createdAt:"TimestamptzComparisonExp",
+		createdBy:"IndividualBoolExp",
+		createdById:"BigintComparisonExp",
+		deletedAt:"TimestamptzComparisonExp",
+		hiddenAt:"TimestamptzComparisonExp",
+		id:"BigintComparisonExp",
+		tenant:"TenantBoolExp",
+		tenantId:"BigintComparisonExp"
+	},
+	ViewConstraint: "enum" as const,
+	ViewIncInput:{
+		contentId:"bigint",
+		createdById:"bigint",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewInsertInput:{
+		content:"ContentObjRelInsertInput",
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdBy:"IndividualObjRelInsertInput",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenant:"TenantObjRelInsertInput",
+		tenantId:"bigint"
+	},
+	ViewMaxOrderBy:{
+		contentId:"OrderBy",
+		createdAt:"OrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewMinOrderBy:{
+		contentId:"OrderBy",
+		createdAt:"OrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewOnConflict:{
+		constraint:"ViewConstraint",
+		updateColumns:"ViewUpdateColumn",
+		where:"ViewBoolExp"
+	},
+	ViewOrderBy:{
+		content:"ContentOrderBy",
+		contentId:"OrderBy",
+		createdAt:"OrderBy",
+		createdBy:"IndividualOrderBy",
+		createdById:"OrderBy",
+		deletedAt:"OrderBy",
+		hiddenAt:"OrderBy",
+		id:"OrderBy",
+		tenant:"TenantOrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewPkColumnsInput:{
+		id:"bigint"
+	},
+	ViewSelectColumn: "enum" as const,
+	ViewSetInput:{
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewStddevOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewStddevPopOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewStddevSampOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewStreamCursorInput:{
+		initialValue:"ViewStreamCursorValueInput",
+		ordering:"CursorOrdering"
+	},
+	ViewStreamCursorValueInput:{
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewSumOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewUpdateColumn: "enum" as const,
+	ViewUpdates:{
+		_inc:"ViewIncInput",
+		_set:"ViewSetInput",
+		where:"ViewBoolExp"
+	},
+	ViewVarianceOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewVarPopOrderBy:{
+		contentId:"OrderBy",
+		createdById:"OrderBy",
+		id:"OrderBy",
+		tenantId:"OrderBy"
+	},
+	ViewVarSampOrderBy:{
 		contentId:"OrderBy",
 		createdById:"OrderBy",
 		id:"OrderBy",
@@ -24787,7 +25317,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"TimestamptzComparisonExp",
 		hiddenAt:"TimestamptzComparisonExp",
 		id:"BigintComparisonExp",
-		lastActiveDate:"TimestamptzComparisonExp",
 		tenant:"TenantBoolExp",
 		tenantId:"BigintComparisonExp",
 		value:"SmallintComparisonExp"
@@ -24809,7 +25338,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"TenantObjRelInsertInput",
 		tenantId:"bigint",
 		value:"smallint"
@@ -24821,7 +25349,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		value:"OrderBy"
 	},
@@ -24832,7 +25359,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenantId:"OrderBy",
 		value:"OrderBy"
 	},
@@ -24850,7 +25376,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"OrderBy",
 		hiddenAt:"OrderBy",
 		id:"OrderBy",
-		lastActiveDate:"OrderBy",
 		tenant:"TenantOrderBy",
 		tenantId:"OrderBy",
 		value:"OrderBy"
@@ -24866,7 +25391,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		value:"smallint"
 	},
@@ -24902,7 +25426,6 @@ export const AllTypesProps: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		value:"smallint"
 	},
@@ -24957,7 +25480,6 @@ export const ReturnTypes: Record<string,any> = {
 		ttl:"Int",
 		refresh:"Boolean"
 	},
-	_text: `scalar._text` as const,
 	Account:{
 		bankInfo:"BankInfo",
 		bankInfoId:"bigint",
@@ -25274,8 +25796,6 @@ export const ReturnTypes: Record<string,any> = {
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		email:"String",
-		favorites:"Favorite",
-		favoritesAggregate:"FavoriteAggregate",
 		followers:"Follow",
 		followersAggregate:"FollowAggregate",
 		hiddenAt:"timestamptz",
@@ -25339,7 +25859,6 @@ export const ReturnTypes: Record<string,any> = {
 		id:"bigint",
 		image:"FileUpload",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"Tenant",
 		tenantId:"bigint",
 		type:"String"
@@ -25376,7 +25895,6 @@ export const ReturnTypes: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		type:"String"
 	},
@@ -25388,7 +25906,6 @@ export const ReturnTypes: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		imageId:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		type:"String"
 	},
@@ -26834,6 +27351,8 @@ export const ReturnTypes: Record<string,any> = {
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		event:"Event",
+		eventByEventId:"Event",
+		eventId:"bigint",
 		favorites:"Favorite",
 		favoritesAggregate:"FavoriteAggregate",
 		hiddenAt:"timestamptz",
@@ -26858,6 +27377,8 @@ export const ReturnTypes: Record<string,any> = {
 		thread:"Thread",
 		validations:"Validation",
 		validationsAggregate:"ValidationAggregate",
+		views:"View",
+		viewsAggregate:"ViewAggregate",
 		votes:"Vote",
 		votesAggregate:"VoteAggregate"
 	},
@@ -26947,6 +27468,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentAvgFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -26957,6 +27479,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
+		eventId:"bigint",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		parentId:"bigint",
@@ -26969,6 +27492,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
+		eventId:"bigint",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		parentId:"bigint",
@@ -26983,6 +27507,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentStddevFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -26991,6 +27516,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentStddevPopFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -26999,6 +27525,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentStddevSampFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -27007,6 +27534,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentSumFields:{
 		createdById:"bigint",
+		eventId:"bigint",
 		id:"bigint",
 		parentId:"bigint",
 		replyingToId:"bigint",
@@ -27015,6 +27543,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentVarianceFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -27023,6 +27552,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentVarPopFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -27031,6 +27561,7 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	ContentVarSampFields:{
 		createdById:"Float",
+		eventId:"Float",
 		id:"Float",
 		parentId:"Float",
 		replyingToId:"Float",
@@ -27184,6 +27715,7 @@ export const ReturnTypes: Record<string,any> = {
 		banner:"FileUpload",
 		bannerId:"bigint",
 		content:"Content",
+		contentById:"Content",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdBy:"Individual",
@@ -27872,6 +28404,8 @@ export const ReturnTypes: Record<string,any> = {
 		description:"String",
 		event:"Event",
 		eventId:"bigint",
+		eventSupervisors:"EventSupervisor",
+		eventSupervisorsAggregate:"EventSupervisorAggregate",
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		individual:"Individual",
@@ -28117,6 +28651,120 @@ export const ReturnTypes: Record<string,any> = {
 		pointsAwardedForAttendance:"Float",
 		price:"Float",
 		tenantId:"bigint"
+	},
+	EventSupervisor:{
+		createdAt:"timestamptz",
+		createdBy:"Individual",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganize:"EventOrganize",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenant:"Tenant",
+		tenantId:"bigint",
+		title:"String",
+		user:"User",
+		userId:"bigint"
+	},
+	EventSupervisorAggregate:{
+		aggregate:"EventSupervisorAggregateFields",
+		nodes:"EventSupervisor"
+	},
+	EventSupervisorAggregateFields:{
+		avg:"EventSupervisorAvgFields",
+		count:"Int",
+		max:"EventSupervisorMaxFields",
+		min:"EventSupervisorMinFields",
+		stddev:"EventSupervisorStddevFields",
+		stddevPop:"EventSupervisorStddevPopFields",
+		stddevSamp:"EventSupervisorStddevSampFields",
+		sum:"EventSupervisorSumFields",
+		varPop:"EventSupervisorVarPopFields",
+		varSamp:"EventSupervisorVarSampFields",
+		variance:"EventSupervisorVarianceFields"
+	},
+	EventSupervisorAvgFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorMaxFields:{
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint",
+		title:"String",
+		userId:"bigint"
+	},
+	EventSupervisorMinFields:{
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		eventOrganizeId:"bigint",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint",
+		title:"String",
+		userId:"bigint"
+	},
+	EventSupervisorMutationResponse:{
+		affectedRows:"Int",
+		returning:"EventSupervisor"
+	},
+	EventSupervisorStddevFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorStddevPopFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorStddevSampFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorSumFields:{
+		createdById:"bigint",
+		eventOrganizeId:"bigint",
+		id:"bigint",
+		tenantId:"bigint",
+		userId:"bigint"
+	},
+	EventSupervisorVarianceFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorVarPopFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
+	},
+	EventSupervisorVarSampFields:{
+		createdById:"Float",
+		eventOrganizeId:"Float",
+		id:"Float",
+		tenantId:"Float",
+		userId:"Float"
 	},
 	EventTags:{
 		event:"Event",
@@ -28580,8 +29228,6 @@ export const ReturnTypes: Record<string,any> = {
 		tenantId:"Float"
 	},
 	Favorite:{
-		actor:"Actor",
-		actorId:"bigint",
 		content:"Content",
 		contentId:"bigint",
 		createdAt:"timestamptz",
@@ -28590,7 +29236,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"Tenant",
 		tenantId:"bigint"
 	},
@@ -28612,32 +29257,27 @@ export const ReturnTypes: Record<string,any> = {
 		variance:"FavoriteVarianceFields"
 	},
 	FavoriteAvgFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteMaxFields:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	FavoriteMinFields:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdAt:"timestamptz",
 		createdById:"bigint",
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint"
 	},
 	FavoriteMutationResponse:{
@@ -28645,49 +29285,42 @@ export const ReturnTypes: Record<string,any> = {
 		returning:"Favorite"
 	},
 	FavoriteStddevFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteStddevPopFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteStddevSampFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteSumFields:{
-		actorId:"bigint",
 		contentId:"bigint",
 		createdById:"bigint",
 		id:"bigint",
 		tenantId:"bigint"
 	},
 	FavoriteVarianceFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteVarPopFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
 		tenantId:"Float"
 	},
 	FavoriteVarSampFields:{
-		actorId:"Float",
 		contentId:"Float",
 		createdById:"Float",
 		id:"Float",
@@ -30042,6 +30675,8 @@ export const ReturnTypes: Record<string,any> = {
 		createdEventJoinsAggregate:"EventJoinAggregate",
 		createdEventOrganizes:"EventOrganize",
 		createdEventOrganizesAggregate:"EventOrganizeAggregate",
+		createdEventSupervisors:"EventSupervisor",
+		createdEventSupervisorsAggregate:"EventSupervisorAggregate",
 		createdEvents:"Event",
 		createdEventsAggregate:"EventAggregate",
 		createdExpenseItems:"ExpenseItem",
@@ -30152,7 +30787,9 @@ export const ReturnTypes: Record<string,any> = {
 		threadContributorsAggregate:"ThreadContributorsAggregate",
 		user:"User",
 		validatorEventApprovalStep:"EventApprovalStepValidators",
-		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregate"
+		validatorEventApprovalStepAggregate:"EventApprovalStepValidatorsAggregate",
+		viewed:"View",
+		viewedAggregate:"ViewAggregate"
 	},
 	IndividualAggregate:{
 		aggregate:"IndividualAggregateFields",
@@ -31359,6 +31996,8 @@ export const ReturnTypes: Record<string,any> = {
 		deleteEventOrganizeByPk:"EventOrganize",
 		deleteEventOrganizeSupervisors:"EventOrganizeSupervisorsMutationResponse",
 		deleteEventOrganizeSupervisorsByPk:"EventOrganizeSupervisors",
+		deleteEventSupervisor:"EventSupervisorMutationResponse",
+		deleteEventSupervisorByPk:"EventSupervisor",
 		deleteEventTags:"EventTagsMutationResponse",
 		deleteEventTagsByPk:"EventTags",
 		deleteExpense:"ExpenseMutationResponse",
@@ -31463,6 +32102,8 @@ export const ReturnTypes: Record<string,any> = {
 		deleteUserByPk:"User",
 		deleteValidation:"ValidationMutationResponse",
 		deleteValidationByPk:"Validation",
+		deleteView:"ViewMutationResponse",
+		deleteViewByPk:"View",
 		deleteVote:"VoteMutationResponse",
 		deleteVoteByPk:"Vote",
 		insertAccount:"AccountMutationResponse",
@@ -31521,6 +32162,8 @@ export const ReturnTypes: Record<string,any> = {
 		insertEventOrganizeOne:"EventOrganize",
 		insertEventOrganizeSupervisors:"EventOrganizeSupervisorsMutationResponse",
 		insertEventOrganizeSupervisorsOne:"EventOrganizeSupervisors",
+		insertEventSupervisor:"EventSupervisorMutationResponse",
+		insertEventSupervisorOne:"EventSupervisor",
 		insertEventTags:"EventTagsMutationResponse",
 		insertEventTagsOne:"EventTags",
 		insertExpense:"ExpenseMutationResponse",
@@ -31625,6 +32268,8 @@ export const ReturnTypes: Record<string,any> = {
 		insertUserOne:"User",
 		insertValidation:"ValidationMutationResponse",
 		insertValidationOne:"Validation",
+		insertView:"ViewMutationResponse",
+		insertViewOne:"View",
 		insertVote:"VoteMutationResponse",
 		insertVoteOne:"Vote",
 		updateAccount:"AccountMutationResponse",
@@ -31711,6 +32356,9 @@ export const ReturnTypes: Record<string,any> = {
 		updateEventOrganizeSupervisors:"EventOrganizeSupervisorsMutationResponse",
 		updateEventOrganizeSupervisorsByPk:"EventOrganizeSupervisors",
 		updateEventOrganizeSupervisorsMany:"EventOrganizeSupervisorsMutationResponse",
+		updateEventSupervisor:"EventSupervisorMutationResponse",
+		updateEventSupervisorByPk:"EventSupervisor",
+		updateEventSupervisorMany:"EventSupervisorMutationResponse",
 		updateEventTags:"EventTagsMutationResponse",
 		updateEventTagsByPk:"EventTags",
 		updateEventTagsMany:"EventTagsMutationResponse",
@@ -31867,6 +32515,9 @@ export const ReturnTypes: Record<string,any> = {
 		updateValidation:"ValidationMutationResponse",
 		updateValidationByPk:"Validation",
 		updateValidationMany:"ValidationMutationResponse",
+		updateView:"ViewMutationResponse",
+		updateViewByPk:"View",
+		updateViewMany:"ViewMutationResponse",
 		updateVote:"VoteMutationResponse",
 		updateVoteByPk:"Vote",
 		updateVoteMany:"VoteMutationResponse",
@@ -32369,6 +33020,9 @@ export const ReturnTypes: Record<string,any> = {
 		eventOrganizeSupervisors:"EventOrganizeSupervisors",
 		eventOrganizeSupervisorsAggregate:"EventOrganizeSupervisorsAggregate",
 		eventOrganizeSupervisorsByPk:"EventOrganizeSupervisors",
+		eventSupervisor:"EventSupervisor",
+		eventSupervisorAggregate:"EventSupervisorAggregate",
+		eventSupervisorByPk:"EventSupervisor",
 		eventTags:"EventTags",
 		eventTagsAggregate:"EventTagsAggregate",
 		eventTagsByPk:"EventTags",
@@ -32525,6 +33179,9 @@ export const ReturnTypes: Record<string,any> = {
 		validation:"Validation",
 		validationAggregate:"ValidationAggregate",
 		validationByPk:"Validation",
+		view:"View",
+		viewAggregate:"ViewAggregate",
+		viewByPk:"View",
 		vote:"Vote",
 		voteAggregate:"VoteAggregate",
 		voteByPk:"Vote",
@@ -32547,7 +33204,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reactionType:"String",
 		tenant:"Tenant",
 		tenantId:"bigint"
@@ -32582,7 +33238,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reactionType:"String",
 		tenantId:"bigint"
 	},
@@ -32593,7 +33248,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reactionType:"String",
 		tenantId:"bigint"
 	},
@@ -32654,7 +33308,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reason:"String",
 		tenant:"Tenant",
 		tenantId:"bigint",
@@ -32692,7 +33345,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reason:"String",
 		tenantId:"bigint",
 		type:"String"
@@ -32705,7 +33357,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		reason:"String",
 		tenantId:"bigint",
 		type:"String"
@@ -32775,7 +33426,7 @@ export const ReturnTypes: Record<string,any> = {
 		id:"bigint",
 		isRequired:"Boolean",
 		name:"String",
-		permissions:"_text",
+		permissions:"String",
 		team:"Team",
 		teamId:"bigint",
 		teamJoins:"TeamJoin",
@@ -32817,6 +33468,7 @@ export const ReturnTypes: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		name:"String",
+		permissions:"String",
 		teamId:"bigint",
 		tenantId:"bigint",
 		type:"String"
@@ -32829,6 +33481,7 @@ export const ReturnTypes: Record<string,any> = {
 		hiddenAt:"timestamptz",
 		id:"bigint",
 		name:"String",
+		permissions:"String",
 		teamId:"bigint",
 		tenantId:"bigint",
 		type:"String"
@@ -33254,7 +33907,6 @@ export const ReturnTypes: Record<string,any> = {
 		englishName:"String",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		name:"String",
 		subjectClassGroups:"SubjectClassGroups",
 		subjectClassGroupsAggregate:"SubjectClassGroupsAggregate",
@@ -33360,7 +34012,6 @@ export const ReturnTypes: Record<string,any> = {
 		englishName:"String",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		name:"String",
 		tenantId:"bigint",
 		type:"String"
@@ -33374,7 +34025,6 @@ export const ReturnTypes: Record<string,any> = {
 		englishName:"String",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		name:"String",
 		tenantId:"bigint",
 		type:"String"
@@ -33531,6 +34181,10 @@ export const ReturnTypes: Record<string,any> = {
 		eventOrganizeSupervisorsByPk:"EventOrganizeSupervisors",
 		eventOrganizeSupervisorsStream:"EventOrganizeSupervisors",
 		eventStream:"Event",
+		eventSupervisor:"EventSupervisor",
+		eventSupervisorAggregate:"EventSupervisorAggregate",
+		eventSupervisorByPk:"EventSupervisor",
+		eventSupervisorStream:"EventSupervisor",
 		eventTags:"EventTags",
 		eventTagsAggregate:"EventTagsAggregate",
 		eventTagsByPk:"EventTags",
@@ -33739,6 +34393,10 @@ export const ReturnTypes: Record<string,any> = {
 		validationAggregate:"ValidationAggregate",
 		validationByPk:"Validation",
 		validationStream:"Validation",
+		view:"View",
+		viewAggregate:"ViewAggregate",
+		viewByPk:"View",
+		viewStream:"View",
 		vote:"Vote",
 		voteAggregate:"VoteAggregate",
 		voteByPk:"Vote",
@@ -34740,6 +35398,8 @@ export const ReturnTypes: Record<string,any> = {
 		eventJoinsAggregate:"EventJoinAggregate",
 		eventOrganizes:"EventOrganize",
 		eventOrganizesAggregate:"EventOrganizeAggregate",
+		eventSupervisors:"EventSupervisor",
+		eventSupervisorsAggregate:"EventSupervisorAggregate",
 		eventValidationForm:"Form",
 		eventValidationFormId:"bigint",
 		events:"Event",
@@ -34821,6 +35481,8 @@ export const ReturnTypes: Record<string,any> = {
 		usersAggregate:"UserAggregate",
 		validations:"Validation",
 		validationsAggregate:"ValidationAggregate",
+		views:"View",
+		viewsAggregate:"ViewAggregate",
 		votes:"Vote",
 		votesAggregate:"VoteAggregate"
 	},
@@ -35305,7 +35967,7 @@ export const ReturnTypes: Record<string,any> = {
 		isIntroductionFinished:"Boolean",
 		isOnboardingFinished:"Boolean",
 		lastName:"String",
-		middleNames:"_text",
+		middleNames:"String",
 		missionJoins:"MissionJoin",
 		missionJoinsAggregate:"MissionJoinAggregate",
 		points:"Float",
@@ -35313,6 +35975,8 @@ export const ReturnTypes: Record<string,any> = {
 		sessionsAggregate:"SessionAggregate",
 		shortcuts:"Shortcut",
 		shortcutsAggregate:"ShortcutAggregate",
+		supervisedEvents:"EventSupervisor",
+		supervisedEventsAggregate:"EventSupervisorAggregate",
 		teamJoins:"TeamJoin",
 		teamJoinsAggregate:"TeamJoinAggregate",
 		teamMembers:"TeamMember",
@@ -35353,6 +36017,7 @@ export const ReturnTypes: Record<string,any> = {
 		id:"bigint",
 		individualId:"bigint",
 		lastName:"String",
+		middleNames:"String",
 		points:"Float",
 		tenantId:"bigint"
 	},
@@ -35365,6 +36030,7 @@ export const ReturnTypes: Record<string,any> = {
 		id:"bigint",
 		individualId:"bigint",
 		lastName:"String",
+		middleNames:"String",
 		points:"Float",
 		tenantId:"bigint"
 	},
@@ -35430,7 +36096,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"Tenant",
 		tenantId:"bigint",
 		type:"String"
@@ -35465,7 +36130,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		type:"String"
 	},
@@ -35476,7 +36140,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		type:"String"
 	},
@@ -35526,6 +36189,105 @@ export const ReturnTypes: Record<string,any> = {
 		id:"Float",
 		tenantId:"Float"
 	},
+	View:{
+		content:"Content",
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdBy:"Individual",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenant:"Tenant",
+		tenantId:"bigint"
+	},
+	ViewAggregate:{
+		aggregate:"ViewAggregateFields",
+		nodes:"View"
+	},
+	ViewAggregateFields:{
+		avg:"ViewAvgFields",
+		count:"Int",
+		max:"ViewMaxFields",
+		min:"ViewMinFields",
+		stddev:"ViewStddevFields",
+		stddevPop:"ViewStddevPopFields",
+		stddevSamp:"ViewStddevSampFields",
+		sum:"ViewSumFields",
+		varPop:"ViewVarPopFields",
+		varSamp:"ViewVarSampFields",
+		variance:"ViewVarianceFields"
+	},
+	ViewAvgFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewMaxFields:{
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewMinFields:{
+		contentId:"bigint",
+		createdAt:"timestamptz",
+		createdById:"bigint",
+		deletedAt:"timestamptz",
+		hiddenAt:"timestamptz",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewMutationResponse:{
+		affectedRows:"Int",
+		returning:"View"
+	},
+	ViewStddevFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewStddevPopFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewStddevSampFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewSumFields:{
+		contentId:"bigint",
+		createdById:"bigint",
+		id:"bigint",
+		tenantId:"bigint"
+	},
+	ViewVarianceFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewVarPopFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
+	ViewVarSampFields:{
+		contentId:"Float",
+		createdById:"Float",
+		id:"Float",
+		tenantId:"Float"
+	},
 	Vote:{
 		content:"Content",
 		contentId:"bigint",
@@ -35535,7 +36297,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenant:"Tenant",
 		tenantId:"bigint",
 		value:"smallint"
@@ -35571,7 +36332,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		value:"smallint"
 	},
@@ -35582,7 +36342,6 @@ export const ReturnTypes: Record<string,any> = {
 		deletedAt:"timestamptz",
 		hiddenAt:"timestamptz",
 		id:"bigint",
-		lastActiveDate:"timestamptz",
 		tenantId:"bigint",
 		value:"smallint"
 	},

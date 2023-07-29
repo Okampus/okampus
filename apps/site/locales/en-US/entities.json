@@ -912,11 +912,6 @@
       "one": "join form",
       "other": "join forms"
     },
-    "lastActiveDate": {
-      "determinerType": "short",
-      "one": "last active date",
-      "other": "last active dates"
-    },
     "lastActivityAt": {
       "determinerType": "short",
       "one": "last activity at",

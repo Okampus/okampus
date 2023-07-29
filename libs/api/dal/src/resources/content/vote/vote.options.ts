@@ -4,6 +4,5 @@ import type { Content } from '../content.entity';
 
 export type VoteOptions = VoteProps &
   TenantScopedOptions & {
-    lastActiveDate?: Date | null;
     content?: Content | null;
   };

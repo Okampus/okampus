@@ -5,7 +5,6 @@ import type { ReportProps } from './report.props';
 
 export type ReportOptions = ReportProps &
   TenantScopedOptions & {
-    lastActiveDate?: Date | null;
     actor?: Actor | null;
     content?: Content | null;
   };

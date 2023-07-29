@@ -6,7 +6,7 @@ import { $ } from '../../../zeus';
 // @ts-ignore
 export const deactivateActorImageMutation = typedGql('mutation')({
   updateActorImageByPk: [
-    { pkColumns: { id }, _set: { lastActiveDate: $('now', 'timestamptz!') as unknown as string } },
+    { pkColumns: { id }, _set: { deletedAt: $('now', 'timestamptz!') as unknown as string } },
     actorImageBaseInfo,
   ],
 });

@@ -27,9 +27,6 @@ export class Subject extends TenantScopedEntity {
   @Enum({ items: () => SubjectType, type: EnumType })
   type!: SubjectType;
 
-  @Property({ type: 'datetime', nullable: true, default: null })
-  lastActiveDate: Date | null = null;
-
   @ManyToMany({ type: 'ClassGroup' })
   @TransformCollection()
   classGroups = new Collection<ClassGroup>(this);

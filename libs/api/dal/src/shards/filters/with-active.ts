@@ -10,8 +10,8 @@ export const WithActive = (): ClassDecorator => {
     name: 'active',
     cond: ({ getAll, getOnlyInactive }: FilterArguments = {}) => {
       if (getAll) return {};
-      if (getOnlyInactive) return { lastActiveDate: { $ne: null } };
-      return { lastActiveDate: null };
+      if (getOnlyInactive) return { deletedAt: { $ne: null } };
+      return { deletedAt: null };
     },
     default: true,
   });
