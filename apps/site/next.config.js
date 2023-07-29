@@ -20,7 +20,9 @@ const nextConfig = {
   experimental: {
     esmExternals: false,
     serverActions: true,
-    outputFileTracingExcludes: ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+    outputFileTracingExcludes: {
+      '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+    },
   },
   images: {
     formats: ['image/webp'],
