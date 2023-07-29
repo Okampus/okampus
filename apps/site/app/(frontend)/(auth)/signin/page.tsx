@@ -11,6 +11,7 @@ import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/o
 import { loginMutation, tenantOidcInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
+import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
 import { useMutation } from '@apollo/client';
 
 import { IconArrowRight } from '@tabler/icons-react';
@@ -19,9 +20,12 @@ import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import Cookies from 'universal-cookie';
+
 export default function SigninPage() {
   const [, setMeSlug] = useAtom(meSlugAtom);
   const router = useRouter();
+  const cookieStore = new Cookies();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,8 +37,8 @@ export default function SigninPage() {
     onCompleted: (data) => {
       if (data.login) {
         setMeSlug(data.login.user.individual.actor.slug);
-        const next = localStorage.getItem('next') ?? '/';
-        localStorage.removeItem('next');
+        const next = cookieStore.get(NEXT_PAGE_COOKIE) ?? '/';
+        cookieStore.remove(NEXT_PAGE_COOKIE);
         router.push(next);
       }
     },

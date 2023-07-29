@@ -9,3 +9,5 @@ export const COOKIE_NAMES = {
   [TokenExpiration.AccessExpiration]: 'OKAMPUS_ACCESS_EXPIRES',
   [TokenExpiration.RefreshExpiration]: 'OKAMPUS_REFRESH_EXPIRES',
 };
+
+export const NEXT_PAGE_COOKIE = 'OKAMPUS_NEXT_PAGE';
