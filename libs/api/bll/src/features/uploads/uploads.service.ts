@@ -88,7 +88,7 @@ export class UploadsService extends RequestContext {
       if (!ETag) throw new BadRequestException('Failed to upload file to S3');
 
       this.logger.debug(`Uploaded ${key} to ${Bucket} (${ContentLength} bytes, etag: ${ETag})!`);
-      return { url: `https://${Bucket}/${Key}`, etag: ETag, size: ContentLength };
+      return { url: `https://bucket-${Bucket}.okampus.fr/${Key}`, etag: ETag, size: ContentLength };
     } catch (error) {
       this.logger.error(`Failed to upload ${key} to ${Bucket}: ${error}`);
       throw error;
