@@ -29,7 +29,7 @@
       "executor": "nx:run-commands",
       "options": {
         "color": true,
-        "commands": ["nx run api:ts-check", "nx run api:ts-check-spec", "nx run api:eslint", "nx run api:prettier"]
+        "commands": ["nx run api:ts-check", "nx run api:eslint", "nx run api:prettier"]
       }
     },
     "lint:fix": {
@@ -42,9 +42,6 @@
     },
     "ts-check": {
       "command": "tsc --pretty --noEmit -p apps/api/tsconfig.app.json"
-    },
-    "ts-check-spec": {
-      "command": "tsc --pretty --noEmit -p apps/api/tsconfig.spec.json"
     },
     "eslint": {
       "command": "eslint apps/api --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
