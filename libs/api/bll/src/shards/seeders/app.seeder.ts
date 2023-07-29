@@ -621,6 +621,7 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log('Teams created...');
     const teamPromises = [];
 
+    this.logger.log(`Receipt example path: ${receiptExamplePath}`);
     const receiptExampleFile = await readFile(receiptExamplePath);
     if (!receiptExampleFile) throw new Error('No example receipt file found.');
 
