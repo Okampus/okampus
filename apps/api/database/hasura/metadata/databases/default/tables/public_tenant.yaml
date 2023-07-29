@@ -418,3 +418,14 @@ array_relationships:
         table:
           name: vote
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - id
+        - is_oidc_enabled
+        - oidc_name
+      filter:
+        deleted_at:
+          _is_null: true

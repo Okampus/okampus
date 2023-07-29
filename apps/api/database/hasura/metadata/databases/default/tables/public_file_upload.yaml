@@ -135,3 +135,17 @@ array_relationships:
         table:
           name: team
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - id
+        - size
+        - type
+        - url
+      filter:
+        deleted_at:
+          _is_null: true
+      query_root_fields: []
+      subscription_root_fields: []
