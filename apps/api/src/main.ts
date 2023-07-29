@@ -1,5 +1,5 @@
 import { bootstrap } from './bootstrap/bootstrap';
-import { config } from './configs/config';
+import { config } from './config';
 import mikroOrmConfig from './configs/mikro-orm.config';
 
 import { MikroORM } from '@mikro-orm/core';

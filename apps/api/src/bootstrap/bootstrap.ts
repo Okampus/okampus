@@ -5,7 +5,7 @@ import { tenantCallbackValidation, tenantStrategyValidation } from './tenant.val
 import { uploadPreValidation } from './upload.validation';
 
 import { AppModule } from '../app.module';
-import { config } from '../configs/config';
+import { config } from '../config';
 
 import { AuthService, OIDCCacheService } from '@okampus/api/bll';
 

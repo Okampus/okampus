@@ -1,4 +1,4 @@
-import { config } from './config';
+import { config } from '../config';
 import { allEntities, BaseRepository } from '@okampus/api/dal';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { Logger, NotFoundException } from '@nestjs/common';

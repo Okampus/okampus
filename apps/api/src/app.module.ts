@@ -1,5 +1,5 @@
 import { AppController } from './app.controller';
-import { config } from './configs/config';
+import { config } from './config';
 
 import graphqlConfig from './configs/graphql.config';
 import mikroOrmConfig from './configs/mikro-orm.config';
