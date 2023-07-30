@@ -1,13 +1,8 @@
 import { RedisService } from '../cache/redis.service';
-
 import { UploadsService } from '../../features/uploads/uploads.service';
-
 import { MeiliSearchService } from '../search/meilisearch.service';
-
 import { loadConfig } from '../../shards/utils/load-config';
-
 import { ListBucketsCommand } from '@aws-sdk/client-s3';
-
 import { ConfigService } from '@nestjs/config';
 
 import {
@@ -15,7 +10,6 @@ import {
   DiskHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
-  HealthIndicatorFunction,
   HealthCheck,
 } from '@nestjs/terminus';
 
@@ -25,7 +19,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@okampus/api/shards';
 import { toKebabCase } from '@okampus/shared/utils';
 
-import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
+import type { HealthCheckResult, HealthIndicatorResult, HealthIndicatorFunction } from '@nestjs/terminus';
 import type { ApiConfig } from '@okampus/shared/types';
 
 @ApiTags('Health')
@@ -58,11 +52,12 @@ export class HealthController {
         if (this.uploadService.s3Client) {
           const command = new ListBucketsCommand({});
           const exists = await this.uploadService.s3Client.send(command);
+
           if (!exists.Buckets) return result;
 
           result.s3.status = 'up';
           for (const bucket of buckets) {
-            const status = exists.Buckets?.some((bucket) => bucket.Name === bucket) ? 'up' : 'down';
+            const status = exists.Buckets?.some(({ Name }) => Name === bucket) ? 'up' : 'down';
             result.s3[toKebabCase(bucket)] = { status };
           }
 
