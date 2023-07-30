@@ -425,8 +425,6 @@ export class DatabaseSeeder extends Seeder {
       })
     );
 
-    if (categories.length > 0) return;
-
     this.logger.log('Seeding teams..');
     const teamsData = (await loadTeamsFromYaml(tenant, categories)) ?? fakeTeamsData(tenant, categories);
     const teamsWithParent = await Promise.all(
