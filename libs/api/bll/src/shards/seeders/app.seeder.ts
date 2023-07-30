@@ -407,12 +407,11 @@ export class DatabaseSeeder extends Seeder {
           const fileData = { buffer, size: buffer.length, filename: name, encoding: '7bit', type: 'image/webp' };
           const upload = { ...fileData, fieldname: 'icon', fileLastModifiedAt: createdAt };
 
-          const image = await DatabaseSeeder.upload.uploadThumbnail(
+          const image = await DatabaseSeeder.upload.createImageUpload(
             upload,
-            EntityName.Tag,
-            tag.id,
-            scopedOptions.createdBy,
-            scopedOptions.tenant
+            Buckets.Thumbnails,
+            { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id },
+            200
           );
 
           this.logger.log(`Uploaded ${name} icon`);
