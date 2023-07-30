@@ -1,7 +1,7 @@
 import FileIcon from '../../atoms/Icon/FileIcon';
 import ActionButton from '../Button/ActionButton';
 
-import { Buckets } from '@okampus/shared/enums';
+import { Buckets, EntityName } from '@okampus/shared/enums';
 import { bytes } from '@okampus/shared/utils';
 import { singleUploadMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
@@ -18,10 +18,10 @@ const defaultAbort = () => console.log('No abortHandler provided. Cannot abort!'
 
 export type DocumentInputProps = {
   onChange: (id: string | null, file: File | null) => void;
-  bucket?: Buckets;
+  uploadContext: { bucket: Buckets; entityName: EntityName; entityId?: string };
   disabled?: boolean;
 };
-export default function DocumentInput({ onChange, bucket = Buckets.Attachments }: DocumentInputProps) {
+export default function DocumentInput({ onChange, uploadContext }: DocumentInputProps) {
   const [abort, setAbort] = useState<() => void>(defaultAbort);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -41,7 +41,7 @@ export default function DocumentInput({ onChange, bucket = Buckets.Attachments }
 
   const uploadFile = (uploadedFile: File) => {
     setFile(uploadedFile);
-    const variables = { file: uploadedFile, bucket };
+    const variables = { file: uploadedFile, ...uploadContext };
     insertUpload({ variables, onCompleted: ({ singleUpload }) => onChange(singleUpload?.id as string, uploadedFile) });
   };
 

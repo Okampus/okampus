@@ -5,7 +5,12 @@ import type { ValueTypes } from '../../zeus';
 
 export const singleUploadMutation = typedGql('mutation')({
   singleUpload: [
-    { file: $('file', 'Upload!') as ValueTypes['Upload'], bucket: $('bucket', 'String') as unknown as string },
+    {
+      file: $('file', 'Upload!') as ValueTypes['Upload'],
+      bucket: $('bucket', 'String') as unknown as string,
+      entityName: $('entityName', 'String') as unknown as string,
+      entityId: $('entityId', 'String') as unknown as string,
+    },
     fileUploadBaseInfo,
   ],
 });

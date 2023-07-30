@@ -1,6 +1,7 @@
 'use client';
 
 import ActorImageEditorForm from './ActorImageEditorForm';
+import BannerImage from '../../atoms/Image/BannerImage';
 import ModalLayout from '../../atoms/Layout/ModalLayout';
 
 import { notificationAtom } from '../../../context/global';
@@ -8,9 +9,8 @@ import { useModal } from '../../../hooks/context/useModal';
 import { getBanner } from '../../../utils/actor-image/get-banner';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
-import BannerImage from '../../atoms/Image/BannerImage';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { ActorImageType } from '@okampus/shared/enums';
+import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
 import { insertActorImageMutation, singleUploadMutation } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
 
@@ -38,7 +38,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
 
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file },
+      variables: { file, bucket: Buckets.ActorImages, entityName: EntityName.Team, entityId: actor.id },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Banner } };

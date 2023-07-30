@@ -15,7 +15,7 @@ import { useEventManage, useMe } from '../../../../../../context/navigation';
 import { useModal } from '../../../../../../hooks/context/useModal';
 
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { TeamPermissions } from '@okampus/shared/enums';
+import { Buckets, EntityName, TeamPermissions } from '@okampus/shared/enums';
 import { actorBaseInfo, projectBaseInfo, updateEventMutation, useTypedQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
@@ -70,6 +70,7 @@ export default function ManageEventPage({ params }: { params: { slug: string } }
     openModal({
       node: (
         <ImageEditorForm
+          uploadContext={{ bucket: Buckets.Banners, entityName: EntityName.Event }}
           onUploaded={(fileId, onCompleted, onError) =>
             updateEvent({
               // @ts-ignore

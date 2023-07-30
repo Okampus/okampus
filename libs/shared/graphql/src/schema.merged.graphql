@@ -22573,7 +22573,7 @@ type Mutation {
   updateVote(_inc: VoteIncInput, _set: VoteSetInput, where: VoteBoolExp!): VoteMutationResponse
   updateVoteByPk(_inc: VoteIncInput, _set: VoteSetInput, pkColumns: VotePkColumnsInput!): Vote
   updateVoteMany(updates: [VoteUpdates!]!): [VoteMutationResponse]
-  singleUpload(file: Upload!, bucket: String): FileUpload
+  singleUpload(file: Upload!, bucket: String, entityName: String, entityId: String): FileUpload
   login(dto: LoginInput!): UserLogin!
   logout: Boolean!
 }

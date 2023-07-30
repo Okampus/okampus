@@ -24,7 +24,7 @@ type ActorEntity = EntityName.Team | EntityName.User | EntityName.Bot;
 type UploadContext = {
   createdBy: Individual | null;
   entityName: EntityName;
-  entityId: string;
+  entityId: string | null;
   tenant: Tenant;
 };
 
@@ -80,7 +80,11 @@ export class UploadsService extends RequestContext {
   ): Promise<HTTPResource> {
     const Bucket = this.bucketNames[bucket];
     const ContentLength = size || stream.readableLength;
-    const Key = `${context.tenant.id}/${context.entityName}/${context.entityId}/${key}`;
+
+    const eventContext = context.createdBy?.id ?? EventContext.System;
+    const Key = context.entityId
+      ? `${context.tenant.id}/${context.entityName}/${context.entityId}/${eventContext}/${key}`
+      : `${context.tenant.id}/${context.entityName}/${eventContext}/${key}`;
 
     if (!this.isEnabled) {
       const buffer = await streamToBuffer(stream);
@@ -119,7 +123,7 @@ export class UploadsService extends RequestContext {
     const type = file.type ?? 'application/octet-stream';
     const createdById = context.createdBy?.id ?? null;
     const slug = toSlug(file.filename ?? file.fieldname);
-    const key = `${slug}-${nowString()}-${createdById ?? EventContext.System}-${randomId()}.${type.split('/')[1]}`;
+    const key = `${slug}-${nowString()}-${randomId()}.${type.split('/')[1]}`;
 
     const { url, size } = await this.upload(stream, file.size, type, key, bucket, context);
     const name = file.originalname ?? file.filename ?? key;
@@ -151,50 +155,6 @@ export class UploadsService extends RequestContext {
     return this.createUpload({ ...file, buffer, type: 'image/webp', size: buffer.length }, bucket, context);
   }
 
-  public async uploadActorDocument(
-    file: MulterFile,
-    type: ActorEntity,
-    actorId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId: actorId };
-    return await this.createUpload(file, Buckets.ActorDocuments, context);
-  }
-
-  public async uploadActorImage(
-    file: MulterFile,
-    type: ActorEntity,
-    actorId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId: actorId };
-    return await this.createImageUpload(file, Buckets.ActorImages, context, 400);
-  }
-
-  public async uploadActorVideo(
-    file: MulterFile,
-    type: ActorEntity,
-    actorId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId: actorId };
-    return await this.createUpload(file, Buckets.ActorVideos, context);
-  }
-
-  public async uploadAttachment(
-    file: MulterFile,
-    type: EntityName.Content | EntityName.GrantUnlock,
-    entityId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId };
-    return await this.createUpload(file, Buckets.ActorVideos, context);
-  }
-
   public async uploadQR(
     data: string,
     fieldname: string,
@@ -215,27 +175,5 @@ export class UploadsService extends RequestContext {
     if (!createdBy?.user) throw new BadRequestException('Requester is not a user');
     const context = { createdBy, tenant, entityName: EntityName.User, entityId: createdBy.user.id };
     return await this.createImageUpload(file, Buckets.Signatures, context, 300);
-  }
-
-  public async uploadReceipt(
-    file: MulterFile,
-    type: EntityName.Grant | EntityName.Expense | EntityName.ExpenseItem | EntityName.Finance,
-    entityId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId };
-    return await this.createUpload(file, Buckets.ActorVideos, context);
-  }
-
-  public async uploadThumbnail(
-    file: MulterFile,
-    type: EntityName.Tag | EntityName.Location,
-    entityId: string,
-    createdBy: Individual | null,
-    tenant: Tenant
-  ) {
-    const context = { createdBy, tenant, entityName: type, entityId };
-    return await this.createImageUpload(file, Buckets.Thumbnails, context, 200);
   }
 }
