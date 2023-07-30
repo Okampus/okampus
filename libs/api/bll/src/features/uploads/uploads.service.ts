@@ -72,13 +72,14 @@ export class UploadsService extends RequestContext {
 
   public async upload(
     stream: Readable,
+    size: number,
     type: string,
     key: string,
     bucket: Buckets,
     context: UploadContext
   ): Promise<HTTPResource> {
     const Bucket = this.bucketNames[bucket];
-    const ContentLength = stream.readableLength;
+    const ContentLength = size || stream.readableLength;
     const Key = `${context.tenant.id}/${context.entityName}/${context.entityId}/${key}`;
 
     if (!this.isEnabled) {
@@ -92,7 +93,7 @@ export class UploadsService extends RequestContext {
 
     if (!this.s3Client) throw new BadRequestException('S3 client is not initialized');
 
-    this.logger.debug(`Uploading ${key} to ${Bucket}..`);
+    this.logger.log(`Uploading ${key} to ${Bucket}..`);
     try {
       const command = new PutObjectCommand({ Bucket, Key, ACL, ContentLength, ContentType: type, Body: stream });
 
@@ -113,12 +114,14 @@ export class UploadsService extends RequestContext {
     else if (file.buffer) stream = Readable.from(file.buffer);
     else throw new BadRequestException('File missing a stream or a buffer');
 
+    this.logger.log(`Creating ${context.entityName} upload.. ${stream.readableLength}`);
+
     const type = file.type ?? 'application/octet-stream';
     const createdById = context.createdBy?.id ?? null;
     const slug = toSlug(file.filename ?? file.fieldname);
-    const key = `${slug}-${createdById ?? EventContext.System}-${nowString()}-${randomId()}`;
+    const key = `${slug}-${nowString()}-${createdById ?? EventContext.System}-${randomId()}.${type.split('/')[1]}`;
 
-    const { url, size } = await this.upload(stream, type, key, bucket, context);
+    const { url, size } = await this.upload(stream, file.size, type, key, bucket, context);
     const name = file.originalname ?? file.filename ?? key;
     const fileLastModifiedAt = file.fileLastModifiedAt?.toISOString() ?? new Date().toISOString();
 
@@ -136,9 +139,14 @@ export class UploadsService extends RequestContext {
     height: number
   ): Promise<FileUpload> {
     if (!checkImage(file)) throw new BadRequestException(`${context.entityName} file is not an image.`);
-    if (!file.buffer) throw new BadRequestException(`${context.entityName} file is missing a buffer.`);
 
-    const buffer = await sharp(file.buffer).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
+    let initial;
+    if (file.buffer) initial = file.buffer;
+    else if (file.createReadStream) initial = await streamToBuffer(file.createReadStream());
+    else throw new BadRequestException(`${context.entityName} file is missing a buffer or a stream.`);
+
+    const buffer = await sharp(initial).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
+    this.logger.log(`Resized ${context.entityName} image to ${buffer.length} bytes.`);
 
     return this.createUpload({ ...file, buffer, type: 'image/webp', size: buffer.length }, bucket, context);
   }

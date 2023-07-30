@@ -398,7 +398,6 @@ export class DatabaseSeeder extends Seeder {
     const categoriesData = (await loadCategoriesFromYaml()) ?? seedingConfig.DEFAULT_CATEGORIES;
     const categories = await Promise.all(
       categoriesData.map(async ({ icon, name, color, slug }) => {
-        this.logger.log(`Uploaded ${name} icon`);
         await em.persistAndFlush(new Tag({ color, slug, type: TagType.TeamCategory, name, ...scopedOptions }));
 
         const tag = await em.findOneOrFail(Tag, { slug });
@@ -416,6 +415,8 @@ export class DatabaseSeeder extends Seeder {
             scopedOptions.tenant
           );
 
+          this.logger.log(`Uploaded ${name} icon`);
+
           tag.image = image;
           await em.persistAndFlush([tag, image]);
         }
@@ -423,6 +424,8 @@ export class DatabaseSeeder extends Seeder {
         return tag;
       })
     );
+
+    if (categories.length > 0) return;
 
     this.logger.log('Seeding teams..');
     const teamsData = (await loadTeamsFromYaml(tenant, categories)) ?? fakeTeamsData(tenant, categories);
