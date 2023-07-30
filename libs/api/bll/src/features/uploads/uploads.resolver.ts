@@ -6,9 +6,9 @@ import { BadRequestException } from '@nestjs/common';
 import { GraphQLUpload } from 'graphql-upload-minimal';
 import { Buckets, EntityName } from '@okampus/shared/enums';
 import { enumChecker } from '@okampus/shared/utils';
-import { MulterFile } from '@okampus/shared/types';
 
 import type { FileUpload } from '@okampus/api/dal';
+import type { MulterFile } from '@okampus/shared/types';
 
 const isBucket = enumChecker(Buckets);
 // const actorEntities = [EntityName.Team, EntityName.User, EntityName.Bot] as const;
