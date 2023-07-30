@@ -1,7 +1,6 @@
+import { THEME_COOKIE } from '@okampus/shared/consts';
 import { includes } from '@okampus/shared/utils';
 import { cookies, headers } from 'next/headers';
-
-export const THEME_COOKIE = 'OKAMPUS_THEME';
 
 const availableThemes = ['light', 'dark'];
 const defaultTheme = 'light';

@@ -1,21 +1,4 @@
 {
-  "format": {
-    "currency": {
-      "euro": "{{currency, currency_EUR}}"
-    },
-    "date": {
-      "simple": "{{date, date_simple}}",
-      "weekDay": "{{date, date_weekDay}}",
-      "simpleHour": "{{date, date_simpleHour}}",
-      "weekDayHour": "{{date, date_weekDayHour}}"
-    },
-    "dateRange": {
-      "simple": "{{range, range_simple}}",
-      "weekDay": "{{range, range_weekDay}}",
-      "simpleHour": "{{range, range_simpleHour}}",
-      "weekDayHour": "{{range, range_weekDayHour}}"
-    }
-  },
   "actions": {
     "Create": "a créé {{entityName, determiner_definite}}",
     "Delete": "a suprimé {{entityName, determiner_definite}}",

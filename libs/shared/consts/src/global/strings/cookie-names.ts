@@ -11,3 +11,5 @@ export const COOKIE_NAMES = {
 };
 
 export const NEXT_PAGE_COOKIE = 'OKAMPUS_NEXT_PAGE';
+export const THEME_COOKIE = 'OKAMPUS_THEME';
+export const LOCALE_COOKIE = 'OKAMPUS_LOCALE';

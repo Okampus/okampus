@@ -1,6 +1,6 @@
 import SideBar from '../../../../../components/layouts/SideBar';
+import TeamManageButton from '../../../../../components/layouts/SideBar/ManageButton/TeamManageButton';
 import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
-import EventManageButton from '../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
 import TeamSidePanel from '../../../../../components/layouts/SidePanel/TeamSidePanel';
 import LinkList from '../../../../../components/molecules/List/LinkList';
 import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe';
@@ -28,7 +28,7 @@ export default async function TeamLayout({ children, params }: TeamLayoutProps) 
       <ApolloSubscribe selector={{ teamByPk: [{ id: team.id }, teamWithMembersInfo] }} />
       <SideBar>
         <SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />
-        <EventManageButton slug={params.slug} manage={true} />
+        <TeamManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[
             { label: 'Présentation', href: `/team/${team.actor.slug}`, icon: <IconUsers /> },

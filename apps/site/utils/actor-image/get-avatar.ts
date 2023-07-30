@@ -1,10 +1,14 @@
-import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
+import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED, THEME_COOKIE } from '@okampus/shared/consts';
 import { ActorImageType } from '@okampus/shared/enums';
+
+import Cookies from 'universal-cookie';
+
 import type { ActorImageBaseInfo } from '@okampus/shared/graphql';
 
 export function getAvatar(actorImages?: ActorImageBaseInfo[]) {
+  const cookieStore = new Cookies();
   if (!actorImages || actorImages.length === 0) return;
-  const darkMode = localStorage.getItem('theme') === 'dark';
+  const darkMode = cookieStore.get(THEME_COOKIE) === 'dark';
   if (darkMode) {
     const darkAvatar = actorImages
       .filter((actorImage) => actorImage.type === ActorImageType.AvatarDarkMode)
@@ -17,7 +21,8 @@ export function getAvatar(actorImages?: ActorImageBaseInfo[]) {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
 
   if (avatar) return avatar;
-  return;
+
+  return null;
 }
 
 export function getAvatarRounded(type?: 'user' | 'team' | 'tenant') {

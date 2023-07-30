@@ -1,5 +1,5 @@
 import SideBar from '../../../../../../components/layouts/SideBar';
-import EventManageButton from '../../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
+import TeamManageButton from '../../../../../../components/layouts/SideBar/ManageButton/TeamManageButton';
 import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarBanner';
 import TeamManageNavigation from '../../../../../../components/layouts/SideBar/TeamManageNavigation';
 import TeamManageSidePanel from '../../../../../../components/layouts/SidePanel/TeamManageSidePanel';
@@ -29,7 +29,7 @@ export default async function ManageTeamLayout({ children, params }: ManageTeamL
       <ApolloSubscribe selector={{ teamByPk: [{ id: teamManage.id }, teamManageInfo] }} />
       <SideBar>
         <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />
-        <EventManageButton slug={params.slug} manage={false} />
+        <TeamManageButton slug={params.slug} manage={false} />
         <TeamManageNavigation slug={params.slug} />
       </SideBar>
       {children}
