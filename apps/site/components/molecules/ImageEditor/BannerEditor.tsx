@@ -75,16 +75,18 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
 
   useEffect(() => {
     if (showEditor) {
-      openModal(
-        <ModalLayout header="Modifier la bannière">
-          <ActorImageEditorForm
-            actor={actor}
-            actorImageType={ActorImageType.Banner}
-            imageType="team"
-            onUpload={onUpload}
-          />
-        </ModalLayout>
-      );
+      openModal({
+        node: (
+          <ModalLayout header="Modifier la bannière">
+            <ActorImageEditorForm
+              actor={actor}
+              actorImageType={ActorImageType.Banner}
+              imageType="team"
+              onUpload={onUpload}
+            />
+          </ModalLayout>
+        ),
+      });
     } else {
       closeModal();
     }

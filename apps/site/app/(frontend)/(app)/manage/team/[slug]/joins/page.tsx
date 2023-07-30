@@ -235,29 +235,31 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                         label: 'Accepter la candidature',
                         type: ActionType.Success,
                         linkOrActionOrMenu: () =>
-                          openModal(
-                            <ModalLayout header="Attribuer un rôle">
-                              <FormLayout
-                                schema={attributedRoleSchema}
-                                onSubmit={(values) => {
-                                  const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
-                                  updateTeamJoin({
-                                    // @ts-ignore
-                                    variables: { id: join.id, update },
-                                    onCompleted: () => {
-                                      setNotification({
-                                        type: ToastType.Success,
-                                        message: `L'adhésion de ${join.joinedBy.individual?.actor?.name} a été acceptée !`,
-                                      });
-                                      closeModal();
-                                    },
-                                    onError: (error) =>
-                                      setNotification({ type: ToastType.Error, message: error.message }),
-                                  });
-                                }}
-                              />
-                            </ModalLayout>
-                          ),
+                          openModal({
+                            node: (
+                              <ModalLayout header="Attribuer un rôle">
+                                <FormLayout
+                                  schema={attributedRoleSchema}
+                                  onSubmit={(values) => {
+                                    const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
+                                    updateTeamJoin({
+                                      // @ts-ignore
+                                      variables: { id: join.id, update },
+                                      onCompleted: () => {
+                                        setNotification({
+                                          type: ToastType.Success,
+                                          message: `L'adhésion de ${join.joinedBy.individual?.actor?.name} a été acceptée !`,
+                                        });
+                                        closeModal();
+                                      },
+                                      onError: (error) =>
+                                        setNotification({ type: ToastType.Error, message: error.message }),
+                                    });
+                                  }}
+                                />
+                              </ModalLayout>
+                            ),
+                          }),
                       }}
                     />
                     <ActionButton

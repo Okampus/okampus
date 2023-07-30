@@ -16,7 +16,7 @@ export default function BottomSheet() {
           transition={{ ease: 'easeInOut', duration: 0.2 }}
           className="h-screen absolute inset-0 flex flex-col overflow-hidden z-50"
         >
-          {bottomSheet}
+          {bottomSheet.node}
         </motion.div>
       )}
     </AnimatePresence>

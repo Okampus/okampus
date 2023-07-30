@@ -72,7 +72,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
         <ActionButton
           action={{
             label: 'Créer un événement',
-            linkOrActionOrMenu: () => openModal(<EventForm teamManage={teamManage} />),
+            linkOrActionOrMenu: () => openModal({ node: <EventForm teamManage={teamManage} /> }),
             iconOrSwitch: <IconPlus />,
             type: ActionType.Primary,
           }}
@@ -127,16 +127,18 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                       action={{
                         label: 'Voir',
                         linkOrActionOrMenu: () =>
-                          openModal(
-                            <ModalLayout header={`Validation de l'événement ${eventOrganize.event.name}`}>
-                              <FormSubmissionRender
-                                schema={tenant?.eventValidationForm?.schema as FormSchema}
-                                submission={
-                                  eventOrganize.event.eventApprovalSubmission?.submission as Submission<FormSchema>
-                                }
-                              />
-                            </ModalLayout>
-                          ),
+                          openModal({
+                            node: (
+                              <ModalLayout header={`Validation de l'événement ${eventOrganize.event.name}`}>
+                                <FormSubmissionRender
+                                  schema={tenant?.eventValidationForm?.schema as FormSchema}
+                                  submission={
+                                    eventOrganize.event.eventApprovalSubmission?.submission as Submission<FormSchema>
+                                  }
+                                />
+                              </ModalLayout>
+                            ),
+                          }),
                       }}
                     />
                   ) : (
@@ -158,41 +160,43 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                   <div
                     className="add-button"
                     onClick={() =>
-                      openModal(
-                        <ModalLayout
-                          className="max-w-[40rem]"
-                          header={t(`enums.EventState.${eventOrganize.event.state}`)}
-                        >
-                          <div className="flex flex-col gap-4">
-                            {eventOrganize.event.eventApprovals.map(
-                              (approval) =>
-                                approval.createdBy?.user && (
-                                  <>
-                                    <div key={approval.id} className="flex flex-col gap-3">
-                                      <div
-                                        className={clsx(
-                                          'text-lg flex items-center flex-wrap gap-2',
-                                          approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
-                                        )}
-                                      >
-                                        {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
-                                        {approval.eventApprovalStep?.name} : {approval.isApproved ? 'validé' : 'refusé'}{' '}
-                                        par{' '}
-                                        <UserLabeled
-                                          individual={approval.createdBy}
-                                          id={approval.createdBy.user.id}
-                                          className="text-0"
-                                        />
+                      openModal({
+                        node: (
+                          <ModalLayout
+                            className="max-w-[40rem]"
+                            header={t(`enums.EventState.${eventOrganize.event.state}`)}
+                          >
+                            <div className="flex flex-col gap-4">
+                              {eventOrganize.event.eventApprovals.map(
+                                (approval) =>
+                                  approval.createdBy?.user && (
+                                    <>
+                                      <div key={approval.id} className="flex flex-col gap-3">
+                                        <div
+                                          className={clsx(
+                                            'text-lg flex items-center flex-wrap gap-2',
+                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
+                                          )}
+                                        >
+                                          {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
+                                          {approval.eventApprovalStep?.name} :{' '}
+                                          {approval.isApproved ? 'validé' : 'refusé'} par{' '}
+                                          <UserLabeled
+                                            individual={approval.createdBy}
+                                            id={approval.createdBy.user.id}
+                                            className="text-0"
+                                          />
+                                        </div>
+                                        <div className="text-2">{approval.message}</div>
                                       </div>
-                                      <div className="text-2">{approval.message}</div>
-                                    </div>
-                                    <hr className="border-[var(--border-2)]" />
-                                  </>
-                                )
-                            )}
-                          </div>
-                        </ModalLayout>
-                      )
+                                      <hr className="border-[var(--border-2)]" />
+                                    </>
+                                  )
+                              )}
+                            </div>
+                          </ModalLayout>
+                        ),
+                      })
                     }
                   >
                     Étape{' '}

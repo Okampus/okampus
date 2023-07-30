@@ -70,12 +70,14 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               action={{
                 label: 'Mon QR code',
                 linkOrActionOrMenu: () =>
-                  openModal(
-                    <QRCodeImage
-                      data={`${window.location.origin}/confirm-attendance/${currentUserEventJoin.id}`}
-                      showData={true}
-                    />
-                  ),
+                  openModal({
+                    node: (
+                      <QRCodeImage
+                        data={`${window.location.origin}/confirm-attendance/${currentUserEventJoin.id}`}
+                        showData={true}
+                      />
+                    ),
+                  }),
               }}
             />
           ) : (
@@ -84,44 +86,46 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                 type: ActionType.Primary,
                 linkOrActionOrMenu: () =>
                   event.joinForm
-                    ? openBottomSheet(
-                        <FormRenderer
-                          form={event.joinForm}
-                          onSubmit={(values) => {
-                            const submission = Object.entries(values).map(([slug, value]) => ({ slug, value }));
-                            const object = {
-                              eventId: event.id,
-                              joinedById: me?.user.id,
-                              formSubmission: {
-                                data: {
-                                  submission,
-                                  formId: event.joinForm?.id,
-                                  tenantId: me?.user.tenant.id,
-                                  createdById: me?.user.individual.id,
+                    ? openBottomSheet({
+                        node: (
+                          <FormRenderer
+                            form={event.joinForm}
+                            onSubmit={(values) => {
+                              const submission = Object.entries(values).map(([slug, value]) => ({ slug, value }));
+                              const object = {
+                                eventId: event.id,
+                                joinedById: me?.user.id,
+                                formSubmission: {
+                                  data: {
+                                    submission,
+                                    formId: event.joinForm?.id,
+                                    tenantId: me?.user.tenant.id,
+                                    createdById: me?.user.individual.id,
+                                  },
                                 },
-                              },
-                            };
-                            insertEventJoin({
-                              // @ts-ignore
-                              variables: { object },
-                              onCompleted: ({ insertEventJoinOne: data }) => {
-                                if (!data || !me) return;
-                                mergeCache(
-                                  { __typename: 'User', id: me.user.id },
-                                  { fieldName: 'eventJoins', fragmentOn: 'EventJoin', data }
-                                );
-                                closeBottomSheet();
+                              };
+                              insertEventJoin({
                                 // @ts-ignore
-                                setMe({ ...me, eventJoins: [...(me?.eventJoins || []), data] });
-                                setNotification({
-                                  type: ToastType.Success,
-                                  message: 'Votre inscription a bien été prise en compte !',
-                                });
-                              },
-                            });
-                          }}
-                        />
-                      )
+                                variables: { object },
+                                onCompleted: ({ insertEventJoinOne: data }) => {
+                                  if (!data || !me) return;
+                                  mergeCache(
+                                    { __typename: 'User', id: me.user.id },
+                                    { fieldName: 'eventJoins', fragmentOn: 'EventJoin', data }
+                                  );
+                                  closeBottomSheet();
+                                  // @ts-ignore
+                                  setMe({ ...me, eventJoins: [...(me?.eventJoins || []), data] });
+                                  setNotification({
+                                    type: ToastType.Success,
+                                    message: 'Votre inscription a bien été prise en compte !',
+                                  });
+                                },
+                              });
+                            }}
+                          />
+                        ),
+                      })
                     : insertEventJoin({
                         // @ts-ignore
                         variables: { object: { eventId: event.id, joinedById: me?.id } },

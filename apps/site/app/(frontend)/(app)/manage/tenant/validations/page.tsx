@@ -102,14 +102,16 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
                       action={{
                         label: 'Voir',
                         linkOrActionOrMenu: () =>
-                          openModal(
-                            <ModalLayout header={`Validation de l'événement ${event.name}`}>
-                              <FormSubmissionRender
-                                schema={tenantManage?.eventValidationForm?.schema as FormSchema}
-                                submission={event.eventApprovalSubmission?.submission as Submission<FormSchema>}
-                              />
-                            </ModalLayout>
-                          ),
+                          openModal({
+                            node: (
+                              <ModalLayout header={`Validation de l'événement ${event.name}`}>
+                                <FormSubmissionRender
+                                  schema={tenantManage?.eventValidationForm?.schema as FormSchema}
+                                  submission={event.eventApprovalSubmission?.submission as Submission<FormSchema>}
+                                />
+                              </ModalLayout>
+                            ),
+                          }),
                       }}
                     />
                   ) : (
@@ -131,38 +133,40 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
                   <div
                     className="add-button"
                     onClick={() =>
-                      openModal(
-                        <ModalLayout className="max-w-[40rem]" header={t(`enums.EventState.${event.state}`)}>
-                          <div className="flex flex-col gap-4">
-                            {event.eventApprovals.map(
-                              (approval) =>
-                                approval.createdBy?.user && (
-                                  <>
-                                    <div key={approval.id} className="flex flex-col gap-3">
-                                      <div
-                                        className={clsx(
-                                          'text-lg flex items-center flex-wrap gap-2',
-                                          approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
-                                        )}
-                                      >
-                                        {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
-                                        {approval.eventApprovalStep?.name} : {approval.isApproved ? 'validé' : 'refusé'}{' '}
-                                        par{' '}
-                                        <UserLabeled
-                                          individual={approval.createdBy}
-                                          id={approval.createdBy?.user.id}
-                                          className="text-0"
-                                        />
+                      openModal({
+                        node: (
+                          <ModalLayout className="max-w-[40rem]" header={t(`enums.EventState.${event.state}`)}>
+                            <div className="flex flex-col gap-4">
+                              {event.eventApprovals.map(
+                                (approval) =>
+                                  approval.createdBy?.user && (
+                                    <>
+                                      <div key={approval.id} className="flex flex-col gap-3">
+                                        <div
+                                          className={clsx(
+                                            'text-lg flex items-center flex-wrap gap-2',
+                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
+                                          )}
+                                        >
+                                          {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
+                                          {approval.eventApprovalStep?.name} :{' '}
+                                          {approval.isApproved ? 'validé' : 'refusé'} par{' '}
+                                          <UserLabeled
+                                            individual={approval.createdBy}
+                                            id={approval.createdBy?.user.id}
+                                            className="text-0"
+                                          />
+                                        </div>
+                                        <div className="text-2">{approval.message}</div>
                                       </div>
-                                      <div className="text-2">{approval.message}</div>
-                                    </div>
-                                    <hr className="border-[var(--border-2)]" />
-                                  </>
-                                )
-                            )}
-                          </div>
-                        </ModalLayout>
-                      )
+                                      <hr className="border-[var(--border-2)]" />
+                                    </>
+                                  )
+                              )}
+                            </div>
+                          </ModalLayout>
+                        ),
+                      })
                     }
                   >
                     Étape {event.nextEventApprovalStep ? event.nextEventApprovalStep.order : stepsCount} / {stepsCount}
@@ -181,7 +185,8 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
                       iconOrSwitch: <IconCheck />,
                       label: 'Valider',
                       type: ActionType.Success,
-                      linkOrActionOrMenu: () => openModal(<EventApprovalModal event={event} isApproved={true} />),
+                      linkOrActionOrMenu: () =>
+                        openModal({ node: <EventApprovalModal event={event} isApproved={true} /> }),
                     }}
                   />
                   <ActionButton
@@ -189,7 +194,8 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
                       iconOrSwitch: <IconX />,
                       label: 'Refuser',
                       type: ActionType.Danger,
-                      linkOrActionOrMenu: () => openModal(<EventApprovalModal event={event} isApproved={false} />),
+                      linkOrActionOrMenu: () =>
+                        openModal({ node: <EventApprovalModal event={event} isApproved={false} /> }),
                     }}
                   />
                 </div>

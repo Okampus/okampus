@@ -67,21 +67,23 @@ export default function ManageEventPage({ params }: { params: { slug: string } }
   const [updateEvent] = useMutation(updateEventMutation);
 
   const updateBanner = () =>
-    openModal(
-      <ImageEditorForm
-        onUploaded={(fileId, onCompleted, onError) =>
-          updateEvent({
-            // @ts-ignore
-            variables: { banner: fileId },
-            onCompleted: ({ updateEventByPk }) => {
-              if (!updateEventByPk || !updateEventByPk.banner) onError();
-              else onCompleted();
-              closeModal();
-            },
-          })
-        }
-      />
-    );
+    openModal({
+      node: (
+        <ImageEditorForm
+          onUploaded={(fileId, onCompleted, onError) =>
+            updateEvent({
+              // @ts-ignore
+              variables: { banner: fileId },
+              onCompleted: ({ updateEventByPk }) => {
+                if (!updateEventByPk || !updateEventByPk.banner) onError();
+                else onCompleted();
+                closeModal();
+              },
+            })
+          }
+        />
+      ),
+    });
 
   if (!eventManage) return null;
 

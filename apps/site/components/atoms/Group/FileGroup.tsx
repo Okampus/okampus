@@ -23,7 +23,7 @@ export default function FileGroup({ files, limit = 3, size = 10 }: FileGroupProp
       rounded={12}
       render={(file) => {
         return (
-          <div onClick={() => openBottomSheet(<FilePreviewer file={file} onClose={closeBottomSheet} />)}>
+          <div onClick={() => openBottomSheet({ node: <FilePreviewer file={file} onClose={closeBottomSheet} /> })}>
             <FileIcon file={file} className="aspect-square" style={{ height: `${size / 4}rem` }} />
           </div>
         );

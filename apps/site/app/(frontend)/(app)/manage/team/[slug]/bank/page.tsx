@@ -18,7 +18,7 @@ export default function TeamManageBankPage({ params }: { params: { slug: string 
   // const openModal = useNavigation((state) => state.openModal);
   const { openModal } = useModal();
 
-  if (!teamManage || !teamManage.actor) return null;
+  if (!teamManage?.actor) return null;
 
   return teamManage.accounts.length === 0 ? (
     <EmptyStateImage
@@ -32,14 +32,16 @@ export default function TeamManageBankPage({ params }: { params: { slug: string 
               label: 'Demander une part de compte à votre association-mère',
               linkOrActionOrMenu: () =>
                 // TODO: improve modal
-                openModal(
-                  <ModalLayout header="Demander une part de compte">
-                    <div>
-                      Contactez le trésorier de votre association-mère pour qu&apos;il procède à l&apos;attribution de
-                      votre part de compte
-                    </div>
-                  </ModalLayout>
-                ),
+                openModal({
+                  node: (
+                    <ModalLayout header="Demander une part de compte">
+                      <div>
+                        Contactez le trésorier de votre association-mère pour qu&apos;il procède à l&apos;attribution de
+                        votre part de compte
+                      </div>
+                    </ModalLayout>
+                  ),
+                }),
             }}
           />
         ) : (

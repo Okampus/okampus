@@ -1,11 +1,10 @@
 'use client';
 
 import FormEditor from '../../organisms/FormEditor';
-import { bottomSheetAtom, isBottomSheetOpenAtom } from '../../../context/global';
+import { useBottomSheet } from '../../../hooks/context/useBottomSheet';
 import { IconCheckupList } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
-import { useAtom } from 'jotai';
 import type { FormBaseInfo } from '@okampus/shared/graphql';
 
 export type FormItemProps = { form: FormBaseInfo };
@@ -13,8 +12,7 @@ export type FormItemProps = { form: FormBaseInfo };
 export default function FormItem({ form }: FormItemProps) {
   const [isActive, setIsActive] = useState(false);
 
-  const [, setBottomSheet] = useAtom(bottomSheetAtom);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useAtom(isBottomSheetOpenAtom);
+  const { openBottomSheet, isBottomSheetOpen } = useBottomSheet();
 
   useEffect(() => {
     if (!isBottomSheetOpen && isActive) setIsActive(false);
@@ -22,10 +20,7 @@ export default function FormItem({ form }: FormItemProps) {
   }, [isBottomSheetOpen]);
 
   useEffect(() => {
-    if (isActive) {
-      setBottomSheet(<FormEditor form={form} />);
-      setIsBottomSheetOpen(true);
-    }
+    if (isActive) openBottomSheet({ node: <FormEditor form={form} /> });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -33,8 +28,7 @@ export default function FormItem({ form }: FormItemProps) {
     <div
       className="flex items-center px-5 py-3 gap-4 hover:bg-[var(--bg-1)] border rounded-lg border-color-3 cursor-pointer"
       onClick={() => {
-        setBottomSheet(<FormEditor form={form} />);
-        setIsBottomSheetOpen(true);
+        openBottomSheet({ node: <FormEditor form={form} /> });
         setIsActive(true);
       }}
     >

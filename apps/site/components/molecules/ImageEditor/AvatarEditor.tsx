@@ -90,16 +90,18 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
 
   useEffect(() => {
     if (showEditor) {
-      openModal(
-        <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
-          <ActorImageEditorForm
-            actor={actor}
-            actorImageType={ActorImageType.Avatar}
-            imageType={type}
-            onUpload={onUpload}
-          />
-        </ModalLayout>
-      );
+      openModal({
+        node: (
+          <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
+            <ActorImageEditorForm
+              actor={actor}
+              actorImageType={ActorImageType.Avatar}
+              imageType={type}
+              onUpload={onUpload}
+            />
+          </ModalLayout>
+        ),
+      });
     } else {
       closeModal();
     }

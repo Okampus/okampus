@@ -43,7 +43,9 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                   type: ActionType.Primary,
                   label: 'Adhérer',
                   linkOrActionOrMenu: () =>
-                    openBottomSheet(<FormRenderer form={team.joinForm} onSubmit={(data) => console.log(data)} />),
+                    openBottomSheet({
+                      node: <FormRenderer form={team.joinForm} onSubmit={(data) => console.log(data)} />,
+                    }),
                 }}
               />
             </div>

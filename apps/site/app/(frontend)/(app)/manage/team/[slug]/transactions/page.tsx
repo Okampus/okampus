@@ -198,7 +198,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           <ActionButton
             action={{
               label: 'Ajouter une transaction',
-              linkOrActionOrMenu: () => openModal(<TransactionForm teamManage={teamManage} />),
+              linkOrActionOrMenu: () => openModal({ node: <TransactionForm teamManage={teamManage} /> }),
               iconOrSwitch: <IconPlus />,
               type: ActionType.Primary,
             }}

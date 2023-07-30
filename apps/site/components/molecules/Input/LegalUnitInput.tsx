@@ -76,23 +76,25 @@ export default function LegalUnitInput({
       onChange={(x) => onChange(x?.value ?? null)}
       onChangeSearchValue={(value) => (onQueryChange ? onQueryChange(value) : setSearchText(value))}
       addCurrentSearch={() => {
-        openModal(
-          <LegalUnitInputConfirm
-            initialName={searchText}
-            onSubmit={(name) =>
-              insertLegalUnit({
-                variables: {
-                  // @ts-ignore
-                  object: {
-                    type: type ?? LegalUnitType.Company,
-                    legalName: name,
-                    actor: { data: { name } },
+        openModal({
+          node: (
+            <LegalUnitInputConfirm
+              initialName={searchText}
+              onSubmit={(name) =>
+                insertLegalUnit({
+                  variables: {
+                    // @ts-ignore
+                    object: {
+                      type: type ?? LegalUnitType.Company,
+                      legalName: name,
+                      actor: { data: { name } },
+                    },
                   },
-                },
-              })
-            }
-          />
-        );
+                })
+              }
+            />
+          ),
+        });
       }}
       searchValue={searchText}
       items={selectItems}

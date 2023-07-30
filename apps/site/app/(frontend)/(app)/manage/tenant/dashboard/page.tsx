@@ -42,7 +42,7 @@ export default function TenantDashboardPage() {
   const { openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const previewFile = (file: FileLike) => {
-    openBottomSheet(<FilePreviewer file={file} onClose={closeBottomSheet} />);
+    openBottomSheet({ node: <FilePreviewer file={file} onClose={closeBottomSheet} /> });
   };
 
   const columns = [

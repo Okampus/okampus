@@ -15,10 +15,13 @@ export default function Modal() {
   const modalLargeClass =
     'md:tall:my-14 md:tall:overflow-hidden md:tall:rounded-2xl md:tall:min-w-[30rem] md:tall:border md:tall:border-[var(--border-2)]';
 
+  const currentModal = modals.at(-1);
+  const onClose = () => (closeModal(), currentModal?.onClose?.());
+
   return (
     <AnimatePresence>
       {isModalOpen && (
-        <Backdrop className="flex flex-col items-center justify-center" onClick={closeModal}>
+        <Backdrop className="flex flex-col items-center justify-center" onClick={onClose}>
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -27,15 +30,14 @@ export default function Modal() {
             onClick={(e) => e.stopPropagation()}
             className={clsx(modalBaseClass, modalSmallClass, modalLargeClass)}
           >
-            <CloseButtonIcon className="absolute right-4 top-4" onClick={closeModal} />
+            <CloseButtonIcon className="absolute right-4 top-4" onClick={onClose} />
             <>
-              {modals.map((modal, index) => (
-                <div key={index} className={clsx(index === modals.length - 1 ? '' : 'hidden')}>
-                  {modal}
+              {modals.map((modal, idx) => (
+                <div key={idx} className={clsx(idx === modals.length - 1 ? '' : 'hidden')}>
+                  {modal.node}
                 </div>
               ))}
             </>
-            {/* {modals.at(-1)} */}
           </motion.div>
         </Backdrop>
       )}
