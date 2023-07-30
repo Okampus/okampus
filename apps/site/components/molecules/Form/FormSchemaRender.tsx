@@ -8,7 +8,7 @@ import TextInput from '../Input/TextInput';
 
 import { defaultFormData } from '../../../utils/default-form-data';
 
-import { ControlType } from '@okampus/shared/enums';
+import { Buckets, ControlType, EntityName } from '@okampus/shared/enums';
 import clsx from 'clsx';
 
 import type { FormField, FormSchema, InputOptions, Submission } from '@okampus/shared/types';
@@ -41,7 +41,13 @@ function getInput<T>({ field, data, values, onChange, options }: InputProps<T>) 
       return <SelectInput value={data} items={field.options ?? []} onChange={onInputChange} options={options} />;
     }
     case ControlType.SingleFile: {
-      return <SingleFileInput onChange={onInputChange} options={options} />;
+      return (
+        <SingleFileInput
+          uploadContext={{ bucket: Buckets.Attachments, entityName: EntityName.Form }}
+          onChange={onInputChange}
+          options={options}
+        />
+      );
     }
     case ControlType.Number: {
       const value = typeof data === 'number' ? data.toFixed(2) : '';

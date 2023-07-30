@@ -10,7 +10,7 @@ import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
 import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
-import { ActorImageType } from '@okampus/shared/enums';
+import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
 import { insertActorImageMutation, singleUploadMutation } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
 
@@ -18,8 +18,10 @@ import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import type { CropperProps } from './Cropper/Cropper';
 import type { ActorBaseInfo } from '@okampus/shared/graphql';
+import type { CropperProps } from 'react-advanced-cropper';
+
+const context = { fetchOptions: { credentials: 'include', useUpload: true } };
 
 export type AvatarEditorProps = {
   showEditor: boolean;
@@ -32,16 +34,15 @@ export type AvatarEditorProps = {
 };
 
 export default function AvatarEditor({ showEditor, setShowEditor, actor, size, type, className }: AvatarEditorProps) {
-  const [, setNotification] = useAtom(notificationAtom);
-
-  const context = { fetchOptions: { credentials: 'include', useUpload: true } };
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
   // @ts-ignore
   const [insertActorImage] = useMutation(insertActorImageMutation);
+  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [, setNotification] = useAtom(notificationAtom);
 
+  const entityName = type === 'user' ? EntityName.User : type === 'team' ? EntityName.Team : EntityName.Tenant;
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file },
+      variables: { file, bucket: Buckets.ActorImages, entityName, entityId: actor.id },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Avatar } };
@@ -71,7 +72,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
     });
   };
 
-  const { closeModal, openModal, isModalOpen } = useModal();
+  const { openModal, isModalOpen } = useModal();
 
   const avatar = getAvatar(actor.actorImages)?.image.url;
   const rounded =
@@ -84,27 +85,23 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
       : 0;
 
   useEffect(() => {
-    if (showEditor && !isModalOpen) setShowEditor(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    if (showEditor) {
-      openModal(
-        <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
-          <ActorImageEditorForm
-            actor={actor}
-            actorImageType={ActorImageType.Avatar}
-            imageType={type}
-            onUpload={onUpload}
-          />
-        </ModalLayout>
-      );
-    } else {
-      closeModal();
+    if (showEditor && !isModalOpen) {
+      openModal({
+        node: (
+          <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
+            <ActorImageEditorForm
+              actor={actor}
+              actorImageType={ActorImageType.Avatar}
+              imageType={type}
+              onUpload={onUpload}
+            />
+          </ModalLayout>
+        ),
+        onClose: () => setShowEditor(false),
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showEditor, actor, openModal]);
+  }, [showEditor, actor]);
 
   return (
     <span className="relative overflow-hidden" style={{ borderRadius: `${rounded ? rounded * 1.1 : 50}%` }}>

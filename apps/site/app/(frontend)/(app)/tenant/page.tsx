@@ -34,7 +34,9 @@ export default function TenantPage() {
                 action={{
                   label: 'Suivre',
                   linkOrActionOrMenu: () =>
-                    openBottomSheet(<FormRenderer form={adminTeam.joinForm} onSubmit={(data) => console.log(data)} />),
+                    openBottomSheet({
+                      node: <FormRenderer form={adminTeam.joinForm} onSubmit={(data) => console.log(data)} />,
+                    }),
                 }}
               />
             </div>

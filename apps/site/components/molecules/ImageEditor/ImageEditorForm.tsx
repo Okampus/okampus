@@ -1,4 +1,3 @@
-import Cropper from './Cropper/Cropper';
 import ActionButton from '../Button/ActionButton';
 import GroupItem from '../../atoms/Item/GroupItem';
 
@@ -12,28 +11,31 @@ import { dataURItoBlob } from '@okampus/shared/utils';
 import { IconPhotoPlus } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
 import { useRef, useState } from 'react';
+import { Cropper } from 'react-advanced-cropper';
 
 import { useMutation } from '@apollo/client';
-import type { CropperProps } from './Cropper/Cropper';
-import type { CropperRef } from 'react-advanced-cropper';
+
+import type { Buckets, EntityName } from '@okampus/shared/enums';
+import type { CropperProps, CropperRef } from 'react-advanced-cropper';
 
 export type ImageEditorFormProps = {
   cropperProps?: CropperProps;
+  uploadContext: { bucket: Buckets; entityName: EntityName; entityId?: string };
   onUploaded: (id: string, onCompleted: () => void, onError: () => void) => void;
 };
 
-export default function ImageEditorForm({ cropperProps, onUploaded }: ImageEditorFormProps) {
+const context = { fetchOptions: { credentials: 'include', useUpload: true } };
+export default function ImageEditorForm({ cropperProps, uploadContext, onUploaded }: ImageEditorFormProps) {
   const [src, setSrc] = useState<string | null>(null);
 
   const cropperRef = useRef<CropperRef>(null);
   const [, setNotification] = useAtom(notificationAtom);
 
-  const context = { fetchOptions: { credentials: 'include', useUpload: true } };
   const [insertUpload] = useMutation(singleUploadMutation, { context });
 
   const onUpload = (file: File) => {
     insertUpload({
-      variables: { file },
+      variables: { file, ...uploadContext },
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           onUploaded(
@@ -55,7 +57,6 @@ export default function ImageEditorForm({ cropperProps, onUploaded }: ImageEdito
           {/* TODO: add custom stencil */}
           <Cropper
             {...cropperProps}
-            maxHeight={200}
             ref={cropperRef}
             src={src}
             stencilProps={{ aspectRatio: BANNER_ASPECT_RATIO }}

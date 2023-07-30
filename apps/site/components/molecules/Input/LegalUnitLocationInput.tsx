@@ -69,19 +69,21 @@ export default function LegalUnitLocationInput({
       onChange={(x) => onChange(x?.value ?? null)}
       onChangeSearchValue={setSearchText}
       addCurrentSearch={() => {
-        openModal(
-          <LegalUnitInputConfirm
-            headerLabel={headerLabel}
-            inputPlaceholder={inputLabel}
-            initialName={searchText}
-            onSubmit={(name) =>
-              insertLegalLocationUnit({
-                // @ts-ignore
-                variables: { object: { legalUnitId, legalName: name, actor: { data: { name } } } },
-              })
-            }
-          />
-        );
+        openModal({
+          node: (
+            <LegalUnitInputConfirm
+              headerLabel={headerLabel}
+              inputPlaceholder={inputLabel}
+              initialName={searchText}
+              onSubmit={(name) =>
+                insertLegalLocationUnit({
+                  // @ts-ignore
+                  variables: { object: { legalUnitId, legalName: name, actor: { data: { name } } } },
+                })
+              }
+            />
+          ),
+        });
       }}
       searchValue={searchText}
       items={selectItems}

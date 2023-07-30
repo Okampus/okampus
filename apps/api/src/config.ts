@@ -51,7 +51,7 @@ export const config: ApiConfig = {
     frontendOriginUrl,
     apiUrl: nodeEnv === 'development' ? `http://localhost:${port}` : `https://api.${baseDomain}`,
     hasuraUrl: nodeEnv === 'development' ? 'http://127.0.0.1:8080' : `https://hasura.${baseDomain}`,
-    frontendUrl: nodeEnv === 'development' ? 'http://localhost:4201' : `https://${frontendOriginUrl}`,
+    frontendUrl: nodeEnv === 'development' ? 'http://localhost:3000' : `https://${frontendOriginUrl}`,
   },
   upload: {
     localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
@@ -97,6 +97,7 @@ export const config: ApiConfig = {
       [Buckets.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
       [Buckets.ActorVideos]: process.env.S3_BUCKET_NAME_ACTOR_VIDEOS ?? 'actor-videos',
       [Buckets.Attachments]: process.env.S3_BUCKET_NAME_ATTACHMENTS ?? 'attachments',
+      [Buckets.Banners]: process.env.S3_BUCKET_NAME_BANNERS ?? 'banners',
       [Buckets.QR]: process.env.S3_BUCKET_NAME_QR ?? 'qr-codes',
       [Buckets.Receipts]: process.env.S3_BUCKET_NAME_RECEIPTS ?? 'receipts',
       [Buckets.Signatures]: process.env.S3_BUCKET_NAME_SIGNATURES ?? 'signatures',

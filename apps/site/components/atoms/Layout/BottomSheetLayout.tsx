@@ -8,7 +8,7 @@ export type BottomSheetLayoutProps = {
 };
 
 export default function BottomSheetLayout({ topbar, buttons, content }: BottomSheetLayoutProps) {
-  const { closeBottomSheet } = useBottomSheet();
+  const { closeBottomSheet, bottomSheet } = useBottomSheet();
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function BottomSheetLayout({ topbar, buttons, content }: BottomSh
         {topbar}
         <div className="flex items-center gap-6">
           {buttons}
-          <CloseButtonIcon onClick={closeBottomSheet} />
+          <CloseButtonIcon onClick={() => (closeBottomSheet(), bottomSheet.onClose?.())} />
         </div>
       </div>
       <div className="grow min-h-0 bg-main flex flex-col">{content}</div>

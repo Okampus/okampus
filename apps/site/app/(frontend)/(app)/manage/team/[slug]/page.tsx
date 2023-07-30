@@ -46,8 +46,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         initialValues={initialState}
         checkFields={[]}
         renderChildren={({ changeErrors, changeValues, values }) =>
-          teamManage &&
-          teamManage.actor && (
+          teamManage?.actor && (
             <span className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
               <GroupItem heading="Logo">
                 <span className="flex gap-6">

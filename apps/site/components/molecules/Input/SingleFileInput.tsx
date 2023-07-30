@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { forwardRef, useRef, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
+import type { Buckets, EntityName } from '@okampus/shared/enums';
 import type { InputOptions } from '@okampus/shared/types';
 import type { ChangeEvent } from 'react';
 
@@ -24,21 +25,26 @@ const defaultAbort = () => {
   console.log('No abortHandler provided. Cannot abort!');
 };
 
-export type SingleFileInputProps = { onChange: (id: string | null) => void; options: InputOptions };
+export type SingleFileInputProps = {
+  onChange: (id: string | null) => void;
+  uploadContext: { bucket: Buckets; entityName: EntityName; entityId?: string };
+  options: InputOptions;
+};
 // eslint-disable-next-line react/display-name
 export default forwardRef(({ onChange, options }: SingleFileInputProps, propRef: ForwardRef) => {
-  const [abort, setAbort] = useState<() => void>(defaultAbort);
+  const [, setAbort] = useState<() => void>(defaultAbort);
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
 
   const onAbortPossible = (abortHandler: () => void) => setAbort(() => abortHandler);
   const onProgress = (event: ProgressEvent) => setProgress(Math.floor((event.loaded / event.total) * 10_000) / 100);
   const context = { fetchOptions: { credentials: 'include', useUpload: true, onAbortPossible, onProgress } };
+
   const [insertUpload] = useMutation(singleUploadMutation, { context });
 
   const uploadFile = (uploadedFile: File) => {
     setFile(uploadedFile);
-    const variables = { object: uploadedFile };
+    const variables = { file: uploadedFile, ...options };
     insertUpload({ variables, onCompleted: ({ singleUpload }) => onChange(singleUpload?.id as string) });
   };
 

@@ -26,7 +26,8 @@ const localePathBase = path.resolve('locales');
 const loadPath = async (lang: string, subPath: string) => {
   try {
     return await fetch(`${SITE_URL}/api/locales?lang=${lang}&dictPath=${subPath}`).then((res) => res.json());
-  } catch {
+  } catch (error) {
+    console.error(error);
     return {};
   }
 };
@@ -68,8 +69,7 @@ const cachedDict = cache(async function getDict(lang: string) {
                   (dict) => (dicts[`${_path}.${subPath.split('.json')[0]}`] = dict)
                 )
               )
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-            ).then(() => {});
+            );
 
       await promise;
     })

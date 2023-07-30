@@ -1,6 +1,7 @@
 import { fallbackLocale } from '../config/i18n';
 import { atom } from 'jotai/vanilla';
 
+import type { ClosableNode } from '../types/closable.type';
 import type { Formatters } from '../config/i18n';
 import type { Determiners, Dicts } from '../ssr/getTranslation';
 import type { ToastProps } from '@okampus/shared/types';
@@ -17,13 +18,11 @@ export const meSlugAtom = atom<string | null>(null);
 export const isSidebarOpenAtom = atom(false);
 export const isSidePanelOpenAtom = atom(false);
 
-export type TReactNode = React.ReactElement | null | string | number | boolean;
-
 export const isBottomSheetOpenAtom = atom(false);
-export const bottomSheetAtom = atom<TReactNode>(null); // React.ReactNode causes infinite type
+export const bottomSheetAtom = atom<ClosableNode>({ node: null });
 
 export const isModalOpenAtom = atom(false);
-export const modalsAtom = atom<TReactNode[]>([]); // React.ReactNode causes infinite type
+export const modalsAtom = atom<ClosableNode[]>([]);
 
 export const notificationAtom = atom<ToastProps | null>(null);
 

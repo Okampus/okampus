@@ -15,6 +15,7 @@ import { mergeCache } from '../../../utils/apollo/merge-cache';
 import {
   AccountType,
   Buckets,
+  EntityName,
   FinanceCategory,
   FinanceState,
   LocationType,
@@ -191,7 +192,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
           onEnter: ({ values, setValues }) => setValues({ ...values, fileUploadId: null }),
           content: ({ values, setValues, goToStep }) => (
             <DocumentInput
-              bucket={Buckets.Receipts}
+              uploadContext={{ bucket: Buckets.Receipts, entityName: EntityName.Finance }}
               onChange={(id, attachment) => {
                 if (attachment) setValues({ ...values, fileUploadId: id, attachments: [attachment] });
                 else setValues({ ...values, fileUploadId: id, attachments: [] });
