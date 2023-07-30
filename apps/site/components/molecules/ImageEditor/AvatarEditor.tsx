@@ -18,8 +18,10 @@ import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import type { CropperProps } from './Cropper/Cropper';
 import type { ActorBaseInfo } from '@okampus/shared/graphql';
+import type { CropperProps } from 'react-advanced-cropper';
+
+const context = { fetchOptions: { credentials: 'include', useUpload: true } };
 
 export type AvatarEditorProps = {
   showEditor: boolean;
@@ -32,12 +34,10 @@ export type AvatarEditorProps = {
 };
 
 export default function AvatarEditor({ showEditor, setShowEditor, actor, size, type, className }: AvatarEditorProps) {
-  const [, setNotification] = useAtom(notificationAtom);
-
-  const context = { fetchOptions: { credentials: 'include', useUpload: true } };
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
   // @ts-ignore
   const [insertActorImage] = useMutation(insertActorImageMutation);
+  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [, setNotification] = useAtom(notificationAtom);
 
   const onUpload = (file: File) => {
     insertUpload({
@@ -71,7 +71,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
     });
   };
 
-  const { closeModal, openModal, isModalOpen } = useModal();
+  const { openModal, isModalOpen } = useModal();
 
   const avatar = getAvatar(actor.actorImages)?.image.url;
   const rounded =
@@ -84,12 +84,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
       : 0;
 
   useEffect(() => {
-    if (showEditor && !isModalOpen) setShowEditor(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    if (showEditor) {
+    if (showEditor && !isModalOpen) {
       openModal({
         node: (
           <ModalLayout header={type === 'user' ? "Modifier l'avatar" : 'Modifier le logo'}>
@@ -101,12 +96,11 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
             />
           </ModalLayout>
         ),
+        onClose: () => setShowEditor(false),
       });
-    } else {
-      closeModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showEditor, actor, openModal]);
+  }, [showEditor, actor]);
 
   return (
     <span className="relative overflow-hidden" style={{ borderRadius: `${rounded ? rounded * 1.1 : 50}%` }}>

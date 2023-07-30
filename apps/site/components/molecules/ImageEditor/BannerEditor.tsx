@@ -18,8 +18,10 @@ import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import type { CropperProps } from './Cropper/Cropper';
 import type { ActorBaseInfo } from '@okampus/shared/graphql';
+import type { CropperProps } from 'react-advanced-cropper';
+
+const context = { fetchOptions: { credentials: 'include', useUpload: true } };
 
 export type BannerEditorProps = {
   showEditor: boolean;
@@ -29,12 +31,10 @@ export type BannerEditorProps = {
 };
 
 export default function BannerEditor({ showEditor, setShowEditor, actor }: BannerEditorProps) {
-  const [, setNotification] = useAtom(notificationAtom);
-
-  const context = { fetchOptions: { credentials: 'include', useUpload: true } };
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
   // @ts-ignore
   const [insertActorImage] = useMutation(insertActorImageMutation);
+  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [, setNotification] = useAtom(notificationAtom);
 
   const onUpload = (file: File) => {
     insertUpload({
@@ -65,16 +65,11 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
     });
   };
 
-  const { openModal, closeModal, isModalOpen } = useModal();
+  const { openModal, isModalOpen } = useModal();
   const banner = getBanner(actor.actorImages)?.image.url;
 
   useEffect(() => {
-    if (showEditor && !isModalOpen) setShowEditor(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    if (showEditor) {
+    if (showEditor && !isModalOpen) {
       openModal({
         node: (
           <ModalLayout header="Modifier la bannière">
@@ -86,12 +81,11 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
             />
           </ModalLayout>
         ),
+        onClose: () => setShowEditor(false),
       });
-    } else {
-      closeModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showEditor, actor, openModal]);
+  }, [showEditor, actor]);
 
   return (
     <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>

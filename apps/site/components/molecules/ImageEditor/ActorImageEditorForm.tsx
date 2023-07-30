@@ -1,4 +1,3 @@
-import Cropper from './Cropper/Cropper';
 import ActionButton from '../Button/ActionButton';
 import Swiper from '../Scroll/Swiper';
 
@@ -14,9 +13,9 @@ import { dataURItoBlob } from '@okampus/shared/utils';
 import { IconPhotoPlus } from '@tabler/icons-react';
 import { useRef, useState } from 'react';
 
-import type { CropperProps } from './Cropper/Cropper';
+import { Cropper } from 'react-advanced-cropper';
 import type { ActorBaseInfo } from '@okampus/shared/graphql';
-import type { CropperRef } from 'react-advanced-cropper';
+import type { CropperProps, CropperRef } from 'react-advanced-cropper';
 
 export type ImageEditorFormProps = {
   actor: ActorBaseInfo;
@@ -46,13 +45,26 @@ export default function ActorImageEditorForm({
   const borderRadius = actorImageType === ActorImageType.Banner ? '15%' : imageType === 'user' ? '50%' : '25%';
 
   const [src, setSrc] = useState<string | null>(null);
+  const [previewState, setPreviewState] = useState<string | null>(null);
 
   const cropperRef = useRef<CropperRef>(null);
+  const setSrcAndPreview = (src: string) => {
+    setSrc(src);
+    setTimeout(() => setPreviewState(cropperRef.current?.getCanvas()?.toDataURL() ?? null), 200);
+  };
 
   const renderImage =
     actorImageType === ActorImageType.Avatar
-      ? (src: string) => <AvatarImage src={src} size={32} className="rounded-full" name={actor.name} type={imageType} />
-      : (src: string) => <BannerImage src={src} className="h-8" aspectRatio={BANNER_ASPECT_RATIO} name={actor.name} />;
+      ? (src: string) => (
+          <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
+            <AvatarImage src={src} size={32} className="rounded-full" name={actor.name} type={imageType} />
+          </div>
+        )
+      : (src: string) => (
+          <div className="cursor-pointer" onClick={() => setSrcAndPreview(src)}>
+            <BannerImage src={src} className="h-8" aspectRatio={BANNER_ASPECT_RATIO} name={actor.name} />
+          </div>
+        );
 
   return (
     <div className="w-full max-w-[26rem] flex flex-col gap-6">
@@ -64,14 +76,25 @@ export default function ActorImageEditorForm({
       {src ? (
         <div className="flex flex-col gap-4">
           {/* TODO: add custom stencil */}
-          <Cropper
-            {...cropperProps}
-            maxHeight={200}
-            ref={cropperRef}
-            src={src}
-            stencilProps={{ aspectRatio }}
-            className="rounded-2xl overflow-hidden"
-          />
+          <div className="flex gap-4">
+            <Cropper
+              {...cropperProps}
+              onUpdate={(data) => setPreviewState(data.getCanvas()?.toDataURL() ?? null)}
+              ref={cropperRef}
+              src={src}
+              stencilProps={{ aspectRatio }}
+              className="rounded-2xl overflow-hidden min-h-[16rem] min-w-[16rem]"
+            />
+            <div className="flex flex-col gap-4 items-start">
+              {previewState && (
+                <>
+                  <img src={previewState} alt="preview" style={{ aspectRatio, borderRadius, height: '6rem' }} />
+                  <img src={previewState} alt="preview" style={{ aspectRatio, borderRadius, height: '4rem' }} />
+                  <img src={previewState} alt="preview" style={{ aspectRatio, borderRadius, height: '2rem' }} />
+                </>
+              )}
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-5">
             <ActionButton
               action={{
@@ -102,7 +125,7 @@ export default function ActorImageEditorForm({
             <input
               type="file"
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              onChange={(e) => e.target.files?.[0] && setSrc(URL.createObjectURL(e.target.files[0]))}
+              onChange={(e) => e.target.files?.[0] && setSrcAndPreview(URL.createObjectURL(e.target.files[0]))}
             />
             <div
               className="flex items-center justify-center bg-[var(--primary)] w-full text-white max-w-[8rem]"
