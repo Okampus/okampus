@@ -30,7 +30,7 @@ body {
 }
 
 .menu-title {
-  @apply text-sm font-semibold text-[var(--text-0)];
+  @apply text-base font-semibold text-[var(--text-0)];
 }
 
 .page-title {

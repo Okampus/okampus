@@ -177,7 +177,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                                   />
                                 ) : (
                                   <textarea
-                                    className="input"
+                                    className="input resize-none"
                                     name={`${field.name}-description`}
                                     placeholder="Votre réponse"
                                     value={field.placeholder}
