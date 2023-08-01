@@ -8,7 +8,6 @@ on:
       - ci/*
     paths:
       - 'apps/site/**'
-      - 'libs/ui/**'
       - package.json
       - pnpm-lock.yaml
       - '!*/**/*.md'
@@ -16,7 +15,6 @@ on:
   pull_request:
     paths:
       - 'apps/site/**'
-      - 'libs/ui/**'
       - package.json
       - pnpm-lock.yaml
       - '!*/**/*.md'

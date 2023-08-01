@@ -12,7 +12,7 @@ export type SearchInputProps<T> = {
   className?: string;
 };
 
-export function SearchInput<T>({
+export default function SearchInput<T>({
   query,
   onChangeQuery,
   value,

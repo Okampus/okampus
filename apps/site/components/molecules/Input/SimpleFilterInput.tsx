@@ -24,7 +24,7 @@ const setRefIndex = (idx: number, ref: RefObject<(ValidRefTarget | null)[]>) => 
   if (ref.current) ref.current[idx] = el;
 };
 
-export function SimpleFilterInput<T>({ className, selected, setSelected, items }: SimpleFilterInputProps<T>) {
+export default function SimpleFilterInput<T>({ className, selected, setSelected, items }: SimpleFilterInputProps<T>) {
   const [currentSelected, setCurrentSelected] = useState(selected);
   const [ref, isOpen, setIsOpen] = useOutsideClick(false);
 
