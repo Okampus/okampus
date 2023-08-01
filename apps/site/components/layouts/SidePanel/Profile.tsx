@@ -20,7 +20,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
         <AvatarImage actor={actor} className="mx-auto border-4 border-[var(--border-light)]" type={type} size={40} />
         <div className="text-xl font-bold text-0 text-center">{actor?.name}</div>
       </div>
-      {socials.length > 0 && (
+      {(socials.length > 0 || actor?.email) && (
         <div className="w-full flex gap-2.5 justify-center items-center bg-[var(--primary)] py-2 px-4">
           {socials
             ?.sort((a, b) => a.order - b.order)

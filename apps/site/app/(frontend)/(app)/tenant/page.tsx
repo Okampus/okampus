@@ -4,20 +4,20 @@ import SocialIcon from '../../../../components/atoms/Icon/SocialIcon';
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
 import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
 import ActionButton from '../../../../components/molecules/Button/ActionButton';
-import FormRenderer from '../../../../components/organisms/FormRenderer';
 
 import { useTenant } from '../../../../context/navigation';
 
-import { useBottomSheet } from '../../../../hooks/context/useBottomSheet';
+import { insertFollowMutation } from '@okampus/shared/graphql';
+import { useMutation } from '@apollo/client';
 
 import type { SocialType } from '@okampus/shared/enums';
 
 export default function TenantPage() {
-  const { openBottomSheet } = useBottomSheet();
-
+  // @ts-ignore
+  const [insertFollow] = useMutation(insertFollowMutation);
   const { tenant } = useTenant();
-  if (!tenant || !tenant.adminTeam) return null;
 
+  if (!tenant || !tenant.adminTeam) return null;
   const adminTeam = tenant.adminTeam;
 
   return (
@@ -33,10 +33,8 @@ export default function TenantPage() {
                 className="!w-48"
                 action={{
                   label: 'Suivre',
-                  linkOrActionOrMenu: () =>
-                    openBottomSheet({
-                      node: <FormRenderer form={adminTeam.joinForm} onSubmit={(data) => console.log(data)} />,
-                    }),
+                  // @ts-ignore
+                  linkOrActionOrMenu: () => insertFollow({ variables: { object: { actorId: adminTeam.actor.id } } }),
                 }}
               />
             </div>
