@@ -1,6 +1,6 @@
 // @index(['./**/*.{ts,tsx}', './*/index.{ts,tsx}'], f => `export * from '${f.path.replace(/\/index$/, '')}'`)
 export * from './mutations/action/insertAction';
-export * from './mutations/actor/actorImage/deactivateActorImage';
+export * from './mutations/actor/actorImage/deleteActorImage';
 export * from './mutations/actor/actorImage/insertActorImage';
 export * from './mutations/actor/address/insertAddress';
 export * from './mutations/actor/bankInfo/insertBankInfo';
