@@ -1,5 +1,6 @@
 import FinanceHistory from './FinanceHistory';
 import FinanceEdit from './FinanceEdit';
+import SidePanel from '../../SidePanel';
 
 import CloseButtonIcon from '../../../../components/atoms/Icon/CloseButtonIcon';
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
@@ -32,7 +33,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
   const payedAt = finance.payedAt ? new Date(finance.payedAt as string) : new Date();
 
   return (
-    <div className="p-4 relative flex flex-col">
+    <SidePanel>
       <CloseButtonIcon className="absolute top-2 right-4" onClick={onClose} />
       <div className="text-0 font-medium text-center">
         {t('common.format.date.weekDay', { date: payedAt }).replace(' à ', ', ')}
@@ -45,7 +46,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <hr className="border-[var(--border-2)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Payée par
-          {finance.initiatedBy && finance.initiatedBy.user ? (
+          {finance.initiatedBy?.user ? (
             <UserLabeled small={true} id={finance.initiatedBy.user.id} individual={finance.initiatedBy} />
           ) : (
             <div className="text-1 font-semibold text-sm">Inconnu</div>
@@ -53,7 +54,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         </div>
         <div className="flex gap-2 items-center">
           Ajoutée par
-          {finance.createdBy && finance.createdBy.user ? (
+          {finance.createdBy?.user ? (
             <UserLabeled small={true} individual={finance.createdBy} id={finance.createdBy.user.id} />
           ) : (
             <div className="text-1 font-semibold text-sm">Système</div>
@@ -75,11 +76,13 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         />
       </div> */}
       <TabList selected={selectedTab} tabs={tabs} tabClassName="mt-12 w-full" />
-      {selectedTab === DETAILS ? (
-        <FinanceEdit finance={finance} isRevenue={isRevenue} />
-      ) : (
-        <FinanceHistory finance={finance} />
-      )}
-    </div>
+      <div className="px-4">
+        {selectedTab === DETAILS ? (
+          <FinanceEdit finance={finance} isRevenue={isRevenue} />
+        ) : (
+          <FinanceHistory finance={finance} />
+        )}
+      </div>
+    </SidePanel>
   );
 }
