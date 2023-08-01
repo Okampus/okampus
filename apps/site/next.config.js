@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
 const withPwa = require('@imbios/next-pwa')({ dest: 'public', disable: process.env.NODE_ENV !== 'production' });
+const CopyPlugin = require('copy-webpack-plugin');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -15,6 +16,7 @@ const nextConfig = {
       canvas: 'commonjs canvas',
     });
 
+    config.plugins.push(new CopyPlugin({ patterns: [{ from: 'locales/**', to: '../' }] }));
     return config;
   },
   experimental: {
