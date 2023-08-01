@@ -3,6 +3,7 @@
 import TenantManageButton from '../../../../components/layouts/SideBar/ManageButton/TenantManageButton';
 import SidebarBanner from '../../../../components/layouts/SideBar/SidebarBanner';
 import LinkList from '../../../../components/molecules/List/LinkList';
+import SkeletonPublicSidebar from '../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
 import SideBar from '../../../../components/layouts/SideBar';
 
 import { useTenant } from '../../../../context/navigation';
@@ -14,7 +15,13 @@ type TenantLayoutProps = { children: React.ReactNode };
 export default function TenantLayout({ children }: TenantLayoutProps) {
   const { tenant } = useTenant();
 
-  if (!tenant || !tenant.adminTeam) return null;
+  if (!tenant?.adminTeam)
+    return (
+      <>
+        <SkeletonPublicSidebar />
+        {children}
+      </>
+    );
 
   return (
     <>

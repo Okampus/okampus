@@ -1,14 +1,15 @@
 'use client';
 
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import Dashboard from '../../../../../../../components/organisms/Dashboard';
-import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
-import { useTeamManage, useTenant } from '../../../../../../../context/navigation';
+import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
+import Dashboard from '../../../../../../../../components/organisms/Dashboard';
+import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
+import UserLabeled from '../../../../../../../../components/molecules/Labeled/UserLabeled';
+import { useTeamManage, useTenant } from '../../../../../../../../context/navigation';
+import { download } from '../../../../../../../../utils/download-file';
 
 import { useTypedQuery, generateUserWithPointsInfoSelector } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { download, groupBy, toCsv } from '@okampus/shared/utils';
+import { groupBy, toCsv } from '@okampus/shared/utils';
 
 import { IconDownload } from '@tabler/icons-react';
 
@@ -155,7 +156,7 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
             const csv = toCsv(users, columns);
             download(
               URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-              `lxp-${teamManage?.actor.slug}-${new Date().toISOString()}.csv`
+              `${tenant?.pointName}-${teamManage?.actor.slug}-${new Date().toISOString()}.csv`
             );
           },
           type: ActionType.Action,

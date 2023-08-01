@@ -1,12 +1,12 @@
 'use client';
 
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import GroupItem from '../../../../../../../components/atoms/Item/GroupItem';
-import SelectInput from '../../../../../../../components/molecules/Input/SelectInput';
-import TeamLabeled from '../../../../../../../components/molecules/Labeled/TeamLabeled';
-import TenantLabeled from '../../../../../../../components/molecules/Labeled/TenantLabeled';
+import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
+import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
+import SelectInput from '../../../../../../../../components/molecules/Input/SelectInput';
+import TeamLabeled from '../../../../../../../../components/molecules/Labeled/TeamLabeled';
+import TenantLabeled from '../../../../../../../../components/molecules/Labeled/TenantLabeled';
 
-import { useTeamManage, useTenant } from '../../../../../../../context/navigation';
+import { useTeamManage, useTenant } from '../../../../../../../../context/navigation';
 
 import { TeamType } from '@okampus/shared/enums';
 import { IconHelpCircle } from '@tabler/icons-react';

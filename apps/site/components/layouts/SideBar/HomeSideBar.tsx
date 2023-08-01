@@ -4,6 +4,7 @@ import SideBar from '../SideBar';
 import GroupItem from '../../atoms/Item/GroupItem';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import LinkItem from '../../atoms/Item/LinkItem';
+import SkeletonSidebar from '../../atoms/Skeleton/SkeletonSidebar';
 
 import { useMe } from '../../../context/navigation';
 
@@ -14,7 +15,7 @@ export default function HomeSideBar() {
   const pathname = usePathname();
   const me = useMe();
 
-  if (!me) return null;
+  if (!me) return <SkeletonSidebar />;
 
   const teams = me?.user.teamMembers.map(({ team }) => (
     <LinkItem

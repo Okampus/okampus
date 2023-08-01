@@ -1,4 +1,5 @@
 import SideBar from '../../../../../components/layouts/SideBar';
+import SkeletonPublicSidebar from '../../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
 import TenantManageButton from '../../../../../components/layouts/SideBar/ManageButton/TenantManageButton';
 import TenantManageSidePanel from '../../../../../components/layouts/SidePanel/TenantManageSidePanel';
 import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
@@ -26,7 +27,13 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
   const query = [{ where: { adminTeam: { actor: { slug: { _eq: tenant } } } }, limit: 1 }, tenantManageInfo];
   const [tenantManage] = await getApolloQuery<TenantManageInfo[]>('tenant', query, true).catch(() => []);
 
-  if (!tenantManage || !tenantManage.adminTeam?.actor) return null;
+  if (!tenantManage || !tenantManage.adminTeam?.actor)
+    return (
+      <>
+        <SkeletonPublicSidebar />
+        {children}
+      </>
+    );
 
   return (
     <>

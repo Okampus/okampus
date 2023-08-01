@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
     <>
       <HomeSideBar />
-      <ViewLayout header={welcomeHeader} bottomPadded={false}>
+      <ViewLayout header={welcomeHeader} bottomPadded={false} sidePanelIcon={null}>
         <GroupItem
           heading="Les derniers événements"
           groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-8"

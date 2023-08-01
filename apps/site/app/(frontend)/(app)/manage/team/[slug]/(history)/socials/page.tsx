@@ -1,21 +1,21 @@
 'use client';
 
-import GroupItem from '../../../../../../../components/atoms/Item/GroupItem';
-import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import SocialIcon from '../../../../../../../components/atoms/Icon/SocialIcon';
-import Profile from '../../../../../../../components/layouts/SidePanel/Profile';
+import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
+import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
+import SocialIcon from '../../../../../../../../components/atoms/Icon/SocialIcon';
+import Profile from '../../../../../../../../components/layouts/SidePanel/Profile';
 
-import EditSocialCard from '../../../../../../../components/molecules/Card/EditSocialCard';
-import ChangeSetForm from '../../../../../../../components/molecules/Form/ChangeSetForm';
-import DragList from '../../../../../../../components/molecules/List/DragList';
-import TextInput from '../../../../../../../components/molecules/Input/TextInput';
+import EditSocialCard from '../../../../../../../../components/molecules/Card/EditSocialCard';
+import ChangeSetForm from '../../../../../../../../components/molecules/Form/ChangeSetForm';
+import DragList from '../../../../../../../../components/molecules/List/DragList';
+import TextInput from '../../../../../../../../components/molecules/Input/TextInput';
 
-import { useTeamManage } from '../../../../../../../context/navigation';
-import { useCurrentBreakpoint } from '../../../../../../../hooks/useCurrentBreakpoint';
+import { useTeamManage } from '../../../../../../../../context/navigation';
+import { useCurrentBreakpoint } from '../../../../../../../../hooks/useCurrentBreakpoint';
 
-import { filterCache, mergeCache } from '../../../../../../../utils/apollo/merge-cache';
-import { validateEmail } from '../../../../../../../utils/form-validation/email';
-import { validateWebsite } from '../../../../../../../utils/form-validation/website';
+import { filterCache, mergeCache } from '../../../../../../../../utils/apollo/merge-cache';
+import { validateEmail } from '../../../../../../../../utils/form-validation/email';
+import { validateWebsite } from '../../../../../../../../utils/form-validation/website';
 
 import { SocialType } from '@okampus/shared/enums';
 import {
@@ -29,7 +29,7 @@ import { deepEqual } from '@okampus/shared/utils';
 import { useMutation } from '@apollo/client';
 import clsx from 'clsx';
 
-import type { SocialInfo } from '../../../../../../../components/molecules/Card/EditSocialCard';
+import type { SocialInfo } from '../../../../../../../../components/molecules/Card/EditSocialCard';
 
 export default function TeamManageSocials({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -59,14 +59,13 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
 
   if (!teamManage || !teamManage.actor) return null;
 
+  const isSmall = currentWindowSize === 'mobile' || currentWindowSize === 'tablet';
+  console.log('scrollable', isSmall);
+
   return (
-    <ViewLayout
-      header="Réseaux & contacts"
-      className="pr-0"
-      scrollable={currentWindowSize === 'mobile' || currentWindowSize === 'tablet'}
-      bottomPadded={false}
-    >
+    <ViewLayout header="Réseaux & contacts" className="pr-0" scrollable={isSmall} bottomPadded={false}>
       <ChangeSetForm
+        className="h-full grid 2xl-max:grid-cols-1 2xl:grid-flow-col 2xl:grid-cols-[var(--w-sidepanel)_1fr] gap-x-2"
         checkFields={['email', 'website', ...socials.map((social) => social.type)]}
         initialValues={initialState}
         onSave={(values) => {
@@ -134,7 +133,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
           );
 
           return (
-            <div className="h-full grid 2xl-max:grid-cols-1 2xl:grid-flow-col 2xl:grid-cols-[var(--w-sidepanel)_1fr] gap-x-2">
+            <>
               <div className="col-span-1 pr-[var(--px-content)]">
                 <GroupItem heading="Email & page/site externe">
                   <TextInput
@@ -162,11 +161,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
                 </GroupItem>
               </div>
               <div
-                className={clsx(
-                  'h-full col-span-1 pr-[var(--px-content)]',
-                  (currentWindowSize === 'desktop' || currentWindowSize === 'desktopXl') &&
-                    'scrollbar overflow-y-scroll'
-                )}
+                className={clsx('h-full col-span-1 pr-[var(--px-content)]', !isSmall && 'scrollbar overflow-y-scroll')}
               >
                 {addableSocials.length > 0 && (
                   <GroupItem className="bg-2 p-4 rounded-2xl" heading="Ajouter des réseaux à votre profil">
@@ -227,7 +222,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
                   }))}
                 />
               </div>
-            </div>
+            </>
           );
         }}
       />
