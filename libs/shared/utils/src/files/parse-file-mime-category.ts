@@ -33,13 +33,13 @@ const zipRegex = /application\/(x-|vnd)?zip(-.*)?/;
 const pdfRegex = /application\/(x-|vnd)?pdf/;
 
 export function parseFileMimeCategory(fileCheckPayload: FileMimeCheckPayload): FileMimeCategory {
-  if (fileCheckPayload.type.startsWith('image/'))
-    return fileCheckPayload.type === 'image/svg+xml' ? FileMimeCategory.SVG : FileMimeCategory.Image;
+  if (fileCheckPayload.mimetype.startsWith('image/'))
+    return fileCheckPayload.mimetype === 'image/svg+xml' ? FileMimeCategory.SVG : FileMimeCategory.Image;
 
   const ext = getExtension(fileCheckPayload.name);
-  if (fileCheckPayload.type.startsWith('text/')) {
-    if (tabularRegex.test(fileCheckPayload.type)) return FileMimeCategory.Tabular;
-    if (markdownRegex.test(fileCheckPayload.type)) return FileMimeCategory.Markdown;
+  if (fileCheckPayload.mimetype.startsWith('text/')) {
+    if (tabularRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Tabular;
+    if (markdownRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Markdown;
 
     if (!ext) return FileMimeCategory.Text;
     if (CODE_EXTS.includes(ext)) return FileMimeCategory.Code;
@@ -51,22 +51,23 @@ export function parseFileMimeCategory(fileCheckPayload: FileMimeCheckPayload): F
     return FileMimeCategory.Text;
   }
 
-  if (fileCheckPayload.type.startsWith('application/')) {
-    if (rarRegex.test(fileCheckPayload.type)) return FileMimeCategory.RAR;
-    if (zipRegex.test(fileCheckPayload.type)) return FileMimeCategory.ZIP;
-    if (pdfRegex.test(fileCheckPayload.type)) return FileMimeCategory.PDF;
-    if (documentRegex.test(fileCheckPayload.type)) return FileMimeCategory.Document;
-    if (presentationRegex.test(fileCheckPayload.type)) return FileMimeCategory.Presentation;
-    if (spreadsheetRegex.test(fileCheckPayload.type)) return FileMimeCategory.Spreadsheet;
-    if (executableRegex.test(fileCheckPayload.type)) return FileMimeCategory.Executable;
+  if (fileCheckPayload.mimetype.startsWith('application/')) {
+    if (rarRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.RAR;
+    if (zipRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.ZIP;
+    if (pdfRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.PDF;
+    if (documentRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Document;
+    if (presentationRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Presentation;
+    if (spreadsheetRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Spreadsheet;
+    if (executableRegex.test(fileCheckPayload.mimetype)) return FileMimeCategory.Executable;
   }
 
-  if (fileCheckPayload.type.startsWith('video/')) return FileMimeCategory.Video;
-  if (fileCheckPayload.type.startsWith('audio/')) return FileMimeCategory.Audio;
+  if (fileCheckPayload.mimetype.startsWith('video/')) return FileMimeCategory.Video;
+  if (fileCheckPayload.mimetype.startsWith('audio/')) return FileMimeCategory.Audio;
 
-  if (fileCheckPayload.type.startsWith('font/')) {
-    if (fileCheckPayload.type === 'font/ttf') return FileMimeCategory.TTF;
-    if (fileCheckPayload.type === 'font/woff' || fileCheckPayload.type === 'font/woff2') return FileMimeCategory.WOFF;
+  if (fileCheckPayload.mimetype.startsWith('font/')) {
+    if (fileCheckPayload.mimetype === 'font/ttf') return FileMimeCategory.TTF;
+    if (fileCheckPayload.mimetype === 'font/woff' || fileCheckPayload.mimetype === 'font/woff2')
+      return FileMimeCategory.WOFF;
     return FileMimeCategory.Font;
   }
 

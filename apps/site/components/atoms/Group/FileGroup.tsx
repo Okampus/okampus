@@ -3,10 +3,10 @@ import FileIcon from '../Icon/FileIcon';
 import FilePreviewer from '../../organisms/FilePreviewer';
 import { useBottomSheet } from '../../../hooks/context/useBottomSheet';
 
-import type { FileLike } from '@okampus/shared/types';
+import type { ExternalFile } from '@okampus/shared/types';
 
 export type FileGroupProps = {
-  files: FileLike[];
+  files: (File | ExternalFile)[];
   limit?: number;
   size?: number;
 };
@@ -24,7 +24,12 @@ export default function FileGroup({ files, limit = 3, size = 10 }: FileGroupProp
       render={(file) => {
         return (
           <div onClick={() => openBottomSheet({ node: <FilePreviewer file={file} onClose={closeBottomSheet} /> })}>
-            <FileIcon file={file} className="aspect-square" style={{ height: `${size / 4}rem` }} />
+            <FileIcon
+              type={file.type}
+              name={file.name}
+              className="aspect-square"
+              style={{ height: `${size / 4}rem` }}
+            />
           </div>
         );
       }}

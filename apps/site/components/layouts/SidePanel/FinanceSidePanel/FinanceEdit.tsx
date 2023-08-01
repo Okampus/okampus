@@ -70,7 +70,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
                 {values.attachments.map((attachment) => (
                   <div key={attachment.id} className="flex items-center justify-between gap-4 px-2">
                     <div className="flex gap-4">
-                      <FileIcon className="h-11" file={attachment} />
+                      <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
                       <div className="flex flex-col">
                         <a
                           href={attachment.url}

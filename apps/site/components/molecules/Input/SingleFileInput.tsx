@@ -83,7 +83,7 @@ export default forwardRef(({ onChange, options }: SingleFileInputProps, propRef:
 
   const innerRender = file ? (
     <div className="flex gap-4">
-      <FileIcon file={file} className="h-10" />
+      <FileIcon type={file.type} name={file.name} className="h-10" />
       <div>
         <div className="text-0 text-lg font-medium">{file.name}</div>
         <div className="text-2 text-base">

@@ -1,4 +1,6 @@
-import type { FileLike } from '@okampus/shared/types';
+'use client';
+
+import type { ExternalFile } from '@okampus/shared/types';
 
 export const getObjectUrl = (blob: Blob) => URL.createObjectURL(blob);
 
@@ -11,7 +13,7 @@ export const download = (href: string, filename: string) => {
 };
 
 export const downloadResource = (url: string, filename?: string) => {
-  if (!filename) filename = url.split('\\')?.pop?.()?.split('/').pop() ?? 'fichier';
+  if (!filename) filename = url.split('\\')?.pop?.()?.split('/').pop() ?? new Date().toISOString();
 
   fetch(url, {
     headers: new Headers({
@@ -24,8 +26,8 @@ export const downloadResource = (url: string, filename?: string) => {
     .catch((error) => console.error(error));
 };
 
-export const downloadFile = (file: FileLike) => {
-  'src' in file ? downloadResource(file.src, file.name) : download(getObjectUrl(file), file.name);
+export const downloadFile = (file: File | ExternalFile) => {
+  file instanceof File ? download(getObjectUrl(file), file.name) : downloadResource(file.url, file.name);
 };
 
 export const downloadJSON = (object: object, filename: string) => {

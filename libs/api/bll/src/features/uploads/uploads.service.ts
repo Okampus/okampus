@@ -120,7 +120,7 @@ export class UploadsService extends RequestContext {
 
     this.logger.log(`Creating ${context.entityName} upload.. ${stream.readableLength}`);
 
-    const type = file.type ?? 'application/octet-stream';
+    const type = file.mimetype ?? 'application/octet-stream';
     const createdById = context.createdBy?.id ?? null;
     const slug = toSlug(file.filename ?? file.fieldname);
     const key = `${slug}-${nowString()}-${randomId()}.${type.split('/')[1]}`;
@@ -152,7 +152,11 @@ export class UploadsService extends RequestContext {
     const buffer = await sharp(initial).resize(null, height).webp({ quality: 80, effort: 3 }).toBuffer();
     this.logger.log(`Resized ${context.entityName} image to ${buffer.length} bytes.`);
 
-    return this.createUpload({ ...file, buffer, type: 'image/webp', size: buffer.length }, bucket, context);
+    return this.createUpload(
+      { ...file, buffer, createReadStream: () => Readable.from(buffer), mimetype: 'image/webp', size: buffer.length },
+      bucket,
+      context
+    );
   }
 
   public async uploadQR(
@@ -166,7 +170,7 @@ export class UploadsService extends RequestContext {
     const qrCode = await QRCodeGenerator.toDataURL(data);
     const buffer = Buffer.from(qrCode.split(',')[1], 'base64');
 
-    const file = { buffer, fieldname, type: 'application/octet-stream', size: buffer.length };
+    const file = { buffer, fieldname, mimetype: 'application/octet-stream', size: buffer.length };
     const context = { createdBy, tenant, entityName: type, entityId };
     return await this.createImageUpload(file, Buckets.QR, context, 150);
   }

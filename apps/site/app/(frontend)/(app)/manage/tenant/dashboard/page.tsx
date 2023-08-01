@@ -8,32 +8,25 @@ import Skeleton from '../../../../../../components/atoms/Skeleton/Skeleton';
 import TeamLabeled from '../../../../../../components/molecules/Labeled/TeamLabeled';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../components/organisms/Dashboard';
+import FilePreviewer from '../../../../../../components/organisms/FilePreviewer';
 
 import { useBottomSheet } from '../../../../../../hooks/context/useBottomSheet';
-// import { useTenantManage } from '../../../../../../../context/navigation';
 
-import FilePreviewer from '../../../../../../components/organisms/FilePreviewer';
 import { TeamType, Align, TeamRoleType, DocumentType } from '@okampus/shared/enums';
 import { useTypedQuery, teamDashboardInfo, OrderBy } from '@okampus/shared/graphql';
 import { isNotNull } from '@okampus/shared/utils';
 
 import type { DocumentBaseInfo, TeamDashboardInfo } from '@okampus/shared/graphql';
-import type { FileLike } from '@okampus/shared/types';
+import type { ExternalFile } from '@okampus/shared/types';
 
-function renderDocument(showFile: (file: FileLike) => void, document?: DocumentBaseInfo) {
+function renderDocument(showFile: (file: File | ExternalFile) => void, document?: DocumentBaseInfo) {
   if (!document) return <TextBadge color="grey" label="Manquant" />;
-  if (!document.name || !document.fileUpload) return <Skeleton height={32} width={32} />;
+  if (!document.fileUpload) return <Skeleton height={32} width={32} />;
 
-  const fileLike: FileLike = {
-    name: document.name,
-    src: document.fileUpload.url,
-    type: document.fileUpload.type as string,
-    size: document.fileUpload.size,
-  };
-
+  const file = document.fileUpload;
   return (
-    <div onClick={() => showFile(fileLike)} className="cursor-pointer">
-      <FileIcon className="h-12 aspect-square" file={fileLike} />
+    <div onClick={() => showFile(file)} className="cursor-pointer">
+      <FileIcon className="h-12 aspect-square" type={file.type} name={file.name} />
     </div>
   );
 }
@@ -41,9 +34,8 @@ function renderDocument(showFile: (file: FileLike) => void, document?: DocumentB
 export default function TenantDashboardPage() {
   const { openBottomSheet, closeBottomSheet } = useBottomSheet();
 
-  const previewFile = (file: FileLike) => {
+  const previewFile = (file: File | ExternalFile) =>
     openBottomSheet({ node: <FilePreviewer file={file} onClose={closeBottomSheet} /> });
-  };
 
   const columns = [
     {

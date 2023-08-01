@@ -17,11 +17,12 @@ import { useTeamManage } from '../../../../../../../context/navigation';
 import { useModal } from '../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
 import { useTypedQueryAndSubscribe } from '../../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { download } from '../../../../../../../utils/download-file';
 
 import { Align } from '@okampus/shared/enums';
 import { financeBaseInfo, OrderBy } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { download, getColorHexFromData, isNotNull, toCsv } from '@okampus/shared/utils';
+import { getColorHexFromData, isNotNull, toCsv } from '@okampus/shared/utils';
 
 import { IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
 
@@ -86,14 +87,14 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
       },
     },
     {
-      data: (value: FinanceBaseInfo) => value.initiatedBy?.actor.name ?? 'Inconnu',
+      data: (value: FinanceBaseInfo) => value.initiatedBy?.actor.name ?? '',
       label: 'Payé par',
       align: Align.Left,
       render: (value: FinanceBaseInfo) => {
-        return value.initiatedBy && value.initiatedBy.user ? (
+        return value.initiatedBy?.user ? (
           <UserLabeled individual={value.initiatedBy} id={value.initiatedBy.user.id} />
         ) : (
-          <div className="text-2 font-semibold">Inconnu</div>
+          <TextBadge color="grey" label="Inconnu" />
         );
       },
     },
@@ -108,21 +109,13 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
     },
     {
       data: (value: FinanceBaseInfo) => {
-        const attachments = value.financeAttachments
-          .map((attachment) => attachment.fileUpload)
-          .filter(isNotNull)
-          .map(({ name, size, type, url }) => ({ name, size, type, src: url }));
-        return attachments[0]?.src ?? '';
+        const attachment = value.financeAttachments.map((attachment) => attachment.fileUpload).filter(isNotNull);
+        return attachment.length;
       },
       label: 'Justificatif',
       render: (value: FinanceBaseInfo) => {
-        const attachments = value.financeAttachments
-          .map((attachment) => attachment.fileUpload)
-          .filter(isNotNull)
-          .map(({ name, size, type, url }) => ({ name, size, type, src: url }));
-
-        if (attachments.length === 0) return <TextBadge color="grey" label="Manquant" />;
-        return <FileGroup files={attachments} />;
+        const attachments = value.financeAttachments.map((attachment) => attachment.fileUpload).filter(isNotNull);
+        return attachments.length > 0 ? <FileGroup files={attachments} /> : <TextBadge color="grey" label="Manquant" />;
       },
     },
     {
@@ -136,32 +129,35 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
   return (
     <>
       <ViewLayout
+        sidePanelIcon={null}
         scrollable={false}
         bottomPadded={false}
         className="h-full flex flex-col"
         header={
-          <div className="flex justify-between items-center">
-            <div>
-              {format('euro', account.financesAggregate.aggregate?.sum?.amount ?? 0)}
-              <div className="text-1 text-lg font-medium">Total restant</div>
-            </div>
-
-            {data?.finance && (
-              <ActionButton
-                action={{
-                  label: 'Exporter la trésorerie',
-                  linkOrActionOrMenu: () => {
-                    const csv = toCsv(data.finance, columns);
-                    download(
-                      URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                      `tresorerie-${new Date().toISOString()}.csv`
-                    );
-                  },
-                  type: ActionType.Action,
-                }}
-              />
-            )}
+          <div>
+            <b className="page-title">{format('euro', account.financesAggregate.aggregate?.sum?.amount ?? 0)}</b>
+            <div className="text-1 text-lg font-medium">Total restant</div>
           </div>
+        }
+        actions={
+          data?.finance
+            ? [
+                <ActionButton
+                  key="export"
+                  action={{
+                    label: 'Exporter la trésorerie',
+                    linkOrActionOrMenu: () => {
+                      const csv = toCsv(data.finance, columns);
+                      download(
+                        URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                        `tresorerie-${new Date().toISOString()}.csv`
+                      );
+                    },
+                    type: ActionType.Action,
+                  }}
+                />,
+              ]
+            : []
         }
       >
         {account.children.length > 0 && (

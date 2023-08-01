@@ -102,7 +102,7 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
           <hr className="border-color-3 w-full" />
           <div className="shrink-0 w-full flex gap-6 justify-between">
             <div className="min-w-0 flex gap-4">
-              <FileIcon file={file} className="h-14" />
+              <FileIcon type={file.type} name={file.name} className="h-14" />
               <div className="overflow-hidden">
                 <div className="text-0 text-lg font-medium line-clamp-1">{file.name}</div>
                 <div className="text-2 text-base">
