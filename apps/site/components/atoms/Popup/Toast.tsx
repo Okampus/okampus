@@ -3,28 +3,25 @@
 import './Toast.scss';
 import { notificationAtom } from '../../../context/global';
 
-import { ReactComponent as CloseIcon } from '@okampus/assets/svg/icons/material/filled/close.svg';
-import { ReactComponent as CheckCircleIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
-import { ReactComponent as CloseCircleIcon } from '@okampus/assets/svg/icons/material/filled/close-circle.svg';
-import { ReactComponent as InfoIcon } from '@okampus/assets/svg/icons/material/filled/info.svg';
 import { ToastType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { motion } from 'framer-motion';
 
+import { IconCircleCheckFilled, IconCircleXFilled, IconInfoCircleFilled, IconX } from '@tabler/icons-react';
 import type { ToastProps } from '@okampus/shared/types';
 
 function getButton(type: ToastType) {
   switch (type) {
     case ToastType.Success: {
-      return <CheckCircleIcon className="h-6 aspect-square text-white" />;
+      return <IconCircleCheckFilled className="h-6 aspect-square text-white" />;
     }
     case ToastType.Error: {
-      return <CloseCircleIcon height="h-6 aspect-square text-white" />;
+      return <IconCircleXFilled height="h-6 aspect-square text-white" />;
     }
     case ToastType.Info: {
-      return <InfoIcon height="h-6 aspect-square text-white" />;
+      return <IconInfoCircleFilled height="h-6 aspect-square text-white" />;
     }
     default: {
       return null;
@@ -45,16 +42,25 @@ export default function Toast({
   const close = () => (onTimeout?.(), setNotification(null));
   const timeoutId = setTimeout(close, timeout);
 
-  const style = {
-    background:
-      type === ToastType.Success
-        ? 'var(--success)'
-        : type === ToastType.Error
-        ? 'var(--danger)'
-        : type === ToastType.Info
-        ? 'var(--info)'
-        : 'var(--bg-0)',
-  };
+  let style;
+  switch (type) {
+    case ToastType.Success: {
+      style = { background: 'var(--success)' };
+      break;
+    }
+    case ToastType.Error: {
+      style = { background: 'var(--danger)' };
+      break;
+    }
+    case ToastType.Info: {
+      style = { background: 'var(--info)' };
+      break;
+    }
+    default: {
+      style = { background: 'var(--bg-0)' };
+      break;
+    }
+  }
 
   return (
     <motion.li
@@ -73,7 +79,7 @@ export default function Toast({
       {useDefaultButton ? getButton(type) : prefix}
       <div className="grow text-lg font-medium mb-0.5">{message}</div>
       {button ?? (
-        <CloseIcon className="h-6 aspect-square cursor-pointer" onClick={() => (close(), clearTimeout(timeoutId))} />
+        <IconX className="h-6 aspect-square cursor-pointer" onClick={() => (close(), clearTimeout(timeoutId))} />
       )}
     </motion.li>
   );

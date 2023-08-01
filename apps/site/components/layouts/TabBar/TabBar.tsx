@@ -7,11 +7,10 @@ import { useMe } from '../../../context/navigation';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/material/filled/event.svg';
-import { ReactComponent as GroupFilledIcon } from '@okampus/assets/svg/icons/material/filled/user-group.svg';
 
 import { isNotNull, arrayNotEmptyOrNull } from '@okampus/shared/utils';
 import { usePathname } from 'next/navigation';
+import { IconCalendarEvent, IconUsers } from '@tabler/icons-react';
 
 export default function TabBar() {
   const me = useMe();
@@ -31,8 +30,8 @@ export default function TabBar() {
       <TabBarItem pathname={pathname} label="Tenant" href="/tenant">
         <AvatarImage name={adminTeam?.actor?.name} src={tenantAvatar?.image.url} />
       </TabBarItem>
-      <TabBarItem pathname={pathname} icon={<EventFilledIcon />} label="Calendrier" href="/events" />
-      <TabBarItem pathname={pathname} icon={<GroupFilledIcon />} label="Équipes" href="/teams" />
+      <TabBarItem pathname={pathname} icon={<IconCalendarEvent />} label="Calendrier" href="/events" />
+      <TabBarItem pathname={pathname} icon={<IconUsers />} label="Équipes" href="/teams" />
       {shortcuts && (
         <>
           <hr className="border-color-2 ml-5 my-1" />

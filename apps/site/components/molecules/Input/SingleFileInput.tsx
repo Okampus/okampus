@@ -1,9 +1,6 @@
 // import ActionButton from '../Button/ActionButton';
 import FileIcon from '../../atoms/Icon/FileIcon';
 
-// import { ReactComponent as DeleteFilledIcon } from '@okampus/assets/svg/icons/material/filled/delete.svg';
-// import { ReactComponent as CloseFilledicon } from '@okampus/assets/svg/icons/material/filled/close.svg';
-
 import { singleUploadMutation } from '@okampus/shared/graphql';
 // import { ActionType } from '@okampus/shared/types';
 import { bytes } from '@okampus/shared/utils';

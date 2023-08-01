@@ -73,6 +73,7 @@ export * from './global/approval-state.enum';
 export * from './global/approximate-date.enum';
 export * from './global/colors.enum';
 export * from './global/file-mime-category';
+export * from './global/sort.enum';
 export * from './site/subspace-type.enum';
 export * from './site/view-type.enum';
 export * from './ui/control-type.enum';

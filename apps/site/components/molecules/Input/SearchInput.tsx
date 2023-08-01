@@ -1,6 +1,5 @@
-import { ReactComponent as CheckFilledIcon } from '@okampus/assets/svg/icons/material/filled/check-circle.svg';
-
 import clsx from 'clsx';
+import { IconCheck } from '@tabler/icons-react';
 import type { InputOptions, SelectItem } from '@okampus/shared/types';
 
 export type SearchInputProps<T> = {
@@ -32,7 +31,7 @@ export function SearchInput<T>({
         {value && (
           <div className="flex p-4 rounded text-0 bg-opposite text-opposite justify-between items-start gap-6">
             {value.label}
-            <CheckFilledIcon className="shrink-0 text-green-400 h-7 w-7" />
+            <IconCheck className="shrink-0 text-green-400 h-7 w-7" />
           </div>
         )}
         {items

@@ -8,7 +8,7 @@ import SkeletonSidebar from '../../atoms/Skeleton/SkeletonSidebar';
 
 import { useMe } from '../../../context/navigation';
 
-import { IconUsersGroup } from '@tabler/icons-react';
+import { IconUsers } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 
 export default function HomeSideBar() {
@@ -43,7 +43,7 @@ export default function HomeSideBar() {
             pathname={pathname}
             href="/teams"
             label="Associations"
-            icon={<IconUsersGroup />}
+            icon={<IconUsers />}
             large={true}
           />,
         ]}
