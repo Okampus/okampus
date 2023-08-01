@@ -18,12 +18,39 @@ import JotaiProvider from '../../components/wrappers/JotaiProvider';
 
 import { THEME_COOKIE, LOCALE_COOKIE } from '@okampus/shared/consts';
 
+import { Work_Sans, Fira_Code } from 'next/font/google';
+
+import type { Metadata } from 'next';
+
+const APP_NAME = 'Okampus';
+const APP_DESCRIPTION =
+  'Student platform & digital workspace for schools - A SaaS solution to improve in-school communication';
+
+export const metadata: Metadata = {
+  title: 'Bienvenue sur Okampus 🚀',
+  description: APP_DESCRIPTION,
+  applicationName: APP_NAME,
+  appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: 'default' },
+  keywords: ['education', 'schools', 'students', 'university', 'student clubs', 'productivity'],
+  formatDetection: { telephone: false },
+  themeColor: '#f15',
+  viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover',
+  manifest: '/manifest.json',
+  icons: [
+    { rel: 'apple-touch-icon', url: '/apple-touch-icon.png' },
+    { rel: 'shortcut icon', url: '/favicon.ico' },
+  ],
+};
+
+const sans = Work_Sans({ subsets: ['latin'], variable: '--font-sans' });
+const mono = Fira_Code({ subsets: ['latin'], variable: '--font-mono' });
+
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
   const [theme, lang] = await Promise.all([getTheme(), getLang()]);
   const { determiners, dict } = await getTranslation();
 
   return (
-    <html lang={lang} className={theme}>
+    <html lang={lang} className={`${theme} ${sans.variable} ${mono.variable}`}>
       <CookiesInitialize
         cookies={[
           [THEME_COOKIE, theme],
