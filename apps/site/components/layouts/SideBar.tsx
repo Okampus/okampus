@@ -22,7 +22,6 @@ import { IconSettings, IconLogout } from '@tabler/icons-react';
 import { useMutation } from '@apollo/client';
 
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -31,10 +30,6 @@ import { useEffect } from 'react';
 
 export type SideBarProps = { children: React.ReactNode };
 export default function SideBar({ children }: SideBarProps) {
-  // const sidebarInner = useNavigation((state) => state.sidebarInner);
-  // const isSidebarOpen = useNavigation((state) => state.isSidebarOpen);
-  // const closeSidebar = useNavigation((state) => state.closeSidebar);
-  // const openSidebar = useNavigation((state) => state.openSidebar);
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
 
   const me = useMe();
@@ -47,19 +42,16 @@ export default function SideBar({ children }: SideBarProps) {
   const [logout] = useMutation(logoutMutation, { onCompleted: () => router.push('/signin') });
 
   const currentWindowSize = useCurrentBreakpoint();
-  const isAtLeastDesktop = currentWindowSize === 'desktop' || currentWindowSize === 'desktopXl';
+  const isMobile = currentWindowSize === 'mobile';
 
   useEffect(() => {
-    if (isAtLeastDesktop) {
-      !isSidebarOpen && setIsSideBarOpen(true);
-    } else {
-      isSidebarOpen && setIsSideBarOpen(false);
-    }
-  }, [isAtLeastDesktop, isSidebarOpen, setIsSideBarOpen]);
+    if (isMobile) isSidebarOpen && setIsSideBarOpen(false);
+    else !isSidebarOpen && setIsSideBarOpen(true);
+  }, [isMobile, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
     'h-full shrink-0 bg-[var(--bg-navbar)] overflow-x-hidden',
-    isAtLeastDesktop ? 'relative' : 'absolute top-0 left-0'
+    isMobile ? 'absolute top-0 left-0' : 'relative'
   );
 
   // const width = children ? 'var(--w-sidepanel)' : 'var(--w-tabbar)';
@@ -81,14 +73,14 @@ export default function SideBar({ children }: SideBarProps) {
   ];
 
   const inner = (
-    <nav className="h-full flex bg-1">
+    <nav className={clsx('h-full flex bg-1', isMobile && 'mr-4')}>
       <TabBar />
       {children && (
         <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between">
           <div>{children}</div>
-          <Popover forcePlacement={true} placement="bottom-end" placementOffset={20}>
+          <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
             <PopoverTrigger>
-              <div className="flex gap-2 items-center px-4 py-3 bg-0">
+              <div className="flex gap-2 items-center px-4 py-3 border-color-2 border-t">
                 <AvatarImage size={16} src={avatar?.image?.url} name={name} type="user" />
                 <div className="flex flex-col items-start pb-1">
                   <div className="text-1 font-semibold">{name}</div>
@@ -108,11 +100,11 @@ export default function SideBar({ children }: SideBarProps) {
                     </div>
                   </div>
                 }
-                footer={
-                  <div className="text-0 mt-2 bg-0">
-                    <div className="text-xs py-3 text-center">RGPD • Conditions d&apos;utilisation</div>
-                  </div>
-                }
+                // footer={
+                //   <div className="text-0 mt-2 bg-0">
+                //     <div className="text-xs py-3 text-center">RGPD • Conditions d&apos;utilisation</div>
+                //   </div>
+                // }
               />
             </PopoverContent>
           </Popover>
@@ -122,37 +114,21 @@ export default function SideBar({ children }: SideBarProps) {
   );
 
   const slidingSidebar = (
-    <motion.aside
-      // initial={initial}
-      // animate={animate}
-      // exit={initial}
-      // transition={transition}
+    <aside
+      // initial={initial} animate={animate} exit={initial} transition={transition}
       className={sidebarClass}
       onClick={(e) => e.stopPropagation()}
     >
-      {isAtLeastDesktop ? (
-        inner
-      ) : (
-        <>
-          {/* <nav className="flex items-center mr-4">
-            <HomeButton />
-            <NavigationState />
-          </nav> */}
-          <div className="mr-4">{inner}</div>
-        </>
-      )}
-    </motion.aside>
+      {inner}
+    </aside>
   );
 
-  const sidebar = isAtLeastDesktop ? (
-    slidingSidebar
-  ) : (
+  const sidebar = isMobile ? (
     <Backdrop onClick={() => setIsSideBarOpen(false)}>{slidingSidebar}</Backdrop>
+  ) : (
+    slidingSidebar
   );
 
-  return (
-    <AnimatePresence>
-      <>{isSidebarOpen && sidebar}</>
-    </AnimatePresence>
-  );
+  // return <AnimatePresence>{isSidebarOpen && sidebar}</AnimatePresence>;
+  return isSidebarOpen && sidebar;
 }

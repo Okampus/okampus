@@ -32,6 +32,7 @@ export type PopoverOptions = {
   sameWidthAsTarget?: boolean;
   crossAxis?: boolean;
   forcePlacement?: boolean;
+  placementCrossOffset?: number;
   placementOffset?: number;
   shiftOffset?: number;
 };
@@ -47,6 +48,7 @@ export function usePopover({
   crossAxis = true,
   forcePlacement = false,
   placementOffset = 0,
+  placementCrossOffset = 0,
   shiftOffset = 0,
   controlledOpen,
   onOpenChange,
@@ -80,8 +82,11 @@ export function usePopover({
           ]
         : []),
       ...(useArrow
-        ? [offset(floatingOffset + placementOffset), arrow({ element: arrowRef })]
-        : [offset(placementOffset)]),
+        ? [
+            offset({ mainAxis: floatingOffset + placementOffset, crossAxis: placementCrossOffset }),
+            arrow({ element: arrowRef }),
+          ]
+        : [offset({ mainAxis: placementOffset, crossAxis: placementCrossOffset })]),
     ],
   });
 
