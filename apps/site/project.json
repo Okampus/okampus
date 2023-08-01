@@ -19,6 +19,12 @@
         "production": {}
       }
     },
+    "bundle-analyzer": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ANALYZE=true nx build site --prod"
+      }
+    },
     "serve": {
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",

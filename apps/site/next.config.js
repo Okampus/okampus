@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
 const withPwa = require('@imbios/next-pwa')({ dest: 'public', disable: process.env.NODE_ENV !== 'production' });
+const withBundleAnalyzer = require('@next/bundle-analyzer');
 const CopyPlugin = require('copy-webpack-plugin');
 
 /**
@@ -38,10 +39,7 @@ const nextConfig = {
   transpilePackages: ['@tabler/icons-react'],
 };
 
-const plugins = [
-  // Add more Next.js plugins to this list if needed.
-  withNx,
-  withPwa,
-];
+const plugins = [withNx, withPwa];
+if (process.env.ANALYZE === 'true') plugins.push(withBundleAnalyzer({ enabled: true }));
 
 module.exports = composePlugins(...plugins)(nextConfig);
