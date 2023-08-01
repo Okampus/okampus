@@ -6,7 +6,7 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { useMe } from '../../../context/navigation';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
-// import { ReactComponent as HomeFilledIcon } from '@okampus/assets/svg/icons/material/filled/home.svg';
+import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
 import { ReactComponent as EventFilledIcon } from '@okampus/assets/svg/icons/material/filled/event.svg';
 import { ReactComponent as GroupFilledIcon } from '@okampus/assets/svg/icons/material/filled/user-group.svg';
 
@@ -25,7 +25,10 @@ export default function TabBar() {
 
   return (
     <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col scrollbar-on-hover gap-2 py-2 bg-0">
-      <TabBarItem pathname={pathname} label="Accueil" href="/tenant">
+      <TabBarItem pathname={pathname} label="Accueil" href="/">
+        <OkampusLogo className="p-1.5" />
+      </TabBarItem>
+      <TabBarItem pathname={pathname} label="Tenant" href="/tenant">
         <AvatarImage name={adminTeam?.actor?.name} src={tenantAvatar?.image.url} />
       </TabBarItem>
       <TabBarItem pathname={pathname} icon={<EventFilledIcon />} label="Calendrier" href="/events" />
