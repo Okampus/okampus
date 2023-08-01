@@ -1,3 +1,5 @@
+'use client';
+
 import { meSlugAtom } from './global';
 import { useTypedFragment } from '../hooks/apollo/useTypedFragment';
 import {
