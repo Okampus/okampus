@@ -7,7 +7,7 @@ import TextLocation from '../../atoms/Text/TextLocation';
 import { EVENT_ROUTE } from '@okampus/shared/consts';
 import { formatDateRangeDayOfWeek } from '@okampus/shared/utils';
 
-import { IconAlignLeft, IconLocation, IconPencil, IconUsersGroup } from '@tabler/icons-react';
+import { IconAlignLeft, IconLocation, IconPencil, IconUsers } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import type { EventBaseInfo } from '@okampus/shared/graphql';
@@ -26,7 +26,7 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
         </Link>
         <div className="text-primary font-semibold tabular-nums capitalize">{displayedTimeRange}</div>
         <div className="grid grid-cols-[1.25rem_1fr] gap-4 my-8">
-          <IconUsersGroup className="h-6 w-6 mt-1.5" />
+          <IconUsers className="h-6 w-6 mt-1.5" />
           <div className="flex flex-wrap">
             {event.eventOrganizes.map((eventManage, index) => (
               <>

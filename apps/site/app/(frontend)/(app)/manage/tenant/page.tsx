@@ -13,7 +13,7 @@ import { useTenantManage } from '../../../../../context/navigation';
 import { getAvatar } from '../../../../../utils/actor-image/get-avatar';
 import { getBanner } from '../../../../../utils/actor-image/get-banner';
 
-import { deactivateActorImageMutation, updateActorMutation } from '@okampus/shared/graphql';
+import { deleteActorImageMutation, updateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { useState } from 'react';
@@ -32,7 +32,7 @@ export default function TenantProfilePage({ params }: { params: { slug: string }
     bio: adminTeam?.actor?.bio || '',
   };
 
-  const [deactivateActorImage] = useMutation(deactivateActorImageMutation);
+  const [deactivateActorImage] = useMutation(deleteActorImageMutation);
   const [updateActor] = useMutation(updateActorMutation);
 
   const [editingAvatar, setEditingAvatar] = useState(false);

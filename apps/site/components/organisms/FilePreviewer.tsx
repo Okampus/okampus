@@ -12,9 +12,9 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-import type { FileLike } from '@okampus/shared/types';
+import type { ExternalFile } from '@okampus/shared/types';
 
-export type FilePreviewerProps = { file: FileLike; onClose: () => void };
+export type FilePreviewerProps = { file: File | ExternalFile; onClose: () => void };
 
 export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
   const [preview, setPreview] = useState<React.JSX.Element | null>(null);
@@ -31,8 +31,8 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
           renderMode={'svg'}
           className="flex flex-col gap-6"
         >
-          {Array.from({ length: numPages }).map((_, page) => (
-            <Page pageNumber={page + 1} key={page} />
+          {Array.from({ length: numPages }).map((_, idx) => (
+            <Page pageNumber={idx + 1} key={idx} />
           ))}
         </Document>
       );
@@ -44,7 +44,9 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
   const filePreviewClassName = 'shadow-2xl rounded-lg overflow-hidden h-fit';
   useEffect(() => {
     async function filePreview() {
-      if (checkImage(file)) {
+      const checkPayload = { mimetype: file.type ?? '', name: file.name };
+
+      if (checkImage(checkPayload)) {
         if (file instanceof File) {
           return setPreview(
             <Image
@@ -60,12 +62,12 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
           <Image
             className={clsx(filePreviewClassName, 'h-auto w-auto max-h-full')}
             onClick={(e) => e.stopPropagation()}
-            src={file.src}
-            alt={file.name || ''}
+            src={file.url}
+            alt={file.name ?? ''}
           />
         );
-      } else if (checkPdf(file)) {
-        const data = file instanceof File ? await toBase64(file) : file.src;
+      } else if (checkPdf(checkPayload)) {
+        const data = file instanceof File ? await toBase64(file) : file.url;
         setFileSrc(data);
 
         return setPreview(
@@ -108,7 +110,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
         className="p-6 flex gap-6 text-white font-semibold items-center bg-gradient-to-b from-[#000000ee] to-transparent z-10"
       >
         <IconArrowLeft onClick={onClose} className="cursor-pointer " height="30" />
-        <FileIcon className="h-12 aspect-square" file={file} />
+        <FileIcon className="h-12 aspect-square" type={file.type} name={file.name} />
         <div>{file.name}</div>
       </div>
       <div className="absolute flex justify-center h-full w-full pt-12 pb-8 overflow-scroll scrollbar">

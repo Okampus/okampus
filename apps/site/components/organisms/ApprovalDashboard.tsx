@@ -1,6 +1,6 @@
 import TextInput from '../molecules/Input/TextInput';
 import SidebarLayout from '../atoms/Layout/SidebarLayout';
-import { SimpleFilterInput } from '../molecules/Input/SimpleFilterInput';
+import SimpleFilterInput from '../molecules/Input/SimpleFilterInput';
 import { useMemo, useState } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 

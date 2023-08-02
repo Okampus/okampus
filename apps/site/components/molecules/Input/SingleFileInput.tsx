@@ -1,9 +1,6 @@
 // import ActionButton from '../Button/ActionButton';
 import FileIcon from '../../atoms/Icon/FileIcon';
 
-// import { ReactComponent as DeleteFilledIcon } from '@okampus/assets/svg/icons/material/filled/delete.svg';
-// import { ReactComponent as CloseFilledicon } from '@okampus/assets/svg/icons/material/filled/close.svg';
-
 import { singleUploadMutation } from '@okampus/shared/graphql';
 // import { ActionType } from '@okampus/shared/types';
 import { bytes } from '@okampus/shared/utils';
@@ -83,7 +80,7 @@ export default forwardRef(({ onChange, options }: SingleFileInputProps, propRef:
 
   const innerRender = file ? (
     <div className="flex gap-4">
-      <FileIcon file={file} className="h-10" />
+      <FileIcon type={file.type} name={file.name} className="h-10" />
       <div>
         <div className="text-0 text-lg font-medium">{file.name}</div>
         <div className="text-2 text-base">

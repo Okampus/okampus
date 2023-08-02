@@ -42,7 +42,7 @@ export default function EventCard({ event }: EventCardProps) {
           <IconArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="relative mb-4">
-          <BannerImage className="md:rounded-t-2xl md:rounded-b-md" src={event.banner?.url} name={event.name} />
+          <BannerImage className="rounded-2xl" src={event.banner?.url} name={event.name} />
         </div>
         <div className="flex flex-col px-4 gap-0.5">
           <div className="text-primary font-semibold uppercase line-clamp-1 tabular-nums">{displayedStart}</div>

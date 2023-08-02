@@ -5,15 +5,16 @@ import Dashboard from '../../../../../../components/organisms/Dashboard';
 import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
 
+import { download } from '../../../../../../utils/download-file';
 import { useTenantManage } from '../../../../../../context/navigation';
 
 import { useTypedQuery, generateUserWithPointsInfoSelector } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { download, groupBy, toCsv } from '@okampus/shared/utils';
-import { IconDownload } from '@tabler/icons-react';
-import { useMemo } from 'react';
+import { groupBy, toCsv } from '@okampus/shared/utils';
 
+import { IconDownload } from '@tabler/icons-react';
 import clsx from 'clsx';
+import { useMemo } from 'react';
 
 import type { UserBaseInfo, UserWithPointsInfo } from '@okampus/shared/graphql';
 

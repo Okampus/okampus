@@ -13,6 +13,8 @@ import { eventManageInfo } from '@okampus/shared/graphql';
 import { unique } from '@okampus/shared/utils';
 
 import { IconInfoHexagon, IconUsersPlus, IconUsers, IconCheckbox, IconArrowLeft } from '@tabler/icons-react';
+import { notFound } from 'next/navigation';
+
 import type { EventManageInfo } from '@okampus/shared/graphql';
 
 type ManageEventLayoutProps = { children: React.ReactNode; params: { slug: string } };
@@ -20,7 +22,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
   const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, eventManageInfo];
   const [eventManage] = await getApolloQuery<EventManageInfo[]>('event', query, true).catch(() => []);
 
-  if (!eventManage) return null;
+  if (!eventManage) notFound();
 
   const managingTeams = eventManage?.eventOrganizes.map((eventManage) => eventManage.team);
   const teams = unique(managingTeams, (item) => item.id);

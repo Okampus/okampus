@@ -9,6 +9,7 @@ import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
 
 import { projectBaseInfo } from '@okampus/shared/graphql';
 import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
+import { notFound } from 'next/navigation';
 
 import type { ProjectBaseInfo } from '@okampus/shared/graphql';
 
@@ -17,7 +18,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
   const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, projectBaseInfo];
   const [project] = await getApolloQuery<ProjectBaseInfo[]>('project', query, true).catch(() => []);
 
-  if (!project) return null;
+  if (!project) notFound();
 
   const baseRoute = `/project/${params.slug}`;
   const projectRoute = (route: string) => `${baseRoute}/${route}`;

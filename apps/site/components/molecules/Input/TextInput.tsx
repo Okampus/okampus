@@ -3,9 +3,9 @@
 import { notificationAtom } from '../../../context/global';
 import { useDidMountEffect } from '../../../hooks/useDidMountEffect';
 
-import { ReactComponent as SpinnerIcon } from '@okampus/assets/svg/icons/spinner.svg';
 import { ToastType } from '@okampus/shared/types';
 
+import { IconLoader } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
@@ -178,7 +178,7 @@ export default function TextInput({
         )}
         <fieldset className="w-full relative flex rounded-lg bg-[var(--bg-input)]">
           {input}
-          {loading && <SpinnerIcon className="animate-spin shrink-0 self-center h-5 w-5 mr-3 text-1" />}
+          {loading && <IconLoader className="animate-spin shrink-0 self-center h-5 w-5 mr-3 text-1" />}
           {options?.label && !options.placeholder && !suffix && !prefix && (
             <label {...(options?.name && { htmlFor: options.name })} className="input-label">
               {options.label}

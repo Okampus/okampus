@@ -4004,15 +4004,22 @@
           ],
           "mappedType": "enum"
         },
-        "budget": {
-          "name": "budget",
-          "type": "real",
+        "type": {
+          "name": "type",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
-          "mappedType": "float"
+          "default": "'Other'",
+          "enumItems": [
+            "EventRegular",
+            "EventRange",
+            "EventMajor",
+            "Internal",
+            "Other"
+          ],
+          "mappedType": "enum"
         },
         "regular_event_interval": {
           "name": "regular_event_interval",
@@ -4023,6 +4030,38 @@
           "nullable": false,
           "default": "''",
           "mappedType": "text"
+        },
+        "start": {
+          "name": "start",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "budget": {
+          "name": "budget",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "float"
         },
         "is_private": {
           "name": "is_private",

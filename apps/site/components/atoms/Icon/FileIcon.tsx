@@ -5,7 +5,7 @@ import GenericDocumentIcon from '@okampus/assets/svg/mimetypes/generic/generic-d
 import GenericExecutableIcon from '@okampus/assets/svg/mimetypes/generic/generic-executable.svg';
 import GenericImageIcon from '@okampus/assets/svg/mimetypes/generic/generic-image.svg';
 import GenericTabularIcon from '@okampus/assets/svg/mimetypes/generic/generic-tabular.svg';
-import GenericTextIcon from '@okampus/assets/svg/mimetypes/generic/generic-tabular.svg';
+import GenericTextIcon from '@okampus/assets/svg/mimetypes/generic/generic-text.svg';
 import GenericVideoIcon from '@okampus/assets/svg/mimetypes/generic/generic-video.svg';
 
 import PDFIcon from '@okampus/assets/svg/mimetypes/document/pdf.svg';
@@ -79,9 +79,9 @@ export function getFileTypeIcon(file: FileMimeCheckPayload) {
   }
 }
 
-export type FileIconProps = { file: FileMimeCheckPayload; className?: string; style?: React.CSSProperties };
-export default function FileIcon({ file, className, style }: FileIconProps) {
-  const icon = getFileTypeIcon(file);
+export type FileIconProps = { type?: string; name?: string; className?: string; style?: React.CSSProperties };
+export default function FileIcon({ type, name, className, style }: FileIconProps) {
+  const icon = getFileTypeIcon({ mimetype: type ?? '', name: name });
 
   // eslint-disable-next-line @next/next/no-img-element
   return <img alt="" src={icon} className={className} style={{ aspectRatio: '1/1', display: 'block', ...style }} />;

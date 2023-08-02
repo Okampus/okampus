@@ -5,22 +5,6 @@
       "path": "../apps/site"
     },
     {
-      "name": "ui-atoms",
-      "path": "../libs/ui/atoms"
-    },
-    {
-      "name": "ui-molecules",
-      "path": "../libs/ui/molecules"
-    },
-    {
-      "name": "ui-organisms",
-      "path": "../libs/ui/organisms"
-    },
-    {
-      "name": "ui-templates",
-      "path": "../libs/ui/templates"
-    },
-    {
       "name": "api",
       "path": "../apps/api"
     },

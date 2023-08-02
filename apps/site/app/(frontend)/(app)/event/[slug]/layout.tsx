@@ -9,7 +9,9 @@ import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCach
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
 
 import { eventDetailsInfo } from '@okampus/shared/graphql';
+
 import { IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
+import { notFound } from 'next/navigation';
 
 import type { EventDetailsInfo } from '@okampus/shared/graphql';
 
@@ -18,7 +20,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
   const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, eventDetailsInfo];
   const [event] = await getApolloQuery<EventDetailsInfo[]>('event', query, true).catch(() => []);
 
-  if (!event) return null;
+  if (!event) return notFound();
 
   const baseRoute = `/event/${params.slug}`;
   const eventRoute = (route: string) => `${baseRoute}/${route}`;

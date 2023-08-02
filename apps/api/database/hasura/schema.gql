@@ -38310,6 +38310,7 @@ type Project {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  end: timestamptz
 
   # An array relationship
   eventOrganizes(
@@ -38537,6 +38538,7 @@ type Project {
   ): ProjectTagsAggregate!
   regularEventInterval: String!
   slug: String!
+  start: timestamptz
 
   # An object relationship
   team: Team!
@@ -38545,6 +38547,7 @@ type Project {
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
+  type: String!
 }
 
 # aggregated selection of "project"
@@ -38656,6 +38659,7 @@ input ProjectBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  end: TimestamptzComparisonExp
   eventOrganizes: EventOrganizeBoolExp
   eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
@@ -38677,10 +38681,12 @@ input ProjectBoolExp {
   projectTagsAggregate: ProjectTagsAggregateBoolExp
   regularEventInterval: StringComparisonExp
   slug: StringComparisonExp
+  start: TimestamptzComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  type: StringComparisonExp
 }
 
 # unique or primary key constraints on table "project"
@@ -38712,6 +38718,7 @@ input ProjectInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grant: GrantObjRelInsertInput
@@ -38727,10 +38734,12 @@ input ProjectInsertInput {
   projectTags: ProjectTagsArrRelInsertInput
   regularEventInterval: String
   slug: String
+  start: timestamptz
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  type: String
 }
 
 # aggregate max on columns
@@ -38742,14 +38751,17 @@ type ProjectMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # order by max() on columns of table "project"
@@ -38761,14 +38773,17 @@ input ProjectMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # aggregate min on columns
@@ -38780,14 +38795,17 @@ type ProjectMinFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # order by min() on columns of table "project"
@@ -38799,14 +38817,17 @@ input ProjectMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # response of any mutation on the table "project"
@@ -38845,6 +38866,7 @@ input ProjectOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grant: GrantOrderBy
@@ -38860,10 +38882,12 @@ input ProjectOrderBy {
   projectTagsAggregate: ProjectTagsAggregateOrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 # primary key columns input for table: project
@@ -38895,6 +38919,9 @@ enum ProjectSelectColumn {
   description
 
   # column name
+  end
+
+  # column name
   grantId
 
   # column name
@@ -38919,10 +38946,16 @@ enum ProjectSelectColumn {
   slug
 
   # column name
+  start
+
+  # column name
   teamId
 
   # column name
   tenantId
+
+  # column name
+  type
 }
 
 # select "projectAggregateBoolExpBool_andArgumentsColumns" columns of table "project"
@@ -38952,6 +38985,7 @@ input ProjectSetInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -38960,8 +38994,10 @@ input ProjectSetInput {
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # aggregate stddev on columns
@@ -39048,6 +39084,7 @@ input ProjectStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -39056,8 +39093,10 @@ input ProjectStreamCursorValueInput {
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 # aggregate sum on columns
@@ -39700,6 +39739,9 @@ enum ProjectUpdateColumn {
   description
 
   # column name
+  end
+
+  # column name
   grantId
 
   # column name
@@ -39724,10 +39766,16 @@ enum ProjectUpdateColumn {
   slug
 
   # column name
+  start
+
+  # column name
   teamId
 
   # column name
   tenantId
+
+  # column name
+  type
 }
 
 input ProjectUpdates {

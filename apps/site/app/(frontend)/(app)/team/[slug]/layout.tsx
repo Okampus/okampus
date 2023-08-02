@@ -1,3 +1,4 @@
+import SkeletonPublicSidebar from '../../../../../components/atoms/Skeleton/SkeletonPublicSidebar';
 import SideBar from '../../../../../components/layouts/SideBar';
 import TeamManageButton from '../../../../../components/layouts/SideBar/ManageButton/TeamManageButton';
 import SidebarBanner from '../../../../../components/layouts/SideBar/SidebarBanner';
@@ -11,15 +12,17 @@ import { getBanner } from '../../../../../utils/actor-image/get-banner';
 
 import { teamWithMembersInfo } from '@okampus/shared/graphql';
 import { IconUsers, IconTicket } from '@tabler/icons-react';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 import type { TeamWithMembersInfo } from '@okampus/shared/graphql';
 
 type TeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
-export default async function TeamLayout({ children, params }: TeamLayoutProps) {
+async function TeamLayout({ children, params }: TeamLayoutProps) {
   const query = [{ where: { actor: { slug: { _eq: params.slug } } }, limit: 1 }, teamWithMembersInfo];
   const [team] = await getApolloQuery<TeamWithMembersInfo[]>('team', query, true).catch(() => []);
 
-  if (!team) return null;
+  if (!team) notFound();
 
   const teamRoute = (route: string) => `/team/${team?.actor?.slug}/${route}`;
   return (
@@ -41,3 +44,17 @@ export default async function TeamLayout({ children, params }: TeamLayoutProps) 
     </>
   );
 }
+
+// eslint-disable-next-line import/no-anonymous-default-export, react/display-name
+export default ({ children, params }: TeamLayoutProps) => (
+  <Suspense
+    fallback={
+      <>
+        <SkeletonPublicSidebar />
+        {children}
+      </>
+    }
+  >
+    <TeamLayout params={params}>{children}</TeamLayout>
+  </Suspense>
+);

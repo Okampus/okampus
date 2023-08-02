@@ -1,4 +1,4 @@
-import { ReactComponent as CheckFilledIcon } from '@okampus/assets/svg/icons/material/filled/check.svg';
+import { IconCheck } from '@tabler/icons-react';
 import type { InputOptions, SelectItem } from '@okampus/shared/types';
 
 export type MultiCheckboxInputProps<T> = {
@@ -35,9 +35,7 @@ export default function MultiCheckboxInput<T>({ items, selected, onChange, optio
                 className="absolute top-0 left-0 w-full h-full opacity-0"
               />
               <div className="absolute inset-0 bg-2 border border-[var(--border-1)] rounded">
-                {selected[index] && (
-                  <CheckFilledIcon className="absolute inset-0 bg-opposite text-opposite rounded-sm" />
-                )}
+                {selected[index] && <IconCheck className="absolute inset-0 bg-opposite text-opposite rounded-sm" />}
               </div>
             </div>
             {item.label}

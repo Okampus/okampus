@@ -15,6 +15,7 @@ import { useTypedQueryAndSubscribe } from '../../../../../hooks/apollo/useTypedQ
 import { EventState } from '@okampus/shared/enums';
 import { OrderBy, eventWithJoinInfo } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
+import { notFound } from 'next/navigation';
 
 import type { SocialType } from '@okampus/shared/enums';
 
@@ -26,7 +27,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   const variables = { where, orderBy: [{ start: OrderBy.DESC }], limit: 3 };
 
   const { data } = useTypedQueryAndSubscribe({ queryName: 'event', selector: [variables, eventWithJoinInfo] });
-  if (!team) return null;
+  if (!team) notFound();
 
   return (
     <ViewLayout>

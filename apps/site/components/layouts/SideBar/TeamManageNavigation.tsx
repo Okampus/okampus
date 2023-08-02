@@ -18,7 +18,7 @@ import {
   // IconPigMoney,
   IconGavel,
   IconNotebook,
-  IconFolder,
+  // IconFolder,
   IconTicket,
   IconSquarePlus,
   IconTable,
@@ -101,8 +101,8 @@ function getAccordeons(team: TeamManageInfo, tenant?: TenantBaseInfo): LinkListA
             heading: { label: 'Légal & passations' },
             items: [
               { label: 'Situation légale', href: manageTeamRoute('legal'), icon: <IconGavel /> },
-              { label: 'Statuts & règlement', href: manageTeamRoute('status'), icon: <IconNotebook /> },
-              { label: 'Documents', href: manageTeamRoute('documents'), icon: <IconFolder /> },
+              // { label: 'Statuts & règlement', href: manageTeamRoute('status'), icon: <IconNotebook /> },
+              { label: 'Statuts & documents', href: manageTeamRoute('documents'), icon: <IconNotebook /> },
             ],
           },
         ]

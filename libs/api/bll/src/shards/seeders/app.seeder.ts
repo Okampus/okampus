@@ -396,6 +396,8 @@ export class DatabaseSeeder extends Seeder {
     }
 
     const categoriesData = (await loadCategoriesFromYaml()) ?? seedingConfig.DEFAULT_CATEGORIES;
+
+    const iconConfig = { encoding: '7bit', mimetype: 'image/webp', fieldname: 'icon', fileLastModifiedAt: createdAt };
     const categories = await Promise.all(
       categoriesData.map(async ({ icon, name, color, slug }) => {
         await em.persistAndFlush(new Tag({ color, slug, type: TagType.TeamCategory, name, ...scopedOptions }));
@@ -404,15 +406,9 @@ export class DatabaseSeeder extends Seeder {
         const buffer = icon && (await readIcon(icon));
 
         if (buffer) {
-          const fileData = { buffer, size: buffer.length, filename: name, encoding: '7bit', type: 'image/webp' };
-          const upload = { ...fileData, fieldname: 'icon', fileLastModifiedAt: createdAt };
-
-          const image = await DatabaseSeeder.upload.createImageUpload(
-            upload,
-            Buckets.Thumbnails,
-            { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id },
-            200
-          );
+          const file = { ...iconConfig, buffer, size: buffer.length, filename: name };
+          const context = { ...scopedOptions, entityName: EntityName.Tag, entityId: tag.id };
+          const image = await DatabaseSeeder.upload.createImageUpload(file, Buckets.Thumbnails, context, 200);
 
           this.logger.log(`Uploaded ${name} icon`);
 
@@ -535,7 +531,7 @@ export class DatabaseSeeder extends Seeder {
 
         if (teamData.avatar) {
           const fileData = { buffer: teamData.avatar, size: teamData.avatar.length, filename: `${teamData.name}.webp` };
-          const file = { ...fileData, encoding: '7bit', type: 'image/webp', fieldname: teamData.name };
+          const file = { ...fileData, encoding: '7bit', mimetype: 'image/webp', fieldname: teamData.name };
           const image = await DatabaseSeeder.upload.createUpload(file, Buckets.ActorImages, {
             ...scopedOptions,
             entityName: EntityName.Team,
@@ -631,7 +627,7 @@ export class DatabaseSeeder extends Seeder {
       filename: receiptExampleFilename,
       encoding: '7bit',
     };
-    const sampleReceipt = { ...receiptFileData, type: 'application/pdf', fieldname: 'receipt' };
+    const sampleReceipt = { ...receiptFileData, mimetype: 'application/pdf', fieldname: 'receipt' };
 
     const MAX_MEMBERS = Math.min(students.length - 4, seedingConfig.MAX_MEMBERS);
     for (const team of teams) {

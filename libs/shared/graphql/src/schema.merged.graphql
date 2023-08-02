@@ -23011,6 +23011,7 @@ type Project {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  end: timestamptz
   eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
   eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
@@ -23032,10 +23033,12 @@ type Project {
   projectTagsAggregate(distinctOn: [ProjectTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectTagsOrderBy!], where: ProjectTagsBoolExp): ProjectTagsAggregate!
   regularEventInterval: String!
   slug: String!
+  start: timestamptz
   team: Team!
   teamId: bigint!
   tenant: Tenant!
   tenantId: bigint!
+  type: String!
 }
 
 type ProjectAggregate {
@@ -23138,6 +23141,7 @@ input ProjectBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  end: TimestamptzComparisonExp
   eventOrganizes: EventOrganizeBoolExp
   eventOrganizesAggregate: EventOrganizeAggregateBoolExp
   finances: FinanceBoolExp
@@ -23159,10 +23163,12 @@ input ProjectBoolExp {
   projectTagsAggregate: ProjectTagsAggregateBoolExp
   regularEventInterval: StringComparisonExp
   slug: StringComparisonExp
+  start: TimestamptzComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
+  type: StringComparisonExp
 }
 
 enum ProjectConstraint {
@@ -23190,6 +23196,7 @@ input ProjectInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   eventOrganizes: EventOrganizeArrRelInsertInput
   finances: FinanceArrRelInsertInput
   grant: GrantObjRelInsertInput
@@ -23205,10 +23212,12 @@ input ProjectInsertInput {
   projectTags: ProjectTagsArrRelInsertInput
   regularEventInterval: String
   slug: String
+  start: timestamptz
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
+  type: String
 }
 
 type ProjectMaxFields {
@@ -23219,14 +23228,17 @@ type ProjectMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 input ProjectMaxOrderBy {
@@ -23237,14 +23249,17 @@ input ProjectMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 type ProjectMinFields {
@@ -23255,14 +23270,17 @@ type ProjectMinFields {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 input ProjectMinOrderBy {
@@ -23273,14 +23291,17 @@ input ProjectMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   grantId: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 type ProjectMutationResponse {
@@ -23310,6 +23331,7 @@ input ProjectOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  end: OrderBy
   eventOrganizesAggregate: EventOrganizeAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   grant: GrantOrderBy
@@ -23325,10 +23347,12 @@ input ProjectOrderBy {
   projectTagsAggregate: ProjectTagsAggregateOrderBy
   regularEventInterval: OrderBy
   slug: OrderBy
+  start: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  type: OrderBy
 }
 
 input ProjectPkColumnsInput {
@@ -23343,6 +23367,7 @@ enum ProjectSelectColumn {
   createdById
   deletedAt
   description
+  end
   grantId
   hiddenAt
   id
@@ -23351,8 +23376,10 @@ enum ProjectSelectColumn {
   name
   regularEventInterval
   slug
+  start
   teamId
   tenantId
+  type
 }
 
 enum ProjectSelectColumnProjectAggregateBoolExpBool_andArgumentsColumns {
@@ -23373,6 +23400,7 @@ input ProjectSetInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -23381,8 +23409,10 @@ input ProjectSetInput {
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 type ProjectStddevFields {
@@ -23458,6 +23488,7 @@ input ProjectStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  end: timestamptz
   grantId: bigint
   hiddenAt: timestamptz
   id: bigint
@@ -23466,8 +23497,10 @@ input ProjectStreamCursorValueInput {
   name: String
   regularEventInterval: String
   slug: String
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
+  type: String
 }
 
 type ProjectSumFields {
@@ -23970,6 +24003,7 @@ enum ProjectUpdateColumn {
   createdById
   deletedAt
   description
+  end
   grantId
   hiddenAt
   id
@@ -23978,8 +24012,10 @@ enum ProjectUpdateColumn {
   name
   regularEventInterval
   slug
+  start
   teamId
   tenantId
+  type
 }
 
 input ProjectUpdates {

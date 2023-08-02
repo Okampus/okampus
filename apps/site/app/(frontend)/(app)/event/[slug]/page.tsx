@@ -3,7 +3,7 @@
 import QRCodeImage from '../../../../../components/atoms/Image/QRCodeImage';
 import GroupItem from '../../../../../components/atoms/Item/GroupItem';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
-import TextLocation from '../../../../../components/atoms/Text/TextLocation';
+// import TextLocation from '../../../../../components/atoms/Text/TextLocation';
 import ActionButton from '../../../../../components/molecules/Button/ActionButton';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
@@ -43,13 +43,14 @@ export default function EventPage({ params }: { params: { slug: string } }) {
     <ViewLayout
       className="relative"
       header={
-        <div className="flex flex-col gap-2">
-          {event.name}
-          <span className="uppercase text-primary text-xl font-medium">
-            {format('weekDayHour', new Date(event.start))}
-          </span>
-          <TextLocation className="text-lg font-medium" location={event.location} />
-        </div>
+        event.name
+        // <div className="flex flex-col gap-2">
+        //   {event.name}
+        //   <span className="uppercase text-primary text-xl font-medium">
+        //     {format('weekDayHour', new Date(event.start))}
+        //   </span>
+        //   <TextLocation className="text-lg font-medium" location={event.location} />
+        // </div>
       }
     >
       <GroupItem heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">

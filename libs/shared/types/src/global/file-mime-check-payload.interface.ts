@@ -1,5 +1,5 @@
 export type FileMimeCheckPayload = {
-  type: string;
+  mimetype: string;
   name?: string;
   stream?: () => ReadableStream<Uint8Array>;
 };

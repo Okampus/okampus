@@ -1,13 +1,11 @@
-@import 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Fira+Code:wght@100..900';
-
 html,
 body {
-  font-family: Montserrat, sans-serif;
+  font-family: var(--font-sans), sans-serif;
 }
 
 pre,
 code,
 .font-mono,
 .font-code {
-  font-family: FiraCode, monospace;
+  font-family: var(--font-mono), monospace;
 }
