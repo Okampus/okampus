@@ -13,7 +13,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 
-import { Colors } from '@okampus/shared/enums';
+import { Colors, ProjectType } from '@okampus/shared/enums';
 
 import type { EventOrganize } from '../event/event-organize/event-organize.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
@@ -40,11 +40,20 @@ export class Project extends TenantScopedEntity {
   @Enum({ items: () => Colors, type: EnumType, default: Colors.Blue })
   color: Colors = Colors.Blue;
 
-  @Property({ type: 'float', default: 0 })
-  budget = 0;
+  @Enum({ items: () => ProjectType, type: EnumType, default: ProjectType.Other })
+  type: ProjectType = ProjectType.Other;
 
   @Property({ type: 'text', default: '' })
   regularEventInterval = '';
+
+  @Property({ type: Date, nullable: true, default: null })
+  start: Date | null = null;
+
+  @Property({ type: Date, nullable: true, default: null })
+  end: Date | null = null;
+
+  @Property({ type: 'float', default: 0 })
+  budget = 0;
 
   @Property({ type: 'boolean', default: false })
   isPrivate = false;
@@ -56,6 +65,10 @@ export class Project extends TenantScopedEntity {
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
+  @ManyToMany({ type: 'TeamMember' })
+  @TransformCollection()
+  supervisors = new Collection<TeamMember>(this);
+
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
@@ -64,10 +77,6 @@ export class Project extends TenantScopedEntity {
 
   @ManyToOne({ type: 'Grant', nullable: true, default: null })
   grant: Grant | null = null;
-
-  @ManyToMany({ type: 'TeamMember' })
-  @TransformCollection()
-  supervisors = new Collection<TeamMember>(this);
 
   @OneToMany({ type: 'EventOrganize', mappedBy: 'project' })
   @TransformCollection()
