@@ -1,5 +1,5 @@
 import GroupItem from '../Item/GroupItem';
-import { formatIban } from '@okampus/shared/utils';
+import { formatIBAN } from '@okampus/shared/utils';
 
 import clsx from 'clsx';
 
@@ -38,7 +38,7 @@ export default function BankInfoPreview({ iban, holderName, bicSwift, bankLocati
         {holderName || 'XX XXXXXXXXXX XXXXX'}
       </GroupItem>
       <GroupItem heading="IBAN" groupClassName={clsx('font-medium', iban ? 'text-0' : 'opacity-50')}>
-        {formatIban(iban) || 'XXXX XXXX XXXX XXXX XXXX XXXX XXX'}
+        {formatIBAN(iban) || 'XXXX XXXX XXXX XXXX XXXX XXXX XXX'}
       </GroupItem>
       <div className="flex gap-5 w-fit">
         {Object.entries(parts).map(([key, value]) => (

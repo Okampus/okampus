@@ -1,7 +1,7 @@
 import TextCopiable from '../../atoms/Text/TextCopiable';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { formatIban } from '@okampus/shared/utils';
+import { formatIBAN } from '@okampus/shared/utils';
 
 import type { AccountBaseInfo } from '@okampus/shared/graphql';
 
@@ -23,7 +23,7 @@ export default function AccountCard({ account }: AccountCardProps) {
           <>
             <div className="flex gap-1 items-center">
               <div className="text-1 text-sm font-medium">IBAN : </div>
-              <TextCopiable text={formatIban(account.bankInfo.iban)} copyText={account.bankInfo.iban} />
+              <TextCopiable text={formatIBAN(account.bankInfo.iban)} copyText={account.bankInfo.iban} />
             </div>
           </>
         )}

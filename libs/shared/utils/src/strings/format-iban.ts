@@ -1,4 +1,4 @@
-export function formatIban(iban: string) {
+export function formatIBAN(iban: string) {
   if (!iban) return '';
 
   const cleanIban = iban

@@ -1,9 +1,9 @@
-import iban from 'fast-iban';
+import isIBAN from 'validator/lib/isIBAN';
 
 export async function validateIBAN(value: string) {
   let isValid = false;
   try {
-    isValid = await iban.validateIBAN(value);
+    isValid = isIBAN(value);
   } catch {
     isValid = false;
   }

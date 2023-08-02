@@ -12,7 +12,7 @@ import { validateIBAN } from '../../utils/form-validation/iban';
 
 import { LegalUnitType } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
-import { formatIban } from '@okampus/shared/utils';
+import { formatIBAN } from '@okampus/shared/utils';
 import { useState } from 'react';
 
 import type { ActorBaseInfo, LegalUnitLocationMinimalInfo, LegalUnitMinimalInfo } from '@okampus/shared/graphql';
@@ -52,7 +52,7 @@ export default function BankInfoForm({ actor, onSubmit }: BankInfoFormProps) {
         <div className="flex flex-col gap-4">
           <TextInput options={{ label: 'Nom du titulaire du compte' }} value={holderName} onChange={setHolderName} />
           <TextInput
-            format={formatIban}
+            format={formatIBAN}
             checkValueOn={{ length: 33 }}
             infoText={!canContinue && 'Exemple: FR76 0000 1000 0000 0225 4793 751'}
             value={iban}

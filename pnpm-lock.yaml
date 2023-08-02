@@ -173,9 +173,6 @@ dependencies:
   embla-carousel-react:
     specifier: ^7.1.0
     version: 7.1.0(react@18.2.0)
-  fast-iban:
-    specifier: ^1.2.0
-    version: 1.2.0
   fastify:
     specifier: ^4.21.0
     version: 4.21.0
@@ -320,6 +317,9 @@ dependencies:
   use-breakpoint:
     specifier: ^3.1.0
     version: 3.1.1(react-dom@18.2.0)(react@18.2.0)
+  validator:
+    specifier: ^13.9.0
+    version: 13.9.0
   ws:
     specifier: ^8.13.0
     version: 8.13.0
@@ -427,6 +427,9 @@ devDependencies:
   '@types/set-cookie-parser':
     specifier: ^2.4.0
     version: 2.4.0
+  '@types/validator':
+    specifier: ^13.9.0
+    version: 13.9.0
   '@types/webpack-env':
     specifier: ^1.18.0
     version: 1.18.0
@@ -7191,9 +7194,8 @@ packages:
     resolution: {integrity: sha512-NfQ4gyz38SL8sDNrSixxU2Os1a5xcdFxipAFxYEuLUlvU2uDwS4NUpsImcf1//SlWItCVMMLiylsxbmNMToV/g==}
     dev: false
 
-  /@types/validator@13.7.17:
-    resolution: {integrity: sha512-aqayTNmeWrZcvnG2MG9eGYI6b7S5fl+yKgPs6bAjOTwPS316R5SxBGKvtSExfyoJU7pIeHJfsHI0Ji41RVMkvQ==}
-    dev: false
+  /@types/validator@13.9.0:
+    resolution: {integrity: sha512-NclP0IbzHj/4tJZKFqKh8E7kZdgss+MCUYV9G+TLltFfDA4lFgE4PKPpDIyS2FlcdANIfSx273emkupvChigbw==}
 
   /@types/webpack-env@1.18.0:
     resolution: {integrity: sha512-56/MAlX5WMsPVbOg7tAxnYvNYMMWr/QJiIp6BxVSW3JJXUVzzOn64qW8TzQyMSqSUFM2+PVI4aUHcHOzIz/1tg==}
@@ -8691,7 +8693,7 @@ packages:
   /class-validator@0.14.0:
     resolution: {integrity: sha512-ct3ltplN8I9fOwUd8GrP8UQixwff129BkEtuWDKL5W45cQuLd19xqmTLu5ge78YDm/fdje6FMt0hGOhl0lii3A==}
     dependencies:
-      '@types/validator': 13.7.17
+      '@types/validator': 13.9.0
       libphonenumber-js: 1.10.31
       validator: 13.9.0
     dev: false
@@ -10622,12 +10624,6 @@ packages:
       merge2: 1.4.1
       micromatch: 4.0.5
 
-  /fast-iban@1.2.0:
-    resolution: {integrity: sha512-b8Ul29Ff308m0OYYm2dKERgmY/Prvww+3uSDL+VZJBPVH7GhfKrQ2apbShQrCJwQjOnpe+d1b72A//u2/Hr9xw==}
-    dependencies:
-      iso-7064: 1.1.0
-    dev: false
-
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
@@ -12202,10 +12198,6 @@ packages:
 
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  /iso-7064@1.1.0:
-    resolution: {integrity: sha512-GO1bR+qa1AtWIBUoE59suIc6y4yn/1Ho8PEMmhHg0TXpEPzwxm0Z4/+Ps6JfrbYjSDu7yzIoIlQJJh3EHCpvoQ==}
-    dev: false
 
   /isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
