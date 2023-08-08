@@ -15179,7 +15179,7 @@ type Form {
   isAllowingEditingAnswers: Boolean!
   isAllowingMultipleAnswers: Boolean!
   isEnabled: Boolean!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
   schema(path: String): jsonb!
   team: Team
@@ -15287,7 +15287,7 @@ input FormBoolExp {
   isAllowingEditingAnswers: BooleanComparisonExp
   isAllowingMultipleAnswers: BooleanComparisonExp
   isEnabled: BooleanComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   schema: JsonbComparisonExp
   team: TeamBoolExp
@@ -15331,7 +15331,7 @@ input FormInsertInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   team: TeamObjRelInsertInput
@@ -15413,7 +15413,7 @@ input FormOrderBy {
   isAllowingEditingAnswers: OrderBy
   isAllowingMultipleAnswers: OrderBy
   isEnabled: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   schema: OrderBy
   team: TeamOrderBy
@@ -15440,7 +15440,7 @@ enum FormSelectColumn {
   isAllowingEditingAnswers
   isAllowingMultipleAnswers
   isEnabled
-  isRequired
+  isLocked
   name
   schema
   tenantId
@@ -15451,14 +15451,14 @@ enum FormSelectColumnFormAggregateBoolExpBool_andArgumentsColumns {
   isAllowingEditingAnswers
   isAllowingMultipleAnswers
   isEnabled
-  isRequired
+  isLocked
 }
 
 enum FormSelectColumnFormAggregateBoolExpBool_orArgumentsColumns {
   isAllowingEditingAnswers
   isAllowingMultipleAnswers
   isEnabled
-  isRequired
+  isLocked
 }
 
 input FormSetInput {
@@ -15470,7 +15470,7 @@ input FormSetInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   tenantId: bigint
@@ -15527,7 +15527,7 @@ input FormStreamCursorValueInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   tenantId: bigint
@@ -15942,7 +15942,7 @@ enum FormUpdateColumn {
   isAllowingEditingAnswers
   isAllowingMultipleAnswers
   isEnabled
-  isRequired
+  isLocked
   name
   schema
   tenantId
@@ -22596,7 +22596,7 @@ type Pole {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
   team: Team!
   teamId: bigint!
@@ -22697,7 +22697,7 @@ input PoleBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -22727,7 +22727,7 @@ input PoleInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -22813,7 +22813,7 @@ input PoleOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -22834,18 +22834,18 @@ enum PoleSelectColumn {
   description
   hiddenAt
   id
-  isRequired
+  isLocked
   name
   teamId
   tenantId
 }
 
 enum PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns {
-  isRequired
+  isLocked
 }
 
 enum PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns {
-  isRequired
+  isLocked
 }
 
 input PoleSetInput {
@@ -22856,7 +22856,7 @@ input PoleSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   teamId: bigint
   tenantId: bigint
@@ -22917,7 +22917,7 @@ input PoleStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   teamId: bigint
   tenantId: bigint
@@ -22945,7 +22945,7 @@ enum PoleUpdateColumn {
   description
   hiddenAt
   id
-  isRequired
+  isLocked
   name
   teamId
   tenantId
@@ -25090,7 +25090,7 @@ type Role {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
   permissions: [String!]!
   team: Team!
@@ -25196,7 +25196,7 @@ input RoleBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   permissions: StringArrayComparisonExp
   team: TeamBoolExp
@@ -25230,7 +25230,7 @@ input RoleInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   team: TeamObjRelInsertInput
@@ -25323,7 +25323,7 @@ input RoleOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   permissions: OrderBy
   team: TeamOrderBy
@@ -25346,7 +25346,7 @@ enum RoleSelectColumn {
   deletedAt
   hiddenAt
   id
-  isRequired
+  isLocked
   name
   permissions
   teamId
@@ -25355,11 +25355,11 @@ enum RoleSelectColumn {
 }
 
 enum RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns {
-  isRequired
+  isLocked
 }
 
 enum RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns {
-  isRequired
+  isLocked
 }
 
 input RoleSetInput {
@@ -25369,7 +25369,7 @@ input RoleSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -25431,7 +25431,7 @@ input RoleStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -25460,7 +25460,7 @@ enum RoleUpdateColumn {
   deletedAt
   hiddenAt
   id
-  isRequired
+  isLocked
   name
   permissions
   teamId

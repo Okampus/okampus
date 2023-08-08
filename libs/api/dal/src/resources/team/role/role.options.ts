@@ -7,5 +7,5 @@ export type RoleOptions = RoleProps &
   TenantScopedOptions & {
     team: Team;
     type?: TeamRoleType;
-    isRequired?: boolean;
+    isLocked?: boolean;
   };

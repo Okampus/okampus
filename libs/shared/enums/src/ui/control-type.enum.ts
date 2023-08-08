@@ -3,7 +3,8 @@
 export enum ControlType {
   Div = 'div',
   Text = 'text',
-  SingleFile = 'single-file',
+  File = 'file',
+  MultiFile = 'multi-file',
   Select = 'select',
   Number = 'number',
   Checkbox = 'checkbox',

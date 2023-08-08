@@ -476,7 +476,7 @@ export class DatabaseSeeder extends Seeder {
           name: 'Bureau',
           description,
           team: team,
-          isRequired: true,
+          required: true,
           category,
           ...scopedOptions,
         });

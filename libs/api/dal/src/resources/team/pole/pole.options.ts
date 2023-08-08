@@ -5,5 +5,5 @@ import type { Team } from '../team.entity';
 export type PoleOptions = PoleProps &
   TenantScopedOptions & {
     team: Team;
-    isRequired?: boolean;
+    required?: boolean;
   };

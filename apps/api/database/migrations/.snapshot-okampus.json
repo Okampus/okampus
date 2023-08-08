@@ -1408,8 +1408,8 @@
           "default": "true",
           "mappedType": "boolean"
         },
-        "is_required": {
-          "name": "is_required",
+        "is_locked": {
+          "name": "is_locked",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -1961,6 +1961,71 @@
           ],
           "referencedTableName": "public.file_upload",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "form_submission_id": {
+          "name": "form_submission_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "form_submission_linked_files",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "form_submission_linked_files_pkey",
+          "columnNames": [
+            "form_submission_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "form_submission_linked_files_form_submission_id_foreign": {
+          "constraintName": "form_submission_linked_files_form_submission_id_foreign",
+          "columnNames": [
+            "form_submission_id"
+          ],
+          "localTableName": "public.form_submission_linked_files",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.form_submission",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "form_submission_linked_files_file_upload_id_foreign": {
+          "constraintName": "form_submission_linked_files_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.form_submission_linked_files",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -3392,8 +3457,8 @@
           ],
           "mappedType": "enum"
         },
-        "is_required": {
-          "name": "is_required",
+        "is_locked": {
+          "name": "is_locked",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -3548,8 +3613,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "is_required": {
-          "name": "is_required",
+        "is_locked": {
+          "name": "is_locked",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,

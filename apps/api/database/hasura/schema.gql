@@ -21293,7 +21293,7 @@ type Form {
   isAllowingEditingAnswers: Boolean!
   isAllowingMultipleAnswers: Boolean!
   isEnabled: Boolean!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
   schema(
     # JSON select path
@@ -21420,7 +21420,7 @@ input FormBoolExp {
   isAllowingEditingAnswers: BooleanComparisonExp
   isAllowingMultipleAnswers: BooleanComparisonExp
   isEnabled: BooleanComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   schema: JsonbComparisonExp
   team: TeamBoolExp
@@ -21472,7 +21472,7 @@ input FormInsertInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   team: TeamObjRelInsertInput
@@ -21567,7 +21567,7 @@ input FormOrderBy {
   isAllowingEditingAnswers: OrderBy
   isAllowingMultipleAnswers: OrderBy
   isEnabled: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   schema: OrderBy
   team: TeamOrderBy
@@ -21614,7 +21614,7 @@ enum FormSelectColumn {
   isEnabled
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name
@@ -21641,7 +21641,7 @@ enum FormSelectColumnFormAggregateBoolExpBool_andArgumentsColumns {
   isEnabled
 
   # column name
-  isRequired
+  isLocked
 }
 
 # select "formAggregateBoolExpBool_orArgumentsColumns" columns of table "form"
@@ -21656,7 +21656,7 @@ enum FormSelectColumnFormAggregateBoolExpBool_orArgumentsColumns {
   isEnabled
 
   # column name
-  isRequired
+  isLocked
 }
 
 # input type for updating data in table "form"
@@ -21669,7 +21669,7 @@ input FormSetInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   tenantId: bigint
@@ -21737,7 +21737,7 @@ input FormStreamCursorValueInput {
   isAllowingEditingAnswers: Boolean
   isAllowingMultipleAnswers: Boolean
   isEnabled: Boolean
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   schema: jsonb
   tenantId: bigint
@@ -22353,7 +22353,7 @@ enum FormUpdateColumn {
   isEnabled
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name
@@ -37719,7 +37719,7 @@ type Pole {
   description: String!
   hiddenAt: timestamptz
   id: bigint!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
 
   # An object relationship
@@ -37867,7 +37867,7 @@ input PoleBoolExp {
   description: StringComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
@@ -37901,7 +37901,7 @@ input PoleInsertInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   team: TeamObjRelInsertInput
   teamId: bigint
@@ -38000,7 +38000,7 @@ input PoleOrderBy {
   description: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
@@ -38038,7 +38038,7 @@ enum PoleSelectColumn {
   id
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name
@@ -38053,13 +38053,13 @@ enum PoleSelectColumn {
 # select "poleAggregateBoolExpBool_andArgumentsColumns" columns of table "pole"
 enum PoleSelectColumnPoleAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  isRequired
+  isLocked
 }
 
 # select "poleAggregateBoolExpBool_orArgumentsColumns" columns of table "pole"
 enum PoleSelectColumnPoleAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  isRequired
+  isLocked
 }
 
 # input type for updating data in table "pole"
@@ -38071,7 +38071,7 @@ input PoleSetInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   teamId: bigint
   tenantId: bigint
@@ -38143,7 +38143,7 @@ input PoleStreamCursorValueInput {
   description: String
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   teamId: bigint
   tenantId: bigint
@@ -38189,7 +38189,7 @@ enum PoleUpdateColumn {
   id
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name
@@ -44059,7 +44059,7 @@ type Role {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  isRequired: Boolean!
+  isLocked: Boolean!
   name: String!
   permissions: [String!]!
 
@@ -44246,7 +44246,7 @@ input RoleBoolExp {
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isRequired: BooleanComparisonExp
+  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   permissions: StringArrayComparisonExp
   team: TeamBoolExp
@@ -44284,7 +44284,7 @@ input RoleInsertInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   team: TeamObjRelInsertInput
@@ -44390,7 +44390,7 @@ input RoleOrderBy {
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isRequired: OrderBy
+  isLocked: OrderBy
   name: OrderBy
   permissions: OrderBy
   team: TeamOrderBy
@@ -44428,7 +44428,7 @@ enum RoleSelectColumn {
   id
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name
@@ -44449,13 +44449,13 @@ enum RoleSelectColumn {
 # select "roleAggregateBoolExpBool_andArgumentsColumns" columns of table "role"
 enum RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns {
   # column name
-  isRequired
+  isLocked
 }
 
 # select "roleAggregateBoolExpBool_orArgumentsColumns" columns of table "role"
 enum RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns {
   # column name
-  isRequired
+  isLocked
 }
 
 # input type for updating data in table "role"
@@ -44466,7 +44466,7 @@ input RoleSetInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -44539,7 +44539,7 @@ input RoleStreamCursorValueInput {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isRequired: Boolean
+  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -44584,7 +44584,7 @@ enum RoleUpdateColumn {
   id
 
   # column name
-  isRequired
+  isLocked
 
   # column name
   name

@@ -3,7 +3,7 @@ import { GraphQLJSON } from 'graphql-scalars';
 import { FormType } from '@okampus/shared/enums';
 import { IsBoolean, IsEnum, IsOptional, IsString, Length } from 'class-validator';
 
-import type { FormField } from '@okampus/shared/types';
+import type { FormSchema } from '@okampus/shared/types';
 
 @InputType()
 export class FormProps {
@@ -13,7 +13,7 @@ export class FormProps {
   name!: string;
 
   @Field(() => GraphQLJSON)
-  schema!: FormField[];
+  schema!: FormSchema;
 
   @Field(() => FormType)
   @IsEnum(FormType)

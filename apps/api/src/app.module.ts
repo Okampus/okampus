@@ -336,14 +336,14 @@ export class AppModule implements NestModule, OnModuleInit {
             type: ControlType.Checkbox,
             label:
               "L'équipe organisatrice a-t-elle suivi une formation relative à l'organisation d'événement festif et/ou de sensibilisation à la consommation de substances psychoactives ?",
-            isRequired: true,
+            required: true,
           },
           {
             name: 'serviceProvider',
             type: ControlType.Checkbox,
             label:
               "L'équipe organisatrice a-t-elle recours à un prestataire de services pour l'organisation de l'événement ?",
-            isRequired: true,
+            required: true,
           },
           {
             name: 'serviceProviderSiret',
