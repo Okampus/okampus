@@ -10,6 +10,7 @@ import { useThrottle } from 'react-use';
 import type { GeocodeAddress } from '@okampus/shared/types';
 
 export type AddressSearchInputProps = {
+  name: string;
   value: GeocodeAddress | null;
   onChange: (location: GeocodeAddress | null) => void;
   addressQuery?: string;
@@ -22,7 +23,13 @@ const formatAddress = (address: GeocodeAddress | null) => {
   return `${streetNumber} ${street}, ${zip} ${city}`;
 };
 
-export default function AddressSearchInput({ value, onChange, addressQuery, onQueryChange }: AddressSearchInputProps) {
+export default function AddressSearchInput({
+  name,
+  value,
+  onChange,
+  addressQuery,
+  onQueryChange,
+}: AddressSearchInputProps) {
   const [searchText, setSearchText] = useState(value ? formatAddress(value) : '');
 
   useEffect(() => {
@@ -54,13 +61,14 @@ export default function AddressSearchInput({ value, onChange, addressQuery, onQu
 
   return (
     <AutoCompleteInput
-      error={error}
+      name={name}
+      error={error ? error.message : undefined}
       loading={loading}
       value={selected}
-      onChange={(selectValue) => onChange(selectValue?.value || null)}
-      searchValue={searchText}
-      onChangeSearchValue={(query) => (onQueryChange ? onQueryChange(query) : setSearchText(query))}
-      items={selectItems}
+      onChange={(selectValue) => onChange((selectValue as GeocodeAddress) || null)}
+      search={searchText}
+      onChangeSearch={(query) => (onQueryChange ? onQueryChange(query) : setSearchText(query))}
+      options={selectItems}
     />
   );
 }

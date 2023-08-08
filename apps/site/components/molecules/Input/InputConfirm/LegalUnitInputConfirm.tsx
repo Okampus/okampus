@@ -39,9 +39,10 @@ export default function LegalUnitInputConfirm({
       <span>&quot;{legalUnitName.toUpperCase().trim()}&quot; est introuvable dans la liste ?</span>
       <span className="mb-6">Assurez-vous de son orthographe puis validez pour l&apos;ajouter.</span>
       <TextInput
+        name="legalUnitName"
         value={legalUnitName.toUpperCase()}
-        onChange={setLegalUnitName}
-        options={{ placeholder: inputPlaceholder ?? "Nom de l'entité légale" }}
+        onChange={(event) => setLegalUnitName(event.target.value)}
+        placeholder={inputPlaceholder ?? "Nom de l'entité légale"}
       />
     </ModalLayout>
   );

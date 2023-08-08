@@ -1,10 +1,14 @@
+'use client';
+
 import BannerImage from '../../atoms/Image/BannerImage';
-import { formatDateDayOfWeek } from '@okampus/shared/utils';
+import { useTranslation } from '../../../hooks/context/useTranslation';
+
 import type { EventBaseInfo } from '@okampus/shared/graphql';
 
 export type EventLabeledProps = { event: EventBaseInfo };
 export default function EventLabeled({ event }: EventLabeledProps) {
-  const displayedStart = formatDateDayOfWeek(event.start).replaceAll('.,', ' · ');
+  const { format } = useTranslation();
+  const displayedStart = format('weekDayHour', new Date(event.start));
 
   return (
     <div className="flex gap-4 items-start">

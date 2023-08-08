@@ -2,7 +2,7 @@ import ActionButton from '../Button/ActionButton';
 import TeamLabeled from '../Labeled/TeamLabeled';
 // import CloseButtonIcon from '../../atoms/Icon/CloseButtonIcon';
 import BannerImage from '../../atoms/Image/BannerImage';
-import TextLocation from '../../atoms/Text/TextLocation';
+import ILocation from '../../atoms/Inline/ILocation';
 
 import { EVENT_ROUTE } from '@okampus/shared/consts';
 import { formatDateRangeDayOfWeek } from '@okampus/shared/utils';
@@ -36,7 +36,7 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
             ))}
           </div>
           <IconLocation className="h-6 w-6" />
-          <TextLocation location={event?.location} />
+          <ILocation location={event?.location} />
           {event?.location?.locationDetails && (
             <>
               <IconAlignLeft />

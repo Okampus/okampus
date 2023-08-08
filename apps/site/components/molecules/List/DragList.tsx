@@ -24,11 +24,7 @@ export default function DragList<T>({ className, atLeastOne, items, onChange }: 
       )}
       renderItem={({ value, props, index }) => (
         // TODO: fix internal state conservation on drag with react-movable (fix keys with alternative system)
-        <div
-          {...props}
-          key={value.key ?? index}
-          className="w-full md:rounded-2xl bg-1 mb-5 flex gap-4 items-stretch z-50"
-        >
+        <div {...props} key={index} className="w-full md:rounded-2xl bg-1 mb-5 flex gap-4 items-stretch z-50">
           <span data-movable-handle className="pl-2.5 flex justify-center items-center cursor-grab">
             <IconGripVertical className="h-4 w-4 text-2" />
           </span>

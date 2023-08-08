@@ -1,7 +1,9 @@
-import SelectInput from './SelectInput';
-import ArrowButtonIcon from '../../atoms/Icon/ArrowButtonIcon';
+import SelectInput from './../SelectInput';
+import ArrowButtonIcon from '../../../atoms/Icon/ArrowButtonIcon';
 
-import { capitalize, getMonthMatrix } from '@okampus/shared/utils';
+import { useTranslation } from '../../../../hooks/context/useTranslation';
+
+import { getMonthMatrix } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
@@ -9,33 +11,29 @@ import { useState } from 'react';
 
 import type { Ref } from 'react';
 
-const months = Array.from({ length: 12 }, (_, i) => i).map((i) => ({
-  value: i,
-  label: capitalize(new Date(0, i, 1).toLocaleString('fr', { month: 'long' })),
-}));
-
 // TODO: improve with year grid
 const years = Array.from({ length: 26 }, (_, i) => i).map((i) => ({
   value: new Date().getFullYear() + i - 5,
   label: new Date().getFullYear() + i - 5,
 }));
 
-export type CalendarDateInputProps = {
+export type CalendarInputProps = {
   className?: string;
   date: Date;
   setDate: (date: Date) => void;
-  monthSelectRef?: Ref<HTMLDivElement>;
-  yearSelectRef?: Ref<HTMLDivElement>;
+  monthSelectRef?: Ref<HTMLUListElement>;
+  yearSelectRef?: Ref<HTMLUListElement>;
 };
 
 type MonthYear = [number, number];
-export default function CalendarDateInput({
-  className,
-  date,
-  setDate,
-  monthSelectRef,
-  yearSelectRef,
-}: CalendarDateInputProps) {
+export default function CalendarInput({ className, date, setDate, monthSelectRef, yearSelectRef }: CalendarInputProps) {
+  const { format } = useTranslation();
+
+  const months = Array.from({ length: 12 }, (_, i) => i).map((idx) => ({
+    value: idx,
+    label: format('month', new Date(0, idx, 1)),
+  }));
+
   const [monthYear, setMonthYear] = useState<MonthYear>([date.getMonth(), date.getFullYear()]);
   const monthMatrix = getMonthMatrix(...monthYear);
   const currentMonth = monthMatrix[1][0].month();
@@ -55,22 +53,21 @@ export default function CalendarDateInput({
         />
         <span className="flex gap-3 text-xl text-0 font-semibold capitalize">
           <SelectInput
-            items={months}
-            contentElementRef={monthSelectRef}
-            className="p-1 border-b border-color-3"
+            name="month"
+            options={months}
+            contentRef={monthSelectRef}
             value={month}
-            arrow={false}
-            onChange={(value) => setMonthYear([value, year])}
-            options={{ name: 'month' }}
+            showIcon={false}
+            onChange={(value) => setMonthYear([value as number, year])}
           />
           <SelectInput
-            items={years}
-            contentElementRef={yearSelectRef}
-            className="p-1 border-b border-color-3"
+            name="year"
+            options={years}
+            contentRef={yearSelectRef}
+            contentClassName="grid grid-col-3"
             value={year}
-            arrow={false}
-            onChange={(value) => setMonthYear([month, value])}
-            options={{ name: 'year' }}
+            showIcon={false}
+            onChange={(value) => setMonthYear([month, value as number])}
           />
           {/* <span>{new Date(monthYear[1], monthYear[0]).toLocaleString('fr', { month: 'long' })} </span>
           <span>{monthYear[1]}</span> */}

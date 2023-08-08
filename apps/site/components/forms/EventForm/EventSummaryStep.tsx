@@ -1,14 +1,15 @@
-import DateInput from '../../molecules/Input/DateInput';
+import DateInput from '../../molecules/Input/Date/DateInput';
 import SelectInput from '../../molecules/Input/SelectInput';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import TextInput from '../../molecules/Input/TextInput';
 import ActionButton from '../../molecules/Button/ActionButton';
+import TextAreaInput from '../../molecules/Input/TextAreaInput';
 import { projectBaseInfo, useTypedQuery } from '@okampus/shared/graphql';
 
 import { IconX } from '@tabler/icons-react';
 import type { eventFormDefaultValues } from './EventForm';
-import type { FormStepContext } from '../../molecules/Form/MultiStepForm';
+import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 import type { TeamManageInfo } from '@okampus/shared/graphql';
 
 type Context = FormStepContext<typeof eventFormDefaultValues>;
@@ -21,20 +22,19 @@ export default function EventSummaryStep({ teamManage, values, setValues }: Summ
   const SupervisorInput = ({ idx }: { idx: number }) => (
     <div className="flex gap-4 items-center">
       <SelectInput
-        options={{ label: "Membre de l'équipe" }}
-        items={
-          teamManage?.teamMembers.map((teamMember) => ({
-            label: (
-              <UserLabeled
-                individual={teamMember.user.individual}
-                id={teamMember.user.id}
-                showCardOnClick={false}
-                small={true}
-              />
-            ),
-            value: teamMember.id,
-          })) || []
-        }
+        name="supervisorIds"
+        label="Membre de l'équipe"
+        options={teamManage.teamMembers.map((teamMember) => ({
+          label: (
+            <UserLabeled
+              individual={teamMember.user.individual}
+              id={teamMember.user.id}
+              showCardOnClick={false}
+              small={true}
+            />
+          ),
+          value: teamMember.id,
+        }))}
         value={values.supervisorIds[idx]}
         onChange={(id) => {
           const newSupervisorIds = [...values.supervisorIds];
@@ -60,11 +60,12 @@ export default function EventSummaryStep({ teamManage, values, setValues }: Summ
     <div className="w-full flex gap-4 md-max:flex-col">
       <div className="flex flex-col gap-4 md:w-[25rem]">
         <SelectInput
-          items={[
+          options={[
             { label: 'Événement hors-projet', value: null },
             ...(projectData?.project.map((item) => ({ label: item.name, value: item.id })) ?? []),
           ]}
-          options={{ label: 'Projet lié', name: 'projectId' }}
+          label="Projet lié"
+          name="projectId"
           value={values.projectId}
           onChange={(projectId) => setValues({ ...values, projectId: projectId as string, eventId: null })}
         />
@@ -85,17 +86,18 @@ export default function EventSummaryStep({ teamManage, values, setValues }: Summ
       <div className="flex flex-col gap-4 md:w-[35rem]">
         <TextInput
           value={values.name}
-          onChange={(value) => setValues({ ...values, name: value })}
-          options={{ label: "Nom de l'événement", name: 'name' }}
+          onChange={(event) => setValues({ ...values, name: event.target.value })}
+          label="Nom de l'événement"
+          name="name"
         />
         <div className="grid grid-cols-[1fr_8rem] gap-4">
           <DateInput
-            className="w-full"
-            date={values.startDate}
-            onChange={(date) => setValues({ ...values, startDate: date })}
-            options={{ label: 'Date de début', name: 'startDate' }}
+            onChange={(event) => setValues({ ...values, startDate: event.target.value })}
+            label="Date de début"
+            name="startDate"
           />
-          <input
+          <TextInput
+            name="startTime"
             className="input"
             type="time"
             value={values.startTime}
@@ -104,22 +106,23 @@ export default function EventSummaryStep({ teamManage, values, setValues }: Summ
         </div>
         <div className="grid grid-cols-[1fr_8rem] gap-4">
           <DateInput
-            className="w-full"
-            date={values.endDate}
-            onChange={(date) => setValues({ ...values, endDate: date })}
-            options={{ label: 'Date de fin', name: 'endDate' }}
+            onChange={(event) => setValues({ ...values, endDate: event.target.value })}
+            label="Date de fin"
+            name="endDate"
           />
-          <input
+          <TextInput
+            name="endTime"
             className="input"
             type="time"
             value={values.endTime}
             onChange={(e) => setValues({ ...values, endTime: e.target.value })}
           />
         </div>
-        <TextInput
+        <TextAreaInput
           value={values.description}
-          onChange={(value) => setValues({ ...values, description: value })}
-          options={{ label: 'Description des activités', name: 'name' }}
+          onChange={(event) => setValues({ ...values, description: event.target.value })}
+          label="Description des activités"
+          name="name"
           rows={7}
         />
       </div>

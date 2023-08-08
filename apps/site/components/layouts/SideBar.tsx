@@ -28,8 +28,8 @@ import { useEffect } from 'react';
 
 // const transition = { ease: 'easeInOut', duration: 0.3 };
 
-export type SideBarProps = { children: React.ReactNode };
-export default function SideBar({ children }: SideBarProps) {
+export type SideBarProps = { children: React.ReactNode; header?: React.ReactNode };
+export default function SideBar({ children, header }: SideBarProps) {
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
 
   const me = useMe();
@@ -50,8 +50,8 @@ export default function SideBar({ children }: SideBarProps) {
   }, [isMobile, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
-    'h-full shrink-0 bg-[var(--bg-navbar)] overflow-x-hidden',
-    isMobile ? 'absolute top-0 left-0' : 'relative'
+    'h-full flex shrink-0 bg-1 overflow-hidden',
+    isMobile ? 'absolute top-0 left-0 mr-4' : 'relative'
   );
 
   // const width = children ? 'var(--w-sidepanel)' : 'var(--w-tabbar)';
@@ -73,18 +73,21 @@ export default function SideBar({ children }: SideBarProps) {
   ];
 
   const inner = (
-    <nav className={clsx('h-full flex bg-1', isMobile && 'mr-4')}>
+    <>
       <TabBar />
       {children && (
         <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between">
-          <div>{children}</div>
+          <nav className="h-[calc(100%-4rem)]">
+            {header}
+            <div className="h-full overflow-y-scroll">{children}</div>
+          </nav>
           <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
             <PopoverTrigger>
-              <div className="flex gap-2 items-center px-4 py-3 border-color-2 border-t">
-                <AvatarImage size={16} src={avatar?.image?.url} name={name} type="user" />
-                <div className="flex flex-col items-start pb-1">
+              <div className="flex gap-3 items-center px-4 border-color-2 border-t h-[3.75rem] bg-1">
+                <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
+                <div className="flex flex-col items-start leading-5">
                   <div className="text-1 font-semibold">{name}</div>
-                  <div className="text-2 text-xs font-medium px-0.5">{me?.user.individual?.actor?.email}</div>
+                  <div className="text-2 text-xs font-medium">{me?.user.individual?.actor?.email}</div>
                 </div>
               </div>
             </PopoverTrigger>
@@ -92,8 +95,8 @@ export default function SideBar({ children }: SideBarProps) {
               <MenuList
                 sections={sections}
                 header={
-                  <div className="flex gap-2 items-center px-2 py-4 bg-0">
-                    <AvatarImage size={16} src={avatar?.image?.url} name={name} type="user" />
+                  <div className="flex gap-3 items-center px-2 py-4 bg-0">
+                    <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                     <div className="flex flex-col items-start">
                       <div className="text-1 font-semibold">{name}</div>
                       <div className="text-2 text-xs font-medium">{me?.user.individual?.actor?.email}</div>
@@ -110,7 +113,7 @@ export default function SideBar({ children }: SideBarProps) {
           </Popover>
         </div>
       )}
-    </nav>
+    </>
   );
 
   const slidingSidebar = (

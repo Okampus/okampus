@@ -1,15 +1,15 @@
-import DateInput from '../../molecules/Input/DateInput';
-import NumberInput from '../../molecules/Input/NumberInput';
+import DateInput from '../../molecules/Input/Date/DateInput';
+// import NumberInput from '../../molecules/Input/NumberInput';
 import SelectInput from '../../molecules/Input/SelectInput';
 import TextInput from '../../molecules/Input/TextInput';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-import { validateWebsite } from '../../../utils/form-validation/website';
+// import { validateWebsite } from '../../../utils/form-validation/website';
 
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 
 import type { transactionFormDefaultValues } from './TransactionForm';
-import type { FormStepContext } from '../../molecules/Form/MultiStepForm';
+import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 
 type Context = FormStepContext<typeof transactionFormDefaultValues>;
 type DetailsStep = { values: Context['values']; setValues: Context['setValues'] };
@@ -28,35 +28,39 @@ export default function TransactionDetailsStep({ values, setValues }: DetailsSte
 
   return (
     <div className="text-0 flex flex-col gap-4 max-w-[42rem]">
-      <NumberInput
+      <TextInput
         value={values.amount}
-        onChange={(value) => setValues({ ...values, amount: value })}
-        options={{ label: 'Montant de la dépense (€)', name: 'amount' }}
+        onChange={(event) => setValues({ ...values, amount: event.target.value })}
+        label="Montant de la dépense (€)"
+        name="amount"
       />
       <DateInput
+        label="Date de la transaction"
+        name="payedAt"
         className="w-full"
-        date={values.payedAt}
-        onChange={(date) => setValues({ ...values, payedAt: date })}
-        options={{ label: 'Date de la transaction', name: 'payedAt' }}
+        onChange={(event) => setValues({ ...values, payedAt: event.target.value })}
       />
       <SelectInput
-        items={methods}
-        options={{ label: 'Méthode de paiement', name: 'method' }}
+        options={methods}
+        label="Méthode de paiement"
+        name="method"
         value={values.method}
-        onChange={(value) => setValues({ ...values, method: value })}
+        onChange={(value) => setValues({ ...values, method: value as PaymentMethod })}
       />
       <SelectInput
-        items={categories}
-        options={{ label: 'Catégorie de dépense', name: 'category' }}
+        options={categories}
+        label="Catégorie de dépense"
+        name="category"
         value={values.category}
-        onChange={(value) => setValues({ ...values, category: value })}
+        onChange={(value) => setValues({ ...values, category: value as FinanceCategory })}
       />
       {values.isOnline && (
         <TextInput
-          checkValueError={validateWebsite}
+          // checkValueError={validateWebsite}
           value={values.website}
-          onChange={(value) => setValues({ ...values, website: value })}
-          options={{ label: 'Site', name: 'name' }}
+          onChange={(event) => setValues({ ...values, website: event.target.value })}
+          label="Site"
+          name="name"
         />
       )}
     </div>

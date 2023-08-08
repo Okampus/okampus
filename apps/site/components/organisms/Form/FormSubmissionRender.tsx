@@ -11,7 +11,7 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
 
         return (
           <div key={name} className="flex flex-col gap-1.5">
-            <label className="menu-title">{field.label}</label>
+            <label className="label-title">{field.label}</label>
             <span className="text-1 text-sm">
               {field.type === ControlType.MultiCheckbox || field.type === ControlType.Radio ? (
                 <div className="flex gap-6">
@@ -33,7 +33,7 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
                   'Non'
                 )
               ) : (
-                value
+                JSON.stringify(value)
               )}
             </span>
           </div>

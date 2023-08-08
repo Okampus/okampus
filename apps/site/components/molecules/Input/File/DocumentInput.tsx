@@ -1,7 +1,6 @@
-import FileIcon from '../../atoms/Icon/FileIcon';
-import ActionButton from '../Button/ActionButton';
+import FileIcon from '../../../atoms/Icon/FileIcon';
+import ActionButton from '../../Button/ActionButton';
 
-import { Buckets, EntityName } from '@okampus/shared/enums';
 import { bytes } from '@okampus/shared/utils';
 import { singleUploadMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
@@ -11,6 +10,7 @@ import { IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
+import type { Buckets, EntityName } from '@okampus/shared/enums';
 
 import type { ChangeEvent } from 'react';
 
@@ -32,9 +32,9 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const onDragEnter = () => wrapperRef.current && wrapperRef.current.classList.add('dragover');
-  const onDragLeave = () => wrapperRef.current && wrapperRef.current.classList.remove('dragover');
-  const onDrop = () => wrapperRef.current && wrapperRef.current.classList.remove('dragover');
+  const onDragEnter = () => wrapperRef.current?.classList.add('dragover');
+  const onDragLeave = () => wrapperRef.current?.classList.remove('dragover');
+  const onDrop = () => wrapperRef.current?.classList.remove('dragover');
 
   const context = { fetchOptions: { credentials: 'include', useUpload: true, onAbortPossible, onProgress } };
   const [insertUpload] = useMutation(singleUploadMutation, { context });

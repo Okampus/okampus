@@ -5,8 +5,8 @@ import TransactionReceiptStep from './TransactionReceiptStep';
 import TransactionSummaryStep from './TransactionSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../molecules/Form/MultiStepForm';
-import DocumentInput from '../../molecules/Input/DocumentInput';
+import MultiStepForm from '../../organisms/Form/MultiStepForm';
+import DocumentInput from '../../molecules/Input/File/DocumentInput';
 import ChoiceList from '../../molecules/List/ChoiceList';
 
 import { useModal } from '../../../hooks/context/useModal';
@@ -47,7 +47,7 @@ export const transactionFormDefaultValues = {
   website: '',
   initiatedById: null as string | null,
   payedByType: PayedByType.Manual,
-  payedAt: new Date(),
+  payedAt: new Date().toISOString(),
   category: FinanceCategory.Errands,
   method: PaymentMethod.CreditCard,
 };

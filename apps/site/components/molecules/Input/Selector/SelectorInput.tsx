@@ -1,4 +1,4 @@
-import TagBadge from '../../atoms/Badge/TagBadge';
+import TagBadge from '../../../atoms/Badge/TagBadge';
 import { useEffect, useState } from 'react';
 
 // TODO: add swiper for overflowing categories
@@ -40,7 +40,7 @@ function getCategories<T>(items: T[], itemToCategory: (item: T) => string[], sel
   return Object.entries(categoriesCounts).sort((a, b) => b[1] - a[1] + (selected.includes(b[0]) ? 1000 : 0));
 }
 
-export default function CategorySelector<T extends object>({
+export default function SelectorInput<T extends object>({
   items,
   showCount = false,
   itemToCategories = (item: T) => [item.toString()],

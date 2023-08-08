@@ -20,7 +20,7 @@ export default function TabBarItem({
     'relative flex justify-center items-center w-full aspect-square group-hover:scale-[1.03] overflow-hidden rounded-xl [&>:first-child]:rounded-lg',
     icon
       ? clsx(
-          'bg-2 border-[3px] [&>:first-child]:h-full [&>:first-child]:aspect-square',
+          'bg-2 border-[3px] [&>:first-child]:w-full [&>:first-child]:h-full',
           smallPadding ? '[&>:first-child]:p-1.5' : '[&>:first-child]:p-2.5'
         )
       : 'border-0',

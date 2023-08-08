@@ -1,12 +1,12 @@
 'use client';
 
-import UserGroup from '../../atoms/Group/UserGroup';
+import UserGroup from '../Group/UserGroup';
 import BannerImage from '../../atoms/Image/BannerImage';
 import { notificationAtom } from '../../../context/global';
 import { useTenant } from '../../../context/navigation';
+import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { ToastType } from '@okampus/shared/types';
-import { formatDateDayOfWeek } from '@okampus/shared/utils';
 
 import { IconArrowUpRight, IconShare2 } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
@@ -19,7 +19,9 @@ export type EventCardProps = { event: EventWithJoinInfo };
 export default function EventCard({ event }: EventCardProps) {
   const [, setNotification] = useAtom(notificationAtom);
   const { tenant } = useTenant();
-  const displayedStart = formatDateDayOfWeek(event.start).replaceAll('.,', ' · ');
+
+  const { format } = useTranslation();
+  const displayedStart = format('weekDayHour', new Date(event.start));
 
   // const displayedAddress =
   //   event.location?.type === LocationType.Online

@@ -4,7 +4,7 @@ import EventSupervisorsStep from './EventSupervisorsStep';
 import EventSummaryStep from './EventSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../molecules/Form/MultiStepForm';
+import MultiStepForm from '../../organisms/Form/MultiStepForm';
 import ChoiceList from '../../molecules/List/ChoiceList';
 
 import { useMe } from '../../../context/navigation';
@@ -28,9 +28,9 @@ export const eventFormDefaultValues = {
   eventId: null as string | null,
   supervisorIds: [null] as (string | null)[],
   name: '',
-  startDate: new Date(),
+  startDate: new Date().toISOString(),
   startTime: '00:00',
-  endDate: new Date(),
+  endDate: new Date().toISOString(),
   endTime: '00:00',
   bannerFileUploadId: null as string | null,
   address: null as GeocodeAddress | null,
@@ -156,8 +156,8 @@ export default function EventForm({ teamManage }: EventFormProps) {
             ? { type: LocationType.Online, onlineLink: data.website }
             : { type: LocationType.Address, address: data.address };
 
-          const start = new Date(`${data.startDate.toISOString().split('T')[0]}T${data.startTime}`);
-          const end = new Date(`${data.endDate.toISOString().split('T')[0]}T${data.endTime}`);
+          const start = new Date(`${data.startDate.split('T')[0]}T${data.startTime}`);
+          const end = new Date(`${data.endDate.split('T')[0]}T${data.endTime}`);
 
           const variables = {
             object: {

@@ -4,14 +4,13 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { IconMail, IconWorldWww } from '@tabler/icons-react';
 import Link from 'next/link';
 
-import type { SocialInfo } from '../../molecules/Card/EditSocialCard';
 import type { SocialType } from '@okampus/shared/enums';
 import type { ActorBaseInfo } from '@okampus/shared/graphql';
 
 export type ProfileProps = {
   type?: 'user' | 'team' | 'tenant';
   actor?: ActorBaseInfo;
-  socials: SocialInfo[];
+  socials: { type: string; url: string; pseudo: string; order: number }[];
 };
 export default function Profile({ type, actor, socials }: ProfileProps) {
   return (

@@ -4,7 +4,7 @@ import SidePanel from '../../SidePanel';
 
 import CloseButtonIcon from '../../../../components/atoms/Icon/CloseButtonIcon';
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
-import TextFinance from '../../../../components/atoms/Text/TextFinance';
+import IMoney from '../../../atoms/Inline/IMoney';
 import UserLabeled from '../../../../components/molecules/Labeled/UserLabeled';
 import TabList from '../../../../components/molecules/List/TabList';
 
@@ -30,7 +30,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
     { label: 'Historique', key: HISTORY, onClick: () => setSelectedTab(HISTORY) },
   ];
 
-  const payedAt = finance.payedAt ? new Date(finance.payedAt as string) : new Date();
+  const payedAt = finance.payedAt ? new Date(finance.payedAt) : new Date();
 
   return (
     <SidePanel>
@@ -40,7 +40,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
       </div>
       <div className="flex flex-col gap-1 items-center border border-[var(--border-2)] rounded-lg mt-10 bg-2 pb-4">
         <AvatarImage actor={actor} type="team" className="-translate-y-1/2" />
-        <TextFinance amount={finance.amount} className="text-xl -mt-2" textClass="text-0" />
+        <IMoney amount={finance.amount} className="text-xl -mt-2" textClass="text-0" />
         <div className="text-lg text-0 font-medium">{actor?.name}</div>
         <div className="text-2 text-center font-medium">{t(`enums.PaymentMethod.${finance.method}`)}</div>
         <hr className="border-[var(--border-2)] w-full my-2" />

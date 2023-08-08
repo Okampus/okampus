@@ -1,6 +1,6 @@
 'use client';
 
-import ActionButton from '../Button/ActionButton';
+import ActionButton from '../../molecules/Button/ActionButton';
 import { notificationAtom } from '../../../context/global';
 
 import { ActionType, ToastType } from '@okampus/shared/types';
@@ -12,9 +12,9 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 
 export type Errors = Record<string, Error | null>;
-export type ChangeSetFormProps<T extends Record<string, unknown>> = {
+export type FormProps<T extends Record<string, unknown>> = {
   initialValues: T;
-  onSave: (values: Partial<T>) => void;
+  onSubmit: (values: Partial<T>) => void;
   className?: string;
   onCancel?: () => void;
   renderChildren: (props: {
@@ -27,14 +27,14 @@ export type ChangeSetFormProps<T extends Record<string, unknown>> = {
   checkFields?: boolean | Array<string>;
 };
 
-export default function ChangeSetForm<T extends Record<string, unknown>>({
+export default function Form<T extends Record<string, unknown>>({
   initialValues,
-  onSave,
+  onSubmit,
   className = 'relative flex flex-col',
   onCancel,
   renderChildren,
   checkFields = true,
-}: ChangeSetFormProps<T>) {
+}: FormProps<T>) {
   const [, setNotification] = useAtom(notificationAtom);
 
   const [currentInitialValues, setCurrentInitialValues] = useState<T>(initialValues);
@@ -78,7 +78,7 @@ export default function ChangeSetForm<T extends Record<string, unknown>>({
       if (Object.values(errors).some(isNotNull)) {
         setNotification({ type: ToastType.Error, message: 'Veuillez corriger les erreurs avant de sauvegarder.' });
       } else {
-        onSave(changeSet);
+        onSubmit(changeSet);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

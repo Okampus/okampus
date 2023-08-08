@@ -92,7 +92,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
       <BannerImage src={banner} />
       <div
         onClick={() => setShowEditor(true)}
-        className="p-5 absolute -inset-px opacity-0 hover:opacity-75 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
+        className="p-5 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
       >
         <div className="font-semibold text-center">Changer de bannière</div>
       </div>

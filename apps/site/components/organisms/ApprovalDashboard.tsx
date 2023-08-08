@@ -70,15 +70,14 @@ export default function ApprovalDashboard<T, U>({
           <li className="shrink-0 py-2 pr-2 flex gap-3">
             {searchFilter && (
               <TextInput
-                value={query}
-                onChange={setQuery}
-                options={{ placeholder: 'Rechercher...' }}
-                paddingAfterPrefix={true}
-                prefix={<IconSearch className="text-[var(--text-2)]" />}
+                name="search"
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Rechercher..."
+                startContent={<IconSearch className="text-[var(--text-2)]" />}
               />
             )}
             {stateFilter && (
-              <SimpleFilterInput items={filterItems} selected={selectedStates} setSelected={setSelectedStates} />
+              <SimpleFilterInput types={filterItems} selected={selectedStates} setSelected={setSelectedStates} />
             )}
           </li>
           <ul className="h-full overflow-y-scroll overflow-x-hidden scrollbar">
@@ -119,11 +118,11 @@ export default function ApprovalDashboard<T, U>({
                 <div className="flex flex-col text-0 gap-6">
                   <div className="flex gap-12 px-1">
                     <div className="flex flex-col gap-2">
-                      <div className="menu-title">Rôle souhaité</div>
+                      <div className="label-title">Rôle souhaité</div>
                       <div className="font-semibold text-2 text-sm">{selectedTeamJoin.receivedRole?.name}</div>
                     </div>
                     {selectedTeamJoin.state === ApprovalState.Approved && (
-                      <div className="menu-title">Rôle attribué</div>
+                      <div className="label-title">Rôle attribué</div>
                     )}
                   </div>
                   <div className="flex gap-4">

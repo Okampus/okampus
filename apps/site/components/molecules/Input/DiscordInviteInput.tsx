@@ -1,6 +1,6 @@
 'use client';
 
-import TextInput from '../../../components/molecules/Input/TextInput';
+import TextInput from './TextInput';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 import { validateDiscordInvite } from '../../../utils/form-validation/discord-invite';
 
@@ -41,13 +41,14 @@ export default function DiscordInviteInput({
   return (
     <div className="flex flex-col gap-3 w-full">
       <TextInput
+        name="invite"
         value={invite}
-        triggerCheck={triggerCheck}
-        setTriggerCheck={setTriggerCheck}
-        onChange={onChangeInvite}
-        options={{ label: "Lien d'invitation" }}
-        checkValueError={validate}
-        onErrorChange={onErrorChange}
+        // triggerCheck={triggerCheck}
+        // setTriggerCheck={setTriggerCheck}
+        onChange={(event) => onChangeInvite(event.target.value)}
+        // options={{ label: "Lien d'invitation" }}
+        // checkValueError={validate}
+        // onErrorChange={onErrorChange}
       />
       {serverInviteData.guildId && (
         <span className="flex gap-1.5 items-center text-sm text-0 font-semibold mt-1">

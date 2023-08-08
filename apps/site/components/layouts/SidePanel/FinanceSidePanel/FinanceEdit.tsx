@@ -2,13 +2,12 @@
 
 import GroupItem from '../../../../components/atoms/Item/GroupItem';
 import FileIcon from '../../../../components/atoms/Icon/FileIcon';
-import ChangeSetForm from '../../../../components/molecules/Form/ChangeSetForm';
-import DateInput from '../../../../components/molecules/Input/DateInput';
-import NumberInput from '../../../../components/molecules/Input/NumberInput';
+import DateInput from '../../../molecules/Input/Date/DateInput';
 import SelectInput from '../../../../components/molecules/Input/SelectInput';
 
 import { notificationAtom } from '../../../../context/global';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
+import { useForm } from '../../../../hooks/form/useForm';
 
 import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
 import { updateFinanceMutation } from '@okampus/shared/graphql';
@@ -27,8 +26,8 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   const { t } = useTranslation();
 
-  const initialState = {
-    payedAt: new Date(finance.payedAt),
+  const defaultValues = {
+    payedAt: new Date(finance.payedAt).toISOString(),
     amount: Math.abs(finance.amount).toFixed(2),
     method: finance.method,
     category: finance.category,
@@ -37,94 +36,186 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   const [updateFinance] = useMutation(updateFinanceMutation);
 
+  const { errors, register, setValue, values, onSubmit, loading, reset, changed } = useForm({
+    defaultValues,
+    submit: async (data) => {
+      const { amount, attachments: _, ...rest } = data;
+      const update = {
+        ...rest,
+        ...(amount
+          ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
+          : {}),
+      };
+      updateFinance({
+        // @ts-ignore
+        variables: { update, id: finance.id },
+        onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
+        onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+      });
+    },
+  });
+
   return (
-    <ChangeSetForm
-      checkFields={[]}
-      onSave={(data) => {
-        const { amount, attachments: _, ...rest } = data;
-        const update = {
-          ...rest,
-          ...(amount
-            ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
-            : {}),
-        };
-        updateFinance({
-          // @ts-ignore
-          variables: { update, id: finance.id },
-          onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
-          onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-        });
-      }}
-      initialValues={initialState}
-      renderChildren={({ changeValues, values }) => (
-        <div className="py-4 flex flex-col gap-2">
-          {values.attachments.length > 0 && (
-            <>
-              <GroupItem heading="Justificatifs" groupClassName="py-4">
-                {/* <SingleFileInput
+    <form onSubmit={onSubmit} className="py-4 flex flex-col gap-2">
+      <ChangeSetToast changed={changed} errors={errors} loading={loading} onCancel={reset} />
+
+      {values.attachments.length > 0 && (
+        <>
+          <GroupItem heading="Justificatifs" groupClassName="py-4">
+            {/* <SingleFileInput
                 options={{
                   label: 'Ajouter un justificatif',
                   name: 'attachment',
                 }}
               /> */}
-                {values.attachments.map((attachment) => (
-                  <div key={attachment.id} className="flex items-center justify-between gap-4 px-2">
-                    <div className="flex gap-4">
-                      <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
-                      <div className="flex flex-col">
-                        <a
-                          href={attachment.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="add-button line-clamp-1 underline"
-                        >
-                          {attachment.name}
-                        </a>
-                        <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
-                      </div>
-                    </div>
-                    <IconTrash />
+            {values.attachments.map((attachment) => (
+              <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
+                <div className="flex gap-4">
+                  <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
+                  <div className="flex flex-col">
+                    <a
+                      href={attachment.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="add-button line-clamp-1 underline"
+                    >
+                      {attachment.name}
+                    </a>
+                    <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
                   </div>
-                ))}
-              </GroupItem>
-              <hr className="border-[var(--border-2)] my-2" />
-            </>
-          )}
-          <GroupItem heading="Informations">
-            <DateInput
-              className="w-full"
-              options={{ label: 'Date de paiement', name: 'payedAt' }}
-              date={values.payedAt}
-              onChange={(payedAt) => changeValues((current) => ({ ...current, payedAt }))}
-            />
-            <NumberInput
-              value={values.amount}
-              onChange={(amount) => {
-                changeValues((current) => ({ ...current, amount }));
-              }}
-              options={{ label: `Montant de la dépense (€)`, name: 'amount' }}
-            />
-            <SelectInput
-              items={Object.entries(PaymentMethod).map(([, value]) => ({
-                label: t(`enums.PaymentMethod.${value}`),
-                value,
-              }))}
-              options={{ label: 'Méthode de paiement', name: 'method' }}
-              value={values.method}
-              onChange={(method) => changeValues((current) => ({ ...current, method }))}
-            />
-            <SelectInput
-              items={Object.entries(FinanceCategory).map(([, value]) => ({
-                label: t(`enums.FinanceCategory.${value}`),
-                value,
-              }))}
-              options={{ label: 'Catégorie de dépense', name: 'category' }}
-              value={values.category}
-              onChange={(category) => changeValues((current) => ({ ...current, category }))}
-            />
+                </div>
+                <IconTrash />
+              </div>
+            ))}
           </GroupItem>
-        </div>
+          <hr className="border-[var(--border-2)] my-2" />
+        </>
       )}
-    />
+      <GroupItem heading="Informations">
+        <DateInput {...register('method')} label="Date de paiement" />
+        {/* <NumberInput
+          value={values.amount}
+          onChange={(amount) => {
+            changeValues((current) => ({ ...current, amount }));
+          }}
+          label={`Montant de la dépense (€)`}
+          name="amount"
+        /> */}
+        <SelectInput
+          options={Object.entries(PaymentMethod).map(([, value]) => ({
+            label: t(`enums.PaymentMethod.${value}`),
+            value,
+          }))}
+          label="Méthode de paiement"
+          name="method"
+          value={values.method}
+          onChange={(method) => setValue('method', method)}
+        />
+        <SelectInput
+          options={Object.entries(FinanceCategory).map(([, value]) => ({
+            label: t(`enums.FinanceCategory.${value}`),
+            value,
+          }))}
+          label="Catégorie de dépense"
+          name="category"
+          value={values.category}
+          onChange={(category) => setValue('category', category)}
+        />
+      </GroupItem>
+    </form>
   );
+  // return (
+  //   <ChangeSetForm
+  //     checkFields={[]}
+  //     onSave={(data) => {
+  //       const { amount, attachments: _, ...rest } = data;
+  //       const update = {
+  //         ...rest,
+  //         ...(amount
+  //           ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
+  //           : {}),
+  //       };
+  //       updateFinance({
+  //         // @ts-ignore
+  //         variables: { update, id: finance.id },
+  //         onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
+  //         onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+  //       });
+  //     }}
+  //     initialValues={initialState}
+  //     renderChildren={({ changeValues, values }) => (
+  //       <div className="py-4 flex flex-col gap-2">
+  //         {values.attachments.length > 0 && (
+  //           <>
+  //             <GroupItem heading="Justificatifs" groupClassName="py-4">
+  //               {/* <SingleFileInput
+  //               options={{
+  //                 label: 'Ajouter un justificatif',
+  //                 name: 'attachment',
+  //               }}
+  //             /> */}
+  //               {values.attachments.map((attachment) => (
+  //                 <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
+  //                   <div className="flex gap-4">
+  //                     <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
+  //                     <div className="flex flex-col">
+  //                       <a
+  //                         href={attachment.url}
+  //                         target="_blank"
+  //                         rel="noopener noreferrer"
+  //                         className="add-button line-clamp-1 underline"
+  //                       >
+  //                         {attachment.name}
+  //                       </a>
+  //                       <div className="text-sm text-2 font-medium">{bytes(attachment.size)}</div>
+  //                     </div>
+  //                   </div>
+  //                   <IconTrash />
+  //                 </div>
+  //               ))}
+  //             </GroupItem>
+  //             <hr className="border-[var(--border-2)] my-2" />
+  //           </>
+  //         )}
+  //         <GroupItem heading="Informations">
+  //           <DateInput
+  //             className="w-full"
+  //             label="Date de paiement"
+  //             name="payedAt"
+  //             defaultValue={values.payedAt}
+  //             onChange={(payedAt) => changeValues((current) => ({ ...current, payedAt }))}
+  //           />
+  //           <NumberInput
+  //             value={values.amount}
+  //             onChange={(amount) => {
+  //               changeValues((current) => ({ ...current, amount }));
+  //             }}
+  //             label={`Montant de la dépense (€)`}
+  //             name="amount"
+  //           />
+  //           <SelectInput
+  //             options={Object.entries(PaymentMethod).map(([, value]) => ({
+  //               label: t(`enums.PaymentMethod.${value}`),
+  //               value,
+  //             }))}
+  //             label="Méthode de paiement"
+  //             name="method"
+  //             value={values.method}
+  //             onChange={(method) => changeValues((current) => ({ ...current, method }))}
+  //           />
+  //           <SelectInput
+  //             options={Object.entries(FinanceCategory).map(([, value]) => ({
+  //               label: t(`enums.FinanceCategory.${value}`),
+  //               value,
+  //             }))}
+  //             label="Catégorie de dépense"
+  //             name="category"
+  //             value={values.category}
+  //             onChange={(category) => changeValues((current) => ({ ...current, category }))}
+  //           />
+  //         </GroupItem>
+  //       </div>
+  //     )}
+  //   />
+  // );
 }

@@ -1,4 +1,4 @@
-import AutoCompleteInput from './AutoCompleteInput';
+import AutoCompleteInput from './Search/AutoCompleteInput';
 import LegalUnitInputConfirm from './InputConfirm/LegalUnitInputConfirm';
 import AvatarLabeled from '../Labeled/AvatarLabeled';
 import { useModal } from '../../../hooks/context/useModal';
@@ -16,6 +16,7 @@ import { useThrottle } from 'react-use';
 import type { LegalUnitLocationMinimalInfo } from '@okampus/shared/graphql';
 
 export type LegalUnitLocationInputProps = {
+  name: string;
   headerLabel?: string;
   inputLabel?: string;
   legalUnitId: string;
@@ -23,6 +24,7 @@ export type LegalUnitLocationInputProps = {
   onChange: (value: LegalUnitLocationMinimalInfo | null) => void;
 };
 export default function LegalUnitLocationInput({
+  name,
   headerLabel,
   inputLabel,
   legalUnitId,
@@ -56,19 +58,24 @@ export default function LegalUnitLocationInput({
 
   const items = data?.legalUnitLocation ?? [];
 
-  const selectItems = items.map((x) => ({
-    value: x,
-    label: <AvatarLabeled type="team" name={x.legalName} website={x.actor.website} avatarSize={8} />,
-    searchValue: x.legalName,
+  const selectItems = items.map((item) => ({
+    value: item,
+    label: <AvatarLabeled type="team" name={item.legalName} website={item.actor.website} avatarSize={8} />,
+    searchValue: item.legalName,
   }));
   const selected = value ? { value, label: value.legalName, searchValue: value.legalName } : null;
 
   return (
     <AutoCompleteInput
+      name={name}
       value={selected}
-      onChange={(x) => onChange(x?.value ?? null)}
-      onChangeSearchValue={setSearchText}
-      addCurrentSearch={() => {
+      onChange={(value) => onChange((value as LegalUnitLocationMinimalInfo) ?? null)}
+      error={error ? error.message : undefined}
+      loading={loading}
+      options={selectItems}
+      search={searchText}
+      onChangeSearch={setSearchText}
+      onAddCurrentSearch={() => {
         openModal({
           node: (
             <LegalUnitInputConfirm
@@ -85,10 +92,6 @@ export default function LegalUnitLocationInput({
           ),
         });
       }}
-      searchValue={searchText}
-      items={selectItems}
-      error={error ? new Error(JSON.stringify(error)) : error}
-      loading={loading}
     />
   );
 }

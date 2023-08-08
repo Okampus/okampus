@@ -1,4 +1,4 @@
-import TextCopiable from '../../atoms/Text/TextCopiable';
+import ICopiable from '../../atoms/Inline/ICopiable';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { formatIBAN } from '@okampus/shared/utils';
@@ -23,14 +23,14 @@ export default function AccountCard({ account }: AccountCardProps) {
           <>
             <div className="flex gap-1 items-center">
               <div className="text-1 text-sm font-medium">IBAN : </div>
-              <TextCopiable text={formatIBAN(account.bankInfo.iban)} copyText={account.bankInfo.iban} />
+              <ICopiable text={formatIBAN(account.bankInfo.iban)} copyText={account.bankInfo.iban} />
             </div>
           </>
         )}
       </div>
       <div>
         <div className="text-2xl text-0 font-semibold">{format('euro', currentAccountBalance)}</div>
-        <div className="menu-title text-1">
+        <div className="label-title text-1">
           {account.parent ? `Votre solde alloué par ${account.parent.team.actor?.name}` : 'Votre solde restant'}
         </div>
       </div>

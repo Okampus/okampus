@@ -1,4 +1,5 @@
-import MultiCheckboxInput from './MultiCheckboxInput';
+import Field from './Field';
+import CheckboxInput from './Selector/CheckboxInput';
 import CloseButtonIcon from '../../atoms/Icon/CloseButtonIcon';
 import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
@@ -17,21 +18,23 @@ export type SimpleFilterInputProps<T> = {
   className?: string;
   selected: T[];
   setSelected: (selected: T[]) => void;
-  items: { label: React.ReactNode; value: T; count?: number }[];
+  types: { label: React.ReactNode; value: T; count?: number }[];
 };
 
 const setRefIndex = (idx: number, ref: RefObject<(ValidRefTarget | null)[]>) => (el: HTMLElement | null) => {
   if (ref.current) ref.current[idx] = el;
 };
 
-export default function SimpleFilterInput<T>({ className, selected, setSelected, items }: SimpleFilterInputProps<T>) {
-  const [currentSelected, setCurrentSelected] = useState(selected);
+export default function SimpleFilterInput<T>({ className, selected, setSelected, types }: SimpleFilterInputProps<T>) {
+  const [selectedTypes, setSelectedTypes] = useState(selected);
   const [ref, isOpen, setIsOpen] = useOutsideClick(false);
 
-  const total =
-    currentSelected.length > 0
-      ? currentSelected.reduce((acc, item) => acc + (items.find(({ value }) => value === item)?.count || 0), 0)
-      : items.reduce((acc, item) => acc + (item.count || 0), 0);
+  let total = 0;
+  if (selectedTypes.length > 0) {
+    for (const type of selectedTypes) total += types.find(({ value }) => value === type)?.count ?? 0;
+  } else {
+    for (const type of types) total += type.count ?? 0;
+  }
 
   return (
     <Popover
@@ -39,7 +42,7 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
       placement="bottom-start"
       controlledOpen={isOpen}
       onOpenChange={(open) => {
-        if (!open) setCurrentSelected(selected);
+        if (!open) setSelectedTypes(selected);
       }}
     >
       <PopoverTrigger onClick={() => setIsOpen(!isOpen)} className={clsx(className, 'relative')}>
@@ -61,32 +64,45 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
         <div className="text-2xl text-0 font-bold">Filtres</div>
         <CloseButtonIcon className="absolute top-6 right-4" onClick={() => setIsOpen(false)} />
         <span className="flex gap-5 items-center pr-32 pb-4">
-          <div className="add-button" onClick={() => setCurrentSelected(items.map(({ value }) => value))}>
+          <div className="add-button" onClick={() => setSelectedTypes(types.map(({ value }) => value))}>
             Tout séléctionner
           </div>
-          <div className="add-button" onClick={() => setCurrentSelected(selected)}>
+          <div className="add-button" onClick={() => setSelectedTypes(selected)}>
             Réinitialiser
           </div>
         </span>
-        <MultiCheckboxInput
-          items={items.map(({ label, value }) => ({
+        <Field name="filter">
+          {types.map(({ label, value }, idx) => {
+            return (
+              <CheckboxInput
+                key={idx}
+                name="filter"
+                label={label}
+                defaultChecked={selectedTypes.includes(value)}
+                onChange={() => setSelectedTypes(types.filter((_, idx) => selected[idx]).map(({ value }) => value))}
+              />
+            );
+          })}
+        </Field>
+        {/* <MultiCheckboxInput
+          items={types.map(({ label, value }) => ({
             label: (
               <div className="w-full flex justify-between items-center text-0">
                 {label}
-                <div className="text-0 font-semibold text-sm">{items.find(({ value: v }) => v === value)?.count}</div>
+                <div className="text-0 font-semibold text-sm">{types.find(({ value: v }) => v === value)?.count}</div>
               </div>
             ),
             value,
           }))}
-          selected={items.map((item) => currentSelected.includes(item.value))}
-          onChange={(selected) => setCurrentSelected(items.filter((_, idx) => selected[idx]).map(({ value }) => value))}
+          selected={types.map((item) => selectedTypes.includes(item.value))}
+          onChange={(selected) => setSelectedTypes(types.filter((_, idx) => selected[idx]).map(({ value }) => value))}
           options={{ name: 'filter' }}
-        />
+        /> */}
         <ActionButton
           className="mt-4"
           action={{
-            label: currentSelected.length > 0 ? `Afficher ${total} résultats` : 'Afficher tous les résultats',
-            linkOrActionOrMenu: () => (setSelected(currentSelected), setIsOpen(false)),
+            label: selectedTypes.length > 0 ? `Afficher ${total} résultats` : 'Afficher tous les résultats',
+            linkOrActionOrMenu: () => (setSelected(selectedTypes), setIsOpen(false)),
             type: ActionType.Action,
           }}
         />

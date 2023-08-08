@@ -1,156 +1,191 @@
 'use client';
 
-import Popover from '../../atoms/Popup/Popover/Popover';
-import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
-import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
-import GroupHeading from '../../atoms/Heading/GroupHeading';
+import Field from './Field';
+import { TagList } from '../List/TagList';
+
 import {
-  contentVariants,
-  itemVariants,
-  arrowConfig,
-  baseItemClassName,
-  contentClassName,
-  innerContentClassName,
-  openClassName,
-  searchInputClassName,
-} from '../../../config/select-config';
-import { useOutsideClick } from '../../../hooks/useOutsideClick';
+  useFloating,
+  useClick,
+  useDismiss,
+  useRole,
+  useListNavigation,
+  useInteractions,
+  FloatingFocusManager,
+  useTypeahead,
+  offset,
+  flip,
+  size,
+  autoUpdate,
+  FloatingPortal,
+} from '@floating-ui/react';
+import { IconCheck, IconCircle } from '@tabler/icons-react';
 
-import InputLabel from '../../atoms/Label/InputLabel';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 
-import { IconCheck, IconChevronDown } from '@tabler/icons-react';
+import type { ControlledSelect, SelectItem } from '@okampus/shared/types';
 
-import type { Ref } from 'react';
-import type { InputOptions, SelectItem } from '@okampus/shared/types';
-
-export type SelectInputProps<T> = {
-  items: SelectItem<T>[];
+export type SelectInputProps<T> = ControlledSelect<T> & {
+  maxHeight?: string;
   triggerClassName?: string;
-  className?: string;
-  value: T | null;
-  arrow?: boolean;
-  onChange?: (value: T) => void;
-  contentElementRef?: Ref<HTMLDivElement>;
-  search?: boolean;
-  options?: InputOptions;
+  contentClassName?: string;
+  contentRef?: React.Ref<HTMLUListElement>;
+  showIcon?: boolean;
 };
 
-export default function SelectInput<T>({
-  items,
+export default memo(function SelectInput<T>({
+  placeholder = 'Votre choix',
+  maxHeight: maxHeightProp = '12rem',
+  contentClassName: contentClass = 'flex flex-col gap-2 max-h-96 bg-2',
   triggerClassName = 'w-full',
-  className = 'input pt-5 h-[var(--h-input)]',
-  value,
-  arrow = true,
-  onChange,
-  contentElementRef,
-  search,
-  options,
+  contentRef,
+  showIcon = true,
+  ...props
 }: SelectInputProps<T>) {
-  const [ref, isOpen, setIsOpen] = useOutsideClick(false);
-  const [searchText, setSearchText] = useState('');
+  const { options, name, multiple, value, onChange, error, className, label, disabled, required, description } = props;
 
-  const shownItems = search
-    ? items.filter((item) => JSON.stringify(item.value).toLowerCase().includes(searchText.toLowerCase()))
-    : items;
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const shownGroups: { name: string; items: SelectItem<T>[] }[] = [];
-  for (const item of shownItems) {
-    const group = shownGroups.find((group) => group.name === item.group);
-    if (group) group.items.push(item);
-    else shownGroups.push({ name: item.group ?? '', items: [item] });
+  const selected: SelectItem<T>[] = [];
+  if (multiple) {
+    for (const val of value) {
+      const item = options.find((choice) => choice.value === val);
+      if (item) selected.push(item);
+    }
+  } else {
+    const item = options.find((choice) => choice.value === value);
+    if (item) selected.push(item);
   }
 
-  const whileTap = { scale: options?.disabled ? 1 : 0.98 };
-  const triggerConfig = {
-    whileTap,
-    disabled: !!options?.disabled,
-    ref: (el: HTMLDivElement) => ref.current && (ref.current[0] = el),
-    onClick: () => setIsOpen(!isOpen),
-    ...(options?.name && { name: options.name }),
+  const [selectedItems, setSelectedItems] = useState<SelectItem<T>[]>(selected);
+
+  const sizeMiddleware = size({
+    padding: 10,
+    apply({ rects, elements: { floating }, availableHeight }) {
+      const maxHeight = maxHeightProp ?? `${availableHeight}px`;
+      Object.assign(floating.style, { maxHeight, minWidth: `${rects.reference.width}px` });
+    },
+  });
+
+  const { refs, floatingStyles, context } = useFloating({
+    placement: 'bottom-start',
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(5), flip({ padding: 10 }), sizeMiddleware],
+  });
+
+  const listElementRef = useRef<Array<HTMLElement | null>>([]);
+  const listRef = useRef(options.map((choice) => JSON.stringify(choice.value)));
+  const isTypingRef = useRef(false);
+
+  const click = useClick(context, { event: 'mousedown' });
+  const dismiss = useDismiss(context);
+  const role = useRole(context, { role: 'listbox' });
+
+  const selectedIndex = multiple ? undefined : options.findIndex((choice) => choice.value === value);
+
+  const listNavProps = {
+    listRef: listElementRef,
+    activeIndex,
+    selectedIndex,
+    onNavigate: setActiveIndex,
+    loop: true,
+  };
+  const listNav = useListNavigation(context, listNavProps);
+
+  const typeProps = {
+    listRef,
+    activeIndex,
+    selectedIndex,
+    onMatch: isOpen ? setActiveIndex : (index: number) => setSelectedItems([...selectedItems, options[index]]),
+  };
+  const typeahead = useTypeahead(context, { ...typeProps, onTypingChange: (typing) => (isTypingRef.current = typing) });
+
+  const interactions = [dismiss, role, listNav, typeahead, click];
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(interactions);
+
+  const handleSelect = (index: number) => {
+    const item = options[index];
+    if (multiple) {
+      setSelectedItems([...selectedItems, item]);
+      onChange?.([...value, item.value]);
+    } else {
+      setSelectedItems([item]);
+      onChange?.(item.value);
+    }
+    setIsOpen(false);
   };
 
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const contentConfig = {
-    ref: (el: HTMLDivElement) => ref.current && ((ref.current[1] = el), (contentRef.current = el)),
-    variants: contentVariants,
-  };
+  // const selectedItem = selectedIndices === null ? undefined : choices[selectedIndices];
+  // const selectedItemLabel = selectedItem?.label;
 
-  const serializedValue = JSON.stringify(value);
-  const selectedItem = items.find((item) => JSON.stringify(item.value) === serializedValue);
-  const triggerInputClassName = clsx('!cursor-pointer flex justify-between items-center gap-2 w-full', className);
+  const fieldProps = { label, className, name, description, required, error };
 
-  const selectedElementRef = useRef<HTMLLIElement>(null);
-  useEffect(() => {
-    if (selectedElementRef.current && contentRef.current)
-      contentRef.current.scrollTo(0, selectedElementRef.current.offsetTop - 50);
-  }, [contentRef, isOpen]);
+  const triggerClass = clsx(triggerClassName, disabled && 'pointer-events-none opacity-50');
+  const triggerProps = { name, tabIndex: 0, ref: refs.setReference, className: triggerClass, ...getReferenceProps() };
 
-  const renderItem = (item: SelectItem<T>, idx: number) => {
-    const selected = item === selectedItem;
-    const className = clsx(baseItemClassName, selected && 'bg-main');
-    const onClick = () => (onChange?.(item.value), setIsOpen(false));
-    const ref = selected ? selectedElementRef : null;
+  const contentStyle = { ...floatingStyles, overflowY: 'auto' } as React.CSSProperties;
+  const contentProps = { ref: refs.setFloating, className: contentClass, style: contentStyle, ...getFloatingProps() };
 
-    return (
-      <motion.li key={idx} variants={itemVariants} className={className} onClick={onClick} ref={ref}>
-        {item.label}
-        {selected && <IconCheck className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />}
-      </motion.li>
+  let buttonInner: React.ReactNode = placeholder;
+  if (selectedItems.length > 0) {
+    buttonInner = multiple ? (
+      <TagList
+        tags={selectedItems.map((item) => ({
+          content: item.label,
+          onRemove: () => setSelectedItems(selectedItems.filter(({ value }) => value !== item.value)),
+        }))}
+      />
+    ) : (
+      selectedItems[0].label
     );
-  };
+  }
 
   return (
-    <motion.div
-      initial={'closed'}
-      animate={isOpen ? 'open' : 'closed'}
-      className={clsx(triggerClassName, 'border-2 border-transparent', options?.disabled && 'pointer-events-none')}
-    >
-      <Popover controlledOpen={isOpen} placement="bottom-start" sameWidthAsTarget={true} placementOffset={4}>
-        <PopoverTrigger
-          aria-haspopup="listbox"
-          {...triggerConfig}
-          className={clsx('w-full relative rounded-lg', isOpen && openClassName)}
-        >
-          <div className={triggerInputClassName}>
-            <div className={clsx('text-0 line-clamp-1 text-left pointer-events-none')}>
-              {selectedItem && selectedItem.label}
-            </div>
-            {arrow && (
-              <motion.div {...arrowConfig} className="z-20 text-0 absolute top-1/2 right-4">
-                <IconChevronDown className="h-5 w-5" />
-              </motion.div>
-            )}
-          </div>
-          {options?.label && <InputLabel {...options} label={options.label} selected={!!selectedItem} />}
-        </PopoverTrigger>
-        <PopoverContent ref={contentElementRef} className={clsx('p-0 z-100', contentClassName)}>
-          <motion.div {...contentConfig}>
-            {search && (
-              <div className="px-3 pt-3 pb-1 shrink-0">
-                <input
-                  type="text"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="Filtrer..."
-                  className={searchInputClassName}
-                />
-                {/* <TextInput value={searchText} onChange={setSearchText} options={{ label: 'Rechercher un espace...' }} /> */}
-              </div>
-            )}
-            <motion.ul className={innerContentClassName} role="listbox">
-              {shownGroups.map((group, idx) => (
-                <motion.li key={idx} variants={itemVariants} role="option">
-                  {group.name && <GroupHeading label={group.name} className="px-3 py-2" />}
-                  <ul>{group.items.map(renderItem)}</ul>
-                </motion.li>
-              ))}
-            </motion.ul>
-          </motion.div>
-        </PopoverContent>
-      </Popover>
-    </motion.div>
+    <Field {...fieldProps}>
+      <button {...triggerProps}>{buttonInner}</button>
+      {isOpen && (
+        <FloatingPortal>
+          <FloatingFocusManager context={context} modal={false}>
+            <ul {...contentProps} role="listbox" ref={contentRef}>
+              {options.map(({ value, label }, idx) => {
+                const style = {
+                  cursor: 'default',
+                  background: idx === activeIndex ? 'bg-3 opacity-100' : 'opacity-50',
+                };
+                const selected = selectedItems.some((item) => item.value === value);
+                const onKeyDown = (event: React.KeyboardEvent) => {
+                  if (event.key === 'Enter' || (event.key === ' ' && !isTypingRef.current)) {
+                    event.preventDefault();
+                    handleSelect(idx);
+                  }
+                };
+
+                return (
+                  <li
+                    key={idx}
+                    ref={(node) => (listElementRef.current[idx] = node)}
+                    tabIndex={idx === activeIndex ? 0 : -1}
+                    aria-selected={selected}
+                    role="option"
+                    style={style}
+                    {...getItemProps({ onClick: () => handleSelect(idx), onKeyDown })}
+                  >
+                    {label}
+                    {showIcon && selected ? (
+                      <IconCheck aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5 rounded-[50%]" />
+                    ) : (
+                      multiple && <IconCircle aria-hidden className="h-5 w-5 bg-[var(--primary)] text-white p-0.5" />
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </FloatingFocusManager>
+        </FloatingPortal>
+      )}
+    </Field>
   );
-}
+});

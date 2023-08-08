@@ -74,7 +74,7 @@ export default function OverflowList<T>(props: OverflowListProps<T>) {
     if (!previousWidth) return;
 
     repartition(width > previousWidth);
-  }, [width, previousWidth]);
+  }, [width, previousWidth, repartition]);
 
   return (
     <div ref={ref} className={clsx(className, 'flex gap-2 flex-nowrap min-w-0')}>

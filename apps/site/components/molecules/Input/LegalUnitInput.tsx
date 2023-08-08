@@ -1,4 +1,4 @@
-import AutoCompleteInput from './AutoCompleteInput';
+import AutoCompleteInput from './Search/AutoCompleteInput';
 import LegalUnitInputConfirm from './InputConfirm/LegalUnitInputConfirm';
 import AvatarLabeled from '../Labeled/AvatarLabeled';
 
@@ -14,18 +14,20 @@ import { useThrottle } from 'react-use';
 import type { LegalUnitMinimalInfo } from '@okampus/shared/graphql';
 
 export type LegalUnitInputProps = {
+  name: string;
   value: LegalUnitMinimalInfo | null;
   type?: LegalUnitType;
   onChange: (value: LegalUnitMinimalInfo | null) => void;
-  autoFocus?: boolean;
+  // autoFocus?: boolean;
   legalUnitQuery?: string;
   onQueryChange?: (value: string) => void;
 };
 export default function LegalUnitInput({
+  name,
   value,
   type,
   onChange,
-  autoFocus,
+  // autoFocus,
   legalUnitQuery,
   onQueryChange,
 }: LegalUnitInputProps) {
@@ -62,24 +64,26 @@ export default function LegalUnitInput({
   // const items = data ? (dataContainsValue ? data?.legalUnit : value ? [value, ...data.legalUnit] : data.legalUnit) : [];
   const items = data?.legalUnit ?? [];
 
-  const selectItems = items.map((x) => ({
-    value: x,
-    label: <AvatarLabeled type="team" name={x.legalName} website={x.actor.website} avatarSize={8} />,
-    searchValue: x.legalName,
+  const selectItems = items.map((item) => ({
+    value: item,
+    label: <AvatarLabeled type="team" name={item.legalName} website={item.actor.website} avatarSize={8} />,
+    searchValue: item.legalName,
   }));
   const selected = value ? { value, label: value.legalName, searchValue: value.legalName } : null;
 
   return (
     <AutoCompleteInput
-      autoFocus={autoFocus}
+      // autoFocus={autoFocus}
+      name={name}
       value={selected}
-      onChange={(x) => onChange(x?.value ?? null)}
-      onChangeSearchValue={(value) => (onQueryChange ? onQueryChange(value) : setSearchText(value))}
-      addCurrentSearch={() => {
+      onChange={(value) => onChange((value as LegalUnitMinimalInfo) ?? null)}
+      search={searchText}
+      onChangeSearch={(value) => (onQueryChange ? onQueryChange(value) : setSearchText(value))}
+      onAddCurrentSearch={(search: string) => {
         openModal({
           node: (
             <LegalUnitInputConfirm
-              initialName={searchText}
+              initialName={search}
               onSubmit={(name) =>
                 insertLegalUnit({
                   variables: {
@@ -96,9 +100,8 @@ export default function LegalUnitInput({
           ),
         });
       }}
-      searchValue={searchText}
-      items={selectItems}
-      error={error ? new Error(JSON.stringify(error)) : error}
+      options={selectItems}
+      error={error ? error.message : undefined}
       loading={loading}
     />
   );

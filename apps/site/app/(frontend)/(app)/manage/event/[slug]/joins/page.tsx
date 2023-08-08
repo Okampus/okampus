@@ -4,7 +4,7 @@ import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout'
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
 import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptyStateImage';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import ApprovalDashboard from '../../../../../../../components/organisms/ApprovalDashboard';
 
@@ -22,7 +22,7 @@ import { useMutation } from '@apollo/client';
 
 import { useAtom } from 'jotai';
 
-import type { FormField, Submission, FormSchema } from '@okampus/shared/types';
+import type { Submission, FormSchema } from '@okampus/shared/types';
 
 export default function ManageEventAttendancePage({ params }: { params: { slug: string } }) {
   const { eventManage } = useEventManage(params.slug);
@@ -77,7 +77,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
             <hr className="border-color-3" />
             {join.formSubmission && (
               <FormSubmissionRender
-                schema={join.formSubmission?.form.schema as FormField[]}
+                schema={join.formSubmission?.form.schema as FormSchema}
                 submission={join.formSubmission?.submission as Submission<FormSchema>}
               />
             )}
