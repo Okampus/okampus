@@ -28,8 +28,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
     <>
       <ApolloWriteCache values={[[event, eventDetailsInfo]]} />
       <ApolloSubscribe selector={{ eventByPk: [{ id: event.id }, eventDetailsInfo] }} />
-      <SideBar>
-        <SidebarBanner name={event.name} banner={event.banner?.url} />
+      <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[

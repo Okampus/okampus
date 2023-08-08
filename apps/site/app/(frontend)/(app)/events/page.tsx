@@ -2,7 +2,7 @@
 
 import Calendar from '../../../../components/organisms/Calendar';
 import SideBar from '../../../../components/layouts/SideBar';
-import CalendarDateInput from '../../../../components/molecules/Input/CalendarDateInput';
+import CalendarInput from '../../../../components/molecules/Input/Date/CalendarInput';
 import { useTypedQueryAndSubscribe } from '../../../../hooks/apollo/useTypedQueryAndSubscribe';
 
 import { EventState } from '@okampus/shared/enums';
@@ -24,7 +24,7 @@ export default function EventsPage() {
   return (
     <>
       <SideBar>
-        <CalendarDateInput
+        <CalendarInput
           className="w-full px-2 pt-[var(--py-content)]"
           date={sidebarDate}
           setDate={(date) => {

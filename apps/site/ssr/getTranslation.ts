@@ -2,6 +2,7 @@ import 'server-only';
 
 import { getLang } from './getLang';
 import {
+  byteFormatters,
   cutoffs,
   dateFormatters,
   listFormatters,
@@ -13,13 +14,13 @@ import {
 import { SITE_URL } from '../context/consts';
 import { translate } from '../utils/i18n/translate';
 
-import { isNotNull, mapObject } from '@okampus/shared/utils';
+import { formatAsBytes, formatAsOctets, isNotNull, mapObject } from '@okampus/shared/utils';
 
 import { cache } from 'react';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import type { Format, Formatters } from '../config/i18n';
+import type { Format, Formatters, Locale } from '../config/i18n';
 import type { TOptions } from '../utils/i18n/translate';
 
 const localePathBase = path.resolve('locales');
@@ -78,7 +79,8 @@ const cachedDict = cache(async function getDict(lang: string) {
   return dicts;
 });
 
-const cachedFormatters = cache(async function getFormatters(lang: string): Promise<Formatters> {
+const cachedFormatters = cache(async function getFormatters(lang: Locale): Promise<Formatters> {
+  const byte = mapObject(byteFormatters, () => ({ format: lang === 'fr-FR' ? formatAsOctets : formatAsBytes }));
   const date = mapObject(dateFormatters, (_, config) => ({
     format: (date: Date) => new Intl.DateTimeFormat(lang, config).format(date).replace(', ', ' • '),
   }));
@@ -100,7 +102,7 @@ const cachedFormatters = cache(async function getFormatters(lang: string): Promi
     return { format: (value: number) => formatter.select(value) };
   });
 
-  return { ...date, ...number, ...list, ...relativeTime, ...plural };
+  return { ...byte, ...date, ...number, ...list, ...relativeTime, ...plural };
 });
 
 export type DeterminerType = 'indefinite' | 'definite' | 'indefinite_plural' | 'definite_plural';

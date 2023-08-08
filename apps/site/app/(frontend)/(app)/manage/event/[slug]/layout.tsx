@@ -33,8 +33,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
     <>
       <ApolloWriteCache values={[[eventManage, eventManageInfo]]} />
       <ApolloSubscribe selector={{ eventByPk: [{ id: eventManage.id }, eventManageInfo] }} />
-      <SideBar>
-        <SidebarBanner name={eventManage?.name} banner={eventManage.banner?.url} />
+      <SideBar header={<SidebarBanner name={eventManage?.name} banner={eventManage.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={false} />
         <GroupItem heading="Paramètres" headingClassName="ml-3">
           <LinkList

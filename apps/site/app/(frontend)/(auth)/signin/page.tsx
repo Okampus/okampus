@@ -43,7 +43,12 @@ export default function SigninPage() {
       }
     },
   });
+
   const [showLogin, setShowLogin] = useState(false);
+  // const { register, handleSubmit, watch, formState } = useForm<SigninForm>({ values: { username, password } });
+  // const { errors } = formState;
+
+  // const registered = register('username', { value: username });
 
   return (
     <div className="flex w-full h-full overflow-hidden">
@@ -80,15 +85,17 @@ export default function SigninPage() {
               <>
                 <div className="flex flex-col gap-4">
                   <TextInput
-                    options={{ name: 'username', label: "Nom d'utilisateur" }}
+                    name="username"
+                    label="Nom d'utilisateur"
                     value={username}
-                    onChange={setUsername}
+                    onChange={(event) => setUsername(event.target.value)}
                   />
                   <TextInput
-                    options={{ name: 'password', label: 'Mot de passe' }}
+                    name="password"
+                    label="Mot de passe"
                     type="password"
                     value={password}
-                    onChange={setPassword}
+                    onChange={(event) => setPassword(event.target.value)}
                   />
                 </div>
                 <ActionButton

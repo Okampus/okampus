@@ -7,13 +7,13 @@ import { IconCopy } from '@tabler/icons-react';
 
 import { useAtom } from 'jotai';
 
-export type TextCopiableProps = { text: string; copyText?: string; notificationText?: string };
-export default function TextCopiable({ text, copyText, notificationText }: TextCopiableProps) {
+export type ICopiableProps = { text: string; copyText?: string; notificationText?: string };
+export default function ICopiable({ text, copyText, notificationText }: ICopiableProps) {
   const [, setNotification] = useAtom(notificationAtom);
 
   const copy = () => {
-    navigator.clipboard.writeText(copyText || text);
-    setNotification({ type: ToastType.Info, message: notificationText || 'Copié !' });
+    navigator.clipboard.writeText(copyText ?? text);
+    setNotification({ type: ToastType.Info, message: notificationText ?? 'Copié !' });
   };
 
   return (

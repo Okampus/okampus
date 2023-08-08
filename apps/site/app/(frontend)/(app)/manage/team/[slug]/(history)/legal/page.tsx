@@ -37,9 +37,12 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
       <GroupItem heading="Situation générale">
         <span className="flex gap-4 items-center">
           <SelectInput
+            name="type"
+            label="Forme juridique"
+            disabled={true}
+            options={[{ label: teamTypeLabel, value: teamManage.type }]}
             value={teamManage.type}
-            items={[{ label: teamTypeLabel, value: teamManage.type }]}
-            options={{ label: 'Forme juridique', disabled: true }}
+            onChange={() => {}}
           />
           <IconHelpCircle className="h-7 w-7" />
           {/* {//TODO: INFO FORME JURIDIQUE} */}

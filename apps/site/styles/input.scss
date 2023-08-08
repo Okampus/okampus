@@ -1,3 +1,7 @@
+input:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -11,24 +15,17 @@ input:-webkit-autofill:active {
   }
 }
 
+%input {
+  @apply rounded-md text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)] h-[var(--h-input)];
+}
+
 .input {
-  @apply rounded-md px-3.5 tracking-tight text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)];
-  &[type='date'] {
-    @apply px-2.5;
+  @extend %input;
+  @apply px-3 py-1;
+
+  &-unppaded {
+    @extend %input;
   }
-}
-
-.input-label {
-  transition: background-color 0.25s, color 0.25s, top 0.25s, font-weight 0.25s, font-size 0.25s !important;
-  @apply absolute opacity-50 w-[calc(100%-0.75rem)] px-3 left-[2px] right-2 top-3.5 text-[var(--text-1)] font-medium line-clamp-1 pointer-events-none text-left rounded-t-lg;
-}
-
-input:not(:placeholder-shown) ~ .input-label,
-textarea:not(:placeholder-shown) ~ .input-label,
-.input:focus ~ .input-label,
-.input:hover ~ .input-label,
-.selected.input-label {
-  @apply top-0 pb-1 pt-1.5 text-xs text-[var(--text-2)] opacity-100;
 }
 
 [type='checkbox']:checked {

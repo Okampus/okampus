@@ -28,8 +28,11 @@ export default async function ManageTeamLayout({ children, params }: ManageTeamL
     <>
       <ApolloWriteCache values={[[teamManage, teamManageInfo]]} />
       <ApolloSubscribe selector={{ teamByPk: [{ id: teamManage.id }, teamManageInfo] }} />
-      <SideBar>
-        <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />
+      <SideBar
+        header={
+          <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />
+        }
+      >
         <TeamManageButton slug={params.slug} manage={false} />
         <TeamManageNavigation slug={params.slug} />
       </SideBar>

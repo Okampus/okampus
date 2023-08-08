@@ -887,10 +887,10 @@
       "one": "option \"privé ?\"",
       "other": "options \"privé ?\""
     },
-    "isRequired": {
+    "isLocked": {
       "determinerType": "masculine",
-      "one": "option \"requis ?\"",
-      "other": "options \"requis ?\""
+      "one": "option \"verrouillé ?\"",
+      "other": "options \"verrouillé ?\""
     },
     "isTemplate": {
       "determinerType": "masculine",

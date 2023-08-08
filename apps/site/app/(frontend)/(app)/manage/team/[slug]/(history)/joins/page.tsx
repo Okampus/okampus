@@ -21,18 +21,19 @@ import { useTeamManage } from '../../../../../../../../context/navigation';
 import { useTypedQueryAndSubscribe } from '../../../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
 import { useModal } from '../../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
-import { useForm } from '../../../../../../../../hooks/form/useForm';
+// import { useForm } from '../../../../../../../../hooks/form/useForm';
 
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
 
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
 import { teamJoinWithUser, updateTeamJoinMutation, updateTeamMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
-import { extractPositiveNumber } from '@okampus/shared/utils';
+// import { extractPositiveNumber } from '@okampus/shared/utils';
 
 import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import type { FormSchema, Submission } from '@okampus/shared/types';
 
@@ -111,21 +112,30 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
 
   // ISO 8601 Durations
 
-  const { errors, register, setValue, values, loading, changed, onSubmit } = useForm({
-    defaultValues,
-    submit: async (values) => {
-      const update = {
-        membershipDuration: values.membershipDuration,
-        membershipFees: values.membershipFees ? extractPositiveNumber(values.membershipFees) || 0 : 0,
-        isJoinFormActive: values.isJoinFormActive,
-      };
+  // const { errors, register, setValue, values, loading, changed, onSubmit } = useForm({
+  //   defaultValues,
+  //   submit: async (values) => {
+  //     const update = {
+  //       membershipDuration: values.membershipDuration,
+  //       membershipFees: values.membershipFees ? extractPositiveNumber(values.membershipFees) || 0 : 0,
+  //       isJoinFormActive: values.isJoinFormActive,
+  //     };
 
-      // @ts-ignore
-      updateTeam({ variables: { id: teamManage.id, update } });
-    },
+  //     // @ts-ignore
+  //     updateTeam({ variables: { id: teamManage.id, update } });
+  //   },
+  // });
+
+  const { register, setValue, reset, handleSubmit, formState } = useForm({
+    defaultValues,
   });
 
   if (!teamManage || !teamManage.joinForm) return null;
+
+  const onSubmit = handleSubmit((update) => {
+    // @ts-ignore
+    updateTeam({ variables: { id: teamManage.id, update } });
+  });
 
   const attributedRoleSchema = [
     {
@@ -140,7 +150,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   return (
     <ViewLayout header="Adhésions" bottomPadded={false} scrollable={false}>
       <form onSubmit={onSubmit}>
-        <ChangeSetToast changed={changed} errors={errors} loading={loading} onCancel={reset} />
+        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
         <SwitchInput
           {...register('isJoinFormActive')}
           // name="isJoinFormActive"
@@ -161,12 +171,11 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
             endContent={<span className="px-2">€</span>}
             placeholder="Autre montant"
           />
-          <SelectInput
+          <Controller
             name="membershipDuration"
-            value={values.membershipDuration}
-            onChange={(value) => setValue('membershipDuration', value)}
-            label="Renouvellement des adhésions"
-            options={membershipDurationItems}
+            render={({ field }) => (
+              <SelectInput {...field} label="Renouvellement des adhésions" options={membershipDurationItems} />
+            )}
           />
         </GroupItem>
         {/* <ChangeSetForm

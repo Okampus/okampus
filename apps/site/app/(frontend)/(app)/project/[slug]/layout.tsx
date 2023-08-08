@@ -26,8 +26,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
     <>
       <ApolloWriteCache values={[[project, projectBaseInfo]]} />
       <ApolloSubscribe selector={{ projectByPk: [{ id: project.id }, projectBaseInfo] }} />
-      <SideBar>
-        <SidebarBanner name={project.name} banner={project.banner?.url} />
+      <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[

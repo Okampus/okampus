@@ -5,7 +5,7 @@ import MultiStepPageLayout from '../../../../../../../../components/atoms/Layout
 import AvatarImage from '../../../../../../../../components/atoms/Image/AvatarImage';
 import BankInfoPreview from '../../../../../../../../components/atoms/Preview/BankInfoPreview';
 
-import NumberInput from '../../../../../../../../components/molecules/Input/NumberInput';
+import TextInput from '../../../../../../../../components/molecules/Input/TextInput';
 import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
 
 import { useMe, useTeamManage } from '../../../../../../../../context/navigation';
@@ -135,7 +135,7 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
         return (
           <BankInfoForm
             actor={teamManage.actor}
-            onSubmit={({ bankLocation, bicSwift, holderName, iban }) => {
+            submit={async ({ bankLocation, bicSwift, holderName, iban }) => {
               setValues({ ...values, bankLocation, bicSwift, holderName, iban });
               goToNextStep();
             }}
@@ -166,12 +166,13 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
             />
             <div className="flex flex-col gap-6 lg:max-w-[30rem]">
               <div className="page-subtitle">Quel est le solde total de votre compte{teamsString} ?</div>
-              <NumberInput
+              <TextInput
+                name="balance"
                 value={values.balance}
                 textAlign="right"
-                onChange={(value) => setValues({ ...values, balance: value })}
-                options={{ placeholder: 'Solde total (XXXX,XX)' }}
-                suffix={<div className="ml-2">€</div>}
+                onChange={(event) => setValues({ ...values, balance: event.target.value })}
+                placeholder="Solde total (XXXX,XX)"
+                endContent={<div className="ml-2">€</div>}
               />
               {teamManage.teams.length > 0 && (
                 <>
@@ -179,23 +180,21 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
                   {teamManage.teams.map((team) => (
                     <div key={team.id} className="flex items-center gap-4">
                       <AvatarImage actor={team.actor} type="team" />
-                      <NumberInput
-                        value={
-                          values.accountAllocates.find((accountAllocate) => accountAllocate.teamId === team.id)
-                            ?.balance || ''
-                        }
+                      <TextInput
+                        name={`balance-${team.actor.slug}`}
+                        endContent={<div className="ml-2">€</div>}
+                        placeholder={`Solde de ${team.actor?.name} (XXXX,XX)`}
                         textAlign="right"
-                        onChange={(value) =>
+                        onChange={(event) =>
                           setValues({
                             ...values,
                             accountAllocates: values.accountAllocates.map((accountAllocate) => {
-                              if (accountAllocate.teamId === team.id) return { ...accountAllocate, balance: value };
+                              if (accountAllocate.teamId === team.id)
+                                return { ...accountAllocate, balance: event.target.value };
                               return accountAllocate;
                             }),
                           })
                         }
-                        options={{ placeholder: `Solde de ${team.actor?.name} (XXXX,XX)` }}
-                        suffix={<div className="ml-2">€</div>}
                       />
                     </div>
                   ))}

@@ -2,12 +2,12 @@
 
 import BannerImage from '../../../../../../../components/atoms/Image/BannerImage';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
-import UserGroup from '../../../../../../../components/atoms/Group/UserGroup';
+import UserGroup from '../../../../../../../components/molecules/Group/UserGroup';
 import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 import EventForm from '../../../../../../../components/forms/EventForm/EventForm';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../../components/organisms/Dashboard';
@@ -63,11 +63,10 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
     <ViewLayout header="Événements" scrollable={false}>
       <div className="flex gap-6 px-content pb-6">
         <TextInput
-          prefix={<IconSearch className="text-[var(--text-2)]" />}
-          value={search}
-          paddingAfterPrefix={true}
-          onChange={setSearch}
-          options={{ placeholder: 'Rechercher un événement' }}
+          name="search"
+          startContent={<IconSearch className="text-[var(--text-2)]" />}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Rechercher un événement"
         />
         <ActionButton
           action={{

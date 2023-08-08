@@ -8,7 +8,7 @@ export type GroupHeadingProps = {
 };
 export default function GroupHeading({ label, type = 'menu', icon, className }: GroupHeadingProps) {
   return (
-    <h3 className={clsx('flex items-center gap-2.5', className, type === 'menu' ? 'menu-title' : 'page-subtitle')}>
+    <h3 className={clsx('flex items-center gap-2.5', className, type === 'menu' ? 'label-title' : 'page-subtitle')}>
       {icon && <i className="[&>:first-child]:h-5 [&>:first-child]:w-5">{icon}</i>}
       {label}
     </h3>

@@ -29,7 +29,7 @@ body {
   height: 100%;
 }
 
-.menu-title {
+.label-title {
   @apply text-base font-semibold text-[var(--text-0)];
 }
 

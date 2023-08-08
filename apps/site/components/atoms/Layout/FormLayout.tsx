@@ -1,4 +1,4 @@
-import FormSchemaRender from '../../molecules/Form/FormSchemaRender';
+import FormSchemaRender from '../../organisms/Form/FormSchemaRender';
 import ActionButton from '../../molecules/Button/ActionButton';
 import { defaultFormData } from '../../../utils/default-form-data';
 

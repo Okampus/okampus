@@ -1,7 +1,7 @@
 'use client';
 
-import UserGroup from '../../../../../../components/atoms/Group/UserGroup';
-import TextFinance from '../../../../../../components/atoms/Text/TextFinance';
+import UserGroup from '../../../../../../components/molecules/Group/UserGroup';
+import IMoney from '../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
 import FileIcon from '../../../../../../components/atoms/Icon/FileIcon';
 import Skeleton from '../../../../../../components/atoms/Skeleton/Skeleton';
@@ -89,7 +89,7 @@ export default function TenantDashboardPage() {
     {
       label: 'Trésorerie',
       render: (value: TeamDashboardInfo) => {
-        return <TextFinance amount={value.accounts[0].financesAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />;
+        return <IMoney amount={value.accounts[0].financesAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />;
       },
     },
     {

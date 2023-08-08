@@ -39,11 +39,14 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
     <>
       <ApolloWriteCache values={[[tenantManage, tenantManageInfo]]} />
       <ApolloSubscribe selector={{ tenantByPk: [{ id: tenantManage.id }, tenantManageInfo] }} />
-      <SideBar>
-        <SidebarBanner
-          name={tenantManage.adminTeam.actor.name}
-          banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
-        />
+      <SideBar
+        header={
+          <SidebarBanner
+            name={tenantManage.adminTeam.actor.name}
+            banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
+          />
+        }
+      >
         <TenantManageButton manage={false} />
         <LinkList
           items={[

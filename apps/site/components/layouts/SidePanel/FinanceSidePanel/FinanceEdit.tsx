@@ -4,10 +4,11 @@ import GroupItem from '../../../../components/atoms/Item/GroupItem';
 import FileIcon from '../../../../components/atoms/Icon/FileIcon';
 import DateInput from '../../../molecules/Input/Date/DateInput';
 import SelectInput from '../../../../components/molecules/Input/SelectInput';
+import ChangeSetToast from '../../../../components/organisms/Form/ChangeSetToast';
 
 import { notificationAtom } from '../../../../context/global';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
-import { useForm } from '../../../../hooks/form/useForm';
+// import { useForm } from '../../../../hooks/form/useForm';
 
 import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
 import { updateFinanceMutation } from '@okampus/shared/graphql';
@@ -17,6 +18,7 @@ import { bytes, extractPositiveNumber } from '@okampus/shared/utils';
 import { useMutation } from '@apollo/client';
 import { IconTrash } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
+import { useForm } from 'react-hook-form';
 
 import type { FinanceBaseInfo } from '@okampus/shared/graphql';
 
@@ -36,30 +38,52 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   const [updateFinance] = useMutation(updateFinanceMutation);
 
-  const { errors, register, setValue, values, onSubmit, loading, reset, changed } = useForm({
+  const { register, setValue, handleSubmit, formState, watch, reset } = useForm({
     defaultValues,
-    submit: async (data) => {
-      const { amount, attachments: _, ...rest } = data;
-      const update = {
-        ...rest,
-        ...(amount
-          ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
-          : {}),
-      };
-      updateFinance({
-        // @ts-ignore
-        variables: { update, id: finance.id },
-        onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
-        onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-      });
-    },
   });
+
+  const onSubmit = handleSubmit((data) => {
+    const { amount, attachments: _, ...rest } = data;
+    const update = {
+      ...rest,
+      ...(amount ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) } : {}),
+    };
+    updateFinance({
+      // @ts-ignore
+      variables: { update, id: finance.id },
+      onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
+      onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+    });
+  });
+
+  // const { errors, register, setValue, values, onSubmit, loading, reset, changed } = useForm({
+  //   defaultValues,
+  //   submit: async (data) => {
+  //     const { amount, attachments: _, ...rest } = data;
+  //     const update = {
+  //       ...rest,
+  //       ...(amount
+  //         ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
+  //         : {}),
+  //     };
+  //     updateFinance({
+  //       // @ts-ignore
+  //       variables: { update, id: finance.id },
+  //       onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
+  //       onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
+  //     });
+  //   },
+  // });
+
+  const attachments = watch('attachments');
+  const method = watch('method');
+  const category = watch('category');
 
   return (
     <form onSubmit={onSubmit} className="py-4 flex flex-col gap-2">
-      <ChangeSetToast changed={changed} errors={errors} loading={loading} onCancel={reset} />
+      <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
 
-      {values.attachments.length > 0 && (
+      {attachments.length > 0 && (
         <>
           <GroupItem heading="Justificatifs" groupClassName="py-4">
             {/* <SingleFileInput
@@ -68,7 +92,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
                   name: 'attachment',
                 }}
               /> */}
-            {values.attachments.map((attachment) => (
+            {attachments.map((attachment) => (
               <div key={attachment.id} className="flex options-center justify-between gap-4 px-2">
                 <div className="flex gap-4">
                   <FileIcon className="h-11" type={attachment.type} name={attachment.name} />
@@ -108,8 +132,8 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
           }))}
           label="Méthode de paiement"
           name="method"
-          value={values.method}
-          onChange={(method) => setValue('method', method)}
+          value={method}
+          onChange={(method) => setValue('method', method as string)}
         />
         <SelectInput
           options={Object.entries(FinanceCategory).map(([, value]) => ({
@@ -118,8 +142,8 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
           }))}
           label="Catégorie de dépense"
           name="category"
-          value={values.category}
-          onChange={(category) => setValue('category', category)}
+          value={category}
+          onChange={(category) => setValue('category', category as string)}
         />
       </GroupItem>
     </form>

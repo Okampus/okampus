@@ -3,17 +3,18 @@
 import GroupItem from '../atoms/Item/GroupItem';
 import BankInfoPreview from '../atoms/Preview/BankInfoPreview';
 
+import SubmitButton from '../molecules/Button/SubmitButton';
 import TextInput from '../molecules/Input/TextInput';
 import LegalUnitInput from '../molecules/Input/LegalUnitInput';
-import ActionButton from '../molecules/Button/ActionButton';
 import LegalUnitLocationInput from '../molecules/Input/LegalUnitLocationInput';
 
-import { validateIBAN } from '../../utils/form-validation/iban';
+// import { useForm } from '../../hooks/form/useForm';
+// import { validateIBAN } from '../../utils/form-validation/iban';
 
 import { LegalUnitType } from '@okampus/shared/enums';
-import { ActionType } from '@okampus/shared/types';
-import { formatIBAN } from '@okampus/shared/utils';
-import { useState } from 'react';
+// import { formatIBAN } from '@okampus/shared/utils';
+
+import { useForm } from 'react-hook-form';
 
 import type { ActorBaseInfo, LegalUnitLocationMinimalInfo, LegalUnitMinimalInfo } from '@okampus/shared/graphql';
 
@@ -26,8 +27,9 @@ function formatBicSwift(bicSwift: string) {
     .toUpperCase();
 }
 
-type BankInfoProps = {
-  bankLocation: LegalUnitLocationMinimalInfo;
+type BankInfoValues = {
+  bankLocation: LegalUnitLocationMinimalInfo | null;
+  bank: LegalUnitMinimalInfo | null;
   bicSwift: string;
   iban: string;
   holderName: string;
@@ -35,72 +37,69 @@ type BankInfoProps = {
 
 export type BankInfoFormProps = {
   actor: ActorBaseInfo;
-  onSubmit: ({ bankLocation, bicSwift, holderName, iban }: BankInfoProps) => void;
+  submit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankInfoValues) => Promise<void>;
 };
-export default function BankInfoForm({ actor, onSubmit }: BankInfoFormProps) {
-  const [iban, setIban] = useState('');
-  const [canContinue, setCanContinue] = useState<boolean>(false);
+export default function BankInfoForm({ actor, submit }: BankInfoFormProps) {
+  const defaultValues: BankInfoValues = {
+    iban: '',
+    bicSwift: '',
+    bankLocation: null,
+    bank: null,
+    holderName: actor.name,
+  };
 
-  const [bank, setBank] = useState<LegalUnitMinimalInfo | null>(null);
-  const [bicSwift, setBicSwift] = useState('');
-  const [bankLocation, setBankLocation] = useState<LegalUnitLocationMinimalInfo | null>(null);
-  const [holderName, setHolderName] = useState(actor?.name || '');
+  const { register, setValue, handleSubmit, formState, watch } = useForm({
+    defaultValues,
+    // format: { iban: formatIBAN, bicSwift: formatBicSwift },
+    // submit,
+    // validate: { iban: { check: validateIBAN } },
+  });
+
+  const onSubmit = handleSubmit((values) => submit(values));
+
+  const bank = watch('bank');
+  const bankLocation = watch('bankLocation');
+  const iban = watch('iban');
+  const bicSwift = watch('bicSwift');
+  const holderName = watch('holderName');
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_36rem] gap-14">
+    <form className="grid grid-cols-1 lg:grid-cols-[1fr_36rem] gap-14" onSubmit={onSubmit}>
       <div className="flex flex-col gap-5 py-1">
         <div className="flex flex-col gap-4">
-          <TextInput options={{ label: 'Nom du titulaire du compte' }} value={holderName} onChange={setHolderName} />
-          <TextInput
-            format={formatIBAN}
-            checkValueOn={{ length: 33 }}
-            infoText={!canContinue && 'Exemple: FR76 0000 1000 0000 0225 4793 751'}
-            value={iban}
-            onChange={setIban}
-            options={{ label: 'IBAN' }}
-            checkValueError={validateIBAN}
-            onErrorChange={(error) => setCanContinue(!error)}
-          />
+          <TextInput {...register('holderName')} label="Nom du titulaire du compte" />
+          <TextInput {...register('iban')} description="Exemple: FR76 0000 1000 0000 0225 4793 751" label="IBAN" />
         </div>
-        {canContinue && (
+        {!formState.errors.iban && (
           <div className="flex flex-col gap-4">
             <GroupItem heading="Banque correspondante">
-              <LegalUnitInput type={LegalUnitType.Bank} value={bank} onChange={setBank} />
-              <TextInput
-                options={{ label: 'Code BIC/SWIFT (présent sur le RIB)' }}
-                format={formatBicSwift}
-                value={bicSwift}
-                onChange={setBicSwift}
+              <LegalUnitInput
+                name="bank"
+                type={LegalUnitType.Bank}
+                value={bank}
+                onChange={(value) => setValue('bank', value)}
               />
+              <TextInput {...register('bicSwift')} label="Code BIC/SWIFT (présent sur le RIB)" />
             </GroupItem>
             {bank && (
               <>
                 <GroupItem heading="Nom de l'agence">
                   <LegalUnitLocationInput
+                    name="bankLocation"
                     headerLabel="Ajouter votre agence"
                     inputLabel="Nom de l'agence"
                     legalUnitId={bank.id}
                     value={bankLocation}
-                    onChange={setBankLocation}
+                    onChange={(value) => setValue('bankLocation', value)}
                   />
                 </GroupItem>
               </>
             )}
           </div>
         )}
-        {bankLocation && holderName && bank && bicSwift && (
-          <ActionButton
-            className="mt-4"
-            action={{
-              type: ActionType.Success,
-              label: 'Valider votre RIB',
-              linkOrActionOrMenu: () =>
-                onSubmit({ bankLocation, bicSwift, holderName, iban: iban.replaceAll(' ', '') }),
-            }}
-          />
-        )}
+        {bankLocation && iban && holderName && bicSwift && <SubmitButton label="Valider votre RIB" />}
       </div>
       <BankInfoPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankLocation={bankLocation} />
-    </div>
+    </form>
   );
 }

@@ -887,10 +887,10 @@
       "one": "option \"is private?\"",
       "other": "options \"is private?\""
     },
-    "isRequired": {
+    "isLocked": {
       "determinerType": "short",
-      "one": "option \"is required?\"",
-      "other": "options \"is required?\""
+      "one": "option \"is locked?\"",
+      "other": "options \"is locked?\""
     },
     "isTemplate": {
       "determinerType": "short",

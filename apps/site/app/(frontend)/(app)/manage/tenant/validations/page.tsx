@@ -1,14 +1,14 @@
 'use client';
 
 import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
-import TeamGroup from '../../../../../../components/atoms/Group/TeamGroup';
+import TeamGroup from '../../../../../../components/molecules/Group/TeamGroup';
 import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
 import ModalLayout from '../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
 
 import EventApprovalModal from '../../../../../../components/modals/EventApprovalModal';
 import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../components/organisms/Form/FormSubmissionRender';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
 import TabList from '../../../../../../components/molecules/List/TabList';
 import Dashboard from '../../../../../../components/organisms/Dashboard';

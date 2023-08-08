@@ -1,9 +1,9 @@
 'use client';
 
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import TextFinance from '../../../../../../../components/atoms/Text/TextFinance';
+import IMoney from '../../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
-import FileGroup from '../../../../../../../components/atoms/Group/FileGroup';
+import FileGroup from '../../../../../../../components/molecules/Group/FileGroup';
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
 import TransactionForm from '../../../../../../../components/forms/TransactionForm/TransactionForm';
 import FinanceSidePanel from '../../../../../../../components/layouts/SidePanel/FinanceSidePanel/FinanceSidePanel';
@@ -122,7 +122,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
       data: (value: FinanceBaseInfo) => value.amount,
       align: Align.Right,
       label: 'Montant',
-      render: (value: FinanceBaseInfo) => <TextFinance amount={value.amount} />,
+      render: (value: FinanceBaseInfo) => <IMoney amount={value.amount} />,
     },
   ];
 
@@ -172,7 +172,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
                   team={child.team}
                   showCardOnClick={false}
                   content={
-                    <TextFinance
+                    <IMoney
                       className="whitespace-nowrap"
                       amount={child.financesAggregate.aggregate?.sum?.amount || 0}
                     />
@@ -185,11 +185,10 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         )}
         <div className="flex gap-6 px-content pb-6">
           <TextInput
-            prefix={<IconSearch className="text-[var(--text-2)]" />}
-            value={search}
-            paddingAfterPrefix={true}
-            onChange={setSearch}
-            options={{ placeholder: 'Rechercher une transaction' }}
+            name="search"
+            startContent={<IconSearch className="text-[var(--text-2)]" />}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder={'Rechercher une transaction'}
           />
           <ActionButton
             action={{

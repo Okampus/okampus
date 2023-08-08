@@ -1,6 +1,6 @@
 'use client';
 
-import QRCodeImage from '../../../../../components/atoms/Image/QRCodeImage';
+import QRImage from '../../../../../components/atoms/Image/QRCodeImage';
 import GroupItem from '../../../../../components/atoms/Item/GroupItem';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 // import TextLocation from '../../../../../components/atoms/Text/TextLocation';
@@ -73,7 +73,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                 linkOrActionOrMenu: () =>
                   openModal({
                     node: (
-                      <QRCodeImage
+                      <QRImage
                         data={`${window.location.origin}/confirm-attendance/${currentUserEventJoin.id}`}
                         showData={true}
                       />

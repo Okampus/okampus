@@ -1,4 +1,4 @@
-import TextAddress from './TextAddress';
+import IAddress from './IAddress';
 
 import { LocationType } from '@okampus/shared/enums';
 
@@ -7,21 +7,21 @@ import Link from 'next/link';
 
 import type { LocationBaseInfo } from '@okampus/shared/graphql';
 
-export type TextLocationProps = { location?: LocationBaseInfo; className?: string };
-export default function TextLocation({ location, className }: TextLocationProps) {
+export type ILocationProps = { location?: LocationBaseInfo; className?: string };
+export default function ILocation({ location, className }: ILocationProps) {
   return location ? (
     location.onlineLink ? (
       <Link href={location.onlineLink} className={clsx(className, 'text-blue-400 underline')}>
         {location.type === LocationType.Online ? (
           location.onlineLink
         ) : location.address ? (
-          <TextAddress address={location.address} />
+          <IAddress address={location.address} />
         ) : (
           <div>{location.locationDetails}</div>
         )}
       </Link>
     ) : location.address ? (
-      <TextAddress className={className} address={location.address} />
+      <IAddress className={className} address={location.address} />
     ) : (
       <div className={className}>{location.locationDetails}</div>
     )

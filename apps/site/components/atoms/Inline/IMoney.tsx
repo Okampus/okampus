@@ -1,20 +1,14 @@
 import { formatCurrency, formatCurrencyWithSign } from '@okampus/shared/utils';
 import clsx from 'clsx';
 
-export type TextFinanceProps = {
+export type IMoneyProps = {
   amount: number;
   showRed?: boolean;
   textClass?: string;
   className?: string;
   withSign?: boolean;
 };
-export default function TextFinance({
-  amount,
-  showRed,
-  textClass = 'text-1',
-  className,
-  withSign = true,
-}: TextFinanceProps) {
+export default function IMoney({ amount, showRed, textClass = 'text-1', className, withSign = true }: IMoneyProps) {
   const isPositive = amount > 0;
   const format = withSign ? formatCurrencyWithSign : formatCurrency;
   return (

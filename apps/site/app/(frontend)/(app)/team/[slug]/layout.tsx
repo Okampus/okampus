@@ -29,8 +29,7 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
     <>
       <ApolloWriteCache values={[[team, teamWithMembersInfo]]} />
       <ApolloSubscribe selector={{ teamByPk: [{ id: team.id }, teamWithMembersInfo] }} />
-      <SideBar>
-        <SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />
+      <SideBar header={<SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />}>
         <TeamManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[
