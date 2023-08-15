@@ -19,7 +19,7 @@ export class EventSeeder extends Factory<Event> {
     em: EntityManager,
     private readonly team: Team,
     private readonly steps: EventApprovalStep[],
-    private readonly teamMembers: TeamMember[]
+    private readonly teamMembers: TeamMember[],
   ) {
     super(em);
   }
@@ -114,6 +114,7 @@ export class EventSeeder extends Factory<Event> {
                 name: 'payed',
                 label:
                   "Avez-vous payé votre billet via le lien dans la description de l'événement ? Votre inscription ne pourra pas être validée sinon.",
+                placeholder: '',
                 required: true,
               },
             ],
