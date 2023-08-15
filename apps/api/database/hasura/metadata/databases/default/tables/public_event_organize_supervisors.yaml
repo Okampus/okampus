@@ -5,6 +5,6 @@ object_relationships:
   - name: eventOrganize
     using:
       foreign_key_constraint_on: event_organize_id
-  - name: teamMember
+  - name: eventSupervisor
     using:
-      foreign_key_constraint_on: team_member_id
+      foreign_key_constraint_on: event_supervisor_id

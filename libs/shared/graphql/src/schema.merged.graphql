@@ -1,8 +1,8 @@
 directive @cached(ttl: Int! = 60, refresh: Boolean! = false) on QUERY
 
 type Account {
-  bankInfo: BankInfo
-  bankInfoId: bigint
+  bank: Bank
+  bankId: bigint
   children(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   childrenAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   createdAt: timestamptz!
@@ -73,7 +73,7 @@ input AccountArrRelInsertInput {
 }
 
 type AccountAvgFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -82,7 +82,7 @@ type AccountAvgFields {
 }
 
 input AccountAvgOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -94,8 +94,8 @@ input AccountBoolExp {
   _and: [AccountBoolExp!]
   _not: AccountBoolExp
   _or: [AccountBoolExp!]
-  bankInfo: BankInfoBoolExp
-  bankInfoId: BigintComparisonExp
+  bank: BankBoolExp
+  bankId: BigintComparisonExp
   children: AccountBoolExp
   childrenAggregate: AccountAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -121,7 +121,7 @@ enum AccountConstraint {
 }
 
 input AccountIncInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   parentId: bigint
@@ -130,8 +130,8 @@ input AccountIncInput {
 }
 
 input AccountInsertInput {
-  bankInfo: BankInfoObjRelInsertInput
-  bankInfoId: bigint
+  bank: BankObjRelInsertInput
+  bankId: bigint
   children: AccountArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
@@ -151,7 +151,7 @@ input AccountInsertInput {
 }
 
 type AccountMaxFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -165,7 +165,7 @@ type AccountMaxFields {
 }
 
 input AccountMaxOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -179,7 +179,7 @@ input AccountMaxOrderBy {
 }
 
 type AccountMinFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -193,7 +193,7 @@ type AccountMinFields {
 }
 
 input AccountMinOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -223,8 +223,8 @@ input AccountOnConflict {
 }
 
 input AccountOrderBy {
-  bankInfo: BankInfoOrderBy
-  bankInfoId: OrderBy
+  bank: BankOrderBy
+  bankId: OrderBy
   childrenAggregate: AccountAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -248,7 +248,7 @@ input AccountPkColumnsInput {
 }
 
 enum AccountSelectColumn {
-  bankInfoId
+  bankId
   createdAt
   createdById
   deletedAt
@@ -262,7 +262,7 @@ enum AccountSelectColumn {
 }
 
 input AccountSetInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -276,7 +276,7 @@ input AccountSetInput {
 }
 
 type AccountStddevFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -285,7 +285,7 @@ type AccountStddevFields {
 }
 
 input AccountStddevOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -294,7 +294,7 @@ input AccountStddevOrderBy {
 }
 
 type AccountStddevPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -303,7 +303,7 @@ type AccountStddevPopFields {
 }
 
 input AccountStddevPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -312,7 +312,7 @@ input AccountStddevPopOrderBy {
 }
 
 type AccountStddevSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -321,7 +321,7 @@ type AccountStddevSampFields {
 }
 
 input AccountStddevSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -335,7 +335,7 @@ input AccountStreamCursorInput {
 }
 
 input AccountStreamCursorValueInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -349,7 +349,7 @@ input AccountStreamCursorValueInput {
 }
 
 type AccountSumFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   parentId: bigint
@@ -358,7 +358,7 @@ type AccountSumFields {
 }
 
 input AccountSumOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -367,7 +367,7 @@ input AccountSumOrderBy {
 }
 
 enum AccountUpdateColumn {
-  bankInfoId
+  bankId
   createdAt
   createdById
   deletedAt
@@ -387,7 +387,7 @@ input AccountUpdates {
 }
 
 type AccountVarianceFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -396,7 +396,7 @@ type AccountVarianceFields {
 }
 
 input AccountVarianceOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -405,7 +405,7 @@ input AccountVarianceOrderBy {
 }
 
 type AccountVarPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -414,7 +414,7 @@ type AccountVarPopFields {
 }
 
 input AccountVarPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -423,7 +423,7 @@ input AccountVarPopOrderBy {
 }
 
 type AccountVarSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -432,7 +432,7 @@ type AccountVarSampFields {
 }
 
 input AccountVarSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -987,8 +987,8 @@ type Actor {
   actorImagesAggregate(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): ActorImageAggregate!
   actorTags(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): [ActorTags!]!
   actorTagsAggregate(distinctOn: [ActorTagsSelectColumn!], limit: Int, offset: Int, orderBy: [ActorTagsOrderBy!], where: ActorTagsBoolExp): ActorTagsAggregate!
-  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  banks(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  banksAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
   bio: String!
   createdAt: timestamptz!
   createdBy: Individual
@@ -1095,8 +1095,8 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   bio: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -1533,7 +1533,7 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
-  bankInfos: BankInfoArrRelInsertInput
+  banks: BankArrRelInsertInput
   bio: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -1646,7 +1646,7 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  banksAggregate: BankAggregateOrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -2507,13 +2507,11 @@ input AddressVarSampOrderBy {
   longitude: OrderBy
 }
 
-type BankInfo {
+type Bank {
   accounts(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): [Account!]!
   accountsAggregate(distinctOn: [AccountSelectColumn!], limit: Int, offset: Int, orderBy: [AccountOrderBy!], where: AccountBoolExp): AccountAggregate!
   actor: Actor!
   actorId: bigint!
-  bank: LegalUnitLocation
-  bankId: bigint
   bicSwift: String!
   createdAt: timestamptz!
   createdBy: Individual
@@ -2525,85 +2523,85 @@ type BankInfo {
   holderName: String!
   iban: String!
   id: bigint!
+  legalUnitLocation: LegalUnitLocation
+  legalUnitLocationId: bigint
   tenant: Tenant!
   tenantId: bigint!
 }
 
-type BankInfoAggregate {
-  aggregate: BankInfoAggregateFields
-  nodes: [BankInfo!]!
+type BankAggregate {
+  aggregate: BankAggregateFields
+  nodes: [Bank!]!
 }
 
-input BankInfoAggregateBoolExp {
-  count: bankInfoAggregateBoolExpCount
+input BankAggregateBoolExp {
+  count: bankAggregateBoolExpCount
 }
 
-input bankInfoAggregateBoolExpCount {
-  arguments: [BankInfoSelectColumn!]
+input bankAggregateBoolExpCount {
+  arguments: [BankSelectColumn!]
   distinct: Boolean
-  filter: BankInfoBoolExp
+  filter: BankBoolExp
   predicate: IntComparisonExp!
 }
 
-type BankInfoAggregateFields {
-  avg: BankInfoAvgFields
-  count(columns: [BankInfoSelectColumn!], distinct: Boolean): Int!
-  max: BankInfoMaxFields
-  min: BankInfoMinFields
-  stddev: BankInfoStddevFields
-  stddevPop: BankInfoStddevPopFields
-  stddevSamp: BankInfoStddevSampFields
-  sum: BankInfoSumFields
-  varPop: BankInfoVarPopFields
-  varSamp: BankInfoVarSampFields
-  variance: BankInfoVarianceFields
+type BankAggregateFields {
+  avg: BankAvgFields
+  count(columns: [BankSelectColumn!], distinct: Boolean): Int!
+  max: BankMaxFields
+  min: BankMinFields
+  stddev: BankStddevFields
+  stddevPop: BankStddevPopFields
+  stddevSamp: BankStddevSampFields
+  sum: BankSumFields
+  varPop: BankVarPopFields
+  varSamp: BankVarSampFields
+  variance: BankVarianceFields
 }
 
-input BankInfoAggregateOrderBy {
-  avg: BankInfoAvgOrderBy
+input BankAggregateOrderBy {
+  avg: BankAvgOrderBy
   count: OrderBy
-  max: BankInfoMaxOrderBy
-  min: BankInfoMinOrderBy
-  stddev: BankInfoStddevOrderBy
-  stddevPop: BankInfoStddevPopOrderBy
-  stddevSamp: BankInfoStddevSampOrderBy
-  sum: BankInfoSumOrderBy
-  varPop: BankInfoVarPopOrderBy
-  varSamp: BankInfoVarSampOrderBy
-  variance: BankInfoVarianceOrderBy
+  max: BankMaxOrderBy
+  min: BankMinOrderBy
+  stddev: BankStddevOrderBy
+  stddevPop: BankStddevPopOrderBy
+  stddevSamp: BankStddevSampOrderBy
+  sum: BankSumOrderBy
+  varPop: BankVarPopOrderBy
+  varSamp: BankVarSampOrderBy
+  variance: BankVarianceOrderBy
 }
 
-input BankInfoArrRelInsertInput {
-  data: [BankInfoInsertInput!]!
-  onConflict: BankInfoOnConflict
+input BankArrRelInsertInput {
+  data: [BankInsertInput!]!
+  onConflict: BankOnConflict
 }
 
-type BankInfoAvgFields {
+type BankAvgFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoAvgOrderBy {
+input BankAvgOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-input BankInfoBoolExp {
-  _and: [BankInfoBoolExp!]
-  _not: BankInfoBoolExp
-  _or: [BankInfoBoolExp!]
+input BankBoolExp {
+  _and: [BankBoolExp!]
+  _not: BankBoolExp
+  _or: [BankBoolExp!]
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  bank: LegalUnitLocationBoolExp
-  bankId: BigintComparisonExp
   bicSwift: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -2615,28 +2613,28 @@ input BankInfoBoolExp {
   holderName: StringComparisonExp
   iban: StringComparisonExp
   id: BigintComparisonExp
+  legalUnitLocation: LegalUnitLocationBoolExp
+  legalUnitLocationId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
 
-enum BankInfoConstraint {
-  bank_info_pkey
+enum BankConstraint {
+  bank_pkey
 }
 
-input BankInfoIncInput {
+input BankIncInput {
   actorId: bigint
-  bankId: bigint
   createdById: bigint
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-input BankInfoInsertInput {
+input BankInsertInput {
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  bank: LegalUnitLocationObjRelInsertInput
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -2647,13 +2645,14 @@ input BankInfoInsertInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocation: LegalUnitLocationObjRelInsertInput
+  legalUnitLocationId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
-type BankInfoMaxFields {
+type BankMaxFields {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -2662,12 +2661,12 @@ type BankInfoMaxFields {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-input BankInfoMaxOrderBy {
+input BankMaxOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -2676,12 +2675,12 @@ input BankInfoMaxOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoMinFields {
+type BankMinFields {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -2690,12 +2689,12 @@ type BankInfoMinFields {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-input BankInfoMinOrderBy {
+input BankMinOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -2704,31 +2703,30 @@ input BankInfoMinOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoMutationResponse {
+type BankMutationResponse {
   affectedRows: Int!
-  returning: [BankInfo!]!
+  returning: [Bank!]!
 }
 
-input BankInfoObjRelInsertInput {
-  data: BankInfoInsertInput!
-  onConflict: BankInfoOnConflict
+input BankObjRelInsertInput {
+  data: BankInsertInput!
+  onConflict: BankOnConflict
 }
 
-input BankInfoOnConflict {
-  constraint: BankInfoConstraint!
-  updateColumns: [BankInfoUpdateColumn!]! = []
-  where: BankInfoBoolExp
+input BankOnConflict {
+  constraint: BankConstraint!
+  updateColumns: [BankUpdateColumn!]! = []
+  where: BankBoolExp
 }
 
-input BankInfoOrderBy {
+input BankOrderBy {
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  bank: LegalUnitLocationOrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -2739,17 +2737,18 @@ input BankInfoOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocation: LegalUnitLocationOrderBy
+  legalUnitLocationId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
 
-input BankInfoPkColumnsInput {
+input BankPkColumnsInput {
   id: bigint!
 }
 
-enum BankInfoSelectColumn {
+enum BankSelectColumn {
   actorId
-  bankId
   bicSwift
   createdAt
   createdById
@@ -2758,12 +2757,12 @@ enum BankInfoSelectColumn {
   holderName
   iban
   id
+  legalUnitLocationId
   tenantId
 }
 
-input BankInfoSetInput {
+input BankSetInput {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -2772,65 +2771,65 @@ input BankInfoSetInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-type BankInfoStddevFields {
+type BankStddevFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoStddevOrderBy {
+input BankStddevOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoStddevPopFields {
+type BankStddevPopFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoStddevPopOrderBy {
+input BankStddevPopOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoStddevSampFields {
+type BankStddevSampFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoStddevSampOrderBy {
+input BankStddevSampOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-input BankInfoStreamCursorInput {
-  initialValue: BankInfoStreamCursorValueInput!
+input BankStreamCursorInput {
+  initialValue: BankStreamCursorValueInput!
   ordering: CursorOrdering
 }
 
-input BankInfoStreamCursorValueInput {
+input BankStreamCursorValueInput {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -2839,28 +2838,28 @@ input BankInfoStreamCursorValueInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-type BankInfoSumFields {
+type BankSumFields {
   actorId: bigint
-  bankId: bigint
   createdById: bigint
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-input BankInfoSumOrderBy {
+input BankSumOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-enum BankInfoUpdateColumn {
+enum BankUpdateColumn {
   actorId
-  bankId
   bicSwift
   createdAt
   createdById
@@ -2869,60 +2868,61 @@ enum BankInfoUpdateColumn {
   holderName
   iban
   id
+  legalUnitLocationId
   tenantId
 }
 
-input BankInfoUpdates {
-  _inc: BankInfoIncInput
-  _set: BankInfoSetInput
-  where: BankInfoBoolExp!
+input BankUpdates {
+  _inc: BankIncInput
+  _set: BankSetInput
+  where: BankBoolExp!
 }
 
-type BankInfoVarianceFields {
+type BankVarianceFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoVarianceOrderBy {
+input BankVarianceOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoVarPopFields {
+type BankVarPopFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoVarPopOrderBy {
+input BankVarPopOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-type BankInfoVarSampFields {
+type BankVarSampFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-input BankInfoVarSampOrderBy {
+input BankVarSampOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -7145,8 +7145,8 @@ type Document {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
+  file: FileUpload
   fileId: bigint
-  fileUpload: FileUpload
   hiddenAt: timestamptz
   id: bigint!
   name: String!
@@ -7238,8 +7238,8 @@ input DocumentBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  file: FileUploadBoolExp
   fileId: BigintComparisonExp
-  fileUpload: FileUploadBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
@@ -7274,8 +7274,8 @@ input DocumentInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  file: FileUploadObjRelInsertInput
   fileId: bigint
-  fileUpload: FileUploadObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   name: String
@@ -7375,8 +7375,8 @@ input DocumentOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  file: FileUploadOrderBy
   fileId: OrderBy
-  fileUpload: FileUploadOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
@@ -9972,8 +9972,6 @@ type EventOrganize {
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
   project: Project
   projectId: bigint
-  supervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
-  supervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
   team: Team!
   teamId: bigint!
   tenant: Tenant!
@@ -10066,8 +10064,6 @@ input EventOrganizeBoolExp {
   missionsAggregate: MissionAggregateBoolExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  supervisors: EventOrganizeSupervisorsBoolExp
-  supervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -10101,7 +10097,6 @@ input EventOrganizeInsertInput {
   missions: MissionArrRelInsertInput
   project: ProjectObjRelInsertInput
   projectId: bigint
-  supervisors: EventOrganizeSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -10190,7 +10185,6 @@ input EventOrganizeOrderBy {
   missionsAggregate: MissionAggregateOrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  supervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -10315,242 +10309,6 @@ input EventOrganizeSumOrderBy {
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-}
-
-type EventOrganizeSupervisors {
-  eventOrganize: EventOrganize!
-  eventOrganizeId: bigint!
-  teamMember: TeamMember!
-  teamMemberId: bigint!
-}
-
-type EventOrganizeSupervisorsAggregate {
-  aggregate: EventOrganizeSupervisorsAggregateFields
-  nodes: [EventOrganizeSupervisors!]!
-}
-
-input EventOrganizeSupervisorsAggregateBoolExp {
-  count: eventOrganizeSupervisorsAggregateBoolExpCount
-}
-
-input eventOrganizeSupervisorsAggregateBoolExpCount {
-  arguments: [EventOrganizeSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventOrganizeSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type EventOrganizeSupervisorsAggregateFields {
-  avg: EventOrganizeSupervisorsAvgFields
-  count(columns: [EventOrganizeSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventOrganizeSupervisorsMaxFields
-  min: EventOrganizeSupervisorsMinFields
-  stddev: EventOrganizeSupervisorsStddevFields
-  stddevPop: EventOrganizeSupervisorsStddevPopFields
-  stddevSamp: EventOrganizeSupervisorsStddevSampFields
-  sum: EventOrganizeSupervisorsSumFields
-  varPop: EventOrganizeSupervisorsVarPopFields
-  varSamp: EventOrganizeSupervisorsVarSampFields
-  variance: EventOrganizeSupervisorsVarianceFields
-}
-
-input EventOrganizeSupervisorsAggregateOrderBy {
-  avg: EventOrganizeSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventOrganizeSupervisorsMaxOrderBy
-  min: EventOrganizeSupervisorsMinOrderBy
-  stddev: EventOrganizeSupervisorsStddevOrderBy
-  stddevPop: EventOrganizeSupervisorsStddevPopOrderBy
-  stddevSamp: EventOrganizeSupervisorsStddevSampOrderBy
-  sum: EventOrganizeSupervisorsSumOrderBy
-  varPop: EventOrganizeSupervisorsVarPopOrderBy
-  varSamp: EventOrganizeSupervisorsVarSampOrderBy
-  variance: EventOrganizeSupervisorsVarianceOrderBy
-}
-
-input EventOrganizeSupervisorsArrRelInsertInput {
-  data: [EventOrganizeSupervisorsInsertInput!]!
-  onConflict: EventOrganizeSupervisorsOnConflict
-}
-
-type EventOrganizeSupervisorsAvgFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsAvgOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-input EventOrganizeSupervisorsBoolExp {
-  _and: [EventOrganizeSupervisorsBoolExp!]
-  _not: EventOrganizeSupervisorsBoolExp
-  _or: [EventOrganizeSupervisorsBoolExp!]
-  eventOrganize: EventOrganizeBoolExp
-  eventOrganizeId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
-}
-
-enum EventOrganizeSupervisorsConstraint {
-  event_organize_supervisors_pkey
-}
-
-input EventOrganizeSupervisorsIncInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-input EventOrganizeSupervisorsInsertInput {
-  eventOrganize: EventOrganizeObjRelInsertInput
-  eventOrganizeId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
-}
-
-type EventOrganizeSupervisorsMaxFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-input EventOrganizeSupervisorsMaxOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsMinFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-input EventOrganizeSupervisorsMinOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsMutationResponse {
-  affectedRows: Int!
-  returning: [EventOrganizeSupervisors!]!
-}
-
-input EventOrganizeSupervisorsOnConflict {
-  constraint: EventOrganizeSupervisorsConstraint!
-  updateColumns: [EventOrganizeSupervisorsUpdateColumn!]! = []
-  where: EventOrganizeSupervisorsBoolExp
-}
-
-input EventOrganizeSupervisorsOrderBy {
-  eventOrganize: EventOrganizeOrderBy
-  eventOrganizeId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
-}
-
-input EventOrganizeSupervisorsPkColumnsInput {
-  eventOrganizeId: bigint!
-  teamMemberId: bigint!
-}
-
-enum EventOrganizeSupervisorsSelectColumn {
-  eventOrganizeId
-  teamMemberId
-}
-
-input EventOrganizeSupervisorsSetInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-type EventOrganizeSupervisorsStddevFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsStddevOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsStddevPopFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsStddevPopOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsStddevSampFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsStddevSampOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-input EventOrganizeSupervisorsStreamCursorInput {
-  initialValue: EventOrganizeSupervisorsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input EventOrganizeSupervisorsStreamCursorValueInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-type EventOrganizeSupervisorsSumFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-input EventOrganizeSupervisorsSumOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-enum EventOrganizeSupervisorsUpdateColumn {
-  eventOrganizeId
-  teamMemberId
-}
-
-input EventOrganizeSupervisorsUpdates {
-  _inc: EventOrganizeSupervisorsIncInput
-  _set: EventOrganizeSupervisorsSetInput
-  where: EventOrganizeSupervisorsBoolExp!
-}
-
-type EventOrganizeSupervisorsVarianceFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsVarianceOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsVarPopFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsVarPopOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-type EventOrganizeSupervisorsVarSampFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-input EventOrganizeSupervisorsVarSampOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
 }
 
 enum EventOrganizeUpdateColumn {
@@ -11595,8 +11353,8 @@ input EventVarSampOrderBy {
 }
 
 type Expense {
-  bankInfo: BankInfo!
-  bankInfoId: bigint!
+  bank: Bank!
+  bankId: bigint!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
@@ -11668,7 +11426,7 @@ input ExpenseArrRelInsertInput {
 }
 
 type ExpenseAvgFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -11677,7 +11435,7 @@ type ExpenseAvgFields {
 }
 
 input ExpenseAvgOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -11689,8 +11447,8 @@ input ExpenseBoolExp {
   _and: [ExpenseBoolExp!]
   _not: ExpenseBoolExp
   _or: [ExpenseBoolExp!]
-  bankInfo: BankInfoBoolExp
-  bankInfoId: BigintComparisonExp
+  bank: BankBoolExp
+  bankId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -11717,7 +11475,7 @@ enum ExpenseConstraint {
 }
 
 input ExpenseIncInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   expenseReportId: bigint
   id: bigint
@@ -11726,8 +11484,8 @@ input ExpenseIncInput {
 }
 
 input ExpenseInsertInput {
-  bankInfo: BankInfoObjRelInsertInput
-  bankInfoId: bigint
+  bank: BankObjRelInsertInput
+  bankId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -11821,9 +11579,9 @@ input ExpenseItemArrRelInsertInput {
 }
 
 type ExpenseItemAttachments {
+  attachment: FileUpload!
   expenseItem: ExpenseItem!
   expenseItemId: bigint!
-  fileUpload: FileUpload!
   fileUploadId: bigint!
 }
 
@@ -11890,9 +11648,9 @@ input ExpenseItemAttachmentsBoolExp {
   _and: [ExpenseItemAttachmentsBoolExp!]
   _not: ExpenseItemAttachmentsBoolExp
   _or: [ExpenseItemAttachmentsBoolExp!]
+  attachment: FileUploadBoolExp
   expenseItem: ExpenseItemBoolExp
   expenseItemId: BigintComparisonExp
-  fileUpload: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
 }
 
@@ -11906,9 +11664,9 @@ input ExpenseItemAttachmentsIncInput {
 }
 
 input ExpenseItemAttachmentsInsertInput {
+  attachment: FileUploadObjRelInsertInput
   expenseItem: ExpenseItemObjRelInsertInput
   expenseItemId: bigint
-  fileUpload: FileUploadObjRelInsertInput
   fileUploadId: bigint
 }
 
@@ -11944,9 +11702,9 @@ input ExpenseItemAttachmentsOnConflict {
 }
 
 input ExpenseItemAttachmentsOrderBy {
+  attachment: FileUploadOrderBy
   expenseItem: ExpenseItemOrderBy
   expenseItemId: OrderBy
-  fileUpload: FileUploadOrderBy
   fileUploadId: OrderBy
 }
 
@@ -12468,7 +12226,7 @@ input ExpenseItemVarSampOrderBy {
 }
 
 type ExpenseMaxFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12484,7 +12242,7 @@ type ExpenseMaxFields {
 }
 
 input ExpenseMaxOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -12500,7 +12258,7 @@ input ExpenseMaxOrderBy {
 }
 
 type ExpenseMinFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12516,7 +12274,7 @@ type ExpenseMinFields {
 }
 
 input ExpenseMinOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -12548,8 +12306,8 @@ input ExpenseOnConflict {
 }
 
 input ExpenseOrderBy {
-  bankInfo: BankInfoOrderBy
-  bankInfoId: OrderBy
+  bank: BankOrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -12575,7 +12333,7 @@ input ExpensePkColumnsInput {
 }
 
 enum ExpenseSelectColumn {
-  bankInfoId
+  bankId
   createdAt
   createdById
   deletedAt
@@ -12591,7 +12349,7 @@ enum ExpenseSelectColumn {
 }
 
 input ExpenseSetInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12607,7 +12365,7 @@ input ExpenseSetInput {
 }
 
 type ExpenseStddevFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12616,7 +12374,7 @@ type ExpenseStddevFields {
 }
 
 input ExpenseStddevOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12625,7 +12383,7 @@ input ExpenseStddevOrderBy {
 }
 
 type ExpenseStddevPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12634,7 +12392,7 @@ type ExpenseStddevPopFields {
 }
 
 input ExpenseStddevPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12643,7 +12401,7 @@ input ExpenseStddevPopOrderBy {
 }
 
 type ExpenseStddevSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12652,7 +12410,7 @@ type ExpenseStddevSampFields {
 }
 
 input ExpenseStddevSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12666,7 +12424,7 @@ input ExpenseStreamCursorInput {
 }
 
 input ExpenseStreamCursorValueInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -12682,7 +12440,7 @@ input ExpenseStreamCursorValueInput {
 }
 
 type ExpenseSumFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   expenseReportId: bigint
   id: bigint
@@ -12691,7 +12449,7 @@ type ExpenseSumFields {
 }
 
 input ExpenseSumOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12700,7 +12458,7 @@ input ExpenseSumOrderBy {
 }
 
 enum ExpenseUpdateColumn {
-  bankInfoId
+  bankId
   createdAt
   createdById
   deletedAt
@@ -12722,7 +12480,7 @@ input ExpenseUpdates {
 }
 
 type ExpenseVarianceFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12731,7 +12489,7 @@ type ExpenseVarianceFields {
 }
 
 input ExpenseVarianceOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12740,7 +12498,7 @@ input ExpenseVarianceOrderBy {
 }
 
 type ExpenseVarPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12749,7 +12507,7 @@ type ExpenseVarPopFields {
 }
 
 input ExpenseVarPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -12758,7 +12516,7 @@ input ExpenseVarPopOrderBy {
 }
 
 type ExpenseVarSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -12767,7 +12525,7 @@ type ExpenseVarSampFields {
 }
 
 input ExpenseVarSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -13128,6 +12886,8 @@ type FileUpload {
   fileLastModifiedAt: timestamptz!
   financeAttachments(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): [FinanceAttachments!]!
   financeAttachmentsAggregate(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): FinanceAttachmentsAggregate!
+  formSubmissionAttachments(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
+  formSubmissionAttachmentsAggregate(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): FormSubmissionAttachmentsAggregate!
   grantAllocateAttachments(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): [GrantAllocateAttachments!]!
   grantAllocateAttachmentsAggregate(distinctOn: [GrantAllocateAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateAttachmentsOrderBy!], where: GrantAllocateAttachmentsBoolExp): GrantAllocateAttachmentsAggregate!
   grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
@@ -13244,6 +13004,8 @@ input FileUploadBoolExp {
   fileLastModifiedAt: TimestamptzComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
+  formSubmissionAttachments: FormSubmissionAttachmentsBoolExp
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateBoolExp
   grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
   grantAllocates: GrantAllocateBoolExp
@@ -13299,6 +13061,7 @@ input FileUploadInsertInput {
   expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   financeAttachments: FinanceAttachmentsArrRelInsertInput
+  formSubmissionAttachments: FormSubmissionAttachmentsArrRelInsertInput
   grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
   grantAllocates: GrantAllocateArrRelInsertInput
   grantAttachments: GrantAttachmentsArrRelInsertInput
@@ -13405,6 +13168,7 @@ input FileUploadOrderBy {
   expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateOrderBy
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
@@ -13703,7 +13467,7 @@ input FinanceArrRelInsertInput {
 }
 
 type FinanceAttachments {
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
   finance: Finance!
   financeId: bigint!
@@ -13772,7 +13536,7 @@ input FinanceAttachmentsBoolExp {
   _and: [FinanceAttachmentsBoolExp!]
   _not: FinanceAttachmentsBoolExp
   _or: [FinanceAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   finance: FinanceBoolExp
   financeId: BigintComparisonExp
@@ -13788,7 +13552,7 @@ input FinanceAttachmentsIncInput {
 }
 
 input FinanceAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   finance: FinanceObjRelInsertInput
   financeId: bigint
@@ -13826,7 +13590,7 @@ input FinanceAttachmentsOnConflict {
 }
 
 input FinanceAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   finance: FinanceOrderBy
   financeId: OrderBy
@@ -15544,6 +15308,8 @@ type FormSubmission {
   eventJoinsAggregate(distinctOn: [EventJoinSelectColumn!], limit: Int, offset: Int, orderBy: [EventJoinOrderBy!], where: EventJoinBoolExp): EventJoinAggregate!
   form: Form!
   formId: bigint!
+  formSubmissionAttachments(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
+  formSubmissionAttachmentsAggregate(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): FormSubmissionAttachmentsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   submission(path: String): jsonb!
@@ -15606,6 +15372,242 @@ input FormSubmissionArrRelInsertInput {
   onConflict: FormSubmissionOnConflict
 }
 
+type FormSubmissionAttachments {
+  attachment: FileUpload!
+  fileUploadId: bigint!
+  formSubmission: FormSubmission!
+  formSubmissionId: bigint!
+}
+
+type FormSubmissionAttachmentsAggregate {
+  aggregate: FormSubmissionAttachmentsAggregateFields
+  nodes: [FormSubmissionAttachments!]!
+}
+
+input FormSubmissionAttachmentsAggregateBoolExp {
+  count: formSubmissionAttachmentsAggregateBoolExpCount
+}
+
+input formSubmissionAttachmentsAggregateBoolExpCount {
+  arguments: [FormSubmissionAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: FormSubmissionAttachmentsBoolExp
+  predicate: IntComparisonExp!
+}
+
+type FormSubmissionAttachmentsAggregateFields {
+  avg: FormSubmissionAttachmentsAvgFields
+  count(columns: [FormSubmissionAttachmentsSelectColumn!], distinct: Boolean): Int!
+  max: FormSubmissionAttachmentsMaxFields
+  min: FormSubmissionAttachmentsMinFields
+  stddev: FormSubmissionAttachmentsStddevFields
+  stddevPop: FormSubmissionAttachmentsStddevPopFields
+  stddevSamp: FormSubmissionAttachmentsStddevSampFields
+  sum: FormSubmissionAttachmentsSumFields
+  varPop: FormSubmissionAttachmentsVarPopFields
+  varSamp: FormSubmissionAttachmentsVarSampFields
+  variance: FormSubmissionAttachmentsVarianceFields
+}
+
+input FormSubmissionAttachmentsAggregateOrderBy {
+  avg: FormSubmissionAttachmentsAvgOrderBy
+  count: OrderBy
+  max: FormSubmissionAttachmentsMaxOrderBy
+  min: FormSubmissionAttachmentsMinOrderBy
+  stddev: FormSubmissionAttachmentsStddevOrderBy
+  stddevPop: FormSubmissionAttachmentsStddevPopOrderBy
+  stddevSamp: FormSubmissionAttachmentsStddevSampOrderBy
+  sum: FormSubmissionAttachmentsSumOrderBy
+  varPop: FormSubmissionAttachmentsVarPopOrderBy
+  varSamp: FormSubmissionAttachmentsVarSampOrderBy
+  variance: FormSubmissionAttachmentsVarianceOrderBy
+}
+
+input FormSubmissionAttachmentsArrRelInsertInput {
+  data: [FormSubmissionAttachmentsInsertInput!]!
+  onConflict: FormSubmissionAttachmentsOnConflict
+}
+
+type FormSubmissionAttachmentsAvgFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsAvgOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+input FormSubmissionAttachmentsBoolExp {
+  _and: [FormSubmissionAttachmentsBoolExp!]
+  _not: FormSubmissionAttachmentsBoolExp
+  _or: [FormSubmissionAttachmentsBoolExp!]
+  attachment: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  formSubmission: FormSubmissionBoolExp
+  formSubmissionId: BigintComparisonExp
+}
+
+enum FormSubmissionAttachmentsConstraint {
+  form_submission_attachments_pkey
+}
+
+input FormSubmissionAttachmentsIncInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+input FormSubmissionAttachmentsInsertInput {
+  attachment: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  formSubmission: FormSubmissionObjRelInsertInput
+  formSubmissionId: bigint
+}
+
+type FormSubmissionAttachmentsMaxFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+input FormSubmissionAttachmentsMaxOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsMinFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+input FormSubmissionAttachmentsMinOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsMutationResponse {
+  affectedRows: Int!
+  returning: [FormSubmissionAttachments!]!
+}
+
+input FormSubmissionAttachmentsOnConflict {
+  constraint: FormSubmissionAttachmentsConstraint!
+  updateColumns: [FormSubmissionAttachmentsUpdateColumn!]! = []
+  where: FormSubmissionAttachmentsBoolExp
+}
+
+input FormSubmissionAttachmentsOrderBy {
+  attachment: FileUploadOrderBy
+  fileUploadId: OrderBy
+  formSubmission: FormSubmissionOrderBy
+  formSubmissionId: OrderBy
+}
+
+input FormSubmissionAttachmentsPkColumnsInput {
+  fileUploadId: bigint!
+  formSubmissionId: bigint!
+}
+
+enum FormSubmissionAttachmentsSelectColumn {
+  fileUploadId
+  formSubmissionId
+}
+
+input FormSubmissionAttachmentsSetInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+type FormSubmissionAttachmentsStddevFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsStddevOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsStddevPopFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsStddevPopOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsStddevSampFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsStddevSampOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+input FormSubmissionAttachmentsStreamCursorInput {
+  initialValue: FormSubmissionAttachmentsStreamCursorValueInput!
+  ordering: CursorOrdering
+}
+
+input FormSubmissionAttachmentsStreamCursorValueInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+type FormSubmissionAttachmentsSumFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+input FormSubmissionAttachmentsSumOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+enum FormSubmissionAttachmentsUpdateColumn {
+  fileUploadId
+  formSubmissionId
+}
+
+input FormSubmissionAttachmentsUpdates {
+  _inc: FormSubmissionAttachmentsIncInput
+  _set: FormSubmissionAttachmentsSetInput
+  where: FormSubmissionAttachmentsBoolExp!
+}
+
+type FormSubmissionAttachmentsVarianceFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsVarianceOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsVarPopFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsVarPopOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+type FormSubmissionAttachmentsVarSampFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+input FormSubmissionAttachmentsVarSampOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
 type FormSubmissionAvgFields {
   createdById: Float
   formId: Float
@@ -15633,6 +15635,8 @@ input FormSubmissionBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   form: FormBoolExp
   formId: BigintComparisonExp
+  formSubmissionAttachments: FormSubmissionAttachmentsBoolExp
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   submission: JsonbComparisonExp
@@ -15674,6 +15678,7 @@ input FormSubmissionInsertInput {
   eventJoins: EventJoinArrRelInsertInput
   form: FormObjRelInsertInput
   formId: bigint
+  formSubmissionAttachments: FormSubmissionAttachmentsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   submission: jsonb
@@ -15747,6 +15752,7 @@ input FormSubmissionOrderBy {
   eventJoinsAggregate: EventJoinAggregateOrderBy
   form: FormOrderBy
   formId: OrderBy
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   submission: OrderBy
@@ -16146,7 +16152,7 @@ input GrantAllocateArrRelInsertInput {
 }
 
 type GrantAllocateAttachments {
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
   grantAllocate: GrantAllocate!
   grantAllocateId: bigint!
@@ -16215,7 +16221,7 @@ input GrantAllocateAttachmentsBoolExp {
   _and: [GrantAllocateAttachmentsBoolExp!]
   _not: GrantAllocateAttachmentsBoolExp
   _or: [GrantAllocateAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   grantAllocate: GrantAllocateBoolExp
   grantAllocateId: BigintComparisonExp
@@ -16231,7 +16237,7 @@ input GrantAllocateAttachmentsIncInput {
 }
 
 input GrantAllocateAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   grantAllocate: GrantAllocateObjRelInsertInput
   grantAllocateId: bigint
@@ -16269,7 +16275,7 @@ input GrantAllocateAttachmentsOnConflict {
 }
 
 input GrantAllocateAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   grantAllocate: GrantAllocateOrderBy
   grantAllocateId: OrderBy
@@ -16869,7 +16875,7 @@ input GrantArrRelInsertInput {
 }
 
 type GrantAttachments {
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
   grant: Grant!
   grantId: bigint!
@@ -16938,7 +16944,7 @@ input GrantAttachmentsBoolExp {
   _and: [GrantAttachmentsBoolExp!]
   _not: GrantAttachmentsBoolExp
   _or: [GrantAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   grant: GrantBoolExp
   grantId: BigintComparisonExp
@@ -16954,7 +16960,7 @@ input GrantAttachmentsIncInput {
 }
 
 input GrantAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   grant: GrantObjRelInsertInput
   grantId: bigint
@@ -16992,7 +16998,7 @@ input GrantAttachmentsOnConflict {
 }
 
 input GrantAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   grant: GrantOrderBy
   grantId: OrderBy
@@ -17581,8 +17587,8 @@ type Individual {
   createdAddresses(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
   createdAddressesAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   createdAt: timestamptz!
-  createdBankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  createdBankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  createdBanks(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  createdBanksAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
   createdBots(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
   createdBotsAggregate(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): BotAggregate!
   createdBy: Individual
@@ -17816,8 +17822,8 @@ input IndividualBoolExp {
   createdAddresses: AddressBoolExp
   createdAddressesAggregate: AddressAggregateBoolExp
   createdAt: TimestamptzComparisonExp
-  createdBankInfos: BankInfoBoolExp
-  createdBankInfosAggregate: BankInfoAggregateBoolExp
+  createdBanks: BankBoolExp
+  createdBanksAggregate: BankAggregateBoolExp
   createdBots: BotBoolExp
   createdBotsAggregate: BotAggregateBoolExp
   createdBy: IndividualBoolExp
@@ -17991,7 +17997,7 @@ input IndividualInsertInput {
   createdActors: ActorArrRelInsertInput
   createdAddresses: AddressArrRelInsertInput
   createdAt: timestamptz
-  createdBankInfos: BankInfoArrRelInsertInput
+  createdBanks: BankArrRelInsertInput
   createdBots: BotArrRelInsertInput
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -18148,7 +18154,7 @@ input IndividualOrderBy {
   createdActorsAggregate: ActorAggregateOrderBy
   createdAddressesAggregate: AddressAggregateOrderBy
   createdAt: OrderBy
-  createdBankInfosAggregate: BankInfoAggregateOrderBy
+  createdBanksAggregate: BankAggregateOrderBy
   createdBotsAggregate: BotAggregateOrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -19437,9 +19443,9 @@ input LegalUnitInsertInput {
 type LegalUnitLocation {
   actor: Actor!
   actorId: bigint!
-  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
   bankLocationCode: Int
+  banks(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  banksAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -19527,9 +19533,9 @@ input LegalUnitLocationBoolExp {
   _or: [LegalUnitLocationBoolExp!]
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
   bankLocationCode: IntComparisonExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -19561,8 +19567,8 @@ input LegalUnitLocationIncInput {
 input LegalUnitLocationInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
-  bankInfos: BankInfoArrRelInsertInput
   bankLocationCode: Int
+  banks: BankArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -19652,8 +19658,8 @@ input LegalUnitLocationOnConflict {
 input LegalUnitLocationOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
   bankLocationCode: OrderBy
+  banksAggregate: BankAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -22004,8 +22010,8 @@ type Mutation {
   deleteActorTagsByPk(actorId: bigint!, tagId: bigint!): ActorTags
   deleteAddress(where: AddressBoolExp!): AddressMutationResponse
   deleteAddressByPk(id: bigint!): Address
-  deleteBankInfo(where: BankInfoBoolExp!): BankInfoMutationResponse
-  deleteBankInfoByPk(id: bigint!): BankInfo
+  deleteBank(where: BankBoolExp!): BankMutationResponse
+  deleteBankByPk(id: bigint!): Bank
   deleteBot(where: BotBoolExp!): BotMutationResponse
   deleteBotByPk(id: bigint!): Bot
   deleteCampus(where: CampusBoolExp!): CampusMutationResponse
@@ -22046,8 +22052,6 @@ type Mutation {
   deleteEventJoinByPk(id: bigint!): EventJoin
   deleteEventOrganize(where: EventOrganizeBoolExp!): EventOrganizeMutationResponse
   deleteEventOrganizeByPk(id: bigint!): EventOrganize
-  deleteEventOrganizeSupervisors(where: EventOrganizeSupervisorsBoolExp!): EventOrganizeSupervisorsMutationResponse
-  deleteEventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
   deleteEventSupervisor(where: EventSupervisorBoolExp!): EventSupervisorMutationResponse
   deleteEventSupervisorByPk(id: bigint!): EventSupervisor
   deleteEventTags(where: EventTagsBoolExp!): EventTagsMutationResponse
@@ -22073,6 +22077,8 @@ type Mutation {
   deleteForm(where: FormBoolExp!): FormMutationResponse
   deleteFormByPk(id: bigint!): Form
   deleteFormSubmission(where: FormSubmissionBoolExp!): FormSubmissionMutationResponse
+  deleteFormSubmissionAttachments(where: FormSubmissionAttachmentsBoolExp!): FormSubmissionAttachmentsMutationResponse
+  deleteFormSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
   deleteFormSubmissionByPk(id: bigint!): FormSubmission
   deleteGrant(where: GrantBoolExp!): GrantMutationResponse
   deleteGrantAllocate(where: GrantAllocateBoolExp!): GrantAllocateMutationResponse
@@ -22170,8 +22176,8 @@ type Mutation {
   insertActorTagsOne(object: ActorTagsInsertInput!, onConflict: ActorTagsOnConflict): ActorTags
   insertAddress(objects: [AddressInsertInput!]!, onConflict: AddressOnConflict): AddressMutationResponse
   insertAddressOne(object: AddressInsertInput!, onConflict: AddressOnConflict): Address
-  insertBankInfo(objects: [BankInfoInsertInput!]!, onConflict: BankInfoOnConflict): BankInfoMutationResponse
-  insertBankInfoOne(object: BankInfoInsertInput!, onConflict: BankInfoOnConflict): BankInfo
+  insertBank(objects: [BankInsertInput!]!, onConflict: BankOnConflict): BankMutationResponse
+  insertBankOne(object: BankInsertInput!, onConflict: BankOnConflict): Bank
   insertBot(objects: [BotInsertInput!]!, onConflict: BotOnConflict): BotMutationResponse
   insertBotOne(object: BotInsertInput!, onConflict: BotOnConflict): Bot
   insertCampus(objects: [CampusInsertInput!]!, onConflict: CampusOnConflict): CampusMutationResponse
@@ -22212,8 +22218,6 @@ type Mutation {
   insertEventOne(object: EventInsertInput!, onConflict: EventOnConflict): Event
   insertEventOrganize(objects: [EventOrganizeInsertInput!]!, onConflict: EventOrganizeOnConflict): EventOrganizeMutationResponse
   insertEventOrganizeOne(object: EventOrganizeInsertInput!, onConflict: EventOrganizeOnConflict): EventOrganize
-  insertEventOrganizeSupervisors(objects: [EventOrganizeSupervisorsInsertInput!]!, onConflict: EventOrganizeSupervisorsOnConflict): EventOrganizeSupervisorsMutationResponse
-  insertEventOrganizeSupervisorsOne(object: EventOrganizeSupervisorsInsertInput!, onConflict: EventOrganizeSupervisorsOnConflict): EventOrganizeSupervisors
   insertEventSupervisor(objects: [EventSupervisorInsertInput!]!, onConflict: EventSupervisorOnConflict): EventSupervisorMutationResponse
   insertEventSupervisorOne(object: EventSupervisorInsertInput!, onConflict: EventSupervisorOnConflict): EventSupervisor
   insertEventTags(objects: [EventTagsInsertInput!]!, onConflict: EventTagsOnConflict): EventTagsMutationResponse
@@ -22239,6 +22243,8 @@ type Mutation {
   insertForm(objects: [FormInsertInput!]!, onConflict: FormOnConflict): FormMutationResponse
   insertFormOne(object: FormInsertInput!, onConflict: FormOnConflict): Form
   insertFormSubmission(objects: [FormSubmissionInsertInput!]!, onConflict: FormSubmissionOnConflict): FormSubmissionMutationResponse
+  insertFormSubmissionAttachments(objects: [FormSubmissionAttachmentsInsertInput!]!, onConflict: FormSubmissionAttachmentsOnConflict): FormSubmissionAttachmentsMutationResponse
+  insertFormSubmissionAttachmentsOne(object: FormSubmissionAttachmentsInsertInput!, onConflict: FormSubmissionAttachmentsOnConflict): FormSubmissionAttachments
   insertFormSubmissionOne(object: FormSubmissionInsertInput!, onConflict: FormSubmissionOnConflict): FormSubmission
   insertGrant(objects: [GrantInsertInput!]!, onConflict: GrantOnConflict): GrantMutationResponse
   insertGrantAllocate(objects: [GrantAllocateInsertInput!]!, onConflict: GrantAllocateOnConflict): GrantAllocateMutationResponse
@@ -22342,9 +22348,9 @@ type Mutation {
   updateAddress(_inc: AddressIncInput, _set: AddressSetInput, where: AddressBoolExp!): AddressMutationResponse
   updateAddressByPk(_inc: AddressIncInput, _set: AddressSetInput, pkColumns: AddressPkColumnsInput!): Address
   updateAddressMany(updates: [AddressUpdates!]!): [AddressMutationResponse]
-  updateBankInfo(_inc: BankInfoIncInput, _set: BankInfoSetInput, where: BankInfoBoolExp!): BankInfoMutationResponse
-  updateBankInfoByPk(_inc: BankInfoIncInput, _set: BankInfoSetInput, pkColumns: BankInfoPkColumnsInput!): BankInfo
-  updateBankInfoMany(updates: [BankInfoUpdates!]!): [BankInfoMutationResponse]
+  updateBank(_inc: BankIncInput, _set: BankSetInput, where: BankBoolExp!): BankMutationResponse
+  updateBankByPk(_inc: BankIncInput, _set: BankSetInput, pkColumns: BankPkColumnsInput!): Bank
+  updateBankMany(updates: [BankUpdates!]!): [BankMutationResponse]
   updateBot(_inc: BotIncInput, _set: BotSetInput, where: BotBoolExp!): BotMutationResponse
   updateBotByPk(_inc: BotIncInput, _set: BotSetInput, pkColumns: BotPkColumnsInput!): Bot
   updateBotMany(updates: [BotUpdates!]!): [BotMutationResponse]
@@ -22405,9 +22411,6 @@ type Mutation {
   updateEventOrganize(_inc: EventOrganizeIncInput, _set: EventOrganizeSetInput, where: EventOrganizeBoolExp!): EventOrganizeMutationResponse
   updateEventOrganizeByPk(_inc: EventOrganizeIncInput, _set: EventOrganizeSetInput, pkColumns: EventOrganizePkColumnsInput!): EventOrganize
   updateEventOrganizeMany(updates: [EventOrganizeUpdates!]!): [EventOrganizeMutationResponse]
-  updateEventOrganizeSupervisors(_inc: EventOrganizeSupervisorsIncInput, _set: EventOrganizeSupervisorsSetInput, where: EventOrganizeSupervisorsBoolExp!): EventOrganizeSupervisorsMutationResponse
-  updateEventOrganizeSupervisorsByPk(_inc: EventOrganizeSupervisorsIncInput, _set: EventOrganizeSupervisorsSetInput, pkColumns: EventOrganizeSupervisorsPkColumnsInput!): EventOrganizeSupervisors
-  updateEventOrganizeSupervisorsMany(updates: [EventOrganizeSupervisorsUpdates!]!): [EventOrganizeSupervisorsMutationResponse]
   updateEventSupervisor(_inc: EventSupervisorIncInput, _set: EventSupervisorSetInput, where: EventSupervisorBoolExp!): EventSupervisorMutationResponse
   updateEventSupervisorByPk(_inc: EventSupervisorIncInput, _set: EventSupervisorSetInput, pkColumns: EventSupervisorPkColumnsInput!): EventSupervisor
   updateEventSupervisorMany(updates: [EventSupervisorUpdates!]!): [EventSupervisorMutationResponse]
@@ -22445,6 +22448,9 @@ type Mutation {
   updateFormByPk(_append: FormAppendInput, _deleteAtPath: FormDeleteAtPathInput, _deleteElem: FormDeleteElemInput, _deleteKey: FormDeleteKeyInput, _inc: FormIncInput, _prepend: FormPrependInput, _set: FormSetInput, pkColumns: FormPkColumnsInput!): Form
   updateFormMany(updates: [FormUpdates!]!): [FormMutationResponse]
   updateFormSubmission(_append: FormSubmissionAppendInput, _deleteAtPath: FormSubmissionDeleteAtPathInput, _deleteElem: FormSubmissionDeleteElemInput, _deleteKey: FormSubmissionDeleteKeyInput, _inc: FormSubmissionIncInput, _prepend: FormSubmissionPrependInput, _set: FormSubmissionSetInput, where: FormSubmissionBoolExp!): FormSubmissionMutationResponse
+  updateFormSubmissionAttachments(_inc: FormSubmissionAttachmentsIncInput, _set: FormSubmissionAttachmentsSetInput, where: FormSubmissionAttachmentsBoolExp!): FormSubmissionAttachmentsMutationResponse
+  updateFormSubmissionAttachmentsByPk(_inc: FormSubmissionAttachmentsIncInput, _set: FormSubmissionAttachmentsSetInput, pkColumns: FormSubmissionAttachmentsPkColumnsInput!): FormSubmissionAttachments
+  updateFormSubmissionAttachmentsMany(updates: [FormSubmissionAttachmentsUpdates!]!): [FormSubmissionAttachmentsMutationResponse]
   updateFormSubmissionByPk(_append: FormSubmissionAppendInput, _deleteAtPath: FormSubmissionDeleteAtPathInput, _deleteElem: FormSubmissionDeleteElemInput, _deleteKey: FormSubmissionDeleteKeyInput, _inc: FormSubmissionIncInput, _prepend: FormSubmissionPrependInput, _set: FormSubmissionSetInput, pkColumns: FormSubmissionPkColumnsInput!): FormSubmission
   updateFormSubmissionMany(updates: [FormSubmissionUpdates!]!): [FormSubmissionMutationResponse]
   updateGrant(_inc: GrantIncInput, _set: GrantSetInput, where: GrantBoolExp!): GrantMutationResponse
@@ -24103,9 +24109,9 @@ type Query {
   address(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): [Address!]!
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   addressByPk(id: bigint!): Address
-  bankInfo(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfoAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
-  bankInfoByPk(id: bigint!): BankInfo
+  bank(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  bankAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
+  bankByPk(id: bigint!): Bank
   bot(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
   botAggregate(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): BotAggregate!
   botByPk(id: bigint!): Bot
@@ -24166,9 +24172,6 @@ type Query {
   eventOrganize(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
   eventOrganizeAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   eventOrganizeByPk(id: bigint!): EventOrganize
-  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
-  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
-  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
   eventSupervisor(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   eventSupervisorAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
   eventSupervisorByPk(id: bigint!): EventSupervisor
@@ -24207,6 +24210,9 @@ type Query {
   formByPk(id: bigint!): Form
   formSubmission(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): [FormSubmission!]!
   formSubmissionAggregate(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): FormSubmissionAggregate!
+  formSubmissionAttachments(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
+  formSubmissionAttachmentsAggregate(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): FormSubmissionAttachmentsAggregate!
+  formSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
   formSubmissionByPk(id: bigint!): FormSubmission
   grant(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
   grantAggregate(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): GrantAggregate!
@@ -27460,10 +27466,10 @@ type Subscription {
   addressAggregate(distinctOn: [AddressSelectColumn!], limit: Int, offset: Int, orderBy: [AddressOrderBy!], where: AddressBoolExp): AddressAggregate!
   addressByPk(id: bigint!): Address
   addressStream(batchSize: Int!, cursor: [AddressStreamCursorInput]!, where: AddressBoolExp): [Address!]!
-  bankInfo(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfoAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
-  bankInfoByPk(id: bigint!): BankInfo
-  bankInfoStream(batchSize: Int!, cursor: [BankInfoStreamCursorInput]!, where: BankInfoBoolExp): [BankInfo!]!
+  bank(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  bankAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
+  bankByPk(id: bigint!): Bank
+  bankStream(batchSize: Int!, cursor: [BankStreamCursorInput]!, where: BankBoolExp): [Bank!]!
   bot(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
   botAggregate(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): BotAggregate!
   botByPk(id: bigint!): Bot
@@ -27543,10 +27549,6 @@ type Subscription {
   eventOrganizeAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
   eventOrganizeByPk(id: bigint!): EventOrganize
   eventOrganizeStream(batchSize: Int!, cursor: [EventOrganizeStreamCursorInput]!, where: EventOrganizeBoolExp): [EventOrganize!]!
-  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
-  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
-  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
-  eventOrganizeSupervisorsStream(batchSize: Int!, cursor: [EventOrganizeSupervisorsStreamCursorInput]!, where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
   eventStream(batchSize: Int!, cursor: [EventStreamCursorInput]!, where: EventBoolExp): [Event!]!
   eventSupervisor(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): [EventSupervisor!]!
   eventSupervisorAggregate(distinctOn: [EventSupervisorSelectColumn!], limit: Int, offset: Int, orderBy: [EventSupervisorOrderBy!], where: EventSupervisorBoolExp): EventSupervisorAggregate!
@@ -27598,6 +27600,10 @@ type Subscription {
   formStream(batchSize: Int!, cursor: [FormStreamCursorInput]!, where: FormBoolExp): [Form!]!
   formSubmission(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): [FormSubmission!]!
   formSubmissionAggregate(distinctOn: [FormSubmissionSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionOrderBy!], where: FormSubmissionBoolExp): FormSubmissionAggregate!
+  formSubmissionAttachments(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
+  formSubmissionAttachmentsAggregate(distinctOn: [FormSubmissionAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FormSubmissionAttachmentsOrderBy!], where: FormSubmissionAttachmentsBoolExp): FormSubmissionAttachmentsAggregate!
+  formSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
+  formSubmissionAttachmentsStream(batchSize: Int!, cursor: [FormSubmissionAttachmentsStreamCursorInput]!, where: FormSubmissionAttachmentsBoolExp): [FormSubmissionAttachments!]!
   formSubmissionByPk(id: bigint!): FormSubmission
   formSubmissionStream(batchSize: Int!, cursor: [FormSubmissionStreamCursorInput]!, where: FormSubmissionBoolExp): [FormSubmission!]!
   grant(distinctOn: [GrantSelectColumn!], limit: Int, offset: Int, orderBy: [GrantOrderBy!], where: GrantBoolExp): [Grant!]!
@@ -29487,8 +29493,6 @@ type TeamMember {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
-  eventOrganizeSupervisors(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): [EventOrganizeSupervisors!]!
-  eventOrganizeSupervisorsAggregate(distinctOn: [EventOrganizeSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeSupervisorsOrderBy!], where: EventOrganizeSupervisorsBoolExp): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
@@ -29581,8 +29585,6 @@ input TeamMemberBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   endDate: TimestamptzComparisonExp
-  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
@@ -29618,7 +29620,6 @@ input TeamMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
-  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
@@ -29711,7 +29712,6 @@ input TeamMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   endDate: OrderBy
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
@@ -30936,8 +30936,8 @@ type Tenant {
   actorsAggregate(distinctOn: [ActorSelectColumn!], limit: Int, offset: Int, orderBy: [ActorOrderBy!], where: ActorBoolExp): ActorAggregate!
   adminTeam: Team
   adminTeamId: bigint
-  bankInfos(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): [BankInfo!]!
-  bankInfosAggregate(distinctOn: [BankInfoSelectColumn!], limit: Int, offset: Int, orderBy: [BankInfoOrderBy!], where: BankInfoBoolExp): BankInfoAggregate!
+  banks(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): [Bank!]!
+  banksAggregate(distinctOn: [BankSelectColumn!], limit: Int, offset: Int, orderBy: [BankOrderBy!], where: BankBoolExp): BankAggregate!
   bots(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): [Bot!]!
   botsAggregate(distinctOn: [BotSelectColumn!], limit: Int, offset: Int, orderBy: [BotOrderBy!], where: BotBoolExp): BotAggregate!
   campusClusters(distinctOn: [CampusClusterSelectColumn!], limit: Int, offset: Int, orderBy: [CampusClusterOrderBy!], where: CampusClusterBoolExp): [CampusCluster!]!
@@ -31155,8 +31155,8 @@ input TenantBoolExp {
   actorsAggregate: ActorAggregateBoolExp
   adminTeam: TeamBoolExp
   adminTeamId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   bots: BotBoolExp
   botsAggregate: BotAggregateBoolExp
   campusClusters: CampusClusterBoolExp
@@ -31302,7 +31302,7 @@ input TenantInsertInput {
   actors: ActorArrRelInsertInput
   adminTeam: TeamObjRelInsertInput
   adminTeamId: bigint
-  bankInfos: BankInfoArrRelInsertInput
+  banks: BankArrRelInsertInput
   bots: BotArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
   campuses: CampusArrRelInsertInput
@@ -31465,7 +31465,7 @@ input TenantOrderBy {
   actorsAggregate: ActorAggregateOrderBy
   adminTeam: TeamOrderBy
   adminTeamId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  banksAggregate: BankAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
   campusesAggregate: CampusAggregateOrderBy

@@ -1986,11 +1986,11 @@
           "mappedType": "bigint"
         }
       },
-      "name": "form_submission_linked_files",
+      "name": "form_submission_attachments",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "form_submission_linked_files_pkey",
+          "keyName": "form_submission_attachments_pkey",
           "columnNames": [
             "form_submission_id",
             "file_upload_id"
@@ -2002,12 +2002,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "form_submission_linked_files_form_submission_id_foreign": {
-          "constraintName": "form_submission_linked_files_form_submission_id_foreign",
+        "form_submission_attachments_form_submission_id_foreign": {
+          "constraintName": "form_submission_attachments_form_submission_id_foreign",
           "columnNames": [
             "form_submission_id"
           ],
-          "localTableName": "public.form_submission_linked_files",
+          "localTableName": "public.form_submission_attachments",
           "referencedColumnNames": [
             "id"
           ],
@@ -2015,12 +2015,12 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "form_submission_linked_files_file_upload_id_foreign": {
-          "constraintName": "form_submission_linked_files_file_upload_id_foreign",
+        "form_submission_attachments_file_upload_id_foreign": {
+          "constraintName": "form_submission_attachments_file_upload_id_foreign",
           "columnNames": [
             "file_upload_id"
           ],
-          "localTableName": "public.form_submission_linked_files",
+          "localTableName": "public.form_submission_attachments",
           "referencedColumnNames": [
             "id"
           ],
@@ -7122,7 +7122,8 @@
             "Submitted",
             "Rejected",
             "Approved",
-            "Published"
+            "Published",
+            "Completed"
           ],
           "mappedType": "enum"
         },
@@ -7472,7 +7473,7 @@
             "Campus",
             "CampusCluster",
             "Actor",
-            "BankInfo",
+            "Bank",
             "Address",
             "Location",
             "ActorImage",
@@ -8954,8 +8955,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "bank_id": {
-          "name": "bank_id",
+        "legal_unit_location_id": {
+          "name": "legal_unit_location_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -8963,6 +8964,15 @@
           "nullable": true,
           "default": "null",
           "mappedType": "bigint"
+        },
+        "bic_swift": {
+          "name": "bic_swift",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         },
         "holder_name": {
           "name": "holder_name",
@@ -8972,15 +8982,6 @@
           "primary": false,
           "nullable": false,
           "default": "''",
-          "mappedType": "text"
-        },
-        "bic_swift": {
-          "name": "bic_swift",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
           "mappedType": "text"
         },
         "iban": {
@@ -8993,11 +8994,11 @@
           "mappedType": "text"
         }
       },
-      "name": "bank_info",
+      "name": "bank",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "bank_info_pkey",
+          "keyName": "bank_pkey",
           "columnNames": [
             "id"
           ],
@@ -9008,12 +9009,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "bank_info_created_by_id_foreign": {
-          "constraintName": "bank_info_created_by_id_foreign",
+        "bank_created_by_id_foreign": {
+          "constraintName": "bank_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.bank_info",
+          "localTableName": "public.bank",
           "referencedColumnNames": [
             "id"
           ],
@@ -9021,36 +9022,36 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "bank_info_tenant_id_foreign": {
-          "constraintName": "bank_info_tenant_id_foreign",
+        "bank_tenant_id_foreign": {
+          "constraintName": "bank_tenant_id_foreign",
           "columnNames": [
             "tenant_id"
           ],
-          "localTableName": "public.bank_info",
+          "localTableName": "public.bank",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "bank_info_actor_id_foreign": {
-          "constraintName": "bank_info_actor_id_foreign",
+        "bank_actor_id_foreign": {
+          "constraintName": "bank_actor_id_foreign",
           "columnNames": [
             "actor_id"
           ],
-          "localTableName": "public.bank_info",
+          "localTableName": "public.bank",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
-        "bank_info_bank_id_foreign": {
-          "constraintName": "bank_info_bank_id_foreign",
+        "bank_legal_unit_location_id_foreign": {
+          "constraintName": "bank_legal_unit_location_id_foreign",
           "columnNames": [
-            "bank_id"
+            "legal_unit_location_id"
           ],
-          "localTableName": "public.bank_info",
+          "localTableName": "public.bank",
           "referencedColumnNames": [
             "id"
           ],
@@ -9190,8 +9191,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "bank_info_id": {
-          "name": "bank_info_id",
+        "bank_id": {
+          "name": "bank_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -9265,16 +9266,16 @@
           "referencedTableName": "public.file_upload",
           "updateRule": "cascade"
         },
-        "expense_bank_info_id_foreign": {
-          "constraintName": "expense_bank_info_id_foreign",
+        "expense_bank_id_foreign": {
+          "constraintName": "expense_bank_id_foreign",
           "columnNames": [
-            "bank_info_id"
+            "bank_id"
           ],
           "localTableName": "public.expense",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.bank_info",
+          "referencedTableName": "public.bank",
           "updateRule": "cascade"
         }
       }
@@ -9905,8 +9906,8 @@
           "default": "null",
           "mappedType": "bigint"
         },
-        "bank_info_id": {
-          "name": "bank_info_id",
+        "bank_id": {
+          "name": "bank_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -9977,16 +9978,16 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "account_bank_info_id_foreign": {
-          "constraintName": "account_bank_info_id_foreign",
+        "account_bank_id_foreign": {
+          "constraintName": "account_bank_id_foreign",
           "columnNames": [
-            "bank_info_id"
+            "bank_id"
           ],
           "localTableName": "public.account",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.bank_info",
+          "referencedTableName": "public.bank",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -11863,71 +11864,6 @@
             "team_member_id"
           ],
           "localTableName": "public.project_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "event_organize_id": {
-          "name": "event_organize_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "team_member_id": {
-          "name": "team_member_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "event_organize_supervisors",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "event_organize_supervisors_pkey",
-          "columnNames": [
-            "event_organize_id",
-            "team_member_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "event_organize_supervisors_event_organize_id_foreign": {
-          "constraintName": "event_organize_supervisors_event_organize_id_foreign",
-          "columnNames": [
-            "event_organize_id"
-          ],
-          "localTableName": "public.event_organize_supervisors",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event_organize",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "event_organize_supervisors_team_member_id_foreign": {
-          "constraintName": "event_organize_supervisors_team_member_id_foreign",
-          "columnNames": [
-            "team_member_id"
-          ],
-          "localTableName": "public.event_organize_supervisors",
           "referencedColumnNames": [
             "id"
           ],

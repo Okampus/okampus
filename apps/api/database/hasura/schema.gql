@@ -10,8 +10,8 @@ directive @cached(
 # columns and relationships of "account"
 type Account {
   # An object relationship
-  bankInfo: BankInfo
-  bankInfoId: bigint
+  bank: Bank
+  bankId: bigint
 
   # An array relationship
   children(
@@ -165,7 +165,7 @@ input AccountArrRelInsertInput {
 
 # aggregate avg on columns
 type AccountAvgFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -175,7 +175,7 @@ type AccountAvgFields {
 
 # order by avg() on columns of table "account"
 input AccountAvgOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -188,8 +188,8 @@ input AccountBoolExp {
   _and: [AccountBoolExp!]
   _not: AccountBoolExp
   _or: [AccountBoolExp!]
-  bankInfo: BankInfoBoolExp
-  bankInfoId: BigintComparisonExp
+  bank: BankBoolExp
+  bankId: BigintComparisonExp
   children: AccountBoolExp
   childrenAggregate: AccountAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -218,7 +218,7 @@ enum AccountConstraint {
 
 # input type for incrementing numeric columns in table "account"
 input AccountIncInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   parentId: bigint
@@ -228,8 +228,8 @@ input AccountIncInput {
 
 # input type for inserting data into table "account"
 input AccountInsertInput {
-  bankInfo: BankInfoObjRelInsertInput
-  bankInfoId: bigint
+  bank: BankObjRelInsertInput
+  bankId: bigint
   children: AccountArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
@@ -250,7 +250,7 @@ input AccountInsertInput {
 
 # aggregate max on columns
 type AccountMaxFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -265,7 +265,7 @@ type AccountMaxFields {
 
 # order by max() on columns of table "account"
 input AccountMaxOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -280,7 +280,7 @@ input AccountMaxOrderBy {
 
 # aggregate min on columns
 type AccountMinFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -295,7 +295,7 @@ type AccountMinFields {
 
 # order by min() on columns of table "account"
 input AccountMinOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -334,8 +334,8 @@ input AccountOnConflict {
 
 # Ordering options when selecting data from "account".
 input AccountOrderBy {
-  bankInfo: BankInfoOrderBy
-  bankInfoId: OrderBy
+  bank: BankOrderBy
+  bankId: OrderBy
   childrenAggregate: AccountAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -362,7 +362,7 @@ input AccountPkColumnsInput {
 # select columns of table "account"
 enum AccountSelectColumn {
   # column name
-  bankInfoId
+  bankId
 
   # column name
   createdAt
@@ -397,7 +397,7 @@ enum AccountSelectColumn {
 
 # input type for updating data in table "account"
 input AccountSetInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -412,7 +412,7 @@ input AccountSetInput {
 
 # aggregate stddev on columns
 type AccountStddevFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -422,7 +422,7 @@ type AccountStddevFields {
 
 # order by stddev() on columns of table "account"
 input AccountStddevOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -432,7 +432,7 @@ input AccountStddevOrderBy {
 
 # aggregate stddevPop on columns
 type AccountStddevPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -442,7 +442,7 @@ type AccountStddevPopFields {
 
 # order by stddevPop() on columns of table "account"
 input AccountStddevPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -452,7 +452,7 @@ input AccountStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type AccountStddevSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -462,7 +462,7 @@ type AccountStddevSampFields {
 
 # order by stddevSamp() on columns of table "account"
 input AccountStddevSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -481,7 +481,7 @@ input AccountStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input AccountStreamCursorValueInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -496,7 +496,7 @@ input AccountStreamCursorValueInput {
 
 # aggregate sum on columns
 type AccountSumFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   id: bigint
   parentId: bigint
@@ -506,7 +506,7 @@ type AccountSumFields {
 
 # order by sum() on columns of table "account"
 input AccountSumOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -517,7 +517,7 @@ input AccountSumOrderBy {
 # update columns of table "account"
 enum AccountUpdateColumn {
   # column name
-  bankInfoId
+  bankId
 
   # column name
   createdAt
@@ -563,7 +563,7 @@ input AccountUpdates {
 
 # aggregate variance on columns
 type AccountVarianceFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -573,7 +573,7 @@ type AccountVarianceFields {
 
 # order by variance() on columns of table "account"
 input AccountVarianceOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -583,7 +583,7 @@ input AccountVarianceOrderBy {
 
 # aggregate varPop on columns
 type AccountVarPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -593,7 +593,7 @@ type AccountVarPopFields {
 
 # order by varPop() on columns of table "account"
 input AccountVarPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -603,7 +603,7 @@ input AccountVarPopOrderBy {
 
 # aggregate varSamp on columns
 type AccountVarSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   id: Float
   parentId: Float
@@ -613,7 +613,7 @@ type AccountVarSampFields {
 
 # order by varSamp() on columns of table "account"
 input AccountVarSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
   parentId: OrderBy
@@ -1366,9 +1366,9 @@ type Actor {
   ): ActorTagsAggregate!
 
   # An array relationship
-  bankInfos(
+  banks(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -1377,16 +1377,16 @@ type Actor {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
   # An aggregate relationship
-  bankInfosAggregate(
+  banksAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -1395,11 +1395,11 @@ type Actor {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+    where: BankBoolExp
+  ): BankAggregate!
   bio: String!
   createdAt: timestamptz!
 
@@ -1799,8 +1799,8 @@ input ActorBoolExp {
   actorImagesAggregate: ActorImageAggregateBoolExp
   actorTags: ActorTagsBoolExp
   actorTagsAggregate: ActorTagsAggregateBoolExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   bio: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -2343,7 +2343,7 @@ input ActorIncInput {
 input ActorInsertInput {
   actorImages: ActorImageArrRelInsertInput
   actorTags: ActorTagsArrRelInsertInput
-  bankInfos: BankInfoArrRelInsertInput
+  banks: BankArrRelInsertInput
   bio: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -2469,7 +2469,7 @@ input ActorOnConflict {
 input ActorOrderBy {
   actorImagesAggregate: ActorImageAggregateOrderBy
   actorTagsAggregate: ActorTagsAggregateOrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  banksAggregate: BankAggregateOrderBy
   bio: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -3618,8 +3618,8 @@ input AddressVarSampOrderBy {
   longitude: OrderBy
 }
 
-# columns and relationships of "bank_info"
-type BankInfo {
+# columns and relationships of "bank"
+type Bank {
   # An array relationship
   accounts(
     # distinct select on columns
@@ -3659,10 +3659,6 @@ type BankInfo {
   # An object relationship
   actor: Actor!
   actorId: bigint!
-
-  # An object relationship
-  bank: LegalUnitLocation
-  bankId: bigint
   bicSwift: String!
   createdAt: timestamptz!
 
@@ -3712,94 +3708,96 @@ type BankInfo {
   id: bigint!
 
   # An object relationship
+  legalUnitLocation: LegalUnitLocation
+  legalUnitLocationId: bigint
+
+  # An object relationship
   tenant: Tenant!
   tenantId: bigint!
 }
 
-# aggregated selection of "bank_info"
-type BankInfoAggregate {
-  aggregate: BankInfoAggregateFields
-  nodes: [BankInfo!]!
+# aggregated selection of "bank"
+type BankAggregate {
+  aggregate: BankAggregateFields
+  nodes: [Bank!]!
 }
 
-input BankInfoAggregateBoolExp {
-  count: bankInfoAggregateBoolExpCount
+input BankAggregateBoolExp {
+  count: bankAggregateBoolExpCount
 }
 
-input bankInfoAggregateBoolExpCount {
-  arguments: [BankInfoSelectColumn!]
+input bankAggregateBoolExpCount {
+  arguments: [BankSelectColumn!]
   distinct: Boolean
-  filter: BankInfoBoolExp
+  filter: BankBoolExp
   predicate: IntComparisonExp!
 }
 
-# aggregate fields of "bank_info"
-type BankInfoAggregateFields {
-  avg: BankInfoAvgFields
-  count(columns: [BankInfoSelectColumn!], distinct: Boolean): Int!
-  max: BankInfoMaxFields
-  min: BankInfoMinFields
-  stddev: BankInfoStddevFields
-  stddevPop: BankInfoStddevPopFields
-  stddevSamp: BankInfoStddevSampFields
-  sum: BankInfoSumFields
-  varPop: BankInfoVarPopFields
-  varSamp: BankInfoVarSampFields
-  variance: BankInfoVarianceFields
+# aggregate fields of "bank"
+type BankAggregateFields {
+  avg: BankAvgFields
+  count(columns: [BankSelectColumn!], distinct: Boolean): Int!
+  max: BankMaxFields
+  min: BankMinFields
+  stddev: BankStddevFields
+  stddevPop: BankStddevPopFields
+  stddevSamp: BankStddevSampFields
+  sum: BankSumFields
+  varPop: BankVarPopFields
+  varSamp: BankVarSampFields
+  variance: BankVarianceFields
 }
 
-# order by aggregate values of table "bank_info"
-input BankInfoAggregateOrderBy {
-  avg: BankInfoAvgOrderBy
+# order by aggregate values of table "bank"
+input BankAggregateOrderBy {
+  avg: BankAvgOrderBy
   count: OrderBy
-  max: BankInfoMaxOrderBy
-  min: BankInfoMinOrderBy
-  stddev: BankInfoStddevOrderBy
-  stddevPop: BankInfoStddevPopOrderBy
-  stddevSamp: BankInfoStddevSampOrderBy
-  sum: BankInfoSumOrderBy
-  varPop: BankInfoVarPopOrderBy
-  varSamp: BankInfoVarSampOrderBy
-  variance: BankInfoVarianceOrderBy
+  max: BankMaxOrderBy
+  min: BankMinOrderBy
+  stddev: BankStddevOrderBy
+  stddevPop: BankStddevPopOrderBy
+  stddevSamp: BankStddevSampOrderBy
+  sum: BankSumOrderBy
+  varPop: BankVarPopOrderBy
+  varSamp: BankVarSampOrderBy
+  variance: BankVarianceOrderBy
 }
 
-# input type for inserting array relation for remote table "bank_info"
-input BankInfoArrRelInsertInput {
-  data: [BankInfoInsertInput!]!
+# input type for inserting array relation for remote table "bank"
+input BankArrRelInsertInput {
+  data: [BankInsertInput!]!
 
   # upsert condition
-  onConflict: BankInfoOnConflict
+  onConflict: BankOnConflict
 }
 
 # aggregate avg on columns
-type BankInfoAvgFields {
+type BankAvgFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by avg() on columns of table "bank_info"
-input BankInfoAvgOrderBy {
+# order by avg() on columns of table "bank"
+input BankAvgOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-# Boolean expression to filter rows from the table "bank_info". All fields are combined with a logical 'AND'.
-input BankInfoBoolExp {
-  _and: [BankInfoBoolExp!]
-  _not: BankInfoBoolExp
-  _or: [BankInfoBoolExp!]
+# Boolean expression to filter rows from the table "bank". All fields are combined with a logical 'AND'.
+input BankBoolExp {
+  _and: [BankBoolExp!]
+  _not: BankBoolExp
+  _or: [BankBoolExp!]
   accounts: AccountBoolExp
   accountsAggregate: AccountAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  bank: LegalUnitLocationBoolExp
-  bankId: BigintComparisonExp
   bicSwift: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
@@ -3811,32 +3809,32 @@ input BankInfoBoolExp {
   holderName: StringComparisonExp
   iban: StringComparisonExp
   id: BigintComparisonExp
+  legalUnitLocation: LegalUnitLocationBoolExp
+  legalUnitLocationId: BigintComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
 }
 
-# unique or primary key constraints on table "bank_info"
-enum BankInfoConstraint {
+# unique or primary key constraints on table "bank"
+enum BankConstraint {
   # unique or primary key constraint on columns "id"
-  bank_info_pkey
+  bank_pkey
 }
 
-# input type for incrementing numeric columns in table "bank_info"
-input BankInfoIncInput {
+# input type for incrementing numeric columns in table "bank"
+input BankIncInput {
   actorId: bigint
-  bankId: bigint
   createdById: bigint
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-# input type for inserting data into table "bank_info"
-input BankInfoInsertInput {
+# input type for inserting data into table "bank"
+input BankInsertInput {
   accounts: AccountArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
-  bank: LegalUnitLocationObjRelInsertInput
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
@@ -3847,14 +3845,15 @@ input BankInfoInsertInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocation: LegalUnitLocationObjRelInsertInput
+  legalUnitLocationId: bigint
   tenant: TenantObjRelInsertInput
   tenantId: bigint
 }
 
 # aggregate max on columns
-type BankInfoMaxFields {
+type BankMaxFields {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -3863,13 +3862,13 @@ type BankInfoMaxFields {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-# order by max() on columns of table "bank_info"
-input BankInfoMaxOrderBy {
+# order by max() on columns of table "bank"
+input BankMaxOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -3878,13 +3877,13 @@ input BankInfoMaxOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate min on columns
-type BankInfoMinFields {
+type BankMinFields {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -3893,13 +3892,13 @@ type BankInfoMinFields {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-# order by min() on columns of table "bank_info"
-input BankInfoMinOrderBy {
+# order by min() on columns of table "bank"
+input BankMinOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
@@ -3908,40 +3907,39 @@ input BankInfoMinOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-# response of any mutation on the table "bank_info"
-type BankInfoMutationResponse {
+# response of any mutation on the table "bank"
+type BankMutationResponse {
   # number of rows affected by the mutation
   affectedRows: Int!
 
   # data from the rows affected by the mutation
-  returning: [BankInfo!]!
+  returning: [Bank!]!
 }
 
-# input type for inserting object relation for remote table "bank_info"
-input BankInfoObjRelInsertInput {
-  data: BankInfoInsertInput!
+# input type for inserting object relation for remote table "bank"
+input BankObjRelInsertInput {
+  data: BankInsertInput!
 
   # upsert condition
-  onConflict: BankInfoOnConflict
+  onConflict: BankOnConflict
 }
 
-# on_conflict condition type for table "bank_info"
-input BankInfoOnConflict {
-  constraint: BankInfoConstraint!
-  updateColumns: [BankInfoUpdateColumn!]! = []
-  where: BankInfoBoolExp
+# on_conflict condition type for table "bank"
+input BankOnConflict {
+  constraint: BankConstraint!
+  updateColumns: [BankUpdateColumn!]! = []
+  where: BankBoolExp
 }
 
-# Ordering options when selecting data from "bank_info".
-input BankInfoOrderBy {
+# Ordering options when selecting data from "bank".
+input BankOrderBy {
   accountsAggregate: AccountAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
-  bank: LegalUnitLocationOrderBy
-  bankId: OrderBy
   bicSwift: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
@@ -3952,22 +3950,21 @@ input BankInfoOrderBy {
   holderName: OrderBy
   iban: OrderBy
   id: OrderBy
+  legalUnitLocation: LegalUnitLocationOrderBy
+  legalUnitLocationId: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
 }
 
-# primary key columns input for table: bank_info
-input BankInfoPkColumnsInput {
+# primary key columns input for table: bank
+input BankPkColumnsInput {
   id: bigint!
 }
 
-# select columns of table "bank_info"
-enum BankInfoSelectColumn {
+# select columns of table "bank"
+enum BankSelectColumn {
   # column name
   actorId
-
-  # column name
-  bankId
 
   # column name
   bicSwift
@@ -3994,13 +3991,15 @@ enum BankInfoSelectColumn {
   id
 
   # column name
+  legalUnitLocationId
+
+  # column name
   tenantId
 }
 
-# input type for updating data in table "bank_info"
-input BankInfoSetInput {
+# input type for updating data in table "bank"
+input BankSetInput {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -4009,76 +4008,76 @@ input BankInfoSetInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
 # aggregate stddev on columns
-type BankInfoStddevFields {
+type BankStddevFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by stddev() on columns of table "bank_info"
-input BankInfoStddevOrderBy {
+# order by stddev() on columns of table "bank"
+input BankStddevOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate stddevPop on columns
-type BankInfoStddevPopFields {
+type BankStddevPopFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by stddevPop() on columns of table "bank_info"
-input BankInfoStddevPopOrderBy {
+# order by stddevPop() on columns of table "bank"
+input BankStddevPopOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate stddevSamp on columns
-type BankInfoStddevSampFields {
+type BankStddevSampFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by stddevSamp() on columns of table "bank_info"
-input BankInfoStddevSampOrderBy {
+# order by stddevSamp() on columns of table "bank"
+input BankStddevSampOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-# Streaming cursor of the table "bank_info"
-input BankInfoStreamCursorInput {
+# Streaming cursor of the table "bank"
+input BankStreamCursorInput {
   # Stream column input with initial value
-  initialValue: BankInfoStreamCursorValueInput!
+  initialValue: BankStreamCursorValueInput!
 
   # cursor ordering
   ordering: CursorOrdering
 }
 
 # Initial value of the column from where the streaming should start
-input BankInfoStreamCursorValueInput {
+input BankStreamCursorValueInput {
   actorId: bigint
-  bankId: bigint
   bicSwift: String
   createdAt: timestamptz
   createdById: bigint
@@ -4087,34 +4086,32 @@ input BankInfoStreamCursorValueInput {
   holderName: String
   iban: String
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
 # aggregate sum on columns
-type BankInfoSumFields {
+type BankSumFields {
   actorId: bigint
-  bankId: bigint
   createdById: bigint
   id: bigint
+  legalUnitLocationId: bigint
   tenantId: bigint
 }
 
-# order by sum() on columns of table "bank_info"
-input BankInfoSumOrderBy {
+# order by sum() on columns of table "bank"
+input BankSumOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
-# update columns of table "bank_info"
-enum BankInfoUpdateColumn {
+# update columns of table "bank"
+enum BankUpdateColumn {
   # column name
   actorId
-
-  # column name
-  bankId
 
   # column name
   bicSwift
@@ -4141,71 +4138,74 @@ enum BankInfoUpdateColumn {
   id
 
   # column name
+  legalUnitLocationId
+
+  # column name
   tenantId
 }
 
-input BankInfoUpdates {
+input BankUpdates {
   # increments the numeric columns with given value of the filtered values
-  _inc: BankInfoIncInput
+  _inc: BankIncInput
 
   # sets the columns of the filtered rows to the given values
-  _set: BankInfoSetInput
+  _set: BankSetInput
 
   # filter the rows which have to be updated
-  where: BankInfoBoolExp!
+  where: BankBoolExp!
 }
 
 # aggregate variance on columns
-type BankInfoVarianceFields {
+type BankVarianceFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by variance() on columns of table "bank_info"
-input BankInfoVarianceOrderBy {
+# order by variance() on columns of table "bank"
+input BankVarianceOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varPop on columns
-type BankInfoVarPopFields {
+type BankVarPopFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by varPop() on columns of table "bank_info"
-input BankInfoVarPopOrderBy {
+# order by varPop() on columns of table "bank"
+input BankVarPopOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
 # aggregate varSamp on columns
-type BankInfoVarSampFields {
+type BankVarSampFields {
   actorId: Float
-  bankId: Float
   createdById: Float
   id: Float
+  legalUnitLocationId: Float
   tenantId: Float
 }
 
-# order by varSamp() on columns of table "bank_info"
-input BankInfoVarSampOrderBy {
+# order by varSamp() on columns of table "bank"
+input BankVarSampOrderBy {
   actorId: OrderBy
-  bankId: OrderBy
   createdById: OrderBy
   id: OrderBy
+  legalUnitLocationId: OrderBy
   tenantId: OrderBy
 }
 
@@ -10029,10 +10029,10 @@ type Document {
   createdById: bigint
   deletedAt: timestamptz
   description: String!
-  fileId: bigint
 
   # An object relationship
-  fileUpload: FileUpload
+  file: FileUpload
+  fileId: bigint
   hiddenAt: timestamptz
   id: bigint!
   name: String!
@@ -10139,8 +10139,8 @@ input DocumentBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  file: FileUploadBoolExp
   fileId: BigintComparisonExp
-  fileUpload: FileUploadBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   name: StringComparisonExp
@@ -10181,8 +10181,8 @@ input DocumentInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   description: String
+  file: FileUploadObjRelInsertInput
   fileId: bigint
-  fileUpload: FileUploadObjRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   name: String
@@ -10295,8 +10295,8 @@ input DocumentOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   description: OrderBy
+  file: FileUploadOrderBy
   fileId: OrderBy
-  fileUpload: FileUploadOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   name: OrderBy
@@ -13951,42 +13951,6 @@ type EventOrganize {
   project: Project
   projectId: bigint
 
-  # An array relationship
-  supervisors(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
-  # An aggregate relationship
-  supervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): EventOrganizeSupervisorsAggregate!
-
   # An object relationship
   team: Team!
   teamId: bigint!
@@ -14091,8 +14055,6 @@ input EventOrganizeBoolExp {
   missionsAggregate: MissionAggregateBoolExp
   project: ProjectBoolExp
   projectId: BigintComparisonExp
-  supervisors: EventOrganizeSupervisorsBoolExp
-  supervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   tenant: TenantBoolExp
@@ -14130,7 +14092,6 @@ input EventOrganizeInsertInput {
   missions: MissionArrRelInsertInput
   project: ProjectObjRelInsertInput
   projectId: bigint
-  supervisors: EventOrganizeSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
   tenant: TenantObjRelInsertInput
@@ -14232,7 +14193,6 @@ input EventOrganizeOrderBy {
   missionsAggregate: MissionAggregateOrderBy
   project: ProjectOrderBy
   projectId: OrderBy
-  supervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
   tenant: TenantOrderBy
@@ -14392,303 +14352,6 @@ input EventOrganizeSumOrderBy {
   projectId: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-}
-
-# columns and relationships of "event_organize_supervisors"
-type EventOrganizeSupervisors {
-  # An object relationship
-  eventOrganize: EventOrganize!
-  eventOrganizeId: bigint!
-
-  # An object relationship
-  teamMember: TeamMember!
-  teamMemberId: bigint!
-}
-
-# aggregated selection of "event_organize_supervisors"
-type EventOrganizeSupervisorsAggregate {
-  aggregate: EventOrganizeSupervisorsAggregateFields
-  nodes: [EventOrganizeSupervisors!]!
-}
-
-input EventOrganizeSupervisorsAggregateBoolExp {
-  count: eventOrganizeSupervisorsAggregateBoolExpCount
-}
-
-input eventOrganizeSupervisorsAggregateBoolExpCount {
-  arguments: [EventOrganizeSupervisorsSelectColumn!]
-  distinct: Boolean
-  filter: EventOrganizeSupervisorsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "event_organize_supervisors"
-type EventOrganizeSupervisorsAggregateFields {
-  avg: EventOrganizeSupervisorsAvgFields
-  count(columns: [EventOrganizeSupervisorsSelectColumn!], distinct: Boolean): Int!
-  max: EventOrganizeSupervisorsMaxFields
-  min: EventOrganizeSupervisorsMinFields
-  stddev: EventOrganizeSupervisorsStddevFields
-  stddevPop: EventOrganizeSupervisorsStddevPopFields
-  stddevSamp: EventOrganizeSupervisorsStddevSampFields
-  sum: EventOrganizeSupervisorsSumFields
-  varPop: EventOrganizeSupervisorsVarPopFields
-  varSamp: EventOrganizeSupervisorsVarSampFields
-  variance: EventOrganizeSupervisorsVarianceFields
-}
-
-# order by aggregate values of table "event_organize_supervisors"
-input EventOrganizeSupervisorsAggregateOrderBy {
-  avg: EventOrganizeSupervisorsAvgOrderBy
-  count: OrderBy
-  max: EventOrganizeSupervisorsMaxOrderBy
-  min: EventOrganizeSupervisorsMinOrderBy
-  stddev: EventOrganizeSupervisorsStddevOrderBy
-  stddevPop: EventOrganizeSupervisorsStddevPopOrderBy
-  stddevSamp: EventOrganizeSupervisorsStddevSampOrderBy
-  sum: EventOrganizeSupervisorsSumOrderBy
-  varPop: EventOrganizeSupervisorsVarPopOrderBy
-  varSamp: EventOrganizeSupervisorsVarSampOrderBy
-  variance: EventOrganizeSupervisorsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "event_organize_supervisors"
-input EventOrganizeSupervisorsArrRelInsertInput {
-  data: [EventOrganizeSupervisorsInsertInput!]!
-
-  # upsert condition
-  onConflict: EventOrganizeSupervisorsOnConflict
-}
-
-# aggregate avg on columns
-type EventOrganizeSupervisorsAvgFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by avg() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsAvgOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "event_organize_supervisors". All fields are combined with a logical 'AND'.
-input EventOrganizeSupervisorsBoolExp {
-  _and: [EventOrganizeSupervisorsBoolExp!]
-  _not: EventOrganizeSupervisorsBoolExp
-  _or: [EventOrganizeSupervisorsBoolExp!]
-  eventOrganize: EventOrganizeBoolExp
-  eventOrganizeId: BigintComparisonExp
-  teamMember: TeamMemberBoolExp
-  teamMemberId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "event_organize_supervisors"
-enum EventOrganizeSupervisorsConstraint {
-  # unique or primary key constraint on columns "event_organize_id", "team_member_id"
-  event_organize_supervisors_pkey
-}
-
-# input type for incrementing numeric columns in table "event_organize_supervisors"
-input EventOrganizeSupervisorsIncInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# input type for inserting data into table "event_organize_supervisors"
-input EventOrganizeSupervisorsInsertInput {
-  eventOrganize: EventOrganizeObjRelInsertInput
-  eventOrganizeId: bigint
-  teamMember: TeamMemberObjRelInsertInput
-  teamMemberId: bigint
-}
-
-# aggregate max on columns
-type EventOrganizeSupervisorsMaxFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# order by max() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsMaxOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate min on columns
-type EventOrganizeSupervisorsMinFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# order by min() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsMinOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# response of any mutation on the table "event_organize_supervisors"
-type EventOrganizeSupervisorsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [EventOrganizeSupervisors!]!
-}
-
-# on_conflict condition type for table "event_organize_supervisors"
-input EventOrganizeSupervisorsOnConflict {
-  constraint: EventOrganizeSupervisorsConstraint!
-  updateColumns: [EventOrganizeSupervisorsUpdateColumn!]! = []
-  where: EventOrganizeSupervisorsBoolExp
-}
-
-# Ordering options when selecting data from "event_organize_supervisors".
-input EventOrganizeSupervisorsOrderBy {
-  eventOrganize: EventOrganizeOrderBy
-  eventOrganizeId: OrderBy
-  teamMember: TeamMemberOrderBy
-  teamMemberId: OrderBy
-}
-
-# primary key columns input for table: event_organize_supervisors
-input EventOrganizeSupervisorsPkColumnsInput {
-  eventOrganizeId: bigint!
-  teamMemberId: bigint!
-}
-
-# select columns of table "event_organize_supervisors"
-enum EventOrganizeSupervisorsSelectColumn {
-  # column name
-  eventOrganizeId
-
-  # column name
-  teamMemberId
-}
-
-# input type for updating data in table "event_organize_supervisors"
-input EventOrganizeSupervisorsSetInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# aggregate stddev on columns
-type EventOrganizeSupervisorsStddevFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by stddev() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsStddevOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type EventOrganizeSupervisorsStddevPopFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by stddevPop() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsStddevPopOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type EventOrganizeSupervisorsStddevSampFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by stddevSamp() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsStddevSampOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# Streaming cursor of the table "event_organize_supervisors"
-input EventOrganizeSupervisorsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: EventOrganizeSupervisorsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input EventOrganizeSupervisorsStreamCursorValueInput {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# aggregate sum on columns
-type EventOrganizeSupervisorsSumFields {
-  eventOrganizeId: bigint
-  teamMemberId: bigint
-}
-
-# order by sum() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsSumOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# update columns of table "event_organize_supervisors"
-enum EventOrganizeSupervisorsUpdateColumn {
-  # column name
-  eventOrganizeId
-
-  # column name
-  teamMemberId
-}
-
-input EventOrganizeSupervisorsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: EventOrganizeSupervisorsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: EventOrganizeSupervisorsSetInput
-
-  # filter the rows which have to be updated
-  where: EventOrganizeSupervisorsBoolExp!
-}
-
-# aggregate variance on columns
-type EventOrganizeSupervisorsVarianceFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by variance() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsVarianceOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate varPop on columns
-type EventOrganizeSupervisorsVarPopFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by varPop() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsVarPopOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
-}
-
-# aggregate varSamp on columns
-type EventOrganizeSupervisorsVarSampFields {
-  eventOrganizeId: Float
-  teamMemberId: Float
-}
-
-# order by varSamp() on columns of table "event_organize_supervisors"
-input EventOrganizeSupervisorsVarSampOrderBy {
-  eventOrganizeId: OrderBy
-  teamMemberId: OrderBy
 }
 
 # update columns of table "event_organize"
@@ -16067,8 +15730,8 @@ input EventVarSampOrderBy {
 # columns and relationships of "expense"
 type Expense {
   # An object relationship
-  bankInfo: BankInfo!
-  bankInfoId: bigint!
+  bank: Bank!
+  bankId: bigint!
   createdAt: timestamptz!
 
   # An object relationship
@@ -16191,7 +15854,7 @@ input ExpenseArrRelInsertInput {
 
 # aggregate avg on columns
 type ExpenseAvgFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -16201,7 +15864,7 @@ type ExpenseAvgFields {
 
 # order by avg() on columns of table "expense"
 input ExpenseAvgOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -16214,8 +15877,8 @@ input ExpenseBoolExp {
   _and: [ExpenseBoolExp!]
   _not: ExpenseBoolExp
   _or: [ExpenseBoolExp!]
-  bankInfo: BankInfoBoolExp
-  bankInfoId: BigintComparisonExp
+  bank: BankBoolExp
+  bankId: BigintComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
@@ -16245,7 +15908,7 @@ enum ExpenseConstraint {
 
 # input type for incrementing numeric columns in table "expense"
 input ExpenseIncInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   expenseReportId: bigint
   id: bigint
@@ -16255,8 +15918,8 @@ input ExpenseIncInput {
 
 # input type for inserting data into table "expense"
 input ExpenseInsertInput {
-  bankInfo: BankInfoObjRelInsertInput
-  bankInfoId: bigint
+  bank: BankObjRelInsertInput
+  bankId: bigint
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -16401,11 +16064,11 @@ input ExpenseItemArrRelInsertInput {
 # columns and relationships of "expense_item_attachments"
 type ExpenseItemAttachments {
   # An object relationship
-  expenseItem: ExpenseItem!
-  expenseItemId: bigint!
+  attachment: FileUpload!
 
   # An object relationship
-  fileUpload: FileUpload!
+  expenseItem: ExpenseItem!
+  expenseItemId: bigint!
   fileUploadId: bigint!
 }
 
@@ -16481,9 +16144,9 @@ input ExpenseItemAttachmentsBoolExp {
   _and: [ExpenseItemAttachmentsBoolExp!]
   _not: ExpenseItemAttachmentsBoolExp
   _or: [ExpenseItemAttachmentsBoolExp!]
+  attachment: FileUploadBoolExp
   expenseItem: ExpenseItemBoolExp
   expenseItemId: BigintComparisonExp
-  fileUpload: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
 }
 
@@ -16501,9 +16164,9 @@ input ExpenseItemAttachmentsIncInput {
 
 # input type for inserting data into table "expense_item_attachments"
 input ExpenseItemAttachmentsInsertInput {
+  attachment: FileUploadObjRelInsertInput
   expenseItem: ExpenseItemObjRelInsertInput
   expenseItemId: bigint
-  fileUpload: FileUploadObjRelInsertInput
   fileUploadId: bigint
 }
 
@@ -16549,9 +16212,9 @@ input ExpenseItemAttachmentsOnConflict {
 
 # Ordering options when selecting data from "expense_item_attachments".
 input ExpenseItemAttachmentsOrderBy {
+  attachment: FileUploadOrderBy
   expenseItem: ExpenseItemOrderBy
   expenseItemId: OrderBy
-  fileUpload: FileUploadOrderBy
   fileUploadId: OrderBy
 }
 
@@ -17210,7 +16873,7 @@ input ExpenseItemVarSampOrderBy {
 
 # aggregate max on columns
 type ExpenseMaxFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17227,7 +16890,7 @@ type ExpenseMaxFields {
 
 # order by max() on columns of table "expense"
 input ExpenseMaxOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -17244,7 +16907,7 @@ input ExpenseMaxOrderBy {
 
 # aggregate min on columns
 type ExpenseMinFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17261,7 +16924,7 @@ type ExpenseMinFields {
 
 # order by min() on columns of table "expense"
 input ExpenseMinOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -17302,8 +16965,8 @@ input ExpenseOnConflict {
 
 # Ordering options when selecting data from "expense".
 input ExpenseOrderBy {
-  bankInfo: BankInfoOrderBy
-  bankInfoId: OrderBy
+  bank: BankOrderBy
+  bankId: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -17332,7 +16995,7 @@ input ExpensePkColumnsInput {
 # select columns of table "expense"
 enum ExpenseSelectColumn {
   # column name
-  bankInfoId
+  bankId
 
   # column name
   createdAt
@@ -17373,7 +17036,7 @@ enum ExpenseSelectColumn {
 
 # input type for updating data in table "expense"
 input ExpenseSetInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17390,7 +17053,7 @@ input ExpenseSetInput {
 
 # aggregate stddev on columns
 type ExpenseStddevFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17400,7 +17063,7 @@ type ExpenseStddevFields {
 
 # order by stddev() on columns of table "expense"
 input ExpenseStddevOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17410,7 +17073,7 @@ input ExpenseStddevOrderBy {
 
 # aggregate stddevPop on columns
 type ExpenseStddevPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17420,7 +17083,7 @@ type ExpenseStddevPopFields {
 
 # order by stddevPop() on columns of table "expense"
 input ExpenseStddevPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17430,7 +17093,7 @@ input ExpenseStddevPopOrderBy {
 
 # aggregate stddevSamp on columns
 type ExpenseStddevSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17440,7 +17103,7 @@ type ExpenseStddevSampFields {
 
 # order by stddevSamp() on columns of table "expense"
 input ExpenseStddevSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17459,7 +17122,7 @@ input ExpenseStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input ExpenseStreamCursorValueInput {
-  bankInfoId: bigint
+  bankId: bigint
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -17476,7 +17139,7 @@ input ExpenseStreamCursorValueInput {
 
 # aggregate sum on columns
 type ExpenseSumFields {
-  bankInfoId: bigint
+  bankId: bigint
   createdById: bigint
   expenseReportId: bigint
   id: bigint
@@ -17486,7 +17149,7 @@ type ExpenseSumFields {
 
 # order by sum() on columns of table "expense"
 input ExpenseSumOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17497,7 +17160,7 @@ input ExpenseSumOrderBy {
 # update columns of table "expense"
 enum ExpenseUpdateColumn {
   # column name
-  bankInfoId
+  bankId
 
   # column name
   createdAt
@@ -17549,7 +17212,7 @@ input ExpenseUpdates {
 
 # aggregate variance on columns
 type ExpenseVarianceFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17559,7 +17222,7 @@ type ExpenseVarianceFields {
 
 # order by variance() on columns of table "expense"
 input ExpenseVarianceOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17569,7 +17232,7 @@ input ExpenseVarianceOrderBy {
 
 # aggregate varPop on columns
 type ExpenseVarPopFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17579,7 +17242,7 @@ type ExpenseVarPopFields {
 
 # order by varPop() on columns of table "expense"
 input ExpenseVarPopOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -17589,7 +17252,7 @@ input ExpenseVarPopOrderBy {
 
 # aggregate varSamp on columns
 type ExpenseVarSampFields {
-  bankInfoId: Float
+  bankId: Float
   createdById: Float
   expenseReportId: Float
   id: Float
@@ -17599,7 +17262,7 @@ type ExpenseVarSampFields {
 
 # order by varSamp() on columns of table "expense"
 input ExpenseVarSampOrderBy {
-  bankInfoId: OrderBy
+  bankId: OrderBy
   createdById: OrderBy
   expenseReportId: OrderBy
   id: OrderBy
@@ -18255,6 +17918,42 @@ type FileUpload {
   ): FinanceAttachmentsAggregate!
 
   # An array relationship
+  formSubmissionAttachments(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): [FormSubmissionAttachments!]!
+
+  # An aggregate relationship
+  formSubmissionAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): FormSubmissionAttachmentsAggregate!
+
+  # An array relationship
   grantAllocateAttachments(
     # distinct select on columns
     distinctOn: [GrantAllocateAttachmentsSelectColumn!]
@@ -18720,6 +18419,8 @@ input FileUploadBoolExp {
   fileLastModifiedAt: TimestamptzComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
+  formSubmissionAttachments: FormSubmissionAttachmentsBoolExp
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateBoolExp
   grantAllocateAttachments: GrantAllocateAttachmentsBoolExp
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateBoolExp
   grantAllocates: GrantAllocateBoolExp
@@ -18779,6 +18480,7 @@ input FileUploadInsertInput {
   expenses: ExpenseArrRelInsertInput
   fileLastModifiedAt: timestamptz
   financeAttachments: FinanceAttachmentsArrRelInsertInput
+  formSubmissionAttachments: FormSubmissionAttachmentsArrRelInsertInput
   grantAllocateAttachments: GrantAllocateAttachmentsArrRelInsertInput
   grantAllocates: GrantAllocateArrRelInsertInput
   grantAttachments: GrantAttachmentsArrRelInsertInput
@@ -18898,6 +18600,7 @@ input FileUploadOrderBy {
   expensesAggregate: ExpenseAggregateOrderBy
   fileLastModifiedAt: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateOrderBy
   grantAllocateAttachmentsAggregate: GrantAllocateAttachmentsAggregateOrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   grantAttachmentsAggregate: GrantAttachmentsAggregateOrderBy
@@ -19398,7 +19101,7 @@ input FinanceArrRelInsertInput {
 # columns and relationships of "finance_attachments"
 type FinanceAttachments {
   # An object relationship
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
 
   # An object relationship
@@ -19478,7 +19181,7 @@ input FinanceAttachmentsBoolExp {
   _and: [FinanceAttachmentsBoolExp!]
   _not: FinanceAttachmentsBoolExp
   _or: [FinanceAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   finance: FinanceBoolExp
   financeId: BigintComparisonExp
@@ -19498,7 +19201,7 @@ input FinanceAttachmentsIncInput {
 
 # input type for inserting data into table "finance_attachments"
 input FinanceAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   finance: FinanceObjRelInsertInput
   financeId: bigint
@@ -19546,7 +19249,7 @@ input FinanceAttachmentsOnConflict {
 
 # Ordering options when selecting data from "finance_attachments".
 input FinanceAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   finance: FinanceOrderBy
   financeId: OrderBy
@@ -21795,6 +21498,42 @@ type FormSubmission {
   # An object relationship
   form: Form!
   formId: bigint!
+
+  # An array relationship
+  formSubmissionAttachments(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): [FormSubmissionAttachments!]!
+
+  # An aggregate relationship
+  formSubmissionAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): FormSubmissionAttachmentsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   submission(
@@ -21903,6 +21642,304 @@ input FormSubmissionArrRelInsertInput {
   onConflict: FormSubmissionOnConflict
 }
 
+# columns and relationships of "form_submission_attachments"
+type FormSubmissionAttachments {
+  # An object relationship
+  attachment: FileUpload!
+  fileUploadId: bigint!
+
+  # An object relationship
+  formSubmission: FormSubmission!
+  formSubmissionId: bigint!
+}
+
+# aggregated selection of "form_submission_attachments"
+type FormSubmissionAttachmentsAggregate {
+  aggregate: FormSubmissionAttachmentsAggregateFields
+  nodes: [FormSubmissionAttachments!]!
+}
+
+input FormSubmissionAttachmentsAggregateBoolExp {
+  count: formSubmissionAttachmentsAggregateBoolExpCount
+}
+
+input formSubmissionAttachmentsAggregateBoolExpCount {
+  arguments: [FormSubmissionAttachmentsSelectColumn!]
+  distinct: Boolean
+  filter: FormSubmissionAttachmentsBoolExp
+  predicate: IntComparisonExp!
+}
+
+# aggregate fields of "form_submission_attachments"
+type FormSubmissionAttachmentsAggregateFields {
+  avg: FormSubmissionAttachmentsAvgFields
+  count(columns: [FormSubmissionAttachmentsSelectColumn!], distinct: Boolean): Int!
+  max: FormSubmissionAttachmentsMaxFields
+  min: FormSubmissionAttachmentsMinFields
+  stddev: FormSubmissionAttachmentsStddevFields
+  stddevPop: FormSubmissionAttachmentsStddevPopFields
+  stddevSamp: FormSubmissionAttachmentsStddevSampFields
+  sum: FormSubmissionAttachmentsSumFields
+  varPop: FormSubmissionAttachmentsVarPopFields
+  varSamp: FormSubmissionAttachmentsVarSampFields
+  variance: FormSubmissionAttachmentsVarianceFields
+}
+
+# order by aggregate values of table "form_submission_attachments"
+input FormSubmissionAttachmentsAggregateOrderBy {
+  avg: FormSubmissionAttachmentsAvgOrderBy
+  count: OrderBy
+  max: FormSubmissionAttachmentsMaxOrderBy
+  min: FormSubmissionAttachmentsMinOrderBy
+  stddev: FormSubmissionAttachmentsStddevOrderBy
+  stddevPop: FormSubmissionAttachmentsStddevPopOrderBy
+  stddevSamp: FormSubmissionAttachmentsStddevSampOrderBy
+  sum: FormSubmissionAttachmentsSumOrderBy
+  varPop: FormSubmissionAttachmentsVarPopOrderBy
+  varSamp: FormSubmissionAttachmentsVarSampOrderBy
+  variance: FormSubmissionAttachmentsVarianceOrderBy
+}
+
+# input type for inserting array relation for remote table "form_submission_attachments"
+input FormSubmissionAttachmentsArrRelInsertInput {
+  data: [FormSubmissionAttachmentsInsertInput!]!
+
+  # upsert condition
+  onConflict: FormSubmissionAttachmentsOnConflict
+}
+
+# aggregate avg on columns
+type FormSubmissionAttachmentsAvgFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by avg() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsAvgOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# Boolean expression to filter rows from the table "form_submission_attachments".
+# All fields are combined with a logical 'AND'.
+input FormSubmissionAttachmentsBoolExp {
+  _and: [FormSubmissionAttachmentsBoolExp!]
+  _not: FormSubmissionAttachmentsBoolExp
+  _or: [FormSubmissionAttachmentsBoolExp!]
+  attachment: FileUploadBoolExp
+  fileUploadId: BigintComparisonExp
+  formSubmission: FormSubmissionBoolExp
+  formSubmissionId: BigintComparisonExp
+}
+
+# unique or primary key constraints on table "form_submission_attachments"
+enum FormSubmissionAttachmentsConstraint {
+  # unique or primary key constraint on columns "form_submission_id", "file_upload_id"
+  form_submission_attachments_pkey
+}
+
+# input type for incrementing numeric columns in table "form_submission_attachments"
+input FormSubmissionAttachmentsIncInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# input type for inserting data into table "form_submission_attachments"
+input FormSubmissionAttachmentsInsertInput {
+  attachment: FileUploadObjRelInsertInput
+  fileUploadId: bigint
+  formSubmission: FormSubmissionObjRelInsertInput
+  formSubmissionId: bigint
+}
+
+# aggregate max on columns
+type FormSubmissionAttachmentsMaxFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# order by max() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsMaxOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# aggregate min on columns
+type FormSubmissionAttachmentsMinFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# order by min() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsMinOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# response of any mutation on the table "form_submission_attachments"
+type FormSubmissionAttachmentsMutationResponse {
+  # number of rows affected by the mutation
+  affectedRows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [FormSubmissionAttachments!]!
+}
+
+# on_conflict condition type for table "form_submission_attachments"
+input FormSubmissionAttachmentsOnConflict {
+  constraint: FormSubmissionAttachmentsConstraint!
+  updateColumns: [FormSubmissionAttachmentsUpdateColumn!]! = []
+  where: FormSubmissionAttachmentsBoolExp
+}
+
+# Ordering options when selecting data from "form_submission_attachments".
+input FormSubmissionAttachmentsOrderBy {
+  attachment: FileUploadOrderBy
+  fileUploadId: OrderBy
+  formSubmission: FormSubmissionOrderBy
+  formSubmissionId: OrderBy
+}
+
+# primary key columns input for table: form_submission_attachments
+input FormSubmissionAttachmentsPkColumnsInput {
+  fileUploadId: bigint!
+  formSubmissionId: bigint!
+}
+
+# select columns of table "form_submission_attachments"
+enum FormSubmissionAttachmentsSelectColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  formSubmissionId
+}
+
+# input type for updating data in table "form_submission_attachments"
+input FormSubmissionAttachmentsSetInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# aggregate stddev on columns
+type FormSubmissionAttachmentsStddevFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by stddev() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsStddevOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# aggregate stddevPop on columns
+type FormSubmissionAttachmentsStddevPopFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by stddevPop() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsStddevPopOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# aggregate stddevSamp on columns
+type FormSubmissionAttachmentsStddevSampFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by stddevSamp() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsStddevSampOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# Streaming cursor of the table "form_submission_attachments"
+input FormSubmissionAttachmentsStreamCursorInput {
+  # Stream column input with initial value
+  initialValue: FormSubmissionAttachmentsStreamCursorValueInput!
+
+  # cursor ordering
+  ordering: CursorOrdering
+}
+
+# Initial value of the column from where the streaming should start
+input FormSubmissionAttachmentsStreamCursorValueInput {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# aggregate sum on columns
+type FormSubmissionAttachmentsSumFields {
+  fileUploadId: bigint
+  formSubmissionId: bigint
+}
+
+# order by sum() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsSumOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# update columns of table "form_submission_attachments"
+enum FormSubmissionAttachmentsUpdateColumn {
+  # column name
+  fileUploadId
+
+  # column name
+  formSubmissionId
+}
+
+input FormSubmissionAttachmentsUpdates {
+  # increments the numeric columns with given value of the filtered values
+  _inc: FormSubmissionAttachmentsIncInput
+
+  # sets the columns of the filtered rows to the given values
+  _set: FormSubmissionAttachmentsSetInput
+
+  # filter the rows which have to be updated
+  where: FormSubmissionAttachmentsBoolExp!
+}
+
+# aggregate variance on columns
+type FormSubmissionAttachmentsVarianceFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by variance() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsVarianceOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# aggregate varPop on columns
+type FormSubmissionAttachmentsVarPopFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by varPop() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsVarPopOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
+# aggregate varSamp on columns
+type FormSubmissionAttachmentsVarSampFields {
+  fileUploadId: Float
+  formSubmissionId: Float
+}
+
+# order by varSamp() on columns of table "form_submission_attachments"
+input FormSubmissionAttachmentsVarSampOrderBy {
+  fileUploadId: OrderBy
+  formSubmissionId: OrderBy
+}
+
 # aggregate avg on columns
 type FormSubmissionAvgFields {
   createdById: Float
@@ -21933,6 +21970,8 @@ input FormSubmissionBoolExp {
   eventJoinsAggregate: EventJoinAggregateBoolExp
   form: FormBoolExp
   formId: BigintComparisonExp
+  formSubmissionAttachments: FormSubmissionAttachmentsBoolExp
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   submission: JsonbComparisonExp
@@ -21982,6 +22021,7 @@ input FormSubmissionInsertInput {
   eventJoins: EventJoinArrRelInsertInput
   form: FormObjRelInsertInput
   formId: bigint
+  formSubmissionAttachments: FormSubmissionAttachmentsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   submission: jsonb
@@ -22068,6 +22108,7 @@ input FormSubmissionOrderBy {
   eventJoinsAggregate: EventJoinAggregateOrderBy
   form: FormOrderBy
   formId: OrderBy
+  formSubmissionAttachmentsAggregate: FormSubmissionAttachmentsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   submission: OrderBy
@@ -22762,7 +22803,7 @@ input GrantAllocateArrRelInsertInput {
 # columns and relationships of "grant_allocate_attachments"
 type GrantAllocateAttachments {
   # An object relationship
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
 
   # An object relationship
@@ -22842,7 +22883,7 @@ input GrantAllocateAttachmentsBoolExp {
   _and: [GrantAllocateAttachmentsBoolExp!]
   _not: GrantAllocateAttachmentsBoolExp
   _or: [GrantAllocateAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   grantAllocate: GrantAllocateBoolExp
   grantAllocateId: BigintComparisonExp
@@ -22862,7 +22903,7 @@ input GrantAllocateAttachmentsIncInput {
 
 # input type for inserting data into table "grant_allocate_attachments"
 input GrantAllocateAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   grantAllocate: GrantAllocateObjRelInsertInput
   grantAllocateId: bigint
@@ -22910,7 +22951,7 @@ input GrantAllocateAttachmentsOnConflict {
 
 # Ordering options when selecting data from "grant_allocate_attachments".
 input GrantAllocateAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   grantAllocate: GrantAllocateOrderBy
   grantAllocateId: OrderBy
@@ -23655,7 +23696,7 @@ input GrantArrRelInsertInput {
 # columns and relationships of "grant_attachments"
 type GrantAttachments {
   # An object relationship
-  fileUpload: FileUpload!
+  attachment: FileUpload!
   fileUploadId: bigint!
 
   # An object relationship
@@ -23735,7 +23776,7 @@ input GrantAttachmentsBoolExp {
   _and: [GrantAttachmentsBoolExp!]
   _not: GrantAttachmentsBoolExp
   _or: [GrantAttachmentsBoolExp!]
-  fileUpload: FileUploadBoolExp
+  attachment: FileUploadBoolExp
   fileUploadId: BigintComparisonExp
   grant: GrantBoolExp
   grantId: BigintComparisonExp
@@ -23755,7 +23796,7 @@ input GrantAttachmentsIncInput {
 
 # input type for inserting data into table "grant_attachments"
 input GrantAttachmentsInsertInput {
-  fileUpload: FileUploadObjRelInsertInput
+  attachment: FileUploadObjRelInsertInput
   fileUploadId: bigint
   grant: GrantObjRelInsertInput
   grantId: bigint
@@ -23803,7 +23844,7 @@ input GrantAttachmentsOnConflict {
 
 # Ordering options when selecting data from "grant_attachments".
 input GrantAttachmentsOrderBy {
-  fileUpload: FileUploadOrderBy
+  attachment: FileUploadOrderBy
   fileUploadId: OrderBy
   grant: GrantOrderBy
   grantId: OrderBy
@@ -24738,9 +24779,9 @@ type Individual {
   createdAt: timestamptz!
 
   # An array relationship
-  createdBankInfos(
+  createdBanks(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24749,16 +24790,16 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
   # An aggregate relationship
-  createdBankInfosAggregate(
+  createdBanksAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -24767,11 +24808,11 @@ type Individual {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+    where: BankBoolExp
+  ): BankAggregate!
 
   # An array relationship
   createdBots(
@@ -27366,8 +27407,8 @@ input IndividualBoolExp {
   createdAddresses: AddressBoolExp
   createdAddressesAggregate: AddressAggregateBoolExp
   createdAt: TimestamptzComparisonExp
-  createdBankInfos: BankInfoBoolExp
-  createdBankInfosAggregate: BankInfoAggregateBoolExp
+  createdBanks: BankBoolExp
+  createdBanksAggregate: BankAggregateBoolExp
   createdBots: BotBoolExp
   createdBotsAggregate: BotAggregateBoolExp
   createdBy: IndividualBoolExp
@@ -27547,7 +27588,7 @@ input IndividualInsertInput {
   createdActors: ActorArrRelInsertInput
   createdAddresses: AddressArrRelInsertInput
   createdAt: timestamptz
-  createdBankInfos: BankInfoArrRelInsertInput
+  createdBanks: BankArrRelInsertInput
   createdBots: BotArrRelInsertInput
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
@@ -27717,7 +27758,7 @@ input IndividualOrderBy {
   createdActorsAggregate: ActorAggregateOrderBy
   createdAddressesAggregate: AddressAggregateOrderBy
   createdAt: OrderBy
-  createdBankInfosAggregate: BankInfoAggregateOrderBy
+  createdBanksAggregate: BankAggregateOrderBy
   createdBotsAggregate: BotAggregateOrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
@@ -29526,11 +29567,12 @@ type LegalUnitLocation {
   # An object relationship
   actor: Actor!
   actorId: bigint!
+  bankLocationCode: Int
 
   # An array relationship
-  bankInfos(
+  banks(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -29539,16 +29581,16 @@ type LegalUnitLocation {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
   # An aggregate relationship
-  bankInfosAggregate(
+  banksAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -29557,12 +29599,11 @@ type LegalUnitLocation {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
-  bankLocationCode: Int
+    where: BankBoolExp
+  ): BankAggregate!
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
@@ -29665,9 +29706,9 @@ input LegalUnitLocationBoolExp {
   _or: [LegalUnitLocationBoolExp!]
   actor: ActorBoolExp
   actorId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
   bankLocationCode: IntComparisonExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
@@ -29705,8 +29746,8 @@ input LegalUnitLocationIncInput {
 input LegalUnitLocationInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
-  bankInfos: BankInfoArrRelInsertInput
   bankLocationCode: Int
+  banks: BankArrRelInsertInput
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -29809,8 +29850,8 @@ input LegalUnitLocationOnConflict {
 input LegalUnitLocationOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
   bankLocationCode: OrderBy
+  banksAggregate: BankAggregateOrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -33046,14 +33087,14 @@ type Mutation {
   # delete single row from the table: "address"
   deleteAddressByPk(id: bigint!): Address
 
-  # delete data from the table: "bank_info"
-  deleteBankInfo(
+  # delete data from the table: "bank"
+  deleteBank(
     # filter the rows which have to be deleted
-    where: BankInfoBoolExp!
-  ): BankInfoMutationResponse
+    where: BankBoolExp!
+  ): BankMutationResponse
 
-  # delete single row from the table: "bank_info"
-  deleteBankInfoByPk(id: bigint!): BankInfo
+  # delete single row from the table: "bank"
+  deleteBankByPk(id: bigint!): Bank
 
   # delete data from the table: "bot"
   deleteBot(
@@ -33235,15 +33276,6 @@ type Mutation {
   # delete single row from the table: "event_organize"
   deleteEventOrganizeByPk(id: bigint!): EventOrganize
 
-  # delete data from the table: "event_organize_supervisors"
-  deleteEventOrganizeSupervisors(
-    # filter the rows which have to be deleted
-    where: EventOrganizeSupervisorsBoolExp!
-  ): EventOrganizeSupervisorsMutationResponse
-
-  # delete single row from the table: "event_organize_supervisors"
-  deleteEventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
-
   # delete data from the table: "event_supervisor"
   deleteEventSupervisor(
     # filter the rows which have to be deleted
@@ -33357,6 +33389,15 @@ type Mutation {
     # filter the rows which have to be deleted
     where: FormSubmissionBoolExp!
   ): FormSubmissionMutationResponse
+
+  # delete data from the table: "form_submission_attachments"
+  deleteFormSubmissionAttachments(
+    # filter the rows which have to be deleted
+    where: FormSubmissionAttachmentsBoolExp!
+  ): FormSubmissionAttachmentsMutationResponse
+
+  # delete single row from the table: "form_submission_attachments"
+  deleteFormSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
 
   # delete single row from the table: "form_submission"
   deleteFormSubmissionByPk(id: bigint!): FormSubmission
@@ -33847,23 +33888,23 @@ type Mutation {
     onConflict: AddressOnConflict
   ): Address
 
-  # insert data into the table: "bank_info"
-  insertBankInfo(
+  # insert data into the table: "bank"
+  insertBank(
     # the rows to be inserted
-    objects: [BankInfoInsertInput!]!
+    objects: [BankInsertInput!]!
 
     # upsert condition
-    onConflict: BankInfoOnConflict
-  ): BankInfoMutationResponse
+    onConflict: BankOnConflict
+  ): BankMutationResponse
 
-  # insert a single row into the table: "bank_info"
-  insertBankInfoOne(
+  # insert a single row into the table: "bank"
+  insertBankOne(
     # the row to be inserted
-    object: BankInfoInsertInput!
+    object: BankInsertInput!
 
     # upsert condition
-    onConflict: BankInfoOnConflict
-  ): BankInfo
+    onConflict: BankOnConflict
+  ): Bank
 
   # insert data into the table: "bot"
   insertBot(
@@ -34225,24 +34266,6 @@ type Mutation {
     onConflict: EventOrganizeOnConflict
   ): EventOrganize
 
-  # insert data into the table: "event_organize_supervisors"
-  insertEventOrganizeSupervisors(
-    # the rows to be inserted
-    objects: [EventOrganizeSupervisorsInsertInput!]!
-
-    # upsert condition
-    onConflict: EventOrganizeSupervisorsOnConflict
-  ): EventOrganizeSupervisorsMutationResponse
-
-  # insert a single row into the table: "event_organize_supervisors"
-  insertEventOrganizeSupervisorsOne(
-    # the row to be inserted
-    object: EventOrganizeSupervisorsInsertInput!
-
-    # upsert condition
-    onConflict: EventOrganizeSupervisorsOnConflict
-  ): EventOrganizeSupervisors
-
   # insert data into the table: "event_supervisor"
   insertEventSupervisor(
     # the rows to be inserted
@@ -34467,6 +34490,24 @@ type Mutation {
     # upsert condition
     onConflict: FormSubmissionOnConflict
   ): FormSubmissionMutationResponse
+
+  # insert data into the table: "form_submission_attachments"
+  insertFormSubmissionAttachments(
+    # the rows to be inserted
+    objects: [FormSubmissionAttachmentsInsertInput!]!
+
+    # upsert condition
+    onConflict: FormSubmissionAttachmentsOnConflict
+  ): FormSubmissionAttachmentsMutationResponse
+
+  # insert a single row into the table: "form_submission_attachments"
+  insertFormSubmissionAttachmentsOne(
+    # the row to be inserted
+    object: FormSubmissionAttachmentsInsertInput!
+
+    # upsert condition
+    onConflict: FormSubmissionAttachmentsOnConflict
+  ): FormSubmissionAttachments
 
   # insert a single row into the table: "form_submission"
   insertFormSubmissionOne(
@@ -35401,33 +35442,33 @@ type Mutation {
     updates: [AddressUpdates!]!
   ): [AddressMutationResponse]
 
-  # update data of the table: "bank_info"
-  updateBankInfo(
+  # update data of the table: "bank"
+  updateBank(
     # increments the numeric columns with given value of the filtered values
-    _inc: BankInfoIncInput
+    _inc: BankIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: BankInfoSetInput
+    _set: BankSetInput
 
     # filter the rows which have to be updated
-    where: BankInfoBoolExp!
-  ): BankInfoMutationResponse
+    where: BankBoolExp!
+  ): BankMutationResponse
 
-  # update single row of the table: "bank_info"
-  updateBankInfoByPk(
+  # update single row of the table: "bank"
+  updateBankByPk(
     # increments the numeric columns with given value of the filtered values
-    _inc: BankInfoIncInput
+    _inc: BankIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: BankInfoSetInput
-    pkColumns: BankInfoPkColumnsInput!
-  ): BankInfo
+    _set: BankSetInput
+    pkColumns: BankPkColumnsInput!
+  ): Bank
 
-  # update multiples rows of table: "bank_info"
-  updateBankInfoMany(
+  # update multiples rows of table: "bank"
+  updateBankMany(
     # updates to execute, in order
-    updates: [BankInfoUpdates!]!
-  ): [BankInfoMutationResponse]
+    updates: [BankUpdates!]!
+  ): [BankMutationResponse]
 
   # update data of the table: "bot"
   updateBot(
@@ -36021,34 +36062,6 @@ type Mutation {
     updates: [EventOrganizeUpdates!]!
   ): [EventOrganizeMutationResponse]
 
-  # update data of the table: "event_organize_supervisors"
-  updateEventOrganizeSupervisors(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventOrganizeSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventOrganizeSupervisorsSetInput
-
-    # filter the rows which have to be updated
-    where: EventOrganizeSupervisorsBoolExp!
-  ): EventOrganizeSupervisorsMutationResponse
-
-  # update single row of the table: "event_organize_supervisors"
-  updateEventOrganizeSupervisorsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: EventOrganizeSupervisorsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: EventOrganizeSupervisorsSetInput
-    pkColumns: EventOrganizeSupervisorsPkColumnsInput!
-  ): EventOrganizeSupervisors
-
-  # update multiples rows of table: "event_organize_supervisors"
-  updateEventOrganizeSupervisorsMany(
-    # updates to execute, in order
-    updates: [EventOrganizeSupervisorsUpdates!]!
-  ): [EventOrganizeSupervisorsMutationResponse]
-
   # update data of the table: "event_supervisor"
   updateEventSupervisor(
     # increments the numeric columns with given value of the filtered values
@@ -36444,6 +36457,34 @@ type Mutation {
     # filter the rows which have to be updated
     where: FormSubmissionBoolExp!
   ): FormSubmissionMutationResponse
+
+  # update data of the table: "form_submission_attachments"
+  updateFormSubmissionAttachments(
+    # increments the numeric columns with given value of the filtered values
+    _inc: FormSubmissionAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: FormSubmissionAttachmentsSetInput
+
+    # filter the rows which have to be updated
+    where: FormSubmissionAttachmentsBoolExp!
+  ): FormSubmissionAttachmentsMutationResponse
+
+  # update single row of the table: "form_submission_attachments"
+  updateFormSubmissionAttachmentsByPk(
+    # increments the numeric columns with given value of the filtered values
+    _inc: FormSubmissionAttachmentsIncInput
+
+    # sets the columns of the filtered rows to the given values
+    _set: FormSubmissionAttachmentsSetInput
+    pkColumns: FormSubmissionAttachmentsPkColumnsInput!
+  ): FormSubmissionAttachments
+
+  # update multiples rows of table: "form_submission_attachments"
+  updateFormSubmissionAttachmentsMany(
+    # updates to execute, in order
+    updates: [FormSubmissionAttachmentsUpdates!]!
+  ): [FormSubmissionAttachmentsMutationResponse]
 
   # update single row of the table: "form_submission"
   updateFormSubmissionByPk(
@@ -40090,10 +40131,10 @@ type Query {
   # fetch data from the table: "address" using primary key columns
   addressByPk(id: bigint!): Address
 
-  # fetch data from the table: "bank_info"
-  bankInfo(
+  # fetch data from the table: "bank"
+  bank(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40102,16 +40143,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
-  # fetch aggregated fields from the table: "bank_info"
-  bankInfoAggregate(
+  # fetch aggregated fields from the table: "bank"
+  bankAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -40120,14 +40161,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+    where: BankBoolExp
+  ): BankAggregate!
 
-  # fetch data from the table: "bank_info" using primary key columns
-  bankInfoByPk(id: bigint!): BankInfo
+  # fetch data from the table: "bank" using primary key columns
+  bankByPk(id: bigint!): Bank
 
   # fetch data from the table: "bot"
   bot(
@@ -40909,45 +40950,6 @@ type Query {
   # fetch data from the table: "event_organize" using primary key columns
   eventOrganizeByPk(id: bigint!): EventOrganize
 
-  # An array relationship
-  eventOrganizeSupervisors(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
-  # An aggregate relationship
-  eventOrganizeSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): EventOrganizeSupervisorsAggregate!
-
-  # fetch data from the table: "event_organize_supervisors" using primary key columns
-  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
-
   # fetch data from the table: "event_supervisor"
   eventSupervisor(
     # distinct select on columns
@@ -41451,6 +41453,45 @@ type Query {
     # filter the rows returned
     where: FormSubmissionBoolExp
   ): FormSubmissionAggregate!
+
+  # An array relationship
+  formSubmissionAttachments(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): [FormSubmissionAttachments!]!
+
+  # An aggregate relationship
+  formSubmissionAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): FormSubmissionAttachmentsAggregate!
+
+  # fetch data from the table: "form_submission_attachments" using primary key columns
+  formSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
 
   # fetch data from the table: "form_submission" using primary key columns
   formSubmissionByPk(id: bigint!): FormSubmission
@@ -47512,10 +47553,10 @@ type Subscription {
     where: AddressBoolExp
   ): [Address!]!
 
-  # fetch data from the table: "bank_info"
-  bankInfo(
+  # fetch data from the table: "bank"
+  bank(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47524,16 +47565,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
-  # fetch aggregated fields from the table: "bank_info"
-  bankInfoAggregate(
+  # fetch aggregated fields from the table: "bank"
+  bankAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -47542,26 +47583,26 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+    where: BankBoolExp
+  ): BankAggregate!
 
-  # fetch data from the table: "bank_info" using primary key columns
-  bankInfoByPk(id: bigint!): BankInfo
+  # fetch data from the table: "bank" using primary key columns
+  bankByPk(id: bigint!): Bank
 
-  # fetch data from the table in a streaming manner: "bank_info"
-  bankInfoStream(
+  # fetch data from the table in a streaming manner: "bank"
+  bankStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [BankInfoStreamCursorInput]!
+    cursor: [BankStreamCursorInput]!
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
   # fetch data from the table: "bot"
   bot(
@@ -48571,57 +48612,6 @@ type Subscription {
     where: EventOrganizeBoolExp
   ): [EventOrganize!]!
 
-  # An array relationship
-  eventOrganizeSupervisors(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
-  # An aggregate relationship
-  eventOrganizeSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): EventOrganizeSupervisorsAggregate!
-
-  # fetch data from the table: "event_organize_supervisors" using primary key columns
-  eventOrganizeSupervisorsByPk(eventOrganizeId: bigint!, teamMemberId: bigint!): EventOrganizeSupervisors
-
-  # fetch data from the table in a streaming manner: "event_organize_supervisors"
-  eventOrganizeSupervisorsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [EventOrganizeSupervisorsStreamCursorInput]!
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
   # fetch data from the table in a streaming manner: "event"
   eventStream(
     # maximum number of rows returned in a single batch
@@ -49281,6 +49271,57 @@ type Subscription {
     # filter the rows returned
     where: FormSubmissionBoolExp
   ): FormSubmissionAggregate!
+
+  # An array relationship
+  formSubmissionAttachments(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): [FormSubmissionAttachments!]!
+
+  # An aggregate relationship
+  formSubmissionAttachmentsAggregate(
+    # distinct select on columns
+    distinctOn: [FormSubmissionAttachmentsSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [FormSubmissionAttachmentsOrderBy!]
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): FormSubmissionAttachmentsAggregate!
+
+  # fetch data from the table: "form_submission_attachments" using primary key columns
+  formSubmissionAttachmentsByPk(fileUploadId: bigint!, formSubmissionId: bigint!): FormSubmissionAttachments
+
+  # fetch data from the table in a streaming manner: "form_submission_attachments"
+  formSubmissionAttachmentsStream(
+    # maximum number of rows returned in a single batch
+    batchSize: Int!
+
+    # cursor to stream the results returned by the query
+    cursor: [FormSubmissionAttachmentsStreamCursorInput]!
+
+    # filter the rows returned
+    where: FormSubmissionAttachmentsBoolExp
+  ): [FormSubmissionAttachments!]!
 
   # fetch data from the table: "form_submission" using primary key columns
   formSubmissionByPk(id: bigint!): FormSubmission
@@ -54284,42 +54325,6 @@ type TeamMember {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
-
-  # An array relationship
-  eventOrganizeSupervisors(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): [EventOrganizeSupervisors!]!
-
-  # An aggregate relationship
-  eventOrganizeSupervisorsAggregate(
-    # distinct select on columns
-    distinctOn: [EventOrganizeSupervisorsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [EventOrganizeSupervisorsOrderBy!]
-
-    # filter the rows returned
-    where: EventOrganizeSupervisorsBoolExp
-  ): EventOrganizeSupervisorsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
@@ -54495,8 +54500,6 @@ input TeamMemberBoolExp {
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   endDate: TimestamptzComparisonExp
-  eventOrganizeSupervisors: EventOrganizeSupervisorsBoolExp
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
@@ -54536,7 +54539,6 @@ input TeamMemberInsertInput {
   createdById: bigint
   deletedAt: timestamptz
   endDate: timestamptz
-  eventOrganizeSupervisors: EventOrganizeSupervisorsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
@@ -54642,7 +54644,6 @@ input TeamMemberOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   endDate: OrderBy
-  eventOrganizeSupervisorsAggregate: EventOrganizeSupervisorsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
@@ -56349,9 +56350,9 @@ type Tenant {
   adminTeamId: bigint
 
   # An array relationship
-  bankInfos(
+  banks(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -56360,16 +56361,16 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): [BankInfo!]!
+    where: BankBoolExp
+  ): [Bank!]!
 
   # An aggregate relationship
-  bankInfosAggregate(
+  banksAggregate(
     # distinct select on columns
-    distinctOn: [BankInfoSelectColumn!]
+    distinctOn: [BankSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -56378,11 +56379,11 @@ type Tenant {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [BankInfoOrderBy!]
+    orderBy: [BankOrderBy!]
 
     # filter the rows returned
-    where: BankInfoBoolExp
-  ): BankInfoAggregate!
+    where: BankBoolExp
+  ): BankAggregate!
 
   # An array relationship
   bots(
@@ -58415,8 +58416,8 @@ input TenantBoolExp {
   actorsAggregate: ActorAggregateBoolExp
   adminTeam: TeamBoolExp
   adminTeamId: BigintComparisonExp
-  bankInfos: BankInfoBoolExp
-  bankInfosAggregate: BankInfoAggregateBoolExp
+  banks: BankBoolExp
+  banksAggregate: BankAggregateBoolExp
   bots: BotBoolExp
   botsAggregate: BotAggregateBoolExp
   campusClusters: CampusClusterBoolExp
@@ -58572,7 +58573,7 @@ input TenantInsertInput {
   actors: ActorArrRelInsertInput
   adminTeam: TeamObjRelInsertInput
   adminTeamId: bigint
-  bankInfos: BankInfoArrRelInsertInput
+  banks: BankArrRelInsertInput
   bots: BotArrRelInsertInput
   campusClusters: CampusClusterArrRelInsertInput
   campuses: CampusArrRelInsertInput
@@ -58748,7 +58749,7 @@ input TenantOrderBy {
   actorsAggregate: ActorAggregateOrderBy
   adminTeam: TeamOrderBy
   adminTeamId: OrderBy
-  bankInfosAggregate: BankInfoAggregateOrderBy
+  banksAggregate: BankAggregateOrderBy
   botsAggregate: BotAggregateOrderBy
   campusClustersAggregate: CampusClusterAggregateOrderBy
   campusesAggregate: CampusAggregateOrderBy

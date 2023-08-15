@@ -68,12 +68,12 @@ array_relationships:
         table:
           name: address
           schema: public
-  - name: createdBankInfos
+  - name: createdBanks
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: bank_info
+          name: bank
           schema: public
   - name: createdBots
     using:

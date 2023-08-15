@@ -5,7 +5,7 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: fileUpload
+  - name: file
     using:
       foreign_key_constraint_on: file_id
   - name: subject
