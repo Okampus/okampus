@@ -61,6 +61,12 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Property({ type: 'text', default: RoleCategory.Members })
   membersCategoryName: string = RoleCategory.Members;
 
+  @Property({ type: 'text', nullable: true, default: null })
+  expectingPresidentEmail: string | null = null;
+
+  @Property({ type: 'boolean', default: true })
+  isOnboardingComplete = true;
+
   @Property({ type: 'boolean', default: true })
   isJoinFormActive = true;
 

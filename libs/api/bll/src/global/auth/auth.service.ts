@@ -32,11 +32,10 @@ import { AdminPermissions, RequestType, SessionClientType, TokenExpiration, Toke
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
-
-import type { JwtSignOptions } from '@nestjs/jwt';
-import type { IndividualOptions, SessionProps } from '@okampus/api/dal';
+import type { IndividualOptions, SessionProps, Team } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
+import type { JwtSignOptions } from '@nestjs/jwt';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Algorithm } from 'jsonwebtoken';
 
@@ -70,7 +69,7 @@ export class AuthService extends RequestContext {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly meiliSearchService: MeiliSearchService,
-    private readonly hasuraService: HasuraService
+    private readonly hasuraService: HasuraService,
   ) {
     super();
 
@@ -137,7 +136,7 @@ export class AuthService extends RequestContext {
     const bot = await this.em.findOneOrFail<Individual, any>(
       Individual,
       { id: decoded.sub },
-      { populate: individualPopulate }
+      { populate: individualPopulate },
     );
     if (bot.bot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
 
@@ -256,7 +255,7 @@ export class AuthService extends RequestContext {
     tenant: Tenant,
     token: string,
     tokenFamily: string,
-    sub: string
+    sub: string,
   ): Promise<Session> {
     const user = this.em.getReference(User, sub);
     if (!user) throw new InternalServerErrorException('User info not found');
@@ -273,7 +272,7 @@ export class AuthService extends RequestContext {
     token: string,
     type: TokenType,
     req: FastifyRequest,
-    res: FastifyReply
+    res: FastifyReply,
   ): Promise<Individual> {
     const claims = { req: type === TokenType.WebSocket ? RequestType.WebSocket : RequestType.Http, tok: type };
     const options = type === TokenType.Refresh ? this.refreshSignOptions : this.accessSignOptions;
@@ -304,16 +303,17 @@ export class AuthService extends RequestContext {
     body: LoginDto,
     selectionSet: string[],
     req: FastifyRequest,
-    res: FastifyReply
+    res: FastifyReply,
   ): Promise<{
     user: User;
     canManageTenant: boolean;
+    onboardingTeams: Team[];
   }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const individual = await this.em.findOneOrFail<Individual, any>(
       Individual,
       { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
-      { populate: loginUserPopulate }
+      { populate: loginUserPopulate },
     );
 
     if (!individual || !individual.user) throw new UnauthorizedException('Account not yet registered.');
@@ -329,7 +329,16 @@ export class AuthService extends RequestContext {
     const data = await this.hasuraService.findByPk(
       'userByPk',
       selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-      { id: individual.user.id }
+      { id: individual.user.id },
+    );
+
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const teams = await this.hasuraService.find(
+      'team',
+      selectionSet
+        .filter((field) => field.startsWith('onboardTeams'))
+        .map((field) => field.replace('onboardTeams.', '')),
+      { expectingPresidentEmail: individual.actor.email },
     );
 
     return {
@@ -339,8 +348,9 @@ export class AuthService extends RequestContext {
         .some((role) =>
           role.tenant === null
             ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities)
+            : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
         ),
+      onboardingTeams: teams,
     };
   }
 }

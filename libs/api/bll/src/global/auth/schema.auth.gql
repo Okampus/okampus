@@ -6,6 +6,7 @@ input LoginInput {
 type UserLogin {
   user: User!
   canManageTenant: Boolean!
+  onboardTeams: [Team!]!
 }
 
 type Query {
