@@ -19,7 +19,7 @@ export const buttonMotion = (disabled: boolean) => ({
   disabled,
 });
 
-function getActionClass(active: boolean, variant?: ActionType): string {
+export function getActionClass(variant?: ActionType, active = false): string {
   switch (variant) {
     case ActionType.Action: {
       return active ? 'text-0 border-[var(--border-1)] border' : 'bg-opposite text-opposite';
@@ -79,7 +79,7 @@ export default function ActionButton({
     buttonLabel
   );
 
-  const actionClassName = getActionClass(active, action.type);
+  const actionClassName = getActionClass(action.type, active);
   const iconClassName = onlyIcon
     ? small
       ? 'icon-button !h-10 !w-10'
@@ -93,7 +93,7 @@ export default function ActionButton({
       {trigger}
     </Link>
   ) : typeof linkOrActionOrMenu === 'function' ? (
-    <motion.button {...buttonMotion(disabled)} className={buttonClassName} onClick={linkOrActionOrMenu}>
+    <motion.button type="button" {...buttonMotion(disabled)} className={buttonClassName} onClick={linkOrActionOrMenu}>
       {trigger}
     </motion.button>
   ) : (

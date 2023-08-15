@@ -16,11 +16,11 @@ import Dashboard from '../../../../../../../components/organisms/Dashboard';
 import { useTeamManage } from '../../../../../../../context/navigation';
 import { useModal } from '../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
-import { useTypedQueryAndSubscribe } from '../../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../../../hooks/apollo/useQueryAndSubscribe';
 import { download } from '../../../../../../../utils/download-file';
 
+import { GetFinancesDocument, OrderBy } from '@okampus/shared/graphql';
 import { Align } from '@okampus/shared/enums';
-import { financeBaseInfo, OrderBy } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { getColorHexFromData, isNotNull, toCsv } from '@okampus/shared/utils';
 
@@ -29,7 +29,8 @@ import { IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
-import type { FinanceBaseInfo } from '@okampus/shared/graphql';
+import type { GetFinancesQuery, GetFinancesQueryVariables } from '@okampus/shared/graphql';
+import type { FinanceMinimalInfo } from '../../../../../../../types/features/finance.info';
 
 export default function TeamManageTransactionsPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -38,23 +39,29 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
   const { t, format } = useTranslation();
 
   const [search, setSearch] = useState('');
-  const [selectedFinance, setSelectedFinance] = useState<FinanceBaseInfo | null>(null);
+  const [selectedFinance, setSelectedFinance] = useState<FinanceMinimalInfo | null>(null);
 
   const where = useMemo(() => ({ team: { id: { _eq: teamManage?.id } } }), [teamManage?.id]);
-  const variables = { where, orderBy: [{ payedAt: OrderBy.DESC }] };
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'finance', selector: [variables, financeBaseInfo] });
+
+  const variables = { where, orderBy: [{ payedAt: OrderBy.Desc }] };
+  const { data } = useQueryAndSubscribe<GetFinancesQuery, GetFinancesQueryVariables>({
+    query: GetFinancesDocument,
+    variables,
+  });
 
   const account = teamManage?.accounts?.[0];
   if (!account) return null;
 
+  const finances = data?.finance;
+
   const columns = [
     {
-      data: (value: FinanceBaseInfo) => {
+      data: (value: FinanceMinimalInfo) => {
         const actor = value.receivedBy.id === teamManage?.actor?.id ? value.payedBy : value.receivedBy;
         return actor.name;
       },
       label: 'Transaction',
-      render: (value: FinanceBaseInfo) => {
+      render: (value: FinanceMinimalInfo) => {
         const actor = value.receivedBy.id === teamManage?.actor?.id ? value.payedBy : value.receivedBy;
 
         const projectLabel = value.project?.name ?? 'Dépense générale';
@@ -79,50 +86,50 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
       },
     },
     {
-      data: (value: FinanceBaseInfo) => t(`enums.PaymentMethod.${value.method}`),
+      data: (value: FinanceMinimalInfo) => t(`enums.PaymentMethod.${value.method}`),
       label: 'Méthode',
       align: Align.Left,
-      render: (value: FinanceBaseInfo) => {
+      render: (value: FinanceMinimalInfo) => {
         return <div className="text-1 font-medium">{t(`enums.PaymentMethod.${value.method}`)}</div>;
       },
     },
     {
-      data: (value: FinanceBaseInfo) => value.initiatedBy?.actor.name ?? '',
+      data: (value: FinanceMinimalInfo) => value.initiatedBy?.actor.name ?? '',
       label: 'Payé par',
       align: Align.Left,
-      render: (value: FinanceBaseInfo) => {
+      render: (value: FinanceMinimalInfo) => {
         return value.initiatedBy?.user ? (
-          <UserLabeled individual={value.initiatedBy} id={value.initiatedBy.user.id} />
+          <UserLabeled user={{ ...value.initiatedBy.user, individual: value.initiatedBy }} />
         ) : (
           <TextBadge color="grey" label="Inconnu" />
         );
       },
     },
     {
-      data: (value: FinanceBaseInfo) => value.payedAt,
+      data: (value: FinanceMinimalInfo) => value.payedAt,
       label: 'Date',
-      render: (value: FinanceBaseInfo) => {
+      render: (value: FinanceMinimalInfo) => {
         const date = value.payedAt;
         if (!date) return null;
         return <div className="text-1 font-medium">{format('weekDay', new Date(date))}</div>;
       },
     },
     {
-      data: (value: FinanceBaseInfo) => {
-        const attachment = value.financeAttachments.map((attachment) => attachment.fileUpload).filter(isNotNull);
+      data: (value: FinanceMinimalInfo) => {
+        const attachment = value.financeAttachments.map(({ attachment }) => attachment);
         return attachment.length;
       },
       label: 'Justificatif',
-      render: (value: FinanceBaseInfo) => {
-        const attachments = value.financeAttachments.map((attachment) => attachment.fileUpload).filter(isNotNull);
+      render: (value: FinanceMinimalInfo) => {
+        const attachments = value.financeAttachments.map(({ attachment }) => attachment);
         return attachments.length > 0 ? <FileGroup files={attachments} /> : <TextBadge color="grey" label="Manquant" />;
       },
     },
     {
-      data: (value: FinanceBaseInfo) => value.amount,
+      data: (value: FinanceMinimalInfo) => value.amount,
       align: Align.Right,
       label: 'Montant',
-      render: (value: FinanceBaseInfo) => <IMoney amount={value.amount} />,
+      render: (value: FinanceMinimalInfo) => <IMoney amount={value.amount} />,
     },
   ];
 
@@ -132,13 +139,8 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         sidePanelIcon={null}
         scrollable={false}
         bottomPadded={false}
-        className="h-full flex flex-col"
-        header={
-          <div>
-            <b className="page-title">{format('euro', account.financesAggregate.aggregate?.sum?.amount ?? 0)}</b>
-            <div className="text-1 text-lg font-medium">Total restant</div>
-          </div>
-        }
+        innerClassName="h-full flex flex-col"
+        header={format('euro', account.financesAggregate.aggregate?.sum?.amount ?? 0)}
         actions={
           data?.finance
             ? [
@@ -150,7 +152,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
                       const csv = toCsv(data.finance, columns);
                       download(
                         URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-                        `tresorerie-${new Date().toISOString()}.csv`
+                        `tresorerie-${new Date().toISOString()}.csv`,
                       );
                     },
                     type: ActionType.Action,
@@ -186,7 +188,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         <div className="flex gap-6 px-content pb-6">
           <TextInput
             name="search"
-            startContent={<IconSearch className="text-[var(--text-2)]" />}
+            startContent={<IconSearch />}
             onChange={(event) => setSearch(event.target.value)}
             placeholder={'Rechercher une transaction'}
           />
@@ -202,7 +204,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         <Dashboard
           className="h-full overflow-y-scroll scrollbar"
           columns={columns}
-          data={data?.finance}
+          data={finances}
           onElementClick={(data) => setSelectedFinance(data)}
         />
       </ViewLayout>

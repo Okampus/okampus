@@ -6,24 +6,21 @@ import ActionButton from '../molecules/Button/ActionButton';
 
 import { useModal } from '../../hooks/context/useModal';
 
-import { insertEventApprovalMutation, updateEventMutation } from '@okampus/shared/graphql';
+import { useInsertEventApprovalMutation, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { EventState } from '@okampus/shared/enums';
 
-import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 
-import type { EventManageInfo } from '@okampus/shared/graphql';
+import type { GetEventsValidationQuery } from '@okampus/shared/graphql';
 
-export type EventApprovalModalProps = { isApproved: boolean; event: EventManageInfo };
+export type EventApprovalModalProps = { isApproved: boolean; event: GetEventsValidationQuery['event'][number] };
 
 export default function EventApprovalModal({ isApproved, event }: EventApprovalModalProps) {
   const { closeModal } = useModal();
 
-  // @ts-ignore
-  const [updateEvent] = useMutation(updateEventMutation);
-  // @ts-ignore
-  const [insertEventApproval] = useMutation(insertEventApprovalMutation);
+  const [updateEvent] = useUpdateEventMutation();
+  const [insertEventApproval] = useInsertEventApprovalMutation();
   const [message, setMessage] = useState('');
 
   return (
@@ -48,10 +45,8 @@ export default function EventApprovalModal({ isApproved, event }: EventApprovalM
                 isApproved,
               };
               insertEventApproval({
-                // @ts-ignore
                 variables: { object },
                 onCompleted: () => {
-                  // @ts-ignore
                   updateEvent({ variables: { id: event.id, update }, onCompleted: () => closeModal() });
                 },
               });

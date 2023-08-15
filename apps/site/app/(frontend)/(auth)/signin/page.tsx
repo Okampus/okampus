@@ -6,13 +6,12 @@ import ActionButton from '../../../../components/molecules/Button/ActionButton';
 
 import { API_URL } from '../../../../context/consts';
 import { meSlugAtom } from '../../../../context/global';
+import { useGetTenantOidcInfoQuery, useUserLoginMutation } from '@okampus/shared/graphql';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
-import { loginMutation, tenantOidcInfo, useTypedQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-import { useMutation } from '@apollo/client';
 
 import { IconArrowRight } from '@tabler/icons-react';
 
@@ -30,16 +29,14 @@ export default function SigninPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const { data } = useTypedQuery({ tenant: [{}, tenantOidcInfo] });
-
-  // @ts-ignore - Type instantiation is excessively deep and possibly infinite.
-  const [login] = useMutation(loginMutation, {
+  const { data } = useGetTenantOidcInfoQuery();
+  const [login] = useUserLoginMutation({
     onCompleted: (data) => {
       if (data.login) {
         setMeSlug(data.login.user.individual.actor.slug);
-        const next = cookieStore.get(NEXT_PAGE_COOKIE) ?? '/';
+        const next = cookieStore.get(NEXT_PAGE_COOKIE);
         cookieStore.remove(NEXT_PAGE_COOKIE);
-        router.push(next);
+        router.push(next === '/signin' ? '/' : next || '/');
       }
     },
   });
@@ -75,7 +72,7 @@ export default function SigninPage() {
                         linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
                       }}
                     />
-                  )
+                  ),
               )}
             </div>
             <div className="flex items-center gap-1.5 text-xs text-1 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">

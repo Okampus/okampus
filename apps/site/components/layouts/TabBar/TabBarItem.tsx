@@ -21,15 +21,14 @@ export default function TabBarItem({
     icon
       ? clsx(
           'bg-2 border-[3px] [&>:first-child]:w-full [&>:first-child]:h-full',
-          smallPadding ? '[&>:first-child]:p-1.5' : '[&>:first-child]:p-2.5'
+          smallPadding ? '[&>:first-child]:p-1.5' : '[&>:first-child]:p-2',
         )
       : 'border-0',
-    selected ? 'border-[3px] border-[var(--border-opposite)]' : 'border-transparent'
+    selected ? 'border-[3px] border-[var(--border-opposite)]' : 'border-transparent',
   );
 
   if (icon) {
-    const selectedClassName = selected ? 'text-0' : 'text-1';
-
+    const selectedClassName = selected ? 'text-0' : 'text-2';
     children = <div className={clsx(className, selectedClassName)}>{icon}</div>;
   } else {
     children = <div className={clsx(className)}>{children}</div>;
@@ -38,7 +37,7 @@ export default function TabBarItem({
   return (
     <Link
       href={href}
-      className="relative flex flex-col items-center pl-2 pr-3.5 group"
+      className="relative flex flex-col items-center pl-2 pr-2.5 pt-2 group"
       title={typeof label === 'string' ? label : ''}
     >
       {children}

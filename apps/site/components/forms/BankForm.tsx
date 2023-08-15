@@ -1,22 +1,24 @@
 'use client';
 
 import GroupItem from '../atoms/Item/GroupItem';
-import BankInfoPreview from '../atoms/Preview/BankInfoPreview';
 
 import SubmitButton from '../molecules/Button/SubmitButton';
 import TextInput from '../molecules/Input/TextInput';
-import LegalUnitInput from '../molecules/Input/LegalUnitInput';
-import LegalUnitLocationInput from '../molecules/Input/LegalUnitLocationInput';
+import LegalUnitInput from '../molecules/Input/LegalUnit/LegalUnitInput';
+import LegalUnitLocationInput from '../molecules/Input/LegalUnit/LegalUnitLocationInput';
 
 // import { useForm } from '../../hooks/form/useForm';
 // import { validateIBAN } from '../../utils/form-validation/iban';
 
-import { LegalUnitType } from '@okampus/shared/enums';
+import BankPreview from '../atoms/Preview/BankPreview';
 // import { formatIBAN } from '@okampus/shared/utils';
 
+import { LegalUnitType } from '@okampus/shared/enums';
 import { useForm } from 'react-hook-form';
 
-import type { ActorBaseInfo, LegalUnitLocationMinimalInfo, LegalUnitMinimalInfo } from '@okampus/shared/graphql';
+import type { ActorMinimalInfo } from '../../types/features/actor.info';
+import type { LegalUnitLocationMinimalInfo } from '../../types/features/legal-unit-location.info';
+import type { LegalUnitMinimalInfo } from '../../types/features/legal-unit.info';
 
 function formatBicSwift(bicSwift: string) {
   if (!bicSwift) return '';
@@ -27,7 +29,7 @@ function formatBicSwift(bicSwift: string) {
     .toUpperCase();
 }
 
-type BankInfoValues = {
+type BankValues = {
   bankLocation: LegalUnitLocationMinimalInfo | null;
   bank: LegalUnitMinimalInfo | null;
   bicSwift: string;
@@ -35,12 +37,12 @@ type BankInfoValues = {
   holderName: string;
 };
 
-export type BankInfoFormProps = {
-  actor: ActorBaseInfo;
-  submit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankInfoValues) => Promise<void>;
+export type BankFormProps = {
+  actor: ActorMinimalInfo;
+  submit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankValues) => Promise<void>;
 };
-export default function BankInfoForm({ actor, submit }: BankInfoFormProps) {
-  const defaultValues: BankInfoValues = {
+export default function BankForm({ actor, submit }: BankFormProps) {
+  const defaultValues: BankValues = {
     iban: '',
     bicSwift: '',
     bankLocation: null,
@@ -99,7 +101,7 @@ export default function BankInfoForm({ actor, submit }: BankInfoFormProps) {
         )}
         {bankLocation && iban && holderName && bicSwift && <SubmitButton label="Valider votre RIB" />}
       </div>
-      <BankInfoPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankLocation={bankLocation} />
+      <BankPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankLocation={bankLocation} />
     </form>
   );
 }

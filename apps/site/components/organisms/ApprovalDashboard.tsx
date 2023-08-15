@@ -1,9 +1,9 @@
 import TextInput from '../molecules/Input/TextInput';
 import SidebarLayout from '../atoms/Layout/SidebarLayout';
-import SimpleFilterInput from '../molecules/Input/SimpleFilterInput';
 import { useMemo, useState } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 
+import clsx from 'clsx';
 import type { SelectItem } from '@okampus/shared/types';
 
 export type ApprovalDashboardProps<T, U> = {
@@ -47,16 +47,18 @@ export default function ApprovalDashboard<T, U>({
 
         return true;
       }),
-    [items, query, searchFilter, selectedStates, states.length, stateFilter]
+    [items, query, searchFilter, selectedStates, states.length, stateFilter],
   );
 
-  const filterItems = useMemo(
+  const counts = useMemo(
     () =>
-      states.map((state) => ({
-        ...state,
-        count: items.filter((item) => stateFilter?.(item, [state.value])).length,
-      })),
-    [items, stateFilter, states]
+      Object.fromEntries(
+        states.map((state) => [
+          state.value,
+          items.filter((item) => stateFilter && stateFilter(item, [state.value])).length,
+        ]),
+      ),
+    [items, stateFilter, states],
   );
 
   return (
@@ -66,20 +68,43 @@ export default function ApprovalDashboard<T, U>({
       emptyState={emptyState}
       contentHeader={selectedApproval && renderHeader(selectedApproval)}
       sidebar={
-        <ul className="h-full p-2 flex flex-col">
-          <li className="shrink-0 py-2 pr-2 flex gap-3">
-            {searchFilter && (
-              <TextInput
-                name="search"
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Rechercher..."
-                startContent={<IconSearch className="text-[var(--text-2)]" />}
-              />
-            )}
-            {stateFilter && (
+        <div className="h-full py-2 md:p-2 flex flex-col gap-2">
+          <ul className="flex flex-wrap gap-x-2">
+            {states.map((state, idx) => (
+              <li
+                key={idx}
+                onClick={() => setSelectedStates([state.value])}
+                className={clsx(
+                  'flex items-center gap-2 p-2 rounded-lg bg-1-hover cursor-pointer',
+                  selectedStates.length === 1 && selectedStates[0] === state.value ? 'bg-1 opacity-100' : 'opacity-50',
+                )}
+              >
+                <span>
+                  {state.label} — {counts[state.value]}
+                </span>
+              </li>
+            ))}
+            <li
+              onClick={() => setSelectedStates(states.map((state) => state.value))}
+              className={clsx(
+                'flex items-center gap-2 p-2 rounded-lg bg-1-hover cursor-pointer',
+                selectedStates.length === 0 ? 'bg-1 opacity-100' : 'opacity-50',
+              )}
+            >
+              <span>Tout — {items.length}</span>
+            </li>
+          </ul>
+          {searchFilter && (
+            <TextInput
+              name="search"
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Rechercher..."
+              startContent={<IconSearch className="text-[var(--text-2)]" />}
+            />
+          )}
+          {/* {stateFilter && (
               <SimpleFilterInput types={filterItems} selected={selectedStates} setSelected={setSelectedStates} />
-            )}
-          </li>
+            )} */}
           <ul className="h-full overflow-y-scroll overflow-x-hidden scrollbar">
             {filteredItems.map((item, idx) => (
               <li
@@ -91,99 +116,9 @@ export default function ApprovalDashboard<T, U>({
               </li>
             ))}
           </ul>
-        </ul>
+        </div>
       }
-      content={
-        selectedApproval && (
-          <div className="p-5">
-            {renderSelected(selectedApproval)}
-            {/* {selectedTeamJoin ? (
-              <div className="flex flex-col gap-6">
-                <div className="flex gap-4 items-center">
-                  <AvatarImage actor={selectedTeamJoin.joinedBy.individual?.actor} size={18} type="user" />
-                  <div className="flex flex-col">
-                    <div className="text-1 font-semibold text-lg">
-                      {selectedTeamJoin.joinedBy.individual?.actor?.name}
-                    </div>
-                    <div className="text-2 text-xs font-medium">
-                      {selectedTeamJoin.joinedBy.individual?.actor?.email}
-                    </div>
-                  </div>
-                </div>
-                <hr className="border-color-3" />
-                <FormSubmissionRender
-                  schema={selectedTeamJoin.formSubmission?.form.schema as FormField[]}
-                  submission={selectedTeamJoin.formSubmission?.submission as Submission<FormSchema>}
-                />
-                <div className="flex flex-col text-0 gap-6">
-                  <div className="flex gap-12 px-1">
-                    <div className="flex flex-col gap-2">
-                      <div className="label-title">Rôle souhaité</div>
-                      <div className="font-semibold text-2 text-sm">{selectedTeamJoin.receivedRole?.name}</div>
-                    </div>
-                    {selectedTeamJoin.state === ApprovalState.Approved && (
-                      <div className="label-title">Rôle attribué</div>
-                    )}
-                  </div>
-                  <div className="flex gap-4">
-                    {selectedTeamJoin.state === ApprovalState.Pending ? (
-                      <>
-                        <ActionButton
-                          action={{
-                            label: 'Accepter la candidature',
-                            type: ActionType.Success,
-                            linkOrActionOrMenu: () =>
-                              openModal(
-                                <ModalLayout header="Attribuer un rôle">
-                                  <FormLayout
-                                    schema={attributedRoleSchema}
-                                    onSubmit={(values) => {
-                                      const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
-                                      updateJoin({
-                                        // @ts-ignore
-                                        variables: { id: selectedTeamJoin.id, update },
-                                        onCompleted: () => {
-                                          setNotification({
-                                            type: ToastType.Success,
-                                            message: `L'adhésion de ${selectedTeamJoin.joinedBy.individual?.actor?.name} a été acceptée !`,
-                                          });
-                                        },
-                                        onError: (error) =>
-                                          setNotification({ type: ToastType.Error, message: error.message }),
-                                      });
-                                    }}
-                                  />
-                                </ModalLayout>
-                              ),
-                          }}
-                        />
-                        <ActionButton
-                          action={{
-                            label: 'Refuser',
-                            type: ActionType.Danger,
-                            linkOrActionOrMenu: () =>
-                              updateJoin({
-                                // @ts-ignore
-                                variables: { id: selectedTeamJoin.id, update: { state: ApprovalState.Rejected } },
-                                onCompleted: () => {
-                                  setNotification({
-                                    type: ToastType.Success,
-                                    message: `L'adhésion de ${selectedTeamJoin.joinedBy.individual?.actor?.name} a été refusée !`,
-                                  });
-                                },
-                                onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-                              }),
-                          }}
-                        />
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            ) : null} */}
-          </div>
-        )
-      }
+      content={selectedApproval && <div className="p-5">{renderSelected(selectedApproval)}</div>}
     />
   );
 }

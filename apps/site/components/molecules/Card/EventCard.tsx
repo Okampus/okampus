@@ -13,9 +13,9 @@ import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 
-import type { EventWithJoinInfo } from '@okampus/shared/graphql';
+import type { EventMinimalInfo } from '../../../types/features/event.info';
 
-export type EventCardProps = { event: EventWithJoinInfo };
+export type EventCardProps = { event: EventMinimalInfo };
 export default function EventCard({ event }: EventCardProps) {
   const [, setNotification] = useAtom(notificationAtom);
   const { tenant } = useTenant();
@@ -71,15 +71,21 @@ export default function EventCard({ event }: EventCardProps) {
       </motion.div>
 
       {participantsCount > 0 && (
-        <div className="mt-3 px-4 text-1 font-medium flex items-center justify-between">
+        <div className="mt-3 px-4 font-medium flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <UserGroup size={12} users={event.eventJoins.map(({ joinedBy }) => joinedBy)} />
-            {participantsCount}
+            <UserGroup
+              itemsCount={participantsCount}
+              size={12}
+              users={event.eventJoins.map(({ joinedBy }) => joinedBy)}
+            />
           </div>
           <div className="flex gap-4 items-center">
             <IconShare2
-              className="text-1 cursor-pointer h-8 w-8"
-              onClick={() => setNotification({ type: ToastType.Info, message: "Lien de l'équipe copié !" })}
+              className="text-2 cursor-pointer h-7 w-7"
+              onClick={() => {
+                navigator.clipboard.writeText(`${window.location.origin}/event/${event?.slug}`);
+                setNotification({ type: ToastType.Info, message: "Lien de l'événement copié !" });
+              }}
             />
           </div>
         </div>

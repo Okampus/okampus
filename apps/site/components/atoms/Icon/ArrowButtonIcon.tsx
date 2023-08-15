@@ -25,8 +25,8 @@ export default function ArrowButtonIcon({
       <IconChevronRight className={sizeClassName} />
     );
   const className = clsx(
-    'rounded-lg p-1 shrink-0',
-    disabled ? 'text-3 opacity-70' : 'text-0 opacity-80 hover:opacity-100 hover:bg-[var(--bg-3)]'
+    'rounded-full p-1 shrink-0',
+    disabled ? 'text-3 opacity-70' : 'text-0 opacity-80 hover:opacity-100 hover:bg-[var(--bg-3)]',
   );
   return (
     <button onClick={onClick} className={className}>

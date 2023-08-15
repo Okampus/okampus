@@ -12,12 +12,12 @@ import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { useState } from 'react';
 
-import type { FinanceBaseInfo } from '@okampus/shared/graphql';
+import type { FinanceMinimalInfo } from '../../../../types/features/finance.info';
 
 const DETAILS = 'details';
 const HISTORY = 'history';
 
-export type FinanceSidePanelProps = { finance: FinanceBaseInfo; teamManageActorId: string; onClose: () => void };
+export type FinanceSidePanelProps = { finance: FinanceMinimalInfo; teamManageActorId: string; onClose: () => void };
 export default function FinanceSidePanel({ finance, teamManageActorId, onClose }: FinanceSidePanelProps) {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(DETAILS);
@@ -47,7 +47,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <div className="flex gap-2 items-center">
           Payée par
           {finance.initiatedBy?.user ? (
-            <UserLabeled small={true} id={finance.initiatedBy.user.id} individual={finance.initiatedBy} />
+            <UserLabeled user={{ ...finance.initiatedBy.user, individual: finance.initiatedBy }} />
           ) : (
             <div className="text-1 font-semibold text-sm">Inconnu</div>
           )}
@@ -55,7 +55,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <div className="flex gap-2 items-center">
           Ajoutée par
           {finance.createdBy?.user ? (
-            <UserLabeled small={true} individual={finance.createdBy} id={finance.createdBy.user.id} />
+            <UserLabeled user={{ ...finance.createdBy.user, individual: finance.createdBy }} small={true} />
           ) : (
             <div className="text-1 font-semibold text-sm">Système</div>
           )}

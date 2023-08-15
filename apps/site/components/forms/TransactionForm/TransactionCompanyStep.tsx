@@ -1,4 +1,4 @@
-import LegalUnitInput from '../../molecules/Input/LegalUnitInput';
+import LegalUnitInput from '../../molecules/Input/LegalUnit/LegalUnitInput';
 
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 import type { transactionFormDefaultValues } from './TransactionForm';

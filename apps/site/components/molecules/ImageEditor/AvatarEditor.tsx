@@ -9,16 +9,15 @@ import { useModal } from '../../../hooks/context/useModal';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
+import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
 import { AVATAR_USER_ROUNDED, AVATAR_TEAM_ROUNDED, AVATAR_TENANT_ROUNDED } from '@okampus/shared/consts';
 import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
-import { insertActorImageMutation, singleUploadMutation } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import type { ActorBaseInfo } from '@okampus/shared/graphql';
+import type { ActorMinimalInfo } from '../../../types/features/actor.info';
 import type { CropperProps } from 'react-advanced-cropper';
 
 const context = { fetchOptions: { credentials: 'include', useUpload: true } };
@@ -27,16 +26,15 @@ export type AvatarEditorProps = {
   showEditor: boolean;
   cropperProps?: CropperProps;
   setShowEditor: (show: boolean) => void;
-  actor: ActorBaseInfo;
+  actor: ActorMinimalInfo;
   size: number;
   type: 'user' | 'team' | 'tenant';
   className?: string;
 };
 
 export default function AvatarEditor({ showEditor, setShowEditor, actor, size, type, className }: AvatarEditorProps) {
-  // @ts-ignore
-  const [insertActorImage] = useMutation(insertActorImageMutation);
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [insertActorImage] = useInsertActorImageMutation();
+  const [insertUpload] = useInsertSingleUploadMutation({ context });
   const [, setNotification] = useAtom(notificationAtom);
 
   const entityName = type === 'user' ? EntityName.User : type === 'team' ? EntityName.Team : EntityName.Tenant;
@@ -47,7 +45,6 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Avatar } };
           insertActorImage({
-            // @ts-ignore
             variables,
             onCompleted: ({ insertActorImageOne }) => {
               if (insertActorImageOne) {
@@ -58,7 +55,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
                 setShowEditor(false);
                 mergeCache(
                   { __typename: 'Actor', id: actor.id },
-                  { fieldName: 'actorImages', fragmentOn: 'ActorImage', data: insertActorImageOne }
+                  { fieldName: 'actorImages', fragmentOn: 'ActorImage', data: insertActorImageOne },
                 );
               } else {
                 setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });

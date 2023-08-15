@@ -50,7 +50,7 @@ export default function Form<T extends Record<string, unknown>>({
       setCheckingValues(
         Array.isArray(checkFields)
           ? Object.fromEntries(checkFields.map((key) => [key, true]))
-          : Object.fromEntries(Object.keys(values).map((key) => [key, true]))
+          : Object.fromEntries(Object.keys(values).map((key) => [key, true])),
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkFieldsDep]);
@@ -87,18 +87,10 @@ export default function Form<T extends Record<string, unknown>>({
   const resetChecking = () => {
     setCheckingValues(
       Object.fromEntries(
-        Object.entries(checkingValues).map(([key, value]) => [key, value === undefined ? undefined : true])
-      )
+        Object.entries(checkingValues).map(([key, value]) => [key, value === undefined ? undefined : true]),
+      ),
     );
   };
-
-  console.log(
-    differentKeys.size > 0 && !Object.values(errors).some(isNotNull) && !Object.values(checkingValues).some(Boolean),
-    differentKeys.size > 0,
-    !Object.values(errors).some(isNotNull),
-    !Object.values(checkingValues).some(Boolean),
-    checkingValues
-  );
 
   return (
     <div className={className}>
@@ -114,7 +106,7 @@ export default function Form<T extends Record<string, unknown>>({
               transition={{ duration: 0.2 }}
               className={clsx(
                 'left-0 md:left-1/2 md:-translate-x-1/2 md-max:w-screen md-max:bottom-0',
-                'fixed z-20 bottom-4 md:rounded-xl flex justify-between items-center font-semibold text-sm text-1 md:gap-20 pl-6 pr-4 py-2.5 bg-2 shadow-2xl'
+                'fixed z-20 bottom-4 md:rounded-xl flex justify-between items-center font-semibold text-sm text-1 md:gap-20 pl-6 pr-4 py-2.5 bg-2 shadow-2xl',
               )}
             >
               <div className="shrink-0">Sauvegarder ?</div>

@@ -1,0 +1,13 @@
+mutation DeleteSocials($where: SocialBoolExp!) {
+  deleteSocial(where: $where) {
+    returning {
+      __typename
+      id
+      deletedAt
+      type
+      pseudo
+      order
+      url
+    }
+  }
+}

@@ -8,10 +8,9 @@ import { useEventManage, useTenant } from '../../../../../../../context/navigati
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
 
 import { Align, ProcessedVia } from '@okampus/shared/enums';
-import { updateEventJoinMutation } from '@okampus/shared/graphql';
+import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
 import clsx from 'clsx';
@@ -22,7 +21,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
 
   const { tenant } = useTenant();
 
-  const [updateEventJoin] = useMutation(updateEventJoinMutation);
+  const [updateEventJoin] = useUpdateEventJoinMutation();
 
   if (!eventManage) return null;
 
@@ -33,7 +32,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           {
             label: 'Participant',
             render: (eventJoin) => {
-              return <UserLabeled individual={eventJoin.joinedBy.individual} id={eventJoin.joinedBy.id} />;
+              return <UserLabeled user={eventJoin.joinedBy} />;
             },
           },
           // {
@@ -169,10 +168,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                   action={{
                     label: 'Noter présent',
                     linkOrActionOrMenu: () =>
-                      updateEventJoin({
-                        // @ts-ignore
-                        variables: { id: eventJoin.id, update: { isPresent: true } },
-                      }),
+                      updateEventJoin({ variables: { id: eventJoin.id, update: { isPresent: true } } }),
                     iconOrSwitch: <IconCheck />,
                     type: ActionType.Success,
                   }}
@@ -186,7 +182,6 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                     label: 'Noter absent',
                     linkOrActionOrMenu: () =>
                       updateEventJoin({
-                        // @ts-ignore
                         variables: { id: eventJoin.id, update: { isPresent: false } },
                       }),
                     iconOrSwitch: <IconX />,
@@ -247,19 +242,9 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           {
             label: 'Confirmé par',
             align: Align.Left,
-            render: (eventJoin) => {
-              // const attendance = eventJoin.eventAttendances[0];
-              if (
-                eventJoin.participationProcessedAt &&
-                eventJoin.participationProcessedBy &&
-                eventJoin.participationProcessedBy?.user
-              ) {
-                return (
-                  <UserLabeled
-                    id={eventJoin.participationProcessedBy.user.id}
-                    individual={eventJoin.participationProcessedBy}
-                  />
-                );
+            render: ({ participationProcessedAt, participationProcessedBy }) => {
+              if (participationProcessedAt && participationProcessedBy?.user) {
+                return <UserLabeled user={participationProcessedBy.user} />;
               }
               return null;
             },

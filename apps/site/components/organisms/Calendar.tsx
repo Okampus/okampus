@@ -10,23 +10,32 @@ import EventPopoverCard from '../molecules/PopoverCard/EventPopoverCard';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 import { useTranslation } from '../../hooks/context/useTranslation';
 
+import ViewLayout from '../atoms/Layout/ViewLayout';
+import { useGetEventLazyQuery } from '@okampus/shared/graphql';
 import { formatHourSimple, getColorHexFromData, getMonthMatrix } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
-// import { ActionType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
-// import dayjs from 'dayjs';
 import { Fragment } from 'react';
 
-import type { EventBaseInfo } from '@okampus/shared/graphql';
+import type { EventMinimalInfo } from '../../types/features/event.info';
 import type { Dayjs } from 'dayjs';
 
-type DayProps = { day: Dayjs; className?: string; dayClass?: string; isOtherMonth?: boolean; events: EventBaseInfo[] };
+const dayNumberClass =
+  'rounded-xl my-1 mx-2 self-end flex justify-center items-center font-semibold tabular-nums text-lg md-max:text-xs';
+
+type DayProps = {
+  day: Dayjs;
+  className?: string;
+  dayClass?: string;
+  isOtherMonth?: boolean;
+  events: EventMinimalInfo[];
+};
 export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps) {
   const currentWindowSize = useCurrentBreakpoint();
 
-  const dayNumberClass =
-    'rounded-xl my-1 mx-2 self-end flex justify-center items-center font-semibold tabular-nums text-lg';
+  const [getEvent, { data }] = useGetEventLazyQuery();
+  const selectedEvent = data?.event?.[0];
 
   return (
     <div
@@ -36,7 +45,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
       <div className="cursor-pointer">
         {events.map((event, idx) => (
           <Popover placementOffset={10} key={idx}>
-            <PopoverTrigger className="w-full">
+            <PopoverTrigger className="w-full" onClick={() => getEvent({ variables: { slug: event.slug } })}>
               <div className="flex justify-between items-center gap-2 mx-0.5 px-1 py-px rounded-md hover:bg-[var(--bg-2)]">
                 <div className="flex gap-2 items-center">
                   <div
@@ -44,7 +53,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
                     style={{ backgroundColor: getColorHexFromData(event?.name) }}
                   />
                   <div
-                    className="md-max:px-1 py-px rounded font-semibold md:line-clamp-1 md-max:text-clip md-max:whitespace-nowrap text-md text-0 text-start break-all"
+                    className="md-max:px-1 py-px rounded font-semibold md:line-clamp-1 md-max:text-clip md-max:whitespace-nowrap md-max:text-xs text-0 text-start break-all"
                     style={
                       currentWindowSize === 'mobile'
                         ? { backgroundColor: getColorHexFromData(event?.name), color: 'white' }
@@ -55,12 +64,12 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
                   </div>
                 </div>
                 <span className="md-max:hidden text-[var(--text-3)] font-semibold mr-1 tabular-nums text-xs">
-                  {formatHourSimple(event.start as string)}
+                  {formatHourSimple(event.start)}
                 </span>
               </div>
             </PopoverTrigger>
             <PopoverContent>
-              <EventPopoverCard event={event} />
+              <EventPopoverCard event={selectedEvent} />
             </PopoverContent>
           </Popover>
         ))}
@@ -72,7 +81,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
 const weekDayClassName = 'text-xl text-1 font-medium text-right p-2 border-b border-color-5';
 
 export type CalendarProps = {
-  events: EventBaseInfo[];
+  events: EventMinimalInfo[];
   monthYear: [number, number];
   setMonthYear: (monthYear: [number, number]) => void;
   showInTopbar?: boolean;
@@ -88,7 +97,7 @@ export default function Calendar({ events, monthYear, setMonthYear }: CalendarPr
 
   const currentMonthDate = new Date(year, month);
   const currentMonth = monthMatrix[1][0].month(); // Get the month of the day in the middle of the month array
-  const monthMatrixClassName = 'grow min-h-0 w-full grid grid-cols-7 grid-rows-[auto_repeat(6,minmax(0,1fr))]';
+  const monthMatrixClassName = 'grow h-full w-full grid grid-cols-7 grid-rows-[auto_repeat(6,minmax(0,1fr))]';
   const weekDays = WEEKDAYS_SHORT.map((weekDay) => (
     <div key={weekDay} className={weekDayClassName}>
       {weekDay}
@@ -96,21 +105,24 @@ export default function Calendar({ events, monthYear, setMonthYear }: CalendarPr
   ));
 
   return (
-    <div className="h-full w-full flex flex-col pt-[var(--py-content)]">
-      <header className="flex items-center justify-between py-2 mb-4">
-        <div className="flex items-center gap-4 xl-max:px-6">
-          <div className="flex gap-4 opacity-80">
-            <ArrowButtonIcon direction="left" onClick={() => setMonthYear(previoumdonthYear)} />
-            <ArrowButtonIcon direction="right" onClick={() => setMonthYear(nextMonthYear)} />
-          </div>
-
-          <div className="text-4xl tracking-tighter flex gap-3 capitalize text-0">
-            <b>{format('month', new Date(currentMonthDate))}</b> {year}
-          </div>
+    <ViewLayout
+      bottomPadded={false}
+      horizontalPadding={false}
+      header={`${format('month', new Date(currentMonthDate))} ${year}`}
+      headerPrefix={
+        <div className="flex gap-4 opacity-80">
+          <ArrowButtonIcon direction="left" onClick={() => setMonthYear(previoumdonthYear)} />
+          <ArrowButtonIcon direction="right" onClick={() => setMonthYear(nextMonthYear)} />
         </div>
-
-        {/* <ActionButton action={{ type: ActionType.Action, label: "Aujourd'hui", linkOrActionOrMenu }} /> */}
-      </header>
+      }
+      headerPrefixSmall={
+        <div className="flex gap-1 opacity-80">
+          <ArrowButtonIcon sizeClassName="h-7 w-7" direction="left" onClick={() => setMonthYear(previoumdonthYear)} />
+          <ArrowButtonIcon sizeClassName="h-7 w-7" direction="right" onClick={() => setMonthYear(nextMonthYear)} />
+        </div>
+      }
+      sidePanelIcon={null}
+    >
       <div className={monthMatrixClassName}>
         {weekDays}
         {monthMatrix.map((days, rowIdx) => (
@@ -132,6 +144,6 @@ export default function Calendar({ events, monthYear, setMonthYear }: CalendarPr
           </Fragment>
         ))}
       </div>
-    </div>
+    </ViewLayout>
   );
 }

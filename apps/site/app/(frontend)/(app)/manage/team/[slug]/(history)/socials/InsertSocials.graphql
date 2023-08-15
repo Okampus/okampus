@@ -1,0 +1,12 @@
+mutation InsertSocials($objects: [SocialInsertInput!]!) {
+  insertSocial(objects: $objects) {
+    returning {
+      __typename
+      id
+      type
+      pseudo
+      order
+      url
+    }
+  }
+}

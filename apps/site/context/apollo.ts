@@ -1,14 +1,16 @@
 import { API_URL, HASURA_URL, HASURA_WS_URL } from './consts';
+import { getTenantFromHost } from '../utils/headers/get-tenant-from-host';
+
 import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
 
-import { getTenantFromHost } from '@okampus/shared/utils';
 import { InMemoryCache } from '@apollo/client/cache';
+import { ApolloClient, ApolloLink, HttpLink } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { ApolloClient, ApolloLink, HttpLink } from '@apollo/client/core';
+import { getMainDefinition } from '@apollo/client/utilities';
+
 import { createUploadLink } from 'apollo-upload-client';
 import { createClient } from 'graphql-ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 
 const parseHeaders = (rawHeaders: string): Headers => {
   const headers = new Headers();
@@ -89,8 +91,8 @@ export const apolloSplitLink = ApolloLink.split(
     },
     hasuraHttpLink,
     // @ts-ignore - TODO: invalid type of createUploadLink
-    apiUploadLink
-  )
+    apiUploadLink,
+  ),
 );
 
 export const apolloClient = new ApolloClient({
@@ -101,7 +103,7 @@ export const apolloClient = new ApolloClient({
       Event: { keyFields: ['slug'] },
       Project: { keyFields: ['slug'] },
       Team: { keyFields: ['actor', ['slug']] },
-      Tenant: { keyFields: ['adminTeam', ['actor', ['slug']]] },
+      Tenant: { keyFields: ['domain'] },
       User: { keyFields: ['individual', ['actor', ['slug']]] },
       UserLogin: { keyFields: ['user', ['individual', ['actor', ['slug']]]] },
     },
@@ -112,6 +114,6 @@ export type CacheIdWhere =
   | { id: string }
   | { slug: string } // Event, Project
   | { actor: { slug: string } } // Team
-  | { adminTeam: { actor: { slug: string } } } // Tenant
+  | { domain: string } // Tenant
   | { individual: { actor: { slug: string } } } // User
   | { user: { individual: { actor: { slug: string } } } }; // UserLogin

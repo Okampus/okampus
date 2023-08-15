@@ -17,8 +17,8 @@ export default function TenantManageButton({ manage }: TenantManageButtonProps) 
     <Link
       href={manage ? '/manage/tenant' : '/tenant'}
       className={clsx(
-        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-2',
-        manage ? 'text-0' : 'text-opposite bg-opposite'
+        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-1',
+        manage ? 'text-0' : 'text-opposite bg-opposite',
       )}
     >
       {t(manage ? 'common.manage.tenant' : 'common.public.tenant')}

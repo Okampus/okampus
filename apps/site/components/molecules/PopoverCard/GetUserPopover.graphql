@@ -1,0 +1,56 @@
+query GetUserPopover($id: bigint!) {
+  user(where: { id: { _eq: $id } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    firstName
+    lastName
+    individual {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        slug
+        bio
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+    teamMembers(where: { endDate: { _isNull: true } }) {
+      __typename
+      id
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          slug
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}

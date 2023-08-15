@@ -5,24 +5,30 @@ import ApolloWriteCache from './ApolloWriteCache';
 
 import { apolloClient } from '../../context/apollo';
 import { meSlugAtom } from '../../context/global';
-import { userLoginInfo } from '@okampus/shared/graphql';
+
+import { getSubscriptionFromQuery } from '../../utils/apollo/get-from-query';
+
+import { GetMeDocument } from '@okampus/shared/graphql';
 import { ApolloProvider } from '@apollo/client';
 
 import { useAtom } from 'jotai';
-import type { UserLoginInfo } from '@okampus/shared/graphql';
+import type { UserMeInfo } from '../../context/navigation';
 
 export type ApolloJotaiInitializeMeProps = {
-  me: UserLoginInfo;
+  me: UserMeInfo;
   children: React.ReactNode;
 };
+
+const SubscribeMeDocument = getSubscriptionFromQuery(GetMeDocument);
+
 export default function ApolloInitializeMe({ me, children }: ApolloJotaiInitializeMeProps) {
   const [, setMeSlug] = useAtom(meSlugAtom);
   setMeSlug(me.user.individual.actor.slug);
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ApolloWriteCache values={[[me, userLoginInfo]]} />
-      <ApolloSubscribe selector={{ userByPk: [{ id: me.user.id }, userLoginInfo.user] }} />
+      <ApolloWriteCache values={[[me, GetMeDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeMeDocument} data-superjson />
       {children}
     </ApolloProvider>
   );

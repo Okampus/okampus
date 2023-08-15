@@ -1,5 +1,5 @@
 type TransparentGradientProps = { className?: string; children?: React.ReactNode };
-export function TransparentGradient({ className, children }: TransparentGradientProps) {
+export default function TransparentGradient({ className, children }: TransparentGradientProps) {
   return (
     <div className={className}>
       {children}

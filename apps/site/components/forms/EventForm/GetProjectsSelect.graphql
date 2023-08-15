@@ -1,0 +1,30 @@
+query GetProjectsSelect($slug: String!) {
+  project(where: { team: { actor: { slug: { _eq: $slug } } } }) {
+    __typename
+    id
+    createdAt
+    slug
+    start
+    end
+    name
+    isPrivate
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    eventOrganizes {
+      event {
+        __typename
+        id
+        name
+        banner {
+          __typename
+          id
+          url
+        }
+      }
+    }
+  }
+}

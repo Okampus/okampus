@@ -14,15 +14,15 @@ const labeledClassName = 'bg-2-hover rounded-lg p-2 w-full';
 export type EventSidePanelProps = { slug: string };
 export default function EventSidePanel({ slug }: EventSidePanelProps) {
   const { event } = useEvent(slug);
-  if (!event || !event.eventJoinsAggregate.aggregate) return null;
+  if (!event?.eventJoinsAggregate.aggregate) return null;
 
   const count = event.eventJoinsAggregate.aggregate.count;
   return (
     <SidePanel>
       <GroupItem className="mt-[var(--py-content)] px-3" headingClassName="px-2" heading="Organisé par">
-        {event.eventOrganizes.map((eventManage) => (
-          <li key={eventManage.team.id}>
-            <TeamLabeled team={eventManage.team} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
+        {event.eventOrganizes.map(({ team }) => (
+          <li key={team.id}>
+            <TeamLabeled team={team} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
           </li>
         ))}
       </GroupItem>
@@ -33,8 +33,8 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
         groupClassName="flex flex-col"
         heading={`Inscrits — ${count}`}
       >
-        {event.eventJoins.map(({ joinedBy: { id, individual } }) => (
-          <UserLabeled key={id} id={id} individual={individual} full={true} className={labeledClassName} />
+        {event.eventJoins.map(({ joinedBy }) => (
+          <UserLabeled key={joinedBy.id} user={joinedBy} full={true} className={labeledClassName} />
         ))}
         {count > 12 && (
           <Link href={`/event/${slug}/joins`} className="more-button px-3 py-4">

@@ -1,12 +1,12 @@
 import { IconLoader } from '@tabler/icons-react';
 
 export type FieldProps = {
-  name: string;
+  name?: string;
   children: React.ReactNode;
   label?: React.ReactNode;
   className?: string;
   required?: boolean;
-  error?: string | null;
+  error?: string | null | false;
   loading?: boolean;
   info?: React.ReactNode;
   description?: string;
@@ -37,12 +37,13 @@ export default function Field({
 
   const inner = horizontal ? (
     <>
-      <span className="flex justify-between">
+      <span className="flex justify-between items-start">
         {label && (
           <label htmlFor={name} className="text-2 label-title">
             {label} {required && <span className="text-[var(--danger)]">*</span>}
           </label>
         )}
+        {children}
       </span>
       {description && <p className="text-2 text-sm">{description}</p>}
     </>

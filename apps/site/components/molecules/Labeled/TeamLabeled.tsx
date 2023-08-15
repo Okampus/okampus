@@ -4,10 +4,10 @@ import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
 
 import type { AvatarWrapperProps } from './AvatarLabeled';
-import type { TeamMinimalInfo } from '@okampus/shared/graphql';
+import type { TeamMinimalInfo } from '../../../types/features/team.info';
 
 export type TeamLabeledProps = {
-  team?: TeamMinimalInfo;
+  team: TeamMinimalInfo;
   avatarSize?: number;
   full?: boolean;
   label?: React.ReactNode;
@@ -29,11 +29,11 @@ export default function TeamLabeled({
   skeletonClassName,
   className,
 }: TeamLabeledProps) {
-  const avatar = getAvatar(team?.actor?.actorImages)?.image.url;
-  const name = team?.actor?.name;
+  const avatar = getAvatar(team.actor.actorImages)?.image.url;
+  const name = team.actor.name;
 
   const wrapper = ({ children, className }: AvatarWrapperProps) => (
-    <TeamPopoverCard triggerClassName={className} teamId={team?.id}>
+    <TeamPopoverCard triggerClassName={className} teamId={team.id}>
       {children}
     </TeamPopoverCard>
   );

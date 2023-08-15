@@ -3,12 +3,13 @@
 import Calendar from '../../../../components/organisms/Calendar';
 import SideBar from '../../../../components/layouts/SideBar';
 import CalendarInput from '../../../../components/molecules/Input/Date/CalendarInput';
-import { useTypedQueryAndSubscribe } from '../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../hooks/apollo/useQueryAndSubscribe';
 
+import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EventState } from '@okampus/shared/enums';
-import { OrderBy, eventBaseInfo } from '@okampus/shared/graphql';
 
 import { useState } from 'react';
+import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
 export default function EventsPage() {
   const [monthYear, setMonthYear] = useState<[number, number]>([new Date().getMonth(), new Date().getFullYear()]);
@@ -18,8 +19,13 @@ export default function EventsPage() {
   const _lte = new Date(monthYear[1], monthYear[0] + 1, 0).toISOString();
   const where = { start: { _gte, _lte }, state: { _eq: EventState.Published } };
 
-  const variables = { where, orderBy: [{ start: OrderBy.ASC }] };
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'event', selector: [variables, eventBaseInfo] });
+  const variables = { where, orderBy: [{ start: OrderBy.Asc }] };
+  const { data } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({
+    query: GetEventsDocument,
+    variables,
+  });
+
+  const events = data?.event ?? [];
 
   return (
     <>
@@ -33,7 +39,7 @@ export default function EventsPage() {
           }}
         />
       </SideBar>
-      <Calendar showInTopbar={true} events={data?.event ?? []} monthYear={monthYear} setMonthYear={setMonthYear} />
+      <Calendar showInTopbar={true} events={events} monthYear={monthYear} setMonthYear={setMonthYear} />
     </>
   );
 }

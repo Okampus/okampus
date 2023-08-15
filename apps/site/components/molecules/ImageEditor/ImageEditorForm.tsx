@@ -3,8 +3,8 @@ import GroupItem from '../../atoms/Item/GroupItem';
 
 import { notificationAtom } from '../../../context/global';
 
+import { useInsertSingleUploadMutation } from '@okampus/shared/graphql';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
-import { singleUploadMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { dataURItoBlob } from '@okampus/shared/utils';
 
@@ -13,8 +13,7 @@ import { useAtom } from 'jotai';
 import { useRef, useState } from 'react';
 import { Cropper } from 'react-advanced-cropper';
 
-import { useMutation } from '@apollo/client';
-
+import type { InsertSingleUploadMutationVariables } from '@okampus/shared/graphql';
 import type { Buckets, EntityName } from '@okampus/shared/enums';
 import type { CropperProps, CropperRef } from 'react-advanced-cropper';
 
@@ -31,17 +30,19 @@ export default function ImageEditorForm({ cropperProps, uploadContext, onUploade
   const cropperRef = useRef<CropperRef>(null);
   const [, setNotification] = useAtom(notificationAtom);
 
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [insertUpload] = useInsertSingleUploadMutation({ context });
 
   const onUpload = (file: File) => {
+    const variables = { file, ...uploadContext } as InsertSingleUploadMutationVariables;
+
     insertUpload({
-      variables: { file, ...uploadContext },
+      variables,
       onCompleted: ({ singleUpload }) => {
         if (singleUpload) {
           onUploaded(
             singleUpload.id,
             () => setNotification({ type: ToastType.Success, message: 'Bannière mise à jour !' }),
-            () => setNotification({ type: ToastType.Error, message: "Erreur lors de l'ajout de la bannière !" })
+            () => setNotification({ type: ToastType.Error, message: "Erreur lors de l'ajout de la bannière !" }),
           );
         } else {
           setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
@@ -77,7 +78,7 @@ export default function ImageEditorForm({ cropperProps, uploadContext, onUploade
                   const canvas = cropperRef.current?.getCanvas();
                   if (!canvas) return;
                   onUpload(
-                    new File([dataURItoBlob(canvas.toDataURL('image/webp'))], `banner.webp`, { type: 'image/webp' })
+                    new File([dataURItoBlob(canvas.toDataURL('image/webp'))], `banner.webp`, { type: 'image/webp' }),
                   );
                 },
               }}

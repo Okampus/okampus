@@ -8,9 +8,10 @@ import { useTeam } from '../../../context/navigation';
 
 import { RoleCategory } from '@okampus/shared/enums';
 import { usePathname } from 'next/navigation';
-import type { TeamMemberWithUser } from '@okampus/shared/graphql';
 
-const renderCategories = (categories: [string, TeamMemberWithUser[]][]) => (
+import type { TeamMemberMinimalInfo } from '../../../types/features/team-member.info';
+
+const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
   <>
     {categories
       .filter(([, items]) => items.length > 0)
@@ -22,14 +23,8 @@ const renderCategories = (categories: [string, TeamMemberWithUser[]][]) => (
           heading={`${category} — ${teamMembers.length}`}
           key={category}
         >
-          {teamMembers.map((teamMember) => (
-            <UserLabeled
-              key={teamMember.user.id}
-              individual={teamMember.user.individual}
-              id={teamMember.user.id}
-              full={true}
-              className="bg-2-hover rounded-lg p-2 w-full"
-            />
+          {teamMembers.map(({ user }) => (
+            <UserLabeled key={user.id} user={user} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
           ))}
         </GroupItem>
       ))}
@@ -43,9 +38,9 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   if (!team) return null;
 
-  const directors: typeof team.teamMembers[number][] = [];
-  const managers: typeof team.teamMembers[number][] = [];
-  const members: typeof team.teamMembers[number][] = [];
+  const directors: typeof team.teamMembers = [];
+  const managers: typeof team.teamMembers = [];
+  const members: typeof team.teamMembers = [];
 
   for (const member of team.teamMembers) {
     if (member.teamMemberRoles.some(({ role }) => role.category === RoleCategory.Directors)) directors.push(member);

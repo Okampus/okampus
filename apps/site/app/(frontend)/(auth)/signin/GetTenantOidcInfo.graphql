@@ -1,0 +1,30 @@
+query GetTenantOidcInfo {
+  tenant {
+    __typename
+    id
+    isOidcEnabled
+    oidcName
+    domain
+    adminTeam {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+}

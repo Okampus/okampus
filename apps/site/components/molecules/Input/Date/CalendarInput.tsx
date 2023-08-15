@@ -36,8 +36,6 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
   const previousMonthYear: MonthYear = month === 0 ? [11, year - 1] : [month - 1, year];
   const nextMonthYear: MonthYear = month === 11 ? [0, year + 1] : [month + 1, year];
 
-  console.log('Month Year', month, year, months[month]);
-
   return (
     <div className={clsx('flex flex-col w-fit text-1', className)}>
       <header className="flex justify-between items-center mb-2 px-1">

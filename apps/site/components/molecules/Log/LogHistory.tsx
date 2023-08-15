@@ -2,10 +2,10 @@ import LogItem from './LogItem';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 import clsx from 'clsx';
 
-import type { LogBaseInfo } from '@okampus/shared/graphql';
+import type { LogMinimalInfo } from '../../../types/features/log.info';
 import type { ApolloError } from '@apollo/client';
 
-export type LogHistoryProps = { className?: string; logs?: LogBaseInfo[]; loading?: boolean; error?: ApolloError };
+export type LogHistoryProps = { className?: string; logs?: LogMinimalInfo[]; loading?: boolean; error?: ApolloError };
 export default function LogHistory({ className, logs, loading, error }: LogHistoryProps) {
   if (error) return <div className="p-2 bg-[var(--danger)] text-white font-semibold">Erreur : {error.message}</div>;
 

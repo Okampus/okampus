@@ -3,12 +3,11 @@ import BannerImage from '../../atoms/Image/BannerImage';
 import EventLabeled from '../Labeled/EventLabeled';
 import { PROJECT_ROUTE } from '@okampus/shared/consts';
 
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
-import type { ProjectWithTeamInfo } from '@okampus/shared/graphql';
+import type { ProjectDetailsInfo } from '../../../types/features/project.info';
 
-export type ProjectCardProps = { project: ProjectWithTeamInfo };
-
+export type ProjectCardProps = { project: ProjectDetailsInfo };
 export default function ProjectCard({ project }: ProjectCardProps) {
   // const start =
   //   typeof project.eventOrganizes?.min?.start === 'string' && project.eventsAggregate.aggregate?.min?.start;
@@ -39,7 +38,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   // const remaining = missingRoles.slice(3).reduce((curr, [, roles]) => curr + roles.length, 0);
 
   // const helpWanted = missingRoles.length > 0;
-  const createdAtDate = new Date(project.createdAt as string).getTime();
+  // const createdAtDate = new Date(project.createdAt as string).getTime();
   // const isNew = createdAtDate > Date.now() - 1000 * 60 * 60 * 24 * 7;
 
   // const badges = [
@@ -77,12 +76,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             <div className="mt-6 line-clamp-3 text-lg">{project.description}</div>
           </div>
         </div>
-        <Link to={PROJECT_ROUTE(project.slug)} className="card-link" />
+        <Link href={PROJECT_ROUTE(project.slug)} className="card-link" />
       </div>
 
       <div className="flex flex-col gap-4">
-        {project.eventOrganizes.map(({ event }, idx) => {
-          return <EventLabeled key={idx} event={event} />;
+        {project.eventOrganizes.map(({ event }) => {
+          return <EventLabeled key={event.id} event={event} />;
         })}
       </div>
     </div>

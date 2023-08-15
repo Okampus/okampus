@@ -8,10 +8,10 @@ export type ITagProps = {
   endContent?: React.ReactNode;
 };
 
-export function ITag({ content, onRemove, startContent, endContent }: ITagProps) {
+export default function ITag({ content, onRemove, startContent, endContent }: ITagProps) {
   const className = clsx(
     'rounded-md inline-flex items-stretch gap-2 px-1.5 text-0 bg-0 hover:bg-[var(--bg-1)]',
-    onRemove && 'cursor-pointer'
+    onRemove && 'cursor-pointer',
   );
   return (
     <li className={className} onClick={onRemove}>

@@ -2,10 +2,9 @@
 
 import BannerImage from '../../atoms/Image/BannerImage';
 import { useTranslation } from '../../../hooks/context/useTranslation';
+import type { EventMinimalInfo } from '../../../types/features/event.info';
 
-import type { EventBaseInfo } from '@okampus/shared/graphql';
-
-export type EventLabeledProps = { event: EventBaseInfo };
+export type EventLabeledProps = { event: EventMinimalInfo };
 export default function EventLabeled({ event }: EventLabeledProps) {
   const { format } = useTranslation();
   const displayedStart = format('weekDayHour', new Date(event.start));

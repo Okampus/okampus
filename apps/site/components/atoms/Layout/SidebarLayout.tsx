@@ -28,18 +28,14 @@ export default function SidebarLayout({
   contentScrollable = false,
 }: SidebarLayoutProps) {
   const currentWindowSize = useCurrentBreakpoint();
+  const isSmall = currentWindowSize === 'mobile' || currentWindowSize === 'tablet';
 
   return (
-    <section
-      className={clsx(
-        'grid h-full w-full overflow-hidden',
-        className,
-        currentWindowSize !== 'mobile' && 'grid-cols-[22rem_1fr]',
-        showTopBorder && 'border-t border-color-3'
-      )}
-    >
-      <div className="h-full flex flex-col overflow-hidden">{sidebar}</div>
-      {currentWindowSize === 'mobile' ? (
+    <section className={clsx('grid h-full w-full overflow-hidden', className, !isSmall && 'grid-cols-[22rem_1fr]')}>
+      <div className={clsx('h-full flex flex-col overflow-hidden', showTopBorder && 'border-t border-color-3')}>
+        {sidebar}
+      </div>
+      {isSmall ? (
         content && (
           <div className="fixed inset-0 flex flex-col bg-main z-50">
             <div className="w-full h-[var(--h-topbar)] flex items-center gap-8 px-[var(--px-content)] font-semibold text-0 bg-0">
@@ -54,7 +50,8 @@ export default function SidebarLayout({
           className={clsx(
             'flex flex-col',
             showBetweenBorder && 'border-l border-color-3',
-            contentScrollable && 'overflow-y-scroll overflow-x-hidden scrollbar'
+            contentScrollable && 'overflow-y-scroll overflow-x-hidden scrollbar',
+            showTopBorder && 'border-t border-color-3',
           )}
         >
           {content ? (

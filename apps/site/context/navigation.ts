@@ -2,74 +2,124 @@
 
 import { meSlugAtom } from './global';
 import { useTypedFragment } from '../hooks/apollo/useTypedFragment';
+import { getFragmentFromQuery } from '../utils/apollo/get-from-query';
+import { getTenantFromHost } from '../utils/headers/get-tenant-from-host';
 import {
-  projectBaseInfo,
-  userBaseInfo,
-  teamManageInfo,
-  eventManageInfo,
-  tenantManageInfo,
-  eventDetailsInfo,
-  userLoginInfo,
-  teamWithMembersInfo,
-  projectManageInfo,
+  GetEventDocument,
+  GetEventManageDocument,
+  GetTeamDocument,
+  GetTeamManageDocument,
+  GetUserDocument,
+  GetTenantManageDocument,
+  GetProjectDocument,
+  GetProjectManageDocument,
+  GetMeDocument,
 } from '@okampus/shared/graphql';
 
 import { useAtom } from 'jotai';
+import { redirect } from 'next/navigation';
 
 import type {
-  EventManageInfo,
-  TeamManageInfo,
-  ProjectBaseInfo,
-  UserBaseInfo,
-  TenantManageInfo,
-  EventDetailsInfo,
-  UserLoginInfo,
-  TeamWithMembersInfo,
-  ProjectManageInfo,
+  GetEventQueryResult,
+  GetEventManageQueryResult,
+  GetTeamQueryResult,
+  GetTeamManageQueryResult,
+  GetUserQueryResult,
+  GetTenantManageQueryResult,
+  GetProjectQueryResult,
+  GetProjectManageQueryResult,
+  GetMeQueryResult,
 } from '@okampus/shared/graphql';
 
-export function useMe() {
+const UserFragment = getFragmentFromQuery('User', GetUserDocument);
+const UserLoginFragment = getFragmentFromQuery('UserLogin', GetMeDocument);
+const TenantManageFragment = getFragmentFromQuery('Tenant', GetTenantManageDocument, 'TenantManage');
+const EventFragment = getFragmentFromQuery('Event', GetEventDocument);
+const EventManageFragment = getFragmentFromQuery('Event', GetEventManageDocument, 'EventManage');
+const TeamFragment = getFragmentFromQuery('Team', GetTeamDocument);
+const TeamManageFragment = getFragmentFromQuery('Team', GetTeamManageDocument, 'TeamManage');
+const ProjectFragment = getFragmentFromQuery('Project', GetProjectDocument);
+const ProjectManageFragment = getFragmentFromQuery('Project', GetProjectManageDocument, 'ProjectManage');
+
+export type UserInfo = NonNullable<GetUserQueryResult['data']>['user'][number];
+export type UserMeInfo = NonNullable<GetMeQueryResult['data']>['me'];
+export type TenantInfo = NonNullable<GetMeQueryResult['data']>['me']['user']['tenant'];
+export type TenantManageInfo = NonNullable<GetTenantManageQueryResult['data']>['tenant'][number];
+export type EventInfo = NonNullable<GetEventQueryResult['data']>['event'][number];
+export type EventManageInfo = NonNullable<GetEventManageQueryResult['data']>['event'][number];
+export type TeamInfo = NonNullable<GetTeamQueryResult['data']>['team'][number];
+export type TeamManageInfo = NonNullable<GetTeamManageQueryResult['data']>['team'][number];
+export type ProjectInfo = NonNullable<GetProjectQueryResult['data']>['project'][number];
+export type ProjectManageInfo = NonNullable<GetProjectManageQueryResult['data']>['project'][number];
+
+export function useUser(slug: string) {
+  const where = { individual: { actor: { slug } } };
+  const user = useTypedFragment<UserInfo>({ __typename: 'User', fragment: UserFragment, where });
+  return { user };
+}
+
+export function useMeSlug() {
   const [slug] = useAtom(meSlugAtom);
-  const where = { user: { individual: { actor: { slug: slug ?? '' } } } };
-  return useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', selector: userLoginInfo, where });
+  if (!slug) redirect('/signin');
+
+  return slug;
+}
+
+export function useMe() {
+  const slug = useMeSlug();
+  const where = { user: { individual: { actor: { slug } } } };
+  const me = useTypedFragment<UserMeInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
+  if (!me) redirect('/signin');
+
+  return me;
+}
+
+export function useTenant() {
+  const me = useMe();
+  const canManage =
+    me.canManageTenant ?? me.user.teamMembers.some(({ team }) => team.id === me.user.tenant?.adminTeam?.id);
+  return { tenant: me.user.tenant, canManage };
+}
+
+export function useTenantManage() {
+  const tenantManage = useTypedFragment<TenantManageInfo>({
+    __typename: 'Tenant',
+    fragmentTypename: 'TenantManage',
+    fragment: TenantManageFragment,
+    where: { domain: getTenantFromHost(window.location.host) },
+  });
+  return { tenantManage };
 }
 
 export function useEvent(slug: string) {
   const me = useMe();
-  const selector = eventDetailsInfo;
-  const event = useTypedFragment<EventDetailsInfo>({ __typename: 'Event', selector, where: { slug } });
+  const event = useTypedFragment<EventInfo>({ __typename: 'Event', fragment: EventFragment, where: { slug } });
+
   if (!event) return { event: null, canManage: false };
 
   const canManage = me
     ? me.canManageTenant ??
-      event.eventOrganizes.some(({ supervisors }) =>
-        supervisors.some(({ teamMember: { user } }) => user.id === me.user.id)
-      )
+      event.eventOrganizes.some(({ eventSupervisors }) => eventSupervisors.some(({ user }) => user.id === me.user.id))
     : false;
 
   return { event, canManage };
 }
 
-export function useTenant() {
-  const me = useMe();
-  if (!me) return { tenant: null, canManage: false };
-
-  const tenant = me.user.tenant;
-  const adminTeam = tenant.adminTeam;
-  const canManage = me.canManageTenant || me.user.teamMembers.some(({ team }) => team.id === adminTeam?.id);
-  return { tenant, canManage };
-}
-
 export function useEventManage(slug: string) {
-  const selector = eventManageInfo;
-  const eventManage = useTypedFragment<EventManageInfo>({ __typename: 'Event', selector, where: { slug } });
+  const eventManage = useTypedFragment<EventManageInfo>({
+    __typename: 'Event',
+    fragmentTypename: 'EventManage',
+    fragment: EventManageFragment,
+    where: { slug },
+  });
   return { eventManage };
 }
 
 export function useTeam(slug: string) {
   const me = useMe();
-  const selector = teamWithMembersInfo;
-  const team = useTypedFragment<TeamWithMembersInfo>({ __typename: 'Team', selector, where: { actor: { slug } } });
+
+  const where = { actor: { slug } };
+  const team = useTypedFragment<TeamInfo>({ __typename: 'Team', fragment: TeamFragment, where });
   if (!team) return { team: null, canManage: false };
 
   const canManage = me
@@ -80,16 +130,19 @@ export function useTeam(slug: string) {
 }
 
 export function useTeamManage(slug: string) {
-  const selector = teamManageInfo;
-  const teamManage = useTypedFragment<TeamManageInfo>({ __typename: 'Team', selector, where: { actor: { slug } } });
+  const where = { actor: { slug } };
+  const teamManage = useTypedFragment<TeamManageInfo>({
+    __typename: 'Team',
+    fragmentTypename: 'TeamManage',
+    fragment: TeamManageFragment,
+    where,
+  });
   return { teamManage };
 }
 
 export function useProject(slug: string) {
   const me = useMe();
-
-  const selector = projectBaseInfo;
-  const project = useTypedFragment<ProjectBaseInfo>({ __typename: 'Project', selector, where: { slug } });
+  const project = useTypedFragment<ProjectInfo>({ __typename: 'Project', fragment: ProjectFragment, where: { slug } });
 
   if (!project) return { project: null, canManage: false };
 
@@ -101,20 +154,12 @@ export function useProject(slug: string) {
 }
 
 export function useProjectManage(slug: string) {
-  const selector = projectManageInfo;
-  const project = useTypedFragment<ProjectManageInfo>({ __typename: 'Project', selector, where: { slug } });
+  const project = useTypedFragment<ProjectManageInfo>({
+    __typename: 'Project',
+    fragmentTypename: 'ProjectManage',
+    fragment: ProjectManageFragment,
+    where: { slug },
+  });
 
   return { project };
-}
-
-export function useUser(slug: string) {
-  const selector = userBaseInfo;
-  const user = useTypedFragment<UserBaseInfo>({ __typename: 'User', selector, where: { actor: { slug } } });
-  return { user };
-}
-
-export function useTenantManage(slug: string) {
-  const where = { adminTeam: { actor: { slug } } };
-  const tenantManage = useTypedFragment<TenantManageInfo>({ __typename: 'Tenant', selector: tenantManageInfo, where });
-  return { tenantManage };
 }

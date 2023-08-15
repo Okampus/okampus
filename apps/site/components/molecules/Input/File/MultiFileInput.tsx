@@ -33,7 +33,7 @@ export default function MultiFileInput({ onFileAdd, onFileRemove, onFileClick }:
 
   const onFileDrop = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      console.log('update file list', renderedFileList);
+      console.log('TODO: update file list', renderedFileList);
       // const updatedList = [
       //   ...renderedFileList,
       //   ...[...e.target.files].map((file) => {

@@ -16,28 +16,27 @@ import { useTenantManage } from '../../../../../context/navigation';
 import { getAvatar } from '../../../../../utils/actor-image/get-avatar';
 import { getBanner } from '../../../../../utils/actor-image/get-banner';
 
-import { deleteActorImageMutation, updateActorMutation } from '@okampus/shared/graphql';
+import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
 
-export default function TenantProfilePage({ params }: { params: { slug: string } }) {
-  const { tenantManage } = useTenantManage(params.slug);
+export default function TenantProfilePage() {
+  const { tenantManage } = useTenantManage();
   const adminTeam = tenantManage?.adminTeam;
 
   const avatar = getAvatar(adminTeam?.actor?.actorImages);
   const banner = getBanner(adminTeam?.actor?.actorImages);
 
   const defaultValues = {
-    name: adminTeam?.actor?.name || '',
-    status: adminTeam?.actor?.status || '',
-    bio: adminTeam?.actor?.bio || '',
+    name: adminTeam?.actor?.name ?? '',
+    status: adminTeam?.actor?.status ?? '',
+    bio: adminTeam?.actor?.bio ?? '',
   };
 
-  const [deactivateActorImage] = useMutation(deleteActorImageMutation);
-  const [updateActor] = useMutation(updateActorMutation);
+  const [deleteActorImage] = useDeleteActorImageMutation();
+  const [updateActor] = useUpdateActorMutation();
 
   const [editingAvatar, setEditingAvatar] = useState(false);
   const [editingBanner, setEditingBanner] = useState(false);
@@ -55,7 +54,6 @@ export default function TenantProfilePage({ params }: { params: { slug: string }
   });
 
   const onSubmit = handleSubmit((update) => {
-    // @ts-ignore
     adminTeam?.actor && updateActor({ variables: { update, id: adminTeam.actor.id } });
   });
 
@@ -64,7 +62,7 @@ export default function TenantProfilePage({ params }: { params: { slug: string }
   return (
     <ViewLayout header="Personalisation">
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
+        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
         <GroupItem heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor
@@ -86,8 +84,7 @@ export default function TenantProfilePage({ params }: { params: { slug: string }
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () =>
-                      deactivateActorImage({ variables: { id: avatar.id, now: new Date().toISOString() } }),
+                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: avatar.id } }),
                   }}
                 />
               )}
@@ -135,8 +132,7 @@ export default function TenantProfilePage({ params }: { params: { slug: string }
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () =>
-                      deactivateActorImage({ variables: { id: banner.id, now: new Date().toISOString() } }),
+                    linkOrActionOrMenu: () => deleteActorImage({ variables: { id: banner.id } }),
                   }}
                 />
               )}

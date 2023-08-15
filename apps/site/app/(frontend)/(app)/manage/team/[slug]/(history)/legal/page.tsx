@@ -2,7 +2,7 @@
 
 import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
 import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
-import SelectInput from '../../../../../../../../components/molecules/Input/SelectInput';
+import SelectInput from '../../../../../../../../components/molecules/Input/Select/SelectInput';
 import TeamLabeled from '../../../../../../../../components/molecules/Labeled/TeamLabeled';
 import TenantLabeled from '../../../../../../../../components/molecules/Labeled/TenantLabeled';
 
@@ -26,7 +26,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
       'Association indépendate'
     ) : teamManage.type === TeamType.Department && tenant ? (
       <span className="flex items-center gap-2">
-        Départment de <TenantLabeled small={true} tenant={tenant} />
+        Départment de <TenantLabeled small={true} />
       </span>
     ) : (
       'Autre'

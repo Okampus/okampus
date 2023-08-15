@@ -1,20 +1,20 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
 // import NumberInput from '../../molecules/Input/NumberInput';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 import TextInput from '../../molecules/Input/TextInput';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 // import { validateWebsite } from '../../../utils/form-validation/website';
 
+import { useProcessReceiptLazyQuery } from '@okampus/shared/graphql';
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
-import { useTypedLazyQuery } from '@okampus/shared/graphql';
 
 import { useEffect, useMemo } from 'react';
 
 import type { transactionFormDefaultValues } from './TransactionForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '../../../context/navigation';
 
 type Context = FormStepContext<typeof transactionFormDefaultValues>;
 type ReceiptStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
@@ -22,25 +22,10 @@ type ReceiptStep = { teamManage: TeamManageInfo; values: Context['values']; setV
 export default function TransactionReceiptStep({ values, setValues }: ReceiptStep) {
   const { t } = useTranslation();
 
-  const [processReceipt, { data, loading }] = useTypedLazyQuery(
-    {
-      processReceipt: [
-        { key: values.fileUploadId ?? '' },
-        {
-          lineItems: { name: true, price: true, quantity: true },
-          address: true,
-          amount: true,
-          date: true,
-          vendorName: true,
-          phone: true,
-        },
-      ],
-    },
-    { apolloOptions: { context: { useApi: true } } }
-  );
+  const [processReceipt, { data, loading }] = useProcessReceiptLazyQuery({ context: { useApi: true } });
 
   useEffect(() => {
-    if (values.fileUploadId) processReceipt();
+    if (values.fileUploadId) processReceipt({ variables: { key: values.fileUploadId } });
   }, [processReceipt, values.fileUploadId]);
 
   useEffect(() => {
@@ -50,7 +35,7 @@ export default function TransactionReceiptStep({ values, setValues }: ReceiptSte
         ({ name, price, quantity }) =>
           (description += `(${(price * quantity).toFixed(2)} €)${
             quantity > 1 ? (price ? ` ${price.toFixed(2)} € x ${quantity}` : ` ${quantity}`) : ''
-          } ${name.replaceAll('\n', ' / ')}\n`)
+          } ${name.replaceAll('\n', ' / ')}\n`),
       );
       if (data?.processReceipt?.phone) description += `\nTéléphone : ${data.processReceipt.phone}`;
 
@@ -78,7 +63,7 @@ export default function TransactionReceiptStep({ values, setValues }: ReceiptSte
 
   const src = useMemo(
     () => (values.attachments.length > 0 ? URL.createObjectURL(values.attachments[0]) : ''),
-    [values.attachments]
+    [values.attachments],
   );
 
   return (

@@ -1,10 +1,10 @@
 'use client';
 
-import UserGroup from '../../../../../../components/molecules/Group/UserGroup';
 import IMoney from '../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
 import FileIcon from '../../../../../../components/atoms/Icon/FileIcon';
-import Skeleton from '../../../../../../components/atoms/Skeleton/Skeleton';
+import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
+import UserGroup from '../../../../../../components/molecules/Group/UserGroup';
 import TeamLabeled from '../../../../../../components/molecules/Labeled/TeamLabeled';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../components/organisms/Dashboard';
@@ -12,18 +12,20 @@ import FilePreviewer from '../../../../../../components/organisms/FilePreviewer'
 
 import { useBottomSheet } from '../../../../../../hooks/context/useBottomSheet';
 
-import { TeamType, Align, TeamRoleType, DocumentType } from '@okampus/shared/enums';
-import { useTypedQuery, teamDashboardInfo, OrderBy } from '@okampus/shared/graphql';
+import { Align, TeamRoleType, DocumentType } from '@okampus/shared/enums';
+import { useGetTeamDashboardQuery } from '@okampus/shared/graphql';
 import { isNotNull } from '@okampus/shared/utils';
 
-import type { DocumentBaseInfo, TeamDashboardInfo } from '@okampus/shared/graphql';
+import type { GetTeamDashboardQuery } from '@okampus/shared/graphql';
+import type { DocumentMinimalInfo } from '../../../../../../types/features/document.info';
 import type { ExternalFile } from '@okampus/shared/types';
 
-function renderDocument(showFile: (file: File | ExternalFile) => void, document?: DocumentBaseInfo) {
-  if (!document) return <TextBadge color="grey" label="Manquant" />;
-  if (!document.fileUpload) return <Skeleton height={32} width={32} />;
+type TeamDashboardInfo = NonNullable<GetTeamDashboardQuery['team'][number]>;
 
-  const file = document.fileUpload;
+function renderDocument(showFile: (file: File | ExternalFile) => void, document?: DocumentMinimalInfo | null) {
+  const file = document?.file;
+  if (!file) return <TextBadge color="grey" label="Manquant" />;
+
   return (
     <div onClick={() => showFile(file)} className="cursor-pointer">
       <FileIcon className="h-12 aspect-square" type={file.type} name={file.name} />
@@ -46,42 +48,42 @@ export default function TenantDashboardPage() {
       align: Align.Left,
       label: 'Président',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembersAggregate.nodes.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Director)
+        const user = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Director),
         )?.user;
 
         if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled individual={user.individual} id={user.id} />;
+        return <UserLabeled user={user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Trésorier',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembersAggregate.nodes.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Treasurer)
+        const user = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Treasurer),
         )?.user;
 
         if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled individual={user.individual} id={user.id} />;
+        return <UserLabeled user={user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Secrétaire',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembersAggregate.nodes.find((member) =>
-          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Secretary)
+        const user = value.teamMembers.find((member) =>
+          member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Secretary),
         )?.user;
 
         if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled individual={user.individual} id={user.id} />;
+        return <UserLabeled user={user} />;
       },
     },
     {
       label: 'Membres',
       render: (value: TeamDashboardInfo) => {
-        const members = value.teamMembersAggregate.nodes.map((member) => member.user).filter(isNotNull);
+        const members = value.teamMembers.map((member) => member.user).filter(isNotNull);
 
         return <UserGroup users={members} itemsCount={value.teamMembersAggregate.aggregate?.count} />;
       },
@@ -95,47 +97,39 @@ export default function TenantDashboardPage() {
     {
       label: 'Statuts',
       render: (value: TeamDashboardInfo) => {
-        const file = value.documents.find((document) => document.type === DocumentType.AssociationConstitution);
-        return renderDocument(previewFile, file);
+        const document = value.documents.find((document) => document.type === DocumentType.AssociationConstitution);
+        return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Récépissé de déclaration',
       render: (value: TeamDashboardInfo) => {
-        const file = value.documents.find((document) => document.type === DocumentType.AssociationDeclaration);
-        return renderDocument(previewFile, file);
+        const document = value.documents.find((document) => document.type === DocumentType.AssociationDeclaration);
+        return renderDocument(previewFile, document);
       },
     },
     {
       label: 'Courrier de passation',
       render: (value: TeamDashboardInfo) => {
-        const file = value.documents.find((document) => document.type === DocumentType.ClubHandover);
-        return renderDocument(previewFile, file);
+        const document = value.documents.find((document) => document.type === DocumentType.ClubHandover);
+        return renderDocument(previewFile, document);
       },
     },
     {
       align: Align.Center,
       label: 'Règlement intérieur',
       render: (value: TeamDashboardInfo) => {
-        const file = value.documents.find((document) => document.type === DocumentType.ClubCharter);
-        return renderDocument(previewFile, file);
+        const document = value.documents.find((document) => document.type === DocumentType.ClubCharter);
+        return renderDocument(previewFile, document);
       },
     },
   ];
 
-  const { data } = useTypedQuery({
-    team: [
-      {
-        where: { _or: [{ type: { _eq: TeamType.Association } }, { type: { _eq: TeamType.Club } }] },
-        orderBy: [{ actor: { name: OrderBy.ASC } }],
-      },
-      teamDashboardInfo,
-    ],
-  });
+  const { data } = useGetTeamDashboardQuery();
 
   return (
-    <div className="h-full">
+    <ViewLayout header="Dashboard associatif">
       <Dashboard columns={columns} data={data?.team} />
-    </div>
+    </ViewLayout>
   );
 }

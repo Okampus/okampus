@@ -1,0 +1,252 @@
+query GetMe {
+  me {
+    __typename
+    canManageTenant
+    user {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          bio
+          email
+          name
+          slug
+          status
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+        following {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            name
+            slug
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            team {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      teamMembers(where: { endDate: { _isNull: true } }) {
+        __typename
+        id
+        createdAt
+        startDate
+        endDate
+        teamMemberRoles {
+          role {
+            __typename
+            id
+            createdAt
+            category
+            type
+            name
+            permissions
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+      eventJoins {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        event {
+          __typename
+          id
+          slug
+        }
+      }
+      teamJoins {
+        __typename
+        id
+        createdAt
+        state
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+        }
+      }
+      shortcuts {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+        }
+      }
+      tenant {
+        __typename
+        id
+        createdAt
+        domain
+        pointName
+        eventValidationForm {
+          __typename
+          id
+          name
+          schema
+          type
+        }
+        eventApprovalSteps {
+          __typename
+          id
+          name
+          order
+        }
+        adminTeam {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            bio
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+    }
+  }
+}

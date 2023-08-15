@@ -1,0 +1,6 @@
+mutation InsertAccount($object: AccountInsertInput!) {
+  insertAccountOne(object: $object) {
+    __typename
+    id
+  }
+}

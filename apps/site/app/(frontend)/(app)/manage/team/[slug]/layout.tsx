@@ -8,26 +8,31 @@ import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteC
 
 import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 import { getBanner } from '../../../../../../utils/actor-image/get-banner';
+import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 
-import { teamManageInfo } from '@okampus/shared/graphql';
+import { GetTeamManageDocument } from '@okampus/shared/graphql';
 import { notFound } from 'next/navigation';
 
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { GetTeamManageQuery, GetTeamManageQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeTeamManageDocument = getSubscriptionFromQuery(GetTeamManageDocument);
 
 type ManageTeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ManageTeamLayout({ children, params }: ManageTeamLayoutProps) {
-  const query = [{ where: { actor: { slug: { _eq: params.slug } } }, limit: 1 }, teamManageInfo];
-  const [teamManage] = await getApolloQuery<TeamManageInfo[]>('team', query, true).catch((error) => {
-    console.error(error);
-    return [];
-  });
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetTeamManageQuery, GetTeamManageQueryVariables>({
+    query: GetTeamManageDocument,
+    variables,
+  }).catch();
 
-  if (!teamManage) return notFound();
+  if (!data) return notFound();
+
+  const teamManage = data.team[0];
 
   return (
     <>
-      <ApolloWriteCache values={[[teamManage, teamManageInfo]]} />
-      <ApolloSubscribe selector={{ teamByPk: [{ id: teamManage.id }, teamManageInfo] }} />
+      <ApolloWriteCache values={[[teamManage, GetTeamManageDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeTeamManageDocument} variables={variables} data-superjson />
       <SideBar
         header={
           <SidebarBanner name={teamManage?.actor?.name} banner={getBanner(teamManage.actor.actorImages)?.image?.url} />

@@ -1,12 +1,13 @@
 'use client';
 
-import { typedGql } from '@okampus/shared/graphql';
 import { useSubscription } from '@apollo/client';
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type { DocumentNode, OperationVariables } from '@apollo/client';
 
-export type ApolloSubscribeProps<Z extends ValueTypes['Subscription']> = { selector: Z };
-export default function ApolloSubscribe<Z extends ValueTypes['Subscription']>({ selector }: ApolloSubscribeProps<Z>) {
-  // @ts-ignore
-  useSubscription(typedGql('subscription')(selector));
+export type ApolloSubscribeProps<U extends OperationVariables> = { fragment: DocumentNode; variables?: U };
+export default function ApolloSubscribe<U extends OperationVariables>({
+  fragment,
+  variables,
+}: ApolloSubscribeProps<U>) {
+  useSubscription(fragment, { variables });
   return null;
 }

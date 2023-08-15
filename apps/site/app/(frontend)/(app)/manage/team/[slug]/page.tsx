@@ -17,12 +17,11 @@ import { useTeamManage } from '../../../../../../context/navigation';
 import TextInput from '../../../../../../components/molecules/Input/TextInput';
 import ChangeSetToast from '../../../../../../components/organisms/Form/ChangeSetToast';
 
-import { deleteActorImageMutation, updateActorMutation } from '@okampus/shared/graphql';
+import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
 
 export default function TeamManageProfilePage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -36,29 +35,11 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
     bio: teamManage?.actor?.bio ?? '',
   };
 
-  const [deactivateActorImage] = useMutation(deleteActorImageMutation);
-  const [updateActor] = useMutation(updateActorMutation);
+  const [deactivateActorImage] = useDeleteActorImageMutation();
+  const [updateActor] = useUpdateActorMutation();
 
   const [editingAvatar, setEditingAvatar] = useState(false);
   const [editingBanner, setEditingBanner] = useState(false);
-
-  // const { register, setValue, changed, values, errors, loading, onSubmit, reset } = useForm({
-  //   defaultValues,
-  //   validate: {
-  //     name: {
-  //       check: (value) => {
-  //         if (!value) return 'Le nom est requis';
-  //         if (value.length < 3) return 'Le nom doit contenir au moins 3 caractères';
-  //         if (value.length > 50) return 'Le nom doit contenir au maximum 50 caractères';
-  //         return;
-  //       },
-  //     },
-  //   },
-  //   submit: async (update) => {
-  //     // @ts-ignore
-  //     teamManage?.actor && updateActor({ variables: { update, id: teamManage.actor.id } });
-  //   },
-  // });
 
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues,
@@ -66,8 +47,11 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   });
 
   const onSubmit = handleSubmit((update) => {
-    // @ts-ignore
-    teamManage?.actor && updateActor({ variables: { update, id: teamManage.actor.id } });
+    teamManage?.actor &&
+      updateActor({
+        variables: { update, id: teamManage.actor.id },
+        onCompleted: () => reset({}, { keepValues: true }),
+      });
   });
 
   if (!teamManage) return null;
@@ -75,7 +59,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   return (
     <ViewLayout header="Personalisation">
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
+        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
         <GroupItem heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor
@@ -97,8 +81,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                 <ActionButton
                   action={{
                     label: 'Enlever le logo',
-                    linkOrActionOrMenu: () =>
-                      deactivateActorImage({ variables: { id: avatar.id, now: new Date().toISOString() } }),
+                    linkOrActionOrMenu: () => deactivateActorImage({ variables: { id: avatar.id } }),
                   }}
                 />
               )}
@@ -106,7 +89,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <GroupItem heading="En-tête" groupClassName="flex flex-col gap-4 py-1">
+        <div className="flex flex-col gap-4">
           <TextInput
             {...register('name')}
             // name="name"
@@ -123,7 +106,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
             // value={values.sttus}
             label="Slogan"
           />
-        </GroupItem>
+        </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <GroupItem heading="Bannière">
           <span className="flex flex-col gap-4">
@@ -146,8 +129,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
                 <ActionButton
                   action={{
                     label: 'Enlever',
-                    linkOrActionOrMenu: () =>
-                      deactivateActorImage({ variables: { id: banner.id, now: new Date().toISOString() } }),
+                    linkOrActionOrMenu: () => deactivateActorImage({ variables: { id: banner.id } }),
                   }}
                 />
               )}
@@ -155,119 +137,8 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <GroupItem heading="Présentation longue" groupClassName="flex flex-col gap-5">
-          <TextAreaInput
-            {...register('bio')}
-            // name="bio"
-            // value={values.bio}
-            // onChange={(value) => changeValues((values) => ({ ...values, bio: value }))}
-            // onErrorChange={(error) => changeErrors({ bio: error })}
-            rows={10}
-            label="Description"
-          />
-        </GroupItem>
+        <TextAreaInput {...register('bio')} rows={10} label="Description" />
       </form>
     </ViewLayout>
   );
-
-  // return (
-  //   <ViewLayout header="Personalisation">
-  //     <ChangeSetForm
-  //       // @ts-ignore
-  //       onSave={(update) => teamManage?.actor && updateActor({ variables: { update, id: teamManage.actor.id } })}
-  //       initialValues={initialState}
-  //       checkFields={[]}
-  //       renderChildren={({ changeErrors, changeValues, values }) =>
-  //         teamManage?.actor && (
-  //           <span className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-  //             <GroupItem heading="Logo">
-  //               <span className="flex gap-6">
-  //                 <AvatarEditor
-  //                   showEditor={editingAvatar}
-  //                   setShowEditor={setEditingAvatar}
-  //                   actor={teamManage.actor}
-  //                   size={48}
-  //                   type="team"
-  //                 />
-  //                 <div className="flex flex-col justify-between py-1">
-  //                   <ActionButton
-  //                     action={{
-  //                       label: 'Changer le logo',
-  //                       linkOrActionOrMenu: () => setEditingAvatar(true),
-  //                       type: ActionType.Primary,
-  //                     }}
-  //                   />
-  //                   {avatar && (
-  //                     <ActionButton
-  //                       action={{
-  //                         label: 'Enlever le logo',
-  //                         linkOrActionOrMenu: () =>
-  //                           deactivateActorImage({ variables: { id: avatar.id, now: new Date().toISOString() } }),
-  //                       }}
-  //                     />
-  //                   )}
-  //                 </div>
-  //               </span>
-  //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-  //             <GroupItem heading="En-tête" groupClassName="flex flex-col gap-4 py-1">
-  //               <TextInput
-  //                 onChange={(value) => changeValues((values) => ({ ...values, name: value }))}
-  //                 onErrorChange={(error) => changeErrors({ name: error })}
-  //                 value={values.name}
-  //                  label='Nom' }}
-  //               />
-  //               <TextInput
-  //                 onChange={(value) => changeValues((values) => ({ ...values, status: value }))}
-  //                 onErrorChange={(error) => changeErrors({ status: error })}
-  //                 value={values.status}
-  //                  label='Slogan' }}
-  //               />
-  //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1]" />
-  //             <GroupItem heading="Bannière">
-  //               <span className="flex flex-col gap-4">
-  //                 <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={teamManage.actor} />
-  //                 {/* <BannerImage
-  //                   aspectRatio={BANNER_ASPECT_RATIO}
-  //                   src={banner?.fileUpload.url}
-  //                   name={teamManage.actor.name}
-  //                   className="grow border-4 border-[var(--border-2)]"
-  //                 /> */}
-  //                 <div className="shrink-0 flex justify-between py-1.5">
-  //                   <ActionButton
-  //                     action={{
-  //                       label: 'Changer la bannière',
-  //                       linkOrActionOrMenu: () => setEditingBanner(true),
-  //                       type: ActionType.Primary,
-  //                     }}
-  //                   />
-  //                   {banner && (
-  //                     <ActionButton
-  //                       action={{
-  //                         label: 'Enlever',
-  //                         linkOrActionOrMenu: () =>
-  //                           deactivateActorImage({ variables: { id: banner.id, now: new Date().toISOString() } }),
-  //                       }}
-  //                     />
-  //                   )}
-  //                 </div>
-  //               </span>
-  //             </GroupItem>
-  //             <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-  //             <GroupItem heading="Présentation longue" groupClassName="flex flex-col gap-5">
-  //               <TextInput
-  //                 value={values.bio}
-  //                 onChange={(value) => changeValues((values) => ({ ...values, bio: value }))}
-  //                 onErrorChange={(error) => changeErrors({ bio: error })}
-  //                 rows={10}
-  //                  label='Description' }}
-  //               />
-  //             </GroupItem>
-  //           </span>
-  //         )
-  //       }
-  //     />
-  //   </ViewLayout>
-  // );
 }

@@ -1,0 +1,16 @@
+query ProcessReceipt($key: String!) {
+  processReceipt(key: $key) {
+    __typename
+    address
+    amount
+    date
+    phone
+    vendorName
+    lineItems {
+      __typename
+      name
+      quantity
+      price
+    }
+  }
+}

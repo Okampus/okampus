@@ -5,9 +5,9 @@ import { LocationType } from '@okampus/shared/enums';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import type { LocationBaseInfo } from '@okampus/shared/graphql';
+import type { LocationMinimalInfo } from '../../../types/features/location.info';
 
-export type ILocationProps = { location?: LocationBaseInfo; className?: string };
+export type ILocationProps = { location?: LocationMinimalInfo; className?: string };
 export default function ILocation({ location, className }: ILocationProps) {
   return location ? (
     location.onlineLink ? (

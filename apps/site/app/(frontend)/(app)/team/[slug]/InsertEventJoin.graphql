@@ -1,0 +1,6 @@
+mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
+  insertTeamJoinOne(object: $object) {
+    __typename
+    id
+  }
+}

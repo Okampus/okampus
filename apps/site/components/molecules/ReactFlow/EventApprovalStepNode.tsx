@@ -2,7 +2,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 
-import type { EventApprovalStepDetailsInfo } from '@okampus/shared/graphql';
+import type { EventApprovalStepDetailsInfo } from '../../../types/features/event-approval-step.info';
 
 export type EventApprovalStepNodeProps = {
   data: { eventApprovalStep: EventApprovalStepDetailsInfo };

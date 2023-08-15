@@ -4,12 +4,12 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { IconMail, IconWorldWww } from '@tabler/icons-react';
 import Link from 'next/link';
 
+import type { ActorMinimalInfo } from '../../../types/features/actor.info';
 import type { SocialType } from '@okampus/shared/enums';
-import type { ActorBaseInfo } from '@okampus/shared/graphql';
 
 export type ProfileProps = {
   type?: 'user' | 'team' | 'tenant';
-  actor?: ActorBaseInfo;
+  actor?: ActorMinimalInfo;
   socials: { type: string; url: string; pseudo: string; order: number }[];
 };
 export default function Profile({ type, actor, socials }: ProfileProps) {
@@ -21,7 +21,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
       </div>
       {(socials.length > 0 || actor?.email) && (
         <div className="w-full flex gap-2.5 justify-center items-center bg-[var(--primary)] py-2 px-4">
-          {socials
+          {[...socials]
             ?.sort((a, b) => a.order - b.order)
             .map((social, idx) => (
               <a key={idx} href={social.url} target="_blank" rel="noopener noreferrer" className="w-8 h-8">

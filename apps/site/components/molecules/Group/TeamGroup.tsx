@@ -4,9 +4,10 @@ import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
 
 import TeamLabeled from '../Labeled/TeamLabeled';
 import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import type { TeamBaseInfo } from '@okampus/shared/graphql';
 
-export type TeamGroupProps = { teams: TeamBaseInfo[]; itemsCount?: number; limit?: number; size?: number };
+import type { TeamMinimalInfo } from '../../../types/features/team.info';
+
+export type TeamGroupProps = { teams: TeamMinimalInfo[]; itemsCount?: number; limit?: number; size?: number };
 export default function TeamGroup({ teams, itemsCount, limit = 3, size = 14 }: TeamGroupProps) {
   return (
     <Group

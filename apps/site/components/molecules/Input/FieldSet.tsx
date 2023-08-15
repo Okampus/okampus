@@ -5,7 +5,7 @@ export type FieldSetProps = {
   label?: React.ReactNode;
   required?: boolean;
   className?: string;
-  error?: string | null;
+  error?: string | null | boolean;
   info?: React.ReactNode;
   loading?: boolean;
   description?: string;
@@ -34,13 +34,13 @@ export default function FieldSet({
   return (
     <fieldset className={className}>
       {label && (
-        <legend className="text-2 label-title">
+        <legend className="text-2 label-title mb-2">
           {label} {required && <span className="text-[var(--danger)]">*</span>}
         </legend>
       )}
-      {description && <p className="text-2">{description}</p>}
+      {description && <p className="text-2 mb-2">{description}</p>}
       {children}
-      {subtitle}
+      {subtitle && <div className="mt-2">{subtitle}</div>}
     </fieldset>
   );
 }

@@ -7,18 +7,15 @@ import ActionButton from '../../../../components/molecules/Button/ActionButton';
 
 import { useTenant } from '../../../../context/navigation';
 
-import { insertFollowMutation } from '@okampus/shared/graphql';
-import { useMutation } from '@apollo/client';
-
+import { useInsertFollowMutation } from '@okampus/shared/graphql';
 import type { SocialType } from '@okampus/shared/enums';
 
 export default function TenantPage() {
-  // @ts-ignore
-  const [insertFollow] = useMutation(insertFollowMutation);
+  const [insertFollow] = useInsertFollowMutation();
   const { tenant } = useTenant();
 
-  if (!tenant || !tenant.adminTeam) return null;
-  const adminTeam = tenant.adminTeam;
+  const adminTeam = tenant?.adminTeam;
+  if (!adminTeam) return null;
 
   return (
     <ViewLayout>
@@ -27,21 +24,21 @@ export default function TenantPage() {
           <div className="text-2xl font-bold text-0 mb-6 flex items-center gap-8">
             <AvatarImage size={32} actor={adminTeam.actor} type="team" />
             <div className="flex flex-col gap-2">
-              {adminTeam?.actor.name}
+              {adminTeam.actor.name}
               <ActionButton
                 small={true}
                 className="!w-48"
                 action={{
                   label: 'Suivre',
-                  // @ts-ignore
-                  linkOrActionOrMenu: () => insertFollow({ variables: { object: { actorId: adminTeam.actor.id } } }),
+                  linkOrActionOrMenu: () =>
+                    insertFollow({ variables: { object: { followedActorId: adminTeam.actor.id } } }),
                 }}
               />
             </div>
           </div>
-          {adminTeam?.actor.socials.length > 0 && (
+          {adminTeam.actor.socials.length > 0 && (
             <div className="flex flex-wrap gap-3 items-center">
-              {adminTeam?.actor.socials.map(
+              {adminTeam.actor.socials.map(
                 (social) =>
                   social.url && (
                     <a
@@ -51,7 +48,6 @@ export default function TenantPage() {
                       rel="noopener noreferrer"
                       className="font-medium"
                     >
-                      {/* {social.type} */}
                       <SocialIcon
                         className="!h-8 !w-8"
                         small={true}
@@ -59,7 +55,7 @@ export default function TenantPage() {
                         social={social.type as SocialType}
                       />
                     </a>
-                  )
+                  ),
               )}
             </div>
           )}

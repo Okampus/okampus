@@ -36,13 +36,6 @@ export default memo(
 
     const localRef = useRef<HTMLInputElement>();
 
-    // console.log(
-    //   selected,
-    //   choices,
-    //   props.defaultValue,
-    //   choices.findIndex((choice) => choice.value === props.defaultValue),
-    // );
-
     useEffect(() => {
       if (props.defaultValue && localRef.current) {
         localRef.current.value = props.defaultValue;

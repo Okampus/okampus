@@ -13,7 +13,7 @@ export type GroupItemProps = {
 export default function GroupItem({
   className,
   type = 'menu',
-  groupClassName = 'flex flex-col gap-4',
+  groupClassName = 'flex flex-col gap-2',
   headingClassName,
   heading,
   children,

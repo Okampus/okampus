@@ -6,26 +6,35 @@ import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe'
 import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
-import { projectBaseInfo } from '@okampus/shared/graphql';
+import { GetProjectDocument } from '@okampus/shared/graphql';
+
 import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
-import type { ProjectBaseInfo } from '@okampus/shared/graphql';
+import type { GetProjectQuery, GetProjectQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeProjectDocument = getSubscriptionFromQuery(GetProjectDocument);
 
 type ProjectLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ProjectLayout({ children, params }: ProjectLayoutProps) {
-  const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, projectBaseInfo];
-  const [project] = await getApolloQuery<ProjectBaseInfo[]>('project', query, true).catch(() => []);
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetProjectQuery, GetProjectQueryVariables>({
+    query: GetProjectDocument,
+    variables,
+  }).catch();
 
-  if (!project) notFound();
+  if (!data) notFound();
+
+  const project = data.project[0];
 
   const baseRoute = `/project/${params.slug}`;
   const projectRoute = (route: string) => `${baseRoute}/${route}`;
   return (
     <>
-      <ApolloWriteCache values={[[project, projectBaseInfo]]} />
-      <ApolloSubscribe selector={{ projectByPk: [{ id: project.id }, projectBaseInfo] }} />
+      <ApolloWriteCache values={[[project, GetProjectDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeProjectDocument} variables={variables} data-superjson />
       <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList

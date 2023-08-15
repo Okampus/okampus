@@ -18,7 +18,7 @@ import {
 
 import { createContext, useContext, useMemo, useRef, useState } from 'react';
 
-import type { Placement } from '@floating-ui/react';
+import type { FloatingContext, Placement, ReferenceType } from '@floating-ui/react';
 
 export type PopoverOptions = {
   initialOpen?: boolean;
@@ -52,7 +52,35 @@ export function usePopover({
   shiftOffset = 0,
   controlledOpen,
   onOpenChange,
-}: PopoverOptions = {}) {
+}: PopoverOptions = {}): {
+  arrowRef: React.RefObject<HTMLDivElement>;
+  arrowSize: number;
+  useArrow: boolean;
+  modal?: boolean;
+  open: boolean;
+  labelId?: string;
+  descriptionId?: string;
+  setOpen: (open: boolean) => void;
+  setLabelId: (id: string) => void;
+  setDescriptionId: (id: string) => void;
+  getReferenceProps: (props?: Record<string, unknown>) => Record<string, unknown>;
+  getFloatingProps: (props?: Record<string, unknown>) => Record<string, unknown>;
+  getItemProps: (props?: Record<string, unknown>) => Record<string, unknown>;
+  placement: Placement;
+  x: number;
+  y: number;
+  isPositioned: boolean;
+  update: () => void;
+  strategy: 'fixed' | 'absolute';
+  middlewareData: { arrow?: { x?: number; y?: number } };
+  refs: {
+    reference: React.RefObject<ReferenceType>;
+    floating: React.RefObject<ReferenceType>;
+    setReference: (ref: HTMLElement | null) => void;
+    setFloating: (ref: HTMLElement | null) => void;
+  };
+  context: FloatingContext<ReferenceType>;
+} {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
   const [labelId, setLabelId] = useState<string | undefined>();
   const [descriptionId, setDescriptionId] = useState<string | undefined>();
@@ -90,33 +118,33 @@ export function usePopover({
     ],
   });
 
-  const onClick =
-    triggerOn === 'click'
-      ? // eslint-disable-next-line react-hooks/rules-of-hooks
-        useClick(data.context, { enabled: controlledOpen == null })
-      : // eslint-disable-next-line react-hooks/rules-of-hooks
-        useHover(data.context, { enabled: controlledOpen == null, handleClose: safePolygon() });
+  const openInteractionHook = triggerOn === 'click' ? useClick : useHover;
+  const openInteraction = openInteractionHook(data.context, {
+    enabled: controlledOpen == null,
+    handleClose: safePolygon(),
+  });
+
   const dismiss = useDismiss(data.context);
   const role = useRole(data.context);
 
-  const interactions = useInteractions([onClick, dismiss, role]);
+  const interactions = useInteractions([openInteraction, dismiss, role]);
 
   return useMemo(
     () => ({
-      open,
-      setOpen,
+      arrowRef,
       arrowSize,
-      ...interactions,
-      ...data,
+      useArrow,
       modal,
+      open,
       labelId,
       descriptionId,
+      setOpen,
       setLabelId,
       setDescriptionId,
-      useArrow,
-      arrowRef,
+      ...interactions,
+      ...data,
     }),
-    [open, setOpen, arrowSize, interactions, data, modal, labelId, descriptionId, useArrow]
+    [open, setOpen, arrowSize, interactions, data, modal, labelId, descriptionId, useArrow],
   );
 }
 

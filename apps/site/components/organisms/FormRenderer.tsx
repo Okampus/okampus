@@ -13,11 +13,11 @@ import { useAtom } from 'jotai';
 import { useState } from 'react';
 import { useKeyPressEvent } from 'react-use';
 
-import type { FormBaseInfo } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
+import type { FormMinimalInfo } from '../../types/features/form.info';
 
 export type FormRendererProps = {
-  form: FormBaseInfo;
+  form: FormMinimalInfo;
   formName?: string;
   onSubmit: (data: Submission<FormSchema>) => void;
 };

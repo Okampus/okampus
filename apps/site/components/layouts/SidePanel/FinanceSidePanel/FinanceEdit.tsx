@@ -3,26 +3,24 @@
 import GroupItem from '../../../../components/atoms/Item/GroupItem';
 import FileIcon from '../../../../components/atoms/Icon/FileIcon';
 import DateInput from '../../../molecules/Input/Date/DateInput';
-import SelectInput from '../../../../components/molecules/Input/SelectInput';
+import SelectInput from '../../../molecules/Input/Select/SelectInput';
 import ChangeSetToast from '../../../../components/organisms/Form/ChangeSetToast';
 
 import { notificationAtom } from '../../../../context/global';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
-// import { useForm } from '../../../../hooks/form/useForm';
 
+import { useUpdateFinanceMutation } from '@okampus/shared/graphql';
 import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
-import { updateFinanceMutation } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
 import { bytes, extractPositiveNumber } from '@okampus/shared/utils';
 
-import { useMutation } from '@apollo/client';
 import { IconTrash } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
 import { useForm } from 'react-hook-form';
 
-import type { FinanceBaseInfo } from '@okampus/shared/graphql';
+import type { FinanceMinimalInfo } from '../../../../types/features/finance.info';
 
-export type FinanceEditProps = { finance: FinanceBaseInfo; isRevenue: boolean };
+export type FinanceEditProps = { finance: FinanceMinimalInfo; isRevenue: boolean };
 export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
   const [, setNotification] = useAtom(notificationAtom);
 
@@ -33,10 +31,10 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
     amount: Math.abs(finance.amount).toFixed(2),
     method: finance.method,
     category: finance.category,
-    attachments: finance.financeAttachments.map((attachment) => attachment.fileUpload),
+    attachments: finance.financeAttachments.map(({ attachment }) => attachment),
   };
 
-  const [updateFinance] = useMutation(updateFinanceMutation);
+  const [updateFinance] = useUpdateFinanceMutation();
 
   const { register, setValue, handleSubmit, formState, watch, reset } = useForm({
     defaultValues,
@@ -49,7 +47,6 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
       ...(amount ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) } : {}),
     };
     updateFinance({
-      // @ts-ignore
       variables: { update, id: finance.id },
       onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
       onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
@@ -81,7 +78,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   return (
     <form onSubmit={onSubmit} className="py-4 flex flex-col gap-2">
-      <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
+      <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
 
       {attachments.length > 0 && (
         <>

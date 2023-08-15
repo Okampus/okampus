@@ -7,7 +7,7 @@ import UserLabeled from '../../../../../../../../components/molecules/Labeled/Us
 import { useTeamManage, useTenant } from '../../../../../../../../context/navigation';
 import { download } from '../../../../../../../../utils/download-file';
 
-import { useTypedQuery, generateUserWithPointsInfoSelector } from '@okampus/shared/graphql';
+import { useGetUsersWithPointsQuery } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { groupBy, toCsv } from '@okampus/shared/utils';
 
@@ -16,7 +16,9 @@ import { IconDownload } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
-import type { UserBaseInfo, UserWithPointsInfo } from '@okampus/shared/graphql';
+import type { GetUsersWithPointsQuery } from '@okampus/shared/graphql';
+
+type UserWithPointsInfo = NonNullable<GetUsersWithPointsQuery['user'][number]>;
 
 type Month = {
   events: UserWithPointsInfo['eventJoins'];
@@ -24,7 +26,7 @@ type Month = {
   missions: UserWithPointsInfo['missionJoins'];
 };
 
-type GroupedUser = { user: UserBaseInfo; months: { [key: string]: Month } };
+type GroupedUser = { user: UserWithPointsInfo; months: { [key: string]: Month } };
 
 function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): GroupedUser[] {
   const groupedUsers: GroupedUser[] = [];
@@ -66,39 +68,25 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
   const { teamManage } = useTeamManage(params.slug);
   const { tenant } = useTenant();
 
-  const userWithPointsInfo = generateUserWithPointsInfoSelector(teamManage?.id);
-  const { data } = useTypedQuery({
-    user: [
-      {
-        where: {
-          _or: [
-            {
-              eventJoins: {
-                participationProcessedAt: { _isNull: false },
-                event: { eventOrganizes: { teamId: { _eq: teamManage?.id } } },
-              },
-            },
-            { actions: { pointsProcessedAt: { _isNull: false }, teamId: { _eq: teamManage?.id } } },
-            { missionJoins: { pointsProcessedAt: { _isNull: false }, mission: { teamId: { _eq: teamManage?.id } } } },
-          ],
-        },
-      },
-      userWithPointsInfo,
-    ],
-  });
+  // const userWithPointsInfo = generateUserWithPointsInfoSelector(teamManage?.id);
+  const { data } = useGetUsersWithPointsQuery({ variables: { slug: params.slug } });
 
   const months = useMemo(() => {
     const startingMonth = 9;
     const now = new Date();
 
     const monthsSinceStart = [];
-    for (let m = startingMonth, y = now.getFullYear() - 1; y < now.getFullYear() || m <= now.getMonth() + 1; m++) {
-      if (m > 11) {
-        m = 0;
-        y++;
+    for (
+      let month = startingMonth, year = now.getFullYear() - 1;
+      year < now.getFullYear() || month <= now.getMonth() + 1;
+      month++
+    ) {
+      if (month > 11) {
+        month = 0;
+        year++;
       }
 
-      monthsSinceStart.push(`${y}-${m.toString()}`);
+      monthsSinceStart.push(`${year}-${month.toString()}`);
     }
 
     return monthsSinceStart;
@@ -108,10 +96,10 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
 
   const columns = [
     {
-      data: ({ user }: { user: UserBaseInfo }) => user.individual.actor.name,
+      data: ({ user }: { user: UserWithPointsInfo }) => user.individual.actor.name,
       label: 'Membre / Participant',
-      render: ({ user }: { user: UserBaseInfo }) => {
-        return <UserLabeled individual={user.individual} id={user.id} />;
+      render: ({ user }: { user: UserWithPointsInfo }) => {
+        return <UserLabeled user={user} />;
       },
     },
     ...months.map((month) => ({
@@ -146,28 +134,35 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
   ];
 
   return (
-    <ViewLayout header={`Bilan ${tenant?.pointName}`} scrollable={false} bottomPadded={false}>
-      <ActionButton
-        className="mb-4"
-        action={{
-          iconOrSwitch: <IconDownload />,
-          label: 'Exporter le tableau',
-          linkOrActionOrMenu: () => {
-            const csv = toCsv(users, columns);
-            download(
-              URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-              `${tenant?.pointName}-${teamManage?.actor.slug}-${new Date().toISOString()}.csv`
-            );
-          },
-          type: ActionType.Action,
-        }}
-      />
+    <ViewLayout
+      header={`Bilan ${tenant?.pointName}`}
+      scrollable={false}
+      bottomPadded={false}
+      mobilePadded={false}
+      actions={[
+        <ActionButton
+          key="export"
+          action={{
+            iconOrSwitch: <IconDownload />,
+            label: 'Exporter le tableau',
+            linkOrActionOrMenu: () => {
+              const csv = toCsv(users, columns);
+              download(
+                URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                `${tenant?.pointName}-${teamManage?.actor.slug}-${new Date().toISOString()}.csv`,
+              );
+            },
+            type: ActionType.Action,
+          }}
+        />,
+      ]}
+    >
       <Dashboard
         columns={[
           {
             label: 'Membre / Participant',
             render: ({ user }) => {
-              return <UserLabeled individual={user.individual} id={user.id} />;
+              return <UserLabeled user={user} />;
             },
           },
           ...months.map((month) => ({

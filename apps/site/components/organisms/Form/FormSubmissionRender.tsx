@@ -9,34 +9,33 @@ export default function FormSubmissionRender({ submission, schema }: FormSubmiss
         const field = schema.find((field) => field.name === name);
         if (!field) return null;
 
-        return (
-          <div key={name} className="flex flex-col gap-1.5">
-            <label className="label-title">{field.label}</label>
-            <span className="text-1 text-sm">
-              {field.type === ControlType.MultiCheckbox || field.type === ControlType.Radio ? (
-                <div className="flex gap-6">
-                  {field.options?.map((optionValue, idx) => (
-                    <div key={idx} className="flex items-center gap-2 pointer-events-none">
-                      {field.type === ControlType.MultiCheckbox ? (
-                        <input type="checkbox" checked={(value as FormFieldValue<typeof field.type>)[idx]} />
-                      ) : (
-                        <input type="radio" checked={idx === value} />
-                      )}
-                      <span>{optionValue.label}</span>
-                    </div>
-                  ))}
+        let render;
+        if (field.type === ControlType.MultiCheckbox || field.type === ControlType.Radio) {
+          render = (
+            <div className="flex gap-6">
+              {field.options?.map((option, idx) => (
+                <div key={option.value} className="flex items-center gap-2 pointer-events-none">
+                  {field.type === ControlType.MultiCheckbox ? (
+                    <input type="checkbox" checked={(value as FormFieldValue<typeof field.type>)[idx]} />
+                  ) : (
+                    <input type="radio" checked={option.value === value} />
+                  )}
+                  <span>{option.label}</span>
                 </div>
-              ) : field.type === ControlType.Checkbox ? (
-                value ? (
-                  'Oui'
-                ) : (
-                  'Non'
-                )
-              ) : (
-                JSON.stringify(value)
-              )}
-            </span>
-          </div>
+              ))}
+            </div>
+          );
+        } else if (field.type === ControlType.Checkbox) {
+          render = value ? 'Oui' : 'Non';
+        } else {
+          render = JSON.stringify(value);
+        }
+
+        return (
+          <li key={name} className="flex flex-col gap-1.5">
+            <label className="label-title">{field.label}</label>
+            <span className="text-1 text-sm">{render}</span>
+          </li>
         );
       })}
     </div>

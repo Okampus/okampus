@@ -1,6 +1,6 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
 // import NumberInput from '../../molecules/Input/NumberInput';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
 import TextInput from '../../molecules/Input/TextInput';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';

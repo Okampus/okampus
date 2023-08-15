@@ -8,11 +8,12 @@ import { IconCloud, IconRotateClockwise2 } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 
+import type { LogMinimalInfo } from '../../../types/features/log.info';
 import type { TOptions } from '../../../utils/i18n/translate';
-import type { LogBaseInfo } from '@okampus/shared/graphql';
+
 import type { JSONType, LogDiff } from '@okampus/shared/types';
 
-function getActor(log: LogBaseInfo): { name: string; image: React.ReactNode } {
+function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode } {
   const actor = log.createdBy?.actor;
   const className = 'h-[2rem] w-[2rem] rounded-[50%] shrink-0';
   if (actor)
@@ -33,7 +34,7 @@ function getActor(log: LogBaseInfo): { name: string; image: React.ReactNode } {
 
 function getPayload(
   t: (key: string, data?: TOptions) => string,
-  log: LogBaseInfo
+  log: LogMinimalInfo,
 ): { actionType: string; payload: Record<string, unknown> } {
   if (log.eventType === EventType.Update) {
     const diffFields = Object.keys(log.diff as LogDiff);
@@ -88,7 +89,7 @@ function renderValue(field: JSONType, type: DiffType, relType?: string) {
   return null;
 }
 
-export type LogItemProps = { log: LogBaseInfo };
+export type LogItemProps = { log: LogMinimalInfo };
 export default function LogItem({ log }: LogItemProps) {
   const { name, image } = getActor(log);
   const { t, format } = useTranslation();

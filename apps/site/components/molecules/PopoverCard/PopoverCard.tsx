@@ -31,7 +31,7 @@ export default function PopoverCard({
   const rounded = getAvatarRounded(type);
 
   return (
-    <div className={clsx(className, 'flex flex-col w-[22rem] rounded-xl overflow-hidden')}>
+    <div className={clsx(className, 'flex flex-col w-full md:w-[22rem] rounded-t-2xl md:rounded-2xl overflow-hidden')}>
       <BannerImage src={banner} name={name} className={banner ? 'h-fit' : 'h-16'} />
       <div className="text-0 p-6 relative">
         <div

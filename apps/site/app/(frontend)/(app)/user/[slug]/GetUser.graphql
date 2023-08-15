@@ -1,0 +1,65 @@
+query GetUser($slug: String!) {
+  user(where: { individual: { actor: { slug: { _eq: $slug } } } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    firstName
+    lastName
+    individual {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        slug
+        status
+        bio
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+    }
+    teamMembers(where: { endDate: { _isNull: true } }) {
+      __typename
+      id
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          slug
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+}

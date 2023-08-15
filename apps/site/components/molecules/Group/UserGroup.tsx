@@ -4,9 +4,10 @@ import UserLabeled from '../Labeled/UserLabeled';
 import UserPopoverCard from '../PopoverCard/UserPopoverCard';
 
 import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
-import type { UserBaseInfo } from '@okampus/shared/graphql';
 
-export type UserGroupProps = { users: UserBaseInfo[]; itemsCount?: number; limit?: number; size?: number };
+import type { UserMinimalInfo } from '../../../types/features/user.info';
+
+export type UserGroupProps = { users: UserMinimalInfo[]; itemsCount?: number; limit?: number; size?: number };
 export default function UserGroup({ users, itemsCount, limit = 3, size = 14 }: UserGroupProps) {
   return (
     <Group
@@ -21,7 +22,7 @@ export default function UserGroup({ users, itemsCount, limit = 3, size = 14 }: U
           <AvatarImage actor={user.individual?.actor} size={size} type="user" />
         </UserPopoverCard>
       )}
-      renderListElement={(user) => <UserLabeled id={user.id} individual={user.individual} />}
+      renderListElement={(user) => <UserLabeled user={user} />}
     />
   );
 }

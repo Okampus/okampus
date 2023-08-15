@@ -3,13 +3,12 @@
 import AvatarImage from '../../../../../../../../components/atoms/Image/AvatarImage';
 import EmptyStateImage from '../../../../../../../../components/atoms/Image/EmptyStateImage';
 import FormItem from '../../../../../../../../components/atoms/Item/FormItem';
-import GroupItem from '../../../../../../../../components/atoms/Item/GroupItem';
 import FormLayout from '../../../../../../../../components/atoms/Layout/FormLayout';
 import ModalLayout from '../../../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../../../components/atoms/Layout/ViewLayout';
 import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
 import FormSubmissionRender from '../../../../../../../../components/organisms/Form/FormSubmissionRender';
-import SelectInput from '../../../../../../../../components/molecules/Input/SelectInput';
+import SelectInput from '../../../../../../../../components/molecules/Input/Select/SelectInput';
 import SwitchInput from '../../../../../../../../components/molecules/Input/SwitchInput';
 import RadioFreeInput from '../../../../../../../../components/molecules/Input/Selector/RadioFreeInput';
 import UserLabeled from '../../../../../../../../components/molecules/Labeled/UserLabeled';
@@ -18,23 +17,24 @@ import ChangeSetToast from '../../../../../../../../components/organisms/Form/Ch
 
 import { notificationAtom } from '../../../../../../../../context/global';
 import { useTeamManage } from '../../../../../../../../context/navigation';
-import { useTypedQueryAndSubscribe } from '../../../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../../../../hooks/apollo/useQueryAndSubscribe';
 import { useModal } from '../../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
 // import { useForm } from '../../../../../../../../hooks/form/useForm';
 
+import { GetTeamJoinsDocument, useUpdateTeamJoinMutation, useUpdateTeamMutation } from '@okampus/shared/graphql';
 import { ReactComponent as AddUserEmptyState } from '@okampus/assets/svg/empty-state/add-user.svg';
 
 import { ApprovalState, ControlType } from '@okampus/shared/enums';
-import { teamJoinWithUser, updateTeamJoinMutation, updateTeamMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 // import { extractPositiveNumber } from '@okampus/shared/utils';
 
-import { useMutation } from '@apollo/client';
+import { extractPositiveNumber } from '@okampus/shared/utils';
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import type { GetTeamJoinsQuery, GetTeamJoinsQueryVariables } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
 
 type TeamManageTeamJoinsValues = {
@@ -53,7 +53,7 @@ const feesItems = [
   { label: 'Gratuit', value: '0.00' },
   { label: '5€', value: '5.00' },
   { label: '10€', value: '10.00' },
-  { label: '20€', value: '20.00' },
+  { label: '15€', value: '15.00' },
 ];
 
 // TODO: manage archives
@@ -64,8 +64,8 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   const [, setNotification] = useAtom(notificationAtom);
   const { closeModal, openModal } = useModal();
 
-  const [updateTeamJoin] = useMutation(updateTeamJoinMutation);
-  const [updateTeam] = useMutation(updateTeamMutation);
+  const [updateTeamJoin] = useUpdateTeamJoinMutation();
+  const [updateTeam] = useUpdateTeamMutation();
 
   // const [query, setQuery] = useState('');
   // const [selectedStates, setSelectedStates] = useState<ApprovalState[]>([]);
@@ -74,7 +74,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
     () =>
       teamManage?.teamHistories.sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())[0]
         .eventDate,
-    [teamManage?.teamHistories]
+    [teamManage?.teamHistories],
   );
 
   const where = useMemo(() => {
@@ -91,50 +91,33 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
     };
   }, [archiveDate, teamManage?.id]);
 
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'teamJoin', selector: [{ where }, teamJoinWithUser] });
+  const { data } = useQueryAndSubscribe<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>({
+    query: GetTeamJoinsDocument,
+    variables: { where },
+  });
 
   const defaultValues = {
     membershipDuration: teamManage?.membershipDuration ?? '',
-    membershipFees: teamManage?.membershipFees.toString() ?? '',
+    membershipFees: teamManage?.membershipFees.toFixed(2) ?? '',
     isJoinFormActive: teamManage?.isJoinFormActive ?? true,
   };
 
-  // const { data, subscribeToMore } = useTypedQuery({ teamJoin: [{ where }, teamJoinWithUser] });
-  // useEffect(() => {
-  //   subscribeToMore({
-  //     document: typedGql('subscription')({ teamJoin: [{ where }, teamJoinWithUser] }),
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data) return prev;
-  //       return { teamJoin: subscriptionData.data.teamJoin };
-  //     },
-  //   });
-  // }, [subscribeToMore, where]);
+  const teamJoins = data?.teamJoin;
 
-  // ISO 8601 Durations
-
-  // const { errors, register, setValue, values, loading, changed, onSubmit } = useForm({
-  //   defaultValues,
-  //   submit: async (values) => {
-  //     const update = {
-  //       membershipDuration: values.membershipDuration,
-  //       membershipFees: values.membershipFees ? extractPositiveNumber(values.membershipFees) || 0 : 0,
-  //       isJoinFormActive: values.isJoinFormActive,
-  //     };
-
-  //     // @ts-ignore
-  //     updateTeam({ variables: { id: teamManage.id, update } });
-  //   },
-  // });
-
-  const { register, setValue, reset, handleSubmit, formState } = useForm({
+  const { control, register, setValue, reset, handleSubmit, formState, watch } = useForm({
     defaultValues,
   });
 
-  if (!teamManage || !teamManage.joinForm) return null;
+  const membershipFees = watch('membershipFees');
+  if (!teamManage) return null;
 
-  const onSubmit = handleSubmit((update) => {
-    // @ts-ignore
-    updateTeam({ variables: { id: teamManage.id, update } });
+  const onSubmit = handleSubmit((updateData) => {
+    const update = {
+      ...updateData,
+      membershipFees: extractPositiveNumber(updateData.membershipFees) ?? 0,
+    };
+
+    updateTeam({ variables: { id: teamManage.id, update }, onCompleted: () => reset({}, { keepValues: true }) });
   });
 
   const attributedRoleSchema = [
@@ -148,90 +131,49 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   ] as const;
 
   return (
-    <ViewLayout header="Adhésions" bottomPadded={false} scrollable={false}>
+    <ViewLayout header="Adhésions">
       <form onSubmit={onSubmit}>
-        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={reset} />
+        <ChangeSetToast
+          // FIXME: RadioFreeInput behaves weirdly with useForm, probably because of the synthetic event
+          changed={formState.isDirty || membershipFees !== defaultValues.membershipFees}
+          errors={{}}
+          loading={[]}
+          onCancel={() => reset(defaultValues)}
+        />
         <SwitchInput
           {...register('isJoinFormActive')}
           // name="isJoinFormActive"
           label="Formulaire d'adhésion activé ?"
           // checked={values.isJoinFormActive}
           // onChange={(value) => changeValues((current) => ({ ...current, isJoinFormActive: value }))}
-          description="Si le formulaire est désactivé, les adhérents pourront candidater à l'équipe en un clic."
+          description="Si le formulaire est désactivé, les adhérents candidateront à l'équipe en un clic, sans remplir de formulaire."
         />
-        <FormItem form={teamManage.joinForm} />
-        <GroupItem
-          heading="Paramètres d'adhésion"
-          groupClassName="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-12"
-        >
+        <div className="my-6">
+          <FormItem form={teamManage.joinForm} />
+        </div>
+        <div className="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
           <RadioFreeInput
-            {...register('membershipFees')}
+            defaultValue={defaultValues.membershipFees}
+            {...register('membershipFees', {
+              onChange: (e) => {
+                setValue('membershipFees', e.target.value, { shouldDirty: true });
+              },
+            })}
             options={feesItems}
-            label="Cotisation"
-            endContent={<span className="px-2">€</span>}
+            label="Montant de la côtisation"
+            endContent="€"
             placeholder="Autre montant"
           />
           <Controller
+            control={control}
             name="membershipDuration"
-            render={({ field }) => (
-              <SelectInput {...field} label="Renouvellement des adhésions" options={membershipDurationItems} />
-            )}
+            render={({ field }) => {
+              return <SelectInput {...field} options={membershipDurationItems} label="Renouvellement des adhésions" />;
+            }}
           />
-        </GroupItem>
-        {/* <ChangeSetForm
-        className="flex flex-col gap-6"
-        checkFields={[]}
-        initialValues={initialValues}
-        onSave={(values) => {
-          const update = {
-            membershipDuration: values.membershipDuration,
-            membershipFees: values.membershipFees ? extractPositiveNumber(values.membershipFees) || 0 : 0,
-            isJoinFormActive: values.isJoinFormActive,
-          };
-
-          // @ts-ignore
-          updateTeam({ variables: { id: teamManage.id, update } });
-        }}
-        renderChildren={({ changeValues, values }) => {
-          return (
-            <>
-              <SwitchInput
-                name="isJoinFormActive"
-                label="Formulaire d'adhésion activé ?"
-                checked={values.isJoinFormActive}
-                onChange={(value) => changeValues((current) => ({ ...current, isJoinFormActive: value }))}
-                subtitle="Si le formulaire est désactivé, les adhérents pourront candidater à l'équipe en un clic."
-              />
-              <FormItem form={teamManage.joinForm} />
-              <GroupItem
-                heading="Paramètres d'adhésion"
-                groupClassName="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-12"
-              >
-                <RadioFreeInput
-                  value={values.membershipFees}
-                  onChange={(value) => changeValues((current) => ({ ...current, membershipFees: value }))}
-                  options={feesItems}
-                  name="membershipFees"
-                  label="Cotisation"
-                  props={{
-                    options: { name: 'membershipFees', placeholder: 'Autre' },
-                    suffix: <div className="px-2">€</div>,
-                  }}
-                />
-                <SelectInput
-                  name="membershipDuration"
-                  label="Renouvellement des adhésions"
-                  value={values.membershipDuration}
-                  onChange={(value) => changeValues((current) => ({ ...current, membershipDuration: value }))}
-                  options={membershipDurationItems}
-                />
-              </GroupItem>
-            </>
-          );
-        }}
-      /> */}
+        </div>
         <ApprovalDashboard
-          className="mt-8"
+          className="pt-8"
           stateFilter={(join, states) => states.includes(join.state as ApprovalState)}
           searchFilter={(join, query) => {
             const lowerQuery = query.toLowerCase();
@@ -249,14 +191,13 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           }))}
           renderHeader={(join) => (
             <div className="flex items-center gap-2.5 text-0">
-              Adhésion de <UserLabeled individual={join.joinedBy.individual} id={join.joinedBy.id} small={true} />
+              Adhésion de <UserLabeled user={join.joinedBy} small={true} />
             </div>
           )}
           renderItem={(join) => (
             <UserLabeled
               showCardOnClick={false}
-              individual={join.joinedBy.individual}
-              id={join.joinedBy.id}
+              user={join.joinedBy}
               content={t(`enums.ApprovalState.${join.state}`)}
             />
           )}
@@ -298,7 +239,6 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                                     onSubmit={(values) => {
                                       const update = { state: ApprovalState.Approved, receivedRoleId: values.role };
                                       updateTeamJoin({
-                                        // @ts-ignore
                                         variables: { id: join.id, update },
                                         onCompleted: () => {
                                           setNotification({
@@ -323,7 +263,6 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
                           type: ActionType.Danger,
                           linkOrActionOrMenu: () =>
                             updateTeamJoin({
-                              // @ts-ignore
                               variables: { id: join.id, update: { state: ApprovalState.Rejected } },
                               onCompleted: () => {
                                 setNotification({
@@ -341,7 +280,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
               </div>
             </div>
           )}
-          items={data?.teamJoin || []}
+          items={teamJoins || []}
           emptyState={
             <EmptyStateImage
               image={<AddUserEmptyState className="max-w-sm" />}

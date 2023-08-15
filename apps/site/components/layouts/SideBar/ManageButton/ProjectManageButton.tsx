@@ -17,8 +17,8 @@ export default function ProjectManageButton({ slug, manage }: ProjectManageButto
     <Link
       href={manage ? `/manage/project/${slug}` : `/project/${slug}`}
       className={clsx(
-        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-4',
-        manage ? 'text-0' : 'text-opposite bg-opposite'
+        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-1',
+        manage ? 'text-0' : 'text-opposite bg-opposite',
       )}
     >
       {t(manage ? 'common.manage.project' : 'common.public.project')}

@@ -1,18 +1,19 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
-import LegalUnitInput from '../../molecules/Input/LegalUnitInput';
+import LegalUnitInput from '../../molecules/Input/LegalUnit/LegalUnitInput';
 // import NumberInput from '../../molecules/Input/NumberInput';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
+import TextAreaInput from '../../molecules/Input/TextAreaInput';
+import TextInput from '../../molecules/Input/TextInput';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import TextAreaInput from '../../molecules/Input/TextAreaInput';
-import TextInput from '../../molecules/Input/TextInput';
+import { useGetProjectQuery } from '@okampus/shared/graphql';
+
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
-import { projectBaseInfo, useTypedQuery } from '@okampus/shared/graphql';
 
 import { useMemo } from 'react';
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '../../../context/navigation';
 
 import type { transactionFormDefaultValues } from './TransactionForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
@@ -22,14 +23,12 @@ type SummaryFormStepProps = { teamManage: TeamManageInfo; values: Context['value
 export default function TransactionSummaryStep({ teamManage, values, setValues }: SummaryFormStepProps) {
   const { t } = useTranslation();
 
-  const { data: projectData } = useTypedQuery({
-    project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo],
-  });
+  const { data: projectData } = useGetProjectQuery({ variables: { slug: teamManage.actor.slug } });
 
   const selectedProject = projectData?.project.find((project) => project.id === values.projectId) || null;
   const src = useMemo(
     () => (values.attachments ? URL.createObjectURL(values.attachments[0]) : ''),
-    [values.attachments]
+    [values.attachments],
   );
 
   return (
@@ -69,14 +68,7 @@ export default function TransactionSummaryStep({ teamManage, values, setValues }
             name="payedBy"
             options={
               teamManage?.teamMembers.map((teamMember) => ({
-                label: (
-                  <UserLabeled
-                    individual={teamMember.user.individual}
-                    id={teamMember.user.id}
-                    showCardOnClick={false}
-                    small={true}
-                  />
-                ),
+                label: <UserLabeled user={teamMember.user} showCardOnClick={false} small={true} />,
                 value: teamMember.user.individual?.id,
               })) || []
             }

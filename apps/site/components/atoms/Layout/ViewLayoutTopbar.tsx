@@ -1,14 +1,19 @@
 'use client';
 
+import Skeleton from '../Skeleton/Skeleton';
+
 import { isSidePanelOpenAtom, isSidebarOpenAtom } from '../../../context/global';
 import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
+
 import { IconMenu2, IconUsers } from '@tabler/icons-react';
+
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 
 export type ViewLayoutTopbarProps = {
-  header?: React.ReactNode;
-  headerSmall?: React.ReactNode;
+  header?: string | null;
+  headerPrefix?: React.ReactNode;
+  headerPrefixSmall?: React.ReactNode;
   actions?: React.ReactNode[];
   actionsSmall?: React.ReactNode[];
   sidePanelIcon?: React.ReactNode;
@@ -16,7 +21,8 @@ export type ViewLayoutTopbarProps = {
 
 export default function ViewLayoutTopbar({
   header,
-  headerSmall,
+  headerPrefix,
+  headerPrefixSmall,
   actions,
   actionsSmall,
   sidePanelIcon = <IconUsers />,
@@ -28,36 +34,33 @@ export default function ViewLayoutTopbar({
 
   const isMobile = currentWindowSize === 'mobile';
 
-  const displayedActions = isMobile ? actionsSmall ?? actions : actions;
-  const displayedHeader = isMobile ? headerSmall ?? header : header;
+  const displayedActions = isMobile ? actionsSmall : actions;
 
-  const isTitle = typeof displayedHeader !== 'function' && typeof displayedHeader !== 'object';
-
-  let inner = displayedHeader;
-  if (isTitle)
-    inner = isMobile ? (
-      <h1 className="text-xl font-semibold text-0 line-clamp-1">{displayedHeader}</h1>
-    ) : (
-      <h1 className="page-title line-clamp-1">{displayedHeader}</h1>
-    );
+  const title = header ? (
+    <h1 className="page-title line-clamp-1">{header}</h1>
+  ) : header === null ? (
+    <Skeleton className="w-48 h-6 md:h-12" />
+  ) : null;
 
   const className = clsx(
-    'flex items-start justify-between gap-8 w-full px-[var(--px-content)]',
-    isMobile ? 'py-3 mb-4 border-b border-color-2 sticky top-0 bg-main z-20' : 'mb-10 pt-[var(--py-content)]'
+    'flex justify-between gap-8 w-full px-[var(--px-content)] min-h-[var(--h-topbar)] z-20 border-color-2',
+    'md-max:border-b md-max:sticky md-max:items-center md-max:top-0 md-max:bg-[var(--bg-main)]',
+    'md:items-start md:mb-10 md:pt-[var(--py-content)]',
   );
 
   return (
     <nav className={className}>
-      <div className="flex items-center gap-4">
-        {isMobile && (
-          <button onClick={() => setIsSideBarOpen(!isSidebarOpen)}>
-            <IconMenu2 />
-          </button>
-        )}
-        {inner}
+      <div className="flex items-center gap-6">
+        <button className="md:hidden" onClick={() => setIsSideBarOpen(!isSidebarOpen)}>
+          <IconMenu2 />
+        </button>
+        <div className="flex items-center gap-4">
+          {headerPrefix && (isMobile ? headerPrefixSmall ?? headerPrefix : headerPrefix)}
+          {title}
+        </div>
       </div>
       {(displayedActions?.length || sidePanelIcon) && (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {displayedActions}
           <button
             className={isSidePanelOpen ? 'text-0' : 'text-3'}

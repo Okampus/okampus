@@ -1,0 +1,21 @@
+mutation InsertActorImage($object: ActorImageInsertInput!) {
+  insertActorImageOne(object: $object) {
+    __typename
+    id
+    createdAt
+    type
+    image {
+      __typename
+      id
+      url
+    }
+    actor {
+      __typename
+      id
+      email
+      name
+      slug
+      website
+    }
+  }
+}

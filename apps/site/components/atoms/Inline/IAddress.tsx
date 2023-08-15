@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import type { AddressBaseInfo } from '@okampus/shared/graphql';
+import type { AddressMinimalInfo } from '../../../types/features/address.info';
 
-export type IAddressProps = { address: AddressBaseInfo; className?: string };
+export type IAddressProps = { address: AddressMinimalInfo; className?: string };
 export default function IAddress({ address, className }: IAddressProps) {
   const addressString = `${address.streetNumber} ${address.street}, ${address.city} ${address.zip}`;
 

@@ -54,7 +54,6 @@ export default function SelectInput<T>({
   useEffect(() => {
     const item = options.find((choice) => choice.value === value);
     setSelectedItem(item ?? null);
-    // console.log('Select', item, value, options);
   }, [options, value]);
 
   const sizeMiddleware = size({

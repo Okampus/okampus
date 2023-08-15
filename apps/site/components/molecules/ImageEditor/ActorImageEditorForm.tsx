@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import ActionButton from '../Button/ActionButton';
 import Swiper from '../Scroll/Swiper';
 
@@ -14,11 +15,12 @@ import { IconPhotoPlus } from '@tabler/icons-react';
 import { useRef, useState } from 'react';
 
 import { Cropper } from 'react-advanced-cropper';
-import type { ActorBaseInfo } from '@okampus/shared/graphql';
+
+import type { ActorMinimalInfo } from '../../../types/features/actor.info';
 import type { CropperProps, CropperRef } from 'react-advanced-cropper';
 
 export type ImageEditorFormProps = {
-  actor: ActorBaseInfo;
+  actor: ActorMinimalInfo;
   actorImageType: ActorImageType.Avatar | ActorImageType.Banner;
   cropperProps?: CropperProps;
   imageType?: 'user' | 'team' | 'tenant';
@@ -35,7 +37,7 @@ export default function ActorImageEditorForm({
   const images =
     actorImageType === ActorImageType.Avatar
       ? actor.actorImages.filter(
-          (image) => image.type === ActorImageType.Avatar || image.type === ActorImageType.AvatarDarkMode
+          (image) => image.type === ActorImageType.Avatar || image.type === ActorImageType.AvatarDarkMode,
         )
       : actor.actorImages.filter((image) => image.type === ActorImageType.Banner);
 
@@ -85,7 +87,7 @@ export default function ActorImageEditorForm({
               stencilProps={{ aspectRatio }}
               className="rounded-2xl overflow-hidden min-h-[16rem] min-w-[16rem]"
             />
-            <div className="flex flex-col gap-4 items-start">
+            <div className="flex flex-col gap-4 items-start shrink-0">
               {previewState && (
                 <>
                   <img src={previewState} alt="preview" style={{ aspectRatio, borderRadius, height: '6rem' }} />
@@ -112,7 +114,7 @@ export default function ActorImageEditorForm({
                   onUpload(
                     new File([dataURItoBlob(canvas.toDataURL('image/webp'))], `${imageType}.webp`, {
                       type: 'image/webp',
-                    })
+                    }),
                   );
                 },
               }}

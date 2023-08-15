@@ -1,11 +1,11 @@
 import ActionButton from '../../molecules/Button/ActionButton';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import FieldSet from '../../molecules/Input/FieldSet';
 import { IconX } from '@tabler/icons-react';
 
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '../../../context/navigation';
 import type { eventFormDefaultValues } from './EventForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 
@@ -19,16 +19,9 @@ const SupervisorInput = ({ teamManage, values, setValues, idx }: SupervisorInput
       label="Membre de l'équipe"
       name={`supervisorIds.${idx}`}
       options={
-        teamManage?.teamMembers.map((teamMember) => ({
-          label: (
-            <UserLabeled
-              individual={teamMember.user.individual}
-              id={teamMember.user.id}
-              showCardOnClick={false}
-              small={true}
-            />
-          ),
-          value: teamMember.id,
+        teamManage?.teamMembers.map(({ id, user }) => ({
+          label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
+          value: id,
         })) || []
       }
       value={values.supervisorIds[idx]}

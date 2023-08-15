@@ -1,5 +1,5 @@
 import RadioInput from '../../molecules/Input/Selector/RadioInput';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
@@ -9,7 +9,7 @@ import { PayedByType } from '@okampus/shared/enums';
 
 import type { transactionFormDefaultValues } from './TransactionForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '../../../context/navigation';
 
 type Context = FormStepContext<typeof transactionFormDefaultValues>;
 type PayedByStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
@@ -19,16 +19,9 @@ export default function TransactionPayedByStep({ teamManage, values, setValues }
 
   const items = Object.keys(PayedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
 
-  const options = teamManage.teamMembers.map((teamMember) => ({
-    label: (
-      <UserLabeled
-        individual={teamMember.user.individual}
-        id={teamMember.user.id}
-        showCardOnClick={false}
-        small={true}
-      />
-    ),
-    value: teamMember.user.individual.id,
+  const options = teamManage.teamMembers.map(({ user }) => ({
+    label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
+    value: user.individual.id,
   }));
 
   return (

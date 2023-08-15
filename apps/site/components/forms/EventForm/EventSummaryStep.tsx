@@ -1,22 +1,24 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
-import SelectInput from '../../molecules/Input/SelectInput';
+import SelectInput from '../../molecules/Input/Select/SelectInput';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import TextInput from '../../molecules/Input/TextInput';
 import ActionButton from '../../molecules/Button/ActionButton';
 import TextAreaInput from '../../molecules/Input/TextAreaInput';
-import { projectBaseInfo, useTypedQuery } from '@okampus/shared/graphql';
+
+import { useGetProjectsSelectQuery } from '@okampus/shared/graphql';
 
 import { IconX } from '@tabler/icons-react';
+
 import type { eventFormDefaultValues } from './EventForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo } from '../../../context/navigation';
 
 type Context = FormStepContext<typeof eventFormDefaultValues>;
 type SummaryStepProps = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
 export default function EventSummaryStep({ teamManage, values, setValues }: SummaryStepProps) {
-  const { data: projectData } = useTypedQuery({
-    project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo],
+  const { data: projectData } = useGetProjectsSelectQuery({
+    variables: { slug: teamManage.actor.slug },
   });
 
   const SupervisorInput = ({ idx }: { idx: number }) => (
@@ -25,14 +27,7 @@ export default function EventSummaryStep({ teamManage, values, setValues }: Summ
         name="supervisorIds"
         label="Membre de l'équipe"
         options={teamManage.teamMembers.map((teamMember) => ({
-          label: (
-            <UserLabeled
-              individual={teamMember.user.individual}
-              id={teamMember.user.id}
-              showCardOnClick={false}
-              small={true}
-            />
-          ),
+          label: <UserLabeled user={teamMember.user} showCardOnClick={false} small={true} />,
           value: teamMember.id,
         }))}
         value={values.supervisorIds[idx]}

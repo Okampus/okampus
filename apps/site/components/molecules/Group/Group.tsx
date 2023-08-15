@@ -5,18 +5,8 @@ import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 
 import clsx from 'clsx';
 
-const defaultRenderMore = (extra: number, size: number, rounded: number) => (
-  <div
-    className="text-2 bg-4 h-8 w-8 flex items-center justify-center"
-    style={{
-      width: `${size / 6}rem`,
-      height: `${size / 6}rem`,
-      fontSize: `${size / 14}rem`,
-      borderRadius: `${rounded}%`,
-    }}
-  >
-    +{extra}
-  </div>
+const defaultRenderMore = (count: number) => (
+  <div className="text-0 bg-4 flex items-center justify-center ml-3">+&thinsp;{count}</div>
 );
 
 export type GroupProps<T> = {
@@ -29,7 +19,7 @@ export type GroupProps<T> = {
   showNumberInTitle?: boolean;
   render: (item: T) => React.ReactNode;
   renderListElement?: (item: T) => React.ReactNode;
-  renderMore?: (extra: number, size: number, rounded: number) => React.ReactNode;
+  renderMore?: (count: number) => React.ReactNode;
   className?: string;
   itemClassName?: string;
 };
@@ -38,8 +28,6 @@ export default function Group<T>({
   items,
   itemsCount,
   limit,
-  size = 14,
-  rounded,
   title,
   render,
   renderListElement = render,
@@ -54,15 +42,15 @@ export default function Group<T>({
 
   return (
     <div className={clsx('flex', className)}>
-      {items.slice(0, limit).map((item, index) => (
-        <div className={itemClassName} key={index} style={{ zIndex: limit - index }}>
+      {items.slice(0, limit).map((item, idx) => (
+        <div className={itemClassName} key={idx} style={{ zIndex: limit - idx }}>
           {render(item)}
         </div>
       ))}
       {(itemsCount ?? items.length) > limit && (
         <Popover placementOffset={10}>
-          <PopoverTrigger>{renderMore((itemsCount ?? items.length) - limit, size, rounded)}</PopoverTrigger>
-          <PopoverContent popoverClassName="card-md p-3 bg-2 rounded-2xl">
+          <PopoverTrigger>{renderMore((itemsCount ?? items.length) - limit)}</PopoverTrigger>
+          <PopoverContent popoverClassName="card-md p-3 bg-2 rounded-2xl text-0">
             <VerticalList title={heading} nColumns={2}>
               {items.map((item, idx) => (
                 <div key={idx}>{renderListElement(item)}</div>

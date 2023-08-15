@@ -16,12 +16,12 @@ input:-webkit-autofill:active {
 }
 
 %input {
-  @apply rounded-md text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)] h-[var(--h-input)];
+  @apply w-full grow min-w-0 rounded-md text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)] h-[var(--h-input)] max-h-[var(--h-input)];
 }
 
 .input {
   @extend %input;
-  @apply px-3 py-1;
+  @apply p-3;
 
   &-unppaded {
     @extend %input;
