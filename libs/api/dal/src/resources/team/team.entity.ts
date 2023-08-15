@@ -162,6 +162,7 @@ export class Team extends TenantScopedEntity implements Searchable {
           name: 'motivation',
           type: ControlType.Text,
           label: "Quelle est votre motivation pour rejoindre l'équipe ?",
+          placeholder: '',
           required: true,
         },
       ],

@@ -18,7 +18,7 @@ export class FormSubmission extends TenantScopedEntity {
   form!: Form;
 
   @ManyToMany({ type: 'FileUpload' })
-  linkedFiles!: FileUpload;
+  attachments!: FileUpload;
 
   constructor(options: FormSubmissionOptions) {
     super(options);

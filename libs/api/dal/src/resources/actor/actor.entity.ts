@@ -15,7 +15,7 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { randomId, toSlug } from '@okampus/shared/utils';
 
-import type { BankInfo } from './bank-info/bank-info.entity';
+import type { Bank } from './bank/bank.entity';
 import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
 import type { Report } from '../content/report/report.entity';
@@ -69,9 +69,9 @@ export class Actor extends TenantScopedEntity {
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
-  @OneToMany({ type: 'BankInfo', mappedBy: 'actor' })
+  @OneToMany({ type: 'Bank', mappedBy: 'actor' })
   @TransformCollection()
-  bankInfos = new Collection<BankInfo>(this);
+  banks = new Collection<Bank>(this);
 
   @OneToMany({ type: 'ActorImage', mappedBy: 'actor' })
   @TransformCollection()

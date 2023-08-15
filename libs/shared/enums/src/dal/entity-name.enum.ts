@@ -9,7 +9,7 @@ export enum EntityName {
   CampusCluster = 'CampusCluster',
 
   Actor = 'Actor',
-  BankInfo = 'BankInfo',
+  Bank = 'Bank',
   Address = 'Address',
   Location = 'Location',
   ActorImage = 'ActorImage',

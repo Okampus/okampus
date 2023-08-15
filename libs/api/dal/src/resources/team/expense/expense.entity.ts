@@ -14,7 +14,7 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
+import type { Bank } from '../../actor/bank/bank.entity';
 import type { ExpenseItem } from '../expense-item/expense-item.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Finance } from '../finance/finance.entity';
@@ -46,8 +46,8 @@ export class Expense extends TenantScopedEntity {
   @ManyToOne({ type: 'FileUpload' })
   expenseReport!: FileUpload;
 
-  @ManyToOne({ type: 'BankInfo' })
-  bankInfo!: BankInfo;
+  @ManyToOne({ type: 'Bank' })
+  bank!: Bank;
 
   @OneToMany({ type: 'ExpenseItem', mappedBy: 'expense' })
   @TransformCollection()

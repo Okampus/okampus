@@ -15,7 +15,7 @@ import { TransformCollection } from '@okampus/api/shards';
 
 import type { AccountOptions } from './account.options';
 import type { Team } from '../team.entity';
-import type { BankInfo } from '../../actor/bank-info/bank-info.entity';
+import type { Bank } from '../../actor/bank/bank.entity';
 
 @Entity({ customRepository: () => AccountRepository })
 export class Account extends TenantScopedEntity {
@@ -30,8 +30,8 @@ export class Account extends TenantScopedEntity {
   @ManyToOne({ type: 'Account', nullable: true, default: null })
   parent: Account | null = null;
 
-  @ManyToOne({ type: 'BankInfo', nullable: true })
-  bankInfo: BankInfo | null = null;
+  @ManyToOne({ type: 'Bank', nullable: true })
+  bank: Bank | null = null;
 
   @ManyToOne({ type: 'Team' })
   team!: Team;
