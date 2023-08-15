@@ -64,10 +64,6 @@
     "hasura:metadata:export": {
       "command": "bash apps/api/database/hasura/run.sh -d && echo 'Exporting Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata export && cd ../../../.. && bash apps/api/database/hasura/close.sh"
     },
-    "graphql:codegen": {
-      "dependsOn": ["graphql:merge"],
-      "command": "zeus libs/shared/graphql/src/schema.merged.graphql libs/shared/graphql/src --typescript --apollo --typedDocumentNode && printf '%s\n%s\n' \"/* eslint-disable */\n// @ts-nocheck\" \"$(sed '1d' libs/shared/graphql/src/zeus/index.ts)\" > libs/shared/graphql/src/zeus/index.ts && printf '%s\n%s\n' \"/* eslint-disable */\" \"$(cat libs/shared/graphql/src/zeus/typedDocumentNode.ts)\" > libs/shared/graphql/src/zeus/typedDocumentNode.ts && sed -i -e 's/ | Variable<any, string>//g' -e 's/\\[\"bigint\"\\]:[^;]*;/[\"bigint\"]: string;/g' -e 's/\\[\"timestamptz\"\\]:[^;]*;/[\"timestamptz\"]: string;/g' -e 's/\\[\"smallint\"\\]:[^;]*;/[\"smallint\"]: number;/g' libs/shared/graphql/src/zeus/index.ts"
-    },
     "graphql:merge": {
       "dependsOn": ["hasura:schema"],
       "command": "node tools/scripts/graphql-merge.mjs"

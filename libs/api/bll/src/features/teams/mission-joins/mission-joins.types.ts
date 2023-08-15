@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  MissionJoinInsertInput,
+  MissionJoinOnConflict,
+  MissionJoinSetInput,
+  MissionJoinBoolExp,
+  MissionJoinOrderBy,
+  MissionJoinSelectColumn,
+  MissionJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertMissionJoinArgsType = {
-  objects: Array<ValueTypes['MissionJoinInsertInput']>;
-  onConflict?: ValueTypes['MissionJoinOnConflict'];
+  objects: Array<MissionJoinInsertInput>;
+  onConflict?: MissionJoinOnConflict;
 };
 
 export type InsertOneMissionJoinArgsType = {
-  object: ValueTypes['MissionJoinInsertInput'];
-  onConflict?: ValueTypes['MissionJoinOnConflict'];
+  object: MissionJoinInsertInput;
+  onConflict?: MissionJoinOnConflict;
 };
 
 export type UpdateMissionJoinArgsType = {
-  where: ValueTypes['MissionJoinBoolExp'];
-  _set: ValueTypes['MissionJoinSetInput'];
+  where: MissionJoinBoolExp;
+  _set: MissionJoinSetInput;
 };
 
 export type DeleteMissionJoinArgsType = {
-  where: ValueTypes['MissionJoinBoolExp'];
+  where: MissionJoinBoolExp;
 };
 
 export type UpdateByPkMissionJoinArgsType = {
-  pkColumns: ValueTypes['MissionJoinPkColumnsInput'];
-  _set: ValueTypes['MissionJoinSetInput'];
+  pkColumns: MissionJoinPkColumnsInput;
+  _set: MissionJoinSetInput;
 };
 
 export type FindMissionJoinArgsType = {
-  where: ValueTypes['MissionJoinBoolExp'];
-  orderBy?: Array<ValueTypes['MissionJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['MissionJoinSelectColumn']>;
+  where: MissionJoinBoolExp;
+  orderBy?: Array<MissionJoinOrderBy>;
+  distinctOn?: Array<MissionJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkMissionJoinArgsType = {
 };
 
 export type AggregateMissionJoinArgsType = {
-  where: ValueTypes['MissionJoinBoolExp'];
-  orderBy?: Array<ValueTypes['MissionJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['MissionJoinSelectColumn']>;
+  where: MissionJoinBoolExp;
+  orderBy?: Array<MissionJoinOrderBy>;
+  distinctOn?: Array<MissionJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };

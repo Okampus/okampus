@@ -46,9 +46,9 @@ import {
   ActorsModule,
   SocialsModule,
   GoogleModule,
-  BankInfosModule,
   AccountsModule,
   EventApprovalsModule,
+  BanksModule,
 } from '@okampus/api/bll';
 import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -86,54 +86,6 @@ import { hash } from 'argon2';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
-
-// import { CafeteriaModule } from '@api/canteens/canteens.module';
-// import { SubjectsModule } from '@api/modules/label/subjects/subjects.module';
-// import { TagsModule } from '@api/modules/label/tags/tags.module';
-// import { ClassesModule } from '@api/classes/class.module';
-// import { ClassMembershipsModule } from '@api/classes/memberships/memberships.module';
-// import { SchoolYearsModule } from '@api/classes/school-year/school-years.module';
-// import { PoliciesGuard } from '@api/common/modules/authorization';
-// import { OIDCStrategyCache } from '@api/common/modules/authorization/oidc-strategy.cache';
-// import { CaslModule } from '@api/common/modules/casl/casl.module';
-// import { MeiliSearchIndexerModule } from '@api/common/modules/search/meilisearch-indexer.module';
-// import { cacheConfig } from '@api/configs/cache.config';
-// import { config } from '@api/configs/config';
-// import graphqlConfig from '@api/configs/graphql.config';
-// import meiliSearchConfig from '@api/configs/meilisearch.config';
-// import redisConfig from '@api/configs/redis.config';
-// import sentryConfig, { sentryInterceptorConfig } from '@api/configs/sentry.config';
-// import storageConfig from '@api/configs/storage.config';
-// import { BlogsModule } from '@api/create/blogs/blogs.module';
-// import { ContentsModule } from '@api/create/contents/contents.module';
-// import { ThreadsModule } from '@api/create/threads/threads.module';
-// import { WikisModule } from '@api/create/wikis/wikis.module';
-// import { FavoritesModule } from '@api/interact/favorites/favorites.module';
-// import { ReactionsModule } from '@api/interact/reactions/reactions.module';
-// import { ReportsModule } from '@api/interact/reports/reports.module';
-// import { ValidationsModule } from '@api/interact/validations/validations.module';
-// import { VotesModule } from '@api/interact/votes/votes.module';
-// import { APP_OIDC_CACHE } from '@api/shards/constants';
-// import { ExceptionsFilter } from 'libs/api/shards/src/filters/exceptions.filter';
-// import { GlobalRequestContext } from '@api/shards/helpers/global-request-context';
-// import { RestLoggerMiddleware } from 'libs/api/shards/src/middlewares/rest-logger.middleware';
-// import { TraceMiddleware } from 'libs/api/shards/src/middlewares/trace.middleware';
-// import { AnnouncementsModule } from '@api/teams/announcements/announcements.module';
-// import { InterestsModule } from '@api/teams/interests/interests.module';
-// import { MetricsModule } from '@api/teams/metrics/metrics.module';
-// import { SocialsModule } from '@api/teams/socials/socials.module';
-// import { TeamsModule } from '@api/teams/teams.module';
-// import { TenantsCoreModule } from '@api/tenants/core-tenants.module';
-// import { TenantsModule } from '@api/tenants/tenants.module';
-// import { AuthGuard } from '@api/uaa/auth/auth.guard';
-// import { AuthModule } from '@api/uaa/auth/auth.module';
-// import { BadgesModule } from '@api/uaa/badges/badges.module';
-// import { SettingsModule } from '@api/uaa/settings/settings.module';
-// import { StatisticsModule } from '@api/uaa/statistics/statistics.module';
-// import { UsersModule } from '@api/uaa/users/users.module';
-// import { AppController } from './app.controller';
-// import mikroOrmConfig from './common/configs/mikro-orm.config';
-// import { SubscribersModule } from './common/modules/subscribers/subscribers.module';
 
 @Module({
   imports: [
@@ -187,6 +139,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     NationalIdentificationModule,
     TextractModule,
     AuthModule,
+    BanksModule,
     UploadsModule,
 
     // // Subscribers module
@@ -214,7 +167,6 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     AccountsModule,
     LegalUnitsModule,
     LegalUnitLocationsModule,
-    BankInfosModule,
     EventJoinsModule,
     EventsModule,
     FormsModule,
@@ -258,7 +210,7 @@ export class AppModule implements NestModule, OnModuleInit {
     private readonly uploadsService: UploadsService,
     private readonly notificationsService: NotificationsService,
     private readonly orm: MikroORM,
-    private readonly em: EntityManager
+    private readonly em: EntityManager,
   ) {}
 
   public configure(consumer: MiddlewareConsumer): void {
@@ -337,6 +289,7 @@ export class AppModule implements NestModule, OnModuleInit {
             label:
               "L'équipe organisatrice a-t-elle suivi une formation relative à l'organisation d'événement festif et/ou de sensibilisation à la consommation de substances psychoactives ?",
             required: true,
+            placeholder: '',
           },
           {
             name: 'serviceProvider',
@@ -344,16 +297,19 @@ export class AppModule implements NestModule, OnModuleInit {
             label:
               "L'équipe organisatrice a-t-elle recours à un prestataire de services pour l'organisation de l'événement ?",
             required: true,
+            placeholder: '',
           },
           {
             name: 'serviceProviderSiret',
             type: ControlType.Text,
             label: 'Si oui, quel est le numéro de SIRET du prestataire de services ?',
+            placeholder: '',
           },
           {
             name: 'expectedAttendance',
             type: ControlType.Number,
             label: 'Quel est le nombre approximatif de personnes attendues ?',
+            placeholder: '',
           },
         ],
         type: FormType.EventValidationForm,

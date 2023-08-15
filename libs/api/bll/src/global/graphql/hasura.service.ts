@@ -295,11 +295,10 @@ export class HasuraService extends RequestContext {
 
         deepProps[lastPathKey] = { data };
 
+        const last = deepProps[lastPathKey] as { data: Record<string, unknown> };
         if (relationship.slugify) {
           const slugify = dataValue.data[relationship.slugify] as string | undefined;
-
-          // @ts-expect-error - Zeus never type is wrong
-          deepProps[lastPathKey].data.slug = slugify ? `${toSlug(slugify)}-${randomId()}` : randomId();
+          last.data.slug = slugify ? `${toSlug(slugify)}-${randomId()}` : randomId();
         }
       } else if (!relationship.optional) {
         throw new BadRequestException(`Expected ${propsString}.${lastPathKey} to be an object containing 'data'.`);

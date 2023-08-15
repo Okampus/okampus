@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions<% for(const _enum of enums) { %>, <%= _enu
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  <%= className %>InsertInput,
+  <%= className %>OnConflict,
+  <%= className %>BoolExp,
+  <%= className %>OrderBy,
+  <%= className %>SelectColumn,
+  <%= className %>SetInput,
+  <%= className %>Updates,
+  <%= className %>PkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class <%= pluralClassName %>Service extends RequestContext {
@@ -18,11 +27,11 @@ export class <%= pluralClassName %>Service extends RequestContext {
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
     private readonly <%= propertyName %>Repository: <%= className %>Repository,
-  ) { 
-    super(); 
+  ) {
+    super();
   }
 
-  checkPermsCreate(props: ValueTypes['<%= className %>InsertInput']) {
+  checkPermsCreate(props: <%= className %>InsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -38,7 +47,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['<%= className %>SetInput'], <%= propertyName %>: <%= className %>) {
+  checkPermsUpdate(props: <%= className %>SetInput, <%= propertyName %>: <%= className %>) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (<%= propertyName %>.deletedAt) throw new NotFoundException(`<%= className %> was deleted on ${<%= propertyName %>.deletedAt}.`);
@@ -51,7 +60,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     return <%= propertyName %>.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['<%= className %>SetInput']) {
+  checkPropsConstraints(props: <%= className %>SetInput) {
     this.hasuraService.checkForbiddenFields(props);
     <% for(const settle of settles) { %>
     if (props.<%= settle.by %>) throw new BadRequestException('Cannot update <%= settle.by %> directly.');
@@ -66,7 +75,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['<%= className %>InsertInput']) {
+  checkCreateRelationships(props: <%= className %>InsertInput) {
     // Custom logic
     <% if (!tenantScoped) { %>props.tenantId = this.tenant().id;<% } %>
     props.createdById = this.requester().id;
@@ -79,8 +88,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async insert<%= className %>One(
     selectionSet: string[],
-    object: ValueTypes['<%= className %>InsertInput'],
-    onConflict?: ValueTypes['<%= className %>OnConflict'],
+    object: <%= className %>InsertInput,
+    onConflict?: <%= className %>OnConflict,
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert <%= className %>.');
@@ -103,9 +112,9 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async find<%= className %>(
     selectionSet: string[],
-    where: ValueTypes['<%= className %>BoolExp'],
-    orderBy?: Array<ValueTypes['<%= className %>OrderBy']>,
-    distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>,
+    where: <%= className %>BoolExp,
+    orderBy?: Array<<%= className %>OrderBy>,
+    distinctOn?: Array<<%= className %>SelectColumn>,
     limit?: number,
     offset?: number,
   ) {
@@ -125,8 +134,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async insert<%= className %>(
     selectionSet: string[],
-    objects: Array<ValueTypes['<%= className %>InsertInput']>,
-    onConflict?: ValueTypes['<%= className %>OnConflict'],
+    objects: Array<<%= className %>InsertInput>,
+    onConflict?: <%= className %>OnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -153,7 +162,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async update<%= className %>Many(
     selectionSet: string[],
-    updates: Array<ValueTypes['<%= className %>Updates']>,
+    updates: Array<<%= className %>Updates>,
   ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
@@ -184,8 +193,8 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async update<%= className %>ByPk(
     selectionSet: string[],
-    pkColumns: ValueTypes['<%= className %>PkColumnsInput'],
-    _set: ValueTypes['<%= className %>SetInput'],
+    pkColumns: <%= className %>PkColumnsInput,
+    _set: <%= className %>SetInput,
   ) {
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(pkColumns.id);
 
@@ -205,7 +214,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async delete<%= className %>(
     selectionSet: string[],
-    where: ValueTypes['<%= className %>BoolExp'],
+    where: <%= className %>BoolExp,
   ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -215,7 +224,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
       const canDelete = this.checkPermsDelete(<%= propertyName %>);
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${<%= propertyName %>.id}).`);
     }
-  
+
     const data = await this.hasuraService.update('update<%= className %>', selectionSet, where, { deletedAt: new Date().toISOString() });
 
     await Promise.all(<%= pluralPropertyName %>.map(async (<%= propertyName %>) => {
@@ -228,7 +237,7 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async delete<%= className %>ByPk(
     selectionSet: string[],
-    pkColumns: ValueTypes['<%= className %>PkColumnsInput'],
+    pkColumns: <%= className %>PkColumnsInput,
   ) {
     const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(pkColumns.id);
 
@@ -246,9 +255,9 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async aggregate<%= className %>(
     selectionSet: string[],
-    where: ValueTypes['<%= className %>BoolExp'],
-    orderBy?: Array<ValueTypes['<%= className %>OrderBy']>,
-    distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>,
+    where: <%= className %>BoolExp,
+    orderBy?: Array<<%= className %>OrderBy>,
+    distinctOn?: Array<<%= className %>SelectColumn>,
     limit?: number,
     offset?: number
   ) {

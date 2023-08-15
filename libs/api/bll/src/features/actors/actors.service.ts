@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActorInsertInput,
+  ActorOnConflict,
+  ActorBoolExp,
+  ActorOrderBy,
+  ActorSelectColumn,
+  ActorSetInput,
+  ActorUpdates,
+  ActorPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActorsService extends RequestContext {
@@ -22,7 +31,7 @@ export class ActorsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['ActorInsertInput']) {
+  checkPermsCreate(props: ActorInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class ActorsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['ActorSetInput'], actor: Actor) {
+  checkPermsUpdate(props: ActorSetInput, actor: Actor) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (actor.deletedAt) throw new NotFoundException(`Actor was deleted on ${actor.deletedAt}.`);
@@ -65,14 +74,14 @@ export class ActorsService extends RequestContext {
     return actor.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['ActorSetInput']) {
+  checkPropsConstraints(props: ActorSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['ActorInsertInput']) {
+  checkCreateRelationships(props: ActorInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class ActorsService extends RequestContext {
     return true;
   }
 
-  async insertActorOne(
-    selectionSet: string[],
-    object: ValueTypes['ActorInsertInput'],
-    onConflict?: ValueTypes['ActorOnConflict']
-  ) {
+  async insertActorOne(selectionSet: string[], object: ActorInsertInput, onConflict?: ActorOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
 
@@ -106,9 +111,9 @@ export class ActorsService extends RequestContext {
 
   async findActor(
     selectionSet: string[],
-    where: ValueTypes['ActorBoolExp'],
-    orderBy?: Array<ValueTypes['ActorOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActorSelectColumn']>,
+    where: ActorBoolExp,
+    orderBy?: Array<ActorOrderBy>,
+    distinctOn?: Array<ActorSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class ActorsService extends RequestContext {
     return data.actorByPk;
   }
 
-  async insertActor(
-    selectionSet: string[],
-    objects: Array<ValueTypes['ActorInsertInput']>,
-    onConflict?: ValueTypes['ActorOnConflict']
-  ) {
+  async insertActor(selectionSet: string[], objects: Array<ActorInsertInput>, onConflict?: ActorOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Actor.');
@@ -151,7 +152,7 @@ export class ActorsService extends RequestContext {
     return data.insertActor;
   }
 
-  async updateActorMany(selectionSet: string[], updates: Array<ValueTypes['ActorUpdates']>) {
+  async updateActorMany(selectionSet: string[], updates: Array<ActorUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class ActorsService extends RequestContext {
     return data.updateActorMany;
   }
 
-  async updateActorByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['ActorPkColumnsInput'],
-    _set: ValueTypes['ActorSetInput']
-  ) {
+  async updateActorByPk(selectionSet: string[], pkColumns: ActorPkColumnsInput, _set: ActorSetInput) {
     const actor = await this.actorRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, actor);
@@ -202,7 +199,7 @@ export class ActorsService extends RequestContext {
     return data.updateActorByPk;
   }
 
-  async deleteActor(selectionSet: string[], where: ValueTypes['ActorBoolExp']) {
+  async deleteActor(selectionSet: string[], where: ActorBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class ActorsService extends RequestContext {
     return data.updateActor;
   }
 
-  async deleteActorByPk(selectionSet: string[], pkColumns: ValueTypes['ActorPkColumnsInput']) {
+  async deleteActorByPk(selectionSet: string[], pkColumns: ActorPkColumnsInput) {
     const actor = await this.actorRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(actor);
@@ -244,9 +241,9 @@ export class ActorsService extends RequestContext {
 
   async aggregateActor(
     selectionSet: string[],
-    where: ValueTypes['ActorBoolExp'],
-    orderBy?: Array<ValueTypes['ActorOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActorSelectColumn']>,
+    where: ActorBoolExp,
+    orderBy?: Array<ActorOrderBy>,
+    distinctOn?: Array<ActorSelectColumn>,
     limit?: number,
     offset?: number
   ) {

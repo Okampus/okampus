@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventApprovalInsertInput,
+  EventApprovalOnConflict,
+  EventApprovalSetInput,
+  EventApprovalBoolExp,
+  EventApprovalOrderBy,
+  EventApprovalSelectColumn,
+  EventApprovalPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertEventApprovalArgsType = {
-  objects: Array<ValueTypes['EventApprovalInsertInput']>;
-  onConflict?: ValueTypes['EventApprovalOnConflict'];
+  objects: Array<EventApprovalInsertInput>;
+  onConflict?: EventApprovalOnConflict;
 };
 
 export type InsertOneEventApprovalArgsType = {
-  object: ValueTypes['EventApprovalInsertInput'];
-  onConflict?: ValueTypes['EventApprovalOnConflict'];
+  object: EventApprovalInsertInput;
+  onConflict?: EventApprovalOnConflict;
 };
 
 export type UpdateEventApprovalArgsType = {
-  where: ValueTypes['EventApprovalBoolExp'];
-  _set: ValueTypes['EventApprovalSetInput'];
+  where: EventApprovalBoolExp;
+  _set: EventApprovalSetInput;
 };
 
 export type DeleteEventApprovalArgsType = {
-  where: ValueTypes['EventApprovalBoolExp'];
+  where: EventApprovalBoolExp;
 };
 
 export type UpdateByPkEventApprovalArgsType = {
-  pkColumns: ValueTypes['EventApprovalPkColumnsInput'];
-  _set: ValueTypes['EventApprovalSetInput'];
+  pkColumns: EventApprovalPkColumnsInput;
+  _set: EventApprovalSetInput;
 };
 
 export type FindEventApprovalArgsType = {
-  where: ValueTypes['EventApprovalBoolExp'];
-  orderBy?: Array<ValueTypes['EventApprovalOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventApprovalSelectColumn']>;
+  where: EventApprovalBoolExp;
+  orderBy?: Array<EventApprovalOrderBy>;
+  distinctOn?: Array<EventApprovalSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkEventApprovalArgsType = {
 };
 
 export type AggregateEventApprovalArgsType = {
-  where: ValueTypes['EventApprovalBoolExp'];
-  orderBy?: Array<ValueTypes['EventApprovalOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventApprovalSelectColumn']>;
+  where: EventApprovalBoolExp;
+  orderBy?: Array<EventApprovalOrderBy>;
+  distinctOn?: Array<EventApprovalSelectColumn>;
   limit?: number;
   offset?: number;
 };

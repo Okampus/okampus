@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActionInsertInput,
+  ActionOnConflict,
+  ActionBoolExp,
+  ActionOrderBy,
+  ActionSelectColumn,
+  ActionSetInput,
+  ActionUpdates,
+  ActionPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActionsService extends RequestContext {
@@ -22,7 +31,7 @@ export class ActionsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['ActionInsertInput']) {
+  checkPermsCreate(props: ActionInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class ActionsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['ActionSetInput'], action: Action) {
+  checkPermsUpdate(props: ActionSetInput, action: Action) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
@@ -65,14 +74,14 @@ export class ActionsService extends RequestContext {
     return action.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['ActionSetInput']) {
+  checkPropsConstraints(props: ActionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['ActionInsertInput']) {
+  checkCreateRelationships(props: ActionInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class ActionsService extends RequestContext {
     return true;
   }
 
-  async insertActionOne(
-    selectionSet: string[],
-    object: ValueTypes['ActionInsertInput'],
-    onConflict?: ValueTypes['ActionOnConflict']
-  ) {
+  async insertActionOne(selectionSet: string[], object: ActionInsertInput, onConflict?: ActionOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
 
@@ -106,9 +111,9 @@ export class ActionsService extends RequestContext {
 
   async findAction(
     selectionSet: string[],
-    where: ValueTypes['ActionBoolExp'],
-    orderBy?: Array<ValueTypes['ActionOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActionSelectColumn']>,
+    where: ActionBoolExp,
+    orderBy?: Array<ActionOrderBy>,
+    distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class ActionsService extends RequestContext {
     return data.actionByPk;
   }
 
-  async insertAction(
-    selectionSet: string[],
-    objects: Array<ValueTypes['ActionInsertInput']>,
-    onConflict?: ValueTypes['ActionOnConflict']
-  ) {
+  async insertAction(selectionSet: string[], objects: Array<ActionInsertInput>, onConflict?: ActionOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
@@ -151,7 +152,7 @@ export class ActionsService extends RequestContext {
     return data.insertAction;
   }
 
-  async updateActionMany(selectionSet: string[], updates: Array<ValueTypes['ActionUpdates']>) {
+  async updateActionMany(selectionSet: string[], updates: Array<ActionUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class ActionsService extends RequestContext {
     return data.updateActionMany;
   }
 
-  async updateActionByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['ActionPkColumnsInput'],
-    _set: ValueTypes['ActionSetInput']
-  ) {
+  async updateActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput, _set: ActionSetInput) {
     const action = await this.actionRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, action);
@@ -202,7 +199,7 @@ export class ActionsService extends RequestContext {
     return data.updateActionByPk;
   }
 
-  async deleteAction(selectionSet: string[], where: ValueTypes['ActionBoolExp']) {
+  async deleteAction(selectionSet: string[], where: ActionBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class ActionsService extends RequestContext {
     return data.updateAction;
   }
 
-  async deleteActionByPk(selectionSet: string[], pkColumns: ValueTypes['ActionPkColumnsInput']) {
+  async deleteActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput) {
     const action = await this.actionRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(action);
@@ -244,9 +241,9 @@ export class ActionsService extends RequestContext {
 
   async aggregateAction(
     selectionSet: string[],
-    where: ValueTypes['ActionBoolExp'],
-    orderBy?: Array<ValueTypes['ActionOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActionSelectColumn']>,
+    where: ActionBoolExp,
+    orderBy?: Array<ActionOrderBy>,
+    distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
     offset?: number
   ) {

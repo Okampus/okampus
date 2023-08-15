@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  SocialInsertInput,
+  SocialOnConflict,
+  SocialBoolExp,
+  SocialOrderBy,
+  SocialSelectColumn,
+  SocialSetInput,
+  SocialUpdates,
+  SocialPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class SocialsService extends RequestContext {
@@ -22,7 +31,7 @@ export class SocialsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['SocialInsertInput']) {
+  checkPermsCreate(props: SocialInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class SocialsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['SocialSetInput'], social: Social) {
+  checkPermsUpdate(props: SocialSetInput, social: Social) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (social.deletedAt) throw new NotFoundException(`Social was deleted on ${social.deletedAt}.`);
@@ -65,14 +74,14 @@ export class SocialsService extends RequestContext {
     return social.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['SocialSetInput']) {
+  checkPropsConstraints(props: SocialSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['SocialInsertInput']) {
+  checkCreateRelationships(props: SocialInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class SocialsService extends RequestContext {
     return true;
   }
 
-  async insertSocialOne(
-    selectionSet: string[],
-    object: ValueTypes['SocialInsertInput'],
-    onConflict?: ValueTypes['SocialOnConflict']
-  ) {
+  async insertSocialOne(selectionSet: string[], object: SocialInsertInput, onConflict?: SocialOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Social.');
 
@@ -106,9 +111,9 @@ export class SocialsService extends RequestContext {
 
   async findSocial(
     selectionSet: string[],
-    where: ValueTypes['SocialBoolExp'],
-    orderBy?: Array<ValueTypes['SocialOrderBy']>,
-    distinctOn?: Array<ValueTypes['SocialSelectColumn']>,
+    where: SocialBoolExp,
+    orderBy?: Array<SocialOrderBy>,
+    distinctOn?: Array<SocialSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class SocialsService extends RequestContext {
     return data.socialByPk;
   }
 
-  async insertSocial(
-    selectionSet: string[],
-    objects: Array<ValueTypes['SocialInsertInput']>,
-    onConflict?: ValueTypes['SocialOnConflict']
-  ) {
+  async insertSocial(selectionSet: string[], objects: Array<SocialInsertInput>, onConflict?: SocialOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Social.');
@@ -151,7 +152,7 @@ export class SocialsService extends RequestContext {
     return data.insertSocial;
   }
 
-  async updateSocialMany(selectionSet: string[], updates: Array<ValueTypes['SocialUpdates']>) {
+  async updateSocialMany(selectionSet: string[], updates: Array<SocialUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class SocialsService extends RequestContext {
     return data.updateSocialMany;
   }
 
-  async updateSocialByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['SocialPkColumnsInput'],
-    _set: ValueTypes['SocialSetInput']
-  ) {
+  async updateSocialByPk(selectionSet: string[], pkColumns: SocialPkColumnsInput, _set: SocialSetInput) {
     const social = await this.socialRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, social);
@@ -202,7 +199,7 @@ export class SocialsService extends RequestContext {
     return data.updateSocialByPk;
   }
 
-  async deleteSocial(selectionSet: string[], where: ValueTypes['SocialBoolExp']) {
+  async deleteSocial(selectionSet: string[], where: SocialBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class SocialsService extends RequestContext {
     return data.updateSocial;
   }
 
-  async deleteSocialByPk(selectionSet: string[], pkColumns: ValueTypes['SocialPkColumnsInput']) {
+  async deleteSocialByPk(selectionSet: string[], pkColumns: SocialPkColumnsInput) {
     const social = await this.socialRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(social);
@@ -244,9 +241,9 @@ export class SocialsService extends RequestContext {
 
   async aggregateSocial(
     selectionSet: string[],
-    where: ValueTypes['SocialBoolExp'],
-    orderBy?: Array<ValueTypes['SocialOrderBy']>,
-    distinctOn?: Array<ValueTypes['SocialSelectColumn']>,
+    where: SocialBoolExp,
+    orderBy?: Array<SocialOrderBy>,
+    distinctOn?: Array<SocialSelectColumn>,
     limit?: number,
     offset?: number
   ) {

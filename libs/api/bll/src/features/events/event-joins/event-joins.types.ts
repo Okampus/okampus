@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventJoinInsertInput,
+  EventJoinOnConflict,
+  EventJoinSetInput,
+  EventJoinBoolExp,
+  EventJoinOrderBy,
+  EventJoinSelectColumn,
+  EventJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertEventJoinArgsType = {
-  objects: Array<ValueTypes['EventJoinInsertInput']>;
-  onConflict?: ValueTypes['EventJoinOnConflict'];
+  objects: Array<EventJoinInsertInput>;
+  onConflict?: EventJoinOnConflict;
 };
 
 export type InsertOneEventJoinArgsType = {
-  object: ValueTypes['EventJoinInsertInput'];
-  onConflict?: ValueTypes['EventJoinOnConflict'];
+  object: EventJoinInsertInput;
+  onConflict?: EventJoinOnConflict;
 };
 
 export type UpdateEventJoinArgsType = {
-  where: ValueTypes['EventJoinBoolExp'];
-  _set: ValueTypes['EventJoinSetInput'];
+  where: EventJoinBoolExp;
+  _set: EventJoinSetInput;
 };
 
 export type DeleteEventJoinArgsType = {
-  where: ValueTypes['EventJoinBoolExp'];
+  where: EventJoinBoolExp;
 };
 
 export type UpdateByPkEventJoinArgsType = {
-  pkColumns: ValueTypes['EventJoinPkColumnsInput'];
-  _set: ValueTypes['EventJoinSetInput'];
+  pkColumns: EventJoinPkColumnsInput;
+  _set: EventJoinSetInput;
 };
 
 export type FindEventJoinArgsType = {
-  where: ValueTypes['EventJoinBoolExp'];
-  orderBy?: Array<ValueTypes['EventJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventJoinSelectColumn']>;
+  where: EventJoinBoolExp;
+  orderBy?: Array<EventJoinOrderBy>;
+  distinctOn?: Array<EventJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkEventJoinArgsType = {
 };
 
 export type AggregateEventJoinArgsType = {
-  where: ValueTypes['EventJoinBoolExp'];
-  orderBy?: Array<ValueTypes['EventJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventJoinSelectColumn']>;
+  where: EventJoinBoolExp;
+  orderBy?: Array<EventJoinOrderBy>;
+  distinctOn?: Array<EventJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };

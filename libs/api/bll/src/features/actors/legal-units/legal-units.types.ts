@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  LegalUnitInsertInput,
+  LegalUnitOnConflict,
+  LegalUnitSetInput,
+  LegalUnitBoolExp,
+  LegalUnitOrderBy,
+  LegalUnitSelectColumn,
+  LegalUnitPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertLegalUnitArgsType = {
-  objects: Array<ValueTypes['LegalUnitInsertInput']>;
-  onConflict?: ValueTypes['LegalUnitOnConflict'];
+  objects: Array<LegalUnitInsertInput>;
+  onConflict?: LegalUnitOnConflict;
 };
 
 export type InsertOneLegalUnitArgsType = {
-  object: ValueTypes['LegalUnitInsertInput'];
-  onConflict?: ValueTypes['LegalUnitOnConflict'];
+  object: LegalUnitInsertInput;
+  onConflict?: LegalUnitOnConflict;
 };
 
 export type UpdateLegalUnitArgsType = {
-  where: ValueTypes['LegalUnitBoolExp'];
-  _set: ValueTypes['LegalUnitSetInput'];
+  where: LegalUnitBoolExp;
+  _set: LegalUnitSetInput;
 };
 
 export type DeleteLegalUnitArgsType = {
-  where: ValueTypes['LegalUnitBoolExp'];
+  where: LegalUnitBoolExp;
 };
 
 export type UpdateByPkLegalUnitArgsType = {
-  pkColumns: ValueTypes['LegalUnitPkColumnsInput'];
-  _set: ValueTypes['LegalUnitSetInput'];
+  pkColumns: LegalUnitPkColumnsInput;
+  _set: LegalUnitSetInput;
 };
 
 export type FindLegalUnitArgsType = {
-  where: ValueTypes['LegalUnitBoolExp'];
-  orderBy?: Array<ValueTypes['LegalUnitOrderBy']>;
-  distinctOn?: Array<ValueTypes['LegalUnitSelectColumn']>;
+  where: LegalUnitBoolExp;
+  orderBy?: Array<LegalUnitOrderBy>;
+  distinctOn?: Array<LegalUnitSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkLegalUnitArgsType = {
 };
 
 export type AggregateLegalUnitArgsType = {
-  where: ValueTypes['LegalUnitBoolExp'];
-  orderBy?: Array<ValueTypes['LegalUnitOrderBy']>;
-  distinctOn?: Array<ValueTypes['LegalUnitSelectColumn']>;
+  where: LegalUnitBoolExp;
+  orderBy?: Array<LegalUnitOrderBy>;
+  distinctOn?: Array<LegalUnitSelectColumn>;
   limit?: number;
   offset?: number;
 };

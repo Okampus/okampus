@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  UserInsertInput,
+  UserOnConflict,
+  UserBoolExp,
+  UserOrderBy,
+  UserSelectColumn,
+  UserSetInput,
+  UserUpdates,
+  UserPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class UsersService extends RequestContext {
@@ -22,7 +31,7 @@ export class UsersService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['UserInsertInput']) {
+  checkPermsCreate(props: UserInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class UsersService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['UserSetInput'], user: User) {
+  checkPermsUpdate(props: UserSetInput, user: User) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (user.deletedAt) throw new NotFoundException(`User was deleted on ${user.deletedAt}.`);
@@ -65,14 +74,14 @@ export class UsersService extends RequestContext {
     return user.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['UserSetInput']) {
+  checkPropsConstraints(props: UserSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['UserInsertInput']) {
+  checkCreateRelationships(props: UserInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class UsersService extends RequestContext {
     return true;
   }
 
-  async insertUserOne(
-    selectionSet: string[],
-    object: ValueTypes['UserInsertInput'],
-    onConflict?: ValueTypes['UserOnConflict']
-  ) {
+  async insertUserOne(selectionSet: string[], object: UserInsertInput, onConflict?: UserOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert User.');
 
@@ -106,9 +111,9 @@ export class UsersService extends RequestContext {
 
   async findUser(
     selectionSet: string[],
-    where: ValueTypes['UserBoolExp'],
-    orderBy?: Array<ValueTypes['UserOrderBy']>,
-    distinctOn?: Array<ValueTypes['UserSelectColumn']>,
+    where: UserBoolExp,
+    orderBy?: Array<UserOrderBy>,
+    distinctOn?: Array<UserSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class UsersService extends RequestContext {
     return data.userByPk;
   }
 
-  async insertUser(
-    selectionSet: string[],
-    objects: Array<ValueTypes['UserInsertInput']>,
-    onConflict?: ValueTypes['UserOnConflict']
-  ) {
+  async insertUser(selectionSet: string[], objects: Array<UserInsertInput>, onConflict?: UserOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert User.');
@@ -151,7 +152,7 @@ export class UsersService extends RequestContext {
     return data.insertUser;
   }
 
-  async updateUserMany(selectionSet: string[], updates: Array<ValueTypes['UserUpdates']>) {
+  async updateUserMany(selectionSet: string[], updates: Array<UserUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class UsersService extends RequestContext {
     return data.updateUserMany;
   }
 
-  async updateUserByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['UserPkColumnsInput'],
-    _set: ValueTypes['UserSetInput']
-  ) {
+  async updateUserByPk(selectionSet: string[], pkColumns: UserPkColumnsInput, _set: UserSetInput) {
     const user = await this.userRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, user);
@@ -202,7 +199,7 @@ export class UsersService extends RequestContext {
     return data.updateUserByPk;
   }
 
-  async deleteUser(selectionSet: string[], where: ValueTypes['UserBoolExp']) {
+  async deleteUser(selectionSet: string[], where: UserBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class UsersService extends RequestContext {
     return data.updateUser;
   }
 
-  async deleteUserByPk(selectionSet: string[], pkColumns: ValueTypes['UserPkColumnsInput']) {
+  async deleteUserByPk(selectionSet: string[], pkColumns: UserPkColumnsInput) {
     const user = await this.userRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(user);
@@ -244,9 +241,9 @@ export class UsersService extends RequestContext {
 
   async aggregateUser(
     selectionSet: string[],
-    where: ValueTypes['UserBoolExp'],
-    orderBy?: Array<ValueTypes['UserOrderBy']>,
-    distinctOn?: Array<ValueTypes['UserSelectColumn']>,
+    where: UserBoolExp,
+    orderBy?: Array<UserOrderBy>,
+    distinctOn?: Array<UserSelectColumn>,
     limit?: number,
     offset?: number
   ) {

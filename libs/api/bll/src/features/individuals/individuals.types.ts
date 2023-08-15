@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  IndividualInsertInput,
+  IndividualOnConflict,
+  IndividualSetInput,
+  IndividualBoolExp,
+  IndividualOrderBy,
+  IndividualSelectColumn,
+  IndividualPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertIndividualArgsType = {
-  objects: Array<ValueTypes['IndividualInsertInput']>;
-  onConflict?: ValueTypes['IndividualOnConflict'];
+  objects: Array<IndividualInsertInput>;
+  onConflict?: IndividualOnConflict;
 };
 
 export type InsertOneIndividualArgsType = {
-  object: ValueTypes['IndividualInsertInput'];
-  onConflict?: ValueTypes['IndividualOnConflict'];
+  object: IndividualInsertInput;
+  onConflict?: IndividualOnConflict;
 };
 
 export type UpdateIndividualArgsType = {
-  where: ValueTypes['IndividualBoolExp'];
-  _set: ValueTypes['IndividualSetInput'];
+  where: IndividualBoolExp;
+  _set: IndividualSetInput;
 };
 
 export type DeleteIndividualArgsType = {
-  where: ValueTypes['IndividualBoolExp'];
+  where: IndividualBoolExp;
 };
 
 export type UpdateByPkIndividualArgsType = {
-  pkColumns: ValueTypes['IndividualPkColumnsInput'];
-  _set: ValueTypes['IndividualSetInput'];
+  pkColumns: IndividualPkColumnsInput;
+  _set: IndividualSetInput;
 };
 
 export type FindIndividualArgsType = {
-  where: ValueTypes['IndividualBoolExp'];
-  orderBy?: Array<ValueTypes['IndividualOrderBy']>;
-  distinctOn?: Array<ValueTypes['IndividualSelectColumn']>;
+  where: IndividualBoolExp;
+  orderBy?: Array<IndividualOrderBy>;
+  distinctOn?: Array<IndividualSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkIndividualArgsType = {
 };
 
 export type AggregateIndividualArgsType = {
-  where: ValueTypes['IndividualBoolExp'];
-  orderBy?: Array<ValueTypes['IndividualOrderBy']>;
-  distinctOn?: Array<ValueTypes['IndividualSelectColumn']>;
+  where: IndividualBoolExp;
+  orderBy?: Array<IndividualOrderBy>;
+  distinctOn?: Array<IndividualSelectColumn>;
   limit?: number;
   offset?: number;
 };

@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TagInsertInput,
+  TagOnConflict,
+  TagSetInput,
+  TagBoolExp,
+  TagOrderBy,
+  TagSelectColumn,
+  TagPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertTagArgsType = {
-  objects: Array<ValueTypes['TagInsertInput']>;
-  onConflict?: ValueTypes['TagOnConflict'];
+  objects: Array<TagInsertInput>;
+  onConflict?: TagOnConflict;
 };
 
 export type InsertOneTagArgsType = {
-  object: ValueTypes['TagInsertInput'];
-  onConflict?: ValueTypes['TagOnConflict'];
+  object: TagInsertInput;
+  onConflict?: TagOnConflict;
 };
 
 export type UpdateTagArgsType = {
-  where: ValueTypes['TagBoolExp'];
-  _set: ValueTypes['TagSetInput'];
+  where: TagBoolExp;
+  _set: TagSetInput;
 };
 
 export type DeleteTagArgsType = {
-  where: ValueTypes['TagBoolExp'];
+  where: TagBoolExp;
 };
 
 export type UpdateByPkTagArgsType = {
-  pkColumns: ValueTypes['TagPkColumnsInput'];
-  _set: ValueTypes['TagSetInput'];
+  pkColumns: TagPkColumnsInput;
+  _set: TagSetInput;
 };
 
 export type FindTagArgsType = {
-  where: ValueTypes['TagBoolExp'];
-  orderBy?: Array<ValueTypes['TagOrderBy']>;
-  distinctOn?: Array<ValueTypes['TagSelectColumn']>;
+  where: TagBoolExp;
+  orderBy?: Array<TagOrderBy>;
+  distinctOn?: Array<TagSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkTagArgsType = {
 };
 
 export type AggregateTagArgsType = {
-  where: ValueTypes['TagBoolExp'];
-  orderBy?: Array<ValueTypes['TagOrderBy']>;
-  distinctOn?: Array<ValueTypes['TagSelectColumn']>;
+  where: TagBoolExp;
+  orderBy?: Array<TagOrderBy>;
+  distinctOn?: Array<TagSelectColumn>;
   limit?: number;
   offset?: number;
 };

@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  AccountInsertInput,
+  AccountOnConflict,
+  AccountBoolExp,
+  AccountOrderBy,
+  AccountSelectColumn,
+  AccountSetInput,
+  AccountUpdates,
+  AccountPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class AccountsService extends RequestContext {
@@ -22,7 +31,7 @@ export class AccountsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['AccountInsertInput']) {
+  checkPermsCreate(props: AccountInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class AccountsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['AccountSetInput'], account: Account) {
+  checkPermsUpdate(props: AccountSetInput, account: Account) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (account.deletedAt) throw new NotFoundException(`Account was deleted on ${account.deletedAt}.`);
@@ -65,14 +74,14 @@ export class AccountsService extends RequestContext {
     return account.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['AccountSetInput']) {
+  checkPropsConstraints(props: AccountSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['AccountInsertInput']) {
+  checkCreateRelationships(props: AccountInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class AccountsService extends RequestContext {
     return true;
   }
 
-  async insertAccountOne(
-    selectionSet: string[],
-    object: ValueTypes['AccountInsertInput'],
-    onConflict?: ValueTypes['AccountOnConflict']
-  ) {
+  async insertAccountOne(selectionSet: string[], object: AccountInsertInput, onConflict?: AccountOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Account.');
 
@@ -106,9 +111,9 @@ export class AccountsService extends RequestContext {
 
   async findAccount(
     selectionSet: string[],
-    where: ValueTypes['AccountBoolExp'],
-    orderBy?: Array<ValueTypes['AccountOrderBy']>,
-    distinctOn?: Array<ValueTypes['AccountSelectColumn']>,
+    where: AccountBoolExp,
+    orderBy?: Array<AccountOrderBy>,
+    distinctOn?: Array<AccountSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class AccountsService extends RequestContext {
     return data.accountByPk;
   }
 
-  async insertAccount(
-    selectionSet: string[],
-    objects: Array<ValueTypes['AccountInsertInput']>,
-    onConflict?: ValueTypes['AccountOnConflict']
-  ) {
+  async insertAccount(selectionSet: string[], objects: Array<AccountInsertInput>, onConflict?: AccountOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Account.');
@@ -151,7 +152,7 @@ export class AccountsService extends RequestContext {
     return data.insertAccount;
   }
 
-  async updateAccountMany(selectionSet: string[], updates: Array<ValueTypes['AccountUpdates']>) {
+  async updateAccountMany(selectionSet: string[], updates: Array<AccountUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class AccountsService extends RequestContext {
     return data.updateAccountMany;
   }
 
-  async updateAccountByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['AccountPkColumnsInput'],
-    _set: ValueTypes['AccountSetInput']
-  ) {
+  async updateAccountByPk(selectionSet: string[], pkColumns: AccountPkColumnsInput, _set: AccountSetInput) {
     const account = await this.accountRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, account);
@@ -202,7 +199,7 @@ export class AccountsService extends RequestContext {
     return data.updateAccountByPk;
   }
 
-  async deleteAccount(selectionSet: string[], where: ValueTypes['AccountBoolExp']) {
+  async deleteAccount(selectionSet: string[], where: AccountBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class AccountsService extends RequestContext {
     return data.updateAccount;
   }
 
-  async deleteAccountByPk(selectionSet: string[], pkColumns: ValueTypes['AccountPkColumnsInput']) {
+  async deleteAccountByPk(selectionSet: string[], pkColumns: AccountPkColumnsInput) {
     const account = await this.accountRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(account);
@@ -244,9 +241,9 @@ export class AccountsService extends RequestContext {
 
   async aggregateAccount(
     selectionSet: string[],
-    where: ValueTypes['AccountBoolExp'],
-    orderBy?: Array<ValueTypes['AccountOrderBy']>,
-    distinctOn?: Array<ValueTypes['AccountSelectColumn']>,
+    where: AccountBoolExp,
+    orderBy?: Array<AccountOrderBy>,
+    distinctOn?: Array<AccountSelectColumn>,
     limit?: number,
     offset?: number
   ) {

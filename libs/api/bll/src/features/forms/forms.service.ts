@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  FormInsertInput,
+  FormOnConflict,
+  FormBoolExp,
+  FormOrderBy,
+  FormSelectColumn,
+  FormSetInput,
+  FormUpdates,
+  FormPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class FormsService extends RequestContext {
@@ -22,7 +31,7 @@ export class FormsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['FormInsertInput']) {
+  checkPermsCreate(props: FormInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class FormsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['FormSetInput'], form: Form) {
+  checkPermsUpdate(props: FormSetInput, form: Form) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
@@ -65,14 +74,14 @@ export class FormsService extends RequestContext {
     return form.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['FormSetInput']) {
+  checkPropsConstraints(props: FormSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['FormInsertInput']) {
+  checkCreateRelationships(props: FormInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class FormsService extends RequestContext {
     return true;
   }
 
-  async insertFormOne(
-    selectionSet: string[],
-    object: ValueTypes['FormInsertInput'],
-    onConflict?: ValueTypes['FormOnConflict']
-  ) {
+  async insertFormOne(selectionSet: string[], object: FormInsertInput, onConflict?: FormOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
@@ -106,9 +111,9 @@ export class FormsService extends RequestContext {
 
   async findForm(
     selectionSet: string[],
-    where: ValueTypes['FormBoolExp'],
-    orderBy?: Array<ValueTypes['FormOrderBy']>,
-    distinctOn?: Array<ValueTypes['FormSelectColumn']>,
+    where: FormBoolExp,
+    orderBy?: Array<FormOrderBy>,
+    distinctOn?: Array<FormSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class FormsService extends RequestContext {
     return data.formByPk;
   }
 
-  async insertForm(
-    selectionSet: string[],
-    objects: Array<ValueTypes['FormInsertInput']>,
-    onConflict?: ValueTypes['FormOnConflict']
-  ) {
+  async insertForm(selectionSet: string[], objects: Array<FormInsertInput>, onConflict?: FormOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
@@ -151,7 +152,7 @@ export class FormsService extends RequestContext {
     return data.insertForm;
   }
 
-  async updateFormMany(selectionSet: string[], updates: Array<ValueTypes['FormUpdates']>) {
+  async updateFormMany(selectionSet: string[], updates: Array<FormUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class FormsService extends RequestContext {
     return data.updateFormMany;
   }
 
-  async updateFormByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['FormPkColumnsInput'],
-    _set: ValueTypes['FormSetInput']
-  ) {
+  async updateFormByPk(selectionSet: string[], pkColumns: FormPkColumnsInput, _set: FormSetInput) {
     const form = await this.formRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, form);
@@ -202,7 +199,7 @@ export class FormsService extends RequestContext {
     return data.updateFormByPk;
   }
 
-  async deleteForm(selectionSet: string[], where: ValueTypes['FormBoolExp']) {
+  async deleteForm(selectionSet: string[], where: FormBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class FormsService extends RequestContext {
     return data.updateForm;
   }
 
-  async deleteFormByPk(selectionSet: string[], pkColumns: ValueTypes['FormPkColumnsInput']) {
+  async deleteFormByPk(selectionSet: string[], pkColumns: FormPkColumnsInput) {
     const form = await this.formRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(form);
@@ -244,9 +241,9 @@ export class FormsService extends RequestContext {
 
   async aggregateForm(
     selectionSet: string[],
-    where: ValueTypes['FormBoolExp'],
-    orderBy?: Array<ValueTypes['FormOrderBy']>,
-    distinctOn?: Array<ValueTypes['FormSelectColumn']>,
+    where: FormBoolExp,
+    orderBy?: Array<FormOrderBy>,
+    distinctOn?: Array<FormSelectColumn>,
     limit?: number,
     offset?: number
   ) {

@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventApprovalStepInsertInput,
+  EventApprovalStepOnConflict,
+  EventApprovalStepSetInput,
+  EventApprovalStepBoolExp,
+  EventApprovalStepOrderBy,
+  EventApprovalStepSelectColumn,
+  EventApprovalStepPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertEventApprovalStepArgsType = {
-  objects: Array<ValueTypes['EventApprovalStepInsertInput']>;
-  onConflict?: ValueTypes['EventApprovalStepOnConflict'];
+  objects: Array<EventApprovalStepInsertInput>;
+  onConflict?: EventApprovalStepOnConflict;
 };
 
 export type InsertOneEventApprovalStepArgsType = {
-  object: ValueTypes['EventApprovalStepInsertInput'];
-  onConflict?: ValueTypes['EventApprovalStepOnConflict'];
+  object: EventApprovalStepInsertInput;
+  onConflict?: EventApprovalStepOnConflict;
 };
 
 export type UpdateEventApprovalStepArgsType = {
-  where: ValueTypes['EventApprovalStepBoolExp'];
-  _set: ValueTypes['EventApprovalStepSetInput'];
+  where: EventApprovalStepBoolExp;
+  _set: EventApprovalStepSetInput;
 };
 
 export type DeleteEventApprovalStepArgsType = {
-  where: ValueTypes['EventApprovalStepBoolExp'];
+  where: EventApprovalStepBoolExp;
 };
 
 export type UpdateByPkEventApprovalStepArgsType = {
-  pkColumns: ValueTypes['EventApprovalStepPkColumnsInput'];
-  _set: ValueTypes['EventApprovalStepSetInput'];
+  pkColumns: EventApprovalStepPkColumnsInput;
+  _set: EventApprovalStepSetInput;
 };
 
 export type FindEventApprovalStepArgsType = {
-  where: ValueTypes['EventApprovalStepBoolExp'];
-  orderBy?: Array<ValueTypes['EventApprovalStepOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventApprovalStepSelectColumn']>;
+  where: EventApprovalStepBoolExp;
+  orderBy?: Array<EventApprovalStepOrderBy>;
+  distinctOn?: Array<EventApprovalStepSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkEventApprovalStepArgsType = {
 };
 
 export type AggregateEventApprovalStepArgsType = {
-  where: ValueTypes['EventApprovalStepBoolExp'];
-  orderBy?: Array<ValueTypes['EventApprovalStepOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventApprovalStepSelectColumn']>;
+  where: EventApprovalStepBoolExp;
+  orderBy?: Array<EventApprovalStepOrderBy>;
+  distinctOn?: Array<EventApprovalStepSelectColumn>;
   limit?: number;
   offset?: number;
 };

@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ProjectInsertInput,
+  ProjectOnConflict,
+  ProjectBoolExp,
+  ProjectOrderBy,
+  ProjectSelectColumn,
+  ProjectSetInput,
+  ProjectUpdates,
+  ProjectPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class ProjectsService extends RequestContext {
@@ -22,7 +31,7 @@ export class ProjectsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['ProjectInsertInput']) {
+  checkPermsCreate(props: ProjectInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class ProjectsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['ProjectSetInput'], project: Project) {
+  checkPermsUpdate(props: ProjectSetInput, project: Project) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (project.deletedAt) throw new NotFoundException(`Project was deleted on ${project.deletedAt}.`);
@@ -65,14 +74,14 @@ export class ProjectsService extends RequestContext {
     return project.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['ProjectSetInput']) {
+  checkPropsConstraints(props: ProjectSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['ProjectInsertInput']) {
+  checkCreateRelationships(props: ProjectInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class ProjectsService extends RequestContext {
     return true;
   }
 
-  async insertProjectOne(
-    selectionSet: string[],
-    object: ValueTypes['ProjectInsertInput'],
-    onConflict?: ValueTypes['ProjectOnConflict']
-  ) {
+  async insertProjectOne(selectionSet: string[], object: ProjectInsertInput, onConflict?: ProjectOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
 
@@ -106,9 +111,9 @@ export class ProjectsService extends RequestContext {
 
   async findProject(
     selectionSet: string[],
-    where: ValueTypes['ProjectBoolExp'],
-    orderBy?: Array<ValueTypes['ProjectOrderBy']>,
-    distinctOn?: Array<ValueTypes['ProjectSelectColumn']>,
+    where: ProjectBoolExp,
+    orderBy?: Array<ProjectOrderBy>,
+    distinctOn?: Array<ProjectSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class ProjectsService extends RequestContext {
     return data.projectByPk;
   }
 
-  async insertProject(
-    selectionSet: string[],
-    objects: Array<ValueTypes['ProjectInsertInput']>,
-    onConflict?: ValueTypes['ProjectOnConflict']
-  ) {
+  async insertProject(selectionSet: string[], objects: Array<ProjectInsertInput>, onConflict?: ProjectOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
@@ -151,7 +152,7 @@ export class ProjectsService extends RequestContext {
     return data.insertProject;
   }
 
-  async updateProjectMany(selectionSet: string[], updates: Array<ValueTypes['ProjectUpdates']>) {
+  async updateProjectMany(selectionSet: string[], updates: Array<ProjectUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class ProjectsService extends RequestContext {
     return data.updateProjectMany;
   }
 
-  async updateProjectByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['ProjectPkColumnsInput'],
-    _set: ValueTypes['ProjectSetInput']
-  ) {
+  async updateProjectByPk(selectionSet: string[], pkColumns: ProjectPkColumnsInput, _set: ProjectSetInput) {
     const project = await this.projectRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, project);
@@ -202,7 +199,7 @@ export class ProjectsService extends RequestContext {
     return data.updateProjectByPk;
   }
 
-  async deleteProject(selectionSet: string[], where: ValueTypes['ProjectBoolExp']) {
+  async deleteProject(selectionSet: string[], where: ProjectBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class ProjectsService extends RequestContext {
     return data.updateProject;
   }
 
-  async deleteProjectByPk(selectionSet: string[], pkColumns: ValueTypes['ProjectPkColumnsInput']) {
+  async deleteProjectByPk(selectionSet: string[], pkColumns: ProjectPkColumnsInput) {
     const project = await this.projectRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(project);
@@ -244,9 +241,9 @@ export class ProjectsService extends RequestContext {
 
   async aggregateProject(
     selectionSet: string[],
-    where: ValueTypes['ProjectBoolExp'],
-    orderBy?: Array<ValueTypes['ProjectOrderBy']>,
-    distinctOn?: Array<ValueTypes['ProjectSelectColumn']>,
+    where: ProjectBoolExp,
+    orderBy?: Array<ProjectOrderBy>,
+    distinctOn?: Array<ProjectSelectColumn>,
     limit?: number,
     offset?: number
   ) {

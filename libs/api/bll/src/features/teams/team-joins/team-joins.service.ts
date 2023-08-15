@@ -2,12 +2,21 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { TeamJoinRepository, TeamJoin } from '@okampus/api/dal';
+import { TeamJoinRepository, TeamJoin, Team } from '@okampus/api/dal';
 import { EntityName, AdminPermissions, ApprovalState } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TeamJoinInsertInput,
+  TeamJoinOnConflict,
+  TeamJoinBoolExp,
+  TeamJoinOrderBy,
+  TeamJoinSelectColumn,
+  TeamJoinSetInput,
+  TeamJoinUpdates,
+  TeamJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamJoinsService extends RequestContext {
@@ -17,12 +26,12 @@ export class TeamJoinsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly teamJoinRepository: TeamJoinRepository
+    private readonly teamJoinRepository: TeamJoinRepository,
   ) {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['TeamJoinInsertInput']) {
+  checkPermsCreate(props: TeamJoinInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -36,7 +45,7 @@ export class TeamJoinsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === teamJoin.tenant?.id,
         )
     )
       return true;
@@ -45,7 +54,7 @@ export class TeamJoinsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['TeamJoinSetInput'], teamJoin: TeamJoin) {
+  checkPermsUpdate(props: TeamJoinSetInput, teamJoin: TeamJoin) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (teamJoin.deletedAt) throw new NotFoundException(`TeamJoin was deleted on ${teamJoin.deletedAt}.`);
@@ -56,7 +65,7 @@ export class TeamJoinsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === teamJoin.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === teamJoin.tenant?.id,
         )
     )
       return true;
@@ -65,7 +74,7 @@ export class TeamJoinsService extends RequestContext {
     return teamJoin.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['TeamJoinSetInput']) {
+  checkPropsConstraints(props: TeamJoinSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
@@ -80,26 +89,29 @@ export class TeamJoinsService extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['TeamJoinInsertInput']) {
+  async checkCreateRelationships(props: TeamJoinInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    this.hasuraService.expectIdRelationships(props, [{ path: 'teamId' }]);
+    const team = await this.em.findOneOrFail(Team, { id: props.teamId as string, deletedAt: null });
+
+    if (props.formSubmission?.data) props.formSubmission.data.formId = team.joinForm.id;
+
+    this.hasuraService.expectNestedRelationship(props, [{ path: 'formSubmission' }]);
+
     return true;
   }
 
-  async insertTeamJoinOne(
-    selectionSet: string[],
-    object: ValueTypes['TeamJoinInsertInput'],
-    onConflict?: ValueTypes['TeamJoinOnConflict']
-  ) {
+  async insertTeamJoinOne(selectionSet: string[], object: TeamJoinInsertInput, onConflict?: TeamJoinOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert TeamJoin.');
 
     const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = this.checkCreateRelationships(object);
+    const areRelationshipsValid = await this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -114,11 +126,11 @@ export class TeamJoinsService extends RequestContext {
 
   async findTeamJoin(
     selectionSet: string[],
-    where: ValueTypes['TeamJoinBoolExp'],
-    orderBy?: Array<ValueTypes['TeamJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['TeamJoinSelectColumn']>,
+    where: TeamJoinBoolExp,
+    orderBy?: Array<TeamJoinOrderBy>,
+    distinctOn?: Array<TeamJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('teamJoin', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -131,11 +143,7 @@ export class TeamJoinsService extends RequestContext {
     return data.teamJoinByPk;
   }
 
-  async insertTeamJoin(
-    selectionSet: string[],
-    objects: Array<ValueTypes['TeamJoinInsertInput']>,
-    onConflict?: ValueTypes['TeamJoinOnConflict']
-  ) {
+  async insertTeamJoin(selectionSet: string[], objects: Array<TeamJoinInsertInput>, onConflict?: TeamJoinOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert TeamJoin.');
@@ -159,7 +167,7 @@ export class TeamJoinsService extends RequestContext {
     return data.insertTeamJoin;
   }
 
-  async updateTeamJoinMany(selectionSet: string[], updates: Array<ValueTypes['TeamJoinUpdates']>) {
+  async updateTeamJoinMany(selectionSet: string[], updates: Array<TeamJoinUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -182,18 +190,14 @@ export class TeamJoinsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === teamJoin.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.TeamJoin, teamJoin, update._set);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateTeamJoinMany;
   }
 
-  async updateTeamJoinByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['TeamJoinPkColumnsInput'],
-    _set: ValueTypes['TeamJoinSetInput']
-  ) {
+  async updateTeamJoinByPk(selectionSet: string[], pkColumns: TeamJoinPkColumnsInput, _set: TeamJoinSetInput) {
     const teamJoin = await this.teamJoinRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, teamJoin);
@@ -210,7 +214,7 @@ export class TeamJoinsService extends RequestContext {
     return data.updateTeamJoinByPk;
   }
 
-  async deleteTeamJoin(selectionSet: string[], where: ValueTypes['TeamJoinBoolExp']) {
+  async deleteTeamJoin(selectionSet: string[], where: TeamJoinBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -228,14 +232,14 @@ export class TeamJoinsService extends RequestContext {
     await Promise.all(
       teamJoins.map(async (teamJoin) => {
         await this.logsService.deleteLog(EntityName.TeamJoin, teamJoin.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateTeamJoin;
   }
 
-  async deleteTeamJoinByPk(selectionSet: string[], pkColumns: ValueTypes['TeamJoinPkColumnsInput']) {
+  async deleteTeamJoinByPk(selectionSet: string[], pkColumns: TeamJoinPkColumnsInput) {
     const teamJoin = await this.teamJoinRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(teamJoin);
@@ -252,11 +256,11 @@ export class TeamJoinsService extends RequestContext {
 
   async aggregateTeamJoin(
     selectionSet: string[],
-    where: ValueTypes['TeamJoinBoolExp'],
-    orderBy?: Array<ValueTypes['TeamJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['TeamJoinSelectColumn']>,
+    where: TeamJoinBoolExp,
+    orderBy?: Array<TeamJoinOrderBy>,
+    distinctOn?: Array<TeamJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -266,7 +270,7 @@ export class TeamJoinsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.teamJoinAggregate;
   }

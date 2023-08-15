@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TagInsertInput,
+  TagOnConflict,
+  TagBoolExp,
+  TagOrderBy,
+  TagSelectColumn,
+  TagSetInput,
+  TagUpdates,
+  TagPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class TagsService extends RequestContext {
@@ -22,7 +31,7 @@ export class TagsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['TagInsertInput']) {
+  checkPermsCreate(props: TagInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class TagsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['TagSetInput'], tag: Tag) {
+  checkPermsUpdate(props: TagSetInput, tag: Tag) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (tag.deletedAt) throw new NotFoundException(`Tag was deleted on ${tag.deletedAt}.`);
@@ -65,14 +74,14 @@ export class TagsService extends RequestContext {
     return tag.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['TagSetInput']) {
+  checkPropsConstraints(props: TagSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['TagInsertInput']) {
+  checkCreateRelationships(props: TagInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class TagsService extends RequestContext {
     return true;
   }
 
-  async insertTagOne(
-    selectionSet: string[],
-    object: ValueTypes['TagInsertInput'],
-    onConflict?: ValueTypes['TagOnConflict']
-  ) {
+  async insertTagOne(selectionSet: string[], object: TagInsertInput, onConflict?: TagOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tag.');
 
@@ -106,9 +111,9 @@ export class TagsService extends RequestContext {
 
   async findTag(
     selectionSet: string[],
-    where: ValueTypes['TagBoolExp'],
-    orderBy?: Array<ValueTypes['TagOrderBy']>,
-    distinctOn?: Array<ValueTypes['TagSelectColumn']>,
+    where: TagBoolExp,
+    orderBy?: Array<TagOrderBy>,
+    distinctOn?: Array<TagSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class TagsService extends RequestContext {
     return data.tagByPk;
   }
 
-  async insertTag(
-    selectionSet: string[],
-    objects: Array<ValueTypes['TagInsertInput']>,
-    onConflict?: ValueTypes['TagOnConflict']
-  ) {
+  async insertTag(selectionSet: string[], objects: Array<TagInsertInput>, onConflict?: TagOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tag.');
@@ -151,7 +152,7 @@ export class TagsService extends RequestContext {
     return data.insertTag;
   }
 
-  async updateTagMany(selectionSet: string[], updates: Array<ValueTypes['TagUpdates']>) {
+  async updateTagMany(selectionSet: string[], updates: Array<TagUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class TagsService extends RequestContext {
     return data.updateTagMany;
   }
 
-  async updateTagByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['TagPkColumnsInput'],
-    _set: ValueTypes['TagSetInput']
-  ) {
+  async updateTagByPk(selectionSet: string[], pkColumns: TagPkColumnsInput, _set: TagSetInput) {
     const tag = await this.tagRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, tag);
@@ -202,7 +199,7 @@ export class TagsService extends RequestContext {
     return data.updateTagByPk;
   }
 
-  async deleteTag(selectionSet: string[], where: ValueTypes['TagBoolExp']) {
+  async deleteTag(selectionSet: string[], where: TagBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class TagsService extends RequestContext {
     return data.updateTag;
   }
 
-  async deleteTagByPk(selectionSet: string[], pkColumns: ValueTypes['TagPkColumnsInput']) {
+  async deleteTagByPk(selectionSet: string[], pkColumns: TagPkColumnsInput) {
     const tag = await this.tagRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(tag);
@@ -244,9 +241,9 @@ export class TagsService extends RequestContext {
 
   async aggregateTag(
     selectionSet: string[],
-    where: ValueTypes['TagBoolExp'],
-    orderBy?: Array<ValueTypes['TagOrderBy']>,
-    distinctOn?: Array<ValueTypes['TagSelectColumn']>,
+    where: TagBoolExp,
+    orderBy?: Array<TagOrderBy>,
+    distinctOn?: Array<TagSelectColumn>,
     limit?: number,
     offset?: number
   ) {

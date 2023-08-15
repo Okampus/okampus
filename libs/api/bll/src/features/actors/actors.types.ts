@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActorInsertInput,
+  ActorOnConflict,
+  ActorSetInput,
+  ActorBoolExp,
+  ActorOrderBy,
+  ActorSelectColumn,
+  ActorPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertActorArgsType = {
-  objects: Array<ValueTypes['ActorInsertInput']>;
-  onConflict?: ValueTypes['ActorOnConflict'];
+  objects: Array<ActorInsertInput>;
+  onConflict?: ActorOnConflict;
 };
 
 export type InsertOneActorArgsType = {
-  object: ValueTypes['ActorInsertInput'];
-  onConflict?: ValueTypes['ActorOnConflict'];
+  object: ActorInsertInput;
+  onConflict?: ActorOnConflict;
 };
 
 export type UpdateActorArgsType = {
-  where: ValueTypes['ActorBoolExp'];
-  _set: ValueTypes['ActorSetInput'];
+  where: ActorBoolExp;
+  _set: ActorSetInput;
 };
 
 export type DeleteActorArgsType = {
-  where: ValueTypes['ActorBoolExp'];
+  where: ActorBoolExp;
 };
 
 export type UpdateByPkActorArgsType = {
-  pkColumns: ValueTypes['ActorPkColumnsInput'];
-  _set: ValueTypes['ActorSetInput'];
+  pkColumns: ActorPkColumnsInput;
+  _set: ActorSetInput;
 };
 
 export type FindActorArgsType = {
-  where: ValueTypes['ActorBoolExp'];
-  orderBy?: Array<ValueTypes['ActorOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActorSelectColumn']>;
+  where: ActorBoolExp;
+  orderBy?: Array<ActorOrderBy>;
+  distinctOn?: Array<ActorSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkActorArgsType = {
 };
 
 export type AggregateActorArgsType = {
-  where: ValueTypes['ActorBoolExp'];
-  orderBy?: Array<ValueTypes['ActorOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActorSelectColumn']>;
+  where: ActorBoolExp;
+  orderBy?: Array<ActorOrderBy>;
+  distinctOn?: Array<ActorSelectColumn>;
   limit?: number;
   offset?: number;
 };
