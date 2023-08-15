@@ -10,16 +10,17 @@ type SubmissionNoReadonly<Values> = Values extends Array<{ name: infer Key; type
 
 export type Submission<Values> = SubmissionNoReadonly<DeepWriteable<Values>>;
 
-export type FormFieldValue<Type> = Type extends ControlType.Markdown | ControlType.Text | ControlType.Number
+export type FormFieldValue<Type> = Type extends
+  | ControlType.Markdown
+  | ControlType.Text
+  | ControlType.Number
+  | ControlType.Radio
+  | ControlType.Select
   ? string
   : Type extends ControlType.File | ControlType.MultiFile
   ? FileList
-  : Type extends ControlType.Radio | ControlType.Select
-  ? number
   : Type extends ControlType.Checkbox
   ? boolean
-  : Type extends ControlType.MultiCheckbox
-  ? boolean[]
   : never;
 
 export type FormFieldType<Type extends ControlType> = {
@@ -40,7 +41,7 @@ export type FormSchema = Readonly<Array<FormFieldType<ControlType>>>;
 
 export function isFormSubmission<T extends FormSchema>(
   schema: T,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): data is Submission<T> {
   for (const field of schema) {
     if (field.required && !(field.name in data)) {

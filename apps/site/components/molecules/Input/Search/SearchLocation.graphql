@@ -1,0 +1,16 @@
+query SearchLocation($query: String!) {
+  searchLocation(query: $query) {
+    __typename
+    geoapifyId
+    name
+    category
+    latitude
+    longitude
+    street
+    streetNumber
+    city
+    zip
+    state
+    country
+  }
+}

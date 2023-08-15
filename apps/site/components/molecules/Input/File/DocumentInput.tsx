@@ -1,17 +1,17 @@
 import FileIcon from '../../../atoms/Icon/FileIcon';
 import ActionButton from '../../Button/ActionButton';
 
+import { useInsertSingleUploadMutation } from '@okampus/shared/graphql';
 import { bytes } from '@okampus/shared/utils';
-import { singleUploadMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import { IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import type { Buckets, EntityName } from '@okampus/shared/enums';
 
+import type { InsertSingleUploadMutationVariables } from '@okampus/shared/graphql';
+import type { Buckets, EntityName } from '@okampus/shared/enums';
 import type { ChangeEvent } from 'react';
 
 const defaultAbort = () => console.log('No abortHandler provided. Cannot abort!');
@@ -37,11 +37,11 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
   const onDrop = () => wrapperRef.current?.classList.remove('dragover');
 
   const context = { fetchOptions: { credentials: 'include', useUpload: true, onAbortPossible, onProgress } };
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [insertUpload] = useInsertSingleUploadMutation({ context });
 
   const uploadFile = (uploadedFile: File) => {
     setFile(uploadedFile);
-    const variables = { file: uploadedFile, ...uploadContext };
+    const variables = { file: uploadedFile, ...uploadContext } as InsertSingleUploadMutationVariables;
     insertUpload({ variables, onCompleted: ({ singleUpload }) => onChange(singleUpload?.id as string, uploadedFile) });
   };
 
@@ -81,7 +81,7 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
     <div
       className={clsx(
         'relative p-5 h-[35rem] aspect-square rounded-sm flex flex-col gap-6 items-center bg-1 justify-center overflow-hidden',
-        document ? 'border border-transparent hover:border-blue-500' : 'file-uploader'
+        document ? 'border border-transparent hover:border-blue-500' : 'file-uploader',
       )}
       ref={wrapperRef}
       onDragEnter={onDragEnter}

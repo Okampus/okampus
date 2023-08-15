@@ -1,19 +1,15 @@
-import AutoCompleteInput from './Search/AutoCompleteInput';
-import LegalUnitInputConfirm from './InputConfirm/LegalUnitInputConfirm';
-import AvatarLabeled from '../Labeled/AvatarLabeled';
-import { useModal } from '../../../hooks/context/useModal';
+import AutoCompleteInput from '../Search/AutoCompleteInput';
+import LegalUnitInputConfirm from '../InputConfirm/LegalUnitInputConfirm';
+import AvatarLabeled from '../../Labeled/AvatarLabeled';
 
-import {
-  useTypedLazyQuery,
-  legalUnitLocationMinimalInfo,
-  insertLegalUnitLocationMutation,
-} from '@okampus/shared/graphql';
+import { useModal } from '../../../../hooks/context/useModal';
 
-import { useMutation } from '@apollo/client';
+import { useGetLegalUnitLocationsLazyQuery, useInsertLegalUnitLocationMutation } from '@okampus/shared/graphql';
+
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'react-use';
 
-import type { LegalUnitLocationMinimalInfo } from '@okampus/shared/graphql';
+import type { LegalUnitLocationMinimalInfo } from '../../../../types/features/legal-unit-location.info';
 
 export type LegalUnitLocationInputProps = {
   name: string;
@@ -36,19 +32,14 @@ export default function LegalUnitLocationInput({
   const [searchText, setSearchText] = useState('');
   const throttledSearch = useThrottle(searchText, 1500);
 
-  const [search, { data, loading, error }] = useTypedLazyQuery({
-    legalUnitLocation: [
-      { where: { legalName: { _ilike: `%${throttledSearch}%` } }, limit: 7 },
-      legalUnitLocationMinimalInfo,
-    ],
-  });
+  const variables = { where: { legalName: { _ilike: `%${throttledSearch}%` } }, limit: 7 };
+  const [search, { data, loading, error }] = useGetLegalUnitLocationsLazyQuery({ variables });
 
   useEffect(() => {
     if (throttledSearch) search();
   }, [throttledSearch, search]);
 
-  // @ts-ignore
-  const [insertLegalLocationUnit] = useMutation(insertLegalUnitLocationMutation, {
+  const [insertLegalLocationUnit] = useInsertLegalUnitLocationMutation({
     onCompleted: ({ insertLegalUnitLocationOne }) => {
       if (!insertLegalUnitLocationOne) return;
       onChange(insertLegalUnitLocationOne);
@@ -68,8 +59,8 @@ export default function LegalUnitLocationInput({
   return (
     <AutoCompleteInput
       name={name}
-      value={selected}
-      onChange={(value) => onChange((value as LegalUnitLocationMinimalInfo) ?? null)}
+      value={selected ? [selected.value] : []}
+      onChange={(value) => onChange(value[0])}
       error={error ? error.message : undefined}
       loading={loading}
       options={selectItems}
@@ -84,7 +75,6 @@ export default function LegalUnitLocationInput({
               initialName={searchText}
               onSubmit={(name) =>
                 insertLegalLocationUnit({
-                  // @ts-ignore
                   variables: { object: { legalUnitId, legalName: name, actor: { data: { name } } } },
                 })
               }

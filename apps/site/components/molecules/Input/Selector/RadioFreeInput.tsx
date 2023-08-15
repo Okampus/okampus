@@ -1,7 +1,7 @@
 import FieldSet from '../FieldSet';
 import clsx from 'clsx';
 
-import { createRef, forwardRef, memo, useEffect, useState } from 'react';
+import { forwardRef, memo, useEffect, useRef, useState } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
 import type { UncontrolledSelect } from '@okampus/shared/types';
@@ -34,55 +34,88 @@ export default memo(
     const [selected, setSelected] = useState(choices.findIndex((choice) => choice.value === props.defaultValue));
     const [lastInputValue, setLastInputValue] = useState<string>(selected === -1 ? props.defaultValue ?? '' : '');
 
-    const localRef = createRef<HTMLInputElement>();
+    const localRef = useRef<HTMLInputElement>();
+
+    // console.log(
+    //   selected,
+    //   choices,
+    //   props.defaultValue,
+    //   choices.findIndex((choice) => choice.value === props.defaultValue),
+    // );
 
     useEffect(() => {
       if (props.defaultValue && localRef.current) {
         localRef.current.value = props.defaultValue;
+        const choice = choices.findIndex((choice) => choice.value === props.defaultValue);
+        setSelected(choice);
+        if (choice === -1) setLastInputValue(props.defaultValue);
       }
-    }, [props.defaultValue, localRef]);
+    }, [props.defaultValue, choices]);
 
-    const input = (
-      <input
-        ref={mergeRefs([ref, localRef])}
-        className="input"
-        disabled={disabled}
-        placeholder={placeholder}
-        name={name}
-        onChange={onChange}
-        // eslint-disable-next-line jsx-a11y/aria-props
-        aria-description={description}
-        aria-invalid={typeof error === 'string'}
-        {...inputProps}
-      />
-    );
+    const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
+
+    function setNativeValue(element: HTMLInputElement, value: string) {
+      const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {};
+      const prototype = Object.getPrototypeOf(element);
+      const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {};
+
+      if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+        prototypeValueSetter.call(element, value);
+      } else if (valueSetter) {
+        valueSetter.call(element, value);
+      } else {
+        throw new Error('The given element does not have a value setter');
+      }
+    }
 
     const onClickOther = () => {
       setSelected(-1);
       if (localRef.current) {
         localRef.current.focus();
-        localRef.current.value = lastInputValue;
-        localRef.current.dispatchEvent(new Event('change'));
+        setNativeValue(localRef.current, lastInputValue);
+        localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
       }
     };
 
-    const fieldSetClass = clsx('flex flex-wrap gap-2', className);
-    const otherClass = clsx('input', selected === -1 ? 'hidden' : 'opacity-50 hover:opacity-100', 'absolute inset-0');
+    const input = (
+      <div className={clsx('relative', selected !== -1 && 'opacity-50 hover:opacity-100')}>
+        <input
+          ref={mergeRefs([ref, localRef])}
+          className="input"
+          disabled={disabled}
+          placeholder={placeholder}
+          name={name}
+          onChange={onChange}
+          // eslint-disable-next-line jsx-a11y/aria-props
+          aria-description={description}
+          aria-invalid={typeof error === 'string'}
+          {...inputProps}
+        />
+        <button aria-hidden={true} className={otherClass} onClick={onClickOther}>
+          {lastInputValue || placeholder}
+        </button>
+      </div>
+    );
 
-    const fieldSetProps = { label, className, name, description, error, info, loading };
+    const fieldSetClass = clsx('flex flex-wrap gap-2', className);
+
+    const fieldSetProps = { label, className: fieldSetClass, name, description, error, info, loading };
 
     return (
       <FieldSet {...fieldSetProps}>
         {choices.map(({ value, label }, idx) => {
           const onClick = () => {
-            if (selected === -1 && localRef.current) setLastInputValue(localRef.current.value);
             if (localRef.current) {
-              localRef.current.value = value;
-              localRef.current.dispatchEvent(new Event('change'));
+              setNativeValue(localRef.current, value);
+              localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
             }
+            setSelected(idx);
           };
 
-          const buttonClass = clsx('button', selected === idx ? 'bg-2' : 'opacity-50 hover:opacity-100');
+          const buttonClass = clsx(
+            'button !px-3',
+            selected === idx ? 'bg-2' : 'bg-[var(--bg-input)] opacity-50 hover:opacity-100',
+          );
           return (
             <button key={value} disabled={disabled} className={buttonClass} onClick={onClick}>
               {label}
@@ -90,21 +123,24 @@ export default memo(
           );
         })}
 
-        <div className="relative">
-          {startContent || endContent ? (
-            <div className="flex items-stretch">
-              {startContent && <label htmlFor={name}>{startContent}</label>}
-              {input}
-              {endContent && <label htmlFor={name}>{endContent}</label>}
-            </div>
-          ) : (
-            input
-          )}
-          <button aria-hidden={true} className={otherClass} onClick={onClickOther}>
-            {lastInputValue || placeholder}
-          </button>
-        </div>
+        {startContent || endContent ? (
+          <div className="flex items-stretch">
+            {startContent && (
+              <div className="flex items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
+                {startContent}
+              </div>
+            )}
+            {input}
+            {endContent && (
+              <div className="flex items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
+                {endContent}
+              </div>
+            )}
+          </div>
+        ) : (
+          input
+        )}
       </FieldSet>
     );
-  })
+  }),
 );

@@ -18,7 +18,7 @@ export type TextInputProps = {
 
 export default memo(
   forwardRef<HTMLInputElement, TextInputProps>(function TextInput(props, ref) {
-    console.info('TextInput props change', props);
+    // console.info('TextInput props change', props);
     const localRef = createRef<HTMLInputElement>();
 
     useEffect(() => {
@@ -52,7 +52,14 @@ export default memo(
         // eslint-disable-next-line jsx-a11y/aria-props
         aria-description={description}
         aria-invalid={typeof error === 'string'}
-        className={clsx('input', inputClassName, textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'))}
+        className={clsx(
+          'input',
+          inputClassName,
+          startContent && '!rounded-l-none !pl-0',
+          endContent && '!rounded-r-none !pr-0',
+          textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'),
+          !startContent && !endContent && error && '!outline !outline-1 !outline-[var(--danger)]',
+        )}
         onChange={onChange}
         {...inputProps}
       />
@@ -62,15 +69,24 @@ export default memo(
     return (
       <Field {...fieldProps}>
         {startContent || endContent ? (
-          <div className="flex items-stretch">
-            {startContent && <label htmlFor={name}>{startContent}</label>}
+          <div
+            className={clsx(
+              'flex shrink min-w-0 items-stretch font-semibold w-full rounded-md',
+              error && 'outline outline-offset-2 outline-1 outline-[var(--danger)]',
+            )}
+          >
+            {startContent && (
+              <div className="flex items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">{startContent}</div>
+            )}
             {input}
-            {endContent && <label htmlFor={name}>{endContent}</label>}
+            {endContent && (
+              <div className="flex items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">{endContent}</div>
+            )}
           </div>
         ) : (
           input
         )}
       </Field>
     );
-  })
+  }),
 );

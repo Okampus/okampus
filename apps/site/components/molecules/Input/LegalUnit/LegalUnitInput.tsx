@@ -1,17 +1,16 @@
-import AutoCompleteInput from './Search/AutoCompleteInput';
-import LegalUnitInputConfirm from './InputConfirm/LegalUnitInputConfirm';
-import AvatarLabeled from '../Labeled/AvatarLabeled';
+import AutoCompleteInput from '../Search/AutoCompleteInput';
+import LegalUnitInputConfirm from '../InputConfirm/LegalUnitInputConfirm';
+import AvatarLabeled from '../../Labeled/AvatarLabeled';
 
-import { useModal } from '../../../hooks/context/useModal';
+import { useModal } from '../../../../hooks/context/useModal';
 
+import { useGetLegalUnitsLazyQuery, useInsertLegalUnitMutation } from '@okampus/shared/graphql';
 import { LegalUnitType } from '@okampus/shared/enums';
-import { legalUnitMinimalInfo, insertLegalUnitMutation, useTypedLazyQuery } from '@okampus/shared/graphql';
 
-import { useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'react-use';
 
-import type { LegalUnitMinimalInfo } from '@okampus/shared/graphql';
+import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
 
 export type LegalUnitInputProps = {
   name: string;
@@ -38,21 +37,14 @@ export default function LegalUnitInput({
   const [searchText, setSearchText] = useState(legalUnitQuery ?? '');
   const throttledSearch = useThrottle(searchText, 1500);
 
-  const [search, { data, loading, error }] = useTypedLazyQuery({
-    legalUnit: [
-      { where: { ...whereType, legalName: { _ilike: `%${throttledSearch}%` } }, limit: 7 },
-      legalUnitMinimalInfo,
-    ],
-  });
-
-  useEffect(() => setSearchText(legalUnitQuery ?? ''), [legalUnitQuery]);
+  const variables = { where: { ...whereType, legalName: { _ilike: `%${throttledSearch}%` } }, limit: 7 };
+  const [search, { data, loading, error }] = useGetLegalUnitsLazyQuery({ variables });
 
   useEffect(() => {
     if (throttledSearch) search();
   }, [throttledSearch, search]);
 
-  // @ts-ignore
-  const [insertLegalUnit] = useMutation(insertLegalUnitMutation, {
+  const [insertLegalUnit] = useInsertLegalUnitMutation({
     onCompleted: ({ insertLegalUnitOne }) => {
       if (!insertLegalUnitOne) return;
       onChange(insertLegalUnitOne);
@@ -75,8 +67,8 @@ export default function LegalUnitInput({
     <AutoCompleteInput
       // autoFocus={autoFocus}
       name={name}
-      value={selected}
-      onChange={(value) => onChange((value as LegalUnitMinimalInfo) ?? null)}
+      value={selected ? [selected.value] : []}
+      onChange={(value) => onChange(value[0])}
       search={searchText}
       onChangeSearch={(value) => (onQueryChange ? onQueryChange(value) : setSearchText(value))}
       onAddCurrentSearch={(search: string) => {
@@ -87,12 +79,7 @@ export default function LegalUnitInput({
               onSubmit={(name) =>
                 insertLegalUnit({
                   variables: {
-                    // @ts-ignore
-                    object: {
-                      type: type ?? LegalUnitType.Company,
-                      legalName: name,
-                      actor: { data: { name } },
-                    },
+                    object: { type: type ?? LegalUnitType.Company, legalName: name, actor: { data: { name } } },
                   },
                 })
               }

@@ -56,7 +56,7 @@ export default function SelectorInput<T extends object>({
       selectedCategory.length === 0 ? items : getFilteredItems(items, selectedCategory, itemToCategories);
     onChangeFilteredItems(currentFilteredItems);
     setCategories(getCategories(currentFilteredItems, itemToCategories, selectedCategory));
-  }, [selectedCategory]);
+  }, [itemToCategories, items, onChangeCategories, onChangeFilteredItems, selectedCategory]);
 
   const toggleCategory = (category: string) => {
     if (selectedCategory.includes(category)) {

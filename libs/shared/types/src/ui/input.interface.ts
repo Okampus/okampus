@@ -7,7 +7,7 @@ export type UncontrolledInput<T> = {
   className?: string;
   required?: boolean;
   description?: string;
-  error?: string | null;
+  error?: string | null | false;
   info?: React.ReactNode;
   loading?: boolean;
   label?: React.ReactNode;
@@ -22,19 +22,14 @@ export type ControlledInput<T> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
   value: T;
 };
 
-type Multiple<T> =
-  | {
-      multiple: true;
-      onChange?: (value: T[]) => void;
-      value: T[];
-    }
-  | {
-      multiple?: false;
-      onChange?: (value: T) => void;
-      value: T | null;
-    };
+export type ControlledSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
+  onChange?: (value: T) => void;
+  value: T | null;
+  options: SelectItem<T, Searchable>[];
+};
 
-export type ControlledSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> &
-  Multiple<T> & {
-    options: SelectItem<T, Searchable>[];
-  };
+export type ControlledMultiSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
+  onChange?: (value: T[]) => void;
+  value: T[];
+  options: SelectItem<T, Searchable>[];
+};

@@ -1,13 +1,12 @@
 'use client';
 
 import AutoCompleteInput from './AutoCompleteInput';
-// import ComboBoxInput from './ComboBoxInput';
 
-import { geocodeAddressBaseInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
+import { useSearchLocationLazyQuery } from '@okampus/shared/graphql';
 import { useEffect, useState } from 'react';
 
 import { useThrottle } from 'react-use';
-import type { GeocodeAddress } from '@okampus/shared/types';
+import type { GeocodeAddress, SelectItem } from '@okampus/shared/types';
 
 export type AddressSearchInputProps = {
   name: string;
@@ -17,7 +16,7 @@ export type AddressSearchInputProps = {
   onQueryChange?: (value: string) => void;
 };
 
-const formatAddress = (address: GeocodeAddress | null) => {
+const formatAddress = (address: GeocodeAddress) => {
   if (!address) return '';
   const { streetNumber, street, city, zip } = address;
   return `${streetNumber} ${street}, ${zip} ${city}`;
@@ -38,14 +37,14 @@ export default function AddressSearchInput({
 
   const throttledSearch = useThrottle(searchText, 1500);
 
-  const [search, { data, loading, error }] = useTypedLazyQuery(
-    { searchLocation: [{ query: throttledSearch }, geocodeAddressBaseInfo] },
-    { apolloOptions: { context: { useApi: true } } }
-  );
+  const [search, { data, loading, error }] = useSearchLocationLazyQuery({
+    variables: { query: throttledSearch },
+    context: { useApi: true },
+  });
 
   const [addresses, setAddresses] = useState<GeocodeAddress[]>([]);
   useEffect(() => {
-    if (!loading) setAddresses(data?.searchLocation || []);
+    if (!loading) setAddresses(data?.searchLocation ?? []);
   }, [data, loading]);
 
   useEffect(() => {
@@ -64,11 +63,11 @@ export default function AddressSearchInput({
       name={name}
       error={error ? error.message : undefined}
       loading={loading}
-      value={selected}
-      onChange={(selectValue) => onChange((selectValue as GeocodeAddress) || null)}
+      value={selected?.value ? [selected.value] : []}
+      onChange={(selectValue) => onChange(selectValue[0])}
       search={searchText}
       onChangeSearch={(query) => (onQueryChange ? onQueryChange(query) : setSearchText(query))}
-      options={selectItems}
+      options={selectItems as SelectItem<GeocodeAddress, true>[]}
     />
   );
 }

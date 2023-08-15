@@ -1,0 +1,8 @@
+mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
+  singleUpload(file: $file, bucket: $bucket, entityId: $entityId, entityName: $entityName) {
+    id
+    name
+    url
+    createdAt
+  }
+}

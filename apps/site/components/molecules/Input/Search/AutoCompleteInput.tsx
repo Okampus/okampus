@@ -1,8 +1,8 @@
 'use client';
 
 import Field from '../Field';
+import TagList from '../../List/TagList';
 
-import { TagList } from '../../List/TagList';
 import {
   useFloating,
   useClick,
@@ -21,11 +21,12 @@ import {
 import { IconCheck, IconCircle } from '@tabler/icons-react';
 
 import clsx from 'clsx';
-import { memo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import type { ControlledSelect, SelectItem } from '@okampus/shared/types';
+import type { ControlledMultiSelect, SelectItem } from '@okampus/shared/types';
 
 export type AutoCompleteInputProps<T> = {
+  multiple?: boolean;
   search: string;
   onChangeSearch: (search: string) => void;
   onAddCurrentSearch?: (search: string) => SelectItem<T, true> | void;
@@ -34,10 +35,11 @@ export type AutoCompleteInputProps<T> = {
   contentClassName?: string;
   contentRef?: React.Ref<HTMLUListElement>;
   showIcon?: boolean;
-} & ControlledSelect<T, true>;
+} & ControlledMultiSelect<T, true>;
 
-export default memo(function AutoCompleteInput<T>({
+export default function AutoCompleteInput<T>({
   search,
+  multiple = false,
   onChangeSearch,
   onAddCurrentSearch,
   placeholder = 'Votre choix',
@@ -48,7 +50,7 @@ export default memo(function AutoCompleteInput<T>({
   showIcon = true,
   ...props
 }: AutoCompleteInputProps<T>) {
-  const { options, name, multiple, value, onChange, error, className, label, disabled, required, description } = props;
+  const { options, name, value, onChange, error, className, label, disabled, required, description } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -124,7 +126,7 @@ export default memo(function AutoCompleteInput<T>({
         onChange?.([...value, item.value]);
       } else {
         setSelectedItems([item]);
-        onChange?.(item.value);
+        onChange?.([item.value]);
       }
     }
     setIsOpen(false);
@@ -216,7 +218,7 @@ export default memo(function AutoCompleteInput<T>({
       )}
     </Field>
   );
-});
+}
 
 // import { baseItemClassName, contentClassName } from '../../../../config/select-config';
 // import {
