@@ -3,7 +3,8 @@ import { RequestContext } from '../../shards/abstract/request-context';
 
 import { Mutation, Resolver, Args } from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
-import { GraphQLUpload } from 'graphql-upload-minimal';
+import { GraphQLUpload } from 'graphql-upload-ts';
+
 import { Buckets, EntityName } from '@okampus/shared/enums';
 import { enumChecker } from '@okampus/shared/utils';
 
@@ -11,19 +12,6 @@ import type { FileUpload } from '@okampus/api/dal';
 import type { MulterFile } from '@okampus/shared/types';
 
 const isBucket = enumChecker(Buckets);
-// const actorEntities = [EntityName.Team, EntityName.User, EntityName.Bot] as const;
-// const thumbnailsEntities = [EntityName.Tag, EntityName.Location, EntityName.Event, EntityName.Project] as const;
-// const receiptsEntities = [EntityName.Grant, EntityName.Expense, EntityName.ExpenseItem, EntityName.Finance] as const;
-// const attachmentsEntities = [EntityName.Content, EntityName.GrantUnlock] as const;
-
-// function ensureEntityName<T extends ReadonlyArray<string>>(
-//   entityName: string | null,
-//   entityId: string,
-//   entities: T
-// ): entityName is T[number] {
-//   if (!entityName || !includes(entityName, entities)) throw new BadRequestException(`Invalid entity: ${entityName}.`);
-//   return entityId !== '';
-// }
 
 @Resolver('FileUpload')
 export class UploadsResolver extends RequestContext {
@@ -36,7 +24,7 @@ export class UploadsResolver extends RequestContext {
     @Args('file', { type: () => GraphQLUpload }) file: MulterFile,
     @Args('entityName', { nullable: true }) entityName: EntityName,
     @Args('entityId', { nullable: true }) entityId: string | null = null,
-    @Args('bucket', { nullable: true }) bucket: string = Buckets.Attachments
+    @Args('bucket', { nullable: true }) bucket: string = Buckets.Attachments,
   ): Promise<FileUpload> {
     if (!isBucket(bucket)) throw new BadRequestException(`Invalid bucket ${bucket}`);
 
