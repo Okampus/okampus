@@ -159,7 +159,4 @@ export * from './shards/utils/load-config';
 export * from './types/gql-context';
 export * from './types/gql-websocket-context.type';
 export * from './types/http-resource.type';
-export * from './types/page-info.type';
-export * from './types/paginated.type';
-export * from './types/pagination-options.type';
 // @endindex
