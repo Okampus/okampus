@@ -16,7 +16,7 @@ export default function IMoney({ amount, showRed, textClass = 'text-1', classNam
       className={clsx(
         className,
         isPositive ? 'dark:text-green-300 text-green-400' : showRed ? 'text-red-400' : textClass,
-        'font-medium tracking-wide tabular-nums'
+        'font-medium tracking-wide tabular-nums',
       )}
     >
       {format(amount)}

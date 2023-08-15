@@ -5,7 +5,7 @@ import { cookies, headers } from 'next/headers';
 
 const acceptLanguageWithQualityRegex = /([a-z]{1,8}(?:-[a-z]{1,8})?)(?:;q=(0(?:\.\d{1,3})?|1(?:\.0{1,3})?))?/gi;
 
-function getAcceptLanguage(): typeof availableLocales[number] {
+function getAcceptLanguage(): (typeof availableLocales)[number] {
   const acceptLanguage = headers().get('Accept-Language');
   const matches = acceptLanguage ? acceptLanguage.match(acceptLanguageWithQualityRegex) || [] : [];
   if (matches.length === 0) return fallbackLocale;
@@ -32,7 +32,7 @@ function getAcceptLanguage(): typeof availableLocales[number] {
   return fallbackLocale;
 }
 
-export async function getLang(): Promise<typeof availableLocales[number]> {
+export async function getLang(): Promise<(typeof availableLocales)[number]> {
   'use server';
 
   const cookieLocale = cookies().get(LOCALE_COOKIE)?.value;

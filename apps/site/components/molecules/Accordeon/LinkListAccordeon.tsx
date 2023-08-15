@@ -18,7 +18,7 @@ export type LinkListAccordeonProps = {
 export default function LinkListAccordeon({ accordeons, className }: LinkListAccordeonProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState<number>(
-    accordeons.findIndex((acc) => acc.items.find((link) => link.href === pathname))
+    accordeons.findIndex((acc) => acc.items.find((link) => link.href === pathname)),
   );
   return (
     <ul className={clsx('flex flex-col', className)}>

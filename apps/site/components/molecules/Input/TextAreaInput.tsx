@@ -68,5 +68,5 @@ export default memo(
         )}
       </Field>
     );
-  })
+  }),
 );

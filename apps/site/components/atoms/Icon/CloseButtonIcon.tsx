@@ -20,7 +20,7 @@ export default function CloseButtonIcon({ onClick, className, disabled, icon = <
       className={clsx(
         'button-circle opacity-50 !p-1.5 h-11',
         className,
-        disabled ? 'text-3 opacity-70' : 'text-1 opacity-80 hover:opacity-100 hover:bg-[var(--bg-4)]'
+        disabled ? 'text-3 opacity-70' : 'text-1 opacity-80 hover:opacity-100 hover:bg-[var(--bg-4)]',
       )}
     >
       {icon}

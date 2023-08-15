@@ -7,7 +7,7 @@ export function useLocale() {
 
   return [
     lang,
-    (lang: typeof availableLocales[number]) => {
+    (lang: (typeof availableLocales)[number]) => {
       document.documentElement.setAttribute('lang', lang);
       setLang(lang);
     },

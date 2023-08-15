@@ -19,7 +19,7 @@ export default function LinkItem({
     className,
     'relative flex items-center px-3 py-2 font-bold rounded',
     selected ? 'text-[var(--primary)]' : 'text-2 text-0-hover opacity-90 text-hover',
-    large ? 'text-base gap-3' : 'text-sm gap-2.5'
+    large ? 'text-base gap-3' : 'text-sm gap-2.5',
   );
 
   return (
@@ -31,7 +31,7 @@ export default function LinkItem({
             'relative',
             large
               ? 'h-8 w-8 [&>:first-child]:h-8 [&>:first-child]:w-8'
-              : 'h-6 w-6 [&>:first-child]:h-6 [&>:first-child]:w-6'
+              : 'h-6 w-6 [&>:first-child]:h-6 [&>:first-child]:w-6',
           )}
         >
           {icon}

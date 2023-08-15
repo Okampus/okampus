@@ -9,7 +9,7 @@ export function interpolate(
   data: TOptions,
   format: Format,
   dict: unknown,
-  determiners: Determiners
+  determiners: Determiners,
 ): string | undefined {
   return str.replaceAll(/{{\s*([^\s,}]+?)\s*(?:,\s*([^\s}]+?))?\s*}}/g, (_, dataKey: string, contextValue: string) => {
     const hasDynamicContext = contextValue && contextValue.at(0) === '[' && contextValue.at(-1) === ']';
@@ -30,7 +30,7 @@ export function interpolate(
                 return [value, value];
               }
             })
-            .map(([key, contextKey]) => [key, data[contextKey]])
+            .map(([key, contextKey]) => [key, data[contextKey]]),
         );
       }
       return translate(dict, key, context, format, determiners);

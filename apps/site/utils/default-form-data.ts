@@ -3,7 +3,7 @@ import type { FormSchema, Submission } from '@okampus/shared/types';
 
 export function isFormSubmission<T extends FormSchema>(
   schema: T,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): data is Submission<T> {
   for (const field of schema) {
     if (field.required && !(field.name in data)) {

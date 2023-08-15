@@ -6,7 +6,7 @@ export interface ValidRefTarget {
 }
 
 export function useOutsideClick<T extends ValidRefTarget>(
-  initialIsVisible: boolean
+  initialIsVisible: boolean,
 ): [RefObject<(T | null)[]>, boolean, Dispatch<SetStateAction<boolean>>] {
   const [isComponentVisible, setIsComponentVisible] = useState<boolean>(initialIsVisible);
   const ref = useRef<(T | null)[]>([]);

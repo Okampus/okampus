@@ -56,7 +56,7 @@ const cachedDict = cache(async function getDict(lang: string) {
       }
       if (subPath.name.endsWith('.json')) return [subPath.name, [] as string[]] as const;
       return null;
-    })
+    }),
   );
 
   await Promise.all(
@@ -67,13 +67,13 @@ const cachedDict = cache(async function getDict(lang: string) {
           : Promise.all(
               subPaths.map((subPath) =>
                 loadPath(lang, path.join(_path, subPath)).then(
-                  (dict) => (dicts[`${_path}.${subPath.split('.json')[0]}`] = dict)
-                )
-              )
+                  (dict) => (dicts[`${_path}.${subPath.split('.json')[0]}`] = dict),
+                ),
+              ),
             );
 
       await promise;
-    })
+    }),
   );
 
   return dicts;

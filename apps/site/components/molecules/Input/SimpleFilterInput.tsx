@@ -50,7 +50,7 @@ export default function SimpleFilterInput<T>({ className, selected, setSelected,
           ref={setRefIndex(0, ref)}
           className={clsx(
             'input min-h-[var(--h-input)] gap-3 justify-between',
-            selected.length > 0 && 'border-2 border-[var(--border-1)]'
+            selected.length > 0 && 'border-2 border-[var(--border-1)]',
           )}
         >
           <div className="flex items-center gap-2">

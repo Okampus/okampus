@@ -19,7 +19,7 @@ export default function RadioCircleIcon({
         'relative bg-opposite rounded-full shrink-0 aspect-square',
         className,
         sizeClassName,
-        disabled && 'opacity-70'
+        disabled && 'opacity-70',
       )}
     >
       <div className="absolute inset-[2px] bg-2 rounded-full">

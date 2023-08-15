@@ -21,7 +21,7 @@ export default function ModalLayout({
   const contentClass = clsx(
     'min-h-0 overflow-y-scroll scrollbar text-1 font-medium',
     contentClassName,
-    !contentNoPadding && 'px-7 pt-3 pb-8'
+    !contentNoPadding && 'px-7 pt-3 pb-8',
   );
   return (
     <section className={sectionClass}>

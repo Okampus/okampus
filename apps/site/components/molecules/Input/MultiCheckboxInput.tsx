@@ -58,7 +58,7 @@ export default memo(
         </span>
       </Field>
     );
-  })
+  }),
 );
 
 // import { IconCheck } from '@tabler/icons-react';
