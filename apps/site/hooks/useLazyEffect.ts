@@ -5,5 +5,6 @@ export const useLazyEffect = (effect: EffectCallback, deps: DependencyList = [],
   useEffect(() => {
     const handler = setTimeout(() => effect(), delay);
     return () => clearTimeout(handler);
-  }, [...(deps || []), delay]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...(deps || []), effect, delay]);
 };

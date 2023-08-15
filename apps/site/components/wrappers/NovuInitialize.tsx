@@ -39,10 +39,10 @@ import { useAtom } from 'jotai';
 export type NovuInitializeProps = { children: React.ReactNode };
 export default function NovuInitialize({ children }: NovuInitializeProps) {
   const me = useMe();
-  const [, setNotifications] = useAtom(notificationsAtom);
+  const [, setNotification] = useAtom(notificationsAtom);
 
   const applicationIdentifier = process.env.NEXT_PUBLIC_NOVU_APP_ID;
-  const subscriberId = me?.user.id;
+  const subscriberId = me.user.id;
 
   if (!applicationIdentifier || !subscriberId) return null;
   const headlessService = new HeadlessService({ applicationIdentifier, subscriberId });

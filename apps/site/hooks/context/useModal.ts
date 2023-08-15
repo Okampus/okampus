@@ -16,7 +16,7 @@ export function useModal() {
 
   const closeModal = () => {
     if (modals.length === 0) return;
-    if (modals.length === 1) return setIsModalOpen(false);
+    if (modals.length === 1) setIsModalOpen(false);
     setModals(modals.slice(0, -1));
   };
 
