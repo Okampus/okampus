@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ProjectInsertInput,
+  ProjectOnConflict,
+  ProjectSetInput,
+  ProjectBoolExp,
+  ProjectOrderBy,
+  ProjectSelectColumn,
+  ProjectPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertProjectArgsType = {
-  objects: Array<ValueTypes['ProjectInsertInput']>;
-  onConflict?: ValueTypes['ProjectOnConflict'];
+  objects: Array<ProjectInsertInput>;
+  onConflict?: ProjectOnConflict;
 };
 
 export type InsertOneProjectArgsType = {
-  object: ValueTypes['ProjectInsertInput'];
-  onConflict?: ValueTypes['ProjectOnConflict'];
+  object: ProjectInsertInput;
+  onConflict?: ProjectOnConflict;
 };
 
 export type UpdateProjectArgsType = {
-  where: ValueTypes['ProjectBoolExp'];
-  _set: ValueTypes['ProjectSetInput'];
+  where: ProjectBoolExp;
+  _set: ProjectSetInput;
 };
 
 export type DeleteProjectArgsType = {
-  where: ValueTypes['ProjectBoolExp'];
+  where: ProjectBoolExp;
 };
 
 export type UpdateByPkProjectArgsType = {
-  pkColumns: ValueTypes['ProjectPkColumnsInput'];
-  _set: ValueTypes['ProjectSetInput'];
+  pkColumns: ProjectPkColumnsInput;
+  _set: ProjectSetInput;
 };
 
 export type FindProjectArgsType = {
-  where: ValueTypes['ProjectBoolExp'];
-  orderBy?: Array<ValueTypes['ProjectOrderBy']>;
-  distinctOn?: Array<ValueTypes['ProjectSelectColumn']>;
+  where: ProjectBoolExp;
+  orderBy?: Array<ProjectOrderBy>;
+  distinctOn?: Array<ProjectSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkProjectArgsType = {
 };
 
 export type AggregateProjectArgsType = {
-  where: ValueTypes['ProjectBoolExp'];
-  orderBy?: Array<ValueTypes['ProjectOrderBy']>;
-  distinctOn?: Array<ValueTypes['ProjectSelectColumn']>;
+  where: ProjectBoolExp;
+  orderBy?: Array<ProjectOrderBy>;
+  distinctOn?: Array<ProjectSelectColumn>;
   limit?: number;
   offset?: number;
 };

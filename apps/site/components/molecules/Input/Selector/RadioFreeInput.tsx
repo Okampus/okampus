@@ -1,0 +1,139 @@
+import FieldSet from '../FieldSet';
+import clsx from 'clsx';
+
+import { forwardRef, memo, useEffect, useRef, useState } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+
+import type { UncontrolledSelect } from '@okampus/shared/types';
+
+export type RadioFreeInputInputProps = UncontrolledSelect & {
+  textAlign?: 'left' | 'right';
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'value'>;
+
+export default memo(
+  forwardRef<HTMLInputElement, RadioFreeInputInputProps>(function RadioFreeInput(props, ref) {
+    const {
+      options: choices,
+      name,
+      onChange,
+      error,
+      info,
+      loading,
+      className,
+      label,
+      disabled,
+      description,
+      placeholder,
+      startContent,
+      endContent,
+      ...inputProps
+    } = props;
+
+    const [selected, setSelected] = useState(choices.findIndex((choice) => choice.value === props.defaultValue));
+    const [lastInputValue, setLastInputValue] = useState<string>(selected === -1 ? props.defaultValue ?? '' : '');
+
+    const localRef = useRef<HTMLInputElement>();
+
+    useEffect(() => {
+      if (props.defaultValue && localRef.current) {
+        localRef.current.value = props.defaultValue;
+        const choice = choices.findIndex((choice) => choice.value === props.defaultValue);
+        setSelected(choice);
+        if (choice === -1) setLastInputValue(props.defaultValue);
+      }
+    }, [props.defaultValue, choices]);
+
+    const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
+
+    function setNativeValue(element: HTMLInputElement, value: string) {
+      const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {};
+      const prototype = Object.getPrototypeOf(element);
+      const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {};
+
+      if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+        prototypeValueSetter.call(element, value);
+      } else if (valueSetter) {
+        valueSetter.call(element, value);
+      } else {
+        throw new Error('The given element does not have a value setter');
+      }
+    }
+
+    const onClickOther = () => {
+      setSelected(-1);
+      if (localRef.current) {
+        localRef.current.focus();
+        setNativeValue(localRef.current, lastInputValue);
+        localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    };
+
+    const input = (
+      <div className={clsx('relative', selected !== -1 && 'opacity-50 hover:opacity-100')}>
+        <input
+          ref={mergeRefs([ref, localRef])}
+          className="input"
+          disabled={disabled}
+          placeholder={placeholder}
+          name={name}
+          onChange={onChange}
+          // eslint-disable-next-line jsx-a11y/aria-props
+          aria-description={description}
+          aria-invalid={typeof error === 'string'}
+          {...inputProps}
+        />
+        <button aria-hidden={true} className={otherClass} onClick={onClickOther}>
+          {lastInputValue || placeholder}
+        </button>
+      </div>
+    );
+
+    const fieldSetClass = clsx('flex flex-wrap gap-2', className);
+
+    const fieldSetProps = { label, className: fieldSetClass, name, description, error, info, loading };
+
+    return (
+      <FieldSet {...fieldSetProps}>
+        {choices.map(({ value, label }, idx) => {
+          const onClick = () => {
+            if (localRef.current) {
+              setNativeValue(localRef.current, value);
+              localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            setSelected(idx);
+          };
+
+          const buttonClass = clsx(
+            'button !px-3',
+            selected === idx ? 'bg-2' : 'bg-[var(--bg-input)] opacity-50 hover:opacity-100',
+          );
+          return (
+            <button key={value} disabled={disabled} className={buttonClass} onClick={onClick}>
+              {label}
+            </button>
+          );
+        })}
+
+        {startContent || endContent ? (
+          <div className="flex items-stretch">
+            {startContent && (
+              <div className="flex items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
+                {startContent}
+              </div>
+            )}
+            {input}
+            {endContent && (
+              <div className="flex items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
+                {endContent}
+              </div>
+            )}
+          </div>
+        ) : (
+          input
+        )}
+      </FieldSet>
+    );
+  }),
+);

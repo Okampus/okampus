@@ -1,0 +1,24 @@
+mutation UserLogin($dto: LoginInput!) {
+  login(dto: $dto) {
+    __typename
+    canManageTenant
+    user {
+      __typename
+      id
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+        }
+      }
+      tenant {
+        __typename
+        id
+        domain
+      }
+    }
+  }
+}

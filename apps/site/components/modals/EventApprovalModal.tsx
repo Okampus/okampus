@@ -1,35 +1,31 @@
 'use client';
 
 import ModalLayout from '../atoms/Layout/ModalLayout';
-import TextInput from '../molecules/Input/TextInput';
+import TextAreaInput from '../molecules/Input/TextAreaInput';
 import ActionButton from '../molecules/Button/ActionButton';
 
 import { useModal } from '../../hooks/context/useModal';
 
-import { insertEventApprovalMutation, updateEventMutation } from '@okampus/shared/graphql';
+import { useInsertEventApprovalMutation, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { EventState } from '@okampus/shared/enums';
 
-import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 
-import type { EventManageInfo } from '@okampus/shared/graphql';
+import type { GetEventsValidationQuery } from '@okampus/shared/graphql';
 
-export type EventApprovalModalProps = { isApproved: boolean; event: EventManageInfo };
+export type EventApprovalModalProps = { isApproved: boolean; event: GetEventsValidationQuery['event'][number] };
 
 export default function EventApprovalModal({ isApproved, event }: EventApprovalModalProps) {
   const { closeModal } = useModal();
 
-  // @ts-ignore
-  const [updateEvent] = useMutation(updateEventMutation);
-  // @ts-ignore
-  const [insertEventApproval] = useMutation(insertEventApprovalMutation);
-
+  const [updateEvent] = useUpdateEventMutation();
+  const [insertEventApproval] = useInsertEventApprovalMutation();
   const [message, setMessage] = useState('');
 
   return (
     <ModalLayout header={`${event.nextEventApprovalStep?.name} de ${event.name}`}>
-      <TextInput rows={5} value={message} onChange={setMessage} options={{ label: 'Message' }} />
+      <TextAreaInput name="message" rows={5} onChange={(event) => setMessage(event.target.value)} label="Message" />
       <ActionButton
         className="w-full mt-4"
         action={{
@@ -49,10 +45,8 @@ export default function EventApprovalModal({ isApproved, event }: EventApprovalM
                 isApproved,
               };
               insertEventApproval({
-                // @ts-ignore
                 variables: { object },
                 onCompleted: () => {
-                  // @ts-ignore
                   updateEvent({ variables: { id: event.id, update }, onCompleted: () => closeModal() });
                 },
               });

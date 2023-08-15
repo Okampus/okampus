@@ -32,7 +32,7 @@ jobs:
       - name: Automated Version Bump
         id: version-bump
         run: |
-          pybump bump --file charts/okampus/Chart.yaml --level patch
+          echo "CHART_VERSION=$(pybump bump --file charts/okampus/Chart.yaml --level patch)" >> $GITHUB_ENV
         shell: bash
 
       - name: Set version and save file
@@ -44,27 +44,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m 'Updated chart version to ${{ github.sha }}
-
-          https://github.com/Okampus/okampus/tree/${{ github.sha }}'
-          git push
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          repository: 'Okampus/infra'
-          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PATH
-
-      - name: Set version and save values.yaml in infra
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq -i '.okampus.image.tag = "${{ github.sha }}"' 'values.yaml'
-
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m 'Updated chart version to ${{ github.sha }} in infra
+          git commit -m '🔖 $CHART_VERSION Set appVersion (image tag) to ${{ github.sha }}
 
           https://github.com/Okampus/okampus/tree/${{ github.sha }}'
           git push

@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  <%= className %>InsertInput,
+  <%= className %>OnConflict,
+  <%= className %>SetInput,
+  <%= className %>BoolExp,
+  <%= className %>OrderBy,
+  <%= className %>SelectColumn,
+  <%= className %>PkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type Insert<%= className %>ArgsType = {
-  objects: Array<ValueTypes['<%= className %>InsertInput']>;
-  onConflict?: ValueTypes['<%= className %>OnConflict'];
+  objects: Array<<%= className %>InsertInput>;
+  onConflict?: <%= className %>OnConflict;
 };
 
 export type InsertOne<%= className %>ArgsType = {
-  object: ValueTypes['<%= className %>InsertInput'];
-  onConflict?: ValueTypes['<%= className %>OnConflict'];
+  object: <%= className %>InsertInput;
+  onConflict?: <%= className %>OnConflict;
 };
 
 export type Update<%= className %>ArgsType = {
-  where: ValueTypes['<%= className %>BoolExp'];
-  _set: ValueTypes['<%= className %>SetInput'];
+  where: <%= className %>BoolExp;
+  _set: <%= className %>SetInput;
 };
 
 export type Delete<%= className %>ArgsType = {
-  where: ValueTypes['<%= className %>BoolExp'];
+  where: <%= className %>BoolExp;
 };
 
 export type UpdateByPk<%= className %>ArgsType = {
-  pkColumns: ValueTypes['<%= className %>PkColumnsInput'];
-  _set: ValueTypes['<%= className %>SetInput'];
+  pkColumns: <%= className %>PkColumnsInput;
+  _set: <%= className %>SetInput;
 };
 
 export type Find<%= className %>ArgsType = {
-  where: ValueTypes['<%= className %>BoolExp'];
-  orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
-  distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;
+  where: <%= className %>BoolExp;
+  orderBy?: Array<<%= className %>OrderBy>;
+  distinctOn?: Array<<%= className %>SelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPk<%= className %>ArgsType = {
 };
 
 export type Aggregate<%= className %>ArgsType = {
-  where: ValueTypes['<%= className %>BoolExp'];
-  orderBy?: Array<ValueTypes['<%= className %>OrderBy']>;
-  distinctOn?: Array<ValueTypes['<%= className %>SelectColumn']>;
+  where: <%= className %>BoolExp;
+  orderBy?: Array<<%= className %>OrderBy>;
+  distinctOn?: Array<<%= className %>SelectColumn>;
   limit?: number;
   offset?: number;
 };

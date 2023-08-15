@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMount, useMeasure, usePrevious, useShallowCompareEffect, useUpdateEffect } from 'react-use';
 
 type OverflowDirection = 'none' | 'grow' | 'shrink';
@@ -43,29 +43,32 @@ export default function OverflowList<T>(props: OverflowListProps<T>) {
 
   const maybeOverflow = state.overflow.length === 0 && !alwaysRenderOverflow ? null : overflowRenderer(state.overflow);
 
-  const repartition = (growing: boolean) => {
-    if (!spacer.current) return;
+  const repartition = useCallback(
+    (growing: boolean) => {
+      if (!spacer.current) return;
 
-    if (growing) {
-      const lastOverflowCount = state.direction === 'none' ? state.overflow.length : state.lastOverflowCount;
-      setState({ direction: 'grow', lastOverflowCount, overflow: [], visible: items });
-    } else if (spacer.current.getBoundingClientRect().width < 0.9) {
-      setState((state) => {
-        if (state.visible.length <= minVisibleItems) return state;
+      if (growing) {
+        const lastOverflowCount = state.direction === 'none' ? state.overflow.length : state.lastOverflowCount;
+        setState({ direction: 'grow', lastOverflowCount, overflow: [], visible: items });
+      } else if (spacer.current.getBoundingClientRect().width < 0.9) {
+        setState((state) => {
+          if (state.visible.length <= minVisibleItems) return state;
 
-        const visible = [...state.visible];
-        const next = visible.pop();
+          const visible = [...state.visible];
+          const next = visible.pop();
 
-        if (!next) return state;
-        const overflowing = [next, ...state.overflow];
+          if (!next) return state;
+          const overflowing = [next, ...state.overflow];
 
-        const direction = state.direction === 'none' ? 'grow' : state.direction;
-        return { ...state, direction, overflow: overflowing, visible };
-      });
-    } else {
-      setState((prevState) => ({ ...prevState, direction: 'none' }));
-    }
-  };
+          const direction = state.direction === 'none' ? 'grow' : state.direction;
+          return { ...state, direction, overflow: overflowing, visible };
+        });
+      } else {
+        setState((prevState) => ({ ...prevState, direction: 'none' }));
+      }
+    },
+    [items, minVisibleItems, state],
+  );
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const previousWidth = usePrevious(width);
@@ -74,7 +77,7 @@ export default function OverflowList<T>(props: OverflowListProps<T>) {
     if (!previousWidth) return;
 
     repartition(width > previousWidth);
-  }, [width, previousWidth]);
+  }, [width, previousWidth, repartition]);
 
   return (
     <div ref={ref} className={clsx(className, 'flex gap-2 flex-nowrap min-w-0')}>

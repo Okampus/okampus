@@ -2,9 +2,9 @@ table:
   name: account
   schema: public
 object_relationships:
-  - name: bankInfo
+  - name: bank
     using:
-      foreign_key_constraint_on: bank_info_id
+      foreign_key_constraint_on: bank_id
   - name: individual
     using:
       foreign_key_constraint_on: created_by_id

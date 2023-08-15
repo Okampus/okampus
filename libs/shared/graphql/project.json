@@ -26,7 +26,10 @@
     },
     "eslint": {
       "command": "eslint libs/shared/graphql --ext .ts --cache --cache-location node_modules/.cache/.eslintcache"
+    },
+    "codegen": {
+      "command": "graphql-codegen --config libs/shared/graphql/src/codegen.yaml"
     }
   },
-  "tags": ["scope:shared", "type:const", "layer:*"]
+  "tags": ["scope:shared", "type:typing", "layer:*"]
 }

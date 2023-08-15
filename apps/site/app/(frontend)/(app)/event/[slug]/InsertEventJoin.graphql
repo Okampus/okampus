@@ -1,0 +1,6 @@
+mutation InsertEventJoin($object: EventJoinInsertInput!) {
+  insertEventJoinOne(object: $object) {
+    __typename
+    id
+  }
+}

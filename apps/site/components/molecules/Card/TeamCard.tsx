@@ -15,10 +15,10 @@ import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 
-import type { TeamBaseInfo } from '@okampus/shared/graphql';
 import type { SocialType } from '@okampus/shared/enums';
+import type { TeamCardInfo } from '../../../types/features/team.info';
 
-type TeamCardProps = { team: TeamBaseInfo };
+type TeamCardProps = { team: TeamCardInfo };
 export default function TeamCard({ team }: TeamCardProps) {
   const [, setNotification] = useAtom(notificationAtom);
 
@@ -70,8 +70,11 @@ export default function TeamCard({ team }: TeamCardProps) {
           ))}
         </div>
         <IconShare2
-          className="text-1 cursor-pointer h-8 w-8"
-          onClick={() => setNotification({ type: ToastType.Info, message: "Lien de l'équipe copié !" })}
+          className="text-2 cursor-pointer h-7 w-7"
+          onClick={() => {
+            navigator.clipboard.writeText(`${window.location.origin}/team/${team.actor?.slug}`);
+            setNotification({ type: ToastType.Info, message: "Lien de l'équipe copié !" });
+          }}
         />
       </div>
     </div>

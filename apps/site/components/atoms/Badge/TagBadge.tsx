@@ -23,7 +23,7 @@ export default function TagBadge({
       className={clsx(
         'py-1.5 px-3 w-fit capitalize contrast-125 text-1 flex gap-2 items-center text-sm font-semibold cursor-pointer',
         className,
-        backgroundClass
+        backgroundClass,
       )}
     >
       {/* {backgroundColor && <div className="w-2 h-2" style={{ backgroundColor }} />} */}

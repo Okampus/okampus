@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  BotInsertInput,
+  BotOnConflict,
+  BotBoolExp,
+  BotOrderBy,
+  BotSelectColumn,
+  BotSetInput,
+  BotUpdates,
+  BotPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class BotsService extends RequestContext {
@@ -22,7 +31,7 @@ export class BotsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['BotInsertInput']) {
+  checkPermsCreate(props: BotInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class BotsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['BotSetInput'], bot: Bot) {
+  checkPermsUpdate(props: BotSetInput, bot: Bot) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (bot.deletedAt) throw new NotFoundException(`Bot was deleted on ${bot.deletedAt}.`);
@@ -65,14 +74,14 @@ export class BotsService extends RequestContext {
     return bot.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['BotSetInput']) {
+  checkPropsConstraints(props: BotSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['BotInsertInput']) {
+  checkCreateRelationships(props: BotInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class BotsService extends RequestContext {
     return true;
   }
 
-  async insertBotOne(
-    selectionSet: string[],
-    object: ValueTypes['BotInsertInput'],
-    onConflict?: ValueTypes['BotOnConflict']
-  ) {
+  async insertBotOne(selectionSet: string[], object: BotInsertInput, onConflict?: BotOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Bot.');
 
@@ -106,9 +111,9 @@ export class BotsService extends RequestContext {
 
   async findBot(
     selectionSet: string[],
-    where: ValueTypes['BotBoolExp'],
-    orderBy?: Array<ValueTypes['BotOrderBy']>,
-    distinctOn?: Array<ValueTypes['BotSelectColumn']>,
+    where: BotBoolExp,
+    orderBy?: Array<BotOrderBy>,
+    distinctOn?: Array<BotSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class BotsService extends RequestContext {
     return data.botByPk;
   }
 
-  async insertBot(
-    selectionSet: string[],
-    objects: Array<ValueTypes['BotInsertInput']>,
-    onConflict?: ValueTypes['BotOnConflict']
-  ) {
+  async insertBot(selectionSet: string[], objects: Array<BotInsertInput>, onConflict?: BotOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Bot.');
@@ -151,7 +152,7 @@ export class BotsService extends RequestContext {
     return data.insertBot;
   }
 
-  async updateBotMany(selectionSet: string[], updates: Array<ValueTypes['BotUpdates']>) {
+  async updateBotMany(selectionSet: string[], updates: Array<BotUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class BotsService extends RequestContext {
     return data.updateBotMany;
   }
 
-  async updateBotByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['BotPkColumnsInput'],
-    _set: ValueTypes['BotSetInput']
-  ) {
+  async updateBotByPk(selectionSet: string[], pkColumns: BotPkColumnsInput, _set: BotSetInput) {
     const bot = await this.botRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, bot);
@@ -202,7 +199,7 @@ export class BotsService extends RequestContext {
     return data.updateBotByPk;
   }
 
-  async deleteBot(selectionSet: string[], where: ValueTypes['BotBoolExp']) {
+  async deleteBot(selectionSet: string[], where: BotBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class BotsService extends RequestContext {
     return data.updateBot;
   }
 
-  async deleteBotByPk(selectionSet: string[], pkColumns: ValueTypes['BotPkColumnsInput']) {
+  async deleteBotByPk(selectionSet: string[], pkColumns: BotPkColumnsInput) {
     const bot = await this.botRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(bot);
@@ -244,9 +241,9 @@ export class BotsService extends RequestContext {
 
   async aggregateBot(
     selectionSet: string[],
-    where: ValueTypes['BotBoolExp'],
-    orderBy?: Array<ValueTypes['BotOrderBy']>,
-    distinctOn?: Array<ValueTypes['BotSelectColumn']>,
+    where: BotBoolExp,
+    orderBy?: Array<BotOrderBy>,
+    distinctOn?: Array<BotSelectColumn>,
     limit?: number,
     offset?: number
   ) {

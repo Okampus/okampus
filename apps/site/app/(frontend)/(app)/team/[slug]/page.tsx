@@ -4,30 +4,94 @@ import SocialIcon from '../../../../../components/atoms/Icon/SocialIcon';
 import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
 import GroupItem from '../../../../../components/atoms/Item/GroupItem';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
+import CTAButton from '../../../../../components/molecules/Button/CTAButton';
 import EventCard from '../../../../../components/molecules/Card/EventCard';
-import ActionButton from '../../../../../components/molecules/Button/ActionButton';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
-import { useTeam } from '../../../../../context/navigation';
+import { useMe, useTeam } from '../../../../../context/navigation';
 import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
-import { useTypedQueryAndSubscribe } from '../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
 
-import { EventState } from '@okampus/shared/enums';
-import { OrderBy, eventWithJoinInfo } from '@okampus/shared/graphql';
-import { ActionType } from '@okampus/shared/types';
+import { notificationAtom } from '../../../../../context/global';
+import { mergeCache } from '../../../../../utils/apollo/merge-cache';
+
+import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
+import { EventState, TeamRoleType } from '@okampus/shared/enums';
+import { ActionType, ToastType } from '@okampus/shared/types';
 import { notFound } from 'next/navigation';
+import { useAtom } from 'jotai';
 
+import type { ActionCTA } from '../../../../../components/molecules/Button/CTAButton';
 import type { SocialType } from '@okampus/shared/enums';
+import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
 export default function TeamPage({ params }: { params: { slug: string } }) {
+  const me = useMe();
   const { team } = useTeam(params.slug);
-  const { openBottomSheet } = useBottomSheet();
+  const [, setNotification] = useAtom(notificationAtom);
+  const { openBottomSheet, closeBottomSheet } = useBottomSheet();
 
   const where = { eventOrganizes: { teamId: { _eq: team?.id } }, state: { _eq: EventState.Published } };
-  const variables = { where, orderBy: [{ start: OrderBy.DESC }], limit: 3 };
+  const variables = { where, orderBy: [{ start: OrderBy.Desc }], limit: 3 };
 
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'event', selector: [variables, eventWithJoinInfo] });
+  const { data } = useQueryAndSubscribe<GetEventsQuery, GetEventsQueryVariables>({ query: GetTeamDocument, variables });
+
+  const [insertTeamJoin] = useInsertTeamJoinMutation();
+
   if (!team) notFound();
+
+  const events = data?.event;
+  const memberRole = team?.roles.find((role) => role.type === TeamRoleType.Member);
+
+  const isMember = me.user.teamMembers.some((member) => member.team.id === team.id);
+  const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);
+
+  let action: ActionCTA = `manage/team/${team.actor.slug}`;
+  let type = ActionType.Action;
+  let label = `Gérer ${team.actor.name}`;
+
+  if (!isMember) {
+    if (isJoining) {
+      type = ActionType.Info;
+      label = 'Adhésion en attente...';
+    } else {
+      type = ActionType.Primary;
+      label = 'Adhérer';
+      action = action = () =>
+        openBottomSheet({
+          node: (
+            <FormRenderer
+              form={team.joinForm}
+              onSubmit={(data) =>
+                memberRole
+                  ? insertTeamJoin({
+                      variables: {
+                        object: {
+                          askedRoleId: memberRole.id,
+                          teamId: team.id,
+                          joinedById: me.user.id,
+                          formSubmission: { data: { submission: data } },
+                        },
+                      },
+                      onCompleted: ({ insertTeamJoinOne: data }) => {
+                        closeBottomSheet();
+                        setNotification({ message: 'Votre demande a été envoyée', type: ToastType.Success });
+                        mergeCache(
+                          { __typename: 'User', id: me.user.id },
+                          { fieldName: 'teamJoins', fragmentOn: 'TeamJoin', data },
+                        );
+                      },
+                    })
+                  : setNotification({
+                      message: `${team.actor.name} n'accepte pas de nouveaux membres pour le moment !`,
+                      type: ToastType.Error,
+                    })
+              }
+            />
+          ),
+        });
+    }
+  }
 
   return (
     <ViewLayout>
@@ -37,18 +101,9 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
             <AvatarImage size={32} actor={team.actor} type="team" />
             <div className="flex flex-col gap-2">
               {team?.actor.name}
-              <ActionButton
-                small={true}
-                className="!w-48"
-                action={{
-                  type: ActionType.Primary,
-                  label: 'Adhérer',
-                  linkOrActionOrMenu: () =>
-                    openBottomSheet({
-                      node: <FormRenderer form={team.joinForm} onSubmit={(data) => console.log(data)} />,
-                    }),
-                }}
-              />
+              <CTAButton className="min-w-[8rem] line-clamp-1" type={type} action={action}>
+                {label}
+              </CTAButton>
             </div>
           </div>
           {team?.actor.socials.length > 0 && (
@@ -70,7 +125,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                         social={social.type as SocialType}
                       />
                     </a>
-                  )
+                  ),
               )}
             </div>
           )}
@@ -93,14 +148,14 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
       <GroupItem heading="Description" groupClassName="text-justify font-medium whitespace-pre-line" className="mt-6">
         {team?.actor.bio}
       </GroupItem>
-      {data?.event?.length ? (
+      {events?.length ? (
         <>
           <hr className="border-[var(--border-2)] my-12" />
           <GroupItem
             heading="Les derniers événements"
             groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-8"
           >
-            {data.event?.map((event) => (
+            {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </GroupItem>

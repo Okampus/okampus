@@ -10,7 +10,7 @@ import { randomInt } from 'node:crypto';
 
 import type { Team, EventApprovalStep, TeamMember, EventOptions } from '@okampus/api/dal';
 import type { EntityManager } from '@mikro-orm/core';
-import type { FormField } from '@okampus/shared/types';
+import type { FormSchema } from '@okampus/shared/types';
 
 export class EventSeeder extends Factory<Event> {
   model = Event;
@@ -19,7 +19,7 @@ export class EventSeeder extends Factory<Event> {
     em: EntityManager,
     private readonly team: Team,
     private readonly steps: EventApprovalStep[],
-    private readonly teamMembers: TeamMember[]
+    private readonly teamMembers: TeamMember[],
   ) {
     super(em);
   }
@@ -82,7 +82,7 @@ export class EventSeeder extends Factory<Event> {
       !isOnline && this.team.tenant.eventValidationForm
         ? new FormSubmission({
             form: this.team.tenant.eventValidationForm,
-            submission: generateRandomSubmission(this.team.tenant.eventValidationForm.schema as FormField[]),
+            submission: generateRandomSubmission(this.team.tenant.eventValidationForm.schema as FormSchema),
             createdBy: supervisor.individual,
             tenant: this.team.tenant,
           })
@@ -114,7 +114,8 @@ export class EventSeeder extends Factory<Event> {
                 name: 'payed',
                 label:
                   "Avez-vous payé votre billet via le lien dans la description de l'événement ? Votre inscription ne pourra pas être validée sinon.",
-                isRequired: true,
+                placeholder: '',
+                required: true,
               },
             ],
             type: FormType.Event,

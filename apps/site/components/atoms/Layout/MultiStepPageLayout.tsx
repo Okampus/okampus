@@ -85,7 +85,7 @@ export default function MultiStepPageLayout<T>({
         'w-full px-[var(--px-content)] pt-[var(--py-content)]',
         className,
         scrollable && 'overflow-y-scroll overflow-x-hidden scrollbar',
-        bottomPadded && 'pb-[var(--pb-app)]'
+        bottomPadded && 'pb-[var(--pb-app)]',
       )}
     >
       {header && <div className="page-title mb-10">{header}</div>}

@@ -1,0 +1,10 @@
+table:
+  name: form_submission_linked_files
+  schema: public
+object_relationships:
+  - name: fileUpload
+    using:
+      foreign_key_constraint_on: file_upload_id
+  - name: formSubmission
+    using:
+      foreign_key_constraint_on: form_submission_id

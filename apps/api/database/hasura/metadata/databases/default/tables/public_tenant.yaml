@@ -40,12 +40,12 @@ array_relationships:
         table:
           name: actor
           schema: public
-  - name: bankInfos
+  - name: banks
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
-          name: bank_info
+          name: bank
           schema: public
   - name: bots
     using:

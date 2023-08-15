@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "es2022",
-    "types": ["node", "vite/client", "vitest"]
+    "types": ["node", "vite/client"]
   },
   "include": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.migrations.json" }]

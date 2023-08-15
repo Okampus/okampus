@@ -32,7 +32,7 @@ const alignClassMap: { [key in Align]: 'justify-start' | 'justify-center' | 'jus
 };
 
 const baseButtonClass = 'py-2.5 px-6 font-semibold flex items-center gap-2 w-full';
-const baseRowClass = 'text-0 border-b border-[var(--border-light)]';
+const baseRowClass = 'table-row text-0 border-b border-[var(--border-light)]';
 
 export default function Dashboard<T extends object>({
   className,
@@ -64,8 +64,8 @@ export default function Dashboard<T extends object>({
   };
 
   return (
-    <div className={clsx('relative max-h-full w-full scrollbar', className)}>
-      <table className="text-2 table-auto w-max min-w-full">
+    <div className={clsx('relative max-h-[calc(100%-1rem)] w-full scrollbar', className)}>
+      <table className="text-2 table table-auto w-max min-w-full">
         {/* Header */}
         <thead className="sticky top-0 bg-2 z-40">
           <tr>
@@ -87,18 +87,20 @@ export default function Dashboard<T extends object>({
           </tr>
         </thead>
         {/* Rows */}
-        <tbody className="overflow-scroll scrollbar">
+        <tbody className="overflow-x-scroll scrollbar">
           {arr.map((row, rowIdx) => {
             const className = clsx(baseRowClass, onElementClick && 'bg-3-hover cursor-pointer');
             return (
               <tr key={rowIdx} className={className} onClick={() => row && onElementClick?.(row)}>
                 {columns.map((column, colIdx) => {
                   const rowClass = rowIdx === 0 ? 'pt-4 pb-2' : 'py-2';
-                  const className = clsx('text-2 flex', column.classes, rowClass, getAlignClass(column, colIdx));
+                  const className = clsx('text-2 flex px-3', column.classes, rowClass, getAlignClass(column, colIdx));
 
                   return (
-                    <td key={colIdx} className={className}>
-                      {row ? column.render(row) : column.skeleton ?? <Skeleton className="w-full h-6" />}
+                    <td key={colIdx}>
+                      <div className={className}>
+                        {row ? column.render(row) : column.skeleton ?? <Skeleton className="w-full h-6" />}
+                      </div>
                     </td>
                   );
                 })}

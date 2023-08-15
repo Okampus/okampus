@@ -1,0 +1,49 @@
+query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
+  eventJoinByPk(id: $eventJoinId) {
+    __typename
+    id
+    isPresent
+    state
+    event {
+      slug
+      start
+      end
+      eventOrganizes {
+        eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
+          user {
+            __typename
+            id
+            individual {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+                name
+              }
+            }
+          }
+        }
+        team {
+          __typename
+          id
+        }
+      }
+    }
+    joinedBy {
+      __typename
+      id
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+          name
+        }
+      }
+    }
+  }
+}

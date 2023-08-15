@@ -1,0 +1,140 @@
+query GetProject($slug: String!) {
+  project(where: { slug: { _eq: $slug } }, limit: 1) {
+    __typename
+    id
+    createdAt
+    slug
+    start
+    end
+    name
+    isPrivate
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    team {
+      __typename
+      id
+      type
+      actor {
+        __typename
+        id
+        slug
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+    eventOrganizes {
+      event {
+        __typename
+        id
+        slug
+        name
+      }
+      eventSupervisors {
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: { deletedAt: { _isNull: true } }) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+        joinForm {
+          __typename
+          id
+          schema
+          name
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+    }
+  }
+}

@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  SocialInsertInput,
+  SocialOnConflict,
+  SocialSetInput,
+  SocialBoolExp,
+  SocialOrderBy,
+  SocialSelectColumn,
+  SocialPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertSocialArgsType = {
-  objects: Array<ValueTypes['SocialInsertInput']>;
-  onConflict?: ValueTypes['SocialOnConflict'];
+  objects: Array<SocialInsertInput>;
+  onConflict?: SocialOnConflict;
 };
 
 export type InsertOneSocialArgsType = {
-  object: ValueTypes['SocialInsertInput'];
-  onConflict?: ValueTypes['SocialOnConflict'];
+  object: SocialInsertInput;
+  onConflict?: SocialOnConflict;
 };
 
 export type UpdateSocialArgsType = {
-  where: ValueTypes['SocialBoolExp'];
-  _set: ValueTypes['SocialSetInput'];
+  where: SocialBoolExp;
+  _set: SocialSetInput;
 };
 
 export type DeleteSocialArgsType = {
-  where: ValueTypes['SocialBoolExp'];
+  where: SocialBoolExp;
 };
 
 export type UpdateByPkSocialArgsType = {
-  pkColumns: ValueTypes['SocialPkColumnsInput'];
-  _set: ValueTypes['SocialSetInput'];
+  pkColumns: SocialPkColumnsInput;
+  _set: SocialSetInput;
 };
 
 export type FindSocialArgsType = {
-  where: ValueTypes['SocialBoolExp'];
-  orderBy?: Array<ValueTypes['SocialOrderBy']>;
-  distinctOn?: Array<ValueTypes['SocialSelectColumn']>;
+  where: SocialBoolExp;
+  orderBy?: Array<SocialOrderBy>;
+  distinctOn?: Array<SocialSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkSocialArgsType = {
 };
 
 export type AggregateSocialArgsType = {
-  where: ValueTypes['SocialBoolExp'];
-  orderBy?: Array<ValueTypes['SocialOrderBy']>;
-  distinctOn?: Array<ValueTypes['SocialSelectColumn']>;
+  where: SocialBoolExp;
+  orderBy?: Array<SocialOrderBy>;
+  distinctOn?: Array<SocialSelectColumn>;
   limit?: number;
   offset?: number;
 };

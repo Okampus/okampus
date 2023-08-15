@@ -36,7 +36,7 @@ export const clubDefaultRoles: Omit<RoleOptions, 'team' | 'tenant' | 'createdBy'
       ...manageTreasuryPermissions,
     ],
     type: TeamRoleType.Director,
-    isRequired: true,
+    isLocked: true,
   },
   {
     name: 'Trésorier',
@@ -50,7 +50,7 @@ export const clubDefaultRoles: Omit<RoleOptions, 'team' | 'tenant' | 'createdBy'
       ...manageTreasuryPermissions,
     ],
     type: TeamRoleType.Treasurer,
-    isRequired: true,
+    isLocked: true,
   },
   {
     name: 'Secrétaire',
@@ -64,14 +64,14 @@ export const clubDefaultRoles: Omit<RoleOptions, 'team' | 'tenant' | 'createdBy'
       TeamPermissions.ViewTreasury,
     ],
     type: TeamRoleType.Secretary,
-    isRequired: true,
+    isLocked: true,
   },
   {
     name: 'Responsable événements',
     color: Colors.Red,
     category: RoleCategory.Managers,
     permissions: [...viewPermissions, ...manageEventPermissions],
-    isRequired: true,
+    isLocked: true,
   },
   {
     name: 'Responsable communication',

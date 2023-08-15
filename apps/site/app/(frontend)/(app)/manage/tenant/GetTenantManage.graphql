@@ -1,0 +1,45 @@
+query GetTenantManage($domain: String!) {
+  tenant(where: { domain: { _eq: $domain } }) {
+    __typename
+    id
+    domain
+    pointName
+    eventValidationForm {
+      __typename
+      id
+      name
+      schema
+      type
+    }
+    eventApprovalSteps {
+      __typename
+      id
+      name
+      order
+    }
+    adminTeam {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        slug
+        name
+        bio
+        email
+        website
+        status
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+}

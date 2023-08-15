@@ -2,11 +2,10 @@ import AvatarLabeled from './AvatarLabeled';
 import UserPopoverCard from '../PopoverCard/UserPopoverCard';
 
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import type { IndividualMinimalInfo } from '@okampus/shared/graphql';
+import type { UserMinimalInfo } from '../../../types/features/user.info';
 
 export type UserLabeledProps = {
-  id: string;
-  individual?: IndividualMinimalInfo;
+  user: UserMinimalInfo;
   label?: React.ReactNode;
   full?: boolean;
   content?: React.ReactNode;
@@ -17,8 +16,7 @@ export type UserLabeledProps = {
 };
 
 export default function UserLabeled({
-  id,
-  individual,
+  user,
   label,
   full,
   content,
@@ -27,11 +25,11 @@ export default function UserLabeled({
   skeletonClassName,
   className,
 }: UserLabeledProps) {
-  const avatar = getAvatar(individual?.actor?.actorImages)?.image.url;
-  const name = individual?.actor?.name;
+  const avatar = getAvatar(user.individual.actor?.actorImages)?.image.url;
+  const name = user.individual?.actor?.name;
 
   const wrapper = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <UserPopoverCard triggerClassName={className} userId={id}>
+    <UserPopoverCard triggerClassName={className} userId={user.id}>
       {children}
     </UserPopoverCard>
   );

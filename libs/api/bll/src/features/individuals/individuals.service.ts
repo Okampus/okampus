@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  IndividualInsertInput,
+  IndividualOnConflict,
+  IndividualBoolExp,
+  IndividualOrderBy,
+  IndividualSelectColumn,
+  IndividualSetInput,
+  IndividualUpdates,
+  IndividualPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class IndividualsService extends RequestContext {
@@ -22,7 +31,7 @@ export class IndividualsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['IndividualInsertInput']) {
+  checkPermsCreate(props: IndividualInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -46,7 +55,7 @@ export class IndividualsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['IndividualSetInput'], individual: Individual) {
+  checkPermsUpdate(props: IndividualSetInput, individual: Individual) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (individual.deletedAt) throw new NotFoundException(`Individual was deleted on ${individual.deletedAt}.`);
@@ -67,14 +76,14 @@ export class IndividualsService extends RequestContext {
     return individual.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['IndividualSetInput']) {
+  checkPropsConstraints(props: IndividualSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['IndividualInsertInput']) {
+  checkCreateRelationships(props: IndividualInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -82,11 +91,7 @@ export class IndividualsService extends RequestContext {
     return true;
   }
 
-  async insertIndividualOne(
-    selectionSet: string[],
-    object: ValueTypes['IndividualInsertInput'],
-    onConflict?: ValueTypes['IndividualOnConflict']
-  ) {
+  async insertIndividualOne(selectionSet: string[], object: IndividualInsertInput, onConflict?: IndividualOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Individual.');
 
@@ -108,9 +113,9 @@ export class IndividualsService extends RequestContext {
 
   async findIndividual(
     selectionSet: string[],
-    where: ValueTypes['IndividualBoolExp'],
-    orderBy?: Array<ValueTypes['IndividualOrderBy']>,
-    distinctOn?: Array<ValueTypes['IndividualSelectColumn']>,
+    where: IndividualBoolExp,
+    orderBy?: Array<IndividualOrderBy>,
+    distinctOn?: Array<IndividualSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -127,8 +132,8 @@ export class IndividualsService extends RequestContext {
 
   async insertIndividual(
     selectionSet: string[],
-    objects: Array<ValueTypes['IndividualInsertInput']>,
-    onConflict?: ValueTypes['IndividualOnConflict']
+    objects: Array<IndividualInsertInput>,
+    onConflict?: IndividualOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -153,7 +158,7 @@ export class IndividualsService extends RequestContext {
     return data.insertIndividual;
   }
 
-  async updateIndividualMany(selectionSet: string[], updates: Array<ValueTypes['IndividualUpdates']>) {
+  async updateIndividualMany(selectionSet: string[], updates: Array<IndividualUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -184,11 +189,7 @@ export class IndividualsService extends RequestContext {
     return data.updateIndividualMany;
   }
 
-  async updateIndividualByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['IndividualPkColumnsInput'],
-    _set: ValueTypes['IndividualSetInput']
-  ) {
+  async updateIndividualByPk(selectionSet: string[], pkColumns: IndividualPkColumnsInput, _set: IndividualSetInput) {
     const individual = await this.individualRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, individual);
@@ -205,7 +206,7 @@ export class IndividualsService extends RequestContext {
     return data.updateIndividualByPk;
   }
 
-  async deleteIndividual(selectionSet: string[], where: ValueTypes['IndividualBoolExp']) {
+  async deleteIndividual(selectionSet: string[], where: IndividualBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -230,7 +231,7 @@ export class IndividualsService extends RequestContext {
     return data.updateIndividual;
   }
 
-  async deleteIndividualByPk(selectionSet: string[], pkColumns: ValueTypes['IndividualPkColumnsInput']) {
+  async deleteIndividualByPk(selectionSet: string[], pkColumns: IndividualPkColumnsInput) {
     const individual = await this.individualRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(individual);
@@ -247,9 +248,9 @@ export class IndividualsService extends RequestContext {
 
   async aggregateIndividual(
     selectionSet: string[],
-    where: ValueTypes['IndividualBoolExp'],
-    orderBy?: Array<ValueTypes['IndividualOrderBy']>,
-    distinctOn?: Array<ValueTypes['IndividualSelectColumn']>,
+    where: IndividualBoolExp,
+    orderBy?: Array<IndividualOrderBy>,
+    distinctOn?: Array<IndividualSelectColumn>,
     limit?: number,
     offset?: number
   ) {

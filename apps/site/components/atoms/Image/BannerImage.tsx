@@ -17,5 +17,5 @@ export default function BannerImage({ aspectRatio = BANNER_ASPECT_RATIO, src, na
 
   if (!src) return <div className={className} style={{ ...style, backgroundColor: getColorHexFromData(name) }} />;
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt={name || 'Bannière'} className={clsx(className, 'object-cover w-full')} style={style} />;
+  return <img src={src} alt={name ?? 'Bannière'} className={clsx(className, 'object-cover w-full')} style={style} />;
 }

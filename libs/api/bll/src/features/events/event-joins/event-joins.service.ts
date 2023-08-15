@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions, ApprovalState } from '@okampus/shared/enu
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventJoinInsertInput,
+  EventJoinOnConflict,
+  EventJoinBoolExp,
+  EventJoinOrderBy,
+  EventJoinSelectColumn,
+  EventJoinSetInput,
+  EventJoinUpdates,
+  EventJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventJoinsService extends RequestContext {
@@ -22,7 +31,7 @@ export class EventJoinsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['EventJoinInsertInput']) {
+  checkPermsCreate(props: EventJoinInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class EventJoinsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['EventJoinSetInput'], eventJoin: EventJoin) {
+  checkPermsUpdate(props: EventJoinSetInput, eventJoin: EventJoin) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (eventJoin.deletedAt) throw new NotFoundException(`EventJoin was deleted on ${eventJoin.deletedAt}.`);
@@ -65,7 +74,7 @@ export class EventJoinsService extends RequestContext {
     return eventJoin.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['EventJoinSetInput']) {
+  checkPropsConstraints(props: EventJoinSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
@@ -89,7 +98,7 @@ export class EventJoinsService extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['EventJoinInsertInput']) {
+  checkCreateRelationships(props: EventJoinInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -97,11 +106,7 @@ export class EventJoinsService extends RequestContext {
     return true;
   }
 
-  async insertEventJoinOne(
-    selectionSet: string[],
-    object: ValueTypes['EventJoinInsertInput'],
-    onConflict?: ValueTypes['EventJoinOnConflict']
-  ) {
+  async insertEventJoinOne(selectionSet: string[], object: EventJoinInsertInput, onConflict?: EventJoinOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventJoin.');
 
@@ -123,9 +128,9 @@ export class EventJoinsService extends RequestContext {
 
   async findEventJoin(
     selectionSet: string[],
-    where: ValueTypes['EventJoinBoolExp'],
-    orderBy?: Array<ValueTypes['EventJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventJoinSelectColumn']>,
+    where: EventJoinBoolExp,
+    orderBy?: Array<EventJoinOrderBy>,
+    distinctOn?: Array<EventJoinSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -142,8 +147,8 @@ export class EventJoinsService extends RequestContext {
 
   async insertEventJoin(
     selectionSet: string[],
-    objects: Array<ValueTypes['EventJoinInsertInput']>,
-    onConflict?: ValueTypes['EventJoinOnConflict']
+    objects: Array<EventJoinInsertInput>,
+    onConflict?: EventJoinOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -168,7 +173,7 @@ export class EventJoinsService extends RequestContext {
     return data.insertEventJoin;
   }
 
-  async updateEventJoinMany(selectionSet: string[], updates: Array<ValueTypes['EventJoinUpdates']>) {
+  async updateEventJoinMany(selectionSet: string[], updates: Array<EventJoinUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -198,11 +203,7 @@ export class EventJoinsService extends RequestContext {
     return data.updateEventJoinMany;
   }
 
-  async updateEventJoinByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['EventJoinPkColumnsInput'],
-    _set: ValueTypes['EventJoinSetInput']
-  ) {
+  async updateEventJoinByPk(selectionSet: string[], pkColumns: EventJoinPkColumnsInput, _set: EventJoinSetInput) {
     const eventJoin = await this.eventJoinRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, eventJoin);
@@ -219,7 +220,7 @@ export class EventJoinsService extends RequestContext {
     return data.updateEventJoinByPk;
   }
 
-  async deleteEventJoin(selectionSet: string[], where: ValueTypes['EventJoinBoolExp']) {
+  async deleteEventJoin(selectionSet: string[], where: EventJoinBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -244,7 +245,7 @@ export class EventJoinsService extends RequestContext {
     return data.updateEventJoin;
   }
 
-  async deleteEventJoinByPk(selectionSet: string[], pkColumns: ValueTypes['EventJoinPkColumnsInput']) {
+  async deleteEventJoinByPk(selectionSet: string[], pkColumns: EventJoinPkColumnsInput) {
     const eventJoin = await this.eventJoinRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(eventJoin);
@@ -261,9 +262,9 @@ export class EventJoinsService extends RequestContext {
 
   async aggregateEventJoin(
     selectionSet: string[],
-    where: ValueTypes['EventJoinBoolExp'],
-    orderBy?: Array<ValueTypes['EventJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventJoinSelectColumn']>,
+    where: EventJoinBoolExp,
+    orderBy?: Array<EventJoinOrderBy>,
+    distinctOn?: Array<EventJoinSelectColumn>,
     limit?: number,
     offset?: number
   ) {

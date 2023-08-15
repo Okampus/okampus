@@ -6,12 +6,13 @@ import {
   pluralFormatters,
   cutoffs,
   units,
+  byteFormatters,
 } from '../../config/i18n';
 
 import { determinersAtom, dictsAtom, formattersAtom, langAtom } from '../../context/global';
 import { translate } from '../../utils/i18n/translate';
 
-import { isKey } from '@okampus/shared/utils';
+import { formatAsBytes, formatAsOctets, isKey } from '@okampus/shared/utils';
 import { useAtom } from 'jotai';
 
 import type { Format } from '../../config/i18n';
@@ -28,7 +29,9 @@ export function useTranslation() {
     if (formatters[key]) return formatters[key].format(data as any);
 
     let format;
-    if (isKey(key, numberFormatters)) {
+    if (isKey(key, byteFormatters)) {
+      format = lang === 'fr-FR' ? formatAsOctets : formatAsBytes;
+    } else if (isKey(key, numberFormatters)) {
       const formatter = new Intl.NumberFormat(lang, numberFormatters[key]);
       format = (data: number) => formatter.format(data);
     } else if (isKey(key, dateFormatters)) {

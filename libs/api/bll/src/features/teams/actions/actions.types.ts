@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActionInsertInput,
+  ActionOnConflict,
+  ActionSetInput,
+  ActionBoolExp,
+  ActionOrderBy,
+  ActionSelectColumn,
+  ActionPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertActionArgsType = {
-  objects: Array<ValueTypes['ActionInsertInput']>;
-  onConflict?: ValueTypes['ActionOnConflict'];
+  objects: Array<ActionInsertInput>;
+  onConflict?: ActionOnConflict;
 };
 
 export type InsertOneActionArgsType = {
-  object: ValueTypes['ActionInsertInput'];
-  onConflict?: ValueTypes['ActionOnConflict'];
+  object: ActionInsertInput;
+  onConflict?: ActionOnConflict;
 };
 
 export type UpdateActionArgsType = {
-  where: ValueTypes['ActionBoolExp'];
-  _set: ValueTypes['ActionSetInput'];
+  where: ActionBoolExp;
+  _set: ActionSetInput;
 };
 
 export type DeleteActionArgsType = {
-  where: ValueTypes['ActionBoolExp'];
+  where: ActionBoolExp;
 };
 
 export type UpdateByPkActionArgsType = {
-  pkColumns: ValueTypes['ActionPkColumnsInput'];
-  _set: ValueTypes['ActionSetInput'];
+  pkColumns: ActionPkColumnsInput;
+  _set: ActionSetInput;
 };
 
 export type FindActionArgsType = {
-  where: ValueTypes['ActionBoolExp'];
-  orderBy?: Array<ValueTypes['ActionOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActionSelectColumn']>;
+  where: ActionBoolExp;
+  orderBy?: Array<ActionOrderBy>;
+  distinctOn?: Array<ActionSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkActionArgsType = {
 };
 
 export type AggregateActionArgsType = {
-  where: ValueTypes['ActionBoolExp'];
-  orderBy?: Array<ValueTypes['ActionOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActionSelectColumn']>;
+  where: ActionBoolExp;
+  orderBy?: Array<ActionOrderBy>;
+  distinctOn?: Array<ActionSelectColumn>;
   limit?: number;
   offset?: number;
 };

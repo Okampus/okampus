@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import clsx from 'clsx';
 
@@ -7,8 +8,8 @@ export default function SidebarBanner({ name, banner }: SidebarBannerProps) {
     <>
       <div
         className={clsx(
-          'px-4 pt-4 pb-2 mb-2 w-full line-clamp-1 text-lg font-bold flex items-center',
-          banner ? 'absolute z-20 text-white' : 'text-0 mb-2'
+          'px-4 w-full line-clamp-1 text-lg flex items-center h-[var(--h-topbar)]',
+          banner ? 'absolute z-20 text-white font-semibold' : 'text-0 font-bold',
         )}
       >
         {name}
@@ -18,16 +19,12 @@ export default function SidebarBanner({ name, banner }: SidebarBannerProps) {
   );
 
   return banner ? (
-    header
-  ) : (
-    <div className="relative">
+    <div className="relative mb-3">
       {header}
-      {banner ? (
-        <>
-          <img className="w-full" src={banner} alt={name} style={{ aspectRatio: BANNER_ASPECT_RATIO }} />
-          <div className="absolute inset-0 bg-[#00000066]" />
-        </>
-      ) : null}
+      <img className="w-full" src={banner} alt={name} style={{ aspectRatio: BANNER_ASPECT_RATIO }} />
+      <div className="absolute inset-0 bg-[#00000066]" />
     </div>
+  ) : (
+    header
   );
 }

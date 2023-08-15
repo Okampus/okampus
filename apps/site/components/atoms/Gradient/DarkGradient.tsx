@@ -1,5 +1,5 @@
 type DarkGradientProps = { className?: string; children?: React.ReactNode };
-export function DarkGradient({ className, children }: DarkGradientProps) {
+export default function DarkGradient({ className, children }: DarkGradientProps) {
   return (
     <div className={className}>
       {children}

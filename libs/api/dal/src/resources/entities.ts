@@ -40,7 +40,7 @@ import { FileUpload } from './file-upload/file-upload.entity';
 import { Bot } from './individual/bot/bot.entity';
 import { Pole } from './team/pole/pole.entity';
 import { Address } from './actor/address/address.entity';
-import { BankInfo } from './actor/bank-info/bank-info.entity';
+import { Bank } from './actor/bank/bank.entity';
 import { Expense } from './team/expense/expense.entity';
 import { ExpenseItem } from './team/expense-item/expense-item.entity';
 import { Campus } from './tenant/campus/campus.entity';
@@ -77,7 +77,7 @@ export const allEntities = [
   CampusCluster,
 
   Actor,
-  BankInfo,
+  Bank,
   Address,
   Location,
   ActorImage,

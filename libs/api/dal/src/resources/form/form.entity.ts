@@ -33,7 +33,7 @@ export class Form extends TenantScopedEntity {
   isAllowingEditingAnswers = true;
 
   @Property({ type: 'boolean', default: false })
-  isRequired = false;
+  isLocked = false;
 
   constructor(options: FormOptions) {
     super(options);

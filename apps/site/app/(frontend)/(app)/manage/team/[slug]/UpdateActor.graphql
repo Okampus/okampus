@@ -1,0 +1,30 @@
+mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
+  updateActorByPk(pkColumns: { id: $id }, _set: $update) {
+    __typename
+    id
+    slug
+    bio
+    name
+    status
+    email
+    website
+    actorImages {
+      __typename
+      id
+      type
+      image {
+        __typename
+        id
+        url
+      }
+    }
+    socials(where: { deletedAt: { _isNull: true } }) {
+      __typename
+      id
+      pseudo
+      url
+      type
+      order
+    }
+  }
+}

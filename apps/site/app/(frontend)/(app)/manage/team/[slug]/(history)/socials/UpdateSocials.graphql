@@ -1,0 +1,12 @@
+mutation UpdateSocials($updates: [SocialUpdates!]!) {
+  updateSocialMany(updates: $updates) {
+    returning {
+      __typename
+      id
+      type
+      pseudo
+      order
+      url
+    }
+  }
+}

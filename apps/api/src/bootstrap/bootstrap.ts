@@ -51,7 +51,6 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   await fastifyInstance.register(fastifyCors, { origin: corsValidation, credentials: true });
   await fastifyInstance.register(fastifyRequestContext, { hook: 'preValidation', defaultStoreValues });
 
-  // @ts-expect-error - incorrect fastifyInstance type
   const fastifyAdapter = new FastifyAdapter(fastifyInstance);
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter, { logger });
 

@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TenantInsertInput,
+  TenantOnConflict,
+  TenantBoolExp,
+  TenantOrderBy,
+  TenantSelectColumn,
+  TenantSetInput,
+  TenantUpdates,
+  TenantPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class TenantsService extends RequestContext {
@@ -22,7 +31,7 @@ export class TenantsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['TenantInsertInput']) {
+  checkPermsCreate(props: TenantInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -44,7 +53,7 @@ export class TenantsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['TenantSetInput'], tenant: Tenant) {
+  checkPermsUpdate(props: TenantSetInput, tenant: Tenant) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (tenant.deletedAt) throw new NotFoundException(`Tenant was deleted on ${tenant.deletedAt}.`);
@@ -62,14 +71,14 @@ export class TenantsService extends RequestContext {
     return tenant.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['TenantSetInput']) {
+  checkPropsConstraints(props: TenantSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['TenantInsertInput']) {
+  checkCreateRelationships(props: TenantInsertInput) {
     // Custom logic
 
     props.createdById = this.requester().id;
@@ -77,11 +86,7 @@ export class TenantsService extends RequestContext {
     return true;
   }
 
-  async insertTenantOne(
-    selectionSet: string[],
-    object: ValueTypes['TenantInsertInput'],
-    onConflict?: ValueTypes['TenantOnConflict']
-  ) {
+  async insertTenantOne(selectionSet: string[], object: TenantInsertInput, onConflict?: TenantOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tenant.');
 
@@ -103,9 +108,9 @@ export class TenantsService extends RequestContext {
 
   async findTenant(
     selectionSet: string[],
-    where: ValueTypes['TenantBoolExp'],
-    orderBy?: Array<ValueTypes['TenantOrderBy']>,
-    distinctOn?: Array<ValueTypes['TenantSelectColumn']>,
+    where: TenantBoolExp,
+    orderBy?: Array<TenantOrderBy>,
+    distinctOn?: Array<TenantSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -120,11 +125,7 @@ export class TenantsService extends RequestContext {
     return data.tenantByPk;
   }
 
-  async insertTenant(
-    selectionSet: string[],
-    objects: Array<ValueTypes['TenantInsertInput']>,
-    onConflict?: ValueTypes['TenantOnConflict']
-  ) {
+  async insertTenant(selectionSet: string[], objects: Array<TenantInsertInput>, onConflict?: TenantOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Tenant.');
@@ -148,7 +149,7 @@ export class TenantsService extends RequestContext {
     return data.insertTenant;
   }
 
-  async updateTenantMany(selectionSet: string[], updates: Array<ValueTypes['TenantUpdates']>) {
+  async updateTenantMany(selectionSet: string[], updates: Array<TenantUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -178,11 +179,7 @@ export class TenantsService extends RequestContext {
     return data.updateTenantMany;
   }
 
-  async updateTenantByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['TenantPkColumnsInput'],
-    _set: ValueTypes['TenantSetInput']
-  ) {
+  async updateTenantByPk(selectionSet: string[], pkColumns: TenantPkColumnsInput, _set: TenantSetInput) {
     const tenant = await this.tenantRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, tenant);
@@ -199,7 +196,7 @@ export class TenantsService extends RequestContext {
     return data.updateTenantByPk;
   }
 
-  async deleteTenant(selectionSet: string[], where: ValueTypes['TenantBoolExp']) {
+  async deleteTenant(selectionSet: string[], where: TenantBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -224,7 +221,7 @@ export class TenantsService extends RequestContext {
     return data.updateTenant;
   }
 
-  async deleteTenantByPk(selectionSet: string[], pkColumns: ValueTypes['TenantPkColumnsInput']) {
+  async deleteTenantByPk(selectionSet: string[], pkColumns: TenantPkColumnsInput) {
     const tenant = await this.tenantRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(tenant);
@@ -241,9 +238,9 @@ export class TenantsService extends RequestContext {
 
   async aggregateTenant(
     selectionSet: string[],
-    where: ValueTypes['TenantBoolExp'],
-    orderBy?: Array<ValueTypes['TenantOrderBy']>,
-    distinctOn?: Array<ValueTypes['TenantSelectColumn']>,
+    where: TenantBoolExp,
+    orderBy?: Array<TenantOrderBy>,
+    distinctOn?: Array<TenantSelectColumn>,
     limit?: number,
     offset?: number
   ) {

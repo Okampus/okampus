@@ -1,0 +1,84 @@
+query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit: Int, $offset: Int) {
+  teamJoin(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    state
+    joinedBy {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      individual {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          slug
+          bio
+          name
+          email
+          website
+          status
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+    team {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+    formSubmission {
+      __typename
+      id
+      createdAt
+      submission
+      form {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
+    }
+    receivedRole {
+      __typename
+      id
+      createdAt
+      category
+      type
+      name
+      permissions
+    }
+  }
+}

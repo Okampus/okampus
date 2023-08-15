@@ -41,9 +41,9 @@ export default function AvatarLabeled({
     'flex',
     className,
     content ? 'gap-4' : small ? 'gap-2 text-sm' : 'gap-2.5 text-base',
-    align
+    align,
   );
-  const labelClass = clsx('font-semibold', small ? 'text-sm' : 'text-base');
+  const labelClass = clsx('font-medium', small ? 'text-sm' : 'text-base');
   const avatarElement = (
     <AvatarImage
       src={avatar}

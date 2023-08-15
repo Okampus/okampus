@@ -5,7 +5,7 @@ import { IconArrowLeft } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
@@ -34,7 +34,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
           {Array.from({ length: numPages }).map((_, idx) => (
             <Page pageNumber={idx + 1} key={idx} />
           ))}
-        </Document>
+        </Document>,
       );
     }
 
@@ -54,7 +54,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
               onClick={(e) => e.stopPropagation()}
               src={URL.createObjectURL(file)}
               alt={file.name}
-            />
+            />,
           );
         }
 
@@ -64,7 +64,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
             onClick={(e) => e.stopPropagation()}
             src={file.url}
             alt={file.name ?? ''}
-          />
+          />,
         );
       } else if (checkPdf(checkPayload)) {
         const data = file instanceof File ? await toBase64(file) : file.url;
@@ -77,7 +77,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
             renderMode={'svg'}
             className="flex flex-col gap-6"
-          />
+          />,
         );
       } // TODO: add more file types
 
@@ -91,7 +91,7 @@ export default function FilePreviewer({ file, onClose }: FilePreviewerProps) {
         <div className="flex flex-col gap-4 items-center justify-center bg-white text-black h-fit rounded-lg p-5">
           <div className="text-2xl">Prévisualisation</div>
           <div className="text-lg">Aucune prévisualisation possible</div>
-        </div>
+        </div>,
       );
     }
     filePreview();

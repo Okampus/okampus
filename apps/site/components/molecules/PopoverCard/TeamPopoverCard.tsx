@@ -4,26 +4,23 @@ import GroupItem from '../../atoms/Item/GroupItem';
 import Popover from '../../atoms/Popup/Popover/Popover';
 import PopoverTrigger from '../../atoms/Popup/Popover/PopoverTrigger';
 import PopoverContent from '../../atoms/Popup/Popover/PopoverContent';
-
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
 import { getBanner } from '../../../utils/actor-image/get-banner';
+import { useGetTeamPopoverLazyQuery } from '@okampus/shared/graphql';
 
 import { TEAM_ROUTE } from '@okampus/shared/consts';
-import { teamWithMembersInfo, useTypedLazyQuery } from '@okampus/shared/graphql';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
 
-export type TeamPopoverCardProps = { teamId?: string; triggerClassName?: string; children: React.ReactNode };
+export type TeamPopoverCardProps = { teamId: string; triggerClassName?: string; children: React.ReactNode };
 export default function TeamPopoverCard({ teamId, triggerClassName, children }: TeamPopoverCardProps) {
   const { format } = useTranslation();
-  const [getTeam, { data }] = useTypedLazyQuery({
-    team: [{ where: { id: { _eq: teamId } }, limit: 1 }, teamWithMembersInfo],
+  const [getTeam, { data }] = useGetTeamPopoverLazyQuery({
+    variables: { id: teamId },
   });
-
-  if (!teamId) return <>{children}</>;
 
   const team = data?.team?.[0];
 
@@ -32,7 +29,7 @@ export default function TeamPopoverCard({ teamId, triggerClassName, children }: 
       <PopoverTrigger className={triggerClassName} onClick={() => getTeam()}>
         {children}
       </PopoverTrigger>
-      <PopoverContent popoverClassName="rounded-2xl bg-0">
+      <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-0">
         {team ? (
           <PopoverCard
             link={TEAM_ROUTE(team.actor?.slug)}

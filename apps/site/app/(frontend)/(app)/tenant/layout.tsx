@@ -25,11 +25,14 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
 
   return (
     <>
-      <SideBar>
-        <SidebarBanner
-          name={tenant.adminTeam.actor.name}
-          banner={getBanner(tenant.adminTeam.actor.actorImages)?.image.url}
-        />
+      <SideBar
+        header={
+          <SidebarBanner
+            name={tenant.adminTeam.actor.name}
+            banner={getBanner(tenant.adminTeam.actor.actorImages)?.image.url}
+          />
+        }
+      >
         <TenantManageButton manage={true} />
         <LinkList items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
       </SideBar>

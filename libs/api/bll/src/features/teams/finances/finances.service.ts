@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  FinanceInsertInput,
+  FinanceOnConflict,
+  FinanceBoolExp,
+  FinanceOrderBy,
+  FinanceSelectColumn,
+  FinanceSetInput,
+  FinanceUpdates,
+  FinancePkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class FinancesService extends RequestContext {
@@ -22,7 +31,7 @@ export class FinancesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['FinanceInsertInput']) {
+  checkPermsCreate(props: FinanceInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class FinancesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['FinanceSetInput'], finance: Finance) {
+  checkPermsUpdate(props: FinanceSetInput, finance: Finance) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (finance.deletedAt) throw new NotFoundException(`Finance was deleted on ${finance.deletedAt}.`);
@@ -65,14 +74,14 @@ export class FinancesService extends RequestContext {
     return finance.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['FinanceSetInput']) {
+  checkPropsConstraints(props: FinanceSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['FinanceInsertInput']) {
+  checkCreateRelationships(props: FinanceInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class FinancesService extends RequestContext {
     return true;
   }
 
-  async insertFinanceOne(
-    selectionSet: string[],
-    object: ValueTypes['FinanceInsertInput'],
-    onConflict?: ValueTypes['FinanceOnConflict']
-  ) {
+  async insertFinanceOne(selectionSet: string[], object: FinanceInsertInput, onConflict?: FinanceOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Finance.');
 
@@ -106,9 +111,9 @@ export class FinancesService extends RequestContext {
 
   async findFinance(
     selectionSet: string[],
-    where: ValueTypes['FinanceBoolExp'],
-    orderBy?: Array<ValueTypes['FinanceOrderBy']>,
-    distinctOn?: Array<ValueTypes['FinanceSelectColumn']>,
+    where: FinanceBoolExp,
+    orderBy?: Array<FinanceOrderBy>,
+    distinctOn?: Array<FinanceSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class FinancesService extends RequestContext {
     return data.financeByPk;
   }
 
-  async insertFinance(
-    selectionSet: string[],
-    objects: Array<ValueTypes['FinanceInsertInput']>,
-    onConflict?: ValueTypes['FinanceOnConflict']
-  ) {
+  async insertFinance(selectionSet: string[], objects: Array<FinanceInsertInput>, onConflict?: FinanceOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Finance.');
@@ -151,7 +152,7 @@ export class FinancesService extends RequestContext {
     return data.insertFinance;
   }
 
-  async updateFinanceMany(selectionSet: string[], updates: Array<ValueTypes['FinanceUpdates']>) {
+  async updateFinanceMany(selectionSet: string[], updates: Array<FinanceUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class FinancesService extends RequestContext {
     return data.updateFinanceMany;
   }
 
-  async updateFinanceByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['FinancePkColumnsInput'],
-    _set: ValueTypes['FinanceSetInput']
-  ) {
+  async updateFinanceByPk(selectionSet: string[], pkColumns: FinancePkColumnsInput, _set: FinanceSetInput) {
     const finance = await this.financeRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, finance);
@@ -202,7 +199,7 @@ export class FinancesService extends RequestContext {
     return data.updateFinanceByPk;
   }
 
-  async deleteFinance(selectionSet: string[], where: ValueTypes['FinanceBoolExp']) {
+  async deleteFinance(selectionSet: string[], where: FinanceBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class FinancesService extends RequestContext {
     return data.updateFinance;
   }
 
-  async deleteFinanceByPk(selectionSet: string[], pkColumns: ValueTypes['FinancePkColumnsInput']) {
+  async deleteFinanceByPk(selectionSet: string[], pkColumns: FinancePkColumnsInput) {
     const finance = await this.financeRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(finance);
@@ -244,9 +241,9 @@ export class FinancesService extends RequestContext {
 
   async aggregateFinance(
     selectionSet: string[],
-    where: ValueTypes['FinanceBoolExp'],
-    orderBy?: Array<ValueTypes['FinanceOrderBy']>,
-    distinctOn?: Array<ValueTypes['FinanceSelectColumn']>,
+    where: FinanceBoolExp,
+    orderBy?: Array<FinanceOrderBy>,
+    distinctOn?: Array<FinanceSelectColumn>,
     limit?: number,
     offset?: number
   ) {

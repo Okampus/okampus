@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TeamJoinInsertInput,
+  TeamJoinOnConflict,
+  TeamJoinSetInput,
+  TeamJoinBoolExp,
+  TeamJoinOrderBy,
+  TeamJoinSelectColumn,
+  TeamJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertTeamJoinArgsType = {
-  objects: Array<ValueTypes['TeamJoinInsertInput']>;
-  onConflict?: ValueTypes['TeamJoinOnConflict'];
+  objects: Array<TeamJoinInsertInput>;
+  onConflict?: TeamJoinOnConflict;
 };
 
 export type InsertOneTeamJoinArgsType = {
-  object: ValueTypes['TeamJoinInsertInput'];
-  onConflict?: ValueTypes['TeamJoinOnConflict'];
+  object: TeamJoinInsertInput;
+  onConflict?: TeamJoinOnConflict;
 };
 
 export type UpdateTeamJoinArgsType = {
-  where: ValueTypes['TeamJoinBoolExp'];
-  _set: ValueTypes['TeamJoinSetInput'];
+  where: TeamJoinBoolExp;
+  _set: TeamJoinSetInput;
 };
 
 export type DeleteTeamJoinArgsType = {
-  where: ValueTypes['TeamJoinBoolExp'];
+  where: TeamJoinBoolExp;
 };
 
 export type UpdateByPkTeamJoinArgsType = {
-  pkColumns: ValueTypes['TeamJoinPkColumnsInput'];
-  _set: ValueTypes['TeamJoinSetInput'];
+  pkColumns: TeamJoinPkColumnsInput;
+  _set: TeamJoinSetInput;
 };
 
 export type FindTeamJoinArgsType = {
-  where: ValueTypes['TeamJoinBoolExp'];
-  orderBy?: Array<ValueTypes['TeamJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['TeamJoinSelectColumn']>;
+  where: TeamJoinBoolExp;
+  orderBy?: Array<TeamJoinOrderBy>;
+  distinctOn?: Array<TeamJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkTeamJoinArgsType = {
 };
 
 export type AggregateTeamJoinArgsType = {
-  where: ValueTypes['TeamJoinBoolExp'];
-  orderBy?: Array<ValueTypes['TeamJoinOrderBy']>;
-  distinctOn?: Array<ValueTypes['TeamJoinSelectColumn']>;
+  where: TeamJoinBoolExp;
+  orderBy?: Array<TeamJoinOrderBy>;
+  distinctOn?: Array<TeamJoinSelectColumn>;
   limit?: number;
   offset?: number;
 };

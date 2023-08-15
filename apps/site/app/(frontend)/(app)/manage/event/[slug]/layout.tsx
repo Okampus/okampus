@@ -9,20 +9,28 @@ import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteC
 
 import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 
-import { eventManageInfo } from '@okampus/shared/graphql';
+import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
+import { GetEventManageDocument } from '@okampus/shared/graphql';
 import { unique } from '@okampus/shared/utils';
 
 import { IconInfoHexagon, IconUsersPlus, IconUsers, IconCheckbox, IconArrowLeft } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
-import type { EventManageInfo } from '@okampus/shared/graphql';
+import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeEventManageDocument = getSubscriptionFromQuery(GetEventManageDocument);
 
 type ManageEventLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ManageEventLayout({ children, params }: ManageEventLayoutProps) {
-  const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, eventManageInfo];
-  const [eventManage] = await getApolloQuery<EventManageInfo[]>('event', query, true).catch(() => []);
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetEventManageQuery, GetEventManageQueryVariables>({
+    query: GetEventManageDocument,
+    variables,
+  }).catch();
 
-  if (!eventManage) notFound();
+  if (!data) notFound();
+
+  const eventManage = data.event[0];
 
   const managingTeams = eventManage?.eventOrganizes.map((eventManage) => eventManage.team);
   const teams = unique(managingTeams, (item) => item.id);
@@ -31,10 +39,9 @@ export default async function ManageEventLayout({ children, params }: ManageEven
 
   return (
     <>
-      <ApolloWriteCache values={[[eventManage, eventManageInfo]]} />
-      <ApolloSubscribe selector={{ eventByPk: [{ id: eventManage.id }, eventManageInfo] }} />
-      <SideBar>
-        <SidebarBanner name={eventManage?.name} banner={eventManage.banner?.url} />
+      <ApolloWriteCache values={[[eventManage, GetEventManageDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeEventManageDocument} variables={variables} data-superjson />
+      <SideBar header={<SidebarBanner name={eventManage?.name} banner={eventManage.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={false} />
         <GroupItem heading="Paramètres" headingClassName="ml-3">
           <LinkList

@@ -26,7 +26,7 @@ export class Role extends TenantScopedEntity {
   type: TeamRoleType = TeamRoleType.Member;
 
   @Property({ type: 'boolean', default: true })
-  isRequired = false;
+  isLocked = false;
 
   constructor(options: RoleOptions) {
     super(options);

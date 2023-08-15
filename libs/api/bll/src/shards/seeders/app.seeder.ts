@@ -33,11 +33,12 @@ import {
   TenantOrganize,
   TeamHistory,
   Account,
-  BankInfo,
+  Bank,
   EventApproval,
   Log,
   Location,
   Mission,
+  EventSupervisor,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -158,7 +159,7 @@ async function createEventApprovalStep(
   validators: Individual[],
   tenant: Tenant,
   order: number,
-  createdBy: Individual | null
+  createdBy: Individual | null,
 ): Promise<EventApprovalStep> {
   const step = await new EventApprovalStepSeeder(em, tenant, order, createdBy).createOne();
   step.validators.add(validators);
@@ -211,7 +212,7 @@ async function loadCategoriesFromYaml(): Promise<CategoryData[] | null> {
         typeof category.slug === 'string' && category.slug.length > 0 ? category.slug : toSlug(category.name);
       const icon = category.icon ?? `${slug}.webp`;
       return { name: category.name, slug, color, icon };
-    })
+    }),
   );
 }
 
@@ -290,7 +291,7 @@ async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<Tea
         originalCreationMonth,
         originalCreationYear,
       };
-    })
+    }),
   );
 }
 
@@ -356,7 +357,7 @@ export class DatabaseSeeder extends Seeder {
         });
 
         campusCluster.campuses.add(
-          new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions })
+          new Campus({ name: `Campus ${campusCluster.name}`, location, campusCluster, ...scopedOptions }),
         );
       }
 
@@ -390,7 +391,7 @@ export class DatabaseSeeder extends Seeder {
       const nStepAdmins = randomInt(seedingConfig.MIN_ADMINS_BY_STEP, seedingConfig.MAX_ADMINS_BY_STEP);
       [stepAdmins, restAdmins] = randomFromArrayWithRemainder(restAdmins, nStepAdmins);
       approvalSteps.push(
-        await createEventApprovalStep(em, [DatabaseSeeder.admin, ...stepAdmins], tenant, i + 1, DatabaseSeeder.admin)
+        await createEventApprovalStep(em, [DatabaseSeeder.admin, ...stepAdmins], tenant, i + 1, DatabaseSeeder.admin),
       );
       if (i > 0) approvalSteps[i].previousStep = approvalSteps[i - 1];
     }
@@ -417,7 +418,7 @@ export class DatabaseSeeder extends Seeder {
         }
 
         return tag;
-      })
+      }),
     );
 
     this.logger.log('Seeding teams..');
@@ -437,7 +438,7 @@ export class DatabaseSeeder extends Seeder {
           const originalCreationDate = new Date(
             teamData.originalCreationYear,
             teamData.originalCreationMonth || 0,
-            teamData.originalCreationDay || 0
+            teamData.originalCreationDay || 0,
           );
 
           let approximateDate;
@@ -467,7 +468,7 @@ export class DatabaseSeeder extends Seeder {
           teamData.socials.map((social, order) => {
             const teamSocial = new Social({ actor: team.actor, order, ...social, ...scopedOptions });
             return teamSocial;
-          })
+          }),
         );
 
         const description = faker.lorem.paragraph();
@@ -476,7 +477,7 @@ export class DatabaseSeeder extends Seeder {
           name: 'Bureau',
           description,
           team: team,
-          isRequired: true,
+          required: true,
           category,
           ...scopedOptions,
         });
@@ -487,7 +488,7 @@ export class DatabaseSeeder extends Seeder {
           const account = new Account({
             name: 'Compte principal',
             type: AccountType.Primary,
-            bankInfo: new BankInfo({
+            bank: new Bank({
               bank: bankLocation,
               actor: team.actor,
               bicSwift: faker.finance.bic(),
@@ -526,7 +527,7 @@ export class DatabaseSeeder extends Seeder {
         const createdTeam = await em.findOneOrFail(
           Team,
           { actor: { slug: team.actor.slug } },
-          { populate: ['actor', 'actor.actorImages'] }
+          { populate: ['actor', 'actor.actorImages'] },
         );
 
         if (teamData.avatar) {
@@ -545,7 +546,7 @@ export class DatabaseSeeder extends Seeder {
         }
 
         return { team, parent: teamData.parent };
-      })
+      }),
     );
 
     const teams = teamsWithParent.map(({ team, parent }) => {
@@ -564,7 +565,7 @@ export class DatabaseSeeder extends Seeder {
               name: 'Compte principal',
               type: AccountType.Primary,
               parent: account,
-              bankInfo: null,
+              bank: null,
               team,
               ...scopedOptions,
             });
@@ -584,7 +585,7 @@ export class DatabaseSeeder extends Seeder {
                 createdBy: treasurer?.individual,
                 state: FinanceState.Completed,
                 tenant,
-              })
+              }),
             );
 
             team.accounts.add(childAccount);
@@ -606,7 +607,7 @@ export class DatabaseSeeder extends Seeder {
                   .individual,
                 state: FinanceState.Completed,
                 tenant,
-              })
+              }),
             );
           }
         }
@@ -634,7 +635,7 @@ export class DatabaseSeeder extends Seeder {
       const N_MEMBERS = randomInt(seedingConfig.MIN_MEMBERS, MAX_MEMBERS);
       const N_REQUESTERS = randomInt(
         seedingConfig.MIN_REQUESTS,
-        Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS)
+        Math.min(students.length - 4 - N_MEMBERS, seedingConfig.MAX_REQUESTS),
       );
 
       const roles = clubDefaultRoles.map((role) => new Role({ ...role, team, ...scopedOptions }));
@@ -664,7 +665,7 @@ export class DatabaseSeeder extends Seeder {
         if (user) {
           const createdBy = member.user.individual;
           user.shortcuts.add(
-            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user, createdBy, tenant })
+            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user, createdBy, tenant }),
           );
         }
       }
@@ -778,8 +779,8 @@ export class DatabaseSeeder extends Seeder {
                   eventApprovalStep,
                   isApproved: idx === lastStepIdx - 1 && event.state === EventState.Rejected ? false : true,
                   message: faker.lorem.paragraphs(1),
-                  tenant,
                   createdBy: pickOneFromArray(admins),
+                  tenant,
                 });
                 eventApproval.createdAt = new Date(event.createdAt);
                 event.eventApprovals.add(eventApproval);
@@ -791,11 +792,14 @@ export class DatabaseSeeder extends Seeder {
 
           const eventOrganizes = events.map((event) => {
             const createdBy = pickOneFromArray(teamMembers).user.individual;
-            const supervisors = randomFromArray(teamMembers, 1, 3);
-            const eventManage = new EventOrganize({ team, event, createdBy, tenant, supervisors, project });
+            const eventOrganize = new EventOrganize({ team, event, createdBy, tenant, project });
+            const supervisors = randomFromArray(teamMembers, 1, 3).map(
+              ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenant }),
+            );
 
-            eventManage.createdAt = new Date(event.createdAt);
-            return eventManage;
+            eventOrganize.createdAt = new Date(event.createdAt);
+            eventOrganize.supervisors.add(supervisors);
+            return eventOrganize;
           });
 
           team.eventOrganizes.add(eventOrganizes);
@@ -825,7 +829,7 @@ export class DatabaseSeeder extends Seeder {
                 });
 
                 return finance;
-              })
+              }),
             ).then((finances) => finances.filter(isNotNull));
 
             teamPromises.push(async () => {
@@ -955,13 +959,13 @@ export class DatabaseSeeder extends Seeder {
                           : {}),
                         createdBy: individual,
                         tenant,
-                      })
+                      }),
                     );
                   }
                 }
 
                 return entities;
-              })
+              }),
             );
           }
 

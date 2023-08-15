@@ -3,10 +3,10 @@ import type { FormSchema, Submission } from '@okampus/shared/types';
 
 export function isFormSubmission<T extends FormSchema>(
   schema: T,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): data is Submission<T> {
   for (const field of schema) {
-    if (field.isRequired && !(field.name in data)) {
+    if (field.required && !(field.name in data)) {
       return false;
     }
     // else if (
@@ -31,35 +31,35 @@ export function defaultFormData<T extends FormSchema>(schema: T): Submission<T> 
   for (const field of schema) {
     switch (field.type) {
       case ControlType.Radio: {
-        data[field.name] = field.default || 0;
+        data[field.name] = field.defaultValue || 0;
         break;
       }
       case ControlType.Select: {
-        data[field.name] = field.default || 0;
+        data[field.name] = field.defaultValue || 0;
         break;
       }
       case ControlType.Text: {
-        data[field.name] = field.default || '';
+        data[field.name] = field.defaultValue || '';
         break;
       }
       case ControlType.Markdown: {
-        data[field.name] = field.default || '';
+        data[field.name] = field.defaultValue || '';
         break;
       }
       case ControlType.Checkbox: {
-        data[field.name] = field.default || false;
+        data[field.name] = field.defaultValue || false;
         break;
       }
       case ControlType.MultiCheckbox: {
-        data[field.name] = field.default || field.options?.map((_) => false);
+        data[field.name] = field.defaultValue || field.options?.map((_) => false);
         break;
       }
       case ControlType.Number: {
-        data[field.name] = field.default || '0';
+        data[field.name] = field.defaultValue || '0';
         break;
       }
       default: {
-        data[field.name] = field.default;
+        data[field.name] = field.defaultValue;
       }
     }
   }

@@ -6,11 +6,15 @@ import { getColorHexFromData } from '@okampus/shared/utils';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import type { ActorMinimalInfo } from '@okampus/shared/graphql';
+import type { ActorImageMinimalInfo } from '../../../types/features/actor-image.info';
 import type { CSSProperties } from 'react';
 
 export type AvatarImageProps = {
-  actor?: ActorMinimalInfo;
+  actor?: {
+    actorImages?: ActorImageMinimalInfo[];
+    website?: string;
+    name?: string;
+  };
   src?: string;
   website?: string;
   name?: string;
@@ -34,7 +38,7 @@ export default function AvatarImage({
     const avatar = getAvatar(actor.actorImages);
     website = website ?? actor.website;
     src = src ?? avatar?.image.url;
-    name = name || actor.name;
+    name = name ?? actor.name;
   }
 
   const style: CSSProperties = { fontSize: `${(size ?? 12) / 12}rem` };
@@ -44,7 +48,7 @@ export default function AvatarImage({
 
   const avatarClassName = clsx(
     'flex justify-center items-center overflow-hidden shrink-0 select-none font-medium text-white',
-    className
+    className,
   );
 
   if (!name && !src && !website) return <Skeleton className={avatarClassName} style={style} />;

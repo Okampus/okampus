@@ -1,36 +1,36 @@
-import TextCopiable from '../../atoms/Text/TextCopiable';
+import ICopiable from '../../atoms/Inline/ICopiable';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { formatIban } from '@okampus/shared/utils';
+import { formatIBAN } from '@okampus/shared/utils';
 
-import type { AccountBaseInfo } from '@okampus/shared/graphql';
+import type { AccountDetailsInfo } from '../../../types/features/account.info';
 
-export type AccountCardProps = { account: AccountBaseInfo };
+export type AccountCardProps = { account: AccountDetailsInfo };
 export default function AccountCard({ account }: AccountCardProps) {
   const { format } = useTranslation();
   const currentAccountBalance = account.financesAggregate.aggregate?.sum?.amount ?? 0;
 
   const remaining = account.children.reduce(
     (acc, childAccount) => acc + (childAccount.financesAggregate.aggregate?.sum?.amount ?? 0),
-    currentAccountBalance
+    currentAccountBalance,
   );
 
   return (
     <div className="card p-7 gap-8">
       <div className="flex flex-col gap-1">
         <div className="text-lg text-1 font-semibold">{account.name}</div>
-        {account.bankInfo && (
+        {account.bank && (
           <>
             <div className="flex gap-1 items-center">
               <div className="text-1 text-sm font-medium">IBAN : </div>
-              <TextCopiable text={formatIban(account.bankInfo.iban)} copyText={account.bankInfo.iban} />
+              <ICopiable text={formatIBAN(account.bank.iban)} copyText={account.bank.iban} />
             </div>
           </>
         )}
       </div>
       <div>
         <div className="text-2xl text-0 font-semibold">{format('euro', currentAccountBalance)}</div>
-        <div className="menu-title text-1">
+        <div className="label-title text-1">
           {account.parent ? `Votre solde alloué par ${account.parent.team.actor?.name}` : 'Votre solde restant'}
         </div>
       </div>

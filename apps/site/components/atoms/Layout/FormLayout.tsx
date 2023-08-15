@@ -1,4 +1,4 @@
-import FormSchemaRender from '../../molecules/Form/FormSchemaRender';
+import FormSchemaRender from '../../organisms/Form/FormSchemaRender';
 import ActionButton from '../../molecules/Button/ActionButton';
 import { defaultFormData } from '../../../utils/default-form-data';
 
@@ -27,7 +27,7 @@ export default function FormLayout<T extends FormSchema>({
   const [data, setData] = useState<Submission<T>>(initialData || defaultFormData(schema));
 
   return (
-    <div className={clsx(className, 'flex flex-col justify-end')}>
+    <div className={clsx(className, 'flex flex-col justify-end gap-4')}>
       <FormSchemaRender schema={schema} data={data} onChange={setData} />
       <ActionButton
         action={{ type: ActionType.Success, label: 'Soumettre', ...action, linkOrActionOrMenu: () => onSubmit(data) }}

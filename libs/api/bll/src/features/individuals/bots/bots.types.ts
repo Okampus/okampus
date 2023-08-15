@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  BotInsertInput,
+  BotOnConflict,
+  BotSetInput,
+  BotBoolExp,
+  BotOrderBy,
+  BotSelectColumn,
+  BotPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertBotArgsType = {
-  objects: Array<ValueTypes['BotInsertInput']>;
-  onConflict?: ValueTypes['BotOnConflict'];
+  objects: Array<BotInsertInput>;
+  onConflict?: BotOnConflict;
 };
 
 export type InsertOneBotArgsType = {
-  object: ValueTypes['BotInsertInput'];
-  onConflict?: ValueTypes['BotOnConflict'];
+  object: BotInsertInput;
+  onConflict?: BotOnConflict;
 };
 
 export type UpdateBotArgsType = {
-  where: ValueTypes['BotBoolExp'];
-  _set: ValueTypes['BotSetInput'];
+  where: BotBoolExp;
+  _set: BotSetInput;
 };
 
 export type DeleteBotArgsType = {
-  where: ValueTypes['BotBoolExp'];
+  where: BotBoolExp;
 };
 
 export type UpdateByPkBotArgsType = {
-  pkColumns: ValueTypes['BotPkColumnsInput'];
-  _set: ValueTypes['BotSetInput'];
+  pkColumns: BotPkColumnsInput;
+  _set: BotSetInput;
 };
 
 export type FindBotArgsType = {
-  where: ValueTypes['BotBoolExp'];
-  orderBy?: Array<ValueTypes['BotOrderBy']>;
-  distinctOn?: Array<ValueTypes['BotSelectColumn']>;
+  where: BotBoolExp;
+  orderBy?: Array<BotOrderBy>;
+  distinctOn?: Array<BotSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkBotArgsType = {
 };
 
 export type AggregateBotArgsType = {
-  where: ValueTypes['BotBoolExp'];
-  orderBy?: Array<ValueTypes['BotOrderBy']>;
-  distinctOn?: Array<ValueTypes['BotSelectColumn']>;
+  where: BotBoolExp;
+  orderBy?: Array<BotOrderBy>;
+  distinctOn?: Array<BotSelectColumn>;
   limit?: number;
   offset?: number;
 };

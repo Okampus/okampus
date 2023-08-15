@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  UserInsertInput,
+  UserOnConflict,
+  UserSetInput,
+  UserBoolExp,
+  UserOrderBy,
+  UserSelectColumn,
+  UserPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertUserArgsType = {
-  objects: Array<ValueTypes['UserInsertInput']>;
-  onConflict?: ValueTypes['UserOnConflict'];
+  objects: Array<UserInsertInput>;
+  onConflict?: UserOnConflict;
 };
 
 export type InsertOneUserArgsType = {
-  object: ValueTypes['UserInsertInput'];
-  onConflict?: ValueTypes['UserOnConflict'];
+  object: UserInsertInput;
+  onConflict?: UserOnConflict;
 };
 
 export type UpdateUserArgsType = {
-  where: ValueTypes['UserBoolExp'];
-  _set: ValueTypes['UserSetInput'];
+  where: UserBoolExp;
+  _set: UserSetInput;
 };
 
 export type DeleteUserArgsType = {
-  where: ValueTypes['UserBoolExp'];
+  where: UserBoolExp;
 };
 
 export type UpdateByPkUserArgsType = {
-  pkColumns: ValueTypes['UserPkColumnsInput'];
-  _set: ValueTypes['UserSetInput'];
+  pkColumns: UserPkColumnsInput;
+  _set: UserSetInput;
 };
 
 export type FindUserArgsType = {
-  where: ValueTypes['UserBoolExp'];
-  orderBy?: Array<ValueTypes['UserOrderBy']>;
-  distinctOn?: Array<ValueTypes['UserSelectColumn']>;
+  where: UserBoolExp;
+  orderBy?: Array<UserOrderBy>;
+  distinctOn?: Array<UserSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkUserArgsType = {
 };
 
 export type AggregateUserArgsType = {
-  where: ValueTypes['UserBoolExp'];
-  orderBy?: Array<ValueTypes['UserOrderBy']>;
-  distinctOn?: Array<ValueTypes['UserSelectColumn']>;
+  where: UserBoolExp;
+  orderBy?: Array<UserOrderBy>;
+  distinctOn?: Array<UserSelectColumn>;
   limit?: number;
   offset?: number;
 };

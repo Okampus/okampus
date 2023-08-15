@@ -20,7 +20,11 @@ input:-webkit-autofill:active {
 }
 
 .input-label {
-  transition: color 0.2s, top 0.2s, font-weight 0.2s, font-size 0.2s !important;
+  transition:
+    color 0.2s,
+    top 0.2s,
+    font-weight 0.2s,
+    font-size 0.2s !important;
   @apply absolute top-3 px-3 text-[var(--text-1)] opacity-90 font-medium line-clamp-1 pointer-events-none text-base text-left;
 }
 

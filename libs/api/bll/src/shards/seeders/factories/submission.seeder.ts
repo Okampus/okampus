@@ -16,11 +16,11 @@ export function generateRandomSubmission<T extends FormSchema>(schema: T): Submi
         break;
       }
       case ControlType.Text: {
-        data[field.name] = field.default || '';
+        data[field.name] = field.defaultValue || '';
         break;
       }
       case ControlType.Markdown: {
-        data[field.name] = field.default || '';
+        data[field.name] = field.defaultValue || '';
         break;
       }
       case ControlType.Checkbox: {
@@ -39,7 +39,7 @@ export function generateRandomSubmission<T extends FormSchema>(schema: T): Submi
         break;
       }
       default: {
-        data[field.name] = field.default || null;
+        data[field.name] = field.defaultValue || null;
         break;
       }
     }

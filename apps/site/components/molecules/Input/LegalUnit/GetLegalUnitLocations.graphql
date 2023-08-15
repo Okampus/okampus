@@ -1,0 +1,51 @@
+query GetLegalUnitLocations(
+  $where: LegalUnitLocationBoolExp
+  $orderBy: [LegalUnitLocationOrderBy!]
+  $limit: Int
+  $offset: Int
+) {
+  legalUnitLocation(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    legalName
+    actor {
+      __typename
+      id
+      slug
+      name
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+    }
+    location {
+      __typename
+      id
+      type
+      onlineLink
+      locationDetails
+      address {
+        __typename
+        id
+        name
+        latitude
+        longitude
+        category
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+      }
+    }
+  }
+}

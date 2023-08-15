@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TenantInsertInput,
+  TenantOnConflict,
+  TenantSetInput,
+  TenantBoolExp,
+  TenantOrderBy,
+  TenantSelectColumn,
+  TenantPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertTenantArgsType = {
-  objects: Array<ValueTypes['TenantInsertInput']>;
-  onConflict?: ValueTypes['TenantOnConflict'];
+  objects: Array<TenantInsertInput>;
+  onConflict?: TenantOnConflict;
 };
 
 export type InsertOneTenantArgsType = {
-  object: ValueTypes['TenantInsertInput'];
-  onConflict?: ValueTypes['TenantOnConflict'];
+  object: TenantInsertInput;
+  onConflict?: TenantOnConflict;
 };
 
 export type UpdateTenantArgsType = {
-  where: ValueTypes['TenantBoolExp'];
-  _set: ValueTypes['TenantSetInput'];
+  where: TenantBoolExp;
+  _set: TenantSetInput;
 };
 
 export type DeleteTenantArgsType = {
-  where: ValueTypes['TenantBoolExp'];
+  where: TenantBoolExp;
 };
 
 export type UpdateByPkTenantArgsType = {
-  pkColumns: ValueTypes['TenantPkColumnsInput'];
-  _set: ValueTypes['TenantSetInput'];
+  pkColumns: TenantPkColumnsInput;
+  _set: TenantSetInput;
 };
 
 export type FindTenantArgsType = {
-  where: ValueTypes['TenantBoolExp'];
-  orderBy?: Array<ValueTypes['TenantOrderBy']>;
-  distinctOn?: Array<ValueTypes['TenantSelectColumn']>;
+  where: TenantBoolExp;
+  orderBy?: Array<TenantOrderBy>;
+  distinctOn?: Array<TenantSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkTenantArgsType = {
 };
 
 export type AggregateTenantArgsType = {
-  where: ValueTypes['TenantBoolExp'];
-  orderBy?: Array<ValueTypes['TenantOrderBy']>;
-  distinctOn?: Array<ValueTypes['TenantSelectColumn']>;
+  where: TenantBoolExp;
+  orderBy?: Array<TenantOrderBy>;
+  distinctOn?: Array<TenantSelectColumn>;
   limit?: number;
   offset?: number;
 };

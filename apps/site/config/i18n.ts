@@ -1,12 +1,16 @@
 import { objectKeys } from '@okampus/shared/utils';
 
 export const availableLocales = ['fr-FR', 'en-US'] as const;
+export type Locale = (typeof availableLocales)[number];
+
 export const fallbackBaseLocales = { fr: 'fr-FR', en: 'en-US' } as const;
 export const fallbackLocale = 'fr-FR';
 
 export const numberFormatters = {
   euro: { style: 'currency', currency: 'EUR' },
 } as const;
+
+export const byteFormatters = { byte: true } as const;
 
 export const dateFormatters = {
   month: { month: 'long' },
@@ -33,6 +37,8 @@ export const pluralFormatters = {
 } as const;
 
 export type Formatters = {
+  [key in keyof typeof byteFormatters]: { format: (value: number) => string };
+} & {
   [key in keyof typeof numberFormatters]: { format: (value: number) => string };
 } & {
   [key in keyof typeof dateFormatters]: { format: (value: Date) => string };
@@ -45,6 +51,7 @@ export type Formatters = {
 };
 
 export const allFormatters = [
+  ...objectKeys(byteFormatters),
   ...objectKeys(numberFormatters),
   ...objectKeys(dateFormatters),
   ...objectKeys(listFormatters),
@@ -52,7 +59,9 @@ export const allFormatters = [
   ...objectKeys(pluralFormatters),
 ] as const;
 
-export type FormatValueType<T extends typeof allFormatters[number]> = T extends keyof typeof numberFormatters
+export type FormatValueType<T extends (typeof allFormatters)[number]> = T extends keyof typeof byteFormatters
+  ? number
+  : T extends keyof typeof numberFormatters
   ? number
   : T extends keyof typeof dateFormatters
   ? Date
@@ -64,7 +73,7 @@ export type FormatValueType<T extends typeof allFormatters[number]> = T extends 
   ? number
   : never;
 
-export type Format = <T extends typeof allFormatters[number]>(key: T, value: FormatValueType<T>) => string;
+export type Format = <T extends (typeof allFormatters)[number]>(key: T, value: FormatValueType<T>) => string;
 
 export const cutoffs = [60, 3600, 86_400, 86_400 * 7, 86_400 * 30, 86_400 * 365, Number.POSITIVE_INFINITY];
 export const units: Intl.RelativeTimeFormatUnit[] = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];

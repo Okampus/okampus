@@ -8,7 +8,8 @@ import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabe
 import { download } from '../../../../../../utils/download-file';
 import { useTenantManage } from '../../../../../../context/navigation';
 
-import { useTypedQuery, generateUserWithPointsInfoSelector } from '@okampus/shared/graphql';
+import { useGetTenantUsersWithPointsQuery } from '@okampus/shared/graphql';
+
 import { ActionType } from '@okampus/shared/types';
 import { groupBy, toCsv } from '@okampus/shared/utils';
 
@@ -16,7 +17,9 @@ import { IconDownload } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
-import type { UserBaseInfo, UserWithPointsInfo } from '@okampus/shared/graphql';
+import type { GetTenantUsersWithPointsQuery } from '@okampus/shared/graphql';
+
+type UserWithPointsInfo = NonNullable<GetTenantUsersWithPointsQuery['user'][number]>;
 
 type Month = {
   events: UserWithPointsInfo['eventJoins'];
@@ -24,7 +27,7 @@ type Month = {
   missions: UserWithPointsInfo['missionJoins'];
 };
 
-type GroupedUser = { user: UserBaseInfo; months: { [key: string]: Month } };
+type GroupedUser = { user: UserWithPointsInfo; months: { [key: string]: Month } };
 
 function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): GroupedUser[] {
   const groupedUsers: GroupedUser[] = [];
@@ -62,58 +65,44 @@ function groupByUser(users: UserWithPointsInfo[], monthStrings: string[]): Group
   return groupedUsers;
 }
 
-export default function TenantOrganizePointsPage({ params }: { params: { slug: string } }) {
-  const { tenantManage } = useTenantManage(params.slug);
+export default function TenantOrganizePointsPage() {
+  const { tenantManage } = useTenantManage();
 
-  const userWithPointsInfo = generateUserWithPointsInfoSelector(tenantManage?.id);
-  const { data } = useTypedQuery({
-    user: [
-      {
-        where: {
-          _or: [
-            {
-              eventJoins: {
-                participationProcessedAt: { _isNull: false },
-              },
-            },
-            { actions: { pointsProcessedAt: { _isNull: false } } },
-            { missionJoins: { pointsProcessedAt: { _isNull: false } } },
-          ],
-        },
-      },
-      userWithPointsInfo,
-    ],
-  });
+  const { data } = useGetTenantUsersWithPointsQuery();
 
   const months = useMemo(() => {
     const startingMonth = 9;
     const now = new Date();
 
     const monthsSinceStart = [];
-    for (let m = startingMonth, y = now.getFullYear() - 1; y < now.getFullYear() || m <= now.getMonth() + 1; m++) {
-      if (m > 11) {
-        m = 0;
-        y++;
+    for (
+      let month = startingMonth, year = now.getFullYear() - 1;
+      year < now.getFullYear() || month <= now.getMonth() + 1;
+      month++
+    ) {
+      if (month > 11) {
+        month = 0;
+        year++;
       }
 
-      monthsSinceStart.push(`${y}-${m.toString()}`);
+      monthsSinceStart.push(`${year}-${month.toString()}`);
     }
 
     return monthsSinceStart;
   }, []);
 
-  const users = useMemo(() => groupByUser(data?.user || [], months), [months, data?.user]);
+  const users = useMemo(() => groupByUser(data?.user ?? [], months), [months, data?.user]);
 
   const columns = [
     {
-      data: ({ user }: { user: UserBaseInfo }) => user.individual.actor.name,
+      data: ({ user }: GroupedUser) => user.individual.actor.name,
       label: 'Membre / Participant',
-      render: ({ user }: { user: UserBaseInfo }) => {
-        return <UserLabeled individual={user.individual} id={user.id} />;
+      render: ({ user }: GroupedUser) => {
+        return <UserLabeled user={user} />;
       },
     },
     ...months.map((month) => ({
-      data: ({ months }: { months: { [key: string]: Month } }) => {
+      data: ({ months }: GroupedUser) => {
         let points = 0;
         const monthData = months[month];
         if (!monthData) return <div>-</div>;
@@ -125,7 +114,7 @@ export default function TenantOrganizePointsPage({ params }: { params: { slug: s
         return points;
       },
       label: month,
-      render: ({ months }: { months: { [key: string]: Month } }) => {
+      render: ({ months }: GroupedUser) => {
         let points = 0;
         const monthData = months[month];
         if (!monthData) return <div>-</div>;
@@ -144,22 +133,28 @@ export default function TenantOrganizePointsPage({ params }: { params: { slug: s
   ];
 
   return (
-    <ViewLayout header={`Bilan ${tenantManage?.pointName}`} scrollable={false} bottomPadded={false}>
-      <ActionButton
-        className="mb-4"
-        action={{
-          iconOrSwitch: <IconDownload />,
-          label: 'Exporter le tableau',
-          linkOrActionOrMenu: () => {
-            const csv = toCsv(users, columns);
-            download(
-              URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
-              `lxp-${tenantManage?.adminTeam?.actor.slug}-${new Date().toISOString()}.csv`
-            );
-          },
-          type: ActionType.Action,
-        }}
-      />
+    <ViewLayout
+      header={`Bilan ${tenantManage?.pointName}`}
+      actions={[
+        <ActionButton
+          key="export"
+          action={{
+            iconOrSwitch: <IconDownload />,
+            label: 'Exporter le tableau',
+            linkOrActionOrMenu: () => {
+              const csv = toCsv(users, columns);
+              download(
+                URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+                `${tenantManage?.pointName}-${tenantManage?.adminTeam?.actor.slug}-${new Date().toISOString()}.csv`,
+              );
+            },
+            type: ActionType.Action,
+          }}
+        />,
+      ]}
+      scrollable={false}
+      bottomPadded={false}
+    >
       <Dashboard columns={columns} data={users} />
     </ViewLayout>
   );

@@ -53,7 +53,7 @@ export default function TabList({ selected, className, tabClassName, listClassNa
               className={clsx(
                 tabClassName,
                 key === selected ? 'text-[var(--primary)]' : 'text-1',
-                'cursor-pointer whitespace-nowrap font-semibold pb-4 text-center'
+                'cursor-pointer whitespace-nowrap font-semibold pb-4 text-center',
               )}
               onClick={() => onClick(key)}
             >

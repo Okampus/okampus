@@ -3,14 +3,15 @@
 import SidePanel from '../SidePanel';
 import GroupItem from '../../atoms/Item/GroupItem';
 import LogHistory from '../../molecules/Log/LogHistory';
-import { logBaseInfo, useTypedQuery } from '@okampus/shared/graphql';
+import { useGetEventLogsQuery } from '@okampus/shared/graphql';
 
 export type EventManageSidePanelProps = { id: string };
 export default function EventManageSidePanel({ id }: EventManageSidePanelProps) {
-  const { data, loading, error } = useTypedQuery(
-    { eventLogs: [{ id }, logBaseInfo] },
-    { apolloOptions: { context: { useApi: true }, fetchPolicy: 'network-only' } }
-  );
+  const { data, loading, error } = useGetEventLogsQuery({
+    variables: { id },
+    context: { useApi: true },
+    fetchPolicy: 'network-only',
+  });
 
   return (
     <SidePanel>

@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  LegalUnitInsertInput,
+  LegalUnitOnConflict,
+  LegalUnitBoolExp,
+  LegalUnitOrderBy,
+  LegalUnitSelectColumn,
+  LegalUnitSetInput,
+  LegalUnitUpdates,
+  LegalUnitPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class LegalUnitsService extends RequestContext {
@@ -22,7 +31,7 @@ export class LegalUnitsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['LegalUnitInsertInput']) {
+  checkPermsCreate(props: LegalUnitInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -44,7 +53,7 @@ export class LegalUnitsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['LegalUnitSetInput'], legalUnit: LegalUnit) {
+  checkPermsUpdate(props: LegalUnitSetInput, legalUnit: LegalUnit) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (legalUnit.deletedAt) throw new NotFoundException(`LegalUnit was deleted on ${legalUnit.deletedAt}.`);
@@ -62,14 +71,14 @@ export class LegalUnitsService extends RequestContext {
     return legalUnit.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['LegalUnitSetInput']) {
+  checkPropsConstraints(props: LegalUnitSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['LegalUnitInsertInput']) {
+  checkCreateRelationships(props: LegalUnitInsertInput) {
     // Custom logic
 
     props.createdById = this.requester().id;
@@ -79,11 +88,7 @@ export class LegalUnitsService extends RequestContext {
     return true;
   }
 
-  async insertLegalUnitOne(
-    selectionSet: string[],
-    object: ValueTypes['LegalUnitInsertInput'],
-    onConflict?: ValueTypes['LegalUnitOnConflict']
-  ) {
+  async insertLegalUnitOne(selectionSet: string[], object: LegalUnitInsertInput, onConflict?: LegalUnitOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert LegalUnit.');
 
@@ -105,9 +110,9 @@ export class LegalUnitsService extends RequestContext {
 
   async findLegalUnit(
     selectionSet: string[],
-    where: ValueTypes['LegalUnitBoolExp'],
-    orderBy?: Array<ValueTypes['LegalUnitOrderBy']>,
-    distinctOn?: Array<ValueTypes['LegalUnitSelectColumn']>,
+    where: LegalUnitBoolExp,
+    orderBy?: Array<LegalUnitOrderBy>,
+    distinctOn?: Array<LegalUnitSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -124,8 +129,8 @@ export class LegalUnitsService extends RequestContext {
 
   async insertLegalUnit(
     selectionSet: string[],
-    objects: Array<ValueTypes['LegalUnitInsertInput']>,
-    onConflict?: ValueTypes['LegalUnitOnConflict']
+    objects: Array<LegalUnitInsertInput>,
+    onConflict?: LegalUnitOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -150,7 +155,7 @@ export class LegalUnitsService extends RequestContext {
     return data.insertLegalUnit;
   }
 
-  async updateLegalUnitMany(selectionSet: string[], updates: Array<ValueTypes['LegalUnitUpdates']>) {
+  async updateLegalUnitMany(selectionSet: string[], updates: Array<LegalUnitUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -180,11 +185,7 @@ export class LegalUnitsService extends RequestContext {
     return data.updateLegalUnitMany;
   }
 
-  async updateLegalUnitByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['LegalUnitPkColumnsInput'],
-    _set: ValueTypes['LegalUnitSetInput']
-  ) {
+  async updateLegalUnitByPk(selectionSet: string[], pkColumns: LegalUnitPkColumnsInput, _set: LegalUnitSetInput) {
     const legalUnit = await this.legalUnitRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, legalUnit);
@@ -201,7 +202,7 @@ export class LegalUnitsService extends RequestContext {
     return data.updateLegalUnitByPk;
   }
 
-  async deleteLegalUnit(selectionSet: string[], where: ValueTypes['LegalUnitBoolExp']) {
+  async deleteLegalUnit(selectionSet: string[], where: LegalUnitBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -226,7 +227,7 @@ export class LegalUnitsService extends RequestContext {
     return data.updateLegalUnit;
   }
 
-  async deleteLegalUnitByPk(selectionSet: string[], pkColumns: ValueTypes['LegalUnitPkColumnsInput']) {
+  async deleteLegalUnitByPk(selectionSet: string[], pkColumns: LegalUnitPkColumnsInput) {
     const legalUnit = await this.legalUnitRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(legalUnit);
@@ -243,9 +244,9 @@ export class LegalUnitsService extends RequestContext {
 
   async aggregateLegalUnit(
     selectionSet: string[],
-    where: ValueTypes['LegalUnitBoolExp'],
-    orderBy?: Array<ValueTypes['LegalUnitOrderBy']>,
-    distinctOn?: Array<ValueTypes['LegalUnitSelectColumn']>,
+    where: LegalUnitBoolExp,
+    orderBy?: Array<LegalUnitOrderBy>,
+    distinctOn?: Array<LegalUnitSelectColumn>,
     limit?: number,
     offset?: number
   ) {

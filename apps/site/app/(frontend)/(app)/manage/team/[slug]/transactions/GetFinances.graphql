@@ -1,0 +1,167 @@
+query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
+  finance(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    createdAt
+    amount
+    category
+    method
+    payedAt
+    payedBy {
+      __typename
+      id
+      name
+      slug
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+      team {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+        }
+      }
+      individual {
+        __typename
+        id
+        user {
+          __typename
+          id
+          individual {
+            __typename
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+    receivedBy {
+      __typename
+      id
+      name
+      slug
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+      team {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+        }
+      }
+      individual {
+        __typename
+        id
+        user {
+          __typename
+          id
+          individual {
+            __typename
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+    initiatedBy {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        name
+        slug
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+    createdBy {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        name
+        slug
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+      user {
+        __typename
+        id
+      }
+    }
+    event {
+      __typename
+      id
+      slug
+      name
+    }
+    project {
+      __typename
+      id
+      slug
+      name
+    }
+    financeAttachments {
+      attachment {
+        __typename
+        id
+        name
+        size
+        type
+        url
+      }
+    }
+  }
+}

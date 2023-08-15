@@ -7,29 +7,35 @@ import ApolloSubscribe from '../../../../../components/wrappers/ApolloSubscribe'
 import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCache';
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
+import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
-import { eventDetailsInfo } from '@okampus/shared/graphql';
+import { GetEventDocument } from '@okampus/shared/graphql';
 
 import { IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
-import type { EventDetailsInfo } from '@okampus/shared/graphql';
+import type { GetEventQuery, GetEventQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeEventDocument = getSubscriptionFromQuery(GetEventDocument);
 
 type EventLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function EventLayout({ children, params }: EventLayoutProps) {
-  const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, eventDetailsInfo];
-  const [event] = await getApolloQuery<EventDetailsInfo[]>('event', query, true).catch(() => []);
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetEventQuery, GetEventQueryVariables>({
+    query: GetEventDocument,
+    variables,
+  }).catch();
 
-  if (!event) return notFound();
+  if (!data) return notFound();
+  const event = data.event[0];
 
   const baseRoute = `/event/${params.slug}`;
   const eventRoute = (route: string) => `${baseRoute}/${route}`;
   return (
     <>
-      <ApolloWriteCache values={[[event, eventDetailsInfo]]} />
-      <ApolloSubscribe selector={{ eventByPk: [{ id: event.id }, eventDetailsInfo] }} />
-      <SideBar>
-        <SidebarBanner name={event.name} banner={event.banner?.url} />
+      <ApolloWriteCache values={[[event, GetEventDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeEventDocument} variables={variables} data-superjson />
+      <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[

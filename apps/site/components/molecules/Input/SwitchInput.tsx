@@ -1,44 +1,64 @@
+import Field from './Field';
 import clsx from 'clsx';
-import type { InputOptions } from '@okampus/shared/types';
+import { memo, forwardRef, createRef, useEffect } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+import type { UncontrolledInput } from '@okampus/shared/types';
 
-export type SwitchInputProps = {
-  checked: boolean;
-  subtitle?: React.ReactNode;
-  onChange: (value: boolean) => void;
-  options: InputOptions;
-};
-export default function SwitchInput({ checked, subtitle, onChange, options }: SwitchInputProps) {
-  const wrapperClass =
-    'relative w-fit flex items-center justify-between cursor-pointer h-6 aspect-[1.8/1] rounded-full';
-  const switchInput = (
-    <label className={clsx(wrapperClass, checked ? 'bg-[var(--success)]' : 'bg-2')} htmlFor={options.name}>
+const inputClassName = 'w-fit flex items-center justify-between cursor-pointer h-6 aspect-[1.8/1] rounded-full';
+
+export type SwitchInputProps = UncontrolledInput<boolean> &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'defaultValue' | 'className' | 'placeholder' | 'type'>;
+
+export default memo(
+  forwardRef<HTMLInputElement, SwitchInputProps>(function TextInput(props, ref) {
+    const localRef = createRef<HTMLInputElement>();
+
+    useEffect(() => {
+      if (props.defaultValue && localRef.current) localRef.current.checked = props.defaultValue;
+    }, [props.defaultValue, localRef]);
+
+    const {
+      name,
+      onChange,
+      error,
+      info,
+      loading,
+      className,
+      label,
+      defaultValue,
+      disabled,
+      required,
+      description,
+      ...inputProps
+    } = props;
+
+    const input = (
       <input
-        id={options.name}
-        name={options.name}
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-        className="hidden h-0 w-0"
+        ref={mergeRefs([ref, localRef])}
+        name={name}
+        disabled={disabled}
+        // eslint-disable-next-line jsx-a11y/aria-props
+        aria-description={description}
+        aria-invalid={typeof error === 'string'}
+        className={clsx('peer appearance-none [&:checked]:bg-[var(--success)] bg-2 !bg-none', inputClassName)}
+        checked={defaultValue}
+        onChange={onChange}
         type="checkbox"
+        {...inputProps}
       />
-      <span
-        className={clsx(
-          'absolute inset-y-[3px] aspect-square rounded-full bg-white',
-          checked ? 'right-[3px]' : 'left-[3px]'
-        )}
-      />
-    </label>
-  );
-
-  if (options.label)
-    return (
-      <fieldset className="flex flex-col gap-2">
-        <span className="w-full flex justify-between items-start gap-10 text-0 font-semibold text-sm">
-          {options.label}
-          {switchInput}
-        </span>
-        {subtitle && <span className="text-1 text-xs font-medium">{subtitle}</span>}
-      </fieldset>
     );
 
-  return switchInput;
-}
+    const fieldProps = { label, className, name, description, required, error, info, loading };
+    return (
+      <Field {...fieldProps} horizontal={true}>
+        <span className="relative">
+          {input}
+          <span
+            onClick={() => localRef.current?.click()}
+            className="cursor-pointer absolute top-[3px] bottom-[3px] aspect-square rounded-full bg-white peer-checked:right-[3px] peer-checked:left-[unset] left-[3px]"
+          />
+        </span>
+      </Field>
+    );
+  }),
+);

@@ -1,0 +1,6 @@
+mutation InsertBank($object: BankInsertInput!) {
+  insertBankOne(object: $object) {
+    __typename
+    id
+  }
+}

@@ -23,6 +23,7 @@ const nextConfig = {
   experimental: {
     esmExternals: false,
     serverActions: true,
+    swcPlugins: [['next-superjson-plugin', {}]],
     outputFileTracingExcludes: {
       '**/*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
     },

@@ -4,21 +4,18 @@ import EventSupervisorsStep from './EventSupervisorsStep';
 import EventSummaryStep from './EventSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../molecules/Form/MultiStepForm';
+import MultiStepForm from '../../organisms/Form/MultiStepForm';
 import ChoiceList from '../../molecules/List/ChoiceList';
 
-import { useMe } from '../../../context/navigation';
+import { useTeamManage, useTenant } from '../../../context/navigation';
 import { useModal } from '../../../hooks/context/useModal';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
+import { useGetProjectsSelectQuery, useInsertEventMutation } from '@okampus/shared/graphql';
 import { LocationType } from '@okampus/shared/enums';
-import { useTypedQuery, projectBaseInfo, insertEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { isNotNull, randomId, toSlug } from '@okampus/shared/utils';
 
-import { useMutation } from '@apollo/client';
-
-import type { TeamManageInfo } from '@okampus/shared/graphql';
 import type { FormSchema, GeocodeAddress, Submission } from '@okampus/shared/types';
 
 export const eventFormDefaultValues = {
@@ -28,9 +25,9 @@ export const eventFormDefaultValues = {
   eventId: null as string | null,
   supervisorIds: [null] as (string | null)[],
   name: '',
-  startDate: new Date(),
+  startDate: new Date().toISOString(),
   startTime: '00:00',
-  endDate: new Date(),
+  endDate: new Date().toISOString(),
   endTime: '00:00',
   bannerFileUploadId: null as string | null,
   address: null as GeocodeAddress | null,
@@ -40,18 +37,17 @@ export const eventFormDefaultValues = {
   formSubmission: null as Submission<FormSchema> | null,
 };
 
-export type EventFormProps = { teamManage: TeamManageInfo };
-export default function EventForm({ teamManage }: EventFormProps) {
+export default function EventForm({ slug }: { slug: string }) {
+  const { teamManage } = useTeamManage(slug);
   const { closeModal } = useModal();
-  const me = useMe();
+  const { tenant } = useTenant();
 
-  // @ts-ignore
-  const [insertEvent] = useMutation(insertEventMutation);
+  const [insertEvent] = useInsertEventMutation();
 
-  const { data } = useTypedQuery({ project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo] });
+  const { data } = useGetProjectsSelectQuery({ variables: { slug } });
   const projects = data?.project;
 
-  if (!projects || !me?.user.tenant) return null;
+  if (!projects || !tenant || !teamManage) return null;
 
   return (
     <MultiStepForm
@@ -152,15 +148,25 @@ export default function EventForm({ teamManage }: EventFormProps) {
       }}
       onSubmit={(data) => {
         if (teamManage) {
-          const location = data.isOnline
-            ? { type: LocationType.Online, onlineLink: data.website }
-            : { type: LocationType.Address, address: data.address };
+          const location =
+            data.isOnline || !data.address
+              ? { type: LocationType.Online, onlineLink: data.website }
+              : { type: LocationType.Address, address: { data: data.address } };
 
-          const start = new Date(`${data.startDate.toISOString().split('T')[0]}T${data.startTime}`);
-          const end = new Date(`${data.endDate.toISOString().split('T')[0]}T${data.endTime}`);
+          const formSubmission = data.formSubmission
+            ? {
+                eventApprovalSubmission: {
+                  data: {
+                    formId: tenant.eventValidationForm?.id,
+                    formSubmission: { data: { submission: data.formSubmission } },
+                  },
+                },
+              }
+            : {};
 
           const variables = {
             object: {
+              ...formSubmission,
               eventOrganizes: {
                 data: [
                   {
@@ -172,35 +178,24 @@ export default function EventForm({ teamManage }: EventFormProps) {
                   },
                 ],
               },
-              ...(data.formSubmission
-                ? {
-                    eventApprovalSubmission: {
-                      data: {
-                        formId: me.user.tenant.eventValidationForm?.id,
-                        formSubmission: { data: { submission: data.formSubmission } },
-                      },
-                    },
-                  }
-                : {}),
-              start,
-              nextEventApprovalStepId: me.user.tenant.eventApprovalSteps[0].id,
-              end,
+              start: `${data.startDate.split('T')[0]}T${data.startTime}`,
+              end: `${data.endDate.split('T')[0]}T${data.endTime}`,
               name: data.name,
               slug: `${toSlug(data.name)}-${randomId()}`,
               location: { data: { ...location, actorId: teamManage.actor.id, locationDetails: data.addressQuery } },
               content: { data: { text: data.description } },
+              nextEventApprovalStepId: tenant.eventApprovalSteps[0].id,
             },
           };
 
           insertEvent({
-            // @ts-ignore
             variables,
             onCompleted: ({ insertEventOne: data }) => {
-              const id = teamManage.id as string;
+              const id = teamManage.id;
               const eventManage = data?.eventOrganizes?.[0];
               mergeCache(
                 { __typename: 'Team', id },
-                { fieldName: 'eventOrganizes', fragmentOn: 'EventOrganize', data: eventManage }
+                { fieldName: 'eventOrganizes', fragmentOn: 'EventOrganize', data: eventManage },
               );
               closeModal();
             },

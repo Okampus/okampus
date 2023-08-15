@@ -1,0 +1,890 @@
+query GetTeamManage($slug: String!) {
+  team(where: { actor: { slug: { _eq: $slug } } }) {
+    __typename
+    id
+    createdAt
+    type
+    membershipFees
+    membershipDuration
+    actor {
+      __typename
+      id
+      createdAt
+      email
+      name
+      slug
+      website
+      actorImages {
+        __typename
+        id
+        createdAt
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+      bio
+      status
+      socials(where: { deletedAt: { _isNull: true } }) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
+      }
+    }
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
+    joinForm {
+      __typename
+      id
+      schema
+      name
+    }
+    teamMembersAggregate {
+      aggregate {
+        count
+      }
+    }
+    poles {
+      __typename
+      id
+      createdAt
+      name
+      description
+    }
+    roles {
+      __typename
+      id
+      createdAt
+      category
+      type
+      name
+      permissions
+    }
+    teamMembers {
+      __typename
+      id
+      createdAt
+      startDate
+      endDate
+      teamMemberRoles {
+        role {
+          __typename
+          id
+          createdAt
+          category
+          type
+          name
+          permissions
+        }
+      }
+      user {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            bio
+            slug
+            status
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+    }
+    projects {
+      __typename
+      id
+      createdAt
+      color
+      description
+      name
+      slug
+      team {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        createdAt
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+        event {
+          __typename
+          id
+          createdAt
+          start
+          end
+          name
+          slug
+          content {
+            __typename
+            id
+            createdAt
+            text
+          }
+          location {
+            __typename
+            id
+            type
+            createdAt
+            onlineLink
+            locationDetails
+            address {
+              __typename
+              id
+              createdAt
+              latitude
+              longitude
+              category
+              name
+              streetNumber
+              street
+              zip
+              city
+              state
+              country
+            }
+          }
+          state
+          price
+          pointsAwardedForAttendance
+          banner {
+            __typename
+            id
+            createdAt
+            url
+            size
+            type
+            name
+          }
+          isPrivate
+          eventTags {
+            tag {
+              __typename
+              id
+              createdAt
+              slug
+              name
+              color
+            }
+          }
+          eventOrganizes {
+            team {
+              __typename
+              id
+              createdAt
+              type
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+              directorsCategoryName
+              managersCategoryName
+              membersCategoryName
+              joinForm {
+                __typename
+                id
+                createdAt
+                schema
+                name
+                type
+              }
+              teamMembersAggregate {
+                aggregate {
+                  count
+                }
+              }
+              poles {
+                __typename
+                id
+                createdAt
+                name
+                description
+              }
+            }
+            project {
+              __typename
+              id
+              createdAt
+              name
+              slug
+              color
+              isPrivate
+            }
+            eventSupervisors {
+              user {
+                __typename
+                id
+                createdAt
+                firstName
+                lastName
+                individual {
+                  __typename
+                  id
+                  createdAt
+                  actor {
+                    __typename
+                    id
+                    createdAt
+                    email
+                    name
+                    slug
+                    website
+                    actorImages {
+                      __typename
+                      id
+                      createdAt
+                      type
+                      image {
+                        __typename
+                        id
+                        createdAt
+                        url
+                        size
+                        type
+                      }
+                    }
+                    bio
+                    status
+                    actorTags {
+                      tag {
+                        __typename
+                        id
+                        createdAt
+                        slug
+                        name
+                        color
+                      }
+                    }
+                    socials(where: { deletedAt: { _isNull: true } }) {
+                      __typename
+                      id
+                      pseudo
+                      url
+                      type
+                      order
+                    }
+                  }
+                }
+              }
+            }
+          }
+          eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+            aggregate {
+              count
+            }
+          }
+          eventJoins(where: { state: { _eq: "Approved" } }, limit: 3) {
+            __typename
+            id
+            createdAt
+            state
+            isPresent
+            joinedBy {
+              __typename
+              id
+              createdAt
+              firstName
+              lastName
+              individual {
+                __typename
+                id
+                createdAt
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  email
+                  name
+                  slug
+                  website
+                  actorImages {
+                    __typename
+                    id
+                    createdAt
+                    type
+                    image {
+                      __typename
+                      id
+                      createdAt
+                      url
+                      size
+                      type
+                    }
+                  }
+                  bio
+                  status
+                  actorTags {
+                    tag {
+                      __typename
+                      id
+                      createdAt
+                      slug
+                      name
+                      color
+                    }
+                  }
+                  socials(where: { deletedAt: { _isNull: true } }) {
+                    __typename
+                    id
+                    pseudo
+                    url
+                    type
+                    order
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      banner {
+        __typename
+        id
+        createdAt
+        url
+        size
+        type
+        name
+      }
+      projectSupervisors {
+        teamMember {
+          __typename
+          id
+          createdAt
+          startDate
+          endDate
+          teamMemberRoles {
+            role {
+              __typename
+              id
+              createdAt
+              category
+              type
+              name
+              permissions
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: { deletedAt: { _isNull: true } }) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+            }
+          }
+        }
+      }
+      projectTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      isPrivate
+    }
+    membershipDuration
+    membershipFees
+    isJoinFormActive
+    accounts {
+      __typename
+      id
+      createdAt
+      financesAggregate {
+        aggregate {
+          sum {
+            amount
+          }
+        }
+      }
+      bank {
+        __typename
+        id
+        createdAt
+        legalUnitLocation {
+          __typename
+          id
+          createdAt
+          locationType
+          legalName
+          actor {
+            __typename
+            id
+            slug
+            email
+            website
+            name
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+          legalUnit {
+            __typename
+            id
+            createdAt
+            type
+            legalName
+            actor {
+              __typename
+              id
+              slug
+              email
+              website
+              name
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+          location {
+            __typename
+            id
+            createdAt
+            address {
+              __typename
+              id
+              createdAt
+              latitude
+              longitude
+              category
+              name
+              streetNumber
+              street
+              zip
+              city
+              state
+              country
+            }
+            type
+            locationDetails
+            onlineLink
+          }
+        }
+        bicSwift
+        iban
+      }
+      name
+      team {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+        }
+      }
+      type
+      children {
+        __typename
+        id
+        createdAt
+        financesAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        name
+        type
+        bank {
+          __typename
+          id
+          createdAt
+          legalUnitLocation {
+            __typename
+            id
+            createdAt
+            locationType
+            legalName
+            actor {
+              website
+              name
+            }
+            legalUnit {
+              __typename
+              id
+              createdAt
+              type
+              legalName
+              actor {
+                __typename
+                id
+                createdAt
+                website
+                name
+              }
+            }
+            location {
+              __typename
+              id
+              createdAt
+              address {
+                __typename
+                id
+                createdAt
+                latitude
+                longitude
+                category
+                name
+                streetNumber
+                street
+                zip
+                city
+                state
+                country
+              }
+              type
+              locationDetails
+              onlineLink
+            }
+          }
+          bicSwift
+          iban
+        }
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+        }
+      }
+      parent {
+        __typename
+        id
+        createdAt
+        financesAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        bank {
+          __typename
+          id
+          createdAt
+          legalUnitLocation {
+            __typename
+            id
+            createdAt
+            locationType
+            legalName
+            actor {
+              website
+              name
+            }
+            legalUnit {
+              __typename
+              id
+              type
+              legalName
+              actor {
+                __typename
+                id
+                createdAt
+                website
+                name
+              }
+            }
+            location {
+              __typename
+              id
+              type
+              createdAt
+              onlineLink
+              locationDetails
+              address {
+                __typename
+                id
+                latitude
+                longitude
+                category
+                name
+                streetNumber
+                street
+                zip
+                city
+                state
+                country
+              }
+            }
+          }
+          bicSwift
+          iban
+        }
+        name
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+        type
+      }
+    }
+    teamHistories(
+      where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
+    ) {
+      __typename
+      id
+      createdAt
+      eventDate
+    }
+    teams {
+      __typename
+      id
+      createdAt
+      type
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+}

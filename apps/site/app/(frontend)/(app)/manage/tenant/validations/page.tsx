@@ -1,25 +1,25 @@
 'use client';
 
 import TextBadge from '../../../../../../components/atoms/Badge/TextBadge';
-import TeamGroup from '../../../../../../components/atoms/Group/TeamGroup';
+import TeamGroup from '../../../../../../components/molecules/Group/TeamGroup';
 import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
 import ModalLayout from '../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
 
 import EventApprovalModal from '../../../../../../components/modals/EventApprovalModal';
 import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../components/organisms/Form/FormSubmissionRender';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
 import TabList from '../../../../../../components/molecules/List/TabList';
 import Dashboard from '../../../../../../components/organisms/Dashboard';
 
 import { useTenantManage } from '../../../../../../context/navigation';
-import { useTypedQueryAndSubscribe } from '../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
-import { useModal } from '../../../../../../hooks/context/useModal';
+import { useQueryAndSubscribe } from '../../../../../../hooks/apollo/useQueryAndSubscribe';
 import { useTranslation } from '../../../../../../hooks/context/useTranslation';
+import { useModal } from '../../../../../../hooks/context/useModal';
 
+import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
-import { OrderBy, eventManageInfo } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
 import { IconCheck, IconCircleCheck, IconCircleX, IconX } from '@tabler/icons-react';
@@ -28,19 +28,20 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
 
+import type { GetEventsValidationQuery, GetEventsValidationQueryVariables } from '@okampus/shared/graphql';
 import type { FormSchema, Submission } from '@okampus/shared/types';
 
 const REFUSED = 'refused';
 const VALIDATED = 'validated';
 const PUBLISHED = 'published';
 
-export default function TenantValidationPage({ params }: { params: { slug: string } }) {
-  const { tenantManage } = useTenantManage(params.slug);
+export default function TenantValidationPage() {
+  const { tenantManage } = useTenantManage();
   const { t } = useTranslation();
 
   const { openModal } = useModal();
 
-  const steps = tenantManage?.eventApprovalSteps || [];
+  const steps = tenantManage?.eventApprovalSteps ?? [];
   const stepsCount = tenantManage?.eventApprovalSteps.length;
 
   const [selectedTab, setSelectedTab] = useState(steps[0]?.id || VALIDATED);
@@ -59,8 +60,13 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
     return { nextEventApprovalStepId: { _eq: selectedTab }, state: { _eq: EventState.Submitted } };
   }, [selectedTab]);
 
-  const variables = { where, orderBy: [{ start: OrderBy.ASC }] };
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'event', selector: [variables, eventManageInfo] });
+  const variables = { where, orderBy: [{ start: OrderBy.Desc }] };
+  const { data } = useQueryAndSubscribe<GetEventsValidationQuery, GetEventsValidationQueryVariables>({
+    query: GetEventsDocument,
+    variables,
+  });
+
+  const events = data?.event;
 
   if (!tenantManage) return null;
 
@@ -145,23 +151,19 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
                                         <div
                                           className={clsx(
                                             'text-lg flex items-center flex-wrap gap-2',
-                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
+                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]',
                                           )}
                                         >
                                           {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
-                                          <UserLabeled
-                                            individual={approval.createdBy}
-                                            id={approval.createdBy?.user.id}
-                                            className="text-0"
-                                          />
+                                          <UserLabeled user={approval.createdBy?.user} className="text-0" />
                                         </div>
                                         <div className="text-2">{approval.message}</div>
                                       </div>
                                       <hr className="border-[var(--border-2)]" />
                                     </>
-                                  )
+                                  ),
                               )}
                             </div>
                           </ModalLayout>
@@ -203,7 +205,7 @@ export default function TenantValidationPage({ params }: { params: { slug: strin
             },
           },
         ]}
-        data={data?.event}
+        data={events}
       />
     </ViewLayout>
   );

@@ -1,25 +1,24 @@
 'use client';
 
-import BankInfoForm from '../../../../../../../../components/forms/BankInfoForm';
+import BankForm from '../../../../../../../../components/forms/BankForm';
 import MultiStepPageLayout from '../../../../../../../../components/atoms/Layout/MultiStepPageLayout';
 import AvatarImage from '../../../../../../../../components/atoms/Image/AvatarImage';
-import BankInfoPreview from '../../../../../../../../components/atoms/Preview/BankInfoPreview';
+import BankPreview from '../../../../../../../../components/atoms/Preview/BankPreview';
 
-import NumberInput from '../../../../../../../../components/molecules/Input/NumberInput';
+import TextInput from '../../../../../../../../components/molecules/Input/TextInput';
 import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
 
-import { useMe, useTeamManage } from '../../../../../../../../context/navigation';
+import { useMe, useTeamManage, useTenant } from '../../../../../../../../context/navigation';
 import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
 
+import { useInsertAccountMutation, useInsertBankMutation } from '@okampus/shared/graphql';
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
-import { insertAccountMutation, insertBankInfoMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 
 import type { MultiStepPageStep } from '../../../../../../../../components/atoms/Layout/MultiStepPageLayout';
-import type { LegalUnitLocationMinimalInfo } from '@okampus/shared/graphql';
+import type { LegalUnitLocationMinimalInfo } from '../../../../../../../../types/features/legal-unit-location.info';
 
 export default function TeamManageBankCreatePage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -27,14 +26,12 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
   const router = useRouter();
 
   const me = useMe();
+  const { tenant } = useTenant();
 
-  // @ts-ignore
-  const [insertBankInfo] = useMutation(insertBankInfoMutation);
+  const [insertBank] = useInsertBankMutation();
+  const [insertAccount] = useInsertAccountMutation();
 
-  // @ts-ignore
-  const [insertAccount] = useMutation(insertAccountMutation);
-
-  if (!teamManage) return null;
+  if (!teamManage || !tenant) return null;
 
   const initialData = {
     bankLocation: null as null | LegalUnitLocationMinimalInfo,
@@ -56,29 +53,28 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
 
     const remaining = balance - accountAllocates.reduce((acc, accountAllocate) => acc + accountAllocate.balance, 0);
 
-    const bankInfo = {
+    const bank = {
       actorId: teamManage.actor.id,
       bankId: values.bankLocation.id,
       bicSwift: values.bicSwift,
       iban: values.iban,
       holderName: values.holderName,
     };
-    insertBankInfo({
-      // @ts-ignore
-      variables: { object: bankInfo },
-      onCompleted: ({ insertBankInfoOne }) => {
-        if (!insertBankInfoOne) return;
+    insertBank({
+      variables: { object: bank },
+      onCompleted: ({ insertBankOne }) => {
+        if (!insertBankOne) return;
 
-        const bankInfoId = insertBankInfoOne.id;
+        const bankId = insertBankOne.id;
         const finances = {
           data: [
             {
-              tenantId: me?.user.tenantId,
-              createdById: me?.user.individual.id,
+              tenantId: tenant.id,
+              createdById: me.user.individual.id,
               amount: remaining,
               method: PaymentMethod.Transfer,
               category: FinanceCategory.Subvention,
-              payedById: me?.user.tenant.adminTeam?.actor.id,
+              payedById: tenant.adminTeam?.actor.id,
               receivedById: teamManage.actor.id,
               payedAt: new Date(),
               teamId: teamManage.id,
@@ -88,19 +84,19 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
 
         const children = {
           data: accountAllocates.map((accountAllocate) => ({
-            tenantId: me?.user.tenantId,
-            createdById: me?.user.individual.id,
+            tenantId: tenant.id,
+            createdById: me.user.individual.id,
             teamId: accountAllocate.teamId,
             name: 'Compte principal',
             finances: {
               data: [
                 {
-                  tenantId: me?.user.tenantId,
-                  createdById: me?.user.individual.id,
+                  tenantId: tenant.id,
+                  createdById: me.user.individual.id,
                   amount: accountAllocate.balance,
                   method: PaymentMethod.Transfer,
                   category: FinanceCategory.Subvention,
-                  payedById: me?.user.tenant.adminTeam?.actor.id,
+                  payedById: tenant.adminTeam?.actor.id,
                   receivedById: accountAllocate.actorId,
                   payedAt: new Date(),
                   teamId: accountAllocate.teamId,
@@ -112,8 +108,12 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
 
         insertAccount({
           variables: {
-            // @ts-ignore
-            object: { bankInfoId, name: 'Compte principal', teamId: teamManage.id, children, finances },
+            object: {
+              bankId,
+              name: 'Compte principal',
+              teamId: teamManage.id,
+              // children, finances
+            },
           },
           onCompleted: () => router.push(`/manage/team/${teamManage.actor?.slug}/bank`),
         });
@@ -133,9 +133,9 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
       render: ({ values, goToNextStep, setValues }) => {
         if (!teamManage.actor) return null;
         return (
-          <BankInfoForm
+          <BankForm
             actor={teamManage.actor}
-            onSubmit={({ bankLocation, bicSwift, holderName, iban }) => {
+            submit={async ({ bankLocation, bicSwift, holderName, iban }) => {
               setValues({ ...values, bankLocation, bicSwift, holderName, iban });
               goToNextStep();
             }}
@@ -158,7 +158,7 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
 
         return (
           <div className="grid grid-cols-1 lg:grid-cols-[36rem_1fr] gap-10">
-            <BankInfoPreview
+            <BankPreview
               bankLocation={values.bankLocation}
               bicSwift={values.bicSwift}
               iban={values.iban}
@@ -166,12 +166,13 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
             />
             <div className="flex flex-col gap-6 lg:max-w-[30rem]">
               <div className="page-subtitle">Quel est le solde total de votre compte{teamsString} ?</div>
-              <NumberInput
+              <TextInput
+                name="balance"
                 value={values.balance}
                 textAlign="right"
-                onChange={(value) => setValues({ ...values, balance: value })}
-                options={{ placeholder: 'Solde total (XXXX,XX)' }}
-                suffix={<div className="ml-2">€</div>}
+                onChange={(event) => setValues({ ...values, balance: event.target.value })}
+                placeholder="Solde total (XXXX,XX)"
+                endContent={<div className="ml-2">€</div>}
               />
               {teamManage.teams.length > 0 && (
                 <>
@@ -179,23 +180,21 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
                   {teamManage.teams.map((team) => (
                     <div key={team.id} className="flex items-center gap-4">
                       <AvatarImage actor={team.actor} type="team" />
-                      <NumberInput
-                        value={
-                          values.accountAllocates.find((accountAllocate) => accountAllocate.teamId === team.id)
-                            ?.balance || ''
-                        }
+                      <TextInput
+                        name={`balance-${team.actor.slug}`}
+                        endContent={<div className="ml-2">€</div>}
+                        placeholder={`Solde de ${team.actor?.name} (XXXX,XX)`}
                         textAlign="right"
-                        onChange={(value) =>
+                        onChange={(event) =>
                           setValues({
                             ...values,
                             accountAllocates: values.accountAllocates.map((accountAllocate) => {
-                              if (accountAllocate.teamId === team.id) return { ...accountAllocate, balance: value };
+                              if (accountAllocate.teamId === team.id)
+                                return { ...accountAllocate, balance: event.target.value };
                               return accountAllocate;
                             }),
                           })
                         }
-                        options={{ placeholder: `Solde de ${team.actor?.name} (XXXX,XX)` }}
-                        suffix={<div className="ml-2">€</div>}
                       />
                     </div>
                   ))}

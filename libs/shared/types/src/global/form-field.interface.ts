@@ -4,52 +4,47 @@ import type { SelectItem } from '../ui/select-item.interface';
 import type { Cast } from '../types/cast.type';
 import type { DeepWriteable } from '../types/deep-writeable.type';
 
-type SubmissionNoReadonly<T> = T extends Array<{ name: infer Key; type: ControlType }>
-  ? { [K in Cast<Key, string>]: FormFieldValue<Extract<ArrayElement<T>, { name: K }>['type']> }
+type SubmissionNoReadonly<Values> = Values extends Array<{ name: infer Key; type: ControlType }>
+  ? { [K in Cast<Key, string>]: FormFieldValue<Extract<ArrayElement<Values>, { name: K }>['type']> }
   : { [key in string]: FormFieldValue<ControlType> };
 
-export type Submission<T> = SubmissionNoReadonly<DeepWriteable<T>>;
+export type Submission<Values> = SubmissionNoReadonly<DeepWriteable<Values>>;
 
 export type FormFieldValue<Type> = Type extends
   | ControlType.Markdown
   | ControlType.Text
-  | ControlType.SingleFile
   | ControlType.Number
+  | ControlType.Radio
+  | ControlType.Select
   ? string
-  : Type extends ControlType.Radio | ControlType.Select
-  ? number
+  : Type extends ControlType.File | ControlType.MultiFile
+  ? FileList
   : Type extends ControlType.Checkbox
   ? boolean
-  : Type extends ControlType.MultiCheckbox
-  ? boolean[]
   : never;
 
 export type FormFieldType<Type extends ControlType> = {
   name: string;
-  label: string;
+  defaultValue?: FormFieldValue<Type>;
+  label?: string;
   type: Type;
   placeholder?: string;
-  default?: FormFieldValue<Type>;
   options?: SelectItem<string>[];
-  isRequired?: boolean;
+  required?: boolean;
 };
 
-export type FormField = {
-  [Type in ControlType]: FormFieldType<Type>;
-}[ControlType];
-
-export type FormSchema = Readonly<Array<FormField>>;
+export type FormSchema = Readonly<Array<FormFieldType<ControlType>>>;
 
 // export type Submission<Type extends ControlType, Field extends FormFieldType<Type>> = {
-//   [key in Field['name']]: Field['isRequired'] extends true ? FormFieldValue<Type> : FormFieldValue<Type> | undefined;
+//   [key in Field['name']]: Field['required'] extends true ? FormFieldValue<Type> : FormFieldValue<Type> | undefined;
 // };
 
 export function isFormSubmission<T extends FormSchema>(
   schema: T,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ): data is Submission<T> {
   for (const field of schema) {
-    if (field.isRequired && !(field.name in data)) {
+    if (field.required && !(field.name in data)) {
       return false;
     }
     // else if (

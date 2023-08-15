@@ -64,7 +64,7 @@ export default function Toast({
 
   return (
     <motion.li
-      className="relative rounded-primary text-white py-3 px-4 flex gap-4 items-center rounded-lg"
+      className="relative text-white py-3 px-4 flex gap-4 items-center md:rounded-lg min-h-[var(--h-topbar)] "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -79,7 +79,10 @@ export default function Toast({
       {useDefaultButton ? getButton(type) : prefix}
       <div className="grow text-lg font-medium mb-0.5">{message}</div>
       {button ?? (
-        <IconX className="h-6 aspect-square cursor-pointer" onClick={() => (close(), clearTimeout(timeoutId))} />
+        <IconX
+          className="h-6 aspect-square cursor-pointer shrink-0"
+          onClick={() => (close(), clearTimeout(timeoutId))}
+        />
       )}
     </motion.li>
   );

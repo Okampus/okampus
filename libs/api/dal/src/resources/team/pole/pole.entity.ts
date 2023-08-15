@@ -20,7 +20,7 @@ export class Pole extends TenantScopedEntity {
   description!: string;
 
   @Property({ type: 'boolean', default: false })
-  isRequired = false;
+  isLocked = false;
 
   @Enum({ items: () => PoleCategory, type: EnumType })
   category!: PoleCategory;

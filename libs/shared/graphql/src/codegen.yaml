@@ -1,0 +1,21 @@
+overwrite: true
+schema: "libs/shared/graphql/src/schema.merged.graphql"
+generates:
+  libs/shared/graphql/src/generated.ts:
+    documents: "apps/site/**/*.graphql"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - "add":
+          content: "import type { JSONType } from '@okampus/shared/types';"
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      scalars:
+        timestamptz: string
+        bigint: string
+        smallint: number
+        jsonb: JSONType
+        Upload: File

@@ -4,7 +4,7 @@ import SidePanel from '../../SidePanel';
 
 import CloseButtonIcon from '../../../../components/atoms/Icon/CloseButtonIcon';
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
-import TextFinance from '../../../../components/atoms/Text/TextFinance';
+import IMoney from '../../../atoms/Inline/IMoney';
 import UserLabeled from '../../../../components/molecules/Labeled/UserLabeled';
 import TabList from '../../../../components/molecules/List/TabList';
 
@@ -12,12 +12,12 @@ import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { useState } from 'react';
 
-import type { FinanceBaseInfo } from '@okampus/shared/graphql';
+import type { FinanceMinimalInfo } from '../../../../types/features/finance.info';
 
 const DETAILS = 'details';
 const HISTORY = 'history';
 
-export type FinanceSidePanelProps = { finance: FinanceBaseInfo; teamManageActorId: string; onClose: () => void };
+export type FinanceSidePanelProps = { finance: FinanceMinimalInfo; teamManageActorId: string; onClose: () => void };
 export default function FinanceSidePanel({ finance, teamManageActorId, onClose }: FinanceSidePanelProps) {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(DETAILS);
@@ -30,7 +30,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
     { label: 'Historique', key: HISTORY, onClick: () => setSelectedTab(HISTORY) },
   ];
 
-  const payedAt = finance.payedAt ? new Date(finance.payedAt as string) : new Date();
+  const payedAt = finance.payedAt ? new Date(finance.payedAt) : new Date();
 
   return (
     <SidePanel>
@@ -40,14 +40,14 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
       </div>
       <div className="flex flex-col gap-1 items-center border border-[var(--border-2)] rounded-lg mt-10 bg-2 pb-4">
         <AvatarImage actor={actor} type="team" className="-translate-y-1/2" />
-        <TextFinance amount={finance.amount} className="text-xl -mt-2" textClass="text-0" />
+        <IMoney amount={finance.amount} className="text-xl -mt-2" textClass="text-0" />
         <div className="text-lg text-0 font-medium">{actor?.name}</div>
         <div className="text-2 text-center font-medium">{t(`enums.PaymentMethod.${finance.method}`)}</div>
         <hr className="border-[var(--border-2)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Payée par
           {finance.initiatedBy?.user ? (
-            <UserLabeled small={true} id={finance.initiatedBy.user.id} individual={finance.initiatedBy} />
+            <UserLabeled user={{ ...finance.initiatedBy.user, individual: finance.initiatedBy }} />
           ) : (
             <div className="text-1 font-semibold text-sm">Inconnu</div>
           )}
@@ -55,7 +55,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <div className="flex gap-2 items-center">
           Ajoutée par
           {finance.createdBy?.user ? (
-            <UserLabeled small={true} individual={finance.createdBy} id={finance.createdBy.user.id} />
+            <UserLabeled user={{ ...finance.createdBy.user, individual: finance.createdBy }} small={true} />
           ) : (
             <div className="text-1 font-semibold text-sm">Système</div>
           )}

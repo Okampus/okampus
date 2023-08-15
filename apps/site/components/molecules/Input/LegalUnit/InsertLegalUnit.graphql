@@ -1,0 +1,27 @@
+mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
+  insertLegalUnitOne(object: $object) {
+    __typename
+    id
+    createdAt
+    type
+    legalName
+    actor {
+      __typename
+      id
+      slug
+      name
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+    }
+  }
+}

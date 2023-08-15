@@ -3,7 +3,7 @@
 
 %button-disabled,
 .button-disabled {
-  @apply opacity-75 cursor-not-allowed;
+  @apply opacity-50 cursor-not-allowed;
 }
 
 %button {
@@ -14,7 +14,7 @@
   }
 
   // &:not(:disabled):active {
-  //   @apply opacity-75;
+  //   @apply opacity-50;
   // }
 
   &:disabled {

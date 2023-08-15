@@ -1,0 +1,143 @@
+query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offset: Int) {
+  team(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    createdAt
+    type
+    membershipFees
+    membershipDuration
+    actor {
+      __typename
+      id
+      slug
+      status
+      bio
+      name
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+      socials(where: { deletedAt: { _isNull: true } }) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
+      }
+    }
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
+    joinForm {
+      __typename
+      id
+      createdAt
+      schema
+      name
+      type
+    }
+    poles {
+      __typename
+      id
+      createdAt
+      name
+      description
+    }
+    roles {
+      __typename
+      id
+      createdAt
+      category
+      type
+      name
+      permissions
+    }
+    teamMembersAggregate {
+      aggregate {
+        count
+      }
+    }
+    teamMembers {
+      __typename
+      id
+      createdAt
+      startDate
+      endDate
+      teamMemberRoles {
+        role {
+          __typename
+          id
+          createdAt
+          category
+          type
+          name
+          permissions
+        }
+      }
+      user {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+    }
+  }
+}

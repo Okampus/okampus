@@ -1,13 +1,13 @@
 'use client';
 
-import FormEditor from '../../organisms/FormEditor';
+import FormEditor from '../../organisms/FormEditor/FormEditor';
 import { useBottomSheet } from '../../../hooks/context/useBottomSheet';
 import { IconCheckupList } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
-import type { FormBaseInfo } from '@okampus/shared/graphql';
+import type { FormMinimalInfo } from '../../../types/features/form.info';
 
-export type FormItemProps = { form: FormBaseInfo };
+export type FormItemProps = { form: FormMinimalInfo };
 
 export default function FormItem({ form }: FormItemProps) {
   const [isActive, setIsActive] = useState(false);

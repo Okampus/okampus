@@ -4,29 +4,37 @@ import SidebarBanner from '../../../../../../components/layouts/SideBar/SidebarB
 import LinkList from '../../../../../../components/molecules/List/LinkList';
 import ApolloSubscribe from '../../../../../../components/wrappers/ApolloSubscribe';
 import ApolloWriteCache from '../../../../../../components/wrappers/ApolloWriteCache';
-import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 
-import { projectManageInfo } from '@okampus/shared/graphql';
+import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
+import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
+
+import { GetProjectManageDocument } from '@okampus/shared/graphql';
 import { IconUsers, IconCalendarCog } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
-import type { ProjectManageInfo } from '@okampus/shared/graphql';
+import type { GetProjectManageQuery, GetProjectQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeProjectManageDocument = getSubscriptionFromQuery(GetProjectManageDocument);
 
 type ProjectManageLayoutProps = { children: React.ReactNode; params: { slug: string } };
 export default async function ProjectManageLayout({ children, params }: ProjectManageLayoutProps) {
-  const query = [{ where: { slug: { _eq: params.slug } }, limit: 1 }, projectManageInfo];
-  const [project] = await getApolloQuery<ProjectManageInfo[]>('project', query, true).catch(() => []);
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetProjectManageQuery, GetProjectQueryVariables>({
+    query: GetProjectManageDocument,
+    variables,
+  }).catch();
 
-  if (!project) notFound();
+  if (!data) notFound();
+
+  const project = data.project[0];
 
   const baseRoute = `/project/manage/${params.slug}`;
   const projectManageRoute = (route: string) => `${baseRoute}/${route}`;
   return (
     <>
-      <ApolloWriteCache values={[[project, projectManageInfo]]} />
-      <ApolloSubscribe selector={{ projectByPk: [{ id: project.id }, projectManageInfo] }} />
-      <SideBar>
-        <SidebarBanner name={project.name} banner={project.banner?.url} />
+      <ApolloWriteCache values={[[project, GetProjectManageDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeProjectManageDocument} variables={variables} data-superjson />
+      <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[

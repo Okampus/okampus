@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventInsertInput,
+  EventOnConflict,
+  EventBoolExp,
+  EventOrderBy,
+  EventSelectColumn,
+  EventSetInput,
+  EventUpdates,
+  EventPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventsService extends RequestContext {
@@ -22,7 +31,7 @@ export class EventsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['EventInsertInput']) {
+  checkPermsCreate(props: EventInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class EventsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['EventSetInput'], event: Event) {
+  checkPermsUpdate(props: EventSetInput, event: Event) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (event.deletedAt) throw new NotFoundException(`Event was deleted on ${event.deletedAt}.`);
@@ -65,14 +74,14 @@ export class EventsService extends RequestContext {
     return event.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['EventSetInput']) {
+  checkPropsConstraints(props: EventSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['EventInsertInput']) {
+  checkCreateRelationships(props: EventInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -86,11 +95,7 @@ export class EventsService extends RequestContext {
     return true;
   }
 
-  async insertEventOne(
-    selectionSet: string[],
-    object: ValueTypes['EventInsertInput'],
-    onConflict?: ValueTypes['EventOnConflict']
-  ) {
+  async insertEventOne(selectionSet: string[], object: EventInsertInput, onConflict?: EventOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Event.');
 
@@ -112,9 +117,9 @@ export class EventsService extends RequestContext {
 
   async findEvent(
     selectionSet: string[],
-    where: ValueTypes['EventBoolExp'],
-    orderBy?: Array<ValueTypes['EventOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventSelectColumn']>,
+    where: EventBoolExp,
+    orderBy?: Array<EventOrderBy>,
+    distinctOn?: Array<EventSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -129,11 +134,7 @@ export class EventsService extends RequestContext {
     return data.eventByPk;
   }
 
-  async insertEvent(
-    selectionSet: string[],
-    objects: Array<ValueTypes['EventInsertInput']>,
-    onConflict?: ValueTypes['EventOnConflict']
-  ) {
+  async insertEvent(selectionSet: string[], objects: Array<EventInsertInput>, onConflict?: EventOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Event.');
@@ -157,7 +158,7 @@ export class EventsService extends RequestContext {
     return data.insertEvent;
   }
 
-  async updateEventMany(selectionSet: string[], updates: Array<ValueTypes['EventUpdates']>) {
+  async updateEventMany(selectionSet: string[], updates: Array<EventUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -187,11 +188,7 @@ export class EventsService extends RequestContext {
     return data.updateEventMany;
   }
 
-  async updateEventByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['EventPkColumnsInput'],
-    _set: ValueTypes['EventSetInput']
-  ) {
+  async updateEventByPk(selectionSet: string[], pkColumns: EventPkColumnsInput, _set: EventSetInput) {
     const event = await this.eventRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, event);
@@ -208,7 +205,7 @@ export class EventsService extends RequestContext {
     return data.updateEventByPk;
   }
 
-  async deleteEvent(selectionSet: string[], where: ValueTypes['EventBoolExp']) {
+  async deleteEvent(selectionSet: string[], where: EventBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -233,7 +230,7 @@ export class EventsService extends RequestContext {
     return data.updateEvent;
   }
 
-  async deleteEventByPk(selectionSet: string[], pkColumns: ValueTypes['EventPkColumnsInput']) {
+  async deleteEventByPk(selectionSet: string[], pkColumns: EventPkColumnsInput) {
     const event = await this.eventRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(event);
@@ -250,9 +247,9 @@ export class EventsService extends RequestContext {
 
   async aggregateEvent(
     selectionSet: string[],
-    where: ValueTypes['EventBoolExp'],
-    orderBy?: Array<ValueTypes['EventOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventSelectColumn']>,
+    where: EventBoolExp,
+    orderBy?: Array<EventOrderBy>,
+    distinctOn?: Array<EventSelectColumn>,
     limit?: number,
     offset?: number
   ) {

@@ -1,0 +1,293 @@
+query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+  event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+    __typename
+    id
+    createdAt
+    slug
+    start
+    end
+    name
+    state
+    price
+    pointsAwardedForAttendance
+    isPrivate
+    content {
+      __typename
+      id
+      text
+    }
+    location {
+      __typename
+      id
+      type
+      onlineLink
+      locationDetails
+      address {
+        __typename
+        id
+        name
+        latitude
+        longitude
+        category
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+      }
+    }
+    banner {
+      __typename
+      id
+      url
+      type
+    }
+    eventTags {
+      tag {
+        __typename
+        id
+        createdAt
+        slug
+        name
+        color
+      }
+    }
+    eventOrganizes {
+      eventSupervisors {
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: { deletedAt: { _isNull: true } }) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+        joinForm {
+          __typename
+          id
+          schema
+          name
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+    }
+    eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      aggregate {
+        count
+      }
+    }
+    eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      __typename
+      id
+      createdAt
+      state
+      isPresent
+      joinedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+      }
+      formSubmission {
+        __typename
+        id
+        createdAt
+        submission
+        form {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
+      }
+      processedBy {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+          bio
+          status
+          actorTags {
+            tag {
+              __typename
+              id
+              createdAt
+              slug
+              name
+              color
+            }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+      }
+      processedAt
+      participationProcessedVia
+      participationProcessedAt
+    }
+    joinForm {
+      __typename
+      id
+      createdAt
+      schema
+      name
+      type
+    }
+  }
+}

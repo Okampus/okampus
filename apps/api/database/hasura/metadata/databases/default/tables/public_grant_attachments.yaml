@@ -2,7 +2,7 @@ table:
   name: grant_attachments
   schema: public
 object_relationships:
-  - name: fileUpload
+  - name: attachment
     using:
       foreign_key_constraint_on: file_upload_id
   - name: grant

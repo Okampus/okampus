@@ -12,7 +12,7 @@ export type GradientImageProps = {
   onClick?: () => void;
 };
 
-export function GradientImage({
+export default function GradientImage({
   onClick,
   src,
   children,

@@ -5,13 +5,14 @@ import TransactionReceiptStep from './TransactionReceiptStep';
 import TransactionSummaryStep from './TransactionSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../molecules/Form/MultiStepForm';
-import DocumentInput from '../../molecules/Input/DocumentInput';
+import MultiStepForm from '../../organisms/Form/MultiStepForm';
+import DocumentInput from '../../molecules/Input/File/DocumentInput';
 import ChoiceList from '../../molecules/List/ChoiceList';
 
 import { useModal } from '../../../hooks/context/useModal';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
+import { useGetProjectsSelectQuery, useInsertFinanceMutation } from '@okampus/shared/graphql';
 import {
   AccountType,
   Buckets,
@@ -22,13 +23,12 @@ import {
   PayedByType,
   PaymentMethod,
 } from '@okampus/shared/enums';
-import { useTypedQuery, projectBaseInfo, insertFinanceMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 import { extractPositiveNumber } from '@okampus/shared/utils';
 
-import { useMutation } from '@apollo/client';
+import type { TeamManageInfo } from '../../../context/navigation';
+import type { LegalUnitMinimalInfo } from '../../../types/features/legal-unit.info';
 
-import type { LegalUnitMinimalInfo, TeamManageInfo } from '@okampus/shared/graphql';
 import type { GeocodeAddress } from '@okampus/shared/types';
 
 export const transactionFormDefaultValues = {
@@ -47,7 +47,7 @@ export const transactionFormDefaultValues = {
   website: '',
   initiatedById: null as string | null,
   payedByType: PayedByType.Manual,
-  payedAt: new Date(),
+  payedAt: new Date().toISOString(),
   category: FinanceCategory.Errands,
   method: PaymentMethod.CreditCard,
 };
@@ -56,10 +56,9 @@ export type TransactionFormProps = { teamManage: TeamManageInfo };
 export default function TransactionForm({ teamManage }: TransactionFormProps) {
   const { closeModal } = useModal();
 
-  // @ts-ignore
-  const [insertFinance] = useMutation(insertFinanceMutation);
+  const [insertFinance] = useInsertFinanceMutation();
 
-  const { data } = useTypedQuery({ project: [{ where: { team: { id: { _eq: teamManage?.id } } } }, projectBaseInfo] });
+  const { data } = useGetProjectsSelectQuery({ variables: { slug: teamManage.actor.slug } });
   const projects = data?.project;
 
   if (!projects) return null;
@@ -274,7 +273,6 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
 
           insertFinance({
             variables: {
-              // @ts-ignore
               object: {
                 amount: data.isRevenue ? amount : -amount,
                 description: data.description,

@@ -2,12 +2,12 @@
 
 import BannerImage from '../../../../../../../components/atoms/Image/BannerImage';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
-import UserGroup from '../../../../../../../components/atoms/Group/UserGroup';
+import UserGroup from '../../../../../../../components/molecules/Group/UserGroup';
 import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 import EventForm from '../../../../../../../components/forms/EventForm/EventForm';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../../components/organisms/Dashboard';
@@ -15,13 +15,12 @@ import Dashboard from '../../../../../../../components/organisms/Dashboard';
 import { useTeamManage, useTenant } from '../../../../../../../context/navigation';
 import { useModal } from '../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
-import { useTypedQueryAndSubscribe } from '../../../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../../../hooks/apollo/useQueryAndSubscribe';
 
+import { GetEventOrganizesDocument, OrderBy, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { EVENT_STATE_COLORS, EventState } from '@okampus/shared/enums';
-import { OrderBy, eventOrganizeDetailsInfo, updateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import {
   IconArrowBack,
   IconCircleCheck,
@@ -35,6 +34,7 @@ import {
 
 import clsx from 'clsx';
 import { useState } from 'react';
+import type { GetEventOrganizesQuery, GetEventOrganizesQueryVariables } from '@okampus/shared/graphql';
 
 import type { FormSchema, Submission } from '@okampus/shared/types';
 
@@ -47,32 +47,37 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
 
   const stepsCount = tenant?.eventApprovalSteps.length;
 
-  const variables = { where: { teamId: { _eq: teamManage?.id } }, orderBy: [{ event: { start: OrderBy.ASC } }] };
-  const { data } = useTypedQueryAndSubscribe({
-    queryName: 'eventOrganize',
-    selector: [variables, eventOrganizeDetailsInfo],
+  const variables = {
+    where: { team: { actor: { slug: { _eq: params.slug } } }, event: { state: { _eq: 'Published' } } },
+    orderBy: [{ event: { start: OrderBy.Asc } }],
+  };
+
+  const { data } = useQueryAndSubscribe<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>({
+    query: GetEventOrganizesDocument,
+    variables,
   });
 
-  const [updateEvent] = useMutation(updateEventMutation);
+  const [updateEvent] = useUpdateEventMutation();
 
   const [search, setSearch] = useState('');
 
-  if (!teamManage) return null;
+  if (!teamManage || !data) return null;
+
+  const eventOrganizes = data.eventOrganize;
 
   return (
     <ViewLayout header="Événements" scrollable={false}>
       <div className="flex gap-6 px-content pb-6">
         <TextInput
-          prefix={<IconSearch className="text-[var(--text-2)]" />}
-          value={search}
-          paddingAfterPrefix={true}
-          onChange={setSearch}
-          options={{ placeholder: 'Rechercher un événement' }}
+          name="search"
+          startContent={<IconSearch />}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Rechercher un événement"
         />
         <ActionButton
           action={{
             label: 'Créer un événement',
-            linkOrActionOrMenu: () => openModal({ node: <EventForm teamManage={teamManage} /> }),
+            linkOrActionOrMenu: () => openModal({ node: <EventForm slug={params.slug} /> }),
             iconOrSwitch: <IconPlus />,
             type: ActionType.Primary,
           }}
@@ -113,7 +118,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
           {
             label: 'Responsables',
             render: (eventOrganize) => {
-              return <UserGroup users={eventOrganize.supervisors.map(({ teamMember }) => teamMember.user)} />;
+              return <UserGroup users={eventOrganize.eventSupervisors.map((supervisor) => supervisor.user)} />;
             },
           },
           {
@@ -175,23 +180,19 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                                         <div
                                           className={clsx(
                                             'text-lg flex items-center flex-wrap gap-2',
-                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]'
+                                            approval.isApproved ? 'text-[var(--success)]' : 'text-[var(--danger)]',
                                           )}
                                         >
                                           {approval.isApproved ? <IconCircleCheck /> : <IconCircleX />}
                                           {approval.eventApprovalStep?.name} :{' '}
                                           {approval.isApproved ? 'validé' : 'refusé'} par{' '}
-                                          <UserLabeled
-                                            individual={approval.createdBy}
-                                            id={approval.createdBy.user.id}
-                                            className="text-0"
-                                          />
+                                          <UserLabeled user={approval.createdBy.user} className="text-0" />
                                         </div>
                                         <div className="text-2">{approval.message}</div>
                                       </div>
                                       <hr className="border-[var(--border-2)]" />
                                     </>
-                                  )
+                                  ),
                               )}
                             </div>
                           </ModalLayout>
@@ -224,7 +225,6 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                             ? EventState.Submitted
                             : EventState.Approved;
 
-                          // @ts-ignore
                           updateEvent({ variables: { id: eventOrganize.event.id, update: { state } } });
                         },
                       }}
@@ -236,7 +236,6 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                         iconOrSwitch: <IconArrowBack />,
                         linkOrActionOrMenu: () => {
                           updateEvent({
-                            // @ts-ignore
                             variables: { id: eventOrganize.event.id, update: { state: EventState.Draft } },
                           });
                         },
@@ -250,7 +249,6 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
                         iconOrSwitch: <IconWorldUpload />,
                         linkOrActionOrMenu: () => {
                           updateEvent({
-                            // @ts-ignore
                             variables: { id: eventOrganize.event.id, update: { state: EventState.Published } },
                           });
                         },
@@ -270,7 +268,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
             },
           },
         ]}
-        data={data?.eventOrganize}
+        data={eventOrganizes}
       />
     </ViewLayout>
   );

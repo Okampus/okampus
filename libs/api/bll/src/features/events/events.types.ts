@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventInsertInput,
+  EventOnConflict,
+  EventSetInput,
+  EventBoolExp,
+  EventOrderBy,
+  EventSelectColumn,
+  EventPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertEventArgsType = {
-  objects: Array<ValueTypes['EventInsertInput']>;
-  onConflict?: ValueTypes['EventOnConflict'];
+  objects: Array<EventInsertInput>;
+  onConflict?: EventOnConflict;
 };
 
 export type InsertOneEventArgsType = {
-  object: ValueTypes['EventInsertInput'];
-  onConflict?: ValueTypes['EventOnConflict'];
+  object: EventInsertInput;
+  onConflict?: EventOnConflict;
 };
 
 export type UpdateEventArgsType = {
-  where: ValueTypes['EventBoolExp'];
-  _set: ValueTypes['EventSetInput'];
+  where: EventBoolExp;
+  _set: EventSetInput;
 };
 
 export type DeleteEventArgsType = {
-  where: ValueTypes['EventBoolExp'];
+  where: EventBoolExp;
 };
 
 export type UpdateByPkEventArgsType = {
-  pkColumns: ValueTypes['EventPkColumnsInput'];
-  _set: ValueTypes['EventSetInput'];
+  pkColumns: EventPkColumnsInput;
+  _set: EventSetInput;
 };
 
 export type FindEventArgsType = {
-  where: ValueTypes['EventBoolExp'];
-  orderBy?: Array<ValueTypes['EventOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventSelectColumn']>;
+  where: EventBoolExp;
+  orderBy?: Array<EventOrderBy>;
+  distinctOn?: Array<EventSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkEventArgsType = {
 };
 
 export type AggregateEventArgsType = {
-  where: ValueTypes['EventBoolExp'];
-  orderBy?: Array<ValueTypes['EventOrderBy']>;
-  distinctOn?: Array<ValueTypes['EventSelectColumn']>;
+  where: EventBoolExp;
+  orderBy?: Array<EventOrderBy>;
+  distinctOn?: Array<EventSelectColumn>;
   limit?: number;
   offset?: number;
 };

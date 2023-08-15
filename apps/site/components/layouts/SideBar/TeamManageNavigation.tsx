@@ -26,9 +26,9 @@ import {
 } from '@tabler/icons-react';
 
 import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListAccordeon';
-import type { TeamManageInfo, TenantBaseInfo } from '@okampus/shared/graphql';
+import type { TeamManageInfo, TenantInfo } from '../../../context/navigation';
 
-function getAccordeons(team: TeamManageInfo, tenant?: TenantBaseInfo): LinkListAccordeonProps['accordeons'] {
+function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
   const currentYear = new Date().getFullYear();
 
   const manageTeamRoute = (route: string) => `/manage/team/${team?.actor.slug}/${route}`;

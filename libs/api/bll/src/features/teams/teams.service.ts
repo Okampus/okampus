@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  TeamInsertInput,
+  TeamOnConflict,
+  TeamBoolExp,
+  TeamOrderBy,
+  TeamSelectColumn,
+  TeamSetInput,
+  TeamUpdates,
+  TeamPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class TeamsService extends RequestContext {
@@ -22,7 +31,7 @@ export class TeamsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['TeamInsertInput']) {
+  checkPermsCreate(props: TeamInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class TeamsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['TeamSetInput'], team: Team) {
+  checkPermsUpdate(props: TeamSetInput, team: Team) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (team.deletedAt) throw new NotFoundException(`Team was deleted on ${team.deletedAt}.`);
@@ -65,14 +74,14 @@ export class TeamsService extends RequestContext {
     return team.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['TeamSetInput']) {
+  checkPropsConstraints(props: TeamSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['TeamInsertInput']) {
+  checkCreateRelationships(props: TeamInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class TeamsService extends RequestContext {
     return true;
   }
 
-  async insertTeamOne(
-    selectionSet: string[],
-    object: ValueTypes['TeamInsertInput'],
-    onConflict?: ValueTypes['TeamOnConflict']
-  ) {
+  async insertTeamOne(selectionSet: string[], object: TeamInsertInput, onConflict?: TeamOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Team.');
 
@@ -106,9 +111,9 @@ export class TeamsService extends RequestContext {
 
   async findTeam(
     selectionSet: string[],
-    where: ValueTypes['TeamBoolExp'],
-    orderBy?: Array<ValueTypes['TeamOrderBy']>,
-    distinctOn?: Array<ValueTypes['TeamSelectColumn']>,
+    where: TeamBoolExp,
+    orderBy?: Array<TeamOrderBy>,
+    distinctOn?: Array<TeamSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class TeamsService extends RequestContext {
     return data.teamByPk;
   }
 
-  async insertTeam(
-    selectionSet: string[],
-    objects: Array<ValueTypes['TeamInsertInput']>,
-    onConflict?: ValueTypes['TeamOnConflict']
-  ) {
+  async insertTeam(selectionSet: string[], objects: Array<TeamInsertInput>, onConflict?: TeamOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Team.');
@@ -151,7 +152,7 @@ export class TeamsService extends RequestContext {
     return data.insertTeam;
   }
 
-  async updateTeamMany(selectionSet: string[], updates: Array<ValueTypes['TeamUpdates']>) {
+  async updateTeamMany(selectionSet: string[], updates: Array<TeamUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class TeamsService extends RequestContext {
     return data.updateTeamMany;
   }
 
-  async updateTeamByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['TeamPkColumnsInput'],
-    _set: ValueTypes['TeamSetInput']
-  ) {
+  async updateTeamByPk(selectionSet: string[], pkColumns: TeamPkColumnsInput, _set: TeamSetInput) {
     const team = await this.teamRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, team);
@@ -202,7 +199,7 @@ export class TeamsService extends RequestContext {
     return data.updateTeamByPk;
   }
 
-  async deleteTeam(selectionSet: string[], where: ValueTypes['TeamBoolExp']) {
+  async deleteTeam(selectionSet: string[], where: TeamBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class TeamsService extends RequestContext {
     return data.updateTeam;
   }
 
-  async deleteTeamByPk(selectionSet: string[], pkColumns: ValueTypes['TeamPkColumnsInput']) {
+  async deleteTeamByPk(selectionSet: string[], pkColumns: TeamPkColumnsInput) {
     const team = await this.teamRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(team);
@@ -244,9 +241,9 @@ export class TeamsService extends RequestContext {
 
   async aggregateTeam(
     selectionSet: string[],
-    where: ValueTypes['TeamBoolExp'],
-    orderBy?: Array<ValueTypes['TeamOrderBy']>,
-    distinctOn?: Array<ValueTypes['TeamSelectColumn']>,
+    where: TeamBoolExp,
+    orderBy?: Array<TeamOrderBy>,
+    distinctOn?: Array<TeamSelectColumn>,
     limit?: number,
     offset?: number
   ) {

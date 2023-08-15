@@ -9,17 +9,16 @@ import { useModal } from '../../../hooks/context/useModal';
 import { getBanner } from '../../../utils/actor-image/get-banner';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
+import { useInsertActorImageMutation, useInsertSingleUploadMutation } from '@okampus/shared/graphql';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { ActorImageType, Buckets, EntityName } from '@okampus/shared/enums';
-import { insertActorImageMutation, singleUploadMutation } from '@okampus/shared/graphql';
 import { ToastType } from '@okampus/shared/types';
 
-import { useMutation } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import type { ActorBaseInfo } from '@okampus/shared/graphql';
 import type { CropperProps } from 'react-advanced-cropper';
+import type { ActorMinimalInfo } from '../../../types/features/actor.info';
 
 const context = { fetchOptions: { credentials: 'include', useUpload: true } };
 
@@ -27,13 +26,12 @@ export type BannerEditorProps = {
   showEditor: boolean;
   cropperProps?: CropperProps;
   setShowEditor: (show: boolean) => void;
-  actor: ActorBaseInfo;
+  actor: ActorMinimalInfo;
 };
 
 export default function BannerEditor({ showEditor, setShowEditor, actor }: BannerEditorProps) {
-  // @ts-ignore
-  const [insertActorImage] = useMutation(insertActorImageMutation);
-  const [insertUpload] = useMutation(singleUploadMutation, { context });
+  const [insertActorImage] = useInsertActorImageMutation();
+  const [insertUpload] = useInsertSingleUploadMutation({ context });
   const [, setNotification] = useAtom(notificationAtom);
 
   const onUpload = (file: File) => {
@@ -43,7 +41,6 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
         if (singleUpload) {
           const variables = { object: { actorId: actor.id, imageId: singleUpload.id, type: ActorImageType.Banner } };
           insertActorImage({
-            // @ts-ignore
             variables,
             onCompleted: ({ insertActorImageOne }) => {
               if (insertActorImageOne) {
@@ -51,7 +48,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
                 setShowEditor(false);
                 mergeCache(
                   { __typename: 'Actor', id: actor.id },
-                  { fieldName: 'actorImages', fragmentOn: 'ActorImage', data: insertActorImageOne }
+                  { fieldName: 'actorImages', fragmentOn: 'ActorImage', data: insertActorImageOne },
                 );
               } else {
                 setNotification({ type: ToastType.Error, message: "Erreur lors de l'upload de l'image !" });
@@ -92,7 +89,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
       <BannerImage src={banner} />
       <div
         onClick={() => setShowEditor(true)}
-        className="p-5 absolute -inset-px opacity-0 hover:opacity-75 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
+        className="p-5 absolute -inset-px opacity-0 hover:opacity-50 outline outline-black outline-1 z-20 cursor-pointer bg-black text-white flex gap-1 items-center justify-center"
       >
         <div className="font-semibold text-center">Changer de bannière</div>
       </div>

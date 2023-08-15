@@ -1,10 +1,13 @@
-import BannerImage from '../../atoms/Image/BannerImage';
-import { formatDateDayOfWeek } from '@okampus/shared/utils';
-import type { EventBaseInfo } from '@okampus/shared/graphql';
+'use client';
 
-export type EventLabeledProps = { event: EventBaseInfo };
+import BannerImage from '../../atoms/Image/BannerImage';
+import { useTranslation } from '../../../hooks/context/useTranslation';
+import type { EventMinimalInfo } from '../../../types/features/event.info';
+
+export type EventLabeledProps = { event: EventMinimalInfo };
 export default function EventLabeled({ event }: EventLabeledProps) {
-  const displayedStart = formatDateDayOfWeek(event.start).replaceAll('.,', ' · ');
+  const { format } = useTranslation();
+  const displayedStart = format('weekDayHour', new Date(event.start));
 
   return (
     <div className="flex gap-4 items-start">

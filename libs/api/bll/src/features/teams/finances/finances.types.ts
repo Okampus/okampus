@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  FinanceInsertInput,
+  FinanceOnConflict,
+  FinanceSetInput,
+  FinanceBoolExp,
+  FinanceOrderBy,
+  FinanceSelectColumn,
+  FinancePkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertFinanceArgsType = {
-  objects: Array<ValueTypes['FinanceInsertInput']>;
-  onConflict?: ValueTypes['FinanceOnConflict'];
+  objects: Array<FinanceInsertInput>;
+  onConflict?: FinanceOnConflict;
 };
 
 export type InsertOneFinanceArgsType = {
-  object: ValueTypes['FinanceInsertInput'];
-  onConflict?: ValueTypes['FinanceOnConflict'];
+  object: FinanceInsertInput;
+  onConflict?: FinanceOnConflict;
 };
 
 export type UpdateFinanceArgsType = {
-  where: ValueTypes['FinanceBoolExp'];
-  _set: ValueTypes['FinanceSetInput'];
+  where: FinanceBoolExp;
+  _set: FinanceSetInput;
 };
 
 export type DeleteFinanceArgsType = {
-  where: ValueTypes['FinanceBoolExp'];
+  where: FinanceBoolExp;
 };
 
 export type UpdateByPkFinanceArgsType = {
-  pkColumns: ValueTypes['FinancePkColumnsInput'];
-  _set: ValueTypes['FinanceSetInput'];
+  pkColumns: FinancePkColumnsInput;
+  _set: FinanceSetInput;
 };
 
 export type FindFinanceArgsType = {
-  where: ValueTypes['FinanceBoolExp'];
-  orderBy?: Array<ValueTypes['FinanceOrderBy']>;
-  distinctOn?: Array<ValueTypes['FinanceSelectColumn']>;
+  where: FinanceBoolExp;
+  orderBy?: Array<FinanceOrderBy>;
+  distinctOn?: Array<FinanceSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkFinanceArgsType = {
 };
 
 export type AggregateFinanceArgsType = {
-  where: ValueTypes['FinanceBoolExp'];
-  orderBy?: Array<ValueTypes['FinanceOrderBy']>;
-  distinctOn?: Array<ValueTypes['FinanceSelectColumn']>;
+  where: FinanceBoolExp;
+  orderBy?: Array<FinanceOrderBy>;
+  distinctOn?: Array<FinanceSelectColumn>;
   limit?: number;
   offset?: number;
 };

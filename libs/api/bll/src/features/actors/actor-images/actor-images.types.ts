@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActorImageInsertInput,
+  ActorImageOnConflict,
+  ActorImageSetInput,
+  ActorImageBoolExp,
+  ActorImageOrderBy,
+  ActorImageSelectColumn,
+  ActorImagePkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertActorImageArgsType = {
-  objects: Array<ValueTypes['ActorImageInsertInput']>;
-  onConflict?: ValueTypes['ActorImageOnConflict'];
+  objects: Array<ActorImageInsertInput>;
+  onConflict?: ActorImageOnConflict;
 };
 
 export type InsertOneActorImageArgsType = {
-  object: ValueTypes['ActorImageInsertInput'];
-  onConflict?: ValueTypes['ActorImageOnConflict'];
+  object: ActorImageInsertInput;
+  onConflict?: ActorImageOnConflict;
 };
 
 export type UpdateActorImageArgsType = {
-  where: ValueTypes['ActorImageBoolExp'];
-  _set: ValueTypes['ActorImageSetInput'];
+  where: ActorImageBoolExp;
+  _set: ActorImageSetInput;
 };
 
 export type DeleteActorImageArgsType = {
-  where: ValueTypes['ActorImageBoolExp'];
+  where: ActorImageBoolExp;
 };
 
 export type UpdateByPkActorImageArgsType = {
-  pkColumns: ValueTypes['ActorImagePkColumnsInput'];
-  _set: ValueTypes['ActorImageSetInput'];
+  pkColumns: ActorImagePkColumnsInput;
+  _set: ActorImageSetInput;
 };
 
 export type FindActorImageArgsType = {
-  where: ValueTypes['ActorImageBoolExp'];
-  orderBy?: Array<ValueTypes['ActorImageOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActorImageSelectColumn']>;
+  where: ActorImageBoolExp;
+  orderBy?: Array<ActorImageOrderBy>;
+  distinctOn?: Array<ActorImageSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkActorImageArgsType = {
 };
 
 export type AggregateActorImageArgsType = {
-  where: ValueTypes['ActorImageBoolExp'];
-  orderBy?: Array<ValueTypes['ActorImageOrderBy']>;
-  distinctOn?: Array<ValueTypes['ActorImageSelectColumn']>;
+  where: ActorImageBoolExp;
+  orderBy?: Array<ActorImageOrderBy>;
+  distinctOn?: Array<ActorImageSelectColumn>;
   limit?: number;
   offset?: number;
 };

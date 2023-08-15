@@ -5,6 +5,9 @@
     "sourceType": "module",
     "project": ["./libs/shared/types/tsconfig.lib.json", "./libs/shared/types/tsconfig.spec.json"]
   },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

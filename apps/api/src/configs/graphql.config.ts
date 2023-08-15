@@ -1,10 +1,9 @@
 import { rootPath } from '../config';
 import { MercuriusDriver } from '@nestjs/mercurius';
-import { GraphQLUpload } from 'graphql-upload-minimal';
+import { GraphQLUpload } from 'graphql-upload-ts';
 
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 
-console.log('Root', rootPath);
 export const schemaPath = `${rootPath}/libs/shared/graphql/src/schema.merged.graphql`;
 
 const mercuriusConfig: MercuriusDriverConfig = {

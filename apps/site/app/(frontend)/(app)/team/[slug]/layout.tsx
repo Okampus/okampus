@@ -9,28 +9,35 @@ import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCach
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
 import { getBanner } from '../../../../../utils/actor-image/get-banner';
+import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
 
-import { teamWithMembersInfo } from '@okampus/shared/graphql';
+import { GetTeamDocument } from '@okampus/shared/graphql';
+
 import { IconUsers, IconTicket } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import type { TeamWithMembersInfo } from '@okampus/shared/graphql';
+import type { GetTeamQuery, GetTeamQueryVariables } from '@okampus/shared/graphql';
+
+const SubscribeTeamDocument = getSubscriptionFromQuery(GetTeamDocument);
 
 type TeamLayoutProps = { children: React.ReactNode; params: { slug: string } };
 async function TeamLayout({ children, params }: TeamLayoutProps) {
-  const query = [{ where: { actor: { slug: { _eq: params.slug } } }, limit: 1 }, teamWithMembersInfo];
-  const [team] = await getApolloQuery<TeamWithMembersInfo[]>('team', query, true).catch(() => []);
+  const variables = { slug: params.slug };
+  const data = await getApolloQuery<GetTeamQuery, GetTeamQueryVariables>({
+    query: GetTeamDocument,
+    variables,
+  }).catch();
 
-  if (!team) notFound();
+  if (!data) notFound();
+  const team = data.team[0];
 
   const teamRoute = (route: string) => `/team/${team?.actor?.slug}/${route}`;
   return (
     <>
-      <ApolloWriteCache values={[[team, teamWithMembersInfo]]} />
-      <ApolloSubscribe selector={{ teamByPk: [{ id: team.id }, teamWithMembersInfo] }} />
-      <SideBar>
-        <SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />
+      <ApolloWriteCache values={[[team, GetTeamDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeTeamDocument} variables={variables} data-superjson />
+      <SideBar header={<SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />}>
         <TeamManageButton slug={params.slug} manage={true} />
         <LinkList
           items={[

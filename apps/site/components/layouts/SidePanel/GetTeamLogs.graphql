@@ -1,0 +1,73 @@
+query GetTeamLogs($id: bigint!) {
+  teamLogs(id: $id) {
+    __typename
+    id
+    createdAt
+    context
+    diff
+    note
+    entityId
+    entityName
+    eventType
+    createdBy {
+      __typename
+      id
+      createdAt
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            createdAt
+            url
+          }
+        }
+      }
+      user {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

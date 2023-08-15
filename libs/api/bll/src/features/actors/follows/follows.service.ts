@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  FollowInsertInput,
+  FollowOnConflict,
+  FollowBoolExp,
+  FollowOrderBy,
+  FollowSelectColumn,
+  FollowSetInput,
+  FollowUpdates,
+  FollowPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class FollowsService extends RequestContext {
@@ -22,7 +31,7 @@ export class FollowsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['FollowInsertInput']) {
+  checkPermsCreate(props: FollowInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -45,7 +54,7 @@ export class FollowsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['FollowSetInput'], follow: Follow) {
+  checkPermsUpdate(props: FollowSetInput, follow: Follow) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
@@ -65,14 +74,14 @@ export class FollowsService extends RequestContext {
     return follow.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['FollowSetInput']) {
+  checkPropsConstraints(props: FollowSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['FollowInsertInput']) {
+  checkCreateRelationships(props: FollowInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -80,11 +89,7 @@ export class FollowsService extends RequestContext {
     return true;
   }
 
-  async insertFollowOne(
-    selectionSet: string[],
-    object: ValueTypes['FollowInsertInput'],
-    onConflict?: ValueTypes['FollowOnConflict']
-  ) {
+  async insertFollowOne(selectionSet: string[], object: FollowInsertInput, onConflict?: FollowOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
 
@@ -106,9 +111,9 @@ export class FollowsService extends RequestContext {
 
   async findFollow(
     selectionSet: string[],
-    where: ValueTypes['FollowBoolExp'],
-    orderBy?: Array<ValueTypes['FollowOrderBy']>,
-    distinctOn?: Array<ValueTypes['FollowSelectColumn']>,
+    where: FollowBoolExp,
+    orderBy?: Array<FollowOrderBy>,
+    distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -123,11 +128,7 @@ export class FollowsService extends RequestContext {
     return data.followByPk;
   }
 
-  async insertFollow(
-    selectionSet: string[],
-    objects: Array<ValueTypes['FollowInsertInput']>,
-    onConflict?: ValueTypes['FollowOnConflict']
-  ) {
+  async insertFollow(selectionSet: string[], objects: Array<FollowInsertInput>, onConflict?: FollowOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
@@ -151,7 +152,7 @@ export class FollowsService extends RequestContext {
     return data.insertFollow;
   }
 
-  async updateFollowMany(selectionSet: string[], updates: Array<ValueTypes['FollowUpdates']>) {
+  async updateFollowMany(selectionSet: string[], updates: Array<FollowUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -181,11 +182,7 @@ export class FollowsService extends RequestContext {
     return data.updateFollowMany;
   }
 
-  async updateFollowByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['FollowPkColumnsInput'],
-    _set: ValueTypes['FollowSetInput']
-  ) {
+  async updateFollowByPk(selectionSet: string[], pkColumns: FollowPkColumnsInput, _set: FollowSetInput) {
     const follow = await this.followRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, follow);
@@ -202,7 +199,7 @@ export class FollowsService extends RequestContext {
     return data.updateFollowByPk;
   }
 
-  async deleteFollow(selectionSet: string[], where: ValueTypes['FollowBoolExp']) {
+  async deleteFollow(selectionSet: string[], where: FollowBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -227,7 +224,7 @@ export class FollowsService extends RequestContext {
     return data.updateFollow;
   }
 
-  async deleteFollowByPk(selectionSet: string[], pkColumns: ValueTypes['FollowPkColumnsInput']) {
+  async deleteFollowByPk(selectionSet: string[], pkColumns: FollowPkColumnsInput) {
     const follow = await this.followRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(follow);
@@ -244,9 +241,9 @@ export class FollowsService extends RequestContext {
 
   async aggregateFollow(
     selectionSet: string[],
-    where: ValueTypes['FollowBoolExp'],
-    orderBy?: Array<ValueTypes['FollowOrderBy']>,
-    distinctOn?: Array<ValueTypes['FollowSelectColumn']>,
+    where: FollowBoolExp,
+    orderBy?: Array<FollowOrderBy>,
+    distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
     offset?: number
   ) {

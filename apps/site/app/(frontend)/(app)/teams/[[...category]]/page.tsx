@@ -8,16 +8,22 @@ import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 import Skeleton from '../../../../../components/atoms/Skeleton/Skeleton';
 import TeamCard from '../../../../../components/molecules/Card/TeamCard';
 
-import { useTypedQueryAndSubscribe } from '../../../../../hooks/apollo/useTypedQueryAndSubscribe';
+import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
 
+import { GetCategoriesDocument, GetTeamsDocument, OrderBy } from '@okampus/shared/graphql';
 import { TagType, TeamType } from '@okampus/shared/enums';
-import { OrderBy, tagWithUploadInfo, teamBaseInfo } from '@okampus/shared/graphql';
 import { notFound, usePathname } from 'next/navigation';
 import { IconCompass } from '@tabler/icons-react';
 
 import { useMemo } from 'react';
+import type {
+  GetCategoriesQuery,
+  GetCategoriesQueryVariables,
+  GetTeamsQuery,
+  GetTeamsQueryVariables,
+} from '@okampus/shared/graphql';
 
-const tagVariables = { where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.ASC }] };
+const tagVariables = { where: { type: { _eq: TagType.TeamCategory } }, orderBy: [{ name: OrderBy.Asc }] };
 
 export default function TeamsPage({ params }: { params: { category: string[] } }) {
   const categorySlug = params.category?.[0];
@@ -26,20 +32,30 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
     const categoryWhere = categorySlug ? { actor: { actorTags: { tag: { slug: { _eq: categorySlug } } } } } : {};
     return { type: { _in: [TeamType.Club, TeamType.Association] }, ...categoryWhere };
   }, [categorySlug]);
-  const variables = { where, orderBy: [{ actor: { name: OrderBy.ASC } }] };
 
-  const { data } = useTypedQueryAndSubscribe({ queryName: 'team', selector: [variables, teamBaseInfo] });
+  const variables = { where, orderBy: [{ actor: { name: OrderBy.Asc } }] };
+  const { data } = useQueryAndSubscribe<GetTeamsQuery, GetTeamsQueryVariables>({
+    query: GetTeamsDocument,
+    variables,
+  });
+
+  const teams = data?.team;
 
   const pathname = usePathname();
-  const { data: tags } = useTypedQueryAndSubscribe({ queryName: 'tag', selector: [tagVariables, tagWithUploadInfo] });
+  const { data: dataTags } = useQueryAndSubscribe<GetCategoriesQuery, GetCategoriesQueryVariables>({
+    query: GetCategoriesDocument,
+    variables: { where: { type: { _eq: TagType.TeamCategory } } },
+  });
+
+  const tags = dataTags?.tag;
 
   let category, header;
-  if (categorySlug && tags?.tag) {
-    category = tags.tag.find((tag) => tag.slug === categorySlug);
+  if (categorySlug && tags) {
+    category = tags.find((tag) => tag.slug === categorySlug);
     if (!category) notFound();
-    header = data?.team ? `${category.name} (${data.team.length ?? 0})` : <Skeleton className="w-32 h-8" />;
+    header = teams ? `${category.name} (${data.team.length ?? 0})` : null;
   } else {
-    header = data?.team ? `Associations (${data.team.length ?? 0})` : <Skeleton className="w-32 h-8" />;
+    header = teams ? `Associations (${data.team.length ?? 0})` : null;
   }
 
   return (
@@ -53,8 +69,8 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
           icon={<IconCompass />}
           large={true}
         />
-        {tags?.tag
-          ? tags.tag.map((tag) => (
+        {tags
+          ? tags.map((tag) => (
               <LinkItem
                 pathname={pathname}
                 key={tag.id}
@@ -77,7 +93,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
         <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-6">
-          {data?.team && tags?.tag
+          {teams
             ? data.team.map((team) => <TeamCard key={team.id} team={team} />)
             : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}
         </div>

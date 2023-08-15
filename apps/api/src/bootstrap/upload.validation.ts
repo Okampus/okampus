@@ -1,6 +1,6 @@
 import { MAX_FILE_SIZE, MAX_FILES } from '@okampus/shared/consts';
 import { isFileUpload } from '@okampus/shared/utils';
-import { processRequest } from 'graphql-upload-minimal';
+import { processRequest } from 'graphql-upload-ts';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export const uploadPreValidation = async (req: FastifyRequest, reply: FastifyReply) => {

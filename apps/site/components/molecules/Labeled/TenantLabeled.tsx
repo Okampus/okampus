@@ -1,13 +1,12 @@
 import AvatarLabeled from './AvatarLabeled';
-import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
+import TenantPopoverCard from '../PopoverCard/TenantPopoverCard';
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
-import { TeamType } from '@okampus/shared/enums';
 
 import type { AvatarWrapperProps } from './AvatarLabeled';
-import type { TenantDetailsInfo } from '@okampus/shared/graphql';
+import type { TenantMinimalInfo } from '../../../types/features/tenant.info';
 
 export type TenantLabeledProps = {
-  tenant?: TenantDetailsInfo;
+  tenant?: TenantMinimalInfo;
   label?: React.ReactNode;
   content?: React.ReactNode;
   small?: boolean;
@@ -25,18 +24,14 @@ export default function TenantLabeled({
   skeletonClassName,
   className,
 }: TenantLabeledProps) {
-  const adminTeam = tenant?.tenantOrganizes.find(
-    (manage) => !manage.campusCluster && manage.team.type === TeamType.Tenant
-  )?.team;
+  const adminTeam = tenant?.adminTeam;
 
   const avatar = getAvatar(adminTeam?.actor?.actorImages)?.image.url;
-  const name = adminTeam?.actor?.name;
+  const name = adminTeam?.actor.name;
 
   // TOOD: create a custom popover card for tenant
   const wrapper = ({ children, className }: AvatarWrapperProps) => (
-    <TeamPopoverCard teamId={adminTeam?.id} triggerClassName={className}>
-      {children}
-    </TeamPopoverCard>
+    <TenantPopoverCard triggerClassName={className}>{children}</TenantPopoverCard>
   );
   return (
     <AvatarLabeled

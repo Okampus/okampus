@@ -25,12 +25,13 @@ export default function SidePanel({ children }: SidePanelProps) {
 
   const sidePanelClass = clsx(
     'h-full shrink-0 bg-1 w-[var(--w-sidepanel)] overflow-x-hidden',
-    currentWindowSize === 'desktopXl' ? 'relative' : 'absolute top-0 right-0'
+    currentWindowSize === 'desktopXl' ? 'relative' : 'absolute top-0 right-0',
   );
   const slidingSidePanel = (
     <nav
       // initial={initial} animate={animate} exit={initial} transition={transition}
       className={sidePanelClass}
+      onClick={(e) => e.stopPropagation()}
     >
       {children}
     </nav>

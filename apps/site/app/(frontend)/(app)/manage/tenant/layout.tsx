@@ -9,41 +9,44 @@ import ApolloWriteCache from '../../../../../components/wrappers/ApolloWriteCach
 
 import { getApolloQuery } from '../../../../../ssr/getApolloQuery';
 import { getBanner } from '../../../../../utils/actor-image/get-banner';
+import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-query';
+import { getTenantFromHost } from '../../../../../utils/headers/get-tenant-from-host';
 
-import { tenantManageInfo } from '@okampus/shared/graphql';
-import { getTenantFromHost } from '@okampus/shared/utils';
+import { GetTenantManageDocument } from '@okampus/shared/graphql';
 
 import { IconUsers, IconCheck, IconLayoutGrid, IconTable } from '@tabler/icons-react';
 import { headers } from 'next/headers';
 
-import type { TenantManageInfo } from '@okampus/shared/graphql';
+import type { GetTenantManageQuery, GetTenantManageQueryVariables } from '@okampus/shared/graphql';
 
 const manageTenantRoute = (route: string) => `/manage/tenant/${route}`;
+
+const SubscribeTenantManageDocument = getSubscriptionFromQuery(GetTenantManageDocument);
 
 type TenantManageLayoutProps = { children: React.ReactNode };
 export default async function TenantManageLayout({ children }: TenantManageLayoutProps) {
   const tenant = getTenantFromHost(headers().get('host') ?? '');
+  const variables = { domain: tenant };
 
-  const query = [{ where: { adminTeam: { actor: { slug: { _eq: tenant } } } }, limit: 1 }, tenantManageInfo];
-  const [tenantManage] = await getApolloQuery<TenantManageInfo[]>('tenant', query, true).catch(() => []);
+  const data = await getApolloQuery<GetTenantManageQuery, GetTenantManageQueryVariables>({
+    query: GetTenantManageDocument,
+    variables,
+  }).catch();
 
-  if (!tenantManage || !tenantManage.adminTeam?.actor)
-    return (
-      <>
-        <SkeletonPublicSidebar />
-        {children}
-      </>
-    );
+  const tenantManage = data?.tenant[0];
 
-  return (
+  return tenantManage.adminTeam?.actor ? (
     <>
-      <ApolloWriteCache values={[[tenantManage, tenantManageInfo]]} />
-      <ApolloSubscribe selector={{ tenantByPk: [{ id: tenantManage.id }, tenantManageInfo] }} />
-      <SideBar>
-        <SidebarBanner
-          name={tenantManage.adminTeam.actor.name}
-          banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
-        />
+      <ApolloWriteCache values={[[tenantManage, GetTenantManageDocument]]} data-superjson />
+      <ApolloSubscribe fragment={SubscribeTenantManageDocument} variables={variables} data-superjson />
+      <SideBar
+        header={
+          <SidebarBanner
+            name={tenantManage.adminTeam.actor.name}
+            banner={getBanner(tenantManage.adminTeam.actor.actorImages)?.image?.url}
+          />
+        }
+      >
         <TenantManageButton manage={false} />
         <LinkList
           items={[
@@ -56,6 +59,11 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
       </SideBar>
       {children}
       <TenantManageSidePanel id={tenantManage.id} />
+    </>
+  ) : (
+    <>
+      <SkeletonPublicSidebar />
+      {children}
     </>
   );
 }

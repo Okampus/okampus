@@ -1,0 +1,63 @@
+query GetTenantUsersWithPoints {
+  user(
+    where: {
+      _or: [
+        { actions: { pointsProcessedAt: { _isNull: false } } }
+        { eventJoins: { participationProcessedAt: { _isNull: false } } }
+        { missionJoins: { pointsProcessedAt: { _isNull: false } } }
+      ]
+    }
+  ) {
+    __typename
+    id
+    createdAt
+    firstName
+    lastName
+    individual {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        slug
+        bio
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+    }
+    actions(where: { pointsProcessedAt: { _isNull: false } }) {
+      __typename
+      id
+      points
+      pointsProcessedAt
+    }
+    eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
+      __typename
+      id
+      processedAt
+      event {
+        __typename
+        id
+        slug
+        pointsAwardedForAttendance
+      }
+    }
+    missionJoins(where: { pointsProcessedAt: { _isNull: false } }) {
+      __typename
+      id
+      points
+      pointsProcessedAt
+    }
+  }
+}

@@ -1,11 +1,13 @@
-import { currentTenant } from '../utils/current-tenant';
+import { getTenantFromHost } from '../utils/headers/get-tenant-from-host';
+
 import { HEADER_TENANT_NAME } from '@okampus/shared/consts';
-import { useState, useEffect } from 'react';
+
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 import type { AxiosRequestConfig } from 'axios';
 
-export function useAxios(request: AxiosRequestConfig, inDomain = false) {
-  const [data, setData] = useState<unknown | null>(null);
+export function useAxios<T>(request: AxiosRequestConfig, inDomain = false) {
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +17,10 @@ export function useAxios(request: AxiosRequestConfig, inDomain = false) {
         const result = await axios.request({
           ...params,
           withCredentials: true,
-          headers: { ...params.headers, ...(inDomain && { [HEADER_TENANT_NAME]: currentTenant() }) },
+          headers: {
+            ...params.headers,
+            ...(inDomain && { [HEADER_TENANT_NAME]: getTenantFromHost(window.location.host) }),
+          },
         });
         setData(result.data);
       } catch (error) {

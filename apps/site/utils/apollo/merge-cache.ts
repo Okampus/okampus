@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 export function mergeCache(
   parent: { __typename: string; id: string },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: { fieldName: string; fragmentOn: string; data: any }
+  field: { fieldName: string; fragmentOn: string; data: any },
 ) {
   apolloClient.cache.modify({
     id: apolloClient.cache.identify({ __typename: parent.__typename, id: parent.id }),
@@ -30,7 +30,7 @@ export function filterCache(
   parent: { __typename: string; id: string },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   field: { fieldName: string; typename: string },
-  ids: string[]
+  ids: string[],
 ) {
   const deletedRefs = new Set(ids.map((id) => `${field.typename}:${id}`));
 

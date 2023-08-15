@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  EventApprovalStepInsertInput,
+  EventApprovalStepOnConflict,
+  EventApprovalStepBoolExp,
+  EventApprovalStepOrderBy,
+  EventApprovalStepSelectColumn,
+  EventApprovalStepSetInput,
+  EventApprovalStepUpdates,
+  EventApprovalStepPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class EventApprovalStepsService extends RequestContext {
@@ -22,7 +31,7 @@ export class EventApprovalStepsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['EventApprovalStepInsertInput']) {
+  checkPermsCreate(props: EventApprovalStepInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -47,7 +56,7 @@ export class EventApprovalStepsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['EventApprovalStepSetInput'], eventApprovalStep: EventApprovalStep) {
+  checkPermsUpdate(props: EventApprovalStepSetInput, eventApprovalStep: EventApprovalStep) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (eventApprovalStep.deletedAt)
@@ -70,14 +79,14 @@ export class EventApprovalStepsService extends RequestContext {
     return eventApprovalStep.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['EventApprovalStepSetInput']) {
+  checkPropsConstraints(props: EventApprovalStepSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['EventApprovalStepInsertInput']) {
+  checkCreateRelationships(props: EventApprovalStepInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -87,8 +96,8 @@ export class EventApprovalStepsService extends RequestContext {
 
   async insertEventApprovalStepOne(
     selectionSet: string[],
-    object: ValueTypes['EventApprovalStepInsertInput'],
-    onConflict?: ValueTypes['EventApprovalStepOnConflict']
+    object: EventApprovalStepInsertInput,
+    onConflict?: EventApprovalStepOnConflict
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApprovalStep.');
@@ -111,9 +120,9 @@ export class EventApprovalStepsService extends RequestContext {
 
   async findEventApprovalStep(
     selectionSet: string[],
-    where: ValueTypes['EventApprovalStepBoolExp'],
-    orderBy?: Array<ValueTypes['EventApprovalStepOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventApprovalStepSelectColumn']>,
+    where: EventApprovalStepBoolExp,
+    orderBy?: Array<EventApprovalStepOrderBy>,
+    distinctOn?: Array<EventApprovalStepSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -138,8 +147,8 @@ export class EventApprovalStepsService extends RequestContext {
 
   async insertEventApprovalStep(
     selectionSet: string[],
-    objects: Array<ValueTypes['EventApprovalStepInsertInput']>,
-    onConflict?: ValueTypes['EventApprovalStepOnConflict']
+    objects: Array<EventApprovalStepInsertInput>,
+    onConflict?: EventApprovalStepOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -164,7 +173,7 @@ export class EventApprovalStepsService extends RequestContext {
     return data.insertEventApprovalStep;
   }
 
-  async updateEventApprovalStepMany(selectionSet: string[], updates: Array<ValueTypes['EventApprovalStepUpdates']>) {
+  async updateEventApprovalStepMany(selectionSet: string[], updates: Array<EventApprovalStepUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -201,8 +210,8 @@ export class EventApprovalStepsService extends RequestContext {
 
   async updateEventApprovalStepByPk(
     selectionSet: string[],
-    pkColumns: ValueTypes['EventApprovalStepPkColumnsInput'],
-    _set: ValueTypes['EventApprovalStepSetInput']
+    pkColumns: EventApprovalStepPkColumnsInput,
+    _set: EventApprovalStepSetInput
   ) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
 
@@ -220,7 +229,7 @@ export class EventApprovalStepsService extends RequestContext {
     return data.updateEventApprovalStepByPk;
   }
 
-  async deleteEventApprovalStep(selectionSet: string[], where: ValueTypes['EventApprovalStepBoolExp']) {
+  async deleteEventApprovalStep(selectionSet: string[], where: EventApprovalStepBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -246,7 +255,7 @@ export class EventApprovalStepsService extends RequestContext {
     return data.updateEventApprovalStep;
   }
 
-  async deleteEventApprovalStepByPk(selectionSet: string[], pkColumns: ValueTypes['EventApprovalStepPkColumnsInput']) {
+  async deleteEventApprovalStepByPk(selectionSet: string[], pkColumns: EventApprovalStepPkColumnsInput) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(eventApprovalStep);
@@ -263,9 +272,9 @@ export class EventApprovalStepsService extends RequestContext {
 
   async aggregateEventApprovalStep(
     selectionSet: string[],
-    where: ValueTypes['EventApprovalStepBoolExp'],
-    orderBy?: Array<ValueTypes['EventApprovalStepOrderBy']>,
-    distinctOn?: Array<ValueTypes['EventApprovalStepSelectColumn']>,
+    where: EventApprovalStepBoolExp,
+    orderBy?: Array<EventApprovalStepOrderBy>,
+    distinctOn?: Array<EventApprovalStepSelectColumn>,
     limit?: number,
     offset?: number
   ) {

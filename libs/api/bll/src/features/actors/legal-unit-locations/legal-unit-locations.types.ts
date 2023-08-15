@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  LegalUnitLocationInsertInput,
+  LegalUnitLocationOnConflict,
+  LegalUnitLocationSetInput,
+  LegalUnitLocationBoolExp,
+  LegalUnitLocationOrderBy,
+  LegalUnitLocationSelectColumn,
+  LegalUnitLocationPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertLegalUnitLocationArgsType = {
-  objects: Array<ValueTypes['LegalUnitLocationInsertInput']>;
-  onConflict?: ValueTypes['LegalUnitLocationOnConflict'];
+  objects: Array<LegalUnitLocationInsertInput>;
+  onConflict?: LegalUnitLocationOnConflict;
 };
 
 export type InsertOneLegalUnitLocationArgsType = {
-  object: ValueTypes['LegalUnitLocationInsertInput'];
-  onConflict?: ValueTypes['LegalUnitLocationOnConflict'];
+  object: LegalUnitLocationInsertInput;
+  onConflict?: LegalUnitLocationOnConflict;
 };
 
 export type UpdateLegalUnitLocationArgsType = {
-  where: ValueTypes['LegalUnitLocationBoolExp'];
-  _set: ValueTypes['LegalUnitLocationSetInput'];
+  where: LegalUnitLocationBoolExp;
+  _set: LegalUnitLocationSetInput;
 };
 
 export type DeleteLegalUnitLocationArgsType = {
-  where: ValueTypes['LegalUnitLocationBoolExp'];
+  where: LegalUnitLocationBoolExp;
 };
 
 export type UpdateByPkLegalUnitLocationArgsType = {
-  pkColumns: ValueTypes['LegalUnitLocationPkColumnsInput'];
-  _set: ValueTypes['LegalUnitLocationSetInput'];
+  pkColumns: LegalUnitLocationPkColumnsInput;
+  _set: LegalUnitLocationSetInput;
 };
 
 export type FindLegalUnitLocationArgsType = {
-  where: ValueTypes['LegalUnitLocationBoolExp'];
-  orderBy?: Array<ValueTypes['LegalUnitLocationOrderBy']>;
-  distinctOn?: Array<ValueTypes['LegalUnitLocationSelectColumn']>;
+  where: LegalUnitLocationBoolExp;
+  orderBy?: Array<LegalUnitLocationOrderBy>;
+  distinctOn?: Array<LegalUnitLocationSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkLegalUnitLocationArgsType = {
 };
 
 export type AggregateLegalUnitLocationArgsType = {
-  where: ValueTypes['LegalUnitLocationBoolExp'];
-  orderBy?: Array<ValueTypes['LegalUnitLocationOrderBy']>;
-  distinctOn?: Array<ValueTypes['LegalUnitLocationSelectColumn']>;
+  where: LegalUnitLocationBoolExp;
+  orderBy?: Array<LegalUnitLocationOrderBy>;
+  distinctOn?: Array<LegalUnitLocationSelectColumn>;
   limit?: number;
   offset?: number;
 };

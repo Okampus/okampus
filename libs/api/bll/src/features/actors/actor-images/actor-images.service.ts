@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  ActorImageInsertInput,
+  ActorImageOnConflict,
+  ActorImageBoolExp,
+  ActorImageOrderBy,
+  ActorImageSelectColumn,
+  ActorImageSetInput,
+  ActorImageUpdates,
+  ActorImagePkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class ActorImagesService extends RequestContext {
@@ -22,7 +31,7 @@ export class ActorImagesService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['ActorImageInsertInput']) {
+  checkPermsCreate(props: ActorImageInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -46,7 +55,7 @@ export class ActorImagesService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['ActorImageSetInput'], actorImage: ActorImage) {
+  checkPermsUpdate(props: ActorImageSetInput, actorImage: ActorImage) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
@@ -67,14 +76,14 @@ export class ActorImagesService extends RequestContext {
     return actorImage.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['ActorImageSetInput']) {
+  checkPropsConstraints(props: ActorImageSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     // Custom logic
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['ActorImageInsertInput']) {
+  checkCreateRelationships(props: ActorImageInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -82,11 +91,7 @@ export class ActorImagesService extends RequestContext {
     return true;
   }
 
-  async insertActorImageOne(
-    selectionSet: string[],
-    object: ValueTypes['ActorImageInsertInput'],
-    onConflict?: ValueTypes['ActorImageOnConflict']
-  ) {
+  async insertActorImageOne(selectionSet: string[], object: ActorImageInsertInput, onConflict?: ActorImageOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert ActorImage.');
 
@@ -108,9 +113,9 @@ export class ActorImagesService extends RequestContext {
 
   async findActorImage(
     selectionSet: string[],
-    where: ValueTypes['ActorImageBoolExp'],
-    orderBy?: Array<ValueTypes['ActorImageOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActorImageSelectColumn']>,
+    where: ActorImageBoolExp,
+    orderBy?: Array<ActorImageOrderBy>,
+    distinctOn?: Array<ActorImageSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -127,8 +132,8 @@ export class ActorImagesService extends RequestContext {
 
   async insertActorImage(
     selectionSet: string[],
-    objects: Array<ValueTypes['ActorImageInsertInput']>,
-    onConflict?: ValueTypes['ActorImageOnConflict']
+    objects: Array<ActorImageInsertInput>,
+    onConflict?: ActorImageOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -153,7 +158,7 @@ export class ActorImagesService extends RequestContext {
     return data.insertActorImage;
   }
 
-  async updateActorImageMany(selectionSet: string[], updates: Array<ValueTypes['ActorImageUpdates']>) {
+  async updateActorImageMany(selectionSet: string[], updates: Array<ActorImageUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -184,11 +189,7 @@ export class ActorImagesService extends RequestContext {
     return data.updateActorImageMany;
   }
 
-  async updateActorImageByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['ActorImagePkColumnsInput'],
-    _set: ValueTypes['ActorImageSetInput']
-  ) {
+  async updateActorImageByPk(selectionSet: string[], pkColumns: ActorImagePkColumnsInput, _set: ActorImageSetInput) {
     const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, actorImage);
@@ -205,7 +206,7 @@ export class ActorImagesService extends RequestContext {
     return data.updateActorImageByPk;
   }
 
-  async deleteActorImage(selectionSet: string[], where: ValueTypes['ActorImageBoolExp']) {
+  async deleteActorImage(selectionSet: string[], where: ActorImageBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -230,7 +231,7 @@ export class ActorImagesService extends RequestContext {
     return data.updateActorImage;
   }
 
-  async deleteActorImageByPk(selectionSet: string[], pkColumns: ValueTypes['ActorImagePkColumnsInput']) {
+  async deleteActorImageByPk(selectionSet: string[], pkColumns: ActorImagePkColumnsInput) {
     const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(actorImage);
@@ -247,9 +248,9 @@ export class ActorImagesService extends RequestContext {
 
   async aggregateActorImage(
     selectionSet: string[],
-    where: ValueTypes['ActorImageBoolExp'],
-    orderBy?: Array<ValueTypes['ActorImageOrderBy']>,
-    distinctOn?: Array<ValueTypes['ActorImageSelectColumn']>,
+    where: ActorImageBoolExp,
+    orderBy?: Array<ActorImageOrderBy>,
+    distinctOn?: Array<ActorImageSelectColumn>,
     limit?: number,
     offset?: number
   ) {

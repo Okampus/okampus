@@ -10,7 +10,7 @@ import type { MotionProps } from 'framer-motion';
 type PopoverTriggerProps = { children: React.ReactNode; asChild?: boolean; motionConfig?: MotionProps };
 export default forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & PopoverTriggerProps>(function PopoverTrigger(
   { children, asChild = false, motionConfig, ...props },
-  propRef
+  propRef,
 ) {
   const context = usePopoverContext();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

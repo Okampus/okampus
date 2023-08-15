@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  AccountInsertInput,
+  AccountOnConflict,
+  AccountSetInput,
+  AccountBoolExp,
+  AccountOrderBy,
+  AccountSelectColumn,
+  AccountPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertAccountArgsType = {
-  objects: Array<ValueTypes['AccountInsertInput']>;
-  onConflict?: ValueTypes['AccountOnConflict'];
+  objects: Array<AccountInsertInput>;
+  onConflict?: AccountOnConflict;
 };
 
 export type InsertOneAccountArgsType = {
-  object: ValueTypes['AccountInsertInput'];
-  onConflict?: ValueTypes['AccountOnConflict'];
+  object: AccountInsertInput;
+  onConflict?: AccountOnConflict;
 };
 
 export type UpdateAccountArgsType = {
-  where: ValueTypes['AccountBoolExp'];
-  _set: ValueTypes['AccountSetInput'];
+  where: AccountBoolExp;
+  _set: AccountSetInput;
 };
 
 export type DeleteAccountArgsType = {
-  where: ValueTypes['AccountBoolExp'];
+  where: AccountBoolExp;
 };
 
 export type UpdateByPkAccountArgsType = {
-  pkColumns: ValueTypes['AccountPkColumnsInput'];
-  _set: ValueTypes['AccountSetInput'];
+  pkColumns: AccountPkColumnsInput;
+  _set: AccountSetInput;
 };
 
 export type FindAccountArgsType = {
-  where: ValueTypes['AccountBoolExp'];
-  orderBy?: Array<ValueTypes['AccountOrderBy']>;
-  distinctOn?: Array<ValueTypes['AccountSelectColumn']>;
+  where: AccountBoolExp;
+  orderBy?: Array<AccountOrderBy>;
+  distinctOn?: Array<AccountSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkAccountArgsType = {
 };
 
 export type AggregateAccountArgsType = {
-  where: ValueTypes['AccountBoolExp'];
-  orderBy?: Array<ValueTypes['AccountOrderBy']>;
-  distinctOn?: Array<ValueTypes['AccountSelectColumn']>;
+  where: AccountBoolExp;
+  orderBy?: Array<AccountOrderBy>;
+  distinctOn?: Array<AccountSelectColumn>;
   limit?: number;
   offset?: number;
 };

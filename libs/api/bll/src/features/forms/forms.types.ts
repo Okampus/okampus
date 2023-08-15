@@ -1,33 +1,41 @@
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  FormInsertInput,
+  FormOnConflict,
+  FormSetInput,
+  FormBoolExp,
+  FormOrderBy,
+  FormSelectColumn,
+  FormPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 export type InsertFormArgsType = {
-  objects: Array<ValueTypes['FormInsertInput']>;
-  onConflict?: ValueTypes['FormOnConflict'];
+  objects: Array<FormInsertInput>;
+  onConflict?: FormOnConflict;
 };
 
 export type InsertOneFormArgsType = {
-  object: ValueTypes['FormInsertInput'];
-  onConflict?: ValueTypes['FormOnConflict'];
+  object: FormInsertInput;
+  onConflict?: FormOnConflict;
 };
 
 export type UpdateFormArgsType = {
-  where: ValueTypes['FormBoolExp'];
-  _set: ValueTypes['FormSetInput'];
+  where: FormBoolExp;
+  _set: FormSetInput;
 };
 
 export type DeleteFormArgsType = {
-  where: ValueTypes['FormBoolExp'];
+  where: FormBoolExp;
 };
 
 export type UpdateByPkFormArgsType = {
-  pkColumns: ValueTypes['FormPkColumnsInput'];
-  _set: ValueTypes['FormSetInput'];
+  pkColumns: FormPkColumnsInput;
+  _set: FormSetInput;
 };
 
 export type FindFormArgsType = {
-  where: ValueTypes['FormBoolExp'];
-  orderBy?: Array<ValueTypes['FormOrderBy']>;
-  distinctOn?: Array<ValueTypes['FormSelectColumn']>;
+  where: FormBoolExp;
+  orderBy?: Array<FormOrderBy>;
+  distinctOn?: Array<FormSelectColumn>;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +45,9 @@ export type FindByPkFormArgsType = {
 };
 
 export type AggregateFormArgsType = {
-  where: ValueTypes['FormBoolExp'];
-  orderBy?: Array<ValueTypes['FormOrderBy']>;
-  distinctOn?: Array<ValueTypes['FormSelectColumn']>;
+  where: FormBoolExp;
+  orderBy?: Array<FormOrderBy>;
+  distinctOn?: Array<FormSelectColumn>;
   limit?: number;
   offset?: number;
 };

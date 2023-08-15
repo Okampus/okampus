@@ -4,7 +4,7 @@ import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout'
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
 import EmptyStateImage from '../../../../../../../components/atoms/Image/EmptyStateImage';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
-import FormSubmissionRender from '../../../../../../../components/molecules/Form/FormSubmissionRender';
+import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import ApprovalDashboard from '../../../../../../../components/organisms/ApprovalDashboard';
 
@@ -15,19 +15,17 @@ import { useTranslation } from '../../../../../../../hooks/context/useTranslatio
 import { ReactComponent as ToggleUserEmptyState } from '@okampus/assets/svg/empty-state/toggle-user.svg';
 
 import { ApprovalState } from '@okampus/shared/enums';
-import { updateEventJoinMutation } from '@okampus/shared/graphql';
+import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
-
-import { useMutation } from '@apollo/client';
 
 import { useAtom } from 'jotai';
 
-import type { FormField, Submission, FormSchema } from '@okampus/shared/types';
+import type { Submission, FormSchema } from '@okampus/shared/types';
 
 export default function ManageEventAttendancePage({ params }: { params: { slug: string } }) {
   const { eventManage } = useEventManage(params.slug);
   const [, setNotification] = useAtom(notificationAtom);
-  const [updateEventJoin] = useMutation(updateEventJoinMutation);
+  const [updateEventJoin] = useUpdateEventJoinMutation();
 
   const { t, format } = useTranslation();
 
@@ -36,7 +34,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
   return (
     <ViewLayout header="Validation des inscriptions" bottomPadded={false} scrollable={false}>
       <ApprovalDashboard
-        className="mt-8"
+        className="pt-8"
         stateFilter={(join, states) => states.includes(join.state as ApprovalState)}
         searchFilter={(join, query) => {
           const lowerQuery = query.toLowerCase();
@@ -52,18 +50,13 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           label: t(`enums.ApprovalState.${state}`),
           value: state,
         }))}
-        renderHeader={(join) => (
+        renderHeader={({ joinedBy }) => (
           <div className="flex items-center gap-2.5 text-0">
-            Inscription de <UserLabeled individual={join.joinedBy.individual} id={join.joinedBy.id} small={true} />
+            Inscription de <UserLabeled user={joinedBy} small={true} />
           </div>
         )}
         renderItem={(join) => (
-          <UserLabeled
-            showCardOnClick={false}
-            individual={join.joinedBy.individual}
-            id={join.joinedBy.id}
-            content={t(`enums.ApprovalState.${join.state}`)}
-          />
+          <UserLabeled showCardOnClick={false} user={join.joinedBy} content={t(`enums.ApprovalState.${join.state}`)} />
         )}
         renderSelected={(join) => (
           <div className="flex flex-col gap-6">
@@ -77,7 +70,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
             <hr className="border-color-3" />
             {join.formSubmission && (
               <FormSubmissionRender
-                schema={join.formSubmission?.form.schema as FormField[]}
+                schema={join.formSubmission?.form.schema as FormSchema}
                 submission={join.formSubmission?.submission as Submission<FormSchema>}
               />
             )}
@@ -96,7 +89,6 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                         type: ActionType.Success,
                         linkOrActionOrMenu: () =>
                           updateEventJoin({
-                            // @ts-ignore
                             variables: { id: join.id, update: { state: ApprovalState.Approved } },
                             onCompleted: () => {
                               setNotification({
@@ -114,12 +106,11 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
                         type: ActionType.Danger,
                         linkOrActionOrMenu: () =>
                           updateEventJoin({
-                            // @ts-ignore
                             variables: { id: join.id, update: { state: ApprovalState.Rejected } },
                             onCompleted: () => {
                               setNotification({
-                                type: ToastType.Success,
-                                message: `L'adhésion de ${join.joinedBy.individual?.actor?.name} a été refusée !`,
+                                type: ToastType.Info,
+                                message: `L'inscription de ${join.joinedBy.individual?.actor?.name} a été refusée !`,
                               });
                             },
                             onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),

@@ -6,17 +6,17 @@ import { LOCALE_COOKIE, THEME_COOKIE } from '@okampus/shared/consts';
 import { atom } from 'jotai/vanilla';
 import Cookies from 'universal-cookie';
 
+import type { Theme } from '../types/theme.type';
 import type { ClosableNode } from '../types/closable.type';
-import type { Formatters } from '../config/i18n';
+import type { Formatters, Locale } from '../config/i18n';
 import type { Determiners, Dicts } from '../ssr/getTranslation';
 import type { ToastProps } from '@okampus/shared/types';
 import type { IMessage } from '@novu/shared';
 
 const cookieStore = new Cookies();
 
-type Theme = 'light' | 'dark';
-export const themeAtom = atom<Theme>((cookieStore.get(THEME_COOKIE) as Theme) || 'light');
-export const langAtom = atom<string>((cookieStore.get(LOCALE_COOKIE) as string) || fallbackLocale);
+export const themeAtom = atom<Theme>(cookieStore.get<Theme>(THEME_COOKIE) || 'light');
+export const langAtom = atom<Locale>(cookieStore.get<Locale>(LOCALE_COOKIE) || fallbackLocale);
 export const determinersAtom = atom<Determiners>({});
 export const dictsAtom = atom<Dicts>({});
 export const formattersAtom = atom<Formatters>({} as Formatters);

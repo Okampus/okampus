@@ -7,7 +7,16 @@ import { EntityName, AdminPermissions, ApprovalState } from '@okampus/shared/enu
 
 import { EntityManager } from '@mikro-orm/core';
 
-import type { ValueTypes } from '@okampus/shared/graphql';
+import type {
+  MissionJoinInsertInput,
+  MissionJoinOnConflict,
+  MissionJoinBoolExp,
+  MissionJoinOrderBy,
+  MissionJoinSelectColumn,
+  MissionJoinSetInput,
+  MissionJoinUpdates,
+  MissionJoinPkColumnsInput,
+} from '@okampus/shared/graphql';
 
 @Injectable()
 export class MissionJoinsService extends RequestContext {
@@ -22,7 +31,7 @@ export class MissionJoinsService extends RequestContext {
     super();
   }
 
-  checkPermsCreate(props: ValueTypes['MissionJoinInsertInput']) {
+  checkPermsCreate(props: MissionJoinInsertInput) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Create props cannot be empty.');
 
     // Custom logic
@@ -46,7 +55,7 @@ export class MissionJoinsService extends RequestContext {
     return false;
   }
 
-  checkPermsUpdate(props: ValueTypes['MissionJoinSetInput'], missionJoin: MissionJoin) {
+  checkPermsUpdate(props: MissionJoinSetInput, missionJoin: MissionJoin) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (missionJoin.deletedAt) throw new NotFoundException(`MissionJoin was deleted on ${missionJoin.deletedAt}.`);
@@ -67,7 +76,7 @@ export class MissionJoinsService extends RequestContext {
     return missionJoin.createdBy?.id === this.requester().id;
   }
 
-  checkPropsConstraints(props: ValueTypes['MissionJoinSetInput']) {
+  checkPropsConstraints(props: MissionJoinSetInput) {
     this.hasuraService.checkForbiddenFields(props);
 
     if (props.processedById) throw new BadRequestException('Cannot update processedById directly.');
@@ -89,7 +98,7 @@ export class MissionJoinsService extends RequestContext {
     return true;
   }
 
-  checkCreateRelationships(props: ValueTypes['MissionJoinInsertInput']) {
+  checkCreateRelationships(props: MissionJoinInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
@@ -99,8 +108,8 @@ export class MissionJoinsService extends RequestContext {
 
   async insertMissionJoinOne(
     selectionSet: string[],
-    object: ValueTypes['MissionJoinInsertInput'],
-    onConflict?: ValueTypes['MissionJoinOnConflict']
+    object: MissionJoinInsertInput,
+    onConflict?: MissionJoinOnConflict
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert MissionJoin.');
@@ -123,9 +132,9 @@ export class MissionJoinsService extends RequestContext {
 
   async findMissionJoin(
     selectionSet: string[],
-    where: ValueTypes['MissionJoinBoolExp'],
-    orderBy?: Array<ValueTypes['MissionJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['MissionJoinSelectColumn']>,
+    where: MissionJoinBoolExp,
+    orderBy?: Array<MissionJoinOrderBy>,
+    distinctOn?: Array<MissionJoinSelectColumn>,
     limit?: number,
     offset?: number
   ) {
@@ -142,8 +151,8 @@ export class MissionJoinsService extends RequestContext {
 
   async insertMissionJoin(
     selectionSet: string[],
-    objects: Array<ValueTypes['MissionJoinInsertInput']>,
-    onConflict?: ValueTypes['MissionJoinOnConflict']
+    objects: Array<MissionJoinInsertInput>,
+    onConflict?: MissionJoinOnConflict
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -168,7 +177,7 @@ export class MissionJoinsService extends RequestContext {
     return data.insertMissionJoin;
   }
 
-  async updateMissionJoinMany(selectionSet: string[], updates: Array<ValueTypes['MissionJoinUpdates']>) {
+  async updateMissionJoinMany(selectionSet: string[], updates: Array<MissionJoinUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -199,11 +208,7 @@ export class MissionJoinsService extends RequestContext {
     return data.updateMissionJoinMany;
   }
 
-  async updateMissionJoinByPk(
-    selectionSet: string[],
-    pkColumns: ValueTypes['MissionJoinPkColumnsInput'],
-    _set: ValueTypes['MissionJoinSetInput']
-  ) {
+  async updateMissionJoinByPk(selectionSet: string[], pkColumns: MissionJoinPkColumnsInput, _set: MissionJoinSetInput) {
     const missionJoin = await this.missionJoinRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, missionJoin);
@@ -220,7 +225,7 @@ export class MissionJoinsService extends RequestContext {
     return data.updateMissionJoinByPk;
   }
 
-  async deleteMissionJoin(selectionSet: string[], where: ValueTypes['MissionJoinBoolExp']) {
+  async deleteMissionJoin(selectionSet: string[], where: MissionJoinBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
     if (!isWhereCorrect)
       throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
@@ -245,7 +250,7 @@ export class MissionJoinsService extends RequestContext {
     return data.updateMissionJoin;
   }
 
-  async deleteMissionJoinByPk(selectionSet: string[], pkColumns: ValueTypes['MissionJoinPkColumnsInput']) {
+  async deleteMissionJoinByPk(selectionSet: string[], pkColumns: MissionJoinPkColumnsInput) {
     const missionJoin = await this.missionJoinRepository.findOneOrFail(pkColumns.id);
 
     const canDelete = this.checkPermsDelete(missionJoin);
@@ -262,9 +267,9 @@ export class MissionJoinsService extends RequestContext {
 
   async aggregateMissionJoin(
     selectionSet: string[],
-    where: ValueTypes['MissionJoinBoolExp'],
-    orderBy?: Array<ValueTypes['MissionJoinOrderBy']>,
-    distinctOn?: Array<ValueTypes['MissionJoinSelectColumn']>,
+    where: MissionJoinBoolExp,
+    orderBy?: Array<MissionJoinOrderBy>,
+    distinctOn?: Array<MissionJoinSelectColumn>,
     limit?: number,
     offset?: number
   ) {

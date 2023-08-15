@@ -15,10 +15,10 @@ object_relationships:
     using:
       foreign_key_constraint_on: location_id
 array_relationships:
-  - name: bankInfos
+  - name: banks
     using:
       foreign_key_constraint_on:
-        column: bank_id
+        column: legal_unit_location_id
         table:
-          name: bank_info
+          name: bank
           schema: public
