@@ -208,7 +208,6 @@
     "vite-plugin-dts": "^2.1.0",
     "vite-plugin-node": "^3.0.0",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.33.0",
     "webpack": "^5.88.0"
   }
 }
