@@ -52558,6 +52558,9 @@ type Team {
     # filter the rows returned
     where: MissionBoolExp
   ): MissionAggregate!
+
+  # An object relationship
+  parent: Team
   parentId: bigint
 
   # An array relationship
@@ -52667,9 +52670,6 @@ type Team {
     # filter the rows returned
     where: RoleBoolExp
   ): RoleAggregate!
-
-  # An object relationship
-  team: Team
 
   # An array relationship
   teamHistories(
@@ -53014,6 +53014,7 @@ input TeamBoolExp {
   membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
+  parent: TeamBoolExp
   parentId: BigintComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
@@ -53021,7 +53022,6 @@ input TeamBoolExp {
   projectsAggregate: ProjectAggregateBoolExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
-  team: TeamBoolExp
   teamHistories: TeamHistoryBoolExp
   teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -53580,11 +53580,11 @@ input TeamInsertInput {
   membershipDuration: String
   membershipFees: Float
   missions: MissionArrRelInsertInput
+  parent: TeamObjRelInsertInput
   parentId: bigint
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
-  team: TeamObjRelInsertInput
   teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -55766,11 +55766,11 @@ input TeamOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   missionsAggregate: MissionAggregateOrderBy
+  parent: TeamOrderBy
   parentId: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
-  team: TeamOrderBy
   teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy

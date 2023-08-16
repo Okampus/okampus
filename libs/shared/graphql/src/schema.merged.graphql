@@ -28255,6 +28255,7 @@ type Team {
   membershipFees: Float!
   missions(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): [Mission!]!
   missionsAggregate(distinctOn: [MissionSelectColumn!], limit: Int, offset: Int, orderBy: [MissionOrderBy!], where: MissionBoolExp): MissionAggregate!
+  parent: Team
   parentId: bigint
   poles(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): [Pole!]!
   polesAggregate(distinctOn: [PoleSelectColumn!], limit: Int, offset: Int, orderBy: [PoleOrderBy!], where: PoleBoolExp): PoleAggregate!
@@ -28262,7 +28263,6 @@ type Team {
   projectsAggregate(distinctOn: [ProjectSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectOrderBy!], where: ProjectBoolExp): ProjectAggregate!
   roles(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): [Role!]!
   rolesAggregate(distinctOn: [RoleSelectColumn!], limit: Int, offset: Int, orderBy: [RoleOrderBy!], where: RoleBoolExp): RoleAggregate!
-  team: Team
   teamHistories(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): [TeamHistory!]!
   teamHistoriesAggregate(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): TeamHistoryAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
@@ -28424,6 +28424,7 @@ input TeamBoolExp {
   membershipFees: FloatComparisonExp
   missions: MissionBoolExp
   missionsAggregate: MissionAggregateBoolExp
+  parent: TeamBoolExp
   parentId: BigintComparisonExp
   poles: PoleBoolExp
   polesAggregate: PoleAggregateBoolExp
@@ -28431,7 +28432,6 @@ input TeamBoolExp {
   projectsAggregate: ProjectAggregateBoolExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
-  team: TeamBoolExp
   teamHistories: TeamHistoryBoolExp
   teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
@@ -28880,11 +28880,11 @@ input TeamInsertInput {
   membershipDuration: String
   membershipFees: Float
   missions: MissionArrRelInsertInput
+  parent: TeamObjRelInsertInput
   parentId: bigint
   poles: PoleArrRelInsertInput
   projects: ProjectArrRelInsertInput
   roles: RoleArrRelInsertInput
-  team: TeamObjRelInsertInput
   teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
@@ -30606,11 +30606,11 @@ input TeamOrderBy {
   membershipDuration: OrderBy
   membershipFees: OrderBy
   missionsAggregate: MissionAggregateOrderBy
+  parent: TeamOrderBy
   parentId: OrderBy
   polesAggregate: PoleAggregateOrderBy
   projectsAggregate: ProjectAggregateOrderBy
   rolesAggregate: RoleAggregateOrderBy
-  team: TeamOrderBy
   teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
