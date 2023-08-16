@@ -52432,6 +52432,9 @@ type Team {
     # filter the rows returned
     where: EventOrganizeBoolExp
   ): EventOrganizeAggregate!
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
 
   # An array relationship
   finances(
@@ -52510,6 +52513,7 @@ type Team {
   hiddenAt: timestamptz
   id: bigint!
   isJoinFormActive: Boolean!
+  isOnboardingComplete: Boolean!
 
   # An object relationship
   joinForm: Form!
@@ -52990,6 +52994,9 @@ input TeamBoolExp {
   documentsAggregate: DocumentAggregateBoolExp
   eventOrganizes: EventOrganizeBoolExp
   eventOrganizesAggregate: EventOrganizeAggregateBoolExp
+  expectingPresidentEmail: StringComparisonExp
+  expectingSecretaryEmail: StringComparisonExp
+  expectingTreasurerEmail: StringComparisonExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grantFund: LegalUnitBoolExp
@@ -52998,6 +53005,7 @@ input TeamBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isJoinFormActive: BooleanComparisonExp
+  isOnboardingComplete: BooleanComparisonExp
   joinForm: FormBoolExp
   joinFormId: BigintComparisonExp
   managersCategoryName: StringComparisonExp
@@ -53555,12 +53563,16 @@ input TeamInsertInput {
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
   eventOrganizes: EventOrganizeArrRelInsertInput
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   finances: FinanceArrRelInsertInput
   grantFund: LegalUnitObjRelInsertInput
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinForm: FormObjRelInsertInput
   joinFormId: bigint
   managersCategoryName: String
@@ -54278,6 +54290,9 @@ type TeamMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -54302,6 +54317,9 @@ input TeamMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -55642,6 +55660,9 @@ type TeamMinFields {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -55666,6 +55687,9 @@ input TeamMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -55725,12 +55749,16 @@ input TeamOrderBy {
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
   eventOrganizesAggregate: EventOrganizeAggregateOrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   financesAggregate: FinanceAggregateOrderBy
   grantFund: LegalUnitOrderBy
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isJoinFormActive: OrderBy
+  isOnboardingComplete: OrderBy
   joinForm: FormOrderBy
   joinFormId: OrderBy
   managersCategoryName: OrderBy
@@ -55788,6 +55816,15 @@ enum TeamSelectColumn {
   directorsCategoryName
 
   # column name
+  expectingPresidentEmail
+
+  # column name
+  expectingSecretaryEmail
+
+  # column name
+  expectingTreasurerEmail
+
+  # column name
   hiddenAt
 
   # column name
@@ -55795,6 +55832,9 @@ enum TeamSelectColumn {
 
   # column name
   isJoinFormActive
+
+  # column name
+  isOnboardingComplete
 
   # column name
   joinFormId
@@ -55831,12 +55871,18 @@ enum TeamSelectColumn {
 enum TeamSelectColumnTeamAggregateBoolExpBool_andArgumentsColumns {
   # column name
   isJoinFormActive
+
+  # column name
+  isOnboardingComplete
 }
 
 # select "teamAggregateBoolExpBool_orArgumentsColumns" columns of table "team"
 enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
   # column name
   isJoinFormActive
+
+  # column name
+  isOnboardingComplete
 }
 
 # input type for updating data in table "team"
@@ -55849,9 +55895,13 @@ input TeamSetInput {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinFormId: bigint
   managersCategoryName: String
   membersCategoryName: String
@@ -55979,9 +56029,13 @@ input TeamStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinFormId: bigint
   managersCategoryName: String
   membersCategoryName: String
@@ -56053,6 +56107,15 @@ enum TeamUpdateColumn {
   directorsCategoryName
 
   # column name
+  expectingPresidentEmail
+
+  # column name
+  expectingSecretaryEmail
+
+  # column name
+  expectingTreasurerEmail
+
+  # column name
   hiddenAt
 
   # column name
@@ -56060,6 +56123,9 @@ enum TeamUpdateColumn {
 
   # column name
   isJoinFormActive
+
+  # column name
+  isOnboardingComplete
 
   # column name
   joinFormId

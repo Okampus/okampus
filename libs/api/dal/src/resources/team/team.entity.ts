@@ -64,6 +64,12 @@ export class Team extends TenantScopedEntity implements Searchable {
   @Property({ type: 'text', nullable: true, default: null })
   expectingPresidentEmail: string | null = null;
 
+  @Property({ type: 'text', nullable: true, default: null })
+  expectingTreasurerEmail: string | null = null;
+
+  @Property({ type: 'text', nullable: true, default: null })
+  expectingSecretaryEmail: string | null = null;
+
   @Property({ type: 'boolean', default: true })
   isOnboardingComplete = true;
 

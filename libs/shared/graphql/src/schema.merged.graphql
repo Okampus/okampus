@@ -28235,6 +28235,9 @@ type Team {
   documentsAggregate(distinctOn: [DocumentSelectColumn!], limit: Int, offset: Int, orderBy: [DocumentOrderBy!], where: DocumentBoolExp): DocumentAggregate!
   eventOrganizes(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): [EventOrganize!]!
   eventOrganizesAggregate(distinctOn: [EventOrganizeSelectColumn!], limit: Int, offset: Int, orderBy: [EventOrganizeOrderBy!], where: EventOrganizeBoolExp): EventOrganizeAggregate!
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   finances(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): [Finance!]!
   financesAggregate(distinctOn: [FinanceSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceOrderBy!], where: FinanceBoolExp): FinanceAggregate!
   grantFund: LegalUnit
@@ -28243,6 +28246,7 @@ type Team {
   hiddenAt: timestamptz
   id: bigint!
   isJoinFormActive: Boolean!
+  isOnboardingComplete: Boolean!
   joinForm: Form!
   joinFormId: bigint!
   managersCategoryName: String!
@@ -28400,6 +28404,9 @@ input TeamBoolExp {
   documentsAggregate: DocumentAggregateBoolExp
   eventOrganizes: EventOrganizeBoolExp
   eventOrganizesAggregate: EventOrganizeAggregateBoolExp
+  expectingPresidentEmail: StringComparisonExp
+  expectingSecretaryEmail: StringComparisonExp
+  expectingTreasurerEmail: StringComparisonExp
   finances: FinanceBoolExp
   financesAggregate: FinanceAggregateBoolExp
   grantFund: LegalUnitBoolExp
@@ -28408,6 +28415,7 @@ input TeamBoolExp {
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   isJoinFormActive: BooleanComparisonExp
+  isOnboardingComplete: BooleanComparisonExp
   joinForm: FormBoolExp
   joinFormId: BigintComparisonExp
   managersCategoryName: StringComparisonExp
@@ -28855,12 +28863,16 @@ input TeamInsertInput {
   directorsCategoryName: String
   documents: DocumentArrRelInsertInput
   eventOrganizes: EventOrganizeArrRelInsertInput
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   finances: FinanceArrRelInsertInput
   grantFund: LegalUnitObjRelInsertInput
   grants: GrantArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinForm: FormObjRelInsertInput
   joinFormId: bigint
   managersCategoryName: String
@@ -29450,6 +29462,9 @@ type TeamMaxFields {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -29473,6 +29488,9 @@ input TeamMaxOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -30492,6 +30510,9 @@ type TeamMinFields {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   joinFormId: bigint
@@ -30515,6 +30536,9 @@ input TeamMinOrderBy {
   createdById: OrderBy
   deletedAt: OrderBy
   directorsCategoryName: OrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   joinFormId: OrderBy
@@ -30565,12 +30589,16 @@ input TeamOrderBy {
   directorsCategoryName: OrderBy
   documentsAggregate: DocumentAggregateOrderBy
   eventOrganizesAggregate: EventOrganizeAggregateOrderBy
+  expectingPresidentEmail: OrderBy
+  expectingSecretaryEmail: OrderBy
+  expectingTreasurerEmail: OrderBy
   financesAggregate: FinanceAggregateOrderBy
   grantFund: LegalUnitOrderBy
   grantsAggregate: GrantAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   isJoinFormActive: OrderBy
+  isOnboardingComplete: OrderBy
   joinForm: FormOrderBy
   joinFormId: OrderBy
   managersCategoryName: OrderBy
@@ -30609,9 +30637,13 @@ enum TeamSelectColumn {
   createdById
   deletedAt
   directorsCategoryName
+  expectingPresidentEmail
+  expectingSecretaryEmail
+  expectingTreasurerEmail
   hiddenAt
   id
   isJoinFormActive
+  isOnboardingComplete
   joinFormId
   managersCategoryName
   membersCategoryName
@@ -30626,10 +30658,12 @@ enum TeamSelectColumn {
 
 enum TeamSelectColumnTeamAggregateBoolExpBool_andArgumentsColumns {
   isJoinFormActive
+  isOnboardingComplete
 }
 
 enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
   isJoinFormActive
+  isOnboardingComplete
 }
 
 input TeamSetInput {
@@ -30641,9 +30675,13 @@ input TeamSetInput {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinFormId: bigint
   managersCategoryName: String
   membersCategoryName: String
@@ -30760,9 +30798,13 @@ input TeamStreamCursorValueInput {
   createdById: bigint
   deletedAt: timestamptz
   directorsCategoryName: String
+  expectingPresidentEmail: String
+  expectingSecretaryEmail: String
+  expectingTreasurerEmail: String
   hiddenAt: timestamptz
   id: bigint
   isJoinFormActive: Boolean
+  isOnboardingComplete: Boolean
   joinFormId: bigint
   managersCategoryName: String
   membersCategoryName: String
@@ -30814,9 +30856,13 @@ enum TeamUpdateColumn {
   createdById
   deletedAt
   directorsCategoryName
+  expectingPresidentEmail
+  expectingSecretaryEmail
+  expectingTreasurerEmail
   hiddenAt
   id
   isJoinFormActive
+  isOnboardingComplete
   joinFormId
   managersCategoryName
   membersCategoryName
