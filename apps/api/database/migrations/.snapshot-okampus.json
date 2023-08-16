@@ -2882,6 +2882,46 @@
           "default": "'Members'",
           "mappedType": "text"
         },
+        "expecting_president_email": {
+          "name": "expecting_president_email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "expecting_treasurer_email": {
+          "name": "expecting_treasurer_email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "expecting_secretary_email": {
+          "name": "expecting_secretary_email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "text"
+        },
+        "is_onboarding_complete": {
+          "name": "is_onboarding_complete",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
         "is_join_form_active": {
           "name": "is_join_form_active",
           "type": "boolean",
@@ -7123,6 +7163,7 @@
             "Rejected",
             "Approved",
             "Published",
+            "Canceled",
             "Completed"
           ],
           "mappedType": "enum"
