@@ -1,5 +1,3 @@
-import '../../vite-imports.d.ts';
-
 import { EventApprovalStepSeeder } from './factories/approval-step.seeder';
 import { EventSeeder } from './factories/event.seeder';
 import { UserSeeder } from './factories/user.seeder';
