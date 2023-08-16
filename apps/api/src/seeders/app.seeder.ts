@@ -8,6 +8,7 @@ import { LegalUnitSeeder } from './factories/legal-unit.seeder';
 import { LegalUnitLocationSeeder } from './factories/legal-unit-location.seeder';
 import { TagSeeder } from './factories/tag.seeder';
 
+import { rootPath } from '../config.js';
 import {
   clubDefaultRoles,
   Campus,
@@ -86,20 +87,20 @@ import YAML from 'yaml';
 
 import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
+import type { UploadsService } from '@okampus/api/bll';
 import type { EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
-import type { UploadsService } from '../../features/uploads/uploads.service';
-import type { EntityManager } from '@mikro-orm/core';
 import type { SocialType } from '@okampus/shared/enums';
+
+import type { EntityManager } from '@mikro-orm/core';
 
 const createdAt = new Date();
 
-const relativeAssetsPath = `../../../../../assets/src/`;
-const seederFolder = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
+const assetsFolder = path.join(rootPath, 'libs', 'assets', 'src');
+const customSeederFolder = path.join(rootPath, 'apps', 'api', 'src', 'seeders', 'custom');
 
 const receiptExampleFilename = 'receipt-example.pdf';
-const receiptExamplePath = path.join(seederFolder, relativeAssetsPath, 'documents', receiptExampleFilename);
+const receiptExamplePath = path.join(assetsFolder, 'documents', receiptExampleFilename);
 
 const seedingConfig = {
   N_ADMINS: 10,
@@ -192,14 +193,14 @@ function randomMission(project: Project, tenant: Tenant): Mission {
 }
 
 async function readIcon(iconFileName: string) {
-  const icon = await readFile(path.join(seederFolder, relativeAssetsPath, 'images/team-category', iconFileName));
-  if (!icon) return await readFile(`${seederFolder}/custom/icons/${iconFileName}`);
+  const icon = await readFile(path.join(assetsFolder, 'images', 'team-category', iconFileName));
+  if (!icon) return await readFile(path.join(customSeederFolder, 'icons', iconFileName));
   return icon;
 }
 
 type CategoryData = { name: string; color: Colors; slug?: string; icon?: string };
 async function loadCategoriesFromYaml(): Promise<CategoryData[] | null> {
-  let categories = await readYaml(`${seederFolder}/custom/categories.yaml`);
+  let categories = await readYaml(path.join(customSeederFolder, 'categories.yaml'));
   if (!Array.isArray(categories)) return null;
 
   categories = categories.filter(({ name }) => typeof name === 'string' && name.length > 0);
@@ -251,7 +252,7 @@ function fakeTeamsData(tenant: Tenant, categories: Tag[]): TeamData[] {
 }
 
 async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<TeamData[] | null> {
-  let teams = await readYaml(`${seederFolder}/custom/teams.yaml`);
+  let teams = await readYaml(path.join(customSeederFolder, 'teams.yaml'));
   if (!Array.isArray(teams)) return null;
 
   teams = teams.filter(({ name }) => typeof name === 'string' && name.length > 0);
@@ -260,7 +261,7 @@ async function loadTeamsFromYaml(tenant: Tenant, categories: Tag[]): Promise<Tea
   return await Promise.all(
     teams.map(async (team: TeamData) => {
       const slug = typeof team.slug === 'string' && team.slug.length > 0 ? team.slug : toSlug(team.name);
-      const avatar = await readFile(`${seederFolder}/custom/avatars/${team.name}.webp`);
+      const avatar = await readFile(path.join(customSeederFolder, 'avatars', `${team.name}.webp`));
 
       const originalCreationDay = team.originalCreationDay;
       const originalCreationMonth = team.originalCreationMonth;
@@ -306,7 +307,7 @@ export class DatabaseSeeder extends Seeder {
 
   public async run(em: EntityManager): Promise<void> {
     this.logger.log(`Seeding launched for tenant ${DatabaseSeeder.targetTenant}...`);
-    this.logger.log(`Seeder folder: ${seederFolder}, receipt example path: ${receiptExamplePath}`);
+    this.logger.log(`Custom seeder folder: ${customSeederFolder}, receipt example path: ${receiptExamplePath}`);
 
     const start = new Date('2023-05-01T00:00:00.000Z');
 

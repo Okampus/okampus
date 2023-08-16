@@ -1,7 +1,8 @@
-import { Factory } from '@mikro-orm/seeder';
 import { Individual } from '@okampus/api/dal';
 import { randomId, toSlug } from '@okampus/shared/utils';
+
 import { faker } from '@faker-js/faker/locale/fr';
+import { Factory } from '@mikro-orm/seeder';
 
 import type { EntityManager } from '@mikro-orm/core';
 import type { Tenant, IndividualOptions } from '@okampus/api/dal';
@@ -9,7 +10,11 @@ import type { Tenant, IndividualOptions } from '@okampus/api/dal';
 export class UserSeeder extends Factory<Individual> {
   model = Individual;
 
-  constructor(em: EntityManager, private readonly tenant: Tenant, private readonly passwordHash: string) {
+  constructor(
+    em: EntityManager,
+    private readonly tenant: Tenant,
+    private readonly passwordHash: string,
+  ) {
     super(em);
   }
 

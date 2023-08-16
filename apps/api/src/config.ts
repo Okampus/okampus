@@ -1,12 +1,13 @@
 import { Buckets, TokenType } from '@okampus/shared/enums';
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'node:url';
+
+import { execSync } from 'node:child_process';
 import path from 'node:path';
+
 import type { ApiConfig } from '@okampus/shared/types';
 
-const _dirname = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
-export const rootPath = path.join(_dirname, '../../..');
-const appPath = `${rootPath}/apps/api`;
+export const rootPath = execSync('git rev-parse --show-toplevel').toString().trim();
+const appPath = path.join(rootPath, 'apps', 'api');
 
 dotenv.config({ path: `${appPath}/.env` });
 

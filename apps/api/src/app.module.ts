@@ -1,4 +1,5 @@
 import { AppController } from './app.controller';
+import { DatabaseSeeder } from './seeders/app.seeder';
 import { config } from './config';
 
 import graphqlConfig from './configs/graphql.config';
@@ -7,7 +8,6 @@ import mikroOrmConfig from './configs/mikro-orm.config';
 import {
   AuthGuard,
   AuthModule,
-  DatabaseSeeder,
   OIDCCacheModule,
   UploadsModule,
   HealthModule,
