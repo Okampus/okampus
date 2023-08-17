@@ -1,4 +1,7 @@
 import ModalLayout from '../../atoms/Layout/ModalLayout';
+import ActionButton from '../../molecules/Button/ActionButton';
+
+import { ActionType } from '@okampus/shared/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -16,6 +19,8 @@ type FormStep<T> = {
   hideBack?: boolean;
   header: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
   footer?: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
+  nextStep?: string;
+  submit?: React.ReactNode;
   content: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
   onEnter?: (ctx: FormStepContext<T>) => void;
 };
@@ -42,22 +47,39 @@ export default function MultiStepForm<T>({ steps, defaultValues, onClose, onSubm
 
   const context = { values, setValues, goToPreviousStep, goToStep, onSubmit };
 
-  const key = stepHistory.at(-1) || 'initial';
+  const key = stepHistory.at(-1) ?? 'initial';
   const step = steps[key];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => step.onEnter?.(context), [step]);
 
   const renderFooter = typeof step.footer === 'function' ? step.footer?.(context) ?? null : step.footer;
+
+  let innerFooter = renderFooter;
+  if (step.nextStep || step.submit) {
+    const label = step.nextStep ? 'Continuer' : step.submit;
+    const linkOrActionOrMenu = () => (step.nextStep ? goToStep(step.nextStep) : onSubmit(values));
+    const stepButton = <ActionButton action={{ type: ActionType.Success, label, linkOrActionOrMenu }} />;
+
+    innerFooter = renderFooter ? (
+      <div className="flex items-center gap-2">
+        {renderFooter}
+        {stepButton}
+      </div>
+    ) : (
+      stepButton
+    );
+  }
+
   const footer =
     key === 'initial' || step.hideBack ? (
-      renderFooter
+      innerFooter
     ) : (
       <>
         <div className="text-1 font-medium cursor-pointer hover:underline" onClick={goToPreviousStep}>
           Retour
         </div>
-        {renderFooter}
+        {innerFooter}
       </>
     );
 

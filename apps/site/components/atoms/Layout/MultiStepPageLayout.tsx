@@ -1,9 +1,7 @@
-import {
-  // useEffect,
-  useState,
-} from 'react';
-// import { IconCircleCheck } from '@tabler/icons-react';
-import clsx from 'clsx';
+import ViewLayout from './ViewLayout';
+import { clsx } from 'clsx';
+import { useState } from 'react';
+import { IconCircleCheck } from '@tabler/icons-react';
 
 export type MultiStepPageStepContext<T> = {
   values: T;
@@ -22,7 +20,7 @@ export type MultiStepPageStep<T> = {
 
 export type MultiStepPageLayoutProps<T> = {
   initialData: T;
-  header?: React.ReactNode;
+  header?: string;
   scrollable?: boolean;
   bottomPadded?: boolean;
   initialStep?: number;
@@ -44,34 +42,6 @@ export default function MultiStepPageLayout<T>({
   const [currentStep, setCurrentStep] = useState(initialStep ?? 0);
   const [data, setData] = useState<T>(initialData);
 
-  // useEffect(
-  //   () =>
-  //     setSidePanel({
-  //       id: 'multistep',
-  //       panel: (
-  //         <div className="mt-4 w-full flex flex-col">
-  //           {steps.map((step, index) => (
-  //             <div key={index} className={clsx(index !== currentStep && 'opacity-50', 'p-4')}>
-  //               <div className="flex items-start gap-3 font-semibold text-0 mb-1">
-  //                 {index > currentStep ? (
-  //                   <IconCircleCheck className="text-2" />
-  //                 ) : (
-  //                   <IconCircleCheck className="text-[var(--success)]" />
-  //                 )}
-  //                 {step.title}
-  //               </div>
-  //               {step.subtitle && <div className="pl-9 text-sm text-2 font-medium">{step.subtitle}</div>}
-  //             </div>
-  //           ))}
-  //         </div>
-  //       ),
-  //       priority: 2,
-  //     }),
-  //   [steps, currentStep, setSidePanel]
-  // );
-
-  // useEffect(() => () => removeSidePanel('multistep'), [removeSidePanel]);
-
   const goToPreviousStep = () => setCurrentStep(currentStep - 1);
   const goToNextStep = () => setCurrentStep(currentStep + 1);
 
@@ -80,16 +50,27 @@ export default function MultiStepPageLayout<T>({
   if (!step) return null;
 
   return (
-    <section
-      className={clsx(
-        'w-full px-[var(--px-content)] pt-[var(--py-content)]',
-        className,
-        scrollable && 'overflow-y-scroll overflow-x-hidden scrollbar',
-        bottomPadded && 'pb-[var(--pb-app)]',
-      )}
-    >
-      {header && <div className="page-title mb-10">{header}</div>}
-      {step.render({ values: data, setValues: setData, goToPreviousStep, goToNextStep, onSubmit })}
-    </section>
+    <>
+      <ViewLayout innerClassName={className} header={header} bottomPadded={bottomPadded} scrollable={scrollable}>
+        {header && <div className="page-title mb-10">{header}</div>}
+        {step.render({ values: data, setValues: setData, goToPreviousStep, goToNextStep, onSubmit })}
+      </ViewLayout>
+
+      <div className="my-[var(--py-content)] w-full flex flex-col">
+        {steps.map((step, idx) => (
+          <div key={idx} className={clsx(idx !== currentStep && 'opacity-50', 'p-4')}>
+            <div className="flex items-start gap-3 font-semibold text-0 mb-1">
+              {idx > currentStep ? (
+                <IconCircleCheck className="text-2" />
+              ) : (
+                <IconCircleCheck className="text-[var(--success)]" />
+              )}
+              {step.title}
+            </div>
+            {step.subtitle && <div className="pl-9 text-sm text-2 font-medium">{step.subtitle}</div>}
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

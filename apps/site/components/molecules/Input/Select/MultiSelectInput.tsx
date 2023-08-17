@@ -59,7 +59,7 @@ export default function MultiSelectInput<T>({
       const item = options.find((choice) => choice.value === val);
       if (item) selected.push(item);
     }
-  }, [options, value]);
+  }, [options, selected, value]);
 
   const [selectedItems, setSelectedItems] = useState<SelectItem<T>[]>(selected);
 
@@ -117,7 +117,7 @@ export default function MultiSelectInput<T>({
   const triggerClass = clsx(triggerClassName, disabled && 'pointer-events-none opacity-50');
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 
-  const contentStyle = { ...floatingStyles, overflowY: 'auto' } as React.CSSProperties;
+  const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
   const contentProps = { className: contentClass, style: contentStyle, ...getFloatingProps() };
 
   const buttonInner: React.ReactNode =

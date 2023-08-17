@@ -54,7 +54,7 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        zIndex: 101,
+                        zIndex: 103,
                         ...props.style,
                       }
                     : {
@@ -62,7 +62,7 @@ export default forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement> & Popo
                         top: context.y ?? 0,
                         left: context.x ?? 0,
                         width: 'max-content',
-                        zIndex: 101,
+                        zIndex: 103,
                         ...props.style,
                       }
                 }
