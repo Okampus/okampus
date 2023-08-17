@@ -5,7 +5,7 @@ import IMoney from '../../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
 import FileGroup from '../../../../../../../components/molecules/Group/FileGroup';
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
-import TransactionForm from '../../../../../../../components/forms/TransactionForm/TransactionForm';
+import FinanceForm from '../../../../../../../components/forms/FinanceForm/FinanceForm';
 import FinanceSidePanel from '../../../../../../../components/layouts/SidePanel/FinanceSidePanel/FinanceSidePanel';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
@@ -195,7 +195,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           <ActionButton
             action={{
               label: 'Ajouter une transaction',
-              linkOrActionOrMenu: () => openModal({ node: <TransactionForm teamManage={teamManage} /> }),
+              linkOrActionOrMenu: () => openModal({ node: <FinanceForm teamManage={teamManage} /> }),
               iconOrSwitch: <IconPlus />,
               type: ActionType.Primary,
             }}
