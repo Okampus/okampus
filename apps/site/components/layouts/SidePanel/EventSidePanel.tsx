@@ -19,14 +19,13 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
   const count = event.eventJoinsAggregate.aggregate.count;
   return (
     <SidePanel>
-      <GroupItem className="mt-[var(--py-content)] px-3" headingClassName="px-2" heading="Organisé par">
+      <GroupItem className="my-[var(--py-content)] px-3" headingClassName="px-2" heading="Organisé par">
         {event.eventOrganizes.map(({ team }) => (
           <li key={team.id}>
             <TeamLabeled team={team} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
           </li>
         ))}
       </GroupItem>
-      <hr className="m-2 border-[var(--border-2)]" />
       <GroupItem
         className="mb-4 px-3"
         headingClassName="px-2"

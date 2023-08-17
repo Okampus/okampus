@@ -45,7 +45,7 @@ export default function SideBar({ children, header }: SideBarProps) {
   useEffect(() => {
     if (isMobile) isSidebarOpen && setIsSideBarOpen(false);
     else !isSidebarOpen && setIsSideBarOpen(true);
-  }, [isMobile, setIsSideBarOpen]);
+  }, [isMobile, isSidebarOpen, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
     'h-full flex shrink-0 bg-1 overflow-hidden',
@@ -82,7 +82,7 @@ export default function SideBar({ children, header }: SideBarProps) {
           {!isMobile && (
             <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
               <PopoverTrigger>
-                <div className="flex gap-3 items-center px-4 border-color-2 border-t h-[var(--h-topbar)] bg-1">
+                <div className="flex gap-3 items-center px-4 border-color-2 border-t h-[var(--h-bottombar)] bg-1">
                   <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>
@@ -94,7 +94,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                 <MenuList
                   sections={sections}
                   header={
-                    <div className="flex gap-3 items-center px-2 h-[var(--h-topbar)] bg-0">
+                    <div className="flex gap-3 items-center px-2 h-[var(--h-bottombar)] bg-0">
                       <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                       <div className="flex flex-col items-start">
                         <div className="text-1 font-semibold">{name}</div>

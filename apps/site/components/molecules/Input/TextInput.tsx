@@ -18,7 +18,6 @@ export type TextInputProps = {
 
 export default memo(
   forwardRef<HTMLInputElement, TextInputProps>(function TextInput(props, ref) {
-    // console.info('TextInput props change', props);
     const localRef = createRef<HTMLInputElement>();
 
     useEffect(() => {

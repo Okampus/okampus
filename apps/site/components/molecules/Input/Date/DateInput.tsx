@@ -57,6 +57,7 @@ export default memo(
         type="date"
         name={name}
         disabled={disabled}
+        // eslint-disable-next-line jsx-a11y/aria-props
         aria-description={description}
         aria-invalid={typeof error === 'string'}
         className={clsx('input w-full', inputClassName)}
@@ -80,16 +81,14 @@ export default memo(
     };
     return (
       <Field {...fieldProps}>
-        <span className="relative w-full">
+        <div className="relative w-full">
           {input}
           <Popover forcePlacement={true} placement="bottom-start" controlledOpen={isOpen}>
             <PopoverTrigger
               onClick={() => !isOpen && setIsOpen(!isOpen)}
-              className={clsx(className, 'absolute inset-y-0 right-2 bg-[var(--bg-input)]')}
+              className="absolute top-0 bottom-0 right-2.5 bg-[var(--bg-input)]"
             >
-              {/* <div ref={setRefIndex(0, ref)} className="input !pt-1 pb-1 justify-between gap-4"> */}
               <IconCalendarEvent className="p-0.5" />
-              {/* </div> */}
             </PopoverTrigger>
             <PopoverContent
               ref={(ref) => refs.current && (refs.current[0] = ref)}
@@ -97,8 +96,6 @@ export default memo(
             >
               <CalendarInput
                 disableSelect={true}
-                // yearSelectRef={(ref) => refs.current && (refs.current[1] = ref)}
-                // monthSelectRef={(ref) => refs.current && (refs.current[2] = ref)}
                 date={date ?? new Date()}
                 setDate={(date) => {
                   if (localRef.current) {
@@ -111,7 +108,7 @@ export default memo(
               />
             </PopoverContent>
           </Popover>
-        </span>
+        </div>
       </Field>
     );
   }),
