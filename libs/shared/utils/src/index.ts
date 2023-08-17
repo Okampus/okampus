@@ -75,6 +75,7 @@ export * from './resources/users/full-name';
 export * from './streams/stream-to-buffer';
 export * from './strings/capitalize';
 export * from './strings/count-char';
+export * from './strings/format-bic-swift';
 export * from './strings/format-iban';
 export * from './strings/non-empty';
 export * from './strings/nth-index-of';

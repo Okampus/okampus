@@ -8,5 +8,5 @@ export function validateIBAN(value: string) {
     isValid = false;
   }
   if (!isValid) return 'IBAN invalide.';
-  return;
+  return true;
 }
