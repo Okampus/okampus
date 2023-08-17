@@ -2,7 +2,7 @@ query GetMe {
   me {
     __typename
     canManageTenant
-    onboardTeams {
+    onboardingTeams {
       __typename
       id
       membershipFees

@@ -41,6 +41,7 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
           id
           individual {
             __typename
+            id
             actor {
               __typename
               id
@@ -84,6 +85,7 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
           id
           individual {
             __typename
+            id
             actor {
               __typename
               id
@@ -139,6 +141,15 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
       user {
         __typename
         id
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
       }
     }
     event {

@@ -5,6 +5,8 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     isPresent
     state
     event {
+      __typename
+      id
       slug
       start
       end
