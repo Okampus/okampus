@@ -3,31 +3,37 @@
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
 import TextInput from '../../../../components/molecules/Input/TextInput';
 import ActionButton from '../../../../components/molecules/Button/ActionButton';
+import SubmitButton from '../../../../components/molecules/Button/SubmitButton';
+import FormErrors from '../../../../components/organisms/Form/FormErrors';
 
 import { API_URL } from '../../../../context/consts';
 import { meSlugAtom } from '../../../../context/global';
-import { useGetTenantOidcInfoQuery, useUserLoginMutation } from '@okampus/shared/graphql';
+
+import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
 
 import { ReactComponent as OkampusLogoLarge } from '@okampus/assets/svg/brands/okampus-large.svg';
+import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
+import { useGetTenantOidcInfoQuery, useUserLoginMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { NEXT_PAGE_COOKIE } from '@okampus/shared/consts';
-
-import { IconArrowRight } from '@tabler/icons-react';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import Cookies from 'universal-cookie';
+import * as z from 'zod';
+
+const signinFormSchema = z.object({
+  username: z.string().min(1, { message: "Nom d'utilisateur requis" }),
+  password: z.string().min(1, { message: 'Mot de passe requis' }),
+});
 
 export default function SigninPage() {
   const [, setMeSlug] = useAtom(meSlugAtom);
   const router = useRouter();
   const cookieStore = new Cookies();
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   const { data } = useGetTenantOidcInfoQuery();
   const [login] = useUserLoginMutation({
@@ -36,16 +42,34 @@ export default function SigninPage() {
         setMeSlug(data.login.user.individual.actor.slug);
         const next = cookieStore.get(NEXT_PAGE_COOKIE);
         cookieStore.remove(NEXT_PAGE_COOKIE);
+        console.log('NEXT', next === '/signin' ? '/' : next || '/');
         router.push(next === '/signin' ? '/' : next || '/');
       }
     },
   });
 
   const [showLogin, setShowLogin] = useState(false);
-  // const { register, handleSubmit, watch, formState } = useForm<SigninForm>({ values: { username, password } });
-  // const { errors } = formState;
+  const { register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
+    resolver: zodResolver(signinFormSchema),
+  });
 
-  // const registered = register('username', { value: username });
+  const onSubmit = handleSubmit(async (values) => {
+    await login({ variables: { dto: { username: values.username, password: values.password } } })
+      .then(({ data }) => {
+        if (data?.login) {
+          setMeSlug(data.login.user.individual.actor.slug);
+          const next = cookieStore.get(NEXT_PAGE_COOKIE);
+          cookieStore.remove(NEXT_PAGE_COOKIE);
+          router.push(next === '/signin' ? '/' : next || '/');
+        }
+      })
+      // eslint-disable-next-line unicorn/catch-error-name
+      .catch((apolloErrors) => {
+        for (const error of getGraphQLErrors(apolloErrors)) {
+          setError('root', error);
+        }
+      });
+  });
 
   return (
     <div className="flex w-full h-full overflow-hidden">
@@ -79,32 +103,25 @@ export default function SigninPage() {
               OU
             </div>
             {showLogin ? (
-              <>
-                <div className="flex flex-col gap-4">
+              <form onSubmit={onSubmit}>
+                <div className="flex flex-col gap-4 mb-6">
                   <TextInput
-                    name="username"
+                    error={formState.errors.username?.message}
                     label="Nom d'utilisateur"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
+                    placeholder="Votre nom d'utilisateur"
+                    {...register('username', { required: true })}
                   />
                   <TextInput
-                    name="password"
+                    error={formState.errors.password?.message}
                     label="Mot de passe"
                     type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="••••••••"
+                    {...register('password', { required: true })}
                   />
                 </div>
-                <ActionButton
-                  iconPosition="right"
-                  action={{
-                    iconOrSwitch: <IconArrowRight />,
-                    label: 'Se connecter',
-                    linkOrActionOrMenu: () => login({ variables: { dto: { username: username.trim(), password } } }),
-                    type: ActionType.Action,
-                  }}
-                />
-              </>
+                <SubmitButton label="Se connecter" loading={formState.isSubmitting} />
+                <FormErrors className="mt-6" errors={formState.errors} />
+              </form>
             ) : (
               <span className="add-button" onClick={() => setShowLogin(true)}>
                 J&apos;ai un compte Okampus

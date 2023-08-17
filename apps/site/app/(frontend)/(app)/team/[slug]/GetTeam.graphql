@@ -4,6 +4,9 @@ query GetTeam($slug: String!) {
     id
     createdAt
     type
+    directorsCategoryName
+    managersCategoryName
+    membersCategoryName
     membershipFees
     membershipDuration
     actor {
@@ -34,9 +37,6 @@ query GetTeam($slug: String!) {
         order
       }
     }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
     joinForm {
       __typename
       id
@@ -44,6 +44,31 @@ query GetTeam($slug: String!) {
       schema
       name
       type
+    }
+    parent {
+      __typename
+      id
+      type
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
     }
     poles {
       __typename

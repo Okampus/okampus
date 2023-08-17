@@ -47,7 +47,7 @@ export default memo(
         // eslint-disable-next-line jsx-a11y/aria-props
         aria-description={description}
         aria-invalid={typeof error === 'string'}
-        className={clsx('input !h-auto', inputClassName)}
+        className={clsx('input !h-auto !max-h-max', inputClassName)}
         placeholder={placeholder}
         onChange={onChange}
         {...textAreaProps}

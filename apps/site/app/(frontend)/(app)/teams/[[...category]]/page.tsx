@@ -3,10 +3,13 @@
 import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
 import LinkItem from '../../../../../components/atoms/Item/LinkItem';
 import SkeletonLinkItem from '../../../../../components/atoms/Skeleton/SkeletonLinkItem';
-import SideBar from '../../../../../components/layouts/SideBar';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 import Skeleton from '../../../../../components/atoms/Skeleton/Skeleton';
+
 import TeamCard from '../../../../../components/molecules/Card/TeamCard';
+
+import SideBar from '../../../../../components/layouts/SideBar';
+import SideBarTitle from '../../../../../components/layouts/SideBar/SidebarTitle';
 
 import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
 
@@ -61,14 +64,8 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
   return (
     <>
       <SideBar>
-        <LinkItem
-          className="mt-[var(--py-content)]"
-          pathname={pathname}
-          href="/teams"
-          label="Les associations"
-          icon={<IconCompass />}
-          large={true}
-        />
+        <SideBarTitle>Découverte</SideBarTitle>
+        <LinkItem pathname={pathname} href="/teams" label="Les associations" icon={<IconCompass />} large={true} />
         {tags
           ? tags.map((tag) => (
               <LinkItem

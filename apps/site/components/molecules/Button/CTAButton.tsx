@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import type { ActionType } from '@okampus/shared/types';
 
-export type ActionCTA = (() => void) | string;
+export type ActionCTA = (() => void) | string | undefined;
 
 export type CTAButtonProps = {
   className: string;
@@ -24,7 +24,7 @@ export default function CTAButton({ className, type, children, action }: CTAButt
       {children}
     </button>
   ) : (
-    <Link className={className} href={action}>
+    <Link className={ctaClassName} href={action}>
       {children}
     </Link>
   );

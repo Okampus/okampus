@@ -1,7 +1,7 @@
 'use client';
 
+import SideBarTitle from './SidebarTitle';
 import SideBar from '../SideBar';
-import GroupItem from '../../atoms/Item/GroupItem';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import LinkItem from '../../atoms/Item/LinkItem';
 
@@ -28,11 +28,8 @@ export default function HomeSideBar() {
 
   return (
     <SideBar>
-      <GroupItem
-        headingClassName="ml-3 mt-6 opacity-60"
-        heading="Vos associations"
-        groupClassName="flex flex-col gap-1"
-      >
+      <SideBarTitle>Accueil</SideBarTitle>
+      <div>
         {[
           ...(teams || []),
           <LinkItem
@@ -44,7 +41,7 @@ export default function HomeSideBar() {
             large={true}
           />,
         ]}
-      </GroupItem>
+      </div>
     </SideBar>
   );
 }

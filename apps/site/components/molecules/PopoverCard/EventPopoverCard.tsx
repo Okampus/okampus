@@ -15,7 +15,7 @@ import type { EventDetailsInfo } from '../../../types/features/event.info';
 export type EventPopoverCardProps = { event?: EventDetailsInfo };
 export default function EventPopoverCard({ event }: EventPopoverCardProps) {
   return event ? (
-    <div className="relative bg-main shadow-lg dark:shadow-[#333] rounded-t-2xl md:rounded-2xl w-full md:w-[34rem]">
+    <div className="text-0 relative bg-main shadow-lg dark:shadow-[#333] rounded-t-2xl md:rounded-2xl w-full md:w-[34rem]">
       {/* <CloseButtonIcon className="absolute right-4 top-4" onClick={onClose} /> */}
       <BannerImage className="rounded-t-2xl" name={event.name} aspectRatio={4.5} src={event?.banner?.url} />
       <div className="px-10 py-8">

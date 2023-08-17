@@ -1,7 +1,7 @@
-import { Factory } from '@mikro-orm/seeder';
 import { Tenant } from '@okampus/api/dal';
 import { toSlug } from '@okampus/shared/utils';
 import { faker } from '@faker-js/faker/locale/fr';
+import { Factory } from '@mikro-orm/seeder';
 
 import type { TenantOptions } from '@okampus/api/dal';
 

@@ -45,9 +45,29 @@ query GetTeamManage($slug: String!) {
       schema
       name
     }
-    teamMembersAggregate {
-      aggregate {
-        count
+    parent {
+      __typename
+      id
+      type
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
       }
     }
     poles {
@@ -764,6 +784,8 @@ query GetTeamManage($slug: String!) {
         __typename
         id
         createdAt
+        name
+        type
         financesAggregate {
           aggregate {
             sum {
@@ -824,7 +846,6 @@ query GetTeamManage($slug: String!) {
           bicSwift
           iban
         }
-        name
         team {
           __typename
           id
@@ -850,7 +871,6 @@ query GetTeamManage($slug: String!) {
             }
           }
         }
-        type
       }
     }
     teamHistories(

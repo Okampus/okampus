@@ -28,7 +28,7 @@ export class AuthResolver {
     private readonly individualRepository: IndividualRepository,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   @TenantPublic()
@@ -36,7 +36,7 @@ export class AuthResolver {
   public async login(
     @Args('dto') dto: LoginDto,
     @Context() ctx: GQLContext,
-    @Info() info: GraphQLResolveInfo
+    @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
     canManageTenant: boolean;
@@ -70,34 +70,43 @@ export class AuthResolver {
   public async me(
     @Requester() requester: Individual,
     @ReqTenant() tenant: Tenant,
-    @Info() info: GraphQLResolveInfo
+    @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
     canManageTenant: boolean;
   }> {
     if (!requester.user) throw new BadRequestException('No user found');
 
-    const data = await this.hasuraService.findByPk(
-      'userByPk',
-      getSelectionSet(info)
-        .filter((field) => field.startsWith('user'))
-        .map((field) => field.replace('user.', '')),
-      { id: requester.user.id }
-    );
+    const selectionSet = getSelectionSet(info);
 
-    const individual = await this.individualRepository.findOneOrFail(
-      { id: requester.id },
-      { populate: ['adminRoles'] }
-    );
+    const userData = selectionSet.some((field) => field.startsWith('user'))
+      ? await this.hasuraService.findByPk(
+          'userByPk',
+          selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
+          { id: requester.user.id },
+        )
+      : undefined;
+
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
+      ? await this.hasuraService.find(
+          'team',
+          selectionSet
+            .filter((field) => field.startsWith('onboardingTeams'))
+            .map((field) => field.replace('onboardingTeams.', '')),
+          { expectingPresidentEmail: { _eq: requester.actor.email } },
+        )
+      : undefined;
 
     return {
-      user: data.userByPk,
-      canManageTenant: individual.adminRoles
+      ...(userData && { user: userData.userByPk }),
+      ...(teamsData && { onboardingTeams: teamsData.team }),
+      canManageTenant: requester.adminRoles
         .getItems()
         .some((role) =>
           role.tenant === null
             ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
-            : role.tenant.id === tenant.id && role.permissions.includes(AdminPermissions.ManageTenantEntities)
+            : role.tenant.id === tenant.id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
         ),
     };
   }

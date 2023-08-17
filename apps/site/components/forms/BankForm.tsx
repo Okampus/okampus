@@ -1,33 +1,22 @@
 'use client';
 
 import GroupItem from '../atoms/Item/GroupItem';
+import BankPreview from '../atoms/Preview/BankPreview';
 
 import SubmitButton from '../molecules/Button/SubmitButton';
 import TextInput from '../molecules/Input/TextInput';
 import LegalUnitInput from '../molecules/Input/LegalUnit/LegalUnitInput';
 import LegalUnitLocationInput from '../molecules/Input/LegalUnit/LegalUnitLocationInput';
 
-// import { useForm } from '../../hooks/form/useForm';
-// import { validateIBAN } from '../../utils/form-validation/iban';
-
-import BankPreview from '../atoms/Preview/BankPreview';
-// import { formatIBAN } from '@okampus/shared/utils';
+import { validateIBAN } from '../../utils/form-validation/iban';
 
 import { LegalUnitType } from '@okampus/shared/enums';
+import { formatBicSwift, formatIBAN } from '@okampus/shared/utils';
 import { useForm } from 'react-hook-form';
 
 import type { ActorMinimalInfo } from '../../types/features/actor.info';
 import type { LegalUnitLocationMinimalInfo } from '../../types/features/legal-unit-location.info';
 import type { LegalUnitMinimalInfo } from '../../types/features/legal-unit.info';
-
-function formatBicSwift(bicSwift: string) {
-  if (!bicSwift) return '';
-  return bicSwift
-    .slice(0, 11)
-    .replaceAll(/\s\s+/g, ' ')
-    .replaceAll(/[^\da-z]/gi, '')
-    .toUpperCase();
-}
 
 type BankValues = {
   bankLocation: LegalUnitLocationMinimalInfo | null;
@@ -70,7 +59,11 @@ export default function BankForm({ actor, submit }: BankFormProps) {
       <div className="flex flex-col gap-5 py-1">
         <div className="flex flex-col gap-4">
           <TextInput {...register('holderName')} label="Nom du titulaire du compte" />
-          <TextInput {...register('iban')} description="Exemple: FR76 0000 1000 0000 0225 4793 751" label="IBAN" />
+          <TextInput
+            {...register('iban', { validate: validateIBAN, setValueAs: formatIBAN })}
+            description="Exemple: FR76 0000 1000 0000 0225 4793 751"
+            label="IBAN"
+          />
         </div>
         {!formState.errors.iban && (
           <div className="flex flex-col gap-4">
@@ -81,7 +74,10 @@ export default function BankForm({ actor, submit }: BankFormProps) {
                 value={bank}
                 onChange={(value) => setValue('bank', value)}
               />
-              <TextInput {...register('bicSwift')} label="Code BIC/SWIFT (présent sur le RIB)" />
+              <TextInput
+                {...register('bicSwift', { setValueAs: formatBicSwift })}
+                label="Code BIC/SWIFT (présent sur le RIB)"
+              />
             </GroupItem>
             {bank && (
               <>
@@ -99,7 +95,9 @@ export default function BankForm({ actor, submit }: BankFormProps) {
             )}
           </div>
         )}
-        {bankLocation && iban && holderName && bicSwift && <SubmitButton label="Valider votre RIB" />}
+        {bankLocation && iban && holderName && bicSwift && (
+          <SubmitButton loading={formState.isSubmitting} label="Valider votre RIB" />
+        )}
       </div>
       <BankPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankLocation={bankLocation} />
     </form>

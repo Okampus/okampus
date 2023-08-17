@@ -1,5 +1,6 @@
 'use client';
 
+import SideBarTitle from './SidebarTitle';
 import SideBar from '../SideBar';
 import UserLabeled from '../../molecules/Labeled/UserLabeled';
 import SkeletonSidebar from '../../atoms/Skeleton/SkeletonSidebar';
@@ -14,7 +15,8 @@ export default function UserSideBar({ user }: UserSideBarProps) {
 
   return data ? (
     <SideBar>
-      <ul className="px-3">
+      <SideBarTitle>Annuaire associatif</SideBarTitle>
+      <ul className="px-2 flex flex-col gap-1">
         <li>
           <UserLabeled user={user} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
         </li>

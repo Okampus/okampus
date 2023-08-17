@@ -63,6 +63,11 @@ mutation InsertFinance($object: FinanceInsertInput!) {
       team {
         __typename
         id
+        actor {
+          __typename
+          id
+          slug
+        }
       }
       individual {
         __typename
@@ -70,6 +75,20 @@ mutation InsertFinance($object: FinanceInsertInput!) {
         user {
           __typename
           id
+          individual {
+            __typename
+            id
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+        actor {
+          __typename
+          id
+          slug
         }
       }
     }
@@ -119,6 +138,15 @@ mutation InsertFinance($object: FinanceInsertInput!) {
       user {
         __typename
         id
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
       }
     }
     event {

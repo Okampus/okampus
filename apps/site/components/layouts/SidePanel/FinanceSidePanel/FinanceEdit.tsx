@@ -112,7 +112,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
           <hr className="border-[var(--border-2)] my-2" />
         </>
       )}
-      <GroupItem heading="Informations">
+      <div>
         <DateInput {...register('method')} label="Date de paiement" />
         {/* <NumberInput
           value={values.amount}
@@ -142,7 +142,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
           value={category}
           onChange={(category) => setValue('category', category as string)}
         />
-      </GroupItem>
+      </div>
     </form>
   );
   // return (

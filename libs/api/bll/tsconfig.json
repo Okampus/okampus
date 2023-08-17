@@ -1,6 +1,6 @@
 {
   "extends": "../../../tsconfig.base.json",
-  "files": ["request-context-data.d.ts", "src/vite-imports.d.ts"],
+  "files": ["request-context-data.d.ts"],
   "include": [],
   "references": [
     {

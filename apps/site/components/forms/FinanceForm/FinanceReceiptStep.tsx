@@ -12,14 +12,14 @@ import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 
 import { useEffect, useMemo } from 'react';
 
-import type { transactionFormDefaultValues } from './TransactionForm';
+import type { financeFormDefaultValues } from './FinanceForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 import type { TeamManageInfo } from '../../../context/navigation';
 
-type Context = FormStepContext<typeof transactionFormDefaultValues>;
+type Context = FormStepContext<typeof financeFormDefaultValues>;
 type ReceiptStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
 
-export default function TransactionReceiptStep({ values, setValues }: ReceiptStep) {
+export default function FinanceReceiptStep({ values, setValues }: ReceiptStep) {
   const { t } = useTranslation();
 
   const [processReceipt, { data, loading }] = useProcessReceiptLazyQuery({ context: { useApi: true } });

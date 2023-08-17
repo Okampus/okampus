@@ -11,5 +11,5 @@ export default function FinanceHistory({ finance }: FinanceHistoryProps) {
     variables: { id: finance.id },
   });
 
-  return <LogHistory logs={data?.financeLogs} loading={loading} error={error} />;
+  return <LogHistory className="mt-4" logs={data?.financeLogs} loading={loading} error={error} />;
 }

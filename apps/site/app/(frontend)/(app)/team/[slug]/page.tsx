@@ -46,11 +46,13 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   const isMember = me.user.teamMembers.some((member) => member.team.id === team.id);
   const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);
 
-  let action: ActionCTA = `manage/team/${team.actor.slug}`;
+  let action: ActionCTA;
   let type = ActionType.Action;
   let label = `Gérer ${team.actor.name}`;
 
-  if (!isMember) {
+  if (isMember) {
+    action = `/manage/team/${team.actor.slug}`;
+  } else {
     if (isJoining) {
       type = ActionType.Info;
       label = 'Adhésion en attente...';
@@ -94,7 +96,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <ViewLayout>
+    <ViewLayout hasCta={true}>
       <div className="flex lg-max:flex-col gap-8 lg:items-center lg:gap-24">
         <div className="shrink-0 flex flex-col">
           <div className="text-2xl font-bold text-0 mb-6 flex items-center gap-8">

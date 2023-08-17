@@ -65,54 +65,50 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
       onCompleted: ({ insertBankOne }) => {
         if (!insertBankOne) return;
 
-        const bankId = insertBankOne.id;
-        const finances = {
-          data: [
-            {
-              tenantId: tenant.id,
-              createdById: me.user.individual.id,
-              amount: remaining,
-              method: PaymentMethod.Transfer,
-              category: FinanceCategory.Subvention,
-              payedById: tenant.adminTeam?.actor.id,
-              receivedById: teamManage.actor.id,
-              payedAt: new Date(),
-              teamId: teamManage.id,
-            },
-          ],
-        };
-
-        const children = {
-          data: accountAllocates.map((accountAllocate) => ({
-            tenantId: tenant.id,
-            createdById: me.user.individual.id,
-            teamId: accountAllocate.teamId,
-            name: 'Compte principal',
-            finances: {
-              data: [
-                {
-                  tenantId: tenant.id,
-                  createdById: me.user.individual.id,
-                  amount: accountAllocate.balance,
-                  method: PaymentMethod.Transfer,
-                  category: FinanceCategory.Subvention,
-                  payedById: tenant.adminTeam?.actor.id,
-                  receivedById: accountAllocate.actorId,
-                  payedAt: new Date(),
-                  teamId: accountAllocate.teamId,
-                },
-              ],
-            },
-          })),
-        };
-
         insertAccount({
           variables: {
             object: {
-              bankId,
+              bankId: insertBankOne.id,
               name: 'Compte principal',
               teamId: teamManage.id,
-              // children, finances
+              finances: {
+                data: [
+                  {
+                    tenantId: tenant.id,
+                    createdById: me.user.individual.id,
+                    amount: remaining,
+                    method: PaymentMethod.Transfer,
+                    category: FinanceCategory.Subvention,
+                    payedById: tenant.adminTeam?.actor.id,
+                    receivedById: teamManage.actor.id,
+                    payedAt: new Date().toISOString(),
+                    teamId: teamManage.id,
+                  },
+                ],
+              },
+              children: {
+                data: accountAllocates.map((accountAllocate) => ({
+                  tenantId: tenant.id,
+                  createdById: me.user.individual.id,
+                  teamId: accountAllocate.teamId,
+                  name: 'Compte principal',
+                  finances: {
+                    data: [
+                      {
+                        tenantId: tenant.id,
+                        createdById: me.user.individual.id,
+                        amount: accountAllocate.balance,
+                        method: PaymentMethod.Transfer,
+                        category: FinanceCategory.Subvention,
+                        payedById: tenant.adminTeam?.actor.id,
+                        receivedById: accountAllocate.actorId,
+                        payedAt: new Date().toISOString(),
+                        teamId: accountAllocate.teamId,
+                      },
+                    ],
+                  },
+                })),
+              },
             },
           },
           onCompleted: () => router.push(`/manage/team/${teamManage.actor?.slug}/bank`),

@@ -1,7 +1,8 @@
-import { Factory } from '@mikro-orm/seeder';
 import { LegalUnit } from '@okampus/api/dal';
 import { LegalUnitType } from '@okampus/shared/enums';
 import { randomFromArray, toSlug } from '@okampus/shared/utils';
+
+import { Factory } from '@mikro-orm/seeder';
 import { faker } from '@faker-js/faker/locale/fr';
 
 import type { Tenant, LegalUnitOptions, Tag } from '@okampus/api/dal';
@@ -14,7 +15,7 @@ export class LegalUnitSeeder extends Factory<LegalUnit> {
     em: EntityManager,
     private readonly type: LegalUnitType,
     private readonly tenant: Tenant,
-    private readonly tags: Tag[]
+    private readonly tags: Tag[],
   ) {
     super(em);
   }

@@ -19,6 +19,7 @@ query GetProjectsSelect($slug: String!) {
         __typename
         id
         name
+        slug
         banner {
           __typename
           id

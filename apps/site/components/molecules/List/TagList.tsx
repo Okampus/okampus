@@ -1,5 +1,6 @@
 import ITag from '../../atoms/Inline/ITag';
 import clsx from 'clsx';
+import { forwardRef } from 'react';
 
 import type { ITagProps } from '../../atoms/Inline/ITag';
 
@@ -9,9 +10,16 @@ export type TagListProps = {
   children?: React.ReactNode;
 } & Omit<React.HTMLAttributes<HTMLUListElement>, 'children'>;
 
-export default function TagList({ tags, className, onRemove, children, ...ulProps }: TagListProps) {
+export default forwardRef<HTMLUListElement, TagListProps>(function TagList(
+  { tags, className, onRemove, children, ...ulProps }: TagListProps,
+  ref,
+) {
   return (
-    <ul className={clsx('w-full flex flex-wrap gap-2 gap-x-2 gap-y-1 overflow-hidden', className)} {...ulProps}>
+    <ul
+      ref={ref}
+      className={clsx('w-full flex flex-wrap gap-2 gap-x-2 gap-y-1 overflow-hidden', className)}
+      {...ulProps}
+    >
       {tags.map((tag, idx) => (
         <ITag
           key={idx}
@@ -24,4 +32,4 @@ export default function TagList({ tags, className, onRemove, children, ...ulProp
       {children}
     </ul>
   );
-}
+});

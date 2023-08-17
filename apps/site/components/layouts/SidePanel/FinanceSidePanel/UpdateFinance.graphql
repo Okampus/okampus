@@ -63,6 +63,11 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
       team {
         __typename
         id
+        actor {
+          __typename
+          id
+          slug
+        }
       }
       individual {
         __typename
@@ -70,6 +75,15 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
         user {
           __typename
           id
+          individual {
+            __typename
+            id
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
         }
       }
     }
@@ -119,6 +133,15 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
       user {
         __typename
         id
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
       }
     }
     event {

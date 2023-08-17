@@ -3,6 +3,8 @@
 import Calendar from '../../../../components/organisms/Calendar';
 import SideBar from '../../../../components/layouts/SideBar';
 import CalendarInput from '../../../../components/molecules/Input/Date/CalendarInput';
+import SideBarTitle from '../../../../components/layouts/SideBar/SidebarTitle';
+
 import { useQueryAndSubscribe } from '../../../../hooks/apollo/useQueryAndSubscribe';
 
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
@@ -30,8 +32,9 @@ export default function EventsPage() {
   return (
     <>
       <SideBar>
+        <SideBarTitle>Calendrier</SideBarTitle>
         <CalendarInput
-          className="w-full px-2 pt-[var(--py-content)]"
+          className="w-full px-2"
           date={sidebarDate}
           setDate={(date) => {
             setSidebarDate(date);
