@@ -15,12 +15,12 @@ import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enu
 import { useMemo } from 'react';
 import type { TeamManageInfo } from '../../../context/navigation';
 
-import type { transactionFormDefaultValues } from './TransactionForm';
+import type { financeFormDefaultValues } from './FinanceForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 
-type Context = FormStepContext<typeof transactionFormDefaultValues>;
-type SummaryFormStepProps = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
-export default function TransactionSummaryStep({ teamManage, values, setValues }: SummaryFormStepProps) {
+type Context = FormStepContext<typeof financeFormDefaultValues>;
+type SummaryStepProps = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
+export default function FinanceSummaryStep({ teamManage, values, setValues }: SummaryStepProps) {
   const { t } = useTranslation();
 
   const { data: projectData } = useGetProjectQuery({ variables: { slug: teamManage.actor.slug } });

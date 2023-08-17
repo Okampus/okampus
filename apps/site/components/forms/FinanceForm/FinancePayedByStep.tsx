@@ -7,14 +7,14 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 import FieldSet from '../../molecules/Input/FieldSet';
 import { PayedByType } from '@okampus/shared/enums';
 
-import type { transactionFormDefaultValues } from './TransactionForm';
+import type { financeFormDefaultValues } from './FinanceForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 import type { TeamManageInfo } from '../../../context/navigation';
 
-type Context = FormStepContext<typeof transactionFormDefaultValues>;
+type Context = FormStepContext<typeof financeFormDefaultValues>;
 type PayedByStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
 
-export default function TransactionPayedByStep({ teamManage, values, setValues }: PayedByStep) {
+export default function FinancePayedByStep({ teamManage, values, setValues }: PayedByStep) {
   const { t } = useTranslation();
 
   const items = Object.keys(PayedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));

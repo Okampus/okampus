@@ -8,13 +8,13 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 
-import type { transactionFormDefaultValues } from './TransactionForm';
+import type { financeFormDefaultValues } from './FinanceForm';
 import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 
-type Context = FormStepContext<typeof transactionFormDefaultValues>;
+type Context = FormStepContext<typeof financeFormDefaultValues>;
 type DetailsStep = { values: Context['values']; setValues: Context['setValues'] };
 
-export default function TransactionDetailsStep({ values, setValues }: DetailsStep) {
+export default function FinanceDetailsStep({ values, setValues }: DetailsStep) {
   const { t } = useTranslation();
   const methods = Object.entries(PaymentMethod).map(([, value]) => ({
     label: t(`enums.PaymentMethod.${value}`),

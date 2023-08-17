@@ -1,8 +1,8 @@
-import TransactionCompanyStep from './TransactionCompanyStep';
-import TransactionDetailsStep from './TransactionDetailsStep';
-import TransactionPayedByStep from './TrasactionPayedByStep';
-import TransactionReceiptStep from './TransactionReceiptStep';
-import TransactionSummaryStep from './TransactionSummaryStep';
+import FinanceCompanyStep from './FinanceCompanyStep';
+import FinanceDetailsStep from './FinanceDetailsStep';
+import FinancePayedByStep from './FinancePayedByStep';
+import FinanceReceiptStep from './FinanceReceiptStep';
+import FinanceSummaryStep from './FinanceSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
 import ActionButton from '../../molecules/Button/ActionButton';
 import MultiStepForm from '../../organisms/Form/MultiStepForm';
@@ -31,7 +31,7 @@ import type { LegalUnitMinimalInfo } from '../../../types/features/legal-unit.in
 
 import type { GeocodeAddress } from '@okampus/shared/types';
 
-export const transactionFormDefaultValues = {
+export const financeFormDefaultValues = {
   amount: '0',
   description: '',
   projectId: null as string | null,
@@ -52,8 +52,8 @@ export const transactionFormDefaultValues = {
   method: PaymentMethod.CreditCard,
 };
 
-export type TransactionFormProps = { teamManage: TeamManageInfo };
-export default function TransactionForm({ teamManage }: TransactionFormProps) {
+export type FinanceFormProps = { teamManage: TeamManageInfo };
+export default function FinanceForm({ teamManage }: FinanceFormProps) {
   const { closeModal } = useModal();
 
   const [insertFinance] = useInsertFinanceMutation();
@@ -65,7 +65,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
 
   return (
     <MultiStepForm
-      defaultValues={transactionFormDefaultValues}
+      defaultValues={financeFormDefaultValues}
       steps={{
         initial: {
           header: 'Type de transaction',
@@ -212,7 +212,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         details: {
           header: 'Détails de la transaction',
           content: ({ values, setValues }) => (
-            <TransactionReceiptStep teamManage={teamManage} values={values} setValues={setValues} />
+            <FinanceReceiptStep teamManage={teamManage} values={values} setValues={setValues} />
           ),
           footer: ({ goToStep }) => (
             <ActionButton
@@ -222,7 +222,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         },
         detailsNoReceipt: {
           header: 'Détails de la transaction',
-          content: ({ values, setValues }) => <TransactionDetailsStep values={values} setValues={setValues} />,
+          content: ({ values, setValues }) => <FinanceDetailsStep values={values} setValues={setValues} />,
           footer: ({ goToStep }) => (
             <ActionButton
               action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('company') }}
@@ -231,7 +231,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         },
         company: {
           header: 'Entreprise',
-          content: ({ values, setValues }) => <TransactionCompanyStep values={values} setValues={setValues} />,
+          content: ({ values, setValues }) => <FinanceCompanyStep values={values} setValues={setValues} />,
           footer: ({ goToStep }) => (
             <ActionButton
               action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('payedBy') }}
@@ -241,7 +241,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         payedBy: {
           header: 'Responsable de la transaction',
           content: ({ values, setValues }) => (
-            <TransactionPayedByStep teamManage={teamManage} values={values} setValues={setValues} />
+            <FinancePayedByStep teamManage={teamManage} values={values} setValues={setValues} />
           ),
           footer: ({ goToStep }) => (
             <ActionButton
@@ -252,7 +252,7 @@ export default function TransactionForm({ teamManage }: TransactionFormProps) {
         summary: {
           header: 'Récapitulatif',
           content: ({ values, setValues }) => (
-            <TransactionSummaryStep teamManage={teamManage} values={values} setValues={setValues} />
+            <FinanceSummaryStep teamManage={teamManage} values={values} setValues={setValues} />
           ),
           footer: ({ values, onSubmit }) => (
             <ActionButton
