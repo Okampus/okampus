@@ -326,23 +326,28 @@ export class AuthService extends RequestContext {
 
     requestContext.set('requester', individual);
 
-    const data = await this.hasuraService.findByPk(
-      'userByPk',
-      selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-      { id: individual.user.id },
-    );
+    const userData = selectionSet.some((field) => field.startsWith('user'))
+      ? await this.hasuraService.findByPk(
+          'userByPk',
+          selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
+          { id: individual.user.id },
+        )
+      : undefined;
 
     // eslint-disable-next-line unicorn/no-array-method-this-argument
-    const teams = await this.hasuraService.find(
-      'team',
-      selectionSet
-        .filter((field) => field.startsWith('onboardTeams'))
-        .map((field) => field.replace('onboardTeams.', '')),
-      { expectingPresidentEmail: individual.actor.email },
-    );
+    const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
+      ? await this.hasuraService.find(
+          'team',
+          selectionSet
+            .filter((field) => field.startsWith('onboardingTeams'))
+            .map((field) => field.replace('onboardingTeams.', '')),
+          { expectingPresidentEmail: { _eq: individual.actor.email } },
+        )
+      : undefined;
 
     return {
-      user: data.userByPk,
+      ...(userData && { user: userData.userByPk }),
+      ...(teamsData && { onboardingTeams: teamsData.team }),
       canManageTenant: individual.adminRoles
         .getItems()
         .some((role) =>
@@ -350,7 +355,6 @@ export class AuthService extends RequestContext {
             ? role.permissions.includes(AdminPermissions.ManageTenantEntities)
             : role.tenant.id === this.tenant().id && role.permissions.includes(AdminPermissions.ManageTenantEntities),
         ),
-      onboardingTeams: teams,
     };
   }
 }
