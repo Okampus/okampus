@@ -310,17 +310,17 @@ export class AuthService extends RequestContext {
     onboardingTeams: Team[];
   }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const individual = await this.em.findOneOrFail<Individual, any>(
+    const individual = await this.em.findOne<Individual, any>(
       Individual,
       { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
       { populate: loginUserPopulate },
     );
 
-    if (!individual || !individual.user) throw new UnauthorizedException('Account not yet registered.');
-    if (!individual.passwordHash) throw new UnauthorizedException('Account not yet registered with password.');
+    if (!individual?.user) throw new UnauthorizedException('This user does not yet exist.');
+    if (!individual.passwordHash) throw new UnauthorizedException('This user does not yet have a password set.');
 
     const isPasswordValid = await verify(individual.passwordHash, body.password, { secret: this.pepper });
-    if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+    if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials.');
 
     await this.refreshSession(req, res, individual.user.id);
 
