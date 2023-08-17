@@ -22,6 +22,7 @@
     "@fastify/request-context": "^5.0.0",
     "@fastify/secure-session": "^6.2.0",
     "@floating-ui/react": "^0.25.1",
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.2.0",
     "@imbios/next-pwa": "^1.1.1",
     "@mercuriusjs/gateway": "^2.0.0",
