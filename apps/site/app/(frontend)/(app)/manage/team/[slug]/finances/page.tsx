@@ -188,9 +188,9 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         <div className="flex gap-6 px-content pb-6">
           <TextInput
             name="search"
-            startContent={<IconSearch />}
+            startContent={<IconSearch className="mr-2" />}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder={'Rechercher une transaction'}
+            placeholder="Rechercher une transaction"
           />
           <ActionButton
             action={{
