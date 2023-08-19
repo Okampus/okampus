@@ -1,20 +1,27 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import type { LinkItemProps } from '@okampus/shared/types';
-
-type TabBarItemProps = LinkItemProps & { children?: React.ReactNode; smallPadding?: boolean };
+type TabBarItemProps = {
+  children?: React.ReactNode;
+  smallPadding?: boolean;
+  pathname: string;
+  icon?: React.ReactNode;
+  label?: string;
+  checkSelected?: (href: string) => boolean;
+  linkOrAction: string | (() => void);
+  // href: string;
+};
 export default function TabBarItem({
   pathname,
   icon,
   label,
   checkSelected,
-  href,
+  linkOrAction,
   children,
   smallPadding,
 }: TabBarItemProps) {
   checkSelected = checkSelected || ((href) => pathname === href);
-  const selected = checkSelected(href);
+  const selected = typeof linkOrAction === 'string' && checkSelected(linkOrAction);
 
   const className = clsx(
     'relative flex justify-center items-center w-full aspect-square group-hover:scale-[1.03] overflow-hidden rounded-xl [&>:first-child]:rounded-lg',
@@ -34,13 +41,15 @@ export default function TabBarItem({
     children = <div className={clsx(className)}>{children}</div>;
   }
 
-  return (
-    <Link
-      href={href}
-      className="relative flex flex-col items-center pl-2 pr-2.5 pt-2 group"
-      title={typeof label === 'string' ? label : ''}
-    >
+  const itemClassName = 'relative flex flex-col items-center pl-2 pr-2.5 pt-2 group';
+
+  return typeof linkOrAction === 'string' ? (
+    <Link href={linkOrAction} className={itemClassName} title={typeof label === 'string' ? label : ''}>
       {children}
     </Link>
+  ) : (
+    <button onClick={linkOrAction} className={itemClassName}>
+      {children}
+    </button>
   );
 }
