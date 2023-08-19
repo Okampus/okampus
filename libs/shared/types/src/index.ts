@@ -13,6 +13,7 @@ export * from './global/cookie.interface';
 export * from './global/duration.interface';
 export * from './global/file-mime-check-payload.interface';
 export * from './global/form-field.interface';
+export * from './global/form-submission.interface';
 export * from './types/abstract-constructor.type';
 export * from './types/array.type';
 export * from './types/cast.type';
