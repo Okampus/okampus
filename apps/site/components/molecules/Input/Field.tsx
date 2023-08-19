@@ -25,7 +25,7 @@ export default function Field({
   description,
   horizontal,
 }: FieldProps) {
-  let subtitle = info;
+  let subtitle = <p className="text-sm">{info}</p>;
   if (loading)
     subtitle = (
       <p className="text-[var(--info)] flex gap-2 text-sm">

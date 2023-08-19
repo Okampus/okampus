@@ -70,8 +70,8 @@ export default function Dashboard<T extends object>({
         <thead className="sticky top-0 bg-2 z-40">
           <tr>
             {columns.map((column, colIdx) => {
-              let sortIcon = '↕';
-              if (sort.column === colIdx) sortIcon = sort.direction === Sort.Asc ? '↑' : '↓';
+              let sortIcon = ' ↕';
+              if (sort.column === colIdx) sortIcon = sort.direction === Sort.Asc ? ' ↑' : ' ↓';
 
               const sortClass = sort.column === colIdx ? 'text-0' : 'text-2';
               const className = clsx(baseButtonClass, sortClass, getAlignClass(column, colIdx));

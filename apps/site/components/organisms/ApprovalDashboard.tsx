@@ -97,9 +97,9 @@ export default function ApprovalDashboard<T, U>({
           {searchFilter && (
             <TextInput
               name="search"
+              startContent={<IconSearch className="text-[var(--text-2)] mr-2" />}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Rechercher..."
-              startContent={<IconSearch className="text-[var(--text-2)]" />}
             />
           )}
           {/* {stateFilter && (

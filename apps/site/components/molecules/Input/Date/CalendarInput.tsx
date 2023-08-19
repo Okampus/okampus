@@ -38,7 +38,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
 
   return (
     <div className={clsx('flex flex-col w-fit text-1', className)}>
-      <header className="flex justify-between items-center mb-2 px-1">
+      <header className="flex justify-between items-center px-1 h-10">
         <ArrowButtonIcon
           disabled={true}
           direction="left"
@@ -59,22 +59,20 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
                 options={months}
                 value={month}
                 showIcon={false}
-                onChange={(value) => setMonthYear([value as number, year])}
+                onChange={(value) => setMonthYear([value, year])}
               />
               <SelectInput
                 name="year"
                 placement="bottom"
                 options={years}
                 triggerClassName="py-2"
-                contentClassName="grid grid-cols-4 bg-0 p-2"
+                contentClassName="grid grid-cols-4 bg-0 p-2 text-0 font-medium"
                 value={year}
                 showIcon={false}
-                onChange={(value) => setMonthYear([month, value as number])}
+                onChange={(value) => setMonthYear([month, value])}
               />
             </>
           )}
-          {/* <span>{new Date(monthYear[1], monthYear[0]).toLocaleString('fr', { month: 'long' })} </span>
-          <span>{monthYear[1]}</span> */}
         </span>
         <ArrowButtonIcon
           disabled={true}
@@ -96,11 +94,11 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
             {row.map((day, idx) => {
               const dayClassName = clsx(
                 day.isSame(date, 'day')
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[var(--info)] text-white'
                   : day.month() === currentMonth
                   ? 'bg-4-hover text-1'
                   : 'bg-3-hover text-3 opacity-50',
-                'text-center aspect-square h-10 font-medium rounded-lg',
+                'text-center aspect-square h-10 font-medium rounded-full',
               );
               return (
                 <button key={idx} onClick={() => setDate(day.toDate())} className={dayClassName}>

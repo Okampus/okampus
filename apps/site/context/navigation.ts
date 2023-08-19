@@ -130,12 +130,11 @@ export function useTeam(slug: string) {
 }
 
 export function useTeamManage(slug: string) {
-  const where = { actor: { slug } };
   const teamManage = useTypedFragment<TeamManageInfo>({
     __typename: 'Team',
     fragmentTypename: 'TeamManage',
     fragment: TeamManageFragment,
-    where,
+    where: { actor: { slug } },
   });
   return { teamManage };
 }

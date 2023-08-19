@@ -42,7 +42,6 @@ export default function SigninPage() {
         setMeSlug(data.login.user.individual.actor.slug);
         const next = cookieStore.get(NEXT_PAGE_COOKIE);
         cookieStore.remove(NEXT_PAGE_COOKIE);
-        console.log('NEXT', next === '/signin' ? '/' : next || '/');
         router.push(next === '/signin' ? '/' : next || '/');
       }
     },
