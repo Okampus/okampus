@@ -62,7 +62,16 @@ export function useTranslation() {
     return key;
   };
 
-  const t = (key: string, data: TOptions = {}) => translate(dict, key, data, format, determiners);
+  function t(key: string, data: TOptions, returnRaw: true): string | Record<string, unknown>;
+  function t(key: string, data: TOptions, returnRaw: false): string;
+  function t(key: string, data: TOptions): string;
+  function t(key: string): string;
+
+  function t(key: string, data: TOptions = {}, returnRaw = false): string | Record<string, unknown> {
+    return returnRaw
+      ? translate(dict, key, data, format, determiners, true)
+      : translate(dict, key, data, format, determiners);
+  }
 
   return { lang, format, determiners, dict, t };
 }
