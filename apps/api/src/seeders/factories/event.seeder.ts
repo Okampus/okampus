@@ -1,5 +1,5 @@
 import { generateRandomSubmission } from './submission.seeder';
-import { Address, Content, Event, Form, FormSubmission, Location } from '@okampus/api/dal';
+import { Address, Event, Form, FormSubmission, Location } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import { ControlType, EventState, FormType, LocationType } from '@okampus/shared/enums';
 import { getRoundedDate, pickOneFromArray, randomId, toSlug } from '@okampus/shared/utils';
@@ -90,12 +90,7 @@ export class EventSeeder extends Factory<Event> {
 
     return {
       name,
-      content: new Content({
-        team: this.team,
-        text: faker.lorem.paragraphs(3),
-        tenant: this.team.tenant,
-        createdBy: supervisor.individual,
-      }),
+      description: faker.lorem.paragraphs(3),
       slug: `${toSlug(name)}-${randomId()}`,
       start,
       end,

@@ -6979,9 +6979,6 @@ export type Content = {
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  event?: Maybe<Event>;
-  eventByEventId?: Maybe<Event>;
-  eventId?: Maybe<Scalars['bigint']['output']>;
   favorites: Array<Favorite>;
   favoritesAggregate: FavoriteAggregate;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -7458,7 +7455,6 @@ export type ContentAttachmentsVarianceOrderBy = {
 export type ContentAvgFields = {
   __typename?: 'ContentAvgFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7468,7 +7464,6 @@ export type ContentAvgFields = {
 
 export type ContentAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7488,9 +7483,6 @@ export type ContentBoolExp = {
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  event?: InputMaybe<EventBoolExp>;
-  eventByEventId?: InputMaybe<EventBoolExp>;
-  eventId?: InputMaybe<BigintComparisonExp>;
   favorites?: InputMaybe<FavoriteBoolExp>;
   favoritesAggregate?: InputMaybe<FavoriteAggregateBoolExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
@@ -7522,13 +7514,11 @@ export type ContentBoolExp = {
 };
 
 export enum ContentConstraint {
-  ContentEventIdUnique = 'content_event_id_unique',
   ContentPkey = 'content_pkey',
 }
 
 export type ContentIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
-  eventId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   parentId?: InputMaybe<Scalars['bigint']['input']>;
   replyingToId?: InputMaybe<Scalars['bigint']['input']>;
@@ -7543,9 +7533,6 @@ export type ContentInsertInput = {
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  event?: InputMaybe<EventObjRelInsertInput>;
-  eventByEventId?: InputMaybe<EventObjRelInsertInput>;
-  eventId?: InputMaybe<Scalars['bigint']['input']>;
   favorites?: InputMaybe<FavoriteArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -7574,7 +7561,6 @@ export type ContentMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
@@ -7588,7 +7574,6 @@ export type ContentMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -7603,7 +7588,6 @@ export type ContentMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  eventId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
@@ -7617,7 +7601,6 @@ export type ContentMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
@@ -7651,9 +7634,6 @@ export type ContentOrderBy = {
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  event?: InputMaybe<EventOrderBy>;
-  eventByEventId?: InputMaybe<EventOrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   favoritesAggregate?: InputMaybe<FavoriteAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -7685,7 +7665,6 @@ export enum ContentSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EventId = 'eventId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAnonymous = 'isAnonymous',
@@ -7708,7 +7687,6 @@ export type ContentSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAnonymous?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7722,7 +7700,6 @@ export type ContentSetInput = {
 export type ContentStddevFields = {
   __typename?: 'ContentStddevFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7732,7 +7709,6 @@ export type ContentStddevFields = {
 
 export type ContentStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7743,7 +7719,6 @@ export type ContentStddevOrderBy = {
 export type ContentStddevPopFields = {
   __typename?: 'ContentStddevPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7753,7 +7728,6 @@ export type ContentStddevPopFields = {
 
 export type ContentStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7764,7 +7738,6 @@ export type ContentStddevPopOrderBy = {
 export type ContentStddevSampFields = {
   __typename?: 'ContentStddevSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7774,7 +7747,6 @@ export type ContentStddevSampFields = {
 
 export type ContentStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7791,7 +7763,6 @@ export type ContentStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  eventId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isAnonymous?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7805,7 +7776,6 @@ export type ContentStreamCursorValueInput = {
 export type ContentSumFields = {
   __typename?: 'ContentSumFields';
   createdById?: Maybe<Scalars['bigint']['output']>;
-  eventId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   parentId?: Maybe<Scalars['bigint']['output']>;
   replyingToId?: Maybe<Scalars['bigint']['output']>;
@@ -7815,7 +7785,6 @@ export type ContentSumFields = {
 
 export type ContentSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7827,7 +7796,6 @@ export enum ContentUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EventId = 'eventId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   IsAnonymous = 'isAnonymous',
@@ -7847,7 +7815,6 @@ export type ContentUpdates = {
 export type ContentVarPopFields = {
   __typename?: 'ContentVarPopFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7857,7 +7824,6 @@ export type ContentVarPopFields = {
 
 export type ContentVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7868,7 +7834,6 @@ export type ContentVarPopOrderBy = {
 export type ContentVarSampFields = {
   __typename?: 'ContentVarSampFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7878,7 +7843,6 @@ export type ContentVarSampFields = {
 
 export type ContentVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -7889,7 +7853,6 @@ export type ContentVarSampOrderBy = {
 export type ContentVarianceFields = {
   __typename?: 'ContentVarianceFields';
   createdById?: Maybe<Scalars['Float']['output']>;
-  eventId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parentId?: Maybe<Scalars['Float']['output']>;
   replyingToId?: Maybe<Scalars['Float']['output']>;
@@ -7899,7 +7862,6 @@ export type ContentVarianceFields = {
 
 export type ContentVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
-  eventId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   replyingToId?: InputMaybe<OrderBy>;
@@ -8398,18 +8360,18 @@ export type Event = {
   __typename?: 'Event';
   banner?: Maybe<FileUpload>;
   bannerId?: Maybe<Scalars['bigint']['output']>;
-  content: Content;
-  contentById?: Maybe<Content>;
-  contentId: Scalars['bigint']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  description: Scalars['String']['output'];
   end: Scalars['timestamptz']['output'];
   eventApprovalSubmission?: Maybe<FormSubmission>;
   eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
+  eventFavorites: Array<EventFavorite>;
+  eventFavoritesAggregate: EventFavoriteAggregate;
   eventJoins: Array<EventJoin>;
   eventJoinsAggregate: EventJoinAggregate;
   eventOrganizes: Array<EventOrganize>;
@@ -8455,6 +8417,22 @@ export type EventEventApprovalsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
+};
+
+export type EventEventFavoritesArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type EventEventFavoritesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
 export type EventEventJoinsArgs = {
@@ -10000,7 +9978,6 @@ export type EventArrRelInsertInput = {
 export type EventAvgFields = {
   __typename?: 'EventAvgFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -10015,7 +9992,6 @@ export type EventAvgFields = {
 
 export type EventAvgOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -10034,18 +10010,18 @@ export type EventBoolExp = {
   _or?: InputMaybe<Array<EventBoolExp>>;
   banner?: InputMaybe<FileUploadBoolExp>;
   bannerId?: InputMaybe<BigintComparisonExp>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentById?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
   end?: InputMaybe<TimestamptzComparisonExp>;
   eventApprovalSubmission?: InputMaybe<FormSubmissionBoolExp>;
   eventApprovalSubmissionId?: InputMaybe<BigintComparisonExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
+  eventFavorites?: InputMaybe<EventFavoriteBoolExp>;
+  eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateBoolExp>;
   eventJoins?: InputMaybe<EventJoinBoolExp>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   eventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
@@ -10078,7 +10054,6 @@ export type EventBoolExp = {
 };
 
 export enum EventConstraint {
-  EventContentIdUnique = 'event_content_id_unique',
   EventEventApprovalSubmissionIdUnique = 'event_event_approval_submission_id_unique',
   EventPkey = 'event_pkey',
   EventSlugUnique = 'event_slug_unique',
@@ -10096,9 +10071,353 @@ export type EventDeleteKeyInput = {
   meta?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type EventFavorite = {
+  __typename?: 'EventFavorite';
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<Individual>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  event: Event;
+  eventId: Scalars['bigint']['output'];
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
+  tenant: Tenant;
+  tenantId: Scalars['bigint']['output'];
+};
+
+export type EventFavoriteAggregate = {
+  __typename?: 'EventFavoriteAggregate';
+  aggregate?: Maybe<EventFavoriteAggregateFields>;
+  nodes: Array<EventFavorite>;
+};
+
+export type EventFavoriteAggregateBoolExp = {
+  count?: InputMaybe<EventFavoriteAggregateBoolExpCount>;
+};
+
+export type EventFavoriteAggregateFields = {
+  __typename?: 'EventFavoriteAggregateFields';
+  avg?: Maybe<EventFavoriteAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<EventFavoriteMaxFields>;
+  min?: Maybe<EventFavoriteMinFields>;
+  stddev?: Maybe<EventFavoriteStddevFields>;
+  stddevPop?: Maybe<EventFavoriteStddevPopFields>;
+  stddevSamp?: Maybe<EventFavoriteStddevSampFields>;
+  sum?: Maybe<EventFavoriteSumFields>;
+  varPop?: Maybe<EventFavoriteVarPopFields>;
+  varSamp?: Maybe<EventFavoriteVarSampFields>;
+  variance?: Maybe<EventFavoriteVarianceFields>;
+};
+
+export type EventFavoriteAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type EventFavoriteAggregateOrderBy = {
+  avg?: InputMaybe<EventFavoriteAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<EventFavoriteMaxOrderBy>;
+  min?: InputMaybe<EventFavoriteMinOrderBy>;
+  stddev?: InputMaybe<EventFavoriteStddevOrderBy>;
+  stddevPop?: InputMaybe<EventFavoriteStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<EventFavoriteStddevSampOrderBy>;
+  sum?: InputMaybe<EventFavoriteSumOrderBy>;
+  varPop?: InputMaybe<EventFavoriteVarPopOrderBy>;
+  varSamp?: InputMaybe<EventFavoriteVarSampOrderBy>;
+  variance?: InputMaybe<EventFavoriteVarianceOrderBy>;
+};
+
+export type EventFavoriteArrRelInsertInput = {
+  data: Array<EventFavoriteInsertInput>;
+  onConflict?: InputMaybe<EventFavoriteOnConflict>;
+};
+
+export type EventFavoriteAvgFields = {
+  __typename?: 'EventFavoriteAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteBoolExp = {
+  _and?: InputMaybe<Array<EventFavoriteBoolExp>>;
+  _not?: InputMaybe<EventFavoriteBoolExp>;
+  _or?: InputMaybe<Array<EventFavoriteBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<IndividualBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  event?: InputMaybe<EventBoolExp>;
+  eventId?: InputMaybe<BigintComparisonExp>;
+  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
+  tenant?: InputMaybe<TenantBoolExp>;
+  tenantId?: InputMaybe<BigintComparisonExp>;
+};
+
+export enum EventFavoriteConstraint {
+  EventFavoritePkey = 'event_favorite_pkey',
+}
+
+export type EventFavoriteIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  eventId?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventFavoriteInsertInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<IndividualObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  event?: InputMaybe<EventObjRelInsertInput>;
+  eventId?: InputMaybe<Scalars['bigint']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenant?: InputMaybe<TenantObjRelInsertInput>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventFavoriteMaxFields = {
+  __typename?: 'EventFavoriteMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventId?: Maybe<Scalars['bigint']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventFavoriteMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteMinFields = {
+  __typename?: 'EventFavoriteMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  eventId?: Maybe<Scalars['bigint']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventFavoriteMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteMutationResponse = {
+  __typename?: 'EventFavoriteMutationResponse';
+  affectedRows: Scalars['Int']['output'];
+  returning: Array<EventFavorite>;
+};
+
+export type EventFavoriteOnConflict = {
+  constraint: EventFavoriteConstraint;
+  updateColumns?: Array<EventFavoriteUpdateColumn>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type EventFavoriteOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<IndividualOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  event?: InputMaybe<EventOrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenant?: InputMaybe<TenantOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoritePkColumnsInput = {
+  id: Scalars['bigint']['input'];
+};
+
+export enum EventFavoriteSelectColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  EventId = 'eventId',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+}
+
+export type EventFavoriteSetInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['bigint']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventFavoriteStddevFields = {
+  __typename?: 'EventFavoriteStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteStddevPopFields = {
+  __typename?: 'EventFavoriteStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteStddevSampFields = {
+  __typename?: 'EventFavoriteStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteStreamCursorInput = {
+  initialValue: EventFavoriteStreamCursorValueInput;
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+export type EventFavoriteStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['bigint']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+export type EventFavoriteSumFields = {
+  __typename?: 'EventFavoriteSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  eventId?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
+};
+
+export type EventFavoriteSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export enum EventFavoriteUpdateColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  EventId = 'eventId',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
+  TenantId = 'tenantId',
+}
+
+export type EventFavoriteUpdates = {
+  _inc?: InputMaybe<EventFavoriteIncInput>;
+  _set?: InputMaybe<EventFavoriteSetInput>;
+  where: EventFavoriteBoolExp;
+};
+
+export type EventFavoriteVarPopFields = {
+  __typename?: 'EventFavoriteVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteVarSampFields = {
+  __typename?: 'EventFavoriteVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
+export type EventFavoriteVarianceFields = {
+  __typename?: 'EventFavoriteVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  eventId?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EventFavoriteVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+};
+
 export type EventIncInput = {
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
@@ -10114,17 +10433,16 @@ export type EventIncInput = {
 export type EventInsertInput = {
   banner?: InputMaybe<FileUploadObjRelInsertInput>;
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentById?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalSubmission?: InputMaybe<FormSubmissionObjRelInsertInput>;
   eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
+  eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
   eventTags?: InputMaybe<EventTagsArrRelInsertInput>;
@@ -10795,10 +11113,10 @@ export type EventJoinVarianceOrderBy = {
 export type EventMaxFields = {
   __typename?: 'EventMaxFields';
   bannerId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -10818,10 +11136,10 @@ export type EventMaxFields = {
 
 export type EventMaxOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
@@ -10842,10 +11160,10 @@ export type EventMaxOrderBy = {
 export type EventMinFields = {
   __typename?: 'EventMinFields';
   bannerId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
   end?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -10865,10 +11183,10 @@ export type EventMinFields = {
 
 export type EventMinOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
@@ -10906,17 +11224,16 @@ export type EventOnConflict = {
 export type EventOrderBy = {
   banner?: InputMaybe<FileUploadOrderBy>;
   bannerId?: InputMaybe<OrderBy>;
-  content?: InputMaybe<ContentOrderBy>;
-  contentById?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
   end?: InputMaybe<OrderBy>;
   eventApprovalSubmission?: InputMaybe<FormSubmissionOrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
+  eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
   eventTagsAggregate?: InputMaybe<EventTagsAggregateOrderBy>;
@@ -11426,10 +11743,10 @@ export type EventPrependInput = {
 
 export enum EventSelectColumn {
   BannerId = 'bannerId',
-  ContentId = 'contentId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Description = 'description',
   End = 'end',
   EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   HiddenAt = 'hiddenAt',
@@ -11465,10 +11782,10 @@ export enum EventSelectColumnEventAggregateBoolExpBool_OrArgumentsColumns {
 
 export type EventSetInput = {
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -11493,7 +11810,6 @@ export type EventSetInput = {
 export type EventStddevFields = {
   __typename?: 'EventStddevFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -11508,7 +11824,6 @@ export type EventStddevFields = {
 
 export type EventStddevOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -11524,7 +11839,6 @@ export type EventStddevOrderBy = {
 export type EventStddevPopFields = {
   __typename?: 'EventStddevPopFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -11539,7 +11853,6 @@ export type EventStddevPopFields = {
 
 export type EventStddevPopOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -11555,7 +11868,6 @@ export type EventStddevPopOrderBy = {
 export type EventStddevSampFields = {
   __typename?: 'EventStddevSampFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -11570,7 +11882,6 @@ export type EventStddevSampFields = {
 
 export type EventStddevSampOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -11590,10 +11901,10 @@ export type EventStreamCursorInput = {
 
 export type EventStreamCursorValueInput = {
   bannerId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   end?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalSubmissionId?: InputMaybe<Scalars['bigint']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -11618,7 +11929,6 @@ export type EventStreamCursorValueInput = {
 export type EventSumFields = {
   __typename?: 'EventSumFields';
   bannerId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
@@ -11633,7 +11943,6 @@ export type EventSumFields = {
 
 export type EventSumOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -12286,10 +12595,10 @@ export type EventTagsVarianceOrderBy = {
 
 export enum EventUpdateColumn {
   BannerId = 'bannerId',
-  ContentId = 'contentId',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Description = 'description',
   End = 'end',
   EventApprovalSubmissionId = 'eventApprovalSubmissionId',
   HiddenAt = 'hiddenAt',
@@ -12325,7 +12634,6 @@ export type EventUpdates = {
 export type EventVarPopFields = {
   __typename?: 'EventVarPopFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -12340,7 +12648,6 @@ export type EventVarPopFields = {
 
 export type EventVarPopOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -12356,7 +12663,6 @@ export type EventVarPopOrderBy = {
 export type EventVarSampFields = {
   __typename?: 'EventVarSampFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -12371,7 +12677,6 @@ export type EventVarSampFields = {
 
 export type EventVarSampOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -12387,7 +12692,6 @@ export type EventVarSampOrderBy = {
 export type EventVarianceFields = {
   __typename?: 'EventVarianceFields';
   bannerId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
   eventApprovalSubmissionId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
@@ -12402,7 +12706,6 @@ export type EventVarianceFields = {
 
 export type EventVarianceOrderBy = {
   bannerId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   eventApprovalSubmissionId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
@@ -13666,8 +13969,8 @@ export type ExpenseVarianceOrderBy = {
 
 export type Favorite = {
   __typename?: 'Favorite';
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
+  content: Content;
+  contentId: Scalars['bigint']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -19364,6 +19667,8 @@ export type Individual = {
   createdEventApprovalStepsAggregate: EventApprovalStepAggregate;
   createdEventApprovals: Array<EventApproval>;
   createdEventApprovalsAggregate: EventApprovalAggregate;
+  createdEventFavorites: Array<EventFavorite>;
+  createdEventFavoritesAggregate: EventFavoriteAggregate;
   createdEventJoins: Array<EventJoin>;
   createdEventJoinsAggregate: EventJoinAggregate;
   createdEventOrganizes: Array<EventOrganize>;
@@ -19803,6 +20108,22 @@ export type IndividualCreatedEventApprovalsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
+};
+
+export type IndividualCreatedEventFavoritesArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type IndividualCreatedEventFavoritesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
 export type IndividualCreatedEventJoinsArgs = {
@@ -20816,6 +21137,8 @@ export type IndividualBoolExp = {
   createdEventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateBoolExp>;
   createdEventApprovals?: InputMaybe<EventApprovalBoolExp>;
   createdEventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
+  createdEventFavorites?: InputMaybe<EventFavoriteBoolExp>;
+  createdEventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateBoolExp>;
   createdEventJoins?: InputMaybe<EventJoinBoolExp>;
   createdEventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   createdEventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
@@ -20977,6 +21300,7 @@ export type IndividualInsertInput = {
   createdDocuments?: InputMaybe<DocumentArrRelInsertInput>;
   createdEventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
   createdEventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
+  createdEventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   createdEventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   createdEventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
   createdEventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
@@ -21137,6 +21461,7 @@ export type IndividualOrderBy = {
   createdDocumentsAggregate?: InputMaybe<DocumentAggregateOrderBy>;
   createdEventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
   createdEventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
+  createdEventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   createdEventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   createdEventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
   createdEventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
@@ -25368,6 +25693,8 @@ export type Mutation = {
   deleteEventApprovalStepValidators?: Maybe<EventApprovalStepValidatorsMutationResponse>;
   deleteEventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
   deleteEventByPk?: Maybe<Event>;
+  deleteEventFavorite?: Maybe<EventFavoriteMutationResponse>;
+  deleteEventFavoriteByPk?: Maybe<EventFavorite>;
   deleteEventJoin?: Maybe<EventJoinMutationResponse>;
   deleteEventJoinByPk?: Maybe<EventJoin>;
   deleteEventOrganize?: Maybe<EventOrganizeMutationResponse>;
@@ -25533,6 +25860,8 @@ export type Mutation = {
   insertEventApprovalStepOne?: Maybe<EventApprovalStep>;
   insertEventApprovalStepValidators?: Maybe<EventApprovalStepValidatorsMutationResponse>;
   insertEventApprovalStepValidatorsOne?: Maybe<EventApprovalStepValidators>;
+  insertEventFavorite?: Maybe<EventFavoriteMutationResponse>;
+  insertEventFavoriteOne?: Maybe<EventFavorite>;
   insertEventJoin?: Maybe<EventJoinMutationResponse>;
   insertEventJoinOne?: Maybe<EventJoin>;
   insertEventOne?: Maybe<Event>;
@@ -25727,6 +26056,9 @@ export type Mutation = {
   updateEventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
   updateEventApprovalStepValidatorsMany?: Maybe<Array<Maybe<EventApprovalStepValidatorsMutationResponse>>>;
   updateEventByPk?: Maybe<Event>;
+  updateEventFavorite?: Maybe<EventFavoriteMutationResponse>;
+  updateEventFavoriteByPk?: Maybe<EventFavorite>;
+  updateEventFavoriteMany?: Maybe<Array<Maybe<EventFavoriteMutationResponse>>>;
   updateEventJoin?: Maybe<EventJoinMutationResponse>;
   updateEventJoinByPk?: Maybe<EventJoin>;
   updateEventJoinMany?: Maybe<Array<Maybe<EventJoinMutationResponse>>>;
@@ -26106,6 +26438,14 @@ export type MutationDeleteEventApprovalStepValidatorsByPkArgs = {
 };
 
 export type MutationDeleteEventByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type MutationDeleteEventFavoriteArgs = {
+  where: EventFavoriteBoolExp;
+};
+
+export type MutationDeleteEventFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -26832,6 +27172,16 @@ export type MutationInsertEventApprovalStepValidatorsArgs = {
 export type MutationInsertEventApprovalStepValidatorsOneArgs = {
   object: EventApprovalStepValidatorsInsertInput;
   onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
+};
+
+export type MutationInsertEventFavoriteArgs = {
+  objects: Array<EventFavoriteInsertInput>;
+  onConflict?: InputMaybe<EventFavoriteOnConflict>;
+};
+
+export type MutationInsertEventFavoriteOneArgs = {
+  object: EventFavoriteInsertInput;
+  onConflict?: InputMaybe<EventFavoriteOnConflict>;
 };
 
 export type MutationInsertEventJoinArgs = {
@@ -27834,6 +28184,22 @@ export type MutationUpdateEventByPkArgs = {
   _prepend?: InputMaybe<EventPrependInput>;
   _set?: InputMaybe<EventSetInput>;
   pkColumns: EventPkColumnsInput;
+};
+
+export type MutationUpdateEventFavoriteArgs = {
+  _inc?: InputMaybe<EventFavoriteIncInput>;
+  _set?: InputMaybe<EventFavoriteSetInput>;
+  where: EventFavoriteBoolExp;
+};
+
+export type MutationUpdateEventFavoriteByPkArgs = {
+  _inc?: InputMaybe<EventFavoriteIncInput>;
+  _set?: InputMaybe<EventFavoriteSetInput>;
+  pkColumns: EventFavoritePkColumnsInput;
+};
+
+export type MutationUpdateEventFavoriteManyArgs = {
+  updates: Array<EventFavoriteUpdates>;
 };
 
 export type MutationUpdateEventJoinArgs = {
@@ -30540,6 +30906,9 @@ export type Query = {
   eventApprovalStepValidatorsAggregate: EventApprovalStepValidatorsAggregate;
   eventApprovalStepValidatorsByPk?: Maybe<EventApprovalStepValidators>;
   eventByPk?: Maybe<Event>;
+  eventFavorite: Array<EventFavorite>;
+  eventFavoriteAggregate: EventFavoriteAggregate;
+  eventFavoriteByPk?: Maybe<EventFavorite>;
   eventJoin: Array<EventJoin>;
   eventJoinAggregate: EventJoinAggregate;
   eventJoinByPk?: Maybe<EventJoin>;
@@ -31227,6 +31596,26 @@ export type QueryEventApprovalStepValidatorsByPkArgs = {
 };
 
 export type QueryEventByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type QueryEventFavoriteArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type QueryEventFavoriteAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type QueryEventFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -35814,6 +36203,10 @@ export type Subscription = {
   eventApprovalStepValidatorsStream: Array<EventApprovalStepValidators>;
   eventApprovalStream: Array<EventApproval>;
   eventByPk?: Maybe<Event>;
+  eventFavorite: Array<EventFavorite>;
+  eventFavoriteAggregate: EventFavoriteAggregate;
+  eventFavoriteByPk?: Maybe<EventFavorite>;
+  eventFavoriteStream: Array<EventFavorite>;
   eventJoin: Array<EventJoin>;
   eventJoinAggregate: EventJoinAggregate;
   eventJoinByPk?: Maybe<EventJoin>;
@@ -36696,6 +37089,32 @@ export type SubscriptionEventApprovalStreamArgs = {
 
 export type SubscriptionEventByPkArgs = {
   id: Scalars['bigint']['input'];
+};
+
+export type SubscriptionEventFavoriteArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type SubscriptionEventFavoriteAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type SubscriptionEventFavoriteByPkArgs = {
+  id: Scalars['bigint']['input'];
+};
+
+export type SubscriptionEventFavoriteStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<EventFavoriteStreamCursorInput>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
 export type SubscriptionEventJoinArgs = {
@@ -41922,6 +42341,8 @@ export type Tenant = {
   eventApprovalStepsAggregate: EventApprovalStepAggregate;
   eventApprovals: Array<EventApproval>;
   eventApprovalsAggregate: EventApprovalAggregate;
+  eventFavorites: Array<EventFavorite>;
+  eventFavoritesAggregate: EventFavoriteAggregate;
   eventJoins: Array<EventJoin>;
   eventJoinsAggregate: EventJoinAggregate;
   eventOrganizes: Array<EventOrganize>;
@@ -42301,6 +42722,22 @@ export type TenantEventApprovalsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
+};
+
+export type TenantEventFavoritesArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
+};
+
+export type TenantEventFavoritesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
+  where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
 export type TenantEventJoinsArgs = {
@@ -43056,6 +43493,8 @@ export type TenantBoolExp = {
   eventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateBoolExp>;
   eventApprovals?: InputMaybe<EventApprovalBoolExp>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateBoolExp>;
+  eventFavorites?: InputMaybe<EventFavoriteBoolExp>;
+  eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateBoolExp>;
   eventJoins?: InputMaybe<EventJoinBoolExp>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateBoolExp>;
   eventOrganizes?: InputMaybe<EventOrganizeBoolExp>;
@@ -43189,6 +43628,7 @@ export type TenantInsertInput = {
   domain?: InputMaybe<Scalars['String']['input']>;
   eventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
   eventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
+  eventFavorites?: InputMaybe<EventFavoriteArrRelInsertInput>;
   eventJoins?: InputMaybe<EventJoinArrRelInsertInput>;
   eventOrganizes?: InputMaybe<EventOrganizeArrRelInsertInput>;
   eventSupervisors?: InputMaybe<EventSupervisorArrRelInsertInput>;
@@ -43355,6 +43795,7 @@ export type TenantOrderBy = {
   domain?: InputMaybe<OrderBy>;
   eventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
   eventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
+  eventFavoritesAggregate?: InputMaybe<EventFavoriteAggregateOrderBy>;
   eventJoinsAggregate?: InputMaybe<EventJoinAggregateOrderBy>;
   eventOrganizesAggregate?: InputMaybe<EventOrganizeAggregateOrderBy>;
   eventSupervisorsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
@@ -46897,6 +47338,13 @@ export type EventApprovalStepValidatorsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
+export type EventFavoriteAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<EventFavoriteSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<EventFavoriteBoolExp>;
+  predicate: IntComparisonExp;
+};
+
 export type EventJoinAggregateBoolExpBool_And = {
   arguments: EventJoinSelectColumnEventJoinAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -47823,6 +48271,7 @@ export type GetEventQuery = {
     __typename: 'Event';
     id: string;
     createdAt: string;
+    description: string;
     slug: string;
     start: string;
     end: string;
@@ -47831,7 +48280,6 @@ export type GetEventQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; text: string };
     location?: {
       __typename: 'Location';
       id: string;
@@ -48038,7 +48486,7 @@ export type GetEventsQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; text: string };
+    description: string;
     location?: {
       __typename: 'Location';
       id: string;
@@ -48278,11 +48726,11 @@ export type GetEventManageQuery = {
     end: string;
     name: string;
     slug: string;
+    description: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; createdAt: string; text: string };
     location?: {
       __typename: 'Location';
       id: string;
@@ -48674,11 +49122,11 @@ export type UpdateEventMutation = {
     end: string;
     name: string;
     slug: string;
+    description: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; createdAt: string; text: string };
     location?: {
       __typename: 'Location';
       id: string;
@@ -49591,11 +50039,11 @@ export type GetTeamManageQuery = {
           end: string;
           name: string;
           slug: string;
+          description: string;
           state: string;
           price: number;
           pointsAwardedForAttendance: number;
           isPrivate: boolean;
-          content: { __typename: 'Content'; id: string; createdAt: string; text: string };
           location?: {
             __typename: 'Location';
             id: string;
@@ -50621,7 +51069,7 @@ export type GetEventOrganizesQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; text: string };
+    description: string;
     location?: {
       __typename: 'Location';
       id: string;
@@ -51395,7 +51843,7 @@ export type GetEventsValidationQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; text: string };
+    description: string;
     location?: {
       __typename: 'Location';
       id: string;
@@ -52372,7 +52820,7 @@ export type InsertEventMutation = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    content: { __typename: 'Content'; id: string; text: string };
+    description: string;
     location?: {
       __typename: 'Location';
       id: string;
@@ -54110,6 +54558,7 @@ export const GetEventDocument = gql`
       __typename
       id
       createdAt
+      description
       slug
       start
       end
@@ -54118,11 +54567,6 @@ export const GetEventDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
-      content {
-        __typename
-        id
-        text
-      }
       location {
         __typename
         id
@@ -54423,11 +54867,7 @@ export const GetEventsDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
-      content {
-        __typename
-        id
-        text
-      }
+      description
       location {
         __typename
         id
@@ -54747,12 +55187,7 @@ export const GetEventManageDocument = gql`
       end
       name
       slug
-      content {
-        __typename
-        id
-        createdAt
-        text
-      }
+      description
       location {
         __typename
         id
@@ -55256,12 +55691,7 @@ export const UpdateEventDocument = gql`
       end
       name
       slug
-      content {
-        __typename
-        id
-        createdAt
-        text
-      }
+      description
       location {
         __typename
         id
@@ -56643,12 +57073,7 @@ export const GetTeamManageDocument = gql`
             end
             name
             slug
-            content {
-              __typename
-              id
-              createdAt
-              text
-            }
+            description
             location {
               __typename
               id
@@ -58002,11 +58427,7 @@ export const GetEventOrganizesDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
-      content {
-        __typename
-        id
-        text
-      }
+      description
       location {
         __typename
         id
@@ -59156,11 +59577,7 @@ export const GetEventsValidationDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
-      content {
-        __typename
-        id
-        text
-      }
+      description
       location {
         __typename
         id
@@ -60650,11 +61067,7 @@ export const InsertEventDocument = gql`
       price
       pointsAwardedForAttendance
       isPrivate
-      content {
-        __typename
-        id
-        text
-      }
+      description
       location {
         __typename
         id

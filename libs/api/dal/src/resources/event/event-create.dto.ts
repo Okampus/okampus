@@ -6,10 +6,6 @@ import { IsArray, IsString } from 'class-validator';
 export class CreateEventDto extends EventProps {
   @Field(() => String)
   @IsString()
-  description!: string;
-
-  @Field(() => String)
-  @IsString()
   supervisorId!: string;
 
   @Field(() => [String])

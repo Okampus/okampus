@@ -11,11 +11,7 @@ mutation InsertEvent($object: EventInsertInput!) {
     price
     pointsAwardedForAttendance
     isPrivate
-    content {
-      __typename
-      id
-      text
-    }
+    description
     location {
       __typename
       id

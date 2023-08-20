@@ -51,7 +51,7 @@ export function teamToSearchable(team: Team): BaseSearchable {
 }
 
 export function eventToSearchable(event: Event): BaseSearchable {
-  if (!event.content || !event.eventOrganizes) throw new Error('Event is not fully loaded.');
+  if (!event.eventOrganizes) throw new Error('Event is not fully loaded.');
 
   const tags = load(event.tags).map((tag) => tag.name);
   const teams = load(event.eventOrganizes).map((manage) => manage.team.actor.name);
@@ -60,7 +60,7 @@ export function eventToSearchable(event: Event): BaseSearchable {
     slug: event.slug,
     name: event.name,
     thumbnail: event.banner?.url ?? null,
-    description: event.content.text,
+    description: event.description,
     categories: [event.state, ...(event.location?.address?.city ? [event.location.address.city] : [])],
     createdAt: event.createdAt.getTime(),
     // updatedAt: event.updatedAt.getTime(),

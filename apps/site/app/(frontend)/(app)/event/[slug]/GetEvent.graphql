@@ -3,6 +3,7 @@ query GetEvent($slug: String!) {
     __typename
     id
     createdAt
+    description
     slug
     start
     end
@@ -11,11 +12,6 @@ query GetEvent($slug: String!) {
     price
     pointsAwardedForAttendance
     isPrivate
-    content {
-      __typename
-      id
-      text
-    }
     location {
       __typename
       id

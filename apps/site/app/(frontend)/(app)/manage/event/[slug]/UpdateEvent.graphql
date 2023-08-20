@@ -7,12 +7,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     end
     name
     slug
-    content {
-      __typename
-      id
-      createdAt
-      text
-    }
+    description
     location {
       __typename
       id

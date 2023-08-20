@@ -138,6 +138,13 @@ array_relationships:
         table:
           name: event_approval
           schema: public
+  - name: eventFavorites
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: event_favorite
+          schema: public
   - name: eventJoins
     using:
       foreign_key_constraint_on:

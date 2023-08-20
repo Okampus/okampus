@@ -1,4 +1,3 @@
-import type { ContentMinimalInfo } from './content.info';
 import type { LocationMinimalInfo } from './location.info';
 import type { TeamMinimalInfo } from './team.info';
 import type { UserMinimalInfo } from './user.info';
@@ -18,7 +17,7 @@ export type EventMinimalInfo = {
 };
 
 export type EventDetailsInfo = EventMinimalInfo & {
-  content: ContentMinimalInfo;
+  description: string;
   location?: LocationMinimalInfo | null;
   eventOrganizes: {
     team: TeamMinimalInfo;

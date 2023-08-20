@@ -7,12 +7,7 @@ query GetEventManage($slug: String!) {
     end
     name
     slug
-    content {
-      __typename
-      id
-      createdAt
-      text
-    }
+    description
     location {
       __typename
       id

@@ -23,6 +23,7 @@
 - "!include public_event_approval_step.yaml"
 - "!include public_event_approval_step_notifiees.yaml"
 - "!include public_event_approval_step_validators.yaml"
+- "!include public_event_favorite.yaml"
 - "!include public_event_join.yaml"
 - "!include public_event_organize.yaml"
 - "!include public_event_supervisor.yaml"
