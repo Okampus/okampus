@@ -87,8 +87,8 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'json', default: '{}' })
   meta: JSONObject = {};
 
-  @ManyToOne({ type: 'Location', nullable: true, default: null })
-  location: Location | null = null;
+  @ManyToOne({ type: 'Location' })
+  location!: Location;
 
   @OneToOne({ type: 'FormSubmission', nullable: true, default: null })
   eventApprovalSubmission: FormSubmission | null = null;

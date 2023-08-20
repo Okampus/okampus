@@ -7254,8 +7254,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "default": "null",
+          "nullable": false,
           "mappedType": "bigint"
         },
         "event_approval_submission_id": {
@@ -7376,7 +7375,6 @@
             "id"
           ],
           "referencedTableName": "public.location",
-          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "event_event_approval_submission_id_foreign": {

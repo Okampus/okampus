@@ -12,7 +12,7 @@ import type { Location } from '../actor/location/location.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    location?: Location | null;
+    location: Location;
     banner?: FileUpload | null;
     joinForm?: Form | null;
     regularEvent?: Event | null;
