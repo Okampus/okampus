@@ -47,7 +47,6 @@ export function interpolate(
 
         const valueDeterminer = data[dataKey]?.determinerType || Object.keys(determiners)[0];
         const value = data[dataKey]?.[isPlural ? 'other' : 'one'] || data[dataKey]?.value || data[dataKey];
-        console.log(contextValue, value, data[dataKey], dataKey, data);
 
         return `${determiners[valueDeterminer]?.[determinerType] ?? ''}${value}`;
       } else if (includes(contextValue, allFormatters)) {

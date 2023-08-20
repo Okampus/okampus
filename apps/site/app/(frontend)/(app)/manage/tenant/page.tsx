@@ -62,7 +62,12 @@ export default function TenantProfilePage() {
   return (
     <ViewLayout header="Personalisation">
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
+        <ChangeSetToast
+          isDirty={formState.isDirty}
+          isValid={formState.isValid}
+          isLoading={formState.isSubmitting}
+          onCancel={() => reset(defaultValues)}
+        />
         <GroupItem heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor

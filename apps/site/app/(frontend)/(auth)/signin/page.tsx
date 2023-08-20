@@ -114,7 +114,7 @@ export default function SigninPage() {
                     error={formState.errors.password?.message}
                     label="Mot de passe"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="Votre mot de passe"
                     {...register('password', { required: true })}
                   />
                 </div>

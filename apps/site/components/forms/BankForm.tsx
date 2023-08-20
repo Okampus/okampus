@@ -28,9 +28,9 @@ type BankValues = {
 
 export type BankFormProps = {
   actor: ActorMinimalInfo;
-  submit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankValues) => Promise<void>;
+  onSubmit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankValues) => Promise<void>;
 };
-export default function BankForm({ actor, submit }: BankFormProps) {
+export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
   const defaultValues: BankValues = {
     iban: '',
     bicSwift: '',

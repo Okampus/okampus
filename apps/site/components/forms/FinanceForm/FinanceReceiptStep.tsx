@@ -1,55 +1,65 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
-// import NumberInput from '../../molecules/Input/NumberInput';
 import SelectInput from '../../molecules/Input/Select/SelectInput';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 import TextInput from '../../molecules/Input/TextInput';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
-// import { validateWebsite } from '../../../utils/form-validation/website';
-
 import { useProcessReceiptLazyQuery } from '@okampus/shared/graphql';
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 
 import { useEffect, useMemo } from 'react';
+import { Controller } from 'react-hook-form';
 
-import type { financeFormDefaultValues } from './FinanceForm';
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../context/navigation';
+import type { FinanceFormStepProps } from './FinanceForm';
 
-type Context = FormStepContext<typeof financeFormDefaultValues>;
-type ReceiptStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
+function getDescriptionFromLineItems(lineItems?: { name: string; quantity: number; price: number }[]) {
+  if (lineItems) {
+    let description = 'Produits:\n\n';
+    for (const { name, price, quantity } of lineItems) {
+      const totalPrice = (price * quantity).toFixed(2);
+      const totalQuantity = price && quantity > 1 ? `${price.toFixed(2)} € x ${quantity}` : quantity;
+      const formattedName = name.replaceAll('\n', ' / ');
+      description += `(${totalPrice} €) ${totalQuantity} - ${formattedName}\n`;
+    }
 
-export default function FinanceReceiptStep({ values, setValues }: ReceiptStep) {
+    return description + `\n`;
+  }
+
+  return '';
+}
+
+export default function FinanceReceiptStep({ methods: { formMethods } }: FinanceFormStepProps) {
+  const { control, register, watch, setValue, formState } = formMethods;
+
+  const attachments = watch('attachments');
+  const isOnline = watch('isOnline');
+  const fileUploadId = watch('fileUploadId');
+
   const { t } = useTranslation();
 
   const [processReceipt, { data, loading }] = useProcessReceiptLazyQuery({ context: { useApi: true } });
 
   useEffect(() => {
-    if (values.fileUploadId) processReceipt({ variables: { key: values.fileUploadId } });
-  }, [processReceipt, values.fileUploadId]);
+    if (fileUploadId) processReceipt({ variables: { key: fileUploadId } });
+  }, [processReceipt, fileUploadId]);
 
   useEffect(() => {
     if (data) {
-      let description = `Produits :\n\n`;
-      data?.processReceipt?.lineItems.map(
-        ({ name, price, quantity }) =>
-          (description += `(${(price * quantity).toFixed(2)} €)${
-            quantity > 1 ? (price ? ` ${price.toFixed(2)} € x ${quantity}` : ` ${quantity}`) : ''
-          } ${name.replaceAll('\n', ' / ')}\n`),
-      );
-      if (data?.processReceipt?.phone) description += `\nTéléphone : ${data.processReceipt.phone}`;
+      const { address, amount, date, lineItems, phone, vendorName } = data?.processReceipt ?? {};
+      let description = getDescriptionFromLineItems(lineItems);
+      if (vendorName) {
+        description += `Vendeur: ${vendorName}\n`;
+        setValue('legalUnitQuery', vendorName);
+      }
 
-      setValues({
-        ...values,
-        description,
-        legalUnitQuery: data?.processReceipt?.vendorName || '',
-        amount: data?.processReceipt?.amount?.toFixed(2) || '0',
-        addressQuery: data?.processReceipt?.address || '',
-        payedAt: data?.processReceipt?.date ?? '',
-      });
+      if (phone) description += `Téléphone: ${phone}\n`;
+      if (address) setValue('addressQuery', address);
+      if (date) setValue('payedAt', new Date(date));
+      if (amount) setValue('amount', amount.toFixed(2));
+
+      setValue('description', description);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, setValue]);
 
   const methods = Object.entries(PaymentMethod).map(([, value]) => ({
     label: t(`enums.PaymentMethod.${value}`),
@@ -61,10 +71,7 @@ export default function FinanceReceiptStep({ values, setValues }: ReceiptStep) {
     value,
   }));
 
-  const src = useMemo(
-    () => (values.attachments.length > 0 ? URL.createObjectURL(values.attachments[0]) : ''),
-    [values.attachments],
-  );
+  const src = useMemo(() => (attachments.length > 0 ? URL.createObjectURL(attachments[0]) : ''), [attachments]);
 
   return (
     <div className="w-full flex gap-6 md-max:flex-col">
@@ -80,40 +87,38 @@ export default function FinanceReceiptStep({ values, setValues }: ReceiptStep) {
       ) : (
         <div className="text-0 flex flex-col gap-4 max-w-[42rem]">
           <TextInput
-            // value={values.amount}
-            onChange={(event) => setValues({ ...values, amount: event.target.value })}
+            error={formState.errors.amount?.message}
             label="Montant de la dépense (€)"
-            name="amount"
+            {...register('amount')}
           />
-          <DateInput
-            className="w-full"
-            // date={values.payedAt}
-            onChange={(event) => setValues({ ...values, payedAt: event.target.value })}
-            label="Date de la transaction"
-            name="payedAt"
-          />
-          <SelectInput
-            options={methods}
-            label="Méthode de paiement"
+          <DateInput error={formState.errors.amount?.message} label="Date de la transaction" {...register('payedAt')} />
+          <Controller
+            control={control}
             name="method"
-            value={values.method}
-            onChange={(value) => setValues({ ...values, method: value as PaymentMethod })}
+            render={({ field }) => (
+              <SelectInput
+                error={formState.errors.method?.message}
+                options={methods}
+                label="Méthode de paiement"
+                {...field}
+              />
+            )}
           />
-          <SelectInput
-            options={categories}
-            label="Catégorie de dépense"
+
+          <Controller
+            control={control}
             name="category"
-            value={values.category}
-            onChange={(value) => setValues({ ...values, category: value as FinanceCategory })}
+            render={({ field }) => (
+              <SelectInput
+                error={formState.errors.category?.message}
+                options={categories}
+                label="Catégorie de dépense"
+                {...field}
+              />
+            )}
           />
-          {values.isOnline && (
-            <TextInput
-              // checkValueError={validateWebsite}
-              value={values.website}
-              onChange={(event) => setValues({ ...values, website: event.target.value })}
-              label="Site de l'achat"
-              name="name"
-            />
+          {isOnline && (
+            <TextInput error={formState.errors.website?.message} label="Site de l'achat" {...register('website')} />
           )}
         </div>
       )}

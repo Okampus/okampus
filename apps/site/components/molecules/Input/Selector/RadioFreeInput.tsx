@@ -84,7 +84,7 @@ export default memo(
           aria-invalid={typeof error === 'string'}
           {...inputProps}
         />
-        <button aria-hidden={true} className={otherClass} onClick={onClickOther}>
+        <button type="button" aria-hidden={true} className={otherClass} onClick={onClickOther}>
           {lastInputValue || placeholder}
         </button>
       </div>
@@ -110,7 +110,7 @@ export default memo(
             selected === idx ? 'bg-2' : 'bg-[var(--bg-input)] opacity-50 hover:opacity-100',
           );
           return (
-            <button key={value} disabled={disabled} className={buttonClass} onClick={onClick}>
+            <button type="button" key={value} disabled={disabled} className={buttonClass} onClick={onClick}>
               {label}
             </button>
           );

@@ -5,8 +5,10 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
     createdAt
     amount
     category
+    description
     method
     payedAt
+    payedByType
     payedBy {
       __typename
       id

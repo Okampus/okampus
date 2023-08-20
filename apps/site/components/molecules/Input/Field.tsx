@@ -25,7 +25,7 @@ export default function Field({
   description,
   horizontal,
 }: FieldProps) {
-  let subtitle = <p className="text-sm">{info}</p>;
+  let subtitle = <div className="text-sm">{info}</div>;
   if (loading)
     subtitle = (
       <p className="text-[var(--info)] flex gap-2 text-sm">
@@ -33,7 +33,7 @@ export default function Field({
         Vérification...
       </p>
     );
-  else if (error) subtitle = <p className="text-[var(--danger)] text-sm font-medium">{error}</p>;
+  else if (error) subtitle = <div className="text-[var(--danger)] text-sm font-medium">{error}</div>;
 
   const inner = horizontal ? (
     <>
@@ -54,7 +54,7 @@ export default function Field({
           {label} {required && <span className="text-[var(--danger)]">*</span>}
         </label>
       )}
-      {description && <p className="text-2 text-sm">{description}</p>}
+      {description && <div className="text-2 text-sm">{description}</div>}
       {children}
     </>
   );

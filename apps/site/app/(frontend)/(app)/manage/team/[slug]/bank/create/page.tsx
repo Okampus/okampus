@@ -131,7 +131,7 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
         return (
           <BankForm
             actor={teamManage.actor}
-            submit={async ({ bankLocation, bicSwift, holderName, iban }) => {
+            onSubmit={async ({ bankLocation, bicSwift, holderName, iban }) => {
               setValues({ ...values, bankLocation, bicSwift, holderName, iban });
               goToNextStep();
             }}

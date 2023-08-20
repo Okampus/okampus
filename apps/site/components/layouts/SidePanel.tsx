@@ -19,7 +19,6 @@ export default function SidePanel({ children }: SidePanelProps) {
 
   useEffect(() => {
     if (currentWindowSize === 'desktopXl') !isSidePanelOpen && setIsSidePanelOpen(true);
-    else isSidePanelOpen && setIsSidePanelOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWindowSize, setIsSidePanelOpen]);
 

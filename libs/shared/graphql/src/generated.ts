@@ -51290,8 +51290,10 @@ export type GetFinancesQuery = {
     createdAt: string;
     amount: number;
     category: string;
+    description: string;
     method: string;
     payedAt: string;
+    payedByType: string;
     payedBy: {
       __typename: 'Actor';
       id: string;
@@ -53076,8 +53078,10 @@ export type InsertFinanceMutation = {
     createdAt: string;
     amount: number;
     category: string;
+    description: string;
     method: string;
     payedAt: string;
+    payedByType: string;
     payedBy: {
       __typename: 'Actor';
       id: string;
@@ -53285,8 +53289,10 @@ export type UpdateFinanceMutation = {
     createdAt: string;
     amount: number;
     category: string;
+    description: string;
     method: string;
     payedAt: string;
+    payedByType: string;
     payedBy: {
       __typename: 'Actor';
       id: string;
@@ -58864,8 +58870,10 @@ export const GetFinancesDocument = gql`
       createdAt
       amount
       category
+      description
       method
       payedAt
+      payedByType
       payedBy {
         __typename
         id
@@ -61535,8 +61543,10 @@ export const InsertFinanceDocument = gql`
       createdAt
       amount
       category
+      description
       method
       payedAt
+      payedByType
       payedBy {
         __typename
         id
@@ -61930,8 +61940,10 @@ export const UpdateFinanceDocument = gql`
       createdAt
       amount
       category
+      description
       method
       payedAt
+      payedByType
       payedBy {
         __typename
         id

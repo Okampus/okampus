@@ -1,35 +1,41 @@
 import ModalLayout from '../../atoms/Layout/ModalLayout';
 import ActionButton from '../../molecules/Button/ActionButton';
+import SubmitButton from '../../molecules/Button/SubmitButton';
 
 import { ActionType } from '@okampus/shared/types';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import type { Dispatch, SetStateAction } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import type { DeepPartial, FieldPath, FieldValues, Resolver, UseFormReturn } from 'react-hook-form';
 
-export type FormStepContext<T> = {
-  values: T;
-  setValues: Dispatch<SetStateAction<T>>;
-  goToPreviousStep: () => void;
-  goToStep: (step: string) => void;
-  onSubmit: (values: T) => void;
+export type FormStepContext<Values extends FieldValues, U> = {
+  context: U;
+  methods: {
+    goToPreviousStep: () => void;
+    goToStep: (step: string) => void;
+    formMethods: UseFormReturn<Values>;
+  };
 };
 
-type FormStep<T> = {
-  hideBack?: boolean;
-  header: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
-  footer?: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
-  nextStep?: string;
+type FormStep<Values extends FieldValues, U> = {
+  header: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
+  footer?: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
+  content: React.ReactNode | ((props: FormStepContext<Values, U>) => React.ReactNode);
   submit?: React.ReactNode;
-  content: React.ReactNode | ((props: FormStepContext<T>) => React.ReactNode);
-  onEnter?: (ctx: FormStepContext<T>) => void;
+  hideBack?: boolean;
+  nextStep?: string;
+  validateFields?: FieldPath<Values> | FieldPath<Values>[] | true;
+  onEnter?: (ctx: FormStepContext<Values, U>) => void;
 };
 
-export type MultiStepFormProps<T> = {
-  defaultValues: T;
-  steps: { initial: FormStep<T>; [key: string]: FormStep<T> };
-  onClose?: () => void;
+export type MultiStepFormProps<T extends FieldValues, U> = {
+  defaultValues: DeepPartial<T>;
+  context: U;
+  resolver: Resolver<T>;
   onSubmit: (values: T) => void;
+  steps: { initial: FormStep<T, U>; [key: string]: FormStep<T, U> };
+  onClose?: () => void;
 };
 
 const motionConfig = {
@@ -38,28 +44,57 @@ const motionConfig = {
   exit: { x: '-100%', opacity: 0 },
   transition: { duration: 0.2 },
 };
-export default function MultiStepForm<T>({ steps, defaultValues, onClose, onSubmit }: MultiStepFormProps<T>) {
-  const [values, setValues] = useState<T>(defaultValues);
+export default function MultiStepForm<T extends FieldValues, U>({
+  resolver,
+  context,
+  onSubmit: submit,
+  defaultValues,
+  steps,
+  onClose,
+}: MultiStepFormProps<T, U>) {
+  const methods = useForm<T>({ defaultValues, resolver });
+  const onSubmit = methods.handleSubmit(submit);
+
   const [stepHistory, setStepHistory] = useState<string[]>([]);
 
-  const goToPreviousStep = () => (stepHistory.length === 0 ? onClose?.() : setStepHistory(stepHistory.slice(0, -1)));
-  const goToStep = (step: string) => setStepHistory((current) => [...current, step]);
-
-  const context = { values, setValues, goToPreviousStep, goToStep, onSubmit };
+  const ctx = useMemo(
+    () => ({
+      methods: {
+        goToPreviousStep: () => (stepHistory.length === 0 ? onClose?.() : setStepHistory(stepHistory.slice(0, -1))),
+        goToStep: (step: string) => setStepHistory((current) => [...current, step]),
+        formMethods: methods,
+      },
+      context,
+    }),
+    [methods, onClose, stepHistory, context],
+  );
 
   const key = stepHistory.at(-1) ?? 'initial';
   const step = steps[key];
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => step.onEnter?.(context), [step]);
+  useEffect(() => step.onEnter?.(ctx), [ctx, step]);
 
-  const renderFooter = typeof step.footer === 'function' ? step.footer?.(context) ?? null : step.footer;
+  const renderFooter = typeof step.footer === 'function' ? step.footer?.(ctx) ?? null : step.footer;
 
   let innerFooter = renderFooter;
   if (step.nextStep || step.submit) {
     const label = step.nextStep ? 'Continuer' : step.submit;
-    const linkOrActionOrMenu = () => (step.nextStep ? goToStep(step.nextStep) : onSubmit(values));
-    const stepButton = <ActionButton action={{ type: ActionType.Success, label, linkOrActionOrMenu }} />;
+    let stepButton = null;
+    if (step.nextStep) {
+      const nextStep = step.nextStep;
+      const linkOrActionOrMenu = async () => {
+        if (step.validateFields) {
+          const isValid = await methods.trigger(step.validateFields === true ? undefined : step.validateFields);
+          if (!isValid) return;
+        }
+
+        ctx.methods.goToStep(nextStep);
+      };
+      const action = { type: ActionType.Success, label, linkOrActionOrMenu };
+      stepButton = <ActionButton action={action} />;
+    } else {
+      stepButton = <SubmitButton label={label} loading={methods.formState.isSubmitting} />;
+    }
 
     innerFooter = renderFooter ? (
       <div className="flex items-center gap-2">
@@ -76,38 +111,39 @@ export default function MultiStepForm<T>({ steps, defaultValues, onClose, onSubm
       innerFooter
     ) : (
       <>
-        <div className="text-1 font-medium cursor-pointer hover:underline" onClick={goToPreviousStep}>
+        <div className="text-1 font-medium cursor-pointer hover:underline" onClick={ctx.methods.goToPreviousStep}>
           Retour
         </div>
         {innerFooter}
       </>
     );
 
-  const header = typeof step.header === 'function' ? step.header(context) : step.header;
-  const content = typeof step.content === 'function' ? step.content(context) : step.content;
-
   return (
-    <ModalLayout
-      header={
-        <AnimatePresence mode="wait">
-          <motion.div key={key} {...motionConfig}>
-            {header}
-          </motion.div>
-        </AnimatePresence>
-      }
-      footer={
-        <AnimatePresence mode="wait">
-          <motion.div key={key} {...motionConfig} className="flex justify-between items-center gap-6">
-            {footer}
-          </motion.div>
-        </AnimatePresence>
-      }
-    >
-      <AnimatePresence mode="wait">
-        <motion.div key={key} {...motionConfig} className="w-full">
-          {content}
-        </motion.div>
-      </AnimatePresence>
-    </ModalLayout>
+    <FormProvider {...methods}>
+      <form onSubmit={onSubmit}>
+        <ModalLayout
+          header={
+            <AnimatePresence mode="wait">
+              <motion.div key={key} {...motionConfig}>
+                {typeof step.header === 'function' ? step.header(ctx) : step.header}
+              </motion.div>
+            </AnimatePresence>
+          }
+          footer={
+            <AnimatePresence mode="wait">
+              <motion.div key={key} {...motionConfig} className="flex justify-between items-center gap-6">
+                {footer}
+              </motion.div>
+            </AnimatePresence>
+          }
+        >
+          <AnimatePresence mode="wait">
+            <motion.div key={key} {...motionConfig} className="w-full">
+              {typeof step.content === 'function' ? step.content(ctx) : step.content}
+            </motion.div>
+          </AnimatePresence>
+        </ModalLayout>
+      </form>
+    </FormProvider>
   );
 }
