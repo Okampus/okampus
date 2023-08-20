@@ -17,6 +17,8 @@ import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit
 
 export type LegalUnitInputProps = {
   type?: LegalUnitType;
+  headerLabel?: string;
+  inputLabel?: string;
   onChange: (value: LegalUnitMinimalInfo | null) => void;
   legalUnitQuery?: string;
   onQueryChange?: (value: string) => void;
@@ -24,6 +26,8 @@ export type LegalUnitInputProps = {
 
 export default function LegalUnitInput({
   type,
+  headerLabel,
+  inputLabel,
   legalUnitQuery,
   onQueryChange,
   ...props
@@ -78,6 +82,8 @@ export default function LegalUnitInput({
           node: (
             <LegalUnitInputConfirm
               initialName={search}
+              headerLabel={headerLabel}
+              inputPlaceholder={inputLabel}
               onSubmit={(name) => {
                 const object = { type: type ?? LegalUnitType.Company, legalName: name, actor: { data: { name } } };
                 insertLegalUnit({ variables: { object } });
