@@ -10,15 +10,15 @@ export type ITagProps = {
 
 export default function ITag({ content, onRemove, startContent, endContent }: ITagProps) {
   const className = clsx(
-    'rounded-md inline-flex items-stretch gap-2 px-1.5 text-0 bg-0 hover:bg-[var(--bg-1)]',
+    'rounded-md inline-flex items-center h-10 gap-2 px-2 text-0 bg-0 hover:bg-[var(--bg-1)]',
     onRemove && 'cursor-pointer',
   );
   return (
     <li className={className} onClick={onRemove}>
       {startContent && <span className="shrink-0">{startContent}</span>}
-      <span className="line-clamp-1 break-all font-medium text-sm">{content}</span>
+      <span className="line-clamp-1 break-all font-medium">{content}</span>
       {endContent && <span className="shrink-0">{endContent}</span>}
-      {onRemove && <IconX className="shrink-0 aspect-square py-1 pr-1" />}
+      {onRemove && <IconX className="shrink-0 aspect-square pr-1" />}
     </li>
   );
 }

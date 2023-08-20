@@ -4,33 +4,32 @@ import AvatarLabeled from '../../Labeled/AvatarLabeled';
 
 import { useModal } from '../../../../hooks/context/useModal';
 
-import { useGetLegalUnitsLazyQuery, useInsertLegalUnitMutation } from '@okampus/shared/graphql';
+import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
+
 import { LegalUnitType } from '@okampus/shared/enums';
+import { useGetLegalUnitsLazyQuery, useInsertLegalUnitMutation } from '@okampus/shared/graphql';
 
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'react-use';
+import type { ControlledInput } from '@okampus/shared/types';
 
 import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
 
 export type LegalUnitInputProps = {
-  name: string;
-  value: LegalUnitMinimalInfo | null;
   type?: LegalUnitType;
   onChange: (value: LegalUnitMinimalInfo | null) => void;
-  // autoFocus?: boolean;
   legalUnitQuery?: string;
   onQueryChange?: (value: string) => void;
 };
+
 export default function LegalUnitInput({
-  name,
-  value,
   type,
-  onChange,
-  // autoFocus,
   legalUnitQuery,
   onQueryChange,
-}: LegalUnitInputProps) {
+  ...props
+}: LegalUnitInputProps & ControlledInput<LegalUnitMinimalInfo | null>) {
   const { openModal, closeModal } = useModal();
+  const { name, value, onChange, error, className, label, disabled, required, description, loading } = props;
 
   const whereType = type ? { type: { _eq: type } } : {};
 
@@ -38,7 +37,7 @@ export default function LegalUnitInput({
   const throttledSearch = useThrottle(searchText, 1500);
 
   const variables = { where: { ...whereType, legalName: { _ilike: `%${throttledSearch}%` } }, limit: 7 };
-  const [search, { data, loading, error }] = useGetLegalUnitsLazyQuery({ variables });
+  const [search, { data, loading: queryLoading, error: errorQuery }] = useGetLegalUnitsLazyQuery({ variables });
 
   useEffect(() => {
     if (throttledSearch) search();
@@ -52,8 +51,6 @@ export default function LegalUnitInput({
     },
   });
 
-  // const dataContainsValue = data ? data?.legalUnit.find((x) => x.id === value?.id) : false;
-  // const items = data ? (dataContainsValue ? data?.legalUnit : value ? [value, ...data.legalUnit] : data.legalUnit) : [];
   const items = data?.legalUnit ?? [];
 
   const selectItems = items.map((item) => ({
@@ -67,6 +64,11 @@ export default function LegalUnitInput({
     <AutoCompleteInput
       // autoFocus={autoFocus}
       name={name}
+      className={className}
+      label={label}
+      disabled={disabled}
+      required={required}
+      description={description}
       value={selected ? [selected.value] : []}
       onChange={(value) => onChange(value[0])}
       search={searchText}
@@ -76,20 +78,17 @@ export default function LegalUnitInput({
           node: (
             <LegalUnitInputConfirm
               initialName={search}
-              onSubmit={(name) =>
-                insertLegalUnit({
-                  variables: {
-                    object: { type: type ?? LegalUnitType.Company, legalName: name, actor: { data: { name } } },
-                  },
-                })
-              }
+              onSubmit={(name) => {
+                const object = { type: type ?? LegalUnitType.Company, legalName: name, actor: { data: { name } } };
+                insertLegalUnit({ variables: { object } });
+              }}
             />
           ),
         });
       }}
       options={selectItems}
-      error={error ? error.message : undefined}
-      loading={loading}
+      error={errorQuery ? getGraphQLErrors(errorQuery)[0].message ?? error : error}
+      loading={loading ?? queryLoading}
     />
   );
 }

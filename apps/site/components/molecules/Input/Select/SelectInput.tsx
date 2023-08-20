@@ -116,6 +116,7 @@ export default function SelectInput<T>({
     triggerClassName,
     isOpen && '!rounded-b-none',
     disabled && 'pointer-events-none opacity-50',
+    error && '!outline !outline-1 outline-offset-2 !outline-[var(--danger)]',
   );
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 

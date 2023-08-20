@@ -43,10 +43,10 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
               <div className="line-clamp-4 text-2">{event?.location?.locationDetails}</div>
             </>
           )}
-          {event.content && (
+          {event.description && (
             <>
               <IconPencil />
-              <div className="line-clamp-4 font-medium text-2">{event.content.text}</div>
+              <div className="line-clamp-4 font-medium text-2">{event.description}</div>
             </>
           )}
         </div>

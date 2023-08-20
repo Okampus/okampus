@@ -90,7 +90,7 @@ export default memo(
         // eslint-disable-next-line jsx-a11y/aria-props
         aria-description={description}
         aria-invalid={typeof error === 'string'}
-        className={clsx('input w-full', inputClassName)}
+        className={clsx('input w-full', inputClassName, error && '!outline !outline-1 !outline-[var(--danger)]')}
         onChange={(event) => {
           onChange?.(event);
           setDateISOString(event.target.value);
