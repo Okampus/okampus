@@ -48197,7 +48197,8 @@ export type GetEventJoinQuery = {
       start: string;
       end: string;
       eventOrganizes: Array<{
-        __typename?: 'EventOrganize';
+        __typename: 'EventOrganize';
+        id: string;
         eventSupervisors: Array<{
           __typename?: 'EventSupervisor';
           user: {
@@ -48307,7 +48308,8 @@ export type GetEventQuery = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       eventSupervisors: Array<{
         __typename?: 'EventSupervisor';
         user: {
@@ -48514,7 +48516,8 @@ export type GetEventsQuery = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       eventSupervisors: Array<{
         __typename?: 'EventSupervisor';
         user: {
@@ -48768,7 +48771,8 @@ export type GetEventManageQuery = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       team: {
         __typename: 'Team';
         id: string;
@@ -49164,7 +49168,8 @@ export type UpdateEventMutation = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       team: {
         __typename: 'Team';
         id: string;
@@ -49514,6 +49519,63 @@ export type UpdateEventMutation = {
       createdAt: string;
       submission: JSONType;
       form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
+    } | null;
+  } | null;
+};
+
+export type UpdateEventOrganizeProjectManyMutationVariables = Exact<{
+  updates: Array<EventOrganizeUpdates> | EventOrganizeUpdates;
+}>;
+
+export type UpdateEventOrganizeProjectManyMutation = {
+  __typename?: 'Mutation';
+  updateEventOrganizeMany?: Array<{
+    __typename?: 'EventOrganizeMutationResponse';
+    returning: Array<{
+      __typename: 'EventOrganize';
+      id: string;
+      team: { __typename: 'Team'; id: string; type: string; actor: { __typename: 'Actor'; id: string; slug: string } };
+      project?: {
+        __typename: 'Project';
+        id: string;
+        createdAt: string;
+        name: string;
+        slug: string;
+        color: string;
+        isPrivate: boolean;
+      } | null;
+    }>;
+  } | null> | null;
+};
+
+export type UpdateLocationMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
+  update: LocationSetInput;
+}>;
+
+export type UpdateLocationMutation = {
+  __typename?: 'Mutation';
+  updateLocationByPk?: {
+    __typename: 'Location';
+    id: string;
+    createdAt: string;
+    type: string;
+    onlineLink: string;
+    locationDetails: string;
+    address?: {
+      __typename: 'Address';
+      id: string;
+      createdAt: string;
+      latitude?: number | null;
+      longitude?: number | null;
+      category: string;
+      name: string;
+      streetNumber: string;
+      street: string;
+      zip: string;
+      city: string;
+      state: string;
+      country: string;
     } | null;
   } | null;
 };
@@ -50081,7 +50143,8 @@ export type GetTeamManageQuery = {
             tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
           }>;
           eventOrganizes: Array<{
-            __typename?: 'EventOrganize';
+            __typename: 'EventOrganize';
+            id: string;
             team: {
               __typename: 'Team';
               id: string;
@@ -51988,7 +52051,8 @@ export type GetEventsValidationQuery = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       eventSupervisors: Array<{
         __typename?: 'EventSupervisor';
         user: {
@@ -52220,7 +52284,8 @@ export type GetProjectQuery = {
       };
     };
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       event: { __typename: 'Event'; id: string; slug: string; name: string };
       eventSupervisors: Array<{
         __typename?: 'EventSupervisor';
@@ -52790,7 +52855,8 @@ export type GetProjectsSelectQuery = {
     isPrivate: boolean;
     banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       event: {
         __typename: 'Event';
         id: string;
@@ -52848,7 +52914,8 @@ export type InsertEventMutation = {
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
+      __typename: 'EventOrganize';
+      id: string;
       eventSupervisors: Array<{
         __typename?: 'EventSupervisor';
         user: {
@@ -54407,6 +54474,8 @@ export const GetEventJoinDocument = gql`
         start
         end
         eventOrganizes {
+          __typename
+          id
           eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
             user {
               __typename
@@ -54605,6 +54674,8 @@ export const GetEventDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         eventSupervisors {
           user {
             __typename
@@ -54906,6 +54977,8 @@ export const GetEventsDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         eventSupervisors {
           user {
             __typename
@@ -55235,6 +55308,8 @@ export const GetEventManageDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         team {
           __typename
           id
@@ -55739,6 +55814,8 @@ export const UpdateEventDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         team {
           __typename
           id
@@ -56189,6 +56266,137 @@ export function useUpdateEventMutation(
 export type UpdateEventMutationHookResult = ReturnType<typeof useUpdateEventMutation>;
 export type UpdateEventMutationResult = Apollo.MutationResult<UpdateEventMutation>;
 export type UpdateEventMutationOptions = Apollo.BaseMutationOptions<UpdateEventMutation, UpdateEventMutationVariables>;
+export const UpdateEventOrganizeProjectManyDocument = gql`
+  mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
+    updateEventOrganizeMany(updates: $updates) {
+      returning {
+        __typename
+        id
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+    }
+  }
+`;
+export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<
+  UpdateEventOrganizeProjectManyMutation,
+  UpdateEventOrganizeProjectManyMutationVariables
+>;
+
+/**
+ * __useUpdateEventOrganizeProjectManyMutation__
+ *
+ * To run a mutation, you first call `useUpdateEventOrganizeProjectManyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateEventOrganizeProjectManyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateEventOrganizeProjectManyMutation, { data, loading, error }] = useUpdateEventOrganizeProjectManyMutation({
+ *   variables: {
+ *      updates: // value for 'updates'
+ *   },
+ * });
+ */
+export function useUpdateEventOrganizeProjectManyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateEventOrganizeProjectManyMutation,
+    UpdateEventOrganizeProjectManyMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>(
+    UpdateEventOrganizeProjectManyDocument,
+    options,
+  );
+}
+export type UpdateEventOrganizeProjectManyMutationHookResult = ReturnType<
+  typeof useUpdateEventOrganizeProjectManyMutation
+>;
+export type UpdateEventOrganizeProjectManyMutationResult =
+  Apollo.MutationResult<UpdateEventOrganizeProjectManyMutation>;
+export type UpdateEventOrganizeProjectManyMutationOptions = Apollo.BaseMutationOptions<
+  UpdateEventOrganizeProjectManyMutation,
+  UpdateEventOrganizeProjectManyMutationVariables
+>;
+export const UpdateLocationDocument = gql`
+  mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
+    updateLocationByPk(pkColumns: { id: $id }, _set: $update) {
+      __typename
+      id
+      createdAt
+      type
+      onlineLink
+      locationDetails
+      address {
+        __typename
+        id
+        createdAt
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+      }
+    }
+  }
+`;
+export type UpdateLocationMutationFn = Apollo.MutationFunction<UpdateLocationMutation, UpdateLocationMutationVariables>;
+
+/**
+ * __useUpdateLocationMutation__
+ *
+ * To run a mutation, you first call `useUpdateLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLocationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLocationMutation, { data, loading, error }] = useUpdateLocationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateLocationMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
+}
+export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
+export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
+export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<
+  UpdateLocationMutation,
+  UpdateLocationMutationVariables
+>;
 export const GetProjectManageDocument = gql`
   query GetProjectManage($slug: String!) {
     project(where: { slug: { _eq: $slug } }, limit: 1) {
@@ -57121,6 +57329,8 @@ export const GetTeamManageDocument = gql`
               }
             }
             eventOrganizes {
+              __typename
+              id
               team {
                 __typename
                 id
@@ -59745,6 +59955,8 @@ export const GetEventsValidationDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         eventSupervisors {
           user {
             __typename
@@ -60066,6 +60278,8 @@ export const GetProjectDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         event {
           __typename
           id
@@ -61003,6 +61217,8 @@ export const GetProjectsSelectDocument = gql`
         type
       }
       eventOrganizes {
+        __typename
+        id
         event {
           __typename
           id
@@ -61106,6 +61322,8 @@ export const InsertEventDocument = gql`
         }
       }
       eventOrganizes {
+        __typename
+        id
         eventSupervisors {
           user {
             __typename

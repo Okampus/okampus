@@ -50,6 +50,8 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       }
     }
     eventOrganizes {
+      __typename
+      id
       eventSupervisors {
         user {
           __typename

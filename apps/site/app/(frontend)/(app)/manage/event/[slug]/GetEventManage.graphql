@@ -55,6 +55,8 @@ query GetEventManage($slug: String!) {
       }
     }
     eventOrganizes {
+      __typename
+      id
       team {
         __typename
         id

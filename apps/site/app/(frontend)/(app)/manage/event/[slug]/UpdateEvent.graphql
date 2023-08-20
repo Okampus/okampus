@@ -55,6 +55,8 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       }
     }
     eventOrganizes {
+      __typename
+      id
       team {
         __typename
         id

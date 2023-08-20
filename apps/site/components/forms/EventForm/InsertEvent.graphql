@@ -50,6 +50,8 @@ mutation InsertEvent($object: EventInsertInput!) {
       }
     }
     eventOrganizes {
+      __typename
+      id
       eventSupervisors {
         user {
           __typename
