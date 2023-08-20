@@ -62,6 +62,7 @@ import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
 import { View } from './content/view/view.entity';
 import { EventSupervisor } from './event/event-supervisor/event-supervisor.entity';
+import { EventFavorite } from './event/event-favorite/event-favorite.entity';
 
 export const allEntities = [
   Log,
@@ -125,6 +126,7 @@ export const allEntities = [
   Event,
   EventApproval,
   EventApprovalStep,
+  EventFavorite,
   EventJoin,
   EventOrganize,
   EventSupervisor,

@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230811005150 extends Migration {
+export class Migration20230820053218 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "tenant" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "domain" text not null, "point_name" text not null, "is_oidc_enabled" boolean not null default true, "oidc_name" text not null default \'\', "oidc_client_id" text not null default \'\', "oidc_client_secret" text not null default \'\', "oidc_discovery_url" text not null default \'\', "oidc_scopes" text not null default \'\', "oidc_callback_uri" text not null default \'\', "event_validation_form_id" bigint null default null, "admin_team_id" bigint null default null, constraint "tenant_pkey" primary key ("id"));');
@@ -49,7 +49,7 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('create table "canteen" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "description" text not null default \'\', constraint "canteen_pkey" primary key ("id"));');
 
-    this.addSql('create table "team" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Association\', \'Canteen\', \'Company\', \'Club\', \'Project\', \'Department\', \'Tenant\')) not null default \'Club\', "membership_fees" real not null default 0, "membership_duration" text not null default \'\', "directors_category_name" text not null default \'Directors\', "managers_category_name" text not null default \'Managers\', "members_category_name" text not null default \'Members\', "is_join_form_active" boolean not null default true, "join_form_id" bigint not null, "actor_id" bigint not null, "canteen_id" bigint null default null, "cohort_id" bigint null default null, "class_group_id" bigint null default null, "tenant_grant_fund_id" bigint null default null, "video_id" bigint null default null, "parent_id" bigint null default null, constraint "team_pkey" primary key ("id"));');
+    this.addSql('create table "team" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Association\', \'Canteen\', \'Company\', \'Club\', \'Project\', \'Department\', \'Tenant\')) not null default \'Club\', "membership_fees" real not null default 0, "membership_duration" text not null default \'\', "directors_category_name" text not null default \'Directors\', "managers_category_name" text not null default \'Managers\', "members_category_name" text not null default \'Members\', "expecting_president_email" text null default null, "expecting_treasurer_email" text null default null, "expecting_secretary_email" text null default null, "is_onboarding_complete" boolean not null default true, "is_join_form_active" boolean not null default true, "join_form_id" bigint not null, "actor_id" bigint not null, "canteen_id" bigint null default null, "cohort_id" bigint null default null, "class_group_id" bigint null default null, "tenant_grant_fund_id" bigint null default null, "video_id" bigint null default null, "parent_id" bigint null default null, constraint "team_pkey" primary key ("id"));');
     this.addSql('alter table "team" add constraint "team_join_form_id_unique" unique ("join_form_id");');
     this.addSql('alter table "team" add constraint "team_actor_id_unique" unique ("actor_id");');
     this.addSql('alter table "team" add constraint "team_canteen_id_unique" unique ("canteen_id");');
@@ -73,6 +73,24 @@ export class Migration20230811005150 extends Migration {
     this.addSql('create table "document" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "description" text not null, "year_version" smallint null default null, "type" text check ("type" in (\'TenantGuide\', \'AssociationConstitution\', \'AssociationDeclaration\', \'ClubHandover\', \'ClubCharter\', \'TeamMeetingTranscript\', \'TeamGraphicCharter\', \'Other\')) not null, "file_id" bigint null, "subject_id" bigint null default null, "team_id" bigint null default null, constraint "document_pkey" primary key ("id"));');
     this.addSql('alter table "document" add constraint "document_file_id_unique" unique ("file_id");');
 
+    this.addSql('create table "content" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "text" text not null, "is_anonymous" boolean not null default false, "parent_id" bigint null default null, "replying_to_id" bigint null default null, "team_id" bigint null default null, constraint "content_pkey" primary key ("id"));');
+
+    this.addSql('create table "report" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Harassment\', \'Spam\', \'Inappropriate\', \'Other\')) not null, "reason" text not null default \'\', "actor_id" bigint null default null, "content_id" bigint null default null, constraint "report_pkey" primary key ("id"));');
+
+    this.addSql('create table "reaction" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "reaction_type" text check ("reaction_type" in (\'What\', \'Interesting\', \'Like\', \'NotAnIssue\', \'Bump\', \'Laugh\', \'Unsure\', \'Partial\', \'Perfect\')) not null, "content_id" bigint null default null, constraint "reaction_pkey" primary key ("id"));');
+    this.addSql('create index "reaction_reaction_type_index" on "reaction" ("reaction_type");');
+
+    this.addSql('create table "issue" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "slug" text not null, "content_id" bigint not null, constraint "issue_pkey" primary key ("id"));');
+    this.addSql('alter table "issue" add constraint "issue_content_id_unique" unique ("content_id");');
+
+    this.addSql('create table "issue_tags" ("issue_id" bigint not null, "tag_id" bigint not null, constraint "issue_tags_pkey" primary key ("issue_id", "tag_id"));');
+
+    this.addSql('create table "issue_contributors" ("issue_id" bigint not null, "individual_id" bigint not null, constraint "issue_contributors_pkey" primary key ("issue_id", "individual_id"));');
+
+    this.addSql('create table "favorite" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "content_id" bigint not null, constraint "favorite_pkey" primary key ("id"));');
+
+    this.addSql('create table "content_attachments" ("content_id" bigint not null, "file_upload_id" bigint not null, constraint "content_attachments_pkey" primary key ("content_id", "file_upload_id"));');
+
     this.addSql('create table "canteen_menu" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "canteen_id" bigint not null, constraint "canteen_menu_pkey" primary key ("id"));');
 
     this.addSql('create table "canteen_food" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "canteen_id" bigint not null, constraint "canteen_food_pkey" primary key ("id"));');
@@ -90,40 +108,22 @@ export class Migration20230811005150 extends Migration {
     this.addSql('create table "legal_unit_location" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "location_type" text check ("location_type" in (\'Location\', \'Franchisee\')) not null default \'Location\', "nic" varchar(255) null default null, "legal_name" varchar(255) not null, "bank_location_code" int null default null, "actor_id" bigint not null, "legal_unit_id" bigint null default null, "location_id" bigint null default null, constraint "legal_unit_location_pkey" primary key ("id"));');
     this.addSql('alter table "legal_unit_location" add constraint "legal_unit_location_actor_id_unique" unique ("actor_id");');
 
-    this.addSql('create table "content" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "text" text not null, "is_anonymous" boolean not null default false, "parent_id" bigint null default null, "replying_to_id" bigint null default null, "team_id" bigint null default null, "event_id" bigint null default null, constraint "content_pkey" primary key ("id"));');
-    this.addSql('alter table "content" add constraint "content_event_id_unique" unique ("event_id");');
-
-    this.addSql('create table "report" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "type" text check ("type" in (\'Harassment\', \'Spam\', \'Inappropriate\', \'Other\')) not null, "reason" text not null default \'\', "actor_id" bigint null default null, "content_id" bigint null default null, constraint "report_pkey" primary key ("id"));');
-
-    this.addSql('create table "reaction" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "reaction_type" text check ("reaction_type" in (\'What\', \'Interesting\', \'Like\', \'NotAnIssue\', \'Bump\', \'Laugh\', \'Unsure\', \'Partial\', \'Perfect\')) not null, "content_id" bigint null default null, constraint "reaction_pkey" primary key ("id"));');
-    this.addSql('create index "reaction_reaction_type_index" on "reaction" ("reaction_type");');
-
-    this.addSql('create table "issue" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "slug" text not null, "content_id" bigint not null, constraint "issue_pkey" primary key ("id"));');
-    this.addSql('alter table "issue" add constraint "issue_content_id_unique" unique ("content_id");');
-
-    this.addSql('create table "issue_tags" ("issue_id" bigint not null, "tag_id" bigint not null, constraint "issue_tags_pkey" primary key ("issue_id", "tag_id"));');
-
-    this.addSql('create table "issue_contributors" ("issue_id" bigint not null, "individual_id" bigint not null, constraint "issue_contributors_pkey" primary key ("issue_id", "individual_id"));');
-
-    this.addSql('create table "favorite" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "content_id" bigint null default null, constraint "favorite_pkey" primary key ("id"));');
-
-    this.addSql('create table "event" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "start" timestamptz(0) not null, "end" timestamptz(0) not null, "name" text not null, "slug" text not null, "price" real not null default 0, "points_awarded_for_attendance" real not null default 0, "max_participants" smallint null default null, "state" text check ("state" in (\'Template\', \'Draft\', \'Submitted\', \'Rejected\', \'Approved\', \'Published\', \'Completed\')) not null default \'Draft\', "is_private" boolean not null default false, "is_auto_accepting_joins" boolean not null default true, "is_template" boolean not null default false, "meta" jsonb not null default \'{}\', "location_id" bigint null default null, "content_id" bigint not null, "event_approval_submission_id" bigint null default null, "banner_id" bigint null default null, "join_form_id" bigint null default null, "next_event_approval_step_id" bigint null default null, constraint "event_pkey" primary key ("id"));');
+    this.addSql('create table "event" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "start" timestamptz(0) not null, "end" timestamptz(0) not null, "name" text not null, "description" text not null, "slug" text not null, "price" real not null default 0, "points_awarded_for_attendance" real not null default 0, "max_participants" smallint null default null, "state" text check ("state" in (\'Template\', \'Draft\', \'Submitted\', \'Rejected\', \'Approved\', \'Published\', \'Canceled\', \'Completed\')) not null default \'Draft\', "is_private" boolean not null default false, "is_auto_accepting_joins" boolean not null default true, "is_template" boolean not null default false, "meta" jsonb not null default \'{}\', "location_id" bigint not null, "event_approval_submission_id" bigint null default null, "banner_id" bigint null default null, "join_form_id" bigint null default null, "next_event_approval_step_id" bigint null default null, constraint "event_pkey" primary key ("id"));');
     this.addSql('alter table "event" add constraint "event_slug_unique" unique ("slug");');
     this.addSql('create index "event_is_private_index" on "event" ("is_private");');
-    this.addSql('alter table "event" add constraint "event_content_id_unique" unique ("content_id");');
     this.addSql('alter table "event" add constraint "event_event_approval_submission_id_unique" unique ("event_approval_submission_id");');
 
-    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'Individual\', \'Bot\', \'User\', \'Tenant\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'Bank\', \'Address\', \'Location\', \'ActorImage\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Session\', \'Shortcut\', \'Team\', \'TeamHistory\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'Role\', \'Account\', \'AccountAllocate\', \'Expense\', \'ExpenseItem\', \'Finance\', \'TeamJoin\', \'TeamMember\', \'TeamMetric\', \'Grant\', \'GrantUnlock\', \'Canteen\', \'CanteenFood\', \'CanteenMenu\', \'ClassGroup\', \'ClassGroupTeacher\', \'Cohort\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\', \'Content\', \'Thread\', \'Issue\', \'Favorite\', \'Reaction\', \'Report\', \'Validation\', \'View\', \'Vote\', \'Document\', \'Subject\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "individual_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
+    this.addSql('create table "log" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "event_type" text check ("event_type" in (\'Create\', \'Update\', \'Delete\', \'Hide\')) not null, "context" text check ("context" in (\'User\', \'Bot\', \'CRON\', \'Seeding\', \'System\')) not null, "diff" jsonb not null default \'{}\', "entity_name" text check ("entity_name" in (\'Individual\', \'Bot\', \'User\', \'Tenant\', \'TenantOrganize\', \'Campus\', \'CampusCluster\', \'Actor\', \'Bank\', \'Address\', \'Location\', \'ActorImage\', \'LegalUnit\', \'LegalUnitLocation\', \'Social\', \'Tag\', \'Follow\', \'Session\', \'Shortcut\', \'Team\', \'TeamHistory\', \'Action\', \'Mission\', \'MissionJoin\', \'Pole\', \'Role\', \'Account\', \'AccountAllocate\', \'Expense\', \'ExpenseItem\', \'Finance\', \'TeamJoin\', \'TeamMember\', \'TeamMetric\', \'Grant\', \'GrantUnlock\', \'Canteen\', \'CanteenFood\', \'CanteenMenu\', \'ClassGroup\', \'ClassGroupTeacher\', \'Cohort\', \'Project\', \'Event\', \'EventApproval\', \'EventApprovalStep\', \'EventFavorite\', \'EventJoin\', \'EventOrganize\', \'EventSupervisor\', \'FileUpload\', \'Form\', \'FormSubmission\', \'Content\', \'Thread\', \'Issue\', \'Favorite\', \'Reaction\', \'Report\', \'Validation\', \'View\', \'Vote\', \'Document\', \'Subject\')) not null, "entity_id" bigint not null, "note" text not null default \'\', "team_id" bigint null default null, "event_id" bigint null default null, "individual_id" bigint null default null, "tenant_id" bigint null default null, constraint "log_pkey" primary key ("id"));');
 
     this.addSql('create table "event_organize" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "description" text not null default \'\', "event_id" bigint not null, "team_id" bigint not null, "project_id" bigint null default null, constraint "event_organize_pkey" primary key ("id"));');
 
     this.addSql('create table "mission" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "description" text not null default \'\', "points_minimum" smallint not null, "points_maximum" smallint not null, "quantity" smallint not null default 1, "is_auto_accepting_members" boolean not null default false, "is_template" boolean not null default false, "color" text check ("color" in (\'Blue\', \'DeepBlue\', \'DarkBlue\', \'LightBlue\', \'Green\', \'DeepGreen\', \'DarkGreen\', \'LightGreen\', \'Orange\', \'DeepOrange\', \'DarkOrange\', \'LightOrange\', \'Red\', \'DeepRed\', \'DarkRed\', \'LightRed\', \'Purple\', \'DeepPurple\', \'DarkPurple\', \'LightPurple\', \'Gray\', \'DeepGray\', \'DarkGray\', \'Turquoise\', \'Pink\', \'Cyan\', \'Brown\', \'Indigo\', \'Lime\', \'Teal\')) not null default \'Blue\', "team_id" bigint not null, "event_manage_id" bigint null default null, "project_id" bigint null default null, constraint "mission_pkey" primary key ("id"));');
 
+    this.addSql('create table "event_favorite" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "event_id" bigint not null, constraint "event_favorite_pkey" primary key ("id"));');
+
     this.addSql('create table "event_approval" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "message" text not null default \'\', "is_approved" boolean not null, "event_id" bigint null, "event_approval_step_id" bigint null, constraint "event_approval_pkey" primary key ("id"));');
 
     this.addSql('create table "event_tags" ("event_id" bigint not null, "tag_id" bigint not null, constraint "event_tags_pkey" primary key ("event_id", "tag_id"));');
-
-    this.addSql('create table "content_attachments" ("content_id" bigint not null, "file_upload_id" bigint not null, constraint "content_attachments_pkey" primary key ("content_id", "file_upload_id"));');
 
     this.addSql('create table "campus" ("id" bigint not null default "public"."snowflake"(), "created_at" timestamptz(0) not null default current_timestamp, "created_by_id" bigint null default null, "deleted_at" timestamptz(0) null default null, "tenant_id" bigint not null, "hidden_at" timestamptz(0) null default null, "name" text not null, "location_id" bigint not null, "campus_cluster_id" bigint not null, constraint "campus_pkey" primary key ("id"));');
 
@@ -313,6 +313,38 @@ export class Migration20230811005150 extends Migration {
     this.addSql('alter table "document" add constraint "document_subject_id_foreign" foreign key ("subject_id") references "subject" ("id") on update cascade on delete set null;');
     this.addSql('alter table "document" add constraint "document_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete set null;');
 
+    this.addSql('alter table "content" add constraint "content_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "content" add constraint "content_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "content" add constraint "content_parent_id_foreign" foreign key ("parent_id") references "content" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "content" add constraint "content_replying_to_id_foreign" foreign key ("replying_to_id") references "content" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "content" add constraint "content_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete set null;');
+
+    this.addSql('alter table "report" add constraint "report_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "report" add constraint "report_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "report" add constraint "report_actor_id_foreign" foreign key ("actor_id") references "actor" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "report" add constraint "report_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
+
+    this.addSql('alter table "reaction" add constraint "reaction_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "reaction" add constraint "reaction_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "reaction" add constraint "reaction_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
+
+    this.addSql('alter table "issue" add constraint "issue_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "issue" add constraint "issue_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "issue" add constraint "issue_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete CASCADE;');
+
+    this.addSql('alter table "issue_tags" add constraint "issue_tags_issue_id_foreign" foreign key ("issue_id") references "issue" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "issue_tags" add constraint "issue_tags_tag_id_foreign" foreign key ("tag_id") references "tag" ("id") on update cascade on delete cascade;');
+
+    this.addSql('alter table "issue_contributors" add constraint "issue_contributors_issue_id_foreign" foreign key ("issue_id") references "issue" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "issue_contributors" add constraint "issue_contributors_individual_id_foreign" foreign key ("individual_id") references "individual" ("id") on update cascade on delete cascade;');
+
+    this.addSql('alter table "favorite" add constraint "favorite_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "favorite" add constraint "favorite_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "favorite" add constraint "favorite_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade;');
+
+    this.addSql('alter table "content_attachments" add constraint "content_attachments_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete cascade;');
+    this.addSql('alter table "content_attachments" add constraint "content_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
+
     this.addSql('alter table "canteen_menu" add constraint "canteen_menu_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "canteen_menu" add constraint "canteen_menu_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "canteen_menu" add constraint "canteen_menu_canteen_id_foreign" foreign key ("canteen_id") references "canteen" ("id") on update cascade;');
@@ -343,40 +375,9 @@ export class Migration20230811005150 extends Migration {
     this.addSql('alter table "legal_unit_location" add constraint "legal_unit_location_legal_unit_id_foreign" foreign key ("legal_unit_id") references "legal_unit" ("id") on update cascade on delete set null;');
     this.addSql('alter table "legal_unit_location" add constraint "legal_unit_location_location_id_foreign" foreign key ("location_id") references "location" ("id") on update cascade on delete set null;');
 
-    this.addSql('alter table "content" add constraint "content_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "content" add constraint "content_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "content" add constraint "content_parent_id_foreign" foreign key ("parent_id") references "content" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "content" add constraint "content_replying_to_id_foreign" foreign key ("replying_to_id") references "content" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "content" add constraint "content_team_id_foreign" foreign key ("team_id") references "team" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "content" add constraint "content_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "report" add constraint "report_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "report" add constraint "report_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "report" add constraint "report_actor_id_foreign" foreign key ("actor_id") references "actor" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "report" add constraint "report_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "reaction" add constraint "reaction_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "reaction" add constraint "reaction_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "reaction" add constraint "reaction_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
-
-    this.addSql('alter table "issue" add constraint "issue_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "issue" add constraint "issue_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "issue" add constraint "issue_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete CASCADE;');
-
-    this.addSql('alter table "issue_tags" add constraint "issue_tags_issue_id_foreign" foreign key ("issue_id") references "issue" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "issue_tags" add constraint "issue_tags_tag_id_foreign" foreign key ("tag_id") references "tag" ("id") on update cascade on delete cascade;');
-
-    this.addSql('alter table "issue_contributors" add constraint "issue_contributors_issue_id_foreign" foreign key ("issue_id") references "issue" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "issue_contributors" add constraint "issue_contributors_individual_id_foreign" foreign key ("individual_id") references "individual" ("id") on update cascade on delete cascade;');
-
-    this.addSql('alter table "favorite" add constraint "favorite_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "favorite" add constraint "favorite_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "favorite" add constraint "favorite_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete set null;');
-
     this.addSql('alter table "event" add constraint "event_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "event" add constraint "event_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
-    this.addSql('alter table "event" add constraint "event_location_id_foreign" foreign key ("location_id") references "location" ("id") on update cascade on delete set null;');
-    this.addSql('alter table "event" add constraint "event_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete CASCADE;');
+    this.addSql('alter table "event" add constraint "event_location_id_foreign" foreign key ("location_id") references "location" ("id") on update cascade;');
     this.addSql('alter table "event" add constraint "event_event_approval_submission_id_foreign" foreign key ("event_approval_submission_id") references "form_submission" ("id") on update cascade on delete set null;');
     this.addSql('alter table "event" add constraint "event_banner_id_foreign" foreign key ("banner_id") references "file_upload" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "event" add constraint "event_join_form_id_foreign" foreign key ("join_form_id") references "form" ("id") on update cascade on delete set null;');
@@ -400,6 +401,10 @@ export class Migration20230811005150 extends Migration {
     this.addSql('alter table "mission" add constraint "mission_event_manage_id_foreign" foreign key ("event_manage_id") references "event_organize" ("id") on update cascade on delete set null;');
     this.addSql('alter table "mission" add constraint "mission_project_id_foreign" foreign key ("project_id") references "project" ("id") on update cascade on delete set null;');
 
+    this.addSql('alter table "event_favorite" add constraint "event_favorite_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
+    this.addSql('alter table "event_favorite" add constraint "event_favorite_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
+    this.addSql('alter table "event_favorite" add constraint "event_favorite_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade;');
+
     this.addSql('alter table "event_approval" add constraint "event_approval_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "event_approval" add constraint "event_approval_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
     this.addSql('alter table "event_approval" add constraint "event_approval_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete cascade;');
@@ -407,9 +412,6 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "event_tags" add constraint "event_tags_event_id_foreign" foreign key ("event_id") references "event" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "event_tags" add constraint "event_tags_tag_id_foreign" foreign key ("tag_id") references "tag" ("id") on update cascade on delete cascade;');
-
-    this.addSql('alter table "content_attachments" add constraint "content_attachments_content_id_foreign" foreign key ("content_id") references "content" ("id") on update cascade on delete cascade;');
-    this.addSql('alter table "content_attachments" add constraint "content_attachments_file_upload_id_foreign" foreign key ("file_upload_id") references "file_upload" ("id") on update cascade on delete cascade;');
 
     this.addSql('alter table "campus" add constraint "campus_created_by_id_foreign" foreign key ("created_by_id") references "individual" ("id") on update cascade on delete set null;');
     this.addSql('alter table "campus" add constraint "campus_tenant_id_foreign" foreign key ("tenant_id") references "tenant" ("id") on update cascade;');
@@ -630,16 +632,6 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "document" drop constraint "document_tenant_id_foreign";');
 
-    this.addSql('alter table "canteen_menu" drop constraint "canteen_menu_tenant_id_foreign";');
-
-    this.addSql('alter table "canteen_food" drop constraint "canteen_food_tenant_id_foreign";');
-
-    this.addSql('alter table "campus_cluster" drop constraint "campus_cluster_tenant_id_foreign";');
-
-    this.addSql('alter table "admin_role" drop constraint "admin_role_tenant_id_foreign";');
-
-    this.addSql('alter table "location" drop constraint "location_tenant_id_foreign";');
-
     this.addSql('alter table "content" drop constraint "content_tenant_id_foreign";');
 
     this.addSql('alter table "report" drop constraint "report_tenant_id_foreign";');
@@ -650,6 +642,16 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "favorite" drop constraint "favorite_tenant_id_foreign";');
 
+    this.addSql('alter table "canteen_menu" drop constraint "canteen_menu_tenant_id_foreign";');
+
+    this.addSql('alter table "canteen_food" drop constraint "canteen_food_tenant_id_foreign";');
+
+    this.addSql('alter table "campus_cluster" drop constraint "campus_cluster_tenant_id_foreign";');
+
+    this.addSql('alter table "admin_role" drop constraint "admin_role_tenant_id_foreign";');
+
+    this.addSql('alter table "location" drop constraint "location_tenant_id_foreign";');
+
     this.addSql('alter table "event" drop constraint "event_tenant_id_foreign";');
 
     this.addSql('alter table "log" drop constraint "log_tenant_id_foreign";');
@@ -657,6 +659,8 @@ export class Migration20230811005150 extends Migration {
     this.addSql('alter table "event_organize" drop constraint "event_organize_tenant_id_foreign";');
 
     this.addSql('alter table "mission" drop constraint "mission_tenant_id_foreign";');
+
+    this.addSql('alter table "event_favorite" drop constraint "event_favorite_tenant_id_foreign";');
 
     this.addSql('alter table "event_approval" drop constraint "event_approval_tenant_id_foreign";');
 
@@ -718,11 +722,11 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "team" drop constraint "team_actor_id_foreign";');
 
+    this.addSql('alter table "report" drop constraint "report_actor_id_foreign";');
+
     this.addSql('alter table "location" drop constraint "location_actor_id_foreign";');
 
     this.addSql('alter table "legal_unit_location" drop constraint "legal_unit_location_actor_id_foreign";');
-
-    this.addSql('alter table "report" drop constraint "report_actor_id_foreign";');
 
     this.addSql('alter table "follow" drop constraint "follow_followed_actor_id_foreign";');
 
@@ -790,6 +794,18 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "document" drop constraint "document_created_by_id_foreign";');
 
+    this.addSql('alter table "content" drop constraint "content_created_by_id_foreign";');
+
+    this.addSql('alter table "report" drop constraint "report_created_by_id_foreign";');
+
+    this.addSql('alter table "reaction" drop constraint "reaction_created_by_id_foreign";');
+
+    this.addSql('alter table "issue" drop constraint "issue_created_by_id_foreign";');
+
+    this.addSql('alter table "issue_contributors" drop constraint "issue_contributors_individual_id_foreign";');
+
+    this.addSql('alter table "favorite" drop constraint "favorite_created_by_id_foreign";');
+
     this.addSql('alter table "canteen_menu" drop constraint "canteen_menu_created_by_id_foreign";');
 
     this.addSql('alter table "canteen_food" drop constraint "canteen_food_created_by_id_foreign";');
@@ -806,18 +822,6 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "legal_unit_location" drop constraint "legal_unit_location_created_by_id_foreign";');
 
-    this.addSql('alter table "content" drop constraint "content_created_by_id_foreign";');
-
-    this.addSql('alter table "report" drop constraint "report_created_by_id_foreign";');
-
-    this.addSql('alter table "reaction" drop constraint "reaction_created_by_id_foreign";');
-
-    this.addSql('alter table "issue" drop constraint "issue_created_by_id_foreign";');
-
-    this.addSql('alter table "issue_contributors" drop constraint "issue_contributors_individual_id_foreign";');
-
-    this.addSql('alter table "favorite" drop constraint "favorite_created_by_id_foreign";');
-
     this.addSql('alter table "event" drop constraint "event_created_by_id_foreign";');
 
     this.addSql('alter table "log" drop constraint "log_created_by_id_foreign";');
@@ -827,6 +831,8 @@ export class Migration20230811005150 extends Migration {
     this.addSql('alter table "event_organize" drop constraint "event_organize_created_by_id_foreign";');
 
     this.addSql('alter table "mission" drop constraint "mission_created_by_id_foreign";');
+
+    this.addSql('alter table "event_favorite" drop constraint "event_favorite_created_by_id_foreign";');
 
     this.addSql('alter table "event_approval" drop constraint "event_approval_created_by_id_foreign";');
 
@@ -950,11 +956,11 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "document" drop constraint "document_file_id_foreign";');
 
+    this.addSql('alter table "content_attachments" drop constraint "content_attachments_file_upload_id_foreign";');
+
     this.addSql('alter table "location_images" drop constraint "location_images_file_upload_id_foreign";');
 
     this.addSql('alter table "event" drop constraint "event_banner_id_foreign";');
-
-    this.addSql('alter table "content_attachments" drop constraint "content_attachments_file_upload_id_foreign";');
 
     this.addSql('alter table "expense" drop constraint "expense_expense_report_id_foreign";');
 
@@ -1072,6 +1078,32 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "action" drop constraint "action_project_id_foreign";');
 
+    this.addSql('alter table "content" drop constraint "content_parent_id_foreign";');
+
+    this.addSql('alter table "content" drop constraint "content_replying_to_id_foreign";');
+
+    this.addSql('alter table "report" drop constraint "report_content_id_foreign";');
+
+    this.addSql('alter table "reaction" drop constraint "reaction_content_id_foreign";');
+
+    this.addSql('alter table "issue" drop constraint "issue_content_id_foreign";');
+
+    this.addSql('alter table "favorite" drop constraint "favorite_content_id_foreign";');
+
+    this.addSql('alter table "content_attachments" drop constraint "content_attachments_content_id_foreign";');
+
+    this.addSql('alter table "thread" drop constraint "thread_content_id_foreign";');
+
+    this.addSql('alter table "validation" drop constraint "validation_content_id_foreign";');
+
+    this.addSql('alter table "view" drop constraint "view_content_id_foreign";');
+
+    this.addSql('alter table "vote" drop constraint "vote_content_id_foreign";');
+
+    this.addSql('alter table "issue_tags" drop constraint "issue_tags_issue_id_foreign";');
+
+    this.addSql('alter table "issue_contributors" drop constraint "issue_contributors_issue_id_foreign";');
+
     this.addSql('alter table "campus" drop constraint "campus_campus_cluster_id_foreign";');
 
     this.addSql('alter table "tenant_organize" drop constraint "tenant_organize_campus_cluster_id_foreign";');
@@ -1090,39 +1122,11 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('alter table "bank" drop constraint "bank_legal_unit_location_id_foreign";');
 
-    this.addSql('alter table "content" drop constraint "content_parent_id_foreign";');
-
-    this.addSql('alter table "content" drop constraint "content_replying_to_id_foreign";');
-
-    this.addSql('alter table "report" drop constraint "report_content_id_foreign";');
-
-    this.addSql('alter table "reaction" drop constraint "reaction_content_id_foreign";');
-
-    this.addSql('alter table "issue" drop constraint "issue_content_id_foreign";');
-
-    this.addSql('alter table "favorite" drop constraint "favorite_content_id_foreign";');
-
-    this.addSql('alter table "event" drop constraint "event_content_id_foreign";');
-
-    this.addSql('alter table "content_attachments" drop constraint "content_attachments_content_id_foreign";');
-
-    this.addSql('alter table "thread" drop constraint "thread_content_id_foreign";');
-
-    this.addSql('alter table "validation" drop constraint "validation_content_id_foreign";');
-
-    this.addSql('alter table "view" drop constraint "view_content_id_foreign";');
-
-    this.addSql('alter table "vote" drop constraint "vote_content_id_foreign";');
-
-    this.addSql('alter table "issue_tags" drop constraint "issue_tags_issue_id_foreign";');
-
-    this.addSql('alter table "issue_contributors" drop constraint "issue_contributors_issue_id_foreign";');
-
-    this.addSql('alter table "content" drop constraint "content_event_id_foreign";');
-
     this.addSql('alter table "log" drop constraint "log_event_id_foreign";');
 
     this.addSql('alter table "event_organize" drop constraint "event_organize_event_id_foreign";');
+
+    this.addSql('alter table "event_favorite" drop constraint "event_favorite_event_id_foreign";');
 
     this.addSql('alter table "event_approval" drop constraint "event_approval_event_id_foreign";');
 
@@ -1250,6 +1254,22 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('drop table if exists "document" cascade;');
 
+    this.addSql('drop table if exists "content" cascade;');
+
+    this.addSql('drop table if exists "report" cascade;');
+
+    this.addSql('drop table if exists "reaction" cascade;');
+
+    this.addSql('drop table if exists "issue" cascade;');
+
+    this.addSql('drop table if exists "issue_tags" cascade;');
+
+    this.addSql('drop table if exists "issue_contributors" cascade;');
+
+    this.addSql('drop table if exists "favorite" cascade;');
+
+    this.addSql('drop table if exists "content_attachments" cascade;');
+
     this.addSql('drop table if exists "canteen_menu" cascade;');
 
     this.addSql('drop table if exists "canteen_food" cascade;');
@@ -1266,20 +1286,6 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('drop table if exists "legal_unit_location" cascade;');
 
-    this.addSql('drop table if exists "content" cascade;');
-
-    this.addSql('drop table if exists "report" cascade;');
-
-    this.addSql('drop table if exists "reaction" cascade;');
-
-    this.addSql('drop table if exists "issue" cascade;');
-
-    this.addSql('drop table if exists "issue_tags" cascade;');
-
-    this.addSql('drop table if exists "issue_contributors" cascade;');
-
-    this.addSql('drop table if exists "favorite" cascade;');
-
     this.addSql('drop table if exists "event" cascade;');
 
     this.addSql('drop table if exists "log" cascade;');
@@ -1288,11 +1294,11 @@ export class Migration20230811005150 extends Migration {
 
     this.addSql('drop table if exists "mission" cascade;');
 
+    this.addSql('drop table if exists "event_favorite" cascade;');
+
     this.addSql('drop table if exists "event_approval" cascade;');
 
     this.addSql('drop table if exists "event_tags" cascade;');
-
-    this.addSql('drop table if exists "content_attachments" cascade;');
 
     this.addSql('drop table if exists "campus" cascade;');
 

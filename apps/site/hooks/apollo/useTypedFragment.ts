@@ -18,5 +18,6 @@ export function useTypedFragment<T>({
   const from = { __typename, ...where };
 
   const { complete, data, missing } = useFragment<T>({ fragment, fragmentName, from });
+  if (missing) console.warn(`Missing data ${JSON.stringify(data)} for ${JSON.stringify(from)}`);
   return complete && data ? data : null;
 }

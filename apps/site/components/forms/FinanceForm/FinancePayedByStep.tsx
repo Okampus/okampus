@@ -7,18 +7,20 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 import FieldSet from '../../molecules/Input/FieldSet';
 import { PayedByType } from '@okampus/shared/enums';
 
-import type { financeFormDefaultValues } from './FinanceForm';
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../context/navigation';
+import { Controller } from 'react-hook-form';
 
-type Context = FormStepContext<typeof financeFormDefaultValues>;
-type PayedByStep = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
+import type { FinanceFormStepProps } from './FinanceForm';
 
-export default function FinancePayedByStep({ teamManage, values, setValues }: PayedByStep) {
+export default function FinancePayedByStep({
+  methods: { formMethods },
+  context: { teamManage },
+}: FinanceFormStepProps) {
+  const { control, register, watch, formState } = formMethods;
+  const payedByType = watch('payedByType');
+
   const { t } = useTranslation();
 
   const items = Object.keys(PayedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
-
   const options = teamManage.teamMembers.map(({ user }) => ({
     label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
     value: user.individual.id,
@@ -26,25 +28,24 @@ export default function FinancePayedByStep({ teamManage, values, setValues }: Pa
 
   return (
     <div className="flex flex-col gap-4">
-      <FieldSet label="Qui a payé cette transaction ?">
+      <FieldSet label="Qui a payé cette transaction ?" error={formState.errors.payedByType?.message}>
         {items.map(({ label, value }) => (
-          <RadioInput
-            defaultValue={value}
-            key={value}
-            label={label}
-            name="payedByType"
-            onChange={(event) => setValues({ ...values, payedByType: event.target.value as PayedByType })}
-          />
+          <RadioInput {...register('payedByType')} key={value} label={label} />
         ))}
       </FieldSet>
 
-      {values.payedByType === PayedByType.Manual && (
-        <SelectInput
-          label="Membre de l'équipe"
-          name="payedBy"
-          options={options}
-          value={values.initiatedById}
-          onChange={(id) => setValues({ ...values, initiatedById: id as string })}
+      {payedByType === PayedByType.Manual && (
+        <Controller
+          control={control}
+          name="initiatedById"
+          render={({ field }) => (
+            <SelectInput
+              error={formState.errors.initiatedById?.message}
+              label="Membre de l'équipe"
+              options={options}
+              {...field}
+            />
+          )}
         />
       )}
     </div>

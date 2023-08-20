@@ -7,7 +7,6 @@ import Popover from '../atoms/Popup/Popover/Popover';
 import PopoverContent from '../atoms/Popup/Popover/PopoverContent';
 import PopoverTrigger from '../atoms/Popup/Popover/PopoverTrigger';
 import MenuList from '../molecules/Button/MenuList';
-import DarkModeToggle from '../molecules/Input/DarkModeToggle';
 
 import { isSidebarOpenAtom } from '../../context/global';
 import { useMe } from '../../context/navigation';
@@ -43,8 +42,7 @@ export default function SideBar({ children, header }: SideBarProps) {
   const isMobile = currentWindowSize === 'mobile';
 
   useEffect(() => {
-    if (isMobile) isSidebarOpen && setIsSideBarOpen(false);
-    else !isSidebarOpen && setIsSideBarOpen(true);
+    if (!isMobile && !isSidebarOpen) setIsSideBarOpen(true);
   }, [isMobile, isSidebarOpen, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
@@ -60,11 +58,6 @@ export default function SideBar({ children, header }: SideBarProps) {
     {
       actions: [
         { label: 'Gérer mon profil', iconOrSwitch: <IconSettings />, linkOrActionOrMenu: ME_ROUTE },
-        {
-          label: 'Mode sombre',
-          iconOrSwitch: <DarkModeToggle checked={theme === 'dark'} />,
-          linkOrActionOrMenu: setTheme,
-        },
         { label: 'Se déconnecter', iconOrSwitch: <IconLogout />, linkOrActionOrMenu: logout },
       ],
     },

@@ -1,0 +1,25 @@
+mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
+  updateLocationByPk(pkColumns: { id: $id }, _set: $update) {
+    __typename
+    id
+    createdAt
+    type
+    onlineLink
+    locationDetails
+    address {
+      __typename
+      id
+      createdAt
+      latitude
+      longitude
+      category
+      name
+      streetNumber
+      street
+      zip
+      city
+      state
+      country
+    }
+  }
+}

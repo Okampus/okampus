@@ -23,13 +23,13 @@ export type ControlledInput<T> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
 };
 
 export type ControlledSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  onChange?: (value: T) => void;
+  onChange: (value: T) => void;
   value: T | null;
   options: SelectItem<T, Searchable>[];
 };
 
 export type ControlledMultiSelect<T, Searchable = false> = Omit<UncontrolledInput<T>, 'defaultValue'> & {
-  onChange?: (value: T[]) => void;
+  onChange: (value: T[]) => void;
   value: T[];
   options: SelectItem<T, Searchable>[];
 };

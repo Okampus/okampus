@@ -8,13 +8,11 @@ import type { Form } from '../form/form.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { EventOrganize } from './event-organize/event-organize.entity';
-import type { Content } from '../content/content.entity';
 import type { Location } from '../actor/location/location.entity';
 
 export type EventOptions = EventProps &
   TenantScopedOptions & {
-    content: Content;
-    location?: Location | null;
+    location: Location;
     banner?: FileUpload | null;
     joinForm?: Form | null;
     regularEvent?: Event | null;

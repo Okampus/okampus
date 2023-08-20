@@ -35,6 +35,8 @@ query GetProject($slug: String!) {
       }
     }
     eventOrganizes {
+      __typename
+      id
       event {
         __typename
         id

@@ -11,8 +11,8 @@ import type { Content } from '../content.entity';
 export class Favorite extends TenantScopedEntity {
   [EntityRepositoryType]!: FavoriteRepository;
 
-  @ManyToOne({ type: 'Content', nullable: true, default: null })
-  content: Content | null = null;
+  @ManyToOne({ type: 'Content' })
+  content!: Content;
 
   constructor(options: FavoriteOptions) {
     super(options);

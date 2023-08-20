@@ -1,0 +1,27 @@
+mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
+  updateEventOrganizeMany(updates: $updates) {
+    returning {
+      __typename
+      id
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          slug
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
+    }
+  }
+}

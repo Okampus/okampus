@@ -1,149 +1,173 @@
+'use client';
+
 import EventDetailsStep from './EventDetailsStep';
 import EventPresentationStep from './EventPresentationStep';
 import EventSupervisorsStep from './EventSupervisorsStep';
 import EventSummaryStep from './EventSummaryStep';
 import BannerImage from '../../atoms/Image/BannerImage';
-import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../organisms/Form/MultiStepForm';
 import ChoiceList from '../../molecules/List/ChoiceList';
+import MultiStepForm from '../../organisms/Form/MultiStepForm';
 
-import { useTeamManage, useTenant } from '../../../context/navigation';
+import { useTenant } from '../../../context/navigation';
 import { useModal } from '../../../hooks/context/useModal';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
-import { useGetProjectsSelectQuery, useInsertEventMutation } from '@okampus/shared/graphql';
 import { LocationType } from '@okampus/shared/enums';
-import { ActionType } from '@okampus/shared/types';
-import { isNotNull, randomId, toSlug } from '@okampus/shared/utils';
+import { useInsertEventMutation } from '@okampus/shared/graphql';
+import { geocodeAddressSchema } from '@okampus/shared/types';
+import { isNotNull } from '@okampus/shared/utils';
 
-import type { FormSchema, GeocodeAddress, Submission } from '@okampus/shared/types';
+import * as z from 'zod';
 
-export const eventFormDefaultValues = {
-  isOnline: false as boolean,
-  projectId: null as string | null,
-  description: '' as string,
-  eventId: null as string | null,
-  supervisorIds: [null] as (string | null)[],
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
+import type { TeamManageInfo } from '../../../context/navigation';
+import type { useFormContext } from 'react-hook-form';
+
+const eventFormSchema = z
+  .object({
+    isOnline: z.boolean(),
+    projectId: z.string().nullable(),
+    description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
+    supervisorIds: z.array(z.string().nullable()).min(1, { message: 'Au moins un superviseur est requis.' }),
+    name: z
+      .string({ required_error: "Nom de l'événement requis." })
+      .min(3, { message: "Le nom de l'événement doit faire au moins 3 caractères." })
+      .max(100, { message: "Le nom de l'événement ne peut pas dépasser 100 caractères." }),
+    start: z
+      .date({ required_error: 'Date de début requise.' })
+      .min(new Date(), { message: "L'événement ne peut pas commencer dans le passé." }),
+    end: z.date({ required_error: 'Date de fin requise.' }),
+    bannerId: z.string().nullable(),
+    address: geocodeAddressSchema.nullable(),
+    website: z.string().url({ message: 'Le lien doit être une URL valide.' }).optional().or(z.literal('')),
+    locationDetails: z
+      .string()
+      .max(1000, { message: "Les détails de l'emplacement de l'événement ne peuvent pas dépasser 1000 caractères." }),
+    formSubmission: z.record(z.string(), z.union([z.boolean(), z.string(), z.instanceof(FileList)])).nullable(),
+  })
+  .refine((data) => data.end > data.start, {
+    message: "La date et heure de fin de l'événement doit être après sa date et heure de début.",
+    path: ['endDate'],
+  })
+  .refine((data) => !data.isOnline && !data.address, {
+    message: "L'adresse est requise pour les événements en personne.",
+    path: ['address'],
+  })
+  .refine((data) => data.isOnline && !data.website, {
+    message: "Le lien de l'événement est requis pour les événements en ligne.",
+    path: ['address'],
+  });
+
+type EventFormSchema = z.infer<typeof eventFormSchema>;
+
+const eventFormDefaultValues: EventFormSchema = {
+  isOnline: false,
+  projectId: null,
+  description: '',
+  supervisorIds: [null],
   name: '',
-  startDate: new Date().toISOString(),
-  startTime: '00:00',
-  endDate: new Date().toISOString(),
-  endTime: '00:00',
-  bannerFileUploadId: null as string | null,
-  address: null as GeocodeAddress | null,
-  addressQuery: '' as string,
-  website: '' as string,
-  locationDetails: '' as string,
-  formSubmission: null as Submission<FormSchema> | null,
+  start: new Date(),
+  end: new Date(),
+  bannerId: null,
+  address: null,
+  website: '',
+  locationDetails: '',
+  formSubmission: null,
 };
 
-export default function EventForm({ slug }: { slug: string }) {
-  const { teamManage } = useTeamManage(slug);
+export type EventFormStepProps = FormStepContext<EventFormSchema, { teamManage: TeamManageInfo }>;
+export type ChoiceStepProps = {
+  goToStep: (step: string) => void;
+  formMethods: ReturnType<typeof useFormContext<EventFormSchema>>;
+};
+
+function EventOnlineChoiceStep({ methods: { formMethods, goToStep } }: EventFormStepProps) {
+  return (
+    <ChoiceList
+      items={[{ item: { label: 'En ligne', value: true } }, { item: { label: 'En personne', value: false } }]}
+      onClick={(isOnline) => {
+        formMethods.setValue('isOnline', isOnline);
+        goToStep('project');
+      }}
+    />
+  );
+}
+
+function EventProjectChoiceStep({ methods: { formMethods, goToStep }, context: { teamManage } }: EventFormStepProps) {
+  return (
+    teamManage.projects && (
+      <ChoiceList
+        items={[
+          { item: { label: 'Événément hors-projet', value: null } },
+          ...teamManage.projects.map((project) => ({
+            item: { label: project.name, value: project.id },
+            prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
+          })),
+        ]}
+        onClick={(id) => {
+          if (!id) {
+            goToStep('details');
+            return;
+          }
+
+          const project = teamManage.projects.find((project) => project.id === id);
+          if (!project) return;
+          formMethods.setValue('projectId', project.id);
+          goToStep('details');
+        }}
+      />
+    )
+  );
+}
+
+export type EventFormProps = { teamManage: TeamManageInfo };
+export default function EventForm({ teamManage }: EventFormProps) {
   const { closeModal } = useModal();
   const { tenant } = useTenant();
 
   const [insertEvent] = useInsertEventMutation();
 
-  const { data } = useGetProjectsSelectQuery({ variables: { slug } });
-  const projects = data?.project;
-
-  if (!projects || !tenant || !teamManage) return null;
+  if (!tenant) return null;
 
   return (
     <MultiStepForm
+      context={{ teamManage }}
       defaultValues={eventFormDefaultValues}
+      resolver={zodResolver(eventFormSchema)}
       steps={{
         initial: {
           header: 'Événement en ligne ?',
-          content: ({ values, setValues, goToStep }) => {
-            return (
-              <ChoiceList
-                items={[{ item: { label: 'En ligne', value: true } }, { item: { label: 'En personne', value: false } }]}
-                onClick={(isOnline) => {
-                  setValues({ ...values, isOnline });
-                  goToStep('project');
-                }}
-              />
-            );
-          },
+          content: EventOnlineChoiceStep,
         },
         project: {
+          onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
           header: 'Projet lié',
-          onEnter: ({ values, setValues }) => setValues({ ...values, projectId: null }),
-          content: ({ values, setValues, goToStep }) => (
-            <ChoiceList
-              items={[
-                { item: { label: 'Événément hors-projet', value: null } },
-                ...projects.map((project) => ({
-                  item: { label: project.name, value: project.id as string },
-                  prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
-                })),
-              ]}
-              onClick={(id) => {
-                if (!id) {
-                  goToStep('details');
-                  return;
-                }
-
-                const project = projects.find((project) => project.id === id);
-                if (!project) return;
-                setValues({ ...values, projectId: project.id as string });
-                goToStep('details');
-              }}
-            />
-          ),
+          content: EventProjectChoiceStep,
         },
         details: {
+          nextStep: 'presentation',
           header: "Détails de l'événement",
-          content: ({ values, setValues }) => <EventDetailsStep values={values} setValues={setValues} />,
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{
-                type: ActionType.Success,
-                label: 'Continuer',
-                linkOrActionOrMenu: () => goToStep('presentation'),
-              }}
-            />
-          ),
+          content: EventDetailsStep,
+          validateFields: ['name', 'start', 'end', 'address', 'website'],
         },
         presentation: {
+          nextStep: 'supervisors',
           header: "Présentation de l'événement",
-          content: ({ values, setValues }) => <EventPresentationStep values={values} setValues={setValues} />,
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{
-                type: ActionType.Success,
-                label: 'Continuer',
-                linkOrActionOrMenu: () => goToStep('supervisors'),
-              }}
-            />
-          ),
+          content: EventPresentationStep,
+          validateFields: ['description'],
         },
         supervisors: {
+          nextStep: 'summary',
           header: "Responsables de l'événement",
-          content: ({ values, setValues }) => (
-            <EventSupervisorsStep teamManage={teamManage} values={values} setValues={setValues} />
-          ),
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('summary') }}
-            />
-          ),
+          content: EventSupervisorsStep,
+          validateFields: ['supervisorIds'],
         },
         summary: {
+          submit: "Créer l'événement",
           header: 'Récapitulatif',
-          content: ({ values, setValues }) => (
-            <EventSummaryStep teamManage={teamManage} values={values} setValues={setValues} />
-          ),
-          footer: ({ values, onSubmit }) => (
-            <ActionButton
-              action={{
-                type: ActionType.Success,
-                label: "Créer l'événement",
-                linkOrActionOrMenu: () => onSubmit(values),
-              }}
-            />
-          ),
+          content: EventSummaryStep,
         },
       }}
       onSubmit={(data) => {
@@ -178,11 +202,10 @@ export default function EventForm({ slug }: { slug: string }) {
                   },
                 ],
               },
-              start: `${data.startDate.split('T')[0]}T${data.startTime}`,
-              end: `${data.endDate.split('T')[0]}T${data.endTime}`,
+              start: data.start.toISOString(),
+              end: data.end.toISOString(),
               name: data.name,
-              slug: `${toSlug(data.name)}-${randomId()}`,
-              location: { data: { ...location, actorId: teamManage.actor.id, locationDetails: data.addressQuery } },
+              location: { data: { ...location, actorId: teamManage.actor.id, locationDetails: data.locationDetails } },
               content: { data: { text: data.description } },
               nextEventApprovalStepId: tenant.eventApprovalSteps[0].id,
             },
@@ -193,10 +216,9 @@ export default function EventForm({ slug }: { slug: string }) {
             onCompleted: ({ insertEventOne: data }) => {
               const id = teamManage.id;
               const eventManage = data?.eventOrganizes?.[0];
-              mergeCache(
-                { __typename: 'Team', id },
-                { fieldName: 'eventOrganizes', fragmentOn: 'EventOrganize', data: eventManage },
-              );
+              const field = { fieldName: 'eventOrganizes', fragmentOn: 'EventOrganize', data: eventManage };
+              mergeCache({ __typename: 'Team', id }, field);
+
               closeModal();
             },
           });

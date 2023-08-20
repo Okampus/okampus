@@ -33,31 +33,75 @@ export function interpolate(
             .map(([key, contextKey]) => [key, data[contextKey]]),
         );
       }
+
       return translate(dict, key, context, format, determiners);
     }
 
     if (hasDynamicContext) {
-      const formatterKey = contextValue.slice(1, -1).trim();
+      const formatterKey = contextValue.slice(1, -1).trim(); // TODO: resolve complex dynamic context
       if (includes(formatterKey, allFormatters)) return format(formatterKey, data[dataKey]);
-    } else if (contextValue && includes(contextValue, allFormatters)) return format(contextValue, data[dataKey]);
+    } else if (contextValue) {
+      if (contextValue.includes('determiner_')) {
+        const [, determinerType] = contextValue.split('determiner_') as [string, DeterminerType]; // TODO: resolve complex context
+        const isPlural = determinerType.includes('plural');
+
+        const valueDeterminer = data[dataKey]?.determinerType || Object.keys(determiners)[0];
+        const value = data[dataKey]?.[isPlural ? 'other' : 'one'] || data[dataKey]?.value || data[dataKey];
+
+        return `${determiners[valueDeterminer]?.[determinerType] ?? ''}${value}`;
+      } else if (includes(contextValue, allFormatters)) {
+        return format(contextValue, data[dataKey]);
+      }
+    }
 
     return data[dataKey];
   });
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TOptions = { [key: string]: any } & { count?: number | 'other'; determinerType?: DeterminerType };
-export function translate(dict: unknown, key: string, data: TOptions, format: Format, determiners: Determiners) {
+export type TOptions = { [key: string]: any } & {
+  count?: number | 'other';
+  determinerType?: DeterminerType;
+};
+export function translate(dict: unknown, key: string, data: TOptions, format: Format, determiners: Determiners): string;
+export function translate(
+  dict: unknown,
+  key: string,
+  data: TOptions,
+  format: Format,
+  determiners: Determiners,
+  returnRaw: false,
+): string;
+export function translate(
+  dict: unknown,
+  key: string,
+  data: TOptions,
+  format: Format,
+  determiners: Determiners,
+  returnRaw: true,
+): Record<string, unknown>;
+
+export function translate(
+  dict: unknown,
+  key: string,
+  data: TOptions,
+  format: Format,
+  determiners: Determiners,
+  returnRaw?: boolean,
+): string | Record<string, unknown> {
   // eslint-disable-next-line unicorn/no-array-reduce
   const value = key.split('.').reduce((o, i) => (isNonNullObject(o) ? o[i] : o), dict);
   if (typeof value === 'string') return interpolate(value, data, format, dict, determiners) ?? key;
 
   if (isNonNullObject(value)) {
+    if (returnRaw) return value;
+
     const cardinal = typeof data.count === 'number' ? format('cardinal', data.count ?? 1) : 'other';
     const subValue = value[cardinal] || value.other || value.one || value.value;
     const result = interpolate(subValue as string, data, format, dict, determiners);
     if (!result) return key;
     if (!data.determinerType) return result;
+
     const valueDeterminer = (value.determinerType || Object.keys(determiners)[0]) as string;
     return `${determiners[valueDeterminer][data.determinerType]}${result}`;
   }

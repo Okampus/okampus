@@ -7,7 +7,6 @@ import type { Content } from './content.entity';
 import type { Report } from './report/report.entity';
 import type { Favorite } from './favorite/favorite.entity';
 import type { Reaction } from './reaction/reaction.entity';
-import type { Event } from '../event/event.entity';
 
 export type ContentOptions = ContentProps &
   TenantScopedOptions & {
@@ -18,5 +17,4 @@ export type ContentOptions = ContentProps &
     favorites?: Favorite[];
     reactions?: Reaction[];
     team?: Team | null;
-    event?: Event | null;
   };

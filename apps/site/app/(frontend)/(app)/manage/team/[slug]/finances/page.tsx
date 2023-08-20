@@ -13,6 +13,7 @@ import TeamLabeled from '../../../../../../../components/molecules/Labeled/TeamL
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../../components/organisms/Dashboard';
 
+import { isSidePanelOpenAtom } from '../../../../../../../context/global';
 import { useTeamManage } from '../../../../../../../context/navigation';
 import { useModal } from '../../../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../../../hooks/context/useTranslation';
@@ -26,6 +27,7 @@ import { getColorHexFromData, isNotNull, toCsv } from '@okampus/shared/utils';
 
 import { IconChevronRight, IconPlus, IconSearch } from '@tabler/icons-react';
 
+import { useAtom } from 'jotai';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
@@ -33,6 +35,8 @@ import type { GetFinancesQuery, GetFinancesQueryVariables } from '@okampus/share
 import type { FinanceMinimalInfo } from '../../../../../../../types/features/finance.info';
 
 export default function TeamManageTransactionsPage({ params }: { params: { slug: string } }) {
+  const [isSidePanelOpen, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
+
   const { teamManage } = useTeamManage(params.slug);
   const { openModal } = useModal();
 
@@ -63,16 +67,13 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
       label: 'Transaction',
       render: (value: FinanceMinimalInfo) => {
         const actor = value.receivedBy.id === teamManage?.actor?.id ? value.payedBy : value.receivedBy;
-
         const projectLabel = value.project?.name ?? 'Dépense générale';
-        // const eventLabel = value.event?.name ?? value.category;
 
         const labels = [projectLabel, t(`enums.FinanceCategory.${value.category}`)].filter(isNotNull);
 
         return (
           <div className="flex text-0 gap-4 items-start max-w-[28rem]">
             <AvatarImage actor={actor} className="h-12 w-12 rounded-2xl" type="team" />
-            {/* <div className="h-12 w-12 rounded-2xl" style={{ backgroundColor: getColorHexFromData(value.category) }} /> */}
             <div className="flex flex-col gap-0.5">
               <div className="flex gap-2 items-center text-base text-0 font-medium">{actor?.name}</div>
               <span className="flex gap-2 line-clamp-1 flex-wrap">
@@ -166,7 +167,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           <div className="shrink-0 flex gap-4 items-center mb-6 overflow-y-hidden overflow-x-scroll scrollbar">
             {account.children.map((child) => (
               <Link
-                href={`/manage/team/${child.team.actor?.slug}/transactions`}
+                href={`/manage/team/${child.team.actor?.slug}/finances`}
                 key={child.id}
                 className="p-3 shrink-0 flex gap-6 items-center rounded-2xl cursor-pointer border border-[var(--border-2)] bg-[var(--bg-main)] hover:bg-[var(--bg-3)] "
               >
@@ -188,9 +189,9 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         <div className="flex gap-6 px-content pb-6">
           <TextInput
             name="search"
-            startContent={<IconSearch />}
+            startContent={<IconSearch className="mr-2" />}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder={'Rechercher une transaction'}
+            placeholder="Rechercher une transaction"
           />
           <ActionButton
             action={{
@@ -205,7 +206,10 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
           className="h-full overflow-y-scroll scrollbar"
           columns={columns}
           data={finances}
-          onElementClick={(data) => setSelectedFinance(data)}
+          onElementClick={(data) => {
+            setSelectedFinance(data);
+            setIsSidePanelOpen(true);
+          }}
         />
       </ViewLayout>
       {selectedFinance && (

@@ -103,8 +103,9 @@ export default function FormEditor({ form }: FormEditorProps) {
             {selectedTab === QUESTIONS ? (
               <form className="mt-8 flex gap-12" onSubmit={onSubmit}>
                 <ChangeSetToast
-                  errors={formState.errors}
-                  changed={formState.isDirty}
+                  isDirty={formState.isDirty}
+                  isValid={formState.isValid}
+                  isLoading={formState.isSubmitting}
                   onCancel={() => reset({ fields: defaultFields })}
                 />
                 <DragDropContext
@@ -121,7 +122,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                         className="mb-[calc(2.5*var(--h-topbar))]"
                       >
                         {fields.map((field, idx) => {
-                          const options = field.options || [newOption(0)];
+                          const options = field.options ?? [newOption(0)];
                           let optionPrefix: ((idx: number) => React.ReactNode) | null = null;
                           // eslint-disable-next-line unicorn/prefer-switch
                           if (field.type === ControlType.Select)

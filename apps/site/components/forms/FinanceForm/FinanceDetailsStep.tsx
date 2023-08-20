@@ -1,20 +1,18 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
-// import NumberInput from '../../molecules/Input/NumberInput';
 import SelectInput from '../../molecules/Input/Select/SelectInput';
 import TextInput from '../../molecules/Input/TextInput';
-
 import { useTranslation } from '../../../hooks/context/useTranslation';
-// import { validateWebsite } from '../../../utils/form-validation/website';
 
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 
-import type { financeFormDefaultValues } from './FinanceForm';
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
+import { Controller } from 'react-hook-form';
+import type { FinanceFormStepProps } from './FinanceForm';
 
-type Context = FormStepContext<typeof financeFormDefaultValues>;
-type DetailsStep = { values: Context['values']; setValues: Context['setValues'] };
+export default function FinanceDetailsStep({ methods: { formMethods } }: FinanceFormStepProps) {
+  const { control, register, watch, formState } = formMethods;
 
-export default function FinanceDetailsStep({ values, setValues }: DetailsStep) {
+  const isOnline = watch('isOnline');
+
   const { t } = useTranslation();
   const methods = Object.entries(PaymentMethod).map(([, value]) => ({
     label: t(`enums.PaymentMethod.${value}`),
@@ -28,39 +26,37 @@ export default function FinanceDetailsStep({ values, setValues }: DetailsStep) {
 
   return (
     <div className="text-0 flex flex-col gap-4 max-w-[42rem]">
-      <TextInput
-        value={values.amount}
-        onChange={(event) => setValues({ ...values, amount: event.target.value })}
-        label="Montant de la dépense (€)"
-        name="amount"
-      />
-      <DateInput
-        label="Date de la transaction"
-        name="payedAt"
-        className="w-full"
-        onChange={(event) => setValues({ ...values, payedAt: event.target.value })}
-      />
-      <SelectInput
-        options={methods}
-        label="Méthode de paiement"
+      <TextInput error={formState.errors.amount?.message} label="Montant de la dépense (€)" {...register('amount')} />
+      <DateInput error={formState.errors.payedAt?.message} label="Date de la transaction" {...register('payedAt')} />
+      <Controller
+        control={control}
         name="method"
-        value={values.method}
-        onChange={(value) => setValues({ ...values, method: value as PaymentMethod })}
+        render={({ field }) => (
+          <SelectInput
+            error={formState.errors.method?.message}
+            options={methods}
+            label="Méthode de paiement"
+            {...field}
+          />
+        )}
       />
-      <SelectInput
-        options={categories}
-        label="Catégorie de dépense"
+      <Controller
+        control={control}
         name="category"
-        value={values.category}
-        onChange={(value) => setValues({ ...values, category: value as FinanceCategory })}
+        render={({ field }) => (
+          <SelectInput
+            error={formState.errors.category?.message}
+            options={categories}
+            label="Catégorie de dépense"
+            {...field}
+          />
+        )}
       />
-      {values.isOnline && (
+      {isOnline && (
         <TextInput
-          // checkValueError={validateWebsite}
-          value={values.website}
-          onChange={(event) => setValues({ ...values, website: event.target.value })}
-          label="Site"
-          name="name"
+          error={formState.errors.website?.message}
+          label="Site internet lié à la dépense"
+          {...register('website')}
         />
       )}
     </div>

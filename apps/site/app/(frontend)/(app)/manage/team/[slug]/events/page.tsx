@@ -70,14 +70,14 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
       <div className="flex gap-6 px-content pb-6">
         <TextInput
           name="search"
-          startContent={<IconSearch />}
+          startContent={<IconSearch className="mr-2" />}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Rechercher un événement"
         />
         <ActionButton
           action={{
             label: 'Créer un événement',
-            linkOrActionOrMenu: () => openModal({ node: <EventForm slug={params.slug} /> }),
+            linkOrActionOrMenu: () => openModal({ node: <EventForm teamManage={teamManage} /> }),
             iconOrSwitch: <IconPlus />,
             type: ActionType.Primary,
           }}

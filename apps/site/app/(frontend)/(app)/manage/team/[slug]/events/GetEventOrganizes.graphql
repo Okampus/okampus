@@ -250,11 +250,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
     price
     pointsAwardedForAttendance
     isPrivate
-    content {
-      __typename
-      id
-      text
-    }
+    description
     location {
       __typename
       id

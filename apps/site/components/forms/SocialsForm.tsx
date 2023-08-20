@@ -1,46 +1,53 @@
 import SocialIcon from '../atoms/Icon/SocialIcon';
 import GroupItem from '../atoms/Item/GroupItem';
 import TextInput from '../molecules/Input/TextInput';
+import DragListItem from '../molecules/List/DragListItem';
 
 import { validateDiscordInvite } from '../../utils/form-validation/discord-invite';
 import { useAsyncValidation } from '../../hooks/useAsyncValidation';
 import { useTranslation } from '../../hooks/context/useTranslation';
 
-import ChangeSetToast from '../organisms/Form/ChangeSetToast';
-
-import DragListItem from '../molecules/List/DragListItem';
 import { SocialType } from '@okampus/shared/enums';
 import { debounce, moveImmutable, setAtIndexImmutable } from '@okampus/shared/utils';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useForm } from 'react-hook-form';
 
-import { useEffect, useMemo } from 'react';
-
-import type { OnDragEndResponder } from 'react-beautiful-dnd';
 import type { SocialInfo } from '../../types/features/social.info';
+import type { OnDragEndResponder } from 'react-beautiful-dnd';
+import type { useForm } from 'react-hook-form';
 
 export type SocialsFormProps = {
+  formMethods: ReturnType<typeof useForm<{ socials: SocialInfo[] }>>;
   className?: string;
-  initialSocials: SocialInfo[];
-  onChangeSocials?: (socials: SocialInfo[]) => void;
-  onSubmit: (socials: SocialInfo[], callback?: () => void) => void;
 };
 
 const debouncedValidateDiscordInvite = debounce(validateDiscordInvite, 200);
 
-export default function SocialsForm({ className, initialSocials, onChangeSocials, onSubmit }: SocialsFormProps) {
+export default function SocialsForm({ formMethods, className }: SocialsFormProps) {
   const { format } = useTranslation();
 
-  const { validate, loading, errors, infos, resetValidation } = useAsyncValidation();
+  const { register, trigger, formState, watch, setValue, setError, clearErrors } = formMethods;
+  const socials = watch('socials') ?? [];
 
-  const defaultValues = useMemo(() => ({ socials: initialSocials }), [initialSocials]);
-  const { register, trigger, formState, watch, reset, setValue } = useForm({ defaultValues, mode: 'all' });
+  const update = (index: number, value: SocialInfo) => {
+    setValue('socials', setAtIndexImmutable(socials, index, value), { shouldDirty: true });
+  };
 
-  const socials = watch('socials');
-  useEffect(() => {
-    onChangeSocials?.(socials);
-  }, [onChangeSocials, reset, socials]);
+  const { validate, loading, info, resetValidation } = useAsyncValidation({
+    fn: debouncedValidateDiscordInvite,
+    callback: (data) => {
+      const index = socials.findIndex((social) => social.type === SocialType.Discord);
+      if (!index) return;
+
+      update(index, { ...socials[index], pseudo: data.guildName ?? '' });
+    },
+    callbackError: (error) => {
+      const index = socials.findIndex((social) => social.type === SocialType.Discord);
+      if (!index) return;
+
+      error ? setError('socials', { message: error }) : clearErrors(`socials.${index}.url`);
+    },
+  });
 
   const addableSocials = Object.values(SocialType).filter((value) => !socials.some((social) => social.type === value));
 
@@ -52,32 +59,8 @@ export default function SocialsForm({ className, initialSocials, onChangeSocials
     }
   };
 
-  const update = (index: number, value: SocialInfo) => {
-    setValue('socials', setAtIndexImmutable(socials, index, value), { shouldDirty: true });
-  };
-
   return (
-    <form
-      className={className}
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmit(socials, () => {
-          reset({}, { keepValues: true });
-        });
-      }}
-    >
-      <ChangeSetToast
-        changed={formState.isDirty}
-        errors={{
-          ...errors,
-          ...formState.errors,
-        }}
-        loading={loading}
-        onCancel={() => {
-          reset({ socials: initialSocials });
-          resetValidation();
-        }}
-      />
+    <div className={className}>
       {addableSocials.length > 0 && (
         <GroupItem className="bg-2 p-4 md:rounded-2xl mb-6" heading="Ajouter des réseaux à votre profil">
           <div className="text-xs">Cliquez sur un réseau pour ajouter un lien qui apparaîtra sur votre profil.</div>
@@ -88,7 +71,6 @@ export default function SocialsForm({ className, initialSocials, onChangeSocials
                 key={value}
                 social={value}
                 onClick={() => {
-                  // const shiftedSocials = fields.map((social) => ({ ...social, order: social.order + 1 }));
                   setValue(
                     'socials',
                     [
@@ -111,7 +93,7 @@ export default function SocialsForm({ className, initialSocials, onChangeSocials
               {socials.map((field, idx) => {
                 const error = formState.errors.socials?.[idx]?.pseudo;
                 return (
-                  <Draggable key={`socials.${idx}`} draggableId={`social-${idx}`} index={idx}>
+                  <Draggable key={`social-${idx}`} draggableId={`social-${idx}`} index={idx}>
                     {(provided) => (
                       <DragListItem
                         className="flex flex-col md-max:gap-2"
@@ -139,26 +121,12 @@ export default function SocialsForm({ className, initialSocials, onChangeSocials
                         <div className="px-1 md:pl-16">
                           {field.type === SocialType.Discord ? (
                             <TextInput
-                              info={infos['discord']}
-                              error={
-                                errors['discord'] ||
-                                (formState.errors.socials?.[idx]?.url && "Lien d'invitation requis")
-                              }
-                              loading={loading.includes('discord')}
+                              info={info}
+                              error={formState.errors.socials?.[idx]?.url?.message}
+                              loading={loading}
                               label="Lien d'invitation"
                               {...register(`socials.${idx}.url`, {
-                                validate: (value) =>
-                                  value.length > 0 &&
-                                  validate(
-                                    {
-                                      name: 'discord',
-                                      fn: debouncedValidateDiscordInvite,
-                                      callback: (data) => {
-                                        update(idx, { ...field, url: value, pseudo: data?.guildName });
-                                      },
-                                    },
-                                    { invite: value, format },
-                                  ),
+                                validate: (value) => value.length > 0 && validate({ invite: value, format }),
                               })}
                             />
                           ) : field.type === SocialType.Instagram ? (
@@ -286,6 +254,6 @@ export default function SocialsForm({ className, initialSocials, onChangeSocials
           )}
         </Droppable>
       </DragDropContext>
-    </form>
+    </div>
   );
 }

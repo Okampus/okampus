@@ -1,10 +1,10 @@
 {
   "actions": {
-    "Create": "created {{entityName, determiner_definite}}",
-    "Delete": "deleted {{entityName, determiner_definite}}",
-    "Hide": "hid {{entityName, determiner_definite}}",
+    "Create": "created {{entityName, determiner_indefinite}}",
+    "Delete": "deleted {{entityName, determiner_indefinite}}",
+    "Hide": "hid {{entityName, determiner_indefinite}}",
     "Update": {
-      "default": "modified {{fieldName, determiner_definite}}",
+      "default": "modified {{fieldName, determiner_indefinite}}",
       "fields": "modified {{count}} fields"
     }
   },

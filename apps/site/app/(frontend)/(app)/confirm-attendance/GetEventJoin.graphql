@@ -11,6 +11,8 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
       start
       end
       eventOrganizes {
+        __typename
+        id
         eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
           user {
             __typename

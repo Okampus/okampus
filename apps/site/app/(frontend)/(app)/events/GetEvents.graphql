@@ -11,11 +11,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
     price
     pointsAwardedForAttendance
     isPrivate
-    content {
-      __typename
-      id
-      text
-    }
+    description
     location {
       __typename
       id
@@ -54,6 +50,8 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       }
     }
     eventOrganizes {
+      __typename
+      id
       eventSupervisors {
         user {
           __typename

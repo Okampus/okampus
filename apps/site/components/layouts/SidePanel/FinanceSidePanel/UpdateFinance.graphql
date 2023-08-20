@@ -5,8 +5,10 @@ mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
     createdAt
     amount
     category
+    description
     method
     payedAt
+    payedByType
     payedBy {
       __typename
       id

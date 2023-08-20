@@ -166,6 +166,13 @@ array_relationships:
         table:
           name: event_approval
           schema: public
+  - name: createdEventFavorites
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: event_favorite
+          schema: public
   - name: createdEventJoins
     using:
       foreign_key_constraint_on:

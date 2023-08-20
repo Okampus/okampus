@@ -1,12 +1,21 @@
 import { Buckets, TokenType } from '@okampus/shared/enums';
 import dotenv from 'dotenv';
 
-import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import type { ApiConfig } from '@okampus/shared/types';
 
-export const rootPath = execSync('git rev-parse --show-toplevel').toString().trim();
+export let rootPath = typeof __dirname === 'undefined' ? path.dirname(fileURLToPath(import.meta.url)) : __dirname;
+while (rootPath !== '/') {
+  const filePath = path.join(rootPath, 'pnpm-lock.yaml');
+  if (existsSync(filePath)) break;
+  rootPath = path.dirname(rootPath);
+}
+
+if (rootPath === '/') throw new Error('Could not find project root path, exiting...');
+
 const appPath = path.join(rootPath, 'apps', 'api');
 
 dotenv.config({ path: `${appPath}/.env` });

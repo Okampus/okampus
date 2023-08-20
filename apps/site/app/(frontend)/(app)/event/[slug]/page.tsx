@@ -38,21 +38,9 @@ export default function EventPage({ params }: { params: { slug: string } }) {
   if (!event) return null;
 
   return (
-    <ViewLayout
-      innerClassName="relative"
-      header={
-        event.name
-        // <div className="flex flex-col gap-2">
-        //   {event.name}
-        //   <span className="uppercase text-primary text-xl font-medium">
-        //     {format('weekDayHour', new Date(event.start))}
-        //   </span>
-        //   <TextLocation className="text-lg font-medium" location={event.location} />
-        // </div>
-      }
-    >
+    <ViewLayout innerClassName="relative" header={event.name}>
       <GroupItem heading="Programme de l'événement" groupClassName="text-justify font-medium whitespace-pre-line">
-        {event.content.text}
+        {event.description}
       </GroupItem>
       <div className="absolute bottom-0 inset-x-0 border-t border-[var(--border-3)] h-24 flex items-center justify-between px-8 bg-main">
         <div className="flex flex-col">

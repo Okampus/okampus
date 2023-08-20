@@ -1,6 +1,5 @@
 import DateInput from '../../molecules/Input/Date/DateInput';
 import LegalUnitInput from '../../molecules/Input/LegalUnit/LegalUnitInput';
-// import NumberInput from '../../molecules/Input/NumberInput';
 import SelectInput from '../../molecules/Input/Select/SelectInput';
 import TextAreaInput from '../../molecules/Input/TextAreaInput';
 import TextInput from '../../molecules/Input/TextInput';
@@ -8,28 +7,36 @@ import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import { useGetProjectQuery } from '@okampus/shared/graphql';
-
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
 
 import { useMemo } from 'react';
-import type { TeamManageInfo } from '../../../context/navigation';
+import { Controller } from 'react-hook-form';
 
-import type { financeFormDefaultValues } from './FinanceForm';
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
+import type { FinanceFormStepProps } from './FinanceForm';
 
-type Context = FormStepContext<typeof financeFormDefaultValues>;
-type SummaryStepProps = { teamManage: TeamManageInfo; values: Context['values']; setValues: Context['setValues'] };
-export default function FinanceSummaryStep({ teamManage, values, setValues }: SummaryStepProps) {
+export default function FinanceSummaryStep({
+  methods: { formMethods },
+  context: { teamManage },
+}: FinanceFormStepProps) {
+  const { control, register, watch, formState } = formMethods;
+
   const { t } = useTranslation();
 
-  const { data: projectData } = useGetProjectQuery({ variables: { slug: teamManage.actor.slug } });
+  const projectId = watch('projectId');
+  const payedByType = watch('payedByType');
+  const attachments = watch('attachments');
 
-  const selectedProject = projectData?.project.find((project) => project.id === values.projectId) || null;
-  const src = useMemo(
-    () => (values.attachments ? URL.createObjectURL(values.attachments[0]) : ''),
-    [values.attachments],
-  );
+  const selectedProject = teamManage.projects.find((project) => project.id === projectId) ?? null;
+  const src = useMemo(() => (attachments ? URL.createObjectURL(attachments[0]) : ''), [attachments]);
+
+  const paymentMethods = Object.entries(PaymentMethod).map(([, value]) => ({
+    label: t(`enums.PaymentMethod.${value}`),
+    value,
+  }));
+  const payedByTypes = Object.entries(PayedByType).map(([, value]) => ({
+    label: t(`enums.PayedByType.${value}`),
+    value,
+  }));
 
   return (
     <div className="w-full flex gap-4 md-max:flex-col">
@@ -38,104 +45,129 @@ export default function FinanceSummaryStep({ teamManage, values, setValues }: Su
           <embed className="w-[25rem] min-h-[100%]" src={src} />
         </div>
         <div className="grid grid-cols-[9rem,1fr]">
-          <TextInput
-            // value={values.amount}
-            onChange={(event) => setValues({ ...values, amount: event.target.value })}
-            label="Montant"
-            name="amount"
-          />
-          <SelectInput
-            options={Object.entries(PaymentMethod).map(([, value]) => ({
-              label: t(`enums.PaymentMethod.${value}`),
-              value,
-            }))}
-            label="Méthode de paiement"
+          <TextInput error={formState.errors.amount?.message} label="Montant" {...register('amount')} />
+          <Controller
+            control={control}
             name="method"
-            value={values.method}
-            onChange={(value) => setValues({ ...values, method: value as PaymentMethod })}
+            render={({ field }) => (
+              <SelectInput
+                error={formState.errors.method?.message}
+                label="Méthode de paiement"
+                options={paymentMethods}
+                {...field}
+              />
+            )}
           />
         </div>
-        <SelectInput
-          options={Object.entries(PayedByType).map(([, value]) => ({ label: t(`enums.PayedByType.${value}`), value }))}
-          label="Qui a payé la transaction ?"
+
+        <Controller
           name="payedByType"
-          value={values.payedByType}
-          onChange={(value) => setValues({ ...values, payedByType: value as PayedByType, initiatedById: null })}
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              error={formState.errors.amount?.message}
+              options={payedByTypes}
+              label="Qui a payé la transaction ?"
+              {...field}
+            />
+          )}
         />
-        {values.payedByType === PayedByType.Manual && (
-          <SelectInput
-            label="Membre de l'équipe"
-            name="payedBy"
-            options={
-              teamManage?.teamMembers.map((teamMember) => ({
-                label: <UserLabeled user={teamMember.user} showCardOnClick={false} small={true} />,
-                value: teamMember.user.individual?.id,
-              })) || []
-            }
-            value={values.initiatedById}
-            onChange={(value) => setValues({ ...values, initiatedById: value as string })}
+
+        {payedByType === PayedByType.Manual && (
+          <Controller
+            name="initiatedById"
+            control={formMethods.control}
+            render={({ field }) => (
+              <SelectInput
+                error={formState.errors.initiatedById?.message}
+                label="Membre de l'équipe"
+                options={
+                  teamManage?.teamMembers.map((teamMember) => ({
+                    label: <UserLabeled user={teamMember.user} showCardOnClick={false} small={true} />,
+                    value: teamMember.user.individual?.id,
+                  })) || []
+                }
+                {...field}
+              />
+            )}
           />
         )}
       </div>
       <div className="flex flex-col gap-4 md:w-[35rem]">
         <div>
           <div className="text-[var(--text-1)] font-semibold text-xs pl-3 pb-1">Entreprise</div>
-          <LegalUnitInput
+          <Controller
+            control={control}
             name="legalUnit"
-            onQueryChange={(value) => setValues((values) => ({ ...values, legalUnitQuery: value }))}
-            legalUnitQuery={values.legalUnitQuery}
-            value={values.legalUnit}
-            onChange={(value) => setValues((values) => ({ ...values, legalUnit: value }))}
+            render={({ field }) => (
+              <LegalUnitInput error={formState.errors.legalUnit?.message} label="Entreprise" {...field} />
+            )}
           />
         </div>
-        <DateInput
-          // date={values.payedAt}
-          onChange={(event) => setValues({ ...values, payedAt: event.target.value })}
-          label="Date de la transaction"
-          name="payedAt"
-        />
-        <SelectInput
-          options={[
-            { label: 'Dépenses générales', value: null },
-            ...(projectData?.project.map((item) => ({ label: item.name, value: item.id })) ?? []),
-          ]}
-          label="Projet lié"
+        <DateInput error={formState.errors.payedAt?.message} label="Date de la transaction" {...register('payedAt')} />
+        <Controller
           name="projectId"
-          value={values.projectId}
-          onChange={(projectId) => setValues({ ...values, projectId: projectId as string, eventId: null })}
+          render={({ field }) => (
+            <SelectInput
+              error={formState.errors.projectId?.message}
+              label="Projet lié"
+              options={[
+                { label: 'Dépenses générales', value: null },
+                ...(teamManage.projects?.map((item) => ({ label: item.name, value: item.id })) ?? []),
+              ]}
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          name="projectId"
+          render={({ field }) => (
+            <SelectInput
+              options={[
+                { label: 'Dépenses générales', value: null },
+                ...(teamManage.projects.map((item) => ({ label: item.name, value: item.id })) ?? []),
+              ]}
+              label="Projet lié"
+              {...field}
+              // name="projectId"
+              // value={values.projectId}
+              // onChange={(projectId) => setValues({ ...values, projectId: projectId as string, eventId: null })}
+            />
+          )}
         />
         {selectedProject && (
-          <SelectInput
-            options={[
-              { label: 'Dépenses hors-événement', value: null },
-              ...(selectedProject.eventOrganizes.map(({ event }) => ({
-                label: event?.name,
-                value: event.id,
-              })) ?? []),
-            ]}
-            label="Événement lié"
+          <Controller
             name="eventId"
-            value={values.eventId}
-            onChange={(eventId) => setValues({ ...values, eventId: eventId as string })}
+            render={({ field }) => (
+              <SelectInput
+                options={[
+                  { label: 'Dépenses hors-événement', value: null },
+                  ...(selectedProject.eventOrganizes.map(({ event }) => ({
+                    label: event?.name,
+                    value: event.id,
+                  })) ?? []),
+                ]}
+                label="Événement lié"
+                {...field}
+              />
+            )}
           />
         )}
-        <SelectInput
-          options={Object.entries(FinanceCategory).map(([, value]) => ({
-            label: t(`enums.FinanceCategory.${value}`),
-            value,
-          }))}
-          label="Catégorie de dépense"
+        <Controller
           name="category"
-          value={values.category}
-          onChange={(category) => setValues({ ...values, category: category as FinanceCategory })}
+          render={({ field }) => (
+            <SelectInput
+              error={formState.errors.category?.message}
+              label="Catégorie de dépense"
+              options={Object.entries(FinanceCategory).map(([, value]) => ({
+                label: t(`enums.FinanceCategory.${value}`),
+                value,
+              }))}
+              {...field}
+            />
+          )}
         />
-        <TextAreaInput
-          label="Description"
-          name="description"
-          value={values.description}
-          onChange={(e) => setValues({ ...values, description: e.target.value })}
-          className="!h-56 input py-2 tabular-nums"
-        />
+        <TextAreaInput label="Description" className="!h-56 input py-2 tabular-nums" {...register('description')} />
       </div>
     </div>
   );

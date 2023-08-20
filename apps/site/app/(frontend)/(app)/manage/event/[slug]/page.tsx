@@ -9,7 +9,6 @@ import ActionButton from '../../../../../../components/molecules/Button/ActionBu
 import ChangeSetToast from '../../../../../../components/organisms/Form/ChangeSetToast';
 import ImageEditorForm from '../../../../../../components/molecules/ImageEditor/ImageEditorForm';
 import DateInput from '../../../../../../components/molecules/Input/Date/DateInput';
-import FieldSet from '../../../../../../components/molecules/Input/FieldSet';
 import SelectInput from '../../../../../../components/molecules/Input/Select/SelectInput';
 import TextAreaInput from '../../../../../../components/molecules/Input/TextAreaInput';
 import TextInput from '../../../../../../components/molecules/Input/TextInput';
@@ -21,25 +20,42 @@ import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { Buckets, EntityName, TeamPermissions } from '@okampus/shared/enums';
 import { useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
-import { isNotNull } from '@okampus/shared/utils';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import type { EventManageInfo } from '../../../../../../context/navigation';
 
-const getHour = (dateISOString: string) => dateISOString.split('T')[1].slice(0, 5) || '00:00';
+import * as z from 'zod';
+
+import type { EventManageInfo } from '../../../../../../context/navigation';
+import type { LocationMinimalInfo } from '../../../../../../types/features/location.info';
 
 function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo }) {
-  const defaultValues = {
+  const eventUpdateSchema = z
+    .object({
+      description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
+      name: z
+        .string({ required_error: "Nom de l'événement requis." })
+        .min(3, { message: "Le nom de l'événement doit faire au moins 3 caractères." })
+        .max(100, { message: "Le nom de l'événement ne peut pas dépasser 100 caractères." }),
+      start: z
+        .date({ required_error: 'Date de début requise.' })
+        .min(new Date(), { message: "L'événement ne peut pas commencer dans le passé." }),
+      end: z.date({ required_error: 'Date de fin requise.' }),
+      location: z.any().nullable() as z.ZodType<LocationMinimalInfo | null>,
+      projects: z.record(z.string(), z.string().nullable()).array(),
+    })
+    .refine((data) => data.end > data.start, {
+      message: "La date et heure de fin de l'événement doit être après sa date et heure de début.",
+      path: ['endDate'],
+    });
+
+  const defaultValues: z.infer<typeof eventUpdateSchema> = {
     name: eventManage.name,
-    text: eventManage.content.text,
-    startDate: eventManage.start,
-    startTime: getHour(eventManage.start),
-    endDate: eventManage.end,
-    endTime: getHour(eventManage.end),
-    location: eventManage.location,
-    ...Object.fromEntries(
-      eventManage.eventOrganizes.map(({ team, project }) => (project ? [team.id, project.id] : null)).filter(isNotNull),
-    ),
+    description: eventManage.description,
+    start: new Date(eventManage.start),
+    end: new Date(eventManage.end),
+    location: eventManage.location ?? null,
+    projects: eventManage.eventOrganizes.map(({ team, project }) => ({ [team.id]: project?.id ?? null })),
   };
 
   const { openModal, closeModal } = useModal();
@@ -58,6 +74,8 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
   );
 
   const [updateEvent] = useUpdateEventMutation();
+  // const [updateLocation] = useUpdateLocationMutation();
+  // const [updateEventOrganizeProjectMany] = useUpdateEventOrganizeProjectManyMutation();
 
   const updateBanner = () =>
     openModal({
@@ -79,20 +97,36 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
       ),
     });
 
-  const { handleSubmit, register, formState, reset, control } = useForm({ defaultValues });
-  const onSubmit = handleSubmit((update) =>
-    updateEvent({ variables: { update, id: eventManage.id }, onCompleted: () => reset({}, { keepValues: true }) }),
-  );
+  const { handleSubmit, register, formState, reset, control } = useForm({
+    defaultValues,
+    resolver: zodResolver(eventUpdateSchema),
+  });
 
-  // const projects = Object.fromEntries(
-  //   eventManage.eventOrganizes.map(({ team, project }) => (project ? [team.id, project.id] : null)).filter(isNotNull),
-  // );
+  const onSubmit = handleSubmit((update) => {
+    updateEvent({
+      variables: {
+        update: {
+          name: update.name,
+          description: update.description,
+          end: update.end.toISOString(),
+          start: update.start.toISOString(),
+        },
+        id: eventManage.id,
+      },
+      onCompleted: () => reset({}, { keepValues: true }),
+    });
+  });
 
   return (
     <ViewLayout header={`Gérer : ${eventManage.name}`}>
       {eventManage && (
         <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-          <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
+          <ChangeSetToast
+            isDirty={formState.isDirty}
+            isValid={formState.isValid}
+            isLoading={formState.isSubmitting}
+            onCancel={() => reset(defaultValues)}
+          />
           <GroupItem heading="Bannière">
             <span className="flex flex-col gap-4">
               <span className="relative grow overflow-hidden" style={{ aspectRatio: BANNER_ASPECT_RATIO }}>
@@ -126,51 +160,25 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
           </GroupItem>
           <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
           <div className="flex flex-col gap-4">
-            <TextInput
-              {...register('name')}
-              // onChange={(value) => changeValues((values) => ({ ...values, name: value }))}
-              // onErrorChange={(error) => changeErrors({ name: error })}
-              // value={values.name}
-              // label="Nom"
+            <TextInput error={formState.errors.name?.message} label="Nom de l'événements" {...register('name')} />
+            <DateInput
+              error={formState.errors.start?.message}
+              label="Début de l'événement"
+              includeTime={true}
+              {...register('start')}
             />
-            <FieldSet label="Date de début">
-              {/* <div className="grid grid-cols-[1fr_8rem] gap-4"> */}
-              <DateInput
-                {...register('startDate')}
-                // className="w-full"
-                // date={values.startDate}
-                // onChange={(date) => changeValues((values) => ({ ...values, startDate: date }))}
-                // label="Date de début"
-                // name="startDate"
-              />
-              <input
-                {...register('startTime')}
-                className="input"
-                type="time"
-                // value={values.startTime}
-                // onChange={(e) => changeValues((values) => ({ ...values, startTime: e.target.value }))}
-              />
-            </FieldSet>
-            {/* </div> */}
-            <FieldSet label="Date de fin">
-              {/* <div className="grid grid-cols-[1fr_8rem] gap-4"> */}
-              <DateInput
-                {...register('endDate')}
-                // className="w-full"
-                // date={values.endDate}
-                // onChange={(date) => changeValues((values) => ({ ...values, endDate: date }))}
-                // label="Date de fin"
-                // name="endDate"
-              />
-              <input {...register('endTime')} className="input" type="time" />
-              {/* </div> */}
-            </FieldSet>
-            {canManageTeams.map(({ team }) => (
+            <DateInput
+              error={formState.errors.end?.message}
+              label="Fin de l'événements"
+              includeTime={true}
+              {...register('end')}
+            />
+            {canManageTeams.map(({ team }, idx) => (
               <div key={team.id} className="flex gap-4 items-center">
                 <AvatarImage actor={team.actor} type="team" />
                 <Controller
                   control={control}
-                  name={team.id}
+                  name={`projects.${idx}.${team.id}`}
                   render={({ field }) => (
                     <SelectInput
                       {...field}
@@ -179,36 +187,12 @@ function ManageEventPageInner({ eventManage }: { eventManage: EventManageInfo })
                     />
                   )}
                 />
-                {/* <SelectInput
-                  name={team.id}
-                  options={team.projects.map((project) => ({ label: project.name, value: project.id }))}
-                  onChange={(value) => setValue(team.id, value)}
-                  value={projects[team.id]}
-                  label={`${team.actor.name} - Projet lié`}
-                /> */}
               </div>
             ))}
-            {/* <SelectInput
-                    onChange={(value) => changeValues((values) => ({ ...values, project: value }))}
-                    items={eventManage.projects}
-                  /> */}
-            {/* <TextInput
-                    onChange={(value) => changeValues((values) => ({ ...values, status: value }))}
-                    onErrorChange={(error) => changeErrors({ status: error })}
-                    value={values.status}
-                    label='Slogan' }}
-                  /> */}
           </div>
           <hr className="border-color-2 my-10 col-[1/-1]" />
           <GroupItem heading="Présentation longue" groupClassName="flex flex-col gap-5">
-            <TextAreaInput
-              {...register('description')}
-              label="Description"
-              // value={values.text}
-              // onChange={(value) => changeValues((values) => ({ ...values, text: value }))}
-              // onErrorChange={(error) => changeErrors({ text: error })}
-              rows={10}
-            />
+            <TextAreaInput {...register('description')} label="Description" rows={7} />
           </GroupItem>
         </form>
       )}

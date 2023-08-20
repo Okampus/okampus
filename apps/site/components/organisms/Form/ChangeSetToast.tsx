@@ -6,21 +6,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { NestedKeyOf } from '@okampus/shared/types';
 
 export type ChangeSetToastProps<T extends Record<string, unknown>> = {
-  changed: boolean;
+  isDirty: boolean;
+  isValid?: boolean;
+  isLoading?: boolean;
   errors?: Record<string, unknown>;
   loading?: NestedKeyOf<T>[];
   onCancel: () => void;
 };
 
 export default function ChangeSetToast<T extends Record<string, unknown>>({
-  changed,
-  errors = {},
-  loading = [],
+  isDirty,
+  isValid,
+  isLoading,
   onCancel,
 }: ChangeSetToastProps<T>) {
   return (
     <AnimatePresence>
-      {changed && !Object.values(errors).some(Boolean) && loading.length === 0 && (
+      {isDirty && (isValid === undefined || isValid) && !isLoading && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

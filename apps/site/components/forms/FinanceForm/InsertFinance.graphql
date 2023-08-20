@@ -5,8 +5,10 @@ mutation InsertFinance($object: FinanceInsertInput!) {
     createdAt
     amount
     category
+    description
     method
     payedAt
+    payedByType
     payedBy {
       __typename
       id

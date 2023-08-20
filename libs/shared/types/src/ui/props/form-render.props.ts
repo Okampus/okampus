@@ -1,5 +1,5 @@
+import type { Submission } from '../../global/form-submission.interface';
 import type { ActionType } from './action.props';
-import type { Submission } from '../../global/form-field.interface';
 
 export type SubmitOptions<T> = {
   label?: string;

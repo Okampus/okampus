@@ -12,7 +12,6 @@ import ChoiceList from '../../molecules/List/ChoiceList';
 import { useModal } from '../../../hooks/context/useModal';
 import { mergeCache } from '../../../utils/apollo/merge-cache';
 
-import { useGetProjectsSelectQuery, useInsertFinanceMutation } from '@okampus/shared/graphql';
 import {
   AccountType,
   Buckets,
@@ -23,34 +22,179 @@ import {
   PayedByType,
   PaymentMethod,
 } from '@okampus/shared/enums';
-import { ActionType } from '@okampus/shared/types';
+import { useInsertFinanceMutation } from '@okampus/shared/graphql';
+import { ActionType, geocodeAddressSchema } from '@okampus/shared/types';
 import { extractPositiveNumber } from '@okampus/shared/utils';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
 import type { TeamManageInfo } from '../../../context/navigation';
+
 import type { LegalUnitMinimalInfo } from '../../../types/features/legal-unit.info';
 
-import type { GeocodeAddress } from '@okampus/shared/types';
+const financeFormSchema = z.object({
+  amount: z.string().refine((value) => extractPositiveNumber(value), {
+    message: 'Le montant doit être supérieur à 0.',
+  }),
+  description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
+  projectId: z.string().nullable(),
+  eventId: z.string().nullable(),
+  fileUploadId: z.string().nullable(),
+  attachments: z.array(z.instanceof(File)),
+  isRevenue: z.boolean(),
+  isOnline: z.boolean(),
+  address: geocodeAddressSchema.nullable(),
+  addressQuery: z.string(),
+  legalUnit: z.any().nullable() as z.ZodType<LegalUnitMinimalInfo | null>,
+  legalUnitQuery: z.string(),
+  website: z.string().url({ message: 'Le site web doit être une URL valide.' }),
+  initiatedById: z.string().nullable(),
+  payedByType: z.nativeEnum(PayedByType),
+  payedAt: z.date(),
+  category: z.nativeEnum(FinanceCategory),
+  method: z.nativeEnum(PaymentMethod),
+});
 
-export const financeFormDefaultValues = {
+type FinanceFormSchema = z.infer<typeof financeFormSchema>;
+
+const financeFormDefaultValues: FinanceFormSchema = {
   amount: '0',
   description: '',
-  projectId: null as string | null,
-  eventId: null as string | null,
-  fileUploadId: null as string | null,
-  attachments: [] as File[],
+  projectId: null,
+  eventId: null,
+  fileUploadId: null,
+  attachments: [],
   isRevenue: false,
   isOnline: false,
-  address: null as GeocodeAddress | null,
+  address: null,
   addressQuery: '',
-  legalUnit: null as LegalUnitMinimalInfo | null,
+  legalUnit: null,
   legalUnitQuery: '',
   website: '',
-  initiatedById: null as string | null,
+  initiatedById: null,
   payedByType: PayedByType.Manual,
-  payedAt: new Date().toISOString(),
+  payedAt: new Date(),
   category: FinanceCategory.Errands,
   method: PaymentMethod.CreditCard,
 };
+
+export type FinanceFormStepProps = FormStepContext<FinanceFormSchema, { teamManage: TeamManageInfo }>;
+
+function FinanceOnlineChoiceStep({ methods: { formMethods, goToStep } }: FinanceFormStepProps) {
+  // const { setValue } = useFormContext<typeof financeFormDefaultValues>();
+
+  return (
+    <ChoiceList
+      items={[
+        { item: { label: 'Recette', value: true } },
+        { item: { label: 'En personne / par chèque', value: false } },
+      ]}
+      onClick={(isOnline) => {
+        formMethods.setValue('isOnline', isOnline);
+        goToStep('receipt');
+      }}
+    />
+  );
+}
+
+function FinanceProjectChoiceStep({
+  methods: { formMethods, goToStep },
+  context: { teamManage },
+}: FinanceFormStepProps) {
+  // const { setValue } = useFormContext<typeof financeFormDefaultValues>();
+
+  return (
+    teamManage.projects && (
+      <ChoiceList
+        items={[
+          { item: { label: 'Événément hors-projet', value: null } },
+          ...teamManage.projects.map((project) => ({
+            item: { label: project.name, value: project.id },
+            prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
+          })),
+        ]}
+        onClick={(id) => {
+          if (!id) {
+            goToStep('details');
+            return;
+          }
+
+          const project = teamManage.projects.find((project) => project.id === id);
+          if (!project) return;
+          formMethods.setValue('projectId', project.id);
+          goToStep('details');
+        }}
+      />
+    )
+  );
+}
+
+function FinanceEventChoiceStep({ methods: { formMethods, goToStep }, context: { teamManage } }: FinanceFormStepProps) {
+  // const { watch, setValue } = useFormContext<FinanceFormSchema>();
+  const projectId = formMethods.watch('projectId');
+
+  const events =
+    teamManage.projects.find((project) => project.id === projectId)?.eventOrganizes.map(({ event }) => event) ?? [];
+  return (
+    <ChoiceList
+      items={[
+        { item: { label: 'Dépenses hors événement', value: null } },
+        ...events.map((event) => ({
+          item: { label: event?.name, value: event.id },
+          prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
+        })),
+      ]}
+      onClick={(id) => {
+        if (!id) {
+          goToStep('online');
+          return;
+        }
+
+        const event = teamManage.projects
+          .find((project) => project.id === projectId)
+          ?.eventOrganizes.find(({ event }) => event.id === id)?.event;
+        if (!event) return;
+
+        formMethods.setValue('eventId', id);
+        goToStep('online');
+      }}
+    />
+  );
+}
+
+function FinanceReceiptInputStep({ methods: { formMethods, goToStep } }: FinanceFormStepProps) {
+  // const { setValue } = useFormContext<typeof financeFormDefaultValues>();
+
+  return (
+    <DocumentInput
+      uploadContext={{ bucket: Buckets.Receipts, entityName: EntityName.Finance }}
+      onChange={(id, attachment) => {
+        if (attachment) {
+          formMethods.setValue('fileUploadId', id);
+          formMethods.setValue('attachments', [attachment]);
+        } else {
+          formMethods.setValue('fileUploadId', null);
+          formMethods.setValue('attachments', []);
+        }
+        goToStep('details');
+      }}
+    />
+  );
+}
+
+function FinanceReceiptInputSkip({ methods: { goToStep } }: FinanceFormStepProps) {
+  return (
+    <ActionButton
+      action={{
+        type: ActionType.Action,
+        label: "Je n'ai pas de justificatif de paiement",
+        linkOrActionOrMenu: () => goToStep('detailsNoReceipt'),
+      }}
+    />
+  );
+}
 
 export type FinanceFormProps = { teamManage: TeamManageInfo };
 export default function FinanceForm({ teamManage }: FinanceFormProps) {
@@ -58,211 +202,65 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
 
   const [insertFinance] = useInsertFinanceMutation();
 
-  const { data } = useGetProjectsSelectQuery({ variables: { slug: teamManage.actor.slug } });
-  const projects = data?.project;
-
-  if (!projects) return null;
-
   return (
     <MultiStepForm
+      context={{ teamManage }}
       defaultValues={financeFormDefaultValues}
+      resolver={zodResolver(financeFormSchema)}
       steps={{
         initial: {
           header: 'Type de transaction',
-          onEnter: ({ values, setValues }) => setValues({ ...values, projectId: null }),
-          content: ({ values, setValues, goToStep }) => (
-            <ChoiceList
-              items={[{ item: { label: 'Recette', value: true } }, { item: { label: 'Dépense', value: false } }]}
-              onClick={(isRevenue) => {
-                setValues({ ...values, isRevenue });
-                goToStep('project');
-              }}
-            />
-          ),
+          onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
+          content: FinanceOnlineChoiceStep,
         },
         project: {
           header: 'Projet lié',
-          onEnter: ({ values, setValues }) => setValues({ ...values, projectId: null }),
-          content: ({ values, setValues, goToStep }) => (
-            <ChoiceList
-              items={[
-                { item: { label: 'Dépenses générales', value: null } },
-                ...projects.map((project) => ({
-                  item: { label: project.name, value: project.id as string },
-                  prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
-                })),
-              ]}
-              onClick={(id) => {
-                if (!id) {
-                  goToStep('event');
-                  return;
-                }
-
-                const project = projects.find((project) => project.id === id);
-                if (!project) return;
-                setValues({ ...values, projectId: project.id as string });
-                goToStep('event');
-              }}
-            />
-          ),
+          onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
+          content: FinanceProjectChoiceStep,
         },
         event: {
           header: 'Événement lié',
-          content: ({ values, setValues, goToStep }) => {
-            const events =
-              projects.find((project) => project.id === values.projectId)?.eventOrganizes.map(({ event }) => event) ??
-              [];
-            return (
-              <ChoiceList
-                items={[
-                  { item: { label: 'Dépenses hors événement', value: null } },
-                  ...events.map((event) => ({
-                    item: { label: event?.name, value: event.id as string },
-                    prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
-                  })),
-                ]}
-                onClick={(id) => {
-                  if (!id) {
-                    goToStep('online');
-                    return;
-                  }
-
-                  const event = projects
-                    .find((project) => project.id === values.projectId)
-                    ?.eventOrganizes.find(({ event }) => event.id === id)?.event;
-                  if (!event) return;
-                  setValues({ ...values, eventId: id });
-                  goToStep('online');
-                }}
-              />
-            );
-          },
+          content: FinanceEventChoiceStep,
         },
         online: {
-          header: ({ values }) => (values.isRevenue ? 'Recette reçue en ligne ?' : 'Dépense faite en ligne ?'),
-          content: ({ values, setValues, goToStep }) => {
-            return (
-              <ChoiceList
-                items={[
-                  { item: { label: 'En ligne', value: true } },
-                  { item: { label: 'En personne / par chèque', value: false } },
-                ]}
-                onClick={(isOnline) => {
-                  setValues({ ...values, isOnline });
-                  goToStep('receipt');
-                }}
-              />
-            );
-          },
+          header: ({ methods: { formMethods } }) =>
+            formMethods.getValues().isRevenue ? 'Recette reçue en ligne ?' : 'Dépense faite en ligne ?',
+          content: FinanceOnlineChoiceStep,
         },
-        // context: {
-        //   header: 'Contexte de la transaction',
-        //   content: ({ values, setValues, goToStep }) => {
-        //     const events =
-        //       projects.find((project) => project.id === values.projectId)?.eventOrganizes.map(({ event }) => event) ?? [];
-        //     return (
-        //       <ChoiceList
-        //         items={[
-        //           { item: { label: 'Dépenses hors événement', value: null } },
-        //           ...events.map((event) => ({
-        //             item: { label: event?.name, value: event.id as string },
-        //             prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
-        //           })),
-        //         ]}
-        //         onClick={(id) => {
-        //           if (!id) {
-        //             goToStep('receipt');
-        //             return;
-        //           }
-
-        //           const event = projects
-        //             .find((project) => project.id === values.projectId)
-        //             ?.eventOrganizes.find(({ event }) => event.id === id)?.event;
-        //           if (!event) return;
-        //           setValues({ ...values, eventId: id });
-        //           goToStep('receipt');
-        //         }}
-        //       />
-        //     );
-        //   },
-        // },
         receipt: {
           header: 'Justificatif de paiement',
-          onEnter: ({ values, setValues }) => setValues({ ...values, fileUploadId: null }),
-          content: ({ values, setValues, goToStep }) => (
-            <DocumentInput
-              uploadContext={{ bucket: Buckets.Receipts, entityName: EntityName.Finance }}
-              onChange={(id, attachment) => {
-                if (attachment) setValues({ ...values, fileUploadId: id, attachments: [attachment] });
-                else setValues({ ...values, fileUploadId: id, attachments: [] });
-                goToStep('details');
-              }}
-            />
-          ),
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{
-                type: ActionType.Action,
-                label: "Je n'ai pas de justificatif de paiement",
-                linkOrActionOrMenu: () => goToStep('detailsNoReceipt'),
-              }}
-            />
-          ),
+          onEnter: ({ methods: { formMethods } }) => formMethods.setValue('fileUploadId', null),
+          content: FinanceReceiptInputStep,
+          footer: FinanceReceiptInputSkip,
         },
         details: {
+          nextStep: 'company',
           header: 'Détails de la transaction',
-          content: ({ values, setValues }) => (
-            <FinanceReceiptStep teamManage={teamManage} values={values} setValues={setValues} />
-          ),
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('company') }}
-            />
-          ),
+          content: FinanceReceiptStep,
+          validateFields: ['amount', 'payedAt', 'description'],
         },
         detailsNoReceipt: {
+          nextStep: 'company',
           header: 'Détails de la transaction',
-          content: ({ values, setValues }) => <FinanceDetailsStep values={values} setValues={setValues} />,
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('company') }}
-            />
-          ),
+          content: FinanceDetailsStep,
+          validateFields: ['amount', 'payedAt', 'description'],
         },
         company: {
           header: 'Entreprise',
-          content: ({ values, setValues }) => <FinanceCompanyStep values={values} setValues={setValues} />,
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('payedBy') }}
-            />
-          ),
+          content: FinanceCompanyStep,
+          nextStep: 'payedBy',
+          validateFields: ['legalUnit'],
         },
         payedBy: {
           header: 'Responsable de la transaction',
-          content: ({ values, setValues }) => (
-            <FinancePayedByStep teamManage={teamManage} values={values} setValues={setValues} />
-          ),
-          footer: ({ goToStep }) => (
-            <ActionButton
-              action={{ type: ActionType.Success, label: 'Continuer', linkOrActionOrMenu: () => goToStep('summary') }}
-            />
-          ),
+          content: FinancePayedByStep,
+          nextStep: 'summary',
+          validateFields: ['payedByType'],
         },
         summary: {
           header: 'Récapitulatif',
-          content: ({ values, setValues }) => (
-            <FinanceSummaryStep teamManage={teamManage} values={values} setValues={setValues} />
-          ),
-          footer: ({ values, onSubmit }) => (
-            <ActionButton
-              action={{
-                type: ActionType.Success,
-                label: 'Créer la transaction',
-                linkOrActionOrMenu: () => onSubmit(values),
-              }}
-            />
-          ),
+          content: FinanceSummaryStep,
+          submit: 'Créer la transaction',
         },
       }}
       onSubmit={(data) => {
@@ -279,7 +277,7 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
                 category: data.category,
                 state: FinanceState.Completed,
                 method: data.method,
-                payedAt: data.payedAt,
+                payedAt: data.payedAt.toISOString(),
                 payedById,
                 receivedById,
                 payedByType: data.payedByType,
@@ -313,7 +311,7 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
               },
             },
             onCompleted: ({ insertFinanceOne: data }) => {
-              const id = teamManage.id as string;
+              const id = teamManage.id;
               mergeCache({ __typename: 'Team', id }, { fieldName: 'finances', fragmentOn: 'Finance', data });
               closeModal();
             },

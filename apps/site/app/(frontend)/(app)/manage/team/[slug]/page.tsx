@@ -22,6 +22,23 @@ import { ActionType } from '@okampus/shared/types';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const teamFormSchema = z.object({
+  name: z
+    .string({ required_error: "Nom de l'association requis." })
+    .min(3, { message: "Le nom de l'association doit faire au moins 3 caractères." })
+    .max(100, { message: "Le nom de l'association ne peut pas dépasser 100 caractères." }),
+  status: z
+    .string()
+    .max(100, { message: "Le slogan de l'association ne peut pas dépasser 100 caractères." })
+    .or(z.literal('')),
+  bio: z
+    .string()
+    .max(50_000, { message: "La description de l'association ne peut pas dépasser 50 000 caractères." })
+    .or(z.literal('')),
+});
 
 export default function TeamManageProfilePage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -29,7 +46,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   const avatar = getAvatar(teamManage?.actor?.actorImages);
   const banner = getBanner(teamManage?.actor?.actorImages);
 
-  const defaultValues = {
+  const defaultValues: z.infer<typeof teamFormSchema> = {
     name: teamManage?.actor?.name ?? '',
     status: teamManage?.actor?.status ?? '',
     bio: teamManage?.actor?.bio ?? '',
@@ -44,6 +61,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues,
     mode: 'onChange',
+    resolver: zodResolver(teamFormSchema),
   });
 
   const onSubmit = handleSubmit((update) => {
@@ -59,7 +77,12 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   return (
     <ViewLayout header="Personalisation">
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
-        <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
+        <ChangeSetToast
+          isDirty={formState.isDirty}
+          isValid={formState.isValid}
+          isLoading={formState.isSubmitting}
+          onCancel={() => reset(defaultValues)}
+        />
         <GroupItem heading="Logo">
           <span className="flex gap-6">
             <AvatarEditor
@@ -90,33 +113,13 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
         <div className="flex flex-col gap-4">
-          <TextInput
-            {...register('name')}
-            // name="name"
-            // onChange={(event) => }
-            // onErrorChange={(error) => changeErrors({ name: error })}
-            // value={values.name}
-            label="Nom"
-          />
-          <TextInput
-            {...register('status')}
-            // name="status"
-            // onChange={(event) => changeValues((values) => ({ ...values, status: event.target.value }))}
-            // onErrorChange={(error) => changeErrors({ status: error })}
-            // value={values.sttus}
-            label="Slogan"
-          />
+          <TextInput error={formState.errors.name?.message} label="Nom" {...register('name')} />
+          <TextInput error={formState.errors.status?.message} label="Slogan" {...register('status')} />
         </div>
         <hr className="border-color-2 my-10 col-[1/-1]" />
         <GroupItem heading="Bannière">
           <span className="flex flex-col gap-4">
             <BannerEditor showEditor={editingBanner} setShowEditor={setEditingBanner} actor={teamManage.actor} />
-            {/* <BannerImage
-                    aspectRatio={BANNER_ASPECT_RATIO}
-                    src={banner?.fileUpload.url}
-                    name={teamManage.actor.name}
-                    className="grow border-4 border-[var(--border-2)]"
-                  /> */}
             <div className="shrink-0 flex justify-between py-1.5">
               <ActionButton
                 action={{
@@ -137,7 +140,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <TextAreaInput {...register('bio')} rows={10} label="Description" />
+        <TextAreaInput error={formState.errors.bio?.message} {...register('bio')} rows={10} label="Description" />
       </form>
     </ViewLayout>
   );

@@ -15,8 +15,11 @@ export class EventProps {
   end!: Date;
 
   @Field(() => String)
-  @IsOptional()
   name!: string;
+
+  @Field(() => String)
+  @IsOptional()
+  description!: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

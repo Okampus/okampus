@@ -10,15 +10,40 @@ import { notificationAtom } from '../../../../context/global';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { useUpdateFinanceMutation } from '@okampus/shared/graphql';
-import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
+import { PaymentMethod, FinanceCategory, PayedByType } from '@okampus/shared/enums';
 import { ToastType } from '@okampus/shared/types';
 import { bytes, extractPositiveNumber } from '@okampus/shared/utils';
 
 import { IconTrash } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 import type { FinanceMinimalInfo } from '../../../../types/features/finance.info';
+import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
+
+const financeUpdateFormSchema = z.object({
+  amount: z.string().refine((value) => extractPositiveNumber(value), {
+    message: 'Le montant doit être supérieur à 0.',
+  }),
+  description: z.string().max(10_000, { message: 'La description ne peut pas dépasser 10 000 caractères.' }),
+  projectId: z.string().nullable(),
+  eventId: z.string().nullable(),
+  fileUploadId: z.string().nullable(),
+  attachments: z.array(
+    z.object({ id: z.string(), name: z.string(), size: z.number(), type: z.string(), url: z.string() }),
+  ),
+  isRevenue: z.boolean(),
+  legalUnit: z.any().nullable() as z.ZodType<LegalUnitMinimalInfo | null>,
+  legalUnitQuery: z.string(),
+  initiatedById: z.string().nullable(),
+  payedByType: z.nativeEnum(PayedByType),
+  payedAt: z.date(),
+  category: z.nativeEnum(FinanceCategory),
+  method: z.nativeEnum(PaymentMethod),
+});
+
+type FinanceUpdateFormValues = z.infer<typeof financeUpdateFormSchema>;
 
 export type FinanceEditProps = { finance: FinanceMinimalInfo; isRevenue: boolean };
 export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
@@ -26,25 +51,35 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
 
   const { t } = useTranslation();
 
-  const defaultValues = {
-    payedAt: new Date(finance.payedAt).toISOString(),
+  const defaultValues: FinanceUpdateFormValues = {
     amount: Math.abs(finance.amount).toFixed(2),
-    method: finance.method,
-    category: finance.category,
     attachments: finance.financeAttachments.map(({ attachment }) => attachment),
+    category: finance.category as FinanceCategory,
+    description: finance.description,
+    fileUploadId: null,
+    isRevenue,
+    method: finance.method as PaymentMethod,
+    payedAt: new Date(finance.payedAt),
+    payedByType: finance.payedByType as PayedByType,
+    eventId: finance.event?.id ?? null,
+    projectId: finance.project?.id ?? null,
+    legalUnit: finance.legalUnit ?? null,
+    legalUnitQuery: finance.legalUnit?.legalName ?? '',
+    initiatedById: finance.initiatedBy?.id ?? null,
   };
 
   const [updateFinance] = useUpdateFinanceMutation();
 
-  const { register, setValue, handleSubmit, formState, watch, reset } = useForm({
+  const { control, register, setValue, handleSubmit, formState, watch, reset } = useForm<FinanceUpdateFormValues>({
     defaultValues,
   });
 
   const onSubmit = handleSubmit((data) => {
-    const { amount, attachments: _, ...rest } = data;
+    const { amount, payedAt, attachments: _, ...rest } = data;
     const update = {
       ...rest,
       ...(amount ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) } : {}),
+      payedAt: payedAt.toISOString(),
     };
     updateFinance({
       variables: { update, id: finance.id },
@@ -53,32 +88,16 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
     });
   });
 
-  // const { errors, register, setValue, values, onSubmit, loading, reset, changed } = useForm({
-  //   defaultValues,
-  //   submit: async (data) => {
-  //     const { amount, attachments: _, ...rest } = data;
-  //     const update = {
-  //       ...rest,
-  //       ...(amount
-  //         ? { amount: isRevenue ? extractPositiveNumber(amount) : -(extractPositiveNumber(amount) || 0) }
-  //         : {}),
-  //     };
-  //     updateFinance({
-  //       // @ts-ignore
-  //       variables: { update, id: finance.id },
-  //       onCompleted: () => setNotification({ type: ToastType.Success, message: 'Transaction modifiée !' }),
-  //       onError: (error) => setNotification({ type: ToastType.Error, message: error.message }),
-  //     });
-  //   },
-  // });
-
   const attachments = watch('attachments');
-  const method = watch('method');
-  const category = watch('category');
 
   return (
     <form onSubmit={onSubmit} className="py-4 flex flex-col gap-2">
-      <ChangeSetToast changed={formState.isDirty} errors={{}} loading={[]} onCancel={() => reset(defaultValues)} />
+      <ChangeSetToast
+        isDirty={formState.isDirty}
+        isValid={formState.isValid}
+        isLoading={formState.isSubmitting}
+        onCancel={() => reset(defaultValues)}
+      />
 
       {attachments.length > 0 && (
         <>
@@ -113,34 +132,35 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
         </>
       )}
       <div>
-        <DateInput {...register('method')} label="Date de paiement" />
-        {/* <NumberInput
-          value={values.amount}
-          onChange={(amount) => {
-            changeValues((current) => ({ ...current, amount }));
-          }}
-          label={`Montant de la dépense (€)`}
-          name="amount"
-        /> */}
-        <SelectInput
-          options={Object.entries(PaymentMethod).map(([, value]) => ({
-            label: t(`enums.PaymentMethod.${value}`),
-            value,
-          }))}
-          label="Méthode de paiement"
+        <DateInput {...register('payedAt')} label="Date de paiement" />
+        <Controller
+          control={control}
           name="method"
-          value={method}
-          onChange={(method) => setValue('method', method as string)}
+          render={({ field }) => (
+            <SelectInput
+              error={formState.errors.method?.message}
+              options={Object.entries(PaymentMethod).map(([, value]) => ({
+                label: t(`enums.PaymentMethod.${value}`),
+                value,
+              }))}
+              label="Méthode de paiement"
+              {...field}
+            />
+          )}
         />
-        <SelectInput
-          options={Object.entries(FinanceCategory).map(([, value]) => ({
-            label: t(`enums.FinanceCategory.${value}`),
-            value,
-          }))}
-          label="Catégorie de dépense"
+        <Controller
+          control={control}
           name="category"
-          value={category}
-          onChange={(category) => setValue('category', category as string)}
+          render={({ field }) => (
+            <SelectInput
+              options={Object.entries(FinanceCategory).map(([, value]) => ({
+                label: t(`enums.FinanceCategory.${value}`),
+                value,
+              }))}
+              label="Catégorie de dépense"
+              {...field}
+            />
+          )}
         />
       </div>
     </form>

@@ -134,18 +134,14 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
     <ViewLayout header="Adhésions">
       <form onSubmit={onSubmit}>
         <ChangeSetToast
-          // FIXME: RadioFreeInput behaves weirdly with useForm, probably because of the synthetic event
-          changed={formState.isDirty || membershipFees !== defaultValues.membershipFees}
-          errors={{}}
-          loading={[]}
+          isDirty={formState.isDirty}
+          isValid={formState.isValid}
+          isLoading={formState.isSubmitting}
           onCancel={() => reset(defaultValues)}
         />
         <SwitchInput
           {...register('isJoinFormActive')}
-          // name="isJoinFormActive"
           label="Formulaire d'adhésion activé ?"
-          // checked={values.isJoinFormActive}
-          // onChange={(value) => changeValues((current) => ({ ...current, isJoinFormActive: value }))}
           description="Si le formulaire est désactivé, les adhérents candidateront à l'équipe en un clic, sans remplir de formulaire."
         />
         <div className="my-6">
@@ -153,22 +149,28 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
         </div>
         <div className="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
           <RadioFreeInput
+            error={formState.errors.membershipFees?.message}
             defaultValue={defaultValues.membershipFees}
-            {...register('membershipFees', {
-              onChange: (e) => {
-                setValue('membershipFees', e.target.value, { shouldDirty: true });
-              },
-            })}
-            options={feesItems}
             label="Montant de la côtisation"
+            options={feesItems}
             endContent="€"
             placeholder="Autre montant"
+            {...register('membershipFees', {
+              onChange: (e) => setValue('membershipFees', e.target.value, { shouldDirty: true }),
+            })}
           />
           <Controller
             control={control}
             name="membershipDuration"
             render={({ field }) => {
-              return <SelectInput {...field} options={membershipDurationItems} label="Renouvellement des adhésions" />;
+              return (
+                <SelectInput
+                  error={formState.errors.membershipDuration?.message}
+                  label="Renouvellement des adhésions"
+                  options={membershipDurationItems}
+                  {...field}
+                />
+              );
             }}
           />
         </div>

@@ -24,12 +24,12 @@ export default function FieldSet({
   let subtitle = info;
   if (loading)
     subtitle = (
-      <p className="text-[var(--info)] flex gap-2">
+      <div className="text-[var(--info)] flex gap-2">
         <IconLoader className="animate-spin shrink-0 h-5 w-5 pt-1" />
         Vérification...
-      </p>
+      </div>
     );
-  else if (error) subtitle = <p className="text-[var(--danger)] text-sm font-medium">{error}</p>;
+  else if (error) subtitle = <div className="text-[var(--danger)] text-sm font-medium">{error}</div>;
 
   return (
     <fieldset className={className}>
@@ -38,7 +38,7 @@ export default function FieldSet({
           {label} {required && <span className="text-[var(--danger)]">*</span>}
         </legend>
       )}
-      {description && <p className="text-2 mb-2">{description}</p>}
+      {description && <div className="text-2 mb-2">{description}</div>}
       {children}
       {subtitle && <div className="mt-2">{subtitle}</div>}
     </fieldset>

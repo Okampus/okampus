@@ -33,7 +33,7 @@ function getActor(log: LogMinimalInfo): { name: string; image: React.ReactNode }
 }
 
 function getPayload(
-  t: (key: string, data?: TOptions) => string,
+  t: (key: string, data?: TOptions, returnRaw?: true) => string,
   log: LogMinimalInfo,
 ): { actionType: string; payload: Record<string, unknown> } {
   if (log.eventType === EventType.Update) {
@@ -49,7 +49,7 @@ function getPayload(
 
   return {
     actionType: `common.actions.${log.eventType}`,
-    payload: { entityName: t(`entities.entityNames.${log.entityName}`, {}) },
+    payload: { entityName: t(`entities.entityNames.${log.entityName}`, {}, true) },
   };
 }
 

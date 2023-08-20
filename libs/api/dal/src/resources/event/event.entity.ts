@@ -32,7 +32,6 @@ import type { FormSubmission } from '../form-submission/form-submission.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
-import type { Content } from '../content/content.entity';
 
 import type { Searchable } from '../../types/search-entity.type';
 
@@ -55,6 +54,9 @@ export class Event extends TenantScopedEntity implements Searchable {
 
   @Property({ type: 'text' })
   name!: string;
+
+  @Property({ type: 'text' })
+  description = '';
 
   @Unique()
   @Property({ type: 'text' })
@@ -85,11 +87,8 @@ export class Event extends TenantScopedEntity implements Searchable {
   @Property({ type: 'json', default: '{}' })
   meta: JSONObject = {};
 
-  @ManyToOne({ type: 'Location', nullable: true, default: null })
-  location: Location | null = null;
-
-  @OneToOne({ type: 'Content', onDelete: 'CASCADE' })
-  content!: Content; // Description
+  @ManyToOne({ type: 'Location' })
+  location!: Location;
 
   @OneToOne({ type: 'FormSubmission', nullable: true, default: null })
   eventApprovalSubmission: FormSubmission | null = null;
