@@ -1,4 +1,4 @@
-import LegalUnitInput from '../../molecules/Input/LegalUnit/LegalUnitInput';
+import LegalUnitInput from '../../../molecules/Input/LegalUnit/LegalUnitInput';
 import { Controller } from 'react-hook-form';
 import type { FinanceFormStepProps } from './FinanceForm';
 

@@ -29,11 +29,8 @@ import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListA
 import type { TeamManageInfo, TenantInfo } from '../../../context/navigation';
 
 function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
-  const currentYear = new Date().getFullYear();
-
   const manageTeamRoute = (route: string) => `/manage/team/${team?.actor.slug}/${route}`;
 
-  const mandateLabel = `Mandat ${currentYear}-${(currentYear % 100) + 1}`;
   return [
     {
       heading: { label: 'Informations de la page' },
@@ -45,7 +42,7 @@ function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccor
     {
       heading: { label: 'Membres' },
       items: [
-        { label: mandateLabel, href: manageTeamRoute('office'), icon: <IconSitemap /> },
+        { label: 'Équipe actuelle', href: manageTeamRoute('office'), icon: <IconSitemap /> },
         { label: 'Adhésions', href: manageTeamRoute('joins'), icon: <IconUsersPlus /> },
         // { label: 'Roles', href: manageTeamRoute('roles'), icon: <IconUsers /> },
       ],
@@ -116,5 +113,5 @@ export default function TeamManageNavigation({ slug }: { slug: string }) {
 
   if (!teamManage || !tenant) return null;
 
-  return <LinkListAccordeon accordeons={getAccordeons(teamManage, tenant)} />;
+  return <LinkListAccordeon mode="sidebar" accordeons={getAccordeons(teamManage, tenant)} />;
 }

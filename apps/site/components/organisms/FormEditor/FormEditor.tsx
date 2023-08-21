@@ -85,6 +85,7 @@ export default function FormEditor({ form }: FormEditorProps) {
 
   return (
     <BottomSheetLayout
+      horizontalPadding={false}
       topbar={
         <div className="flex gap-4 items-center text-1">
           <IconCheckupList className="w-8 h-8" />
@@ -101,7 +102,7 @@ export default function FormEditor({ form }: FormEditorProps) {
           />
           <div className="grow w-full flex justify-center gap-4 scrollbar overflow-y-scroll">
             {selectedTab === QUESTIONS ? (
-              <form className="mt-8 flex gap-12" onSubmit={onSubmit}>
+              <form className="mt-8 w-full flex gap-12 justify-center" onSubmit={onSubmit}>
                 <ChangeSetToast
                   isDirty={formState.isDirty}
                   isValid={formState.isValid}
@@ -119,7 +120,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                       <ul
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className="mb-[calc(2.5*var(--h-topbar))]"
+                        className="mb-[calc(2.5*var(--h-topbar))] w-full max-w-4xl"
                       >
                         {fields.map((field, idx) => {
                           const options = field.options ?? [newOption(0)];

@@ -1,10 +1,10 @@
-import RadioInput from '../../molecules/Input/Selector/RadioInput';
-import SelectInput from '../../molecules/Input/Select/SelectInput';
-import UserLabeled from '../../molecules/Labeled/UserLabeled';
+import RadioInput from '../../../molecules/Input/Selector/RadioInput';
+import SelectInput from '../../../molecules/Input/Select/SelectInput';
+import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 
-import { useTranslation } from '../../../hooks/context/useTranslation';
+import { useTranslation } from '../../../../hooks/context/useTranslation';
 
-import FieldSet from '../../molecules/Input/FieldSet';
+import FieldSet from '../../../molecules/Input/FieldSet';
 import { PayedByType } from '@okampus/shared/enums';
 
 import { Controller } from 'react-hook-form';

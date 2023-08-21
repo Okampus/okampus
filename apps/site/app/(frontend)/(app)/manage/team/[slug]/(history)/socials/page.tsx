@@ -24,8 +24,11 @@ import {
 import { deepEqual } from '@okampus/shared/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { IconHistory } from '@tabler/icons-react';
+
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
+
 import * as z from 'zod';
 
 import type { SocialInfo } from '../../../../../../../../types/features/social.info';
@@ -148,7 +151,13 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
   });
 
   return (
-    <ViewLayout header="Réseaux & contacts" innerClassName="pr-0" scrollable={isSmall} bottomPadded={false}>
+    <ViewLayout
+      header="Réseaux & contacts"
+      innerClassName="pr-0"
+      scrollable={isSmall}
+      bottomPadded={false}
+      sidePanelIcon={<IconHistory />}
+    >
       <div className="h-full grid xl-max:grid-cols-1 xl:grid-flow-col xl:grid-cols-[24rem_1fr] gap-4">
         <form onSubmit={onSubmit} className="col-span-1 pr-[var(--px-content)]">
           <ChangeSetToast

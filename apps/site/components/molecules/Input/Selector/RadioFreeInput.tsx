@@ -74,7 +74,7 @@ export default memo(
       <div className={clsx('relative', selected !== -1 && 'opacity-50 hover:opacity-100')}>
         <input
           ref={mergeRefs([ref, localRef])}
-          className="input"
+          className={clsx('input', startContent && '!rounded-l-none !pl-0', endContent && '!rounded-r-none !pr-0')}
           disabled={disabled}
           placeholder={placeholder}
           name={name}
@@ -117,15 +117,15 @@ export default memo(
         })}
 
         {startContent || endContent ? (
-          <div className="flex items-stretch">
+          <div className="flex">
             {startContent && (
-              <div className="flex items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
+              <div className="flex  items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
                 {startContent}
               </div>
             )}
             {input}
             {endContent && (
-              <div className="flex items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
+              <div className="flex  items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
                 {endContent}
               </div>
             )}

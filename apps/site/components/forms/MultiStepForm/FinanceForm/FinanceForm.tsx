@@ -3,14 +3,14 @@ import FinanceDetailsStep from './FinanceDetailsStep';
 import FinancePayedByStep from './FinancePayedByStep';
 import FinanceReceiptStep from './FinanceReceiptStep';
 import FinanceSummaryStep from './FinanceSummaryStep';
-import BannerImage from '../../atoms/Image/BannerImage';
-import ActionButton from '../../molecules/Button/ActionButton';
-import MultiStepForm from '../../organisms/Form/MultiStepForm';
-import DocumentInput from '../../molecules/Input/File/DocumentInput';
-import ChoiceList from '../../molecules/List/ChoiceList';
+import BannerImage from '../../../atoms/Image/BannerImage';
+import ActionButton from '../../../molecules/Button/ActionButton';
+import MultiStepForm from '../../../organisms/Form/MultiStepForm';
+import DocumentInput from '../../../molecules/Input/File/DocumentInput';
+import ChoiceList from '../../../molecules/List/ChoiceList';
 
-import { useModal } from '../../../hooks/context/useModal';
-import { mergeCache } from '../../../utils/apollo/merge-cache';
+import { useModal } from '../../../../hooks/context/useModal';
+import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
 import {
   AccountType,
@@ -29,10 +29,10 @@ import { extractPositiveNumber } from '@okampus/shared/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../context/navigation';
+import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
+import type { TeamManageInfo } from '../../../../context/navigation';
 
-import type { LegalUnitMinimalInfo } from '../../../types/features/legal-unit.info';
+import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
 
 const financeFormSchema = z.object({
   amount: z.string().refine((value) => extractPositiveNumber(value), {
@@ -189,7 +189,7 @@ function FinanceReceiptInputSkip({ methods: { goToStep } }: FinanceFormStepProps
     <ActionButton
       action={{
         type: ActionType.Action,
-        label: "Je n'ai pas de justificatif de paiement",
+        label: "Je n'ai pas de justificatif",
         linkOrActionOrMenu: () => goToStep('detailsNoReceipt'),
       }}
     />

@@ -10,7 +10,7 @@ import { getBanner } from '../../../utils/actor-image/get-banner';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { ToastType } from '@okampus/shared/types';
 
-import { IconArrowUpRight, IconShare2 } from '@tabler/icons-react';
+import { IconArrowUpRight, IconLink } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
@@ -69,7 +69,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             </a>
           ))}
         </div>
-        <IconShare2
+        <IconLink
           className="text-2 cursor-pointer h-7 w-7"
           onClick={() => {
             navigator.clipboard.writeText(`${window.location.origin}/team/${team.actor?.slug}`);

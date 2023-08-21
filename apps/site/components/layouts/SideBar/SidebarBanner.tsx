@@ -8,13 +8,13 @@ export default function SidebarBanner({ name, banner }: SidebarBannerProps) {
     <>
       <div
         className={clsx(
-          'px-4 w-full line-clamp-1 text-lg flex items-center h-[var(--h-topbar)]',
-          banner ? 'absolute z-20 text-white font-semibold' : 'text-0 font-bold',
+          'px-4 w-full line-clamp-1 text-xl flex font-semibold items-center h-[var(--h-topbar)]',
+          banner ? 'absolute z-20 text-white' : 'text-0',
         )}
       >
         {name}
       </div>
-      {!banner && <hr className="border-color-2 mb-3" />}
+      {!banner && <hr className="border-color-1 mb-3" />}
     </>
   );
 

@@ -7,8 +7,14 @@ import { AVATAR_USER_ROUNDED } from '@okampus/shared/consts';
 
 import type { UserMinimalInfo } from '../../../types/features/user.info';
 
-export type UserGroupProps = { users: UserMinimalInfo[]; itemsCount?: number; limit?: number; size?: number };
-export default function UserGroup({ users, itemsCount, limit = 3, size = 14 }: UserGroupProps) {
+export type UserGroupProps = {
+  users: UserMinimalInfo[];
+  itemsCount?: number;
+  limit?: number;
+  size?: number;
+  title?: string;
+};
+export default function UserGroup({ users, itemsCount, limit = 3, size = 14, title }: UserGroupProps) {
   return (
     <Group
       className="-space-x-1"
@@ -16,6 +22,7 @@ export default function UserGroup({ users, itemsCount, limit = 3, size = 14 }: U
       itemsCount={itemsCount}
       limit={limit}
       size={size}
+      title={title}
       rounded={AVATAR_USER_ROUNDED}
       render={(user) => (
         <UserPopoverCard userId={user.id}>

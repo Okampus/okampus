@@ -1,4 +1,4 @@
-import TextAreaInput from '../../molecules/Input/TextAreaInput';
+import TextAreaInput from '../../../molecules/Input/TextAreaInput';
 
 import type { EventFormStepProps } from './EventForm';
 

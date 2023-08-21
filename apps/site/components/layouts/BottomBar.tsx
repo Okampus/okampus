@@ -5,7 +5,7 @@ import AvatarImage from '../atoms/Image/AvatarImage';
 import { getAvatar } from '../../utils/actor-image/get-avatar';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { IconAt, IconBrandSafari } from '@tabler/icons-react';
+import { IconBell, IconBrandSafari } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function BottomBar() {
@@ -37,9 +37,9 @@ export default function BottomBar() {
       icon: <IconBrandSafari className="h-7 w-7" />,
     },
     {
-      label: 'Mentions',
+      label: 'Notifications',
       href: '/notifications',
-      icon: <IconAt className="h-7 w-7" />,
+      icon: <IconBell className="h-7 w-7" />,
     },
     {
       label: 'Profil',

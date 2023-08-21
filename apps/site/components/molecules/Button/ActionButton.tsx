@@ -96,7 +96,7 @@ export default function ActionButton({
     <motion.button type="button" {...buttonMotion(disabled)} className={buttonClassName} onClick={linkOrActionOrMenu}>
       {trigger}
     </motion.button>
-  ) : (
+  ) : typeof linkOrActionOrMenu === 'object' ? (
     <Popover triggerOn="hover" forcePlacement={true} placement="right-start" placementOffset={-4}>
       <PopoverTrigger className="w-full">{trigger}</PopoverTrigger>
 
@@ -104,5 +104,7 @@ export default function ActionButton({
         <MenuList {...linkOrActionOrMenu} />
       </PopoverContent>
     </Popover>
+  ) : (
+    trigger
   );
 }

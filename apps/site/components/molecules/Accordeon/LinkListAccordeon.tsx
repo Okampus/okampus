@@ -13,9 +13,10 @@ import type { LinkItemProps } from '@okampus/shared/types';
 export type LinkListAccordeonProps = {
   accordeons: { heading: GroupHeadingProps; items: Omit<LinkItemProps, 'pathname'>[] }[];
   className?: string;
+  mode?: 'sidebar';
 };
 
-export default function LinkListAccordeon({ accordeons, className }: LinkListAccordeonProps) {
+export default function LinkListAccordeon({ accordeons, className, mode }: LinkListAccordeonProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState<number>(
     accordeons.findIndex((acc) => acc.items.find((link) => link.href === pathname)),
@@ -31,8 +32,14 @@ export default function LinkListAccordeon({ accordeons, className }: LinkListAcc
         );
 
         return (
-          <Accordeon key={idx} label={label} open={open === idx} setOpen={(open) => setOpen(open ? idx : -1)}>
-            <LinkList items={items} />
+          <Accordeon
+            titleClassName="text-1 font-medium"
+            key={idx}
+            label={label}
+            open={open === idx}
+            setOpen={(open) => setOpen(open ? idx : -1)}
+          >
+            <LinkList items={items} mode={mode} />
           </Accordeon>
         );
       })}

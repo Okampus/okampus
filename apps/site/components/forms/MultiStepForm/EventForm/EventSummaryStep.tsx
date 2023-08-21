@@ -1,8 +1,8 @@
-import DateInput from '../../molecules/Input/Date/DateInput';
-import SelectInput from '../../molecules/Input/Select/SelectInput';
+import DateInput from '../../../molecules/Input/Date/DateInput';
+import SelectInput from '../../../molecules/Input/Select/SelectInput';
 
-import TextInput from '../../molecules/Input/TextInput';
-import TextAreaInput from '../../molecules/Input/TextAreaInput';
+import TextInput from '../../../molecules/Input/TextInput';
+import TextAreaInput from '../../../molecules/Input/TextAreaInput';
 
 import { Controller } from 'react-hook-form';
 

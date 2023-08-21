@@ -31,6 +31,7 @@ export default function FormRenderer({ form, formName, onSubmit }: FormRendererP
 
   return (
     <BottomSheetLayout
+      horizontalPadding={false}
       topbar={
         <div className="w-full text-center line-clamp-1 text-0 font-semibold text-lg">{formName ?? form.name}</div>
       }

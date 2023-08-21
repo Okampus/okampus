@@ -12,18 +12,19 @@ export default function LinkItem({
   href,
   large,
   customIcon,
+  onClick,
 }: LinkItemProps) {
   if (!checkSelected) checkSelected = (href) => pathname === href;
   const selected = checkSelected(href);
   const classes = clsx(
     className,
-    'relative flex items-center px-3 py-2 font-bold rounded',
+    'relative flex items-center px-2.5 py-2 font-medium rounded',
     selected ? 'text-[var(--primary)]' : 'text-2 text-0-hover opacity-90 text-hover',
-    large ? 'text-base gap-3' : 'text-sm gap-2.5',
+    large ? 'text-lg gap-3' : 'text-base gap-2.5',
   );
 
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} onClick={onClick}>
       {icon && (
         <i
           className={clsx(

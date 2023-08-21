@@ -78,7 +78,7 @@ export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps
   );
 }
 
-const weekDayClassName = 'text-xl text-1 font-medium text-right p-2 border-b border-color-5';
+const weekDayClassName = 'text-xl text-1 font-medium text-right py-2 px-4 border-b border-color-5';
 
 export type CalendarProps = {
   events: EventMinimalInfo[];

@@ -121,7 +121,7 @@ export default function SelectInput<T>({
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
-  const contentProps = { className: contentClassName, style: contentStyle, ...getFloatingProps() };
+  const contentProps = { className: clsx(contentClassName, 'scrollbar'), style: contentStyle, ...getFloatingProps() };
 
   const buttonInner = selectedItem?.label ?? placeholder;
 

@@ -49,6 +49,7 @@ export default async function TenantManageLayout({ children }: TenantManageLayou
       >
         <TenantManageButton manage={false} />
         <LinkList
+          mode="sidebar"
           items={[
             { label: 'Présentation', href: `/manage/tenant`, icon: <IconUsers /> },
             { label: 'Validations', href: manageTenantRoute('validations'), icon: <IconCheck /> },

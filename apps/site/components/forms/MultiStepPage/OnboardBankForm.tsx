@@ -1,31 +1,27 @@
-'use client';
+import BankForm from '../BankForm';
+import AvatarImage from '../../atoms/Image/AvatarImage';
+import MultiStepPageLayout from '../../atoms/Layout/MultiStepPageLayout';
+import BankPreview from '../../atoms/Preview/BankPreview';
+import ActionButton from '../../molecules/Button/ActionButton';
+import TextInput from '../../molecules/Input/TextInput';
 
-import BankForm from '../../../../../../../../components/forms/BankForm';
-import MultiStepPageLayout from '../../../../../../../../components/atoms/Layout/MultiStepPageLayout';
-import AvatarImage from '../../../../../../../../components/atoms/Image/AvatarImage';
-import BankPreview from '../../../../../../../../components/atoms/Preview/BankPreview';
+import { useTenant } from '../../../context/navigation';
+import { useTranslation } from '../../../hooks/context/useTranslation';
 
-import TextInput from '../../../../../../../../components/molecules/Input/TextInput';
-import ActionButton from '../../../../../../../../components/molecules/Button/ActionButton';
-
-import { useMe, useTeamManage, useTenant } from '../../../../../../../../context/navigation';
-import { useTranslation } from '../../../../../../../../hooks/context/useTranslation';
-
-import { useInsertAccountMutation, useInsertBankMutation } from '@okampus/shared/graphql';
-import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 import { ActionType } from '@okampus/shared/types';
+import { useInsertBankMutation, useInsertAccountMutation } from '@okampus/shared/graphql';
+import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
 
-import { useRouter } from 'next/navigation';
+import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
+import type { TeamManageInfo } from '../../../context/navigation';
+import type { LegalUnitLocationMinimalInfo } from '../../../types/features/legal-unit-location.info';
 
-import type { MultiStepPageStep } from '../../../../../../../../components/atoms/Layout/MultiStepPageLayout';
-import type { LegalUnitLocationMinimalInfo } from '../../../../../../../../types/features/legal-unit-location.info';
-
-export default function TeamManageBankCreatePage({ params }: { params: { slug: string } }) {
-  const { teamManage } = useTeamManage(params.slug);
+export type OnboardBankFormProps = {
+  teamManage: TeamManageInfo;
+  onCompleted?: () => void;
+};
+export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBankFormProps) {
   const { format } = useTranslation();
-  const router = useRouter();
-
-  const me = useMe();
   const { tenant } = useTenant();
 
   const [insertBank] = useInsertBankMutation();
@@ -74,8 +70,6 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
               finances: {
                 data: [
                   {
-                    tenantId: tenant.id,
-                    createdById: me.user.individual.id,
                     amount: remaining,
                     method: PaymentMethod.Transfer,
                     category: FinanceCategory.Subvention,
@@ -88,15 +82,11 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
               },
               children: {
                 data: accountAllocates.map((accountAllocate) => ({
-                  tenantId: tenant.id,
-                  createdById: me.user.individual.id,
                   teamId: accountAllocate.teamId,
                   name: 'Compte principal',
                   finances: {
                     data: [
                       {
-                        tenantId: tenant.id,
-                        createdById: me.user.individual.id,
                         amount: accountAllocate.balance,
                         method: PaymentMethod.Transfer,
                         category: FinanceCategory.Subvention,
@@ -111,7 +101,7 @@ export default function TeamManageBankCreatePage({ params }: { params: { slug: s
               },
             },
           },
-          onCompleted: () => router.push(`/manage/team/${teamManage.actor?.slug}/bank`),
+          onCompleted,
         });
       },
     });

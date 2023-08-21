@@ -40,6 +40,7 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
       <SideBar header={<SidebarBanner name={team.actor.name} banner={getBanner(team.actor.actorImages)?.image.url} />}>
         <TeamManageButton slug={params.slug} manage={true} />
         <LinkList
+          mode="sidebar"
           items={[
             { label: 'Présentation', href: `/team/${team.actor.slug}`, icon: <IconUsers /> },
             { label: 'Événements', href: teamRoute('events'), icon: <IconTicket /> },

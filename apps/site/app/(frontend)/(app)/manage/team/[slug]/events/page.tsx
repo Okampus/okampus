@@ -5,7 +5,7 @@ import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
 import UserGroup from '../../../../../../../components/molecules/Group/UserGroup';
 import ModalLayout from '../../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
-import EventForm from '../../../../../../../components/forms/EventForm/EventForm';
+import EventForm from '../../../../../../../components/forms/MultiStepForm/EventForm/EventForm';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import FormSubmissionRender from '../../../../../../../components/organisms/Form/FormSubmissionRender';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';

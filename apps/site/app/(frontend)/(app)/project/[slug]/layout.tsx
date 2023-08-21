@@ -38,6 +38,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
       <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList
+          mode="sidebar"
           items={[
             { label: 'Présentation', href: baseRoute, icon: <IconUsers /> },
             { label: 'Événements', href: projectRoute('events'), icon: <IconCalendarCog /> },

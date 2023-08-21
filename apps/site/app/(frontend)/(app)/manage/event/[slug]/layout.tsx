@@ -45,6 +45,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         <EventManageButton slug={params.slug} manage={false} />
         <GroupItem heading="Paramètres" headingClassName="ml-3">
           <LinkList
+            mode="sidebar"
             items={[
               { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoHexagon /> },
               { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconUsersPlus /> },
@@ -54,6 +55,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         <hr className="m-2 border-[var(--border-2)]" />
         <GroupItem heading="Présence" headingClassName="ml-3">
           <LinkList
+            mode="sidebar"
             items={[
               { label: 'Inscriptions', href: manageEventRoute('joins'), icon: <IconUsers /> },
               { label: 'Liste de présence', href: manageEventRoute('attendance'), icon: <IconCheckbox /> },
@@ -62,6 +64,7 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         </GroupItem>
         <hr className="m-2 border-[var(--border-2)]" />
         <LinkList
+          mode="sidebar"
           items={
             teams.map((team) => ({
               label: team.actor.name,

@@ -1,11 +1,11 @@
-import DateInput from '../../molecules/Input/Date/DateInput';
-import LegalUnitInput from '../../molecules/Input/LegalUnit/LegalUnitInput';
-import SelectInput from '../../molecules/Input/Select/SelectInput';
-import TextAreaInput from '../../molecules/Input/TextAreaInput';
-import TextInput from '../../molecules/Input/TextInput';
-import UserLabeled from '../../molecules/Labeled/UserLabeled';
+import DateInput from '../../../molecules/Input/Date/DateInput';
+import LegalUnitInput from '../../../molecules/Input/LegalUnit/LegalUnitInput';
+import SelectInput from '../../../molecules/Input/Select/SelectInput';
+import TextAreaInput from '../../../molecules/Input/TextAreaInput';
+import TextInput from '../../../molecules/Input/TextInput';
+import UserLabeled from '../../../molecules/Labeled/UserLabeled';
 
-import { useTranslation } from '../../../hooks/context/useTranslation';
+import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { FinanceCategory, PayedByType, PaymentMethod } from '@okampus/shared/enums';
 

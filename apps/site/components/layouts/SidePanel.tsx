@@ -17,10 +17,15 @@ export default function SidePanel({ children }: SidePanelProps) {
   const [isSidePanelOpen, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
   const currentWindowSize = useCurrentBreakpoint();
 
+  const isSmall = currentWindowSize !== 'desktopXl';
+
   useEffect(() => {
-    if (currentWindowSize === 'desktopXl') !isSidePanelOpen && setIsSidePanelOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWindowSize, setIsSidePanelOpen]);
+    if (!isSmall && !isSidePanelOpen) setIsSidePanelOpen(true);
+  }, [isSmall, isSidePanelOpen, setIsSidePanelOpen]);
+
+  useEffect(() => {
+    if (isSmall) setIsSidePanelOpen(false);
+  }, [isSmall]);
 
   const sidePanelClass = clsx(
     'h-full shrink-0 bg-1 w-[var(--w-sidepanel)] overflow-x-hidden',

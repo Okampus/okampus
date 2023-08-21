@@ -5,7 +5,7 @@ import IMoney from '../../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
 import FileGroup from '../../../../../../../components/molecules/Group/FileGroup';
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
-import FinanceForm from '../../../../../../../components/forms/FinanceForm/FinanceForm';
+import FinanceForm from '../../../../../../../components/forms/MultiStepForm/FinanceForm/FinanceForm';
 import FinanceSidePanel from '../../../../../../../components/layouts/SidePanel/FinanceSidePanel/FinanceSidePanel';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';

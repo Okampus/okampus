@@ -4,13 +4,13 @@ import EventDetailsStep from './EventDetailsStep';
 import EventPresentationStep from './EventPresentationStep';
 import EventSupervisorsStep from './EventSupervisorsStep';
 import EventSummaryStep from './EventSummaryStep';
-import BannerImage from '../../atoms/Image/BannerImage';
-import ChoiceList from '../../molecules/List/ChoiceList';
-import MultiStepForm from '../../organisms/Form/MultiStepForm';
+import BannerImage from '../../../atoms/Image/BannerImage';
+import ChoiceList from '../../../molecules/List/ChoiceList';
+import MultiStepForm from '../../../organisms/Form/MultiStepForm';
 
-import { useTenant } from '../../../context/navigation';
-import { useModal } from '../../../hooks/context/useModal';
-import { mergeCache } from '../../../utils/apollo/merge-cache';
+import { useTenant } from '../../../../context/navigation';
+import { useModal } from '../../../../hooks/context/useModal';
+import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
 import { LocationType } from '@okampus/shared/enums';
 import { useInsertEventMutation } from '@okampus/shared/graphql';
@@ -21,8 +21,8 @@ import * as z from 'zod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import type { FormStepContext } from '../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../context/navigation';
+import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
+import type { TeamManageInfo } from '../../../../context/navigation';
 import type { useFormContext } from 'react-hook-form';
 
 const eventFormSchema = z

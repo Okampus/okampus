@@ -8,7 +8,7 @@ import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { ToastType } from '@okampus/shared/types';
 
-import { IconArrowUpRight, IconShare2 } from '@tabler/icons-react';
+import { IconArrowUpRight, IconLink } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
@@ -47,15 +47,15 @@ export default function EventCard({ event }: EventCardProps) {
           <BannerImage className="rounded-2xl" src={event.banner?.url} name={event.name} />
         </div>
         <div className="flex flex-col px-4 gap-0.5">
-          <div className="text-primary font-semibold uppercase line-clamp-1 tabular-nums">{displayedStart}</div>
-          <div className="text-lg font-semibold text-0 line-clamp-2">{event.name}</div>
-
-          <div className="flex items-center gap-1.5 text-1 font-semibold text-sm">
-            <div>{event.price === 0 ? 'Gratuit' : `${event.price} €`}</div>
-            <div className="pb-0.5">/</div>
-            <div>
-              {event.pointsAwardedForAttendance} {tenant?.pointName}
-            </div>
+          <div className="flex justify-between text-sm text-1 font-semibold uppercase line-clamp-1 tabular-nums">
+            <span>{displayedStart}</span>
+            <span>
+              ⭐ {event.pointsAwardedForAttendance} {tenant?.pointName}
+            </span>
+          </div>
+          <div className="font-semibold mt-0.5 text-lg text-0 line-clamp-2">{event.name}</div>
+          <div className="flex items-center gap-1.5 text-1 font-medium text-base">
+            {event.price === 0 ? 'Gratuit' : format('euro', event.price)}
           </div>
           {event?.eventTags.length > 0 && (
             <div className="flex flex-wrap gap-2">
@@ -76,11 +76,12 @@ export default function EventCard({ event }: EventCardProps) {
             <UserGroup
               itemsCount={participantsCount}
               size={12}
+              title="Inscrits"
               users={event.eventJoins.map(({ joinedBy }) => joinedBy)}
             />
           </div>
           <div className="flex gap-4 items-center">
-            <IconShare2
+            <IconLink
               className="text-2 cursor-pointer h-7 w-7"
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/event/${event?.slug}`);

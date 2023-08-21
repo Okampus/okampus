@@ -34,7 +34,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
         }
       >
         <TenantManageButton manage={true} />
-        <LinkList items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
+        <LinkList mode="sidebar" items={[{ label: 'Présentation', href: `/tenant`, icon: <IconUsers /> }]} />
       </SideBar>
       {children}
     </>

@@ -33,7 +33,7 @@ export default function MenuList({ header, footer, sections, className }: MenuPr
                       <span className={clsx(icon && 'pr-8')}>{label}</span>
                       {icon && <div className="w-7 aspect-square">{icon}</div>}
                     </button>
-                  ) : (
+                  ) : typeof action === 'object' ? (
                     <Popover triggerOn="hover" forcePlacement={true} placement="right-start" placementOffset={-4}>
                       <PopoverTrigger className="w-full">
                         <div className={itemClass}>
@@ -46,6 +46,11 @@ export default function MenuList({ header, footer, sections, className }: MenuPr
                         <MenuList {...action} />
                       </PopoverContent>
                     </Popover>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <span className={clsx(icon && 'pr-8')}>{label}</span>
+                      {icon && <div className="w-7 aspect-square">{icon}</div>}
+                    </span>
                   )}
                 </li>
               );

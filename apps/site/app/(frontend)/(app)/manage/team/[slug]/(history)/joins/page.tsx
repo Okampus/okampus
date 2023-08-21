@@ -30,6 +30,8 @@ import { ActionType, ToastType } from '@okampus/shared/types';
 // import { extractPositiveNumber } from '@okampus/shared/utils';
 
 import { extractPositiveNumber } from '@okampus/shared/utils';
+
+import { IconHistory } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -131,7 +133,7 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
   ] as const;
 
   return (
-    <ViewLayout header="Adhésions">
+    <ViewLayout header="Adhésions" sidePanelIcon={<IconHistory />}>
       <form onSubmit={onSubmit}>
         <ChangeSetToast
           isDirty={formState.isDirty}

@@ -1,7 +1,7 @@
-import DateInput from '../../molecules/Input/Date/DateInput';
-import SelectInput from '../../molecules/Input/Select/SelectInput';
-import TextInput from '../../molecules/Input/TextInput';
-import { useTranslation } from '../../../hooks/context/useTranslation';
+import DateInput from '../../../molecules/Input/Date/DateInput';
+import SelectInput from '../../../molecules/Input/Select/SelectInput';
+import TextInput from '../../../molecules/Input/TextInput';
+import { useTranslation } from '../../../../hooks/context/useTranslation';
 
 import { FinanceCategory, PaymentMethod } from '@okampus/shared/enums';
 

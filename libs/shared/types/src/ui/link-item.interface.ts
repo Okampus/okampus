@@ -7,4 +7,5 @@ export interface LinkItemProps {
   icon?: React.ReactNode;
   customIcon?: boolean;
   checkSelected?: (pathname: string) => boolean;
+  onClick?: () => void;
 }

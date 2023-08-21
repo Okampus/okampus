@@ -12,7 +12,7 @@ export enum ActionType {
 
 export type Action = {
   label?: ReactNode;
-  linkOrActionOrMenu: string | (() => void) | MenuProps;
+  linkOrActionOrMenu?: string | (() => void) | MenuProps;
   active?: boolean;
   disabled?: boolean;
   iconOrSwitch?: ReactNode | ((active: boolean) => ReactNode);

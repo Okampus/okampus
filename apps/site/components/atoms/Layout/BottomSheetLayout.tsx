@@ -20,7 +20,7 @@ export default function BottomSheetLayout({
 
   return (
     <>
-      <div className="shrink-0 h-[var(--h-topbar)] w-full bg-1 flex px-[var(--px-content)] items-center justify-between">
+      <div className="shrink-0 h-[var(--h-topbar)] w-full bg-1 flex pl-[var(--px-content)] pr-2 items-center justify-between">
         {topbar}
         <div className="flex items-center gap-6">
           {buttons}

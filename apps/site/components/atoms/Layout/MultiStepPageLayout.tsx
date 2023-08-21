@@ -1,4 +1,6 @@
 import ViewLayout from './ViewLayout';
+import SidePanel from '../../layouts/SidePanel';
+import ActionButton from '../../molecules/Button/ActionButton';
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { IconCircleCheck } from '@tabler/icons-react';
@@ -51,26 +53,39 @@ export default function MultiStepPageLayout<T>({
 
   return (
     <>
-      <ViewLayout innerClassName={className} header={header} bottomPadded={bottomPadded} scrollable={scrollable}>
-        {header && <div className="page-title mb-10">{header}</div>}
+      <ViewLayout
+        innerClassName={className}
+        header={header}
+        bottomPadded={bottomPadded}
+        scrollable={scrollable}
+        sidePanelIcon={
+          <ActionButton
+            action={{
+              label: `${currentStep + 1} / ${steps.length}`,
+            }}
+          />
+        }
+      >
         {step.render({ values: data, setValues: setData, goToPreviousStep, goToNextStep, onSubmit })}
       </ViewLayout>
 
-      <div className="my-[var(--py-content)] w-full flex flex-col">
-        {steps.map((step, idx) => (
-          <div key={idx} className={clsx(idx !== currentStep && 'opacity-50', 'p-4')}>
-            <div className="flex items-start gap-3 font-semibold text-0 mb-1">
-              {idx > currentStep ? (
-                <IconCircleCheck className="text-2" />
-              ) : (
-                <IconCircleCheck className="text-[var(--success)]" />
-              )}
-              {step.title}
+      <SidePanel>
+        <div className="my-[var(--py-content)] w-full flex flex-col">
+          {steps.map((step, idx) => (
+            <div key={step.title} className={clsx(idx !== currentStep && 'opacity-50', 'p-4')}>
+              <div className="flex items-start gap-3 font-semibold text-0 mb-1">
+                {idx > currentStep ? (
+                  <IconCircleCheck className="text-2" />
+                ) : (
+                  <IconCircleCheck className="text-[var(--success)]" />
+                )}
+                {step.title}
+              </div>
+              {step.subtitle && <div className="pl-9 text-sm text-2 font-medium">{step.subtitle}</div>}
             </div>
-            {step.subtitle && <div className="pl-9 text-sm text-2 font-medium">{step.subtitle}</div>}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </SidePanel>
     </>
   );
 }

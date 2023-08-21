@@ -1,10 +1,10 @@
 'use client';
 
-import ModalLayout from '../atoms/Layout/ModalLayout';
-import TextAreaInput from '../molecules/Input/TextAreaInput';
-import ActionButton from '../molecules/Button/ActionButton';
+import ModalLayout from '../../../atoms/Layout/ModalLayout';
+import TextAreaInput from '../../../molecules/Input/TextAreaInput';
+import ActionButton from '../../../molecules/Button/ActionButton';
 
-import { useModal } from '../../hooks/context/useModal';
+import { useModal } from '../../../../hooks/context/useModal';
 
 import { useInsertEventApprovalMutation, useUpdateEventMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
@@ -14,9 +14,9 @@ import { useState } from 'react';
 
 import type { GetEventsValidationQuery } from '@okampus/shared/graphql';
 
-export type EventApprovalModalProps = { isApproved: boolean; event: GetEventsValidationQuery['event'][number] };
+export type EventApprovalFormProps = { isApproved: boolean; event: GetEventsValidationQuery['event'][number] };
 
-export default function EventApprovalModal({ isApproved, event }: EventApprovalModalProps) {
+export default function EventApprovalForm({ isApproved, event }: EventApprovalFormProps) {
   const { closeModal } = useModal();
 
   const [updateEvent] = useUpdateEventMutation();

@@ -38,6 +38,7 @@ export default async function EventLayout({ children, params }: EventLayoutProps
       <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
         <LinkList
+          mode="sidebar"
           items={[
             { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
             { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
