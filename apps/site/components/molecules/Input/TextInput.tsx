@@ -75,11 +75,15 @@ export default memo(
             )}
           >
             {startContent && (
-              <div className="flex items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">{startContent}</div>
+              <div className="flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">
+                {startContent}
+              </div>
             )}
             {input}
             {endContent && (
-              <div className="flex items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">{endContent}</div>
+              <div className="flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">
+                {endContent}
+              </div>
             )}
           </div>
         ) : (

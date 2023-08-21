@@ -119,13 +119,13 @@ export default memo(
         {startContent || endContent ? (
           <div className="flex">
             {startContent && (
-              <div className="flex  items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
+              <div className="flex h-[var(--h-input)] items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
                 {startContent}
               </div>
             )}
             {input}
             {endContent && (
-              <div className="flex  items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
+              <div className="flex h-[var(--h-input)] items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
                 {endContent}
               </div>
             )}

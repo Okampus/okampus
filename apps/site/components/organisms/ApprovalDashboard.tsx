@@ -80,7 +80,7 @@ export default function ApprovalDashboard<T, U>({
                 )}
               >
                 <span>{state.label}</span>
-                <span className="h-6 px-1.5 bg-3">{counts[state.value]}</span>
+                <span className="h-6 px-1.5 bg-3 rounded-md">{counts[state.value]}</span>
               </li>
             ))}
             <li
@@ -91,7 +91,7 @@ export default function ApprovalDashboard<T, U>({
               )}
             >
               <span>Tout</span>
-              <span className="h-6 px-1.5 bg-3">{items.length}</span>
+              <span className="h-6 px-1.5 bg-3 rounded-md">{items.length}</span>
             </li>
           </ul>
           {searchFilter && (

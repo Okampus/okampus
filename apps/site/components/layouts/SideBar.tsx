@@ -68,7 +68,7 @@ export default function SideBar({ children, header }: SideBarProps) {
     <>
       <TabBar />
       {children && (
-        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between">
+        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-r border-color-1">
           <nav className="md-max:h-full md:h-[calc(100%-4rem)] flex flex-col">
             {header}
             <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>

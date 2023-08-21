@@ -42,8 +42,8 @@
     },
     "Actor": {
       "determinerType": "feminine",
-      "one": "actrice",
-      "other": "actrices"
+      "one": "acteur",
+      "other": "acteurs"
     },
     "BankInfo": {
       "determinerType": "feminine",
@@ -62,8 +62,8 @@
     },
     "ActorImage": {
       "determinerType": "feminine",
-      "one": "image d'actrice",
-      "other": "images d'actrices"
+      "one": "image",
+      "other": "image"
     },
     "LegalUnit": {
       "determinerType": "feminine",

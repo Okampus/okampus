@@ -17,7 +17,7 @@ export default function EventManageButton({ slug, manage }: EventManageButtonPro
     <Link
       href={manage ? `/manage/event/${slug}` : `/event/${slug}`}
       className={clsx(
-        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-1',
+        'flex items-center justify-center h-12 w-[calc(100%-1rem)] mb-3 mx-[0.5rem] font-semibold border-2 border-color-1 rounded-md',
         manage ? 'text-0' : 'text-opposite bg-opposite',
       )}
     >

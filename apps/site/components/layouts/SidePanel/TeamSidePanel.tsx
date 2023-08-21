@@ -9,6 +9,7 @@ import { useTeam } from '../../../context/navigation';
 import { RoleCategory } from '@okampus/shared/enums';
 import { usePathname } from 'next/navigation';
 
+import clsx from 'clsx';
 import type { TeamMemberMinimalInfo } from '../../../types/features/team-member.info';
 
 const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
@@ -50,12 +51,12 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
 
   if (!team.actor || !team.actor.socials) return null;
 
+  const showProfile = pathname !== `/team/${team.actor.slug}`;
+
   return (
     <SidePanel>
-      {pathname !== `/team/${team.actor.slug}` && (
-        <Profile type="team" actor={team.actor} socials={team.actor.socials} />
-      )}
-      <section className="pt-[var(--py-content)] px-3">
+      {showProfile && <Profile type="team" actor={team.actor} socials={team.actor.socials} />}
+      <section className={clsx('pt-[var(--py-content)] px-3', showProfile && 'border-t border-color-1')}>
         {renderCategories([
           [team.directorsCategoryName || 'Directeurs', directors],
           [team.managersCategoryName || 'Gestionnaires', managers],
