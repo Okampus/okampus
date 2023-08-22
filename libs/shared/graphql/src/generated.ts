@@ -47911,18 +47911,8 @@ export type GetMeQuery = {
         email: string;
         name: string;
         slug: string;
-        status: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
       };
-      joinForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string };
     }>;
     user: {
       __typename: 'User';
@@ -52840,6 +52830,78 @@ export type UserLoginMutation = {
   };
 };
 
+export type InsertEventApprovalMutationVariables = Exact<{
+  object: EventApprovalInsertInput;
+}>;
+
+export type InsertEventApprovalMutation = {
+  __typename?: 'Mutation';
+  insertEventApprovalOne?: {
+    __typename: 'EventApproval';
+    id: string;
+    createdAt: string;
+    isApproved: boolean;
+    message: string;
+    eventApprovalStep?: {
+      __typename: 'EventApprovalStep';
+      id: string;
+      createdAt: string;
+      name: string;
+      description: string;
+      order: number;
+      nextSteps: Array<{
+        __typename: 'EventApprovalStep';
+        id: string;
+        createdAt: string;
+        name: string;
+        description: string;
+        order: number;
+      }>;
+      previousStep?: {
+        __typename: 'EventApprovalStep';
+        id: string;
+        createdAt: string;
+        name: string;
+        description: string;
+        order: number;
+      } | null;
+    } | null;
+    createdBy?: {
+      __typename: 'Individual';
+      id: string;
+      createdAt: string;
+      actor: {
+        __typename: 'Actor';
+        id: string;
+        createdAt: string;
+        email: string;
+        name: string;
+        slug: string;
+        website: string;
+        actorImages: Array<{
+          __typename: 'ActorImage';
+          id: string;
+          type: string;
+          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
+        }>;
+      };
+      user?: {
+        __typename: 'User';
+        id: string;
+        createdAt: string;
+        firstName: string;
+        lastName: string;
+        individual: {
+          __typename: 'Individual';
+          id: string;
+          createdAt: string;
+          actor: { __typename: 'Actor'; id: string; slug: string };
+        };
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type GetProjectsSelectQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
@@ -53613,78 +53675,6 @@ export type GetTenantLogsQuery = {
   }>;
 };
 
-export type InsertEventApprovalMutationVariables = Exact<{
-  object: EventApprovalInsertInput;
-}>;
-
-export type InsertEventApprovalMutation = {
-  __typename?: 'Mutation';
-  insertEventApprovalOne?: {
-    __typename: 'EventApproval';
-    id: string;
-    createdAt: string;
-    isApproved: boolean;
-    message: string;
-    eventApprovalStep?: {
-      __typename: 'EventApprovalStep';
-      id: string;
-      createdAt: string;
-      name: string;
-      description: string;
-      order: number;
-      nextSteps: Array<{
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      }>;
-      previousStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      } | null;
-    } | null;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: { __typename: 'Actor'; id: string; slug: string };
-        };
-      } | null;
-    } | null;
-  } | null;
-};
-
 export type InsertSingleUploadMutationVariables = Exact<{
   file: Scalars['Upload']['input'];
   bucket: Scalars['String']['input'];
@@ -54071,34 +54061,7 @@ export const GetMeDocument = gql`
           email
           name
           slug
-          status
           website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          socials(where: { deletedAt: { _isNull: true } }) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        joinForm {
-          __typename
-          id
-          name
-          schema
-          type
         }
       }
       user {
@@ -61207,6 +61170,120 @@ export function useUserLoginMutation(
 export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
 export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
 export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
+export const InsertEventApprovalDocument = gql`
+  mutation InsertEventApproval($object: EventApprovalInsertInput!) {
+    insertEventApprovalOne(object: $object) {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type InsertEventApprovalMutationFn = Apollo.MutationFunction<
+  InsertEventApprovalMutation,
+  InsertEventApprovalMutationVariables
+>;
+
+/**
+ * __useInsertEventApprovalMutation__
+ *
+ * To run a mutation, you first call `useInsertEventApprovalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertEventApprovalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertEventApprovalMutation, { data, loading, error }] = useInsertEventApprovalMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertEventApprovalMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>(
+    InsertEventApprovalDocument,
+    options,
+  );
+}
+export type InsertEventApprovalMutationHookResult = ReturnType<typeof useInsertEventApprovalMutation>;
+export type InsertEventApprovalMutationResult = Apollo.MutationResult<InsertEventApprovalMutation>;
+export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<
+  InsertEventApprovalMutation,
+  InsertEventApprovalMutationVariables
+>;
 export const GetProjectsSelectDocument = gql`
   query GetProjectsSelect($slug: String!) {
     project(where: { team: { actor: { slug: { _eq: $slug } } } }) {
@@ -62457,120 +62534,6 @@ export function useGetTenantLogsLazyQuery(
 export type GetTenantLogsQueryHookResult = ReturnType<typeof useGetTenantLogsQuery>;
 export type GetTenantLogsLazyQueryHookResult = ReturnType<typeof useGetTenantLogsLazyQuery>;
 export type GetTenantLogsQueryResult = Apollo.QueryResult<GetTenantLogsQuery, GetTenantLogsQueryVariables>;
-export const InsertEventApprovalDocument = gql`
-  mutation InsertEventApproval($object: EventApprovalInsertInput!) {
-    insertEventApprovalOne(object: $object) {
-      __typename
-      id
-      createdAt
-      isApproved
-      message
-      eventApprovalStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-        nextSteps {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-        previousStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-export type InsertEventApprovalMutationFn = Apollo.MutationFunction<
-  InsertEventApprovalMutation,
-  InsertEventApprovalMutationVariables
->;
-
-/**
- * __useInsertEventApprovalMutation__
- *
- * To run a mutation, you first call `useInsertEventApprovalMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertEventApprovalMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertEventApprovalMutation, { data, loading, error }] = useInsertEventApprovalMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertEventApprovalMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>(
-    InsertEventApprovalDocument,
-    options,
-  );
-}
-export type InsertEventApprovalMutationHookResult = ReturnType<typeof useInsertEventApprovalMutation>;
-export type InsertEventApprovalMutationResult = Apollo.MutationResult<InsertEventApprovalMutation>;
-export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<
-  InsertEventApprovalMutation,
-  InsertEventApprovalMutationVariables
->;
 export const InsertSingleUploadDocument = gql`
   mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
     singleUpload(file: $file, bucket: $bucket, entityId: $entityId, entityName: $entityName) {
