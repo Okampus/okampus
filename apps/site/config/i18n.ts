@@ -16,6 +16,21 @@ export const dateFormatters = {
   month: { month: 'long' },
   weekDay: { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
   weekDayHour: { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },
+  weekDayLong: { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' },
+  weekDayLongHour: {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'long',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  },
+} as const;
+
+export const dateRangeFormatters = {
+  monthRange: { month: 'long' },
+  dayRange: { day: 'numeric', month: 'short', year: 'numeric' },
+  dayHourRange: { day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },
 } as const;
 
 export const listFormatters = {
@@ -26,9 +41,9 @@ export const listFormatters = {
   narrow: { type: 'unit', style: 'narrow' },
 } as const;
 
-export const timeFormatters = {
-  long: { numeric: 'auto', style: 'long' },
-  short: { numeric: 'auto', style: 'short' },
+export const relativeTimeFormatters = {
+  relativeTimeLong: { numeric: 'auto', style: 'long' },
+  relativeTimeShort: { numeric: 'auto', style: 'short' },
 } as const;
 
 export const pluralFormatters = {
@@ -43,9 +58,11 @@ export type Formatters = {
 } & {
   [key in keyof typeof dateFormatters]: { format: (value: Date) => string };
 } & {
+  [key in keyof typeof dateRangeFormatters]: { format: (value: [Date, Date]) => string };
+} & {
   [key in keyof typeof listFormatters]: { format: (value: string[]) => string };
 } & {
-  [key in keyof typeof timeFormatters]: { format: (value: number) => string };
+  [key in keyof typeof relativeTimeFormatters]: { format: (value: number) => string };
 } & {
   [key in keyof typeof pluralFormatters]: { format: (value: number) => string };
 };
@@ -54,8 +71,9 @@ export const allFormatters = [
   ...objectKeys(byteFormatters),
   ...objectKeys(numberFormatters),
   ...objectKeys(dateFormatters),
+  ...objectKeys(dateRangeFormatters),
   ...objectKeys(listFormatters),
-  ...objectKeys(timeFormatters),
+  ...objectKeys(relativeTimeFormatters),
   ...objectKeys(pluralFormatters),
 ] as const;
 
@@ -65,9 +83,11 @@ export type FormatValueType<T extends (typeof allFormatters)[number]> = T extend
   ? number
   : T extends keyof typeof dateFormatters
   ? Date
+  : T extends keyof typeof dateRangeFormatters
+  ? [Date, Date]
   : T extends keyof typeof listFormatters
   ? string[]
-  : T extends keyof typeof timeFormatters
+  : T extends keyof typeof relativeTimeFormatters
   ? number
   : T extends keyof typeof pluralFormatters
   ? number

@@ -2,11 +2,12 @@ import {
   numberFormatters,
   dateFormatters,
   listFormatters,
-  timeFormatters,
+  relativeTimeFormatters,
   pluralFormatters,
   cutoffs,
   units,
   byteFormatters,
+  dateRangeFormatters,
 } from '../../config/i18n';
 
 import { determinersAtom, dictsAtom, formattersAtom, langAtom } from '../../context/global';
@@ -37,11 +38,14 @@ export function useTranslation() {
     } else if (isKey(key, dateFormatters)) {
       const formatter = new Intl.DateTimeFormat(lang, dateFormatters[key]);
       format = (data: Date) => formatter.format(data).replace(', ', ' • ');
+    } else if (isKey(key, dateRangeFormatters)) {
+      const formatter = new Intl.DateTimeFormat(lang, dateRangeFormatters[key]);
+      format = (data: [Date, Date]) => formatter.formatRange(data[0], data[1]);
     } else if (isKey(key, listFormatters)) {
       const formatter = new Intl.ListFormat(lang, listFormatters[key]);
       format = (data: string[]) => formatter.format(data);
-    } else if (isKey(key, timeFormatters)) {
-      const formatter = new Intl.RelativeTimeFormat(lang, timeFormatters[key]);
+    } else if (isKey(key, relativeTimeFormatters)) {
+      const formatter = new Intl.RelativeTimeFormat(lang, relativeTimeFormatters[key]);
       format = (timeMs: number) => {
         const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
         const unitIndex = cutoffs.findIndex((cutoff) => cutoff > Math.abs(deltaSeconds));
