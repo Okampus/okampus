@@ -11,16 +11,10 @@ type TenantStrategyValidation = {
   fastifyPassport: Authenticator;
 };
 
-function getTenant(req: FastifyRequest) {
-  if (req.params && typeof req.params === 'object' && 'tenant' in req.params && typeof req.params.tenant === 'string')
-    return req.params.tenant;
-  return null;
-}
-
 export const tenantStrategyValidation =
   ({ oidcCache, authService, fastifyInstance, fastifyPassport }: TenantStrategyValidation) =>
   async (req: FastifyRequest, res: FastifyReply) => {
-    const domain = getTenant(req);
+    const { domain } = req.params as { domain?: string };
     if (!domain) return false;
 
     const tenant = await authService.findTenant(domain);
@@ -45,7 +39,7 @@ export const tenantStrategyValidation =
     }
 
     const strategy = oidcCache.strategies.get(domain) as Strategy;
-    await fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
+    fastifyPassport.authenticate(strategy, { authInfo: false }).bind(fastifyInstance)(req, res);
 
     return true;
   };
@@ -59,10 +53,10 @@ type TenantCallbackValidation = {
 
 export const tenantCallbackValidation =
   ({ oidcCache, fastifyInstance, fastifyPassport, authenticateOptions }: TenantCallbackValidation) =>
-  async (req: FastifyRequest, res: FastifyReply) => {
-    const tenantSlug = getTenant(req);
-    if (!tenantSlug) return;
+  (req: FastifyRequest, res: FastifyReply) => {
+    const { domain } = req.params as { domain?: string };
+    if (!domain) return;
 
-    const strategy = oidcCache.strategies.get(tenantSlug) as Strategy;
-    await fastifyPassport.authenticate(strategy, authenticateOptions).bind(fastifyInstance)(req, res);
+    const strategy = oidcCache.strategies.get(domain) as Strategy;
+    fastifyPassport.authenticate(strategy, authenticateOptions).bind(fastifyInstance)(req, res);
   };
