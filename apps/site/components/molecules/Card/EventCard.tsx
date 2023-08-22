@@ -47,7 +47,7 @@ export default function EventCard({ event }: EventCardProps) {
           <BannerImage className="rounded-xl" src={event.banner?.url} name={event.name} />
         </div>
         <div className="flex flex-col px-4 gap-0.5">
-          <div className="flex justify-between text-primary tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
+          <div className="flex justify-between text-1 tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
             <span>{displayedStart}</span>
             <span>
               ⭐ {event.pointsAwardedForAttendance} {tenant?.pointName}

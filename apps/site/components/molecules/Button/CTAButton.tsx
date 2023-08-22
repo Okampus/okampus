@@ -16,7 +16,7 @@ export default function CTAButton({ className, type, children, action }: CTAButt
   const ctaClassName = clsx(
     className,
     getActionClass(type),
-    'button md:!text-lg md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full !h-[var(--h-topbar)] md-max:!rounded-none',
+    'button md:!text-lg md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full md-max:!rounded-none',
   );
 
   return typeof action === 'function' || action === undefined ? (

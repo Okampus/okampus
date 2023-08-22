@@ -100,7 +100,7 @@ export default function LogItem({ log }: LogItemProps) {
   return (
     <div className="flex gap-4">
       {image}
-      <span className="text-0 font-semibold">
+      <span className="text-0 font-medium">
         {name} {t(actionType, payload)}
         <div className="text-2 text-sm font-medium">{format('weekDayHour', new Date(log.createdAt))}</div>
         <div className="py-2 text-1 font-medium">
