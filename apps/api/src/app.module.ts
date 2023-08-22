@@ -84,6 +84,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 
+import type { ApiConfig } from '@okampus/shared/types';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
@@ -225,6 +226,8 @@ export class AppModule implements NestModule, OnModuleInit {
     const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
     const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
 
+    const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
+
     const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
 
     let admin: Individual;
@@ -233,7 +236,18 @@ export class AppModule implements NestModule, OnModuleInit {
       admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
     } else {
       // Init base tenant
-      const tenant = new Tenant({ domain: BASE_TENANT, pointName: 'LXP' });
+      const tenant = new Tenant({
+        domain: BASE_TENANT,
+        pointName: 'LXP',
+        isOidcEnabled: oidc.enabled,
+        oidcCallbackUri: oidc.callbackUri,
+        oidcClientId: oidc.clientId,
+        oidcClientSecret: oidc.clientSecret,
+        oidcDiscoveryUrl: oidc.discoveryUrl,
+        oidcName: oidc.name,
+        oidcScopes: oidc.scopes,
+      });
+
       await this.em.persistAndFlush([tenant]);
 
       const anon = new Individual({

@@ -108,6 +108,7 @@ export type ApiConfig = {
   readonly hasuraAdminSecret: string;
   readonly baseTenant: {
     readonly adminPassword: string;
+    readonly domain: string;
     readonly oidc: {
       readonly enabled: boolean;
       readonly name: string;

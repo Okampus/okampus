@@ -1,4 +1,6 @@
+import { BASE_TENANT } from '@okampus/shared/consts';
 import { Buckets, TokenType } from '@okampus/shared/enums';
+
 import dotenv from 'dotenv';
 
 import { existsSync } from 'node:fs';
@@ -167,6 +169,7 @@ export const config: ApiConfig = {
   hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET ?? 'very_secret_and_long_hasura_admin_secret',
   baseTenant: {
     adminPassword: process.env.BASE_TENANT_ADMIN_PASSWORD ?? 'root',
+    domain: process.env.BASE_TENANT_DOMAIN ?? BASE_TENANT,
     oidc: {
       enabled: parseEnvBoolean(process.env.BASE_TENANT_OIDC_ENABLED, false),
       name: process.env.BASE_TENANT_OIDC_NAME ?? 'demo-tenant',
