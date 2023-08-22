@@ -92,7 +92,7 @@ export default function SigninPage() {
                         type: ActionType.Action,
                         label: `Continuer avec ${tenant.oidcName}`,
                         iconOrSwitch: <AvatarImage actor={tenant.adminTeam?.actor} />,
-                        linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
+                        linkOrActionOrMenu: `${API_URL}/auth/${tenant.domain}`,
                       }}
                     />
                   ),
