@@ -21,7 +21,7 @@ import {
 import { IconCheck, IconCircle } from '@tabler/icons-react';
 
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { ControlledMultiSelect, SelectItem } from '@okampus/shared/types';
 
@@ -47,12 +47,14 @@ export default function MultiSelectInput<T>({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const selected: SelectItem<T>[] = [];
-
-  for (const val of value) {
-    const item = options.find((choice) => choice.value === val);
-    if (item) selected.push(item);
-  }
+  const selected = useMemo(() => {
+    const selected: SelectItem<T>[] = [];
+    for (const val of value) {
+      const item = options.find((choice) => choice.value === val);
+      if (item) selected.push(item);
+    }
+    return selected;
+  }, [options, value]);
 
   useEffect(() => {
     for (const val of value) {

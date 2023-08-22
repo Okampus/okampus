@@ -8,21 +8,20 @@ import CTAButton from '../../../../../components/molecules/Button/CTAButton';
 import EventCard from '../../../../../components/molecules/Card/EventCard';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
+import { notificationAtom } from '../../../../../context/global';
 import { useMe, useTeam } from '../../../../../context/navigation';
 import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
 import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
-
-import { notificationAtom } from '../../../../../context/global';
 import { mergeCache } from '../../../../../utils/apollo/merge-cache';
 
 import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
 import { EventState, TeamRoleType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
-import { notFound } from 'next/navigation';
+
 import { useAtom } from 'jotai';
+import { notFound } from 'next/navigation';
 
 import type { ActionCTA } from '../../../../../components/molecules/Button/CTAButton';
-import type { SocialType } from '@okampus/shared/enums';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
 export default function TeamPage({ params }: { params: { slug: string } }) {
@@ -120,12 +119,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                       rel="noopener noreferrer"
                       className="font-medium"
                     >
-                      <SocialIcon
-                        className="!h-8 !w-8"
-                        small={true}
-                        key={social.id}
-                        social={social.type as SocialType}
-                      />
+                      <SocialIcon className="!h-8 !w-8" small={true} key={social.id} social={social.type} />
                     </a>
                   ),
               )}

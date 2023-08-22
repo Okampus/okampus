@@ -5,7 +5,6 @@ import { IconMail, IconWorldWww } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import type { ActorMinimalInfo } from '../../../types/features/actor.info';
-import type { SocialType } from '@okampus/shared/enums';
 
 export type ProfileProps = {
   type?: 'user' | 'team' | 'tenant';
@@ -25,7 +24,7 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
             ?.sort((a, b) => a.order - b.order)
             .map((social, idx) => (
               <a key={idx} href={social.url} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
-                <SocialIcon social={social.type as SocialType} small={true} className="text-0" />
+                <SocialIcon social={social.type} small={true} className="text-0" />
               </a>
             ))}
           {actor?.email && (

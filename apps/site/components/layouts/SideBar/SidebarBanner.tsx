@@ -8,7 +8,7 @@ export default function SidebarBanner({ name, banner }: SidebarBannerProps) {
     <>
       <div
         className={clsx(
-          'px-4 w-full line-clamp-1 text-xl flex font-semibold items-center h-[var(--h-topbar)]',
+          'px-4 w-full line-clamp-1 text-lg flex font-semibold items-center h-[var(--h-topbar)]',
           banner ? 'absolute z-20 text-white' : 'text-0',
         )}
       >

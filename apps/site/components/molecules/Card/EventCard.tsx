@@ -44,17 +44,17 @@ export default function EventCard({ event }: EventCardProps) {
           <IconArrowUpRight className="h-8 w-8" />
         </motion.i>
         <div className="relative mb-4">
-          <BannerImage className="rounded-2xl" src={event.banner?.url} name={event.name} />
+          <BannerImage className="rounded-xl" src={event.banner?.url} name={event.name} />
         </div>
         <div className="flex flex-col px-4 gap-0.5">
-          <div className="flex justify-between text-sm text-1 font-semibold uppercase line-clamp-1 tabular-nums">
+          <div className="flex justify-between text-primary tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
             <span>{displayedStart}</span>
             <span>
               ⭐ {event.pointsAwardedForAttendance} {tenant?.pointName}
             </span>
           </div>
-          <div className="font-semibold mt-0.5 text-lg text-0 line-clamp-2">{event.name}</div>
-          <div className="flex items-center gap-1.5 text-1 font-medium text-base">
+          <div className="font-medium mt-0.5 text-lg text-0 line-clamp-2">{event.name}</div>
+          <div className="flex items-center gap-1.5 text-1 font-medium">
             {event.price === 0 ? 'Gratuit' : format('euro', event.price)}
           </div>
           {event?.eventTags.length > 0 && (

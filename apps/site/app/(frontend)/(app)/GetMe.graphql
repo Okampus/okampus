@@ -15,34 +15,7 @@ query GetMe {
         email
         name
         slug
-        status
         website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-        socials(where: { deletedAt: { _isNull: true } }) {
-          __typename
-          id
-          pseudo
-          url
-          type
-          order
-        }
-      }
-      joinForm {
-        __typename
-        id
-        name
-        schema
-        type
       }
     }
     user {

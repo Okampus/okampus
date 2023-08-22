@@ -6,8 +6,6 @@ import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
 
 import { useUser } from '../../../../../context/navigation';
 
-import type { SocialType } from '@okampus/shared/enums';
-
 export default function UserPage({ params }: { params: { slug: string } }) {
   const { user } = useUser(params.slug);
   if (!user) return null;
@@ -32,7 +30,7 @@ export default function UserPage({ params }: { params: { slug: string } }) {
                     rel="noopener noreferrer"
                     className="font-medium"
                   >
-                    <SocialIcon className="!h-8 !w-8" small={true} key={social.id} social={social.type as SocialType} />
+                    <SocialIcon className="!h-8 !w-8" small={true} key={social.id} social={social.type} />
                   </a>
                 ),
             )}

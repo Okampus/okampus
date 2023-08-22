@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import type { LocationMinimalInfo } from '../../../types/features/location.info';
 
-export type ILocationProps = { location?: LocationMinimalInfo; className?: string };
+export type ILocationProps = { location?: LocationMinimalInfo | null; className?: string };
 export default function ILocation({ location, className }: ILocationProps) {
   return location ? (
     location.onlineLink ? (
@@ -26,6 +26,6 @@ export default function ILocation({ location, className }: ILocationProps) {
       <div className={className}>{location.locationDetails}</div>
     )
   ) : (
-    <div className={className}>Lieu non-renseignée</div>
+    <div className={className}>Lieu à déterminer</div>
   );
 }

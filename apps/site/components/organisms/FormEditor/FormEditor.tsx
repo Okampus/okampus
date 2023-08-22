@@ -49,6 +49,13 @@ const controlOptions = [
   { label: 'Cases à cocher', value: ControlType.MultiCheckbox },
 ];
 
+function OptionPrefix({ type, index }: { type: ControlType; index: number }) {
+  if (type === ControlType.Select) return <div className="text-0 tabular-nums">{index + 1}.</div>;
+  if (type === ControlType.Radio) return <input type="radio" disabled={true} />;
+  if (type === ControlType.MultiCheckbox) return <input type="checkbox" disabled={true} />;
+  return null;
+}
+
 export type FormEditorProps = { form: FormMinimalInfo };
 export default function FormEditor({ form }: FormEditorProps) {
   const [selectedTab, setSelectedTab] = useState(QUESTIONS);
@@ -63,7 +70,7 @@ export default function FormEditor({ form }: FormEditorProps) {
   useKeyPressEvent('Escape', closeBottomSheet);
 
   const defaultFields: FormSchema = Array.isArray(form.schema) ? form.schema : [];
-  const { register, trigger, formState, watch, reset, setValue, control, handleSubmit } = useForm({
+  const { register, formState, watch, reset, setValue, control, handleSubmit } = useForm({
     defaultValues: { fields: defaultFields },
     mode: 'all',
   });
@@ -124,17 +131,10 @@ export default function FormEditor({ form }: FormEditorProps) {
                       >
                         {fields.map((field, idx) => {
                           const options = field.options ?? [newOption(0)];
-                          let optionPrefix: ((idx: number) => React.ReactNode) | null = null;
-                          // eslint-disable-next-line unicorn/prefer-switch
-                          if (field.type === ControlType.Select)
-                            optionPrefix = (idx: number) => <div className="text-0 tabular-nums">{idx + 1}.</div>;
-                          else if (field.type === ControlType.Radio)
-                            optionPrefix = (idx: number) => <input type="radio" disabled={true} />;
-                          else if (field.type === ControlType.MultiCheckbox)
-                            optionPrefix = (idx: number) => <input type="checkbox" disabled={true} />;
+                          const optionPrefix = <OptionPrefix type={field.type} index={idx} />;
 
                           return (
-                            <Draggable key={`field.${idx}`} draggableId={`field-${idx}`} index={idx}>
+                            <Draggable key={`field.${idx}`} draggableId={`field.${idx}`} index={idx}>
                               {(provided) => (
                                 <DragListItem
                                   className="flex flex-col md-max:gap-2"
@@ -215,7 +215,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                                                         }
                                                       >
                                                         <span className="flex items-center gap-2 w-full">
-                                                          {optionPrefix?.(optionIdx)}
+                                                          {optionPrefix}
                                                           <input
                                                             className="bg-transparent w-full outline-none border-b border-transparent hover:border-[var(--border-3)] active:border-[var(--border-3)] focus:border-[var(--border-3)]"
                                                             value={option.value}
@@ -243,7 +243,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                                         </Droppable>
                                       </DragDropContext>
                                       <span className="flex items-center gap-2 pl-6">
-                                        {optionPrefix(options.length + 1)}
+                                        {optionPrefix}
                                         <span
                                           className="border-b border-transparent hover:border-[var(--border-3)] w-full cursor-text mr-2"
                                           onClick={() => {

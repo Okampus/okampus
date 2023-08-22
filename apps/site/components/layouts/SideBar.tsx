@@ -44,7 +44,7 @@ export default function SideBar({ children, header }: SideBarProps) {
 
   useEffect(() => {
     if (isMobile) setIsSideBarOpen(false);
-  }, [isMobile]);
+  }, [isMobile, setIsSideBarOpen]);
 
   const sidebarClass = clsx(
     'h-full flex shrink-0 bg-[var(--bg-sidebar)] overflow-hidden',

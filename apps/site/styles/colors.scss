@@ -109,6 +109,11 @@
   @apply text-[var(--text-2)];
 }
 
+.text-3,
+.text-3-hover:hover {
+  @apply text-[var(--text-3)];
+}
+
 .text-primary {
   @apply text-[var(--primary)];
 }

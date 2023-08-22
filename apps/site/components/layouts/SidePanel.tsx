@@ -25,7 +25,7 @@ export default function SidePanel({ children }: SidePanelProps) {
 
   useEffect(() => {
     if (isSmall) setIsSidePanelOpen(false);
-  }, [isSmall]);
+  }, [isSmall, setIsSidePanelOpen]);
 
   const sidePanelClass = clsx(
     'h-full shrink-0 bg-[var(--bg-sidebar)] w-[var(--w-sidepanel)] overflow-x-hidden border-l border-color-1',

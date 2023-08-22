@@ -8,7 +8,6 @@ import ActionButton from '../../../../components/molecules/Button/ActionButton';
 import { useTenant } from '../../../../context/navigation';
 
 import { useInsertFollowMutation } from '@okampus/shared/graphql';
-import type { SocialType } from '@okampus/shared/enums';
 
 export default function TenantPage() {
   const [insertFollow] = useInsertFollowMutation();
@@ -48,12 +47,7 @@ export default function TenantPage() {
                       rel="noopener noreferrer"
                       className="font-medium"
                     >
-                      <SocialIcon
-                        className="!h-8 !w-8"
-                        small={true}
-                        key={social.id}
-                        social={social.type as SocialType}
-                      />
+                      <SocialIcon className="!h-8 !w-8" small={true} key={social.id} social={social.type} />
                     </a>
                   ),
               )}

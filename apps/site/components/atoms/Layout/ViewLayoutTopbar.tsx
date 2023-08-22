@@ -43,7 +43,7 @@ export default function ViewLayoutTopbar({
   ) : null;
 
   const className = clsx(
-    'flex justify-between gap-8 w-full px-[var(--px-content)] min-h-[var(--h-topbar)] z-20 border-color-2',
+    'flex justify-between gap-8 w-full px-[var(--px-content)] min-h-[var(--h-topbar)] z-20 border-color-1',
     'md-max:border-b md-max:sticky md-max:items-center md-max:top-0 md-max:bg-[var(--bg-main)]',
     'md:items-start md:mb-10 md:pt-[var(--py-content)]',
   );
