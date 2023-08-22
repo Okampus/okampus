@@ -8,10 +8,10 @@ import Link from 'next/link';
 
 export type TeamManageButtonProps = { slug: string; manage: boolean };
 export default function TeamManageButton({ slug, manage }: TeamManageButtonProps) {
-  const { team, canManage } = useTeam(slug);
+  const { canManage } = useTeam(slug);
   const { t } = useTranslation();
 
-  if (!team || (manage && !canManage)) return null;
+  if (manage && !canManage) return null;
 
   return (
     <Link

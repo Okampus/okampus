@@ -1,3 +1,5 @@
+'use client';
+
 // import { useTeamManage } from '../../../context/navigation';
 
 // import { useRouter } from 'next/router';

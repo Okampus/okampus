@@ -8,10 +8,10 @@ import Link from 'next/link';
 
 export type TenantManageButtonProps = { manage: boolean };
 export default function TenantManageButton({ manage }: TenantManageButtonProps) {
-  const { tenant, canManage } = useTenant();
+  const { canManage } = useTenant();
   const { t } = useTranslation();
 
-  if (!tenant || (manage && !canManage)) return null;
+  if (manage && !canManage) return null;
 
   return (
     <Link

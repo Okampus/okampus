@@ -281,13 +281,13 @@ export default function FormEditor({ form }: FormEditorProps) {
                   </Droppable>
                 </DragDropContext>
                 <div
-                  className="sm-max:absolute sm-max:bottom-[calc(3*var(--h-topbar))] sm-max:right-[var(--px-content)] sm:sticky sm:top-6 bg-[var(--primary)] text-white rounded-full p-2 h-fit"
-                  onClick={(e) => e.stopPropagation()}
+                  className="sm-max:absolute sm-max:bottom-[calc(3*var(--h-topbar))] sm-max:right-[var(--px-content)] sm:sticky sm:top-6 bg-[var(--primary)] text-white rounded-full p-2 h-fit "
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setValue('fields', [...fields, newQuestion(fields.length)], { shouldDirty: true });
+                  }}
                 >
-                  <IconPlus
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={() => setValue('fields', [...fields, newQuestion(fields.length)], { shouldDirty: true })}
-                  />
+                  <IconPlus className="w-8 h-8 cursor-pointer" />
                 </div>
               </form>
             ) : (

@@ -1,3 +1,5 @@
+'use client';
+
 import RadioInput from '../../../molecules/Input/Selector/RadioInput';
 import SelectInput from '../../../molecules/Input/Select/SelectInput';
 import UserLabeled from '../../../molecules/Labeled/UserLabeled';

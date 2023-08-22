@@ -1,3 +1,5 @@
+'use client';
+
 import FinanceCompanyStep from './FinanceCompanyStep';
 import FinanceDetailsStep from './FinanceDetailsStep';
 import FinancePayedByStep from './FinancePayedByStep';
@@ -82,13 +84,27 @@ const financeFormDefaultValues: FinanceFormSchema = {
 
 export type FinanceFormStepProps = FormStepContext<FinanceFormSchema, { teamManage: TeamManageInfo }>;
 
+function FinanceTypeChoiceStep({ methods: { formMethods, goToStep } }: FinanceFormStepProps) {
+  // const { setValue } = useFormContext<typeof financeFormDefaultValues>();
+
+  return (
+    <ChoiceList
+      items={[{ item: { label: 'Recette', value: true } }, { item: { label: 'Dépense', value: false } }]}
+      onClick={(isRevenue) => {
+        formMethods.setValue('isRevenue', isRevenue);
+        goToStep('online');
+      }}
+    />
+  );
+}
+
 function FinanceOnlineChoiceStep({ methods: { formMethods, goToStep } }: FinanceFormStepProps) {
   // const { setValue } = useFormContext<typeof financeFormDefaultValues>();
 
   return (
     <ChoiceList
       items={[
-        { item: { label: 'Recette', value: true } },
+        { item: { label: 'En ligne', value: true } },
         { item: { label: 'En personne / par chèque', value: false } },
       ]}
       onClick={(isOnline) => {
@@ -213,6 +229,11 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
           onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
           content: FinanceOnlineChoiceStep,
         },
+        online: {
+          header: ({ methods: { formMethods } }) =>
+            formMethods.getValues().isRevenue ? 'Recette reçue en ligne ?' : 'Dépense faite en ligne ?',
+          content: FinanceOnlineChoiceStep,
+        },
         project: {
           header: 'Projet lié',
           onEnter: ({ methods: { formMethods } }) => formMethods.setValue('projectId', null),
@@ -221,11 +242,6 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
         event: {
           header: 'Événement lié',
           content: FinanceEventChoiceStep,
-        },
-        online: {
-          header: ({ methods: { formMethods } }) =>
-            formMethods.getValues().isRevenue ? 'Recette reçue en ligne ?' : 'Dépense faite en ligne ?',
-          content: FinanceOnlineChoiceStep,
         },
         receipt: {
           header: 'Justificatif de paiement',

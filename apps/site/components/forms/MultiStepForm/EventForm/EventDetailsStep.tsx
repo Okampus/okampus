@@ -1,3 +1,5 @@
+'use client';
+
 import DateInput from '../../../molecules/Input/Date/DateInput';
 import TextInput from '../../../molecules/Input/TextInput';
 import AddressSearchInput from '../../../molecules/Input/Search/AddressSearchInput';

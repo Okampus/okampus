@@ -8,10 +8,10 @@ import Link from 'next/link';
 
 export type ProjectManageButtonProps = { slug: string; manage: boolean };
 export default function ProjectManageButton({ slug, manage }: ProjectManageButtonProps) {
-  const { project, canManage } = useProject(slug);
+  const { canManage } = useProject(slug);
   const { t } = useTranslation();
 
-  if (!project || (manage && !canManage)) return null;
+  if (manage && !canManage) return null;
 
   return (
     <Link

@@ -1,3 +1,5 @@
+'use client';
+
 import DateInput from '../../../molecules/Input/Date/DateInput';
 import LegalUnitInput from '../../../molecules/Input/LegalUnit/LegalUnitInput';
 import SelectInput from '../../../molecules/Input/Select/SelectInput';

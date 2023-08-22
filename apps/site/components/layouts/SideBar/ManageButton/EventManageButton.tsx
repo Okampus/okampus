@@ -8,10 +8,10 @@ import Link from 'next/link';
 
 export type EventManageButtonProps = { slug: string; manage: boolean };
 export default function EventManageButton({ slug, manage }: EventManageButtonProps) {
-  const { event, canManage } = useEvent(slug);
+  const { canManage } = useEvent(slug);
   const { t } = useTranslation();
 
-  if (!event || (manage && !canManage)) return null;
+  if (manage && !canManage) return null;
 
   return (
     <Link

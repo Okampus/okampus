@@ -20,8 +20,8 @@ export default function SidePanel({ children }: SidePanelProps) {
   const isSmall = currentWindowSize !== 'desktopXl';
 
   useEffect(() => {
-    if (!isSmall && !isSidePanelOpen) setIsSidePanelOpen(true);
-  }, [isSmall, isSidePanelOpen, setIsSidePanelOpen]);
+    if (!isSmall) setIsSidePanelOpen(true);
+  }, [isSmall, setIsSidePanelOpen]);
 
   useEffect(() => {
     if (isSmall) setIsSidePanelOpen(false);

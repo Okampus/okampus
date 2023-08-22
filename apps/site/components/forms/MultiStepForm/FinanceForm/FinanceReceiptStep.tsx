@@ -1,3 +1,5 @@
+'use client';
+
 import DateInput from '../../../molecules/Input/Date/DateInput';
 import SelectInput from '../../../molecules/Input/Select/SelectInput';
 import Skeleton from '../../../atoms/Skeleton/Skeleton';
