@@ -9,7 +9,7 @@ import axios from 'axios';
 import { Address } from '@okampus/api/dal';
 
 import type { AxiosInstance } from 'axios';
-import type { GeocodeAddress } from '@okampus/shared/types';
+import type { ApiConfig, GeocodeAddress } from '@okampus/shared/types';
 import type { Countries } from '@okampus/shared/consts';
 
 type Feature = {
@@ -35,21 +35,24 @@ const PARIS_BIAS = 'proximity:2.3488,48.8534';
 export class GeocodeService {
   axiosInstance: AxiosInstance;
   logger = new Logger(GeocodeService.name);
+  private readonly options: ApiConfig['geoapify'];
 
   constructor(
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
   ) {
-    const options = loadConfig(this.configService, 'geoapify');
+    this.options = loadConfig(this.configService, 'geoapify');
 
     this.axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
     this.axiosInstance.interceptors.request.use((config) => {
-      config.params = { apiKey: options.apiKey, ...config.params };
+      config.params = { apiKey: this.options.apiKey, ...config.params };
       return config;
     });
   }
 
   public async searchLocation(query: string, limit = 5): Promise<GeocodeAddress[]> {
+    if (!this.options.isEnabled) return [];
+
     const config = { params: { limit, format: 'json', type: 'amenity', lang: 'fr', bias: PARIS_BIAS } };
     const url = `v1/geocode/autocomplete?text=${encodeURIComponent(query)}`;
     const { data } = await this.axiosInstance.get<{ results: Feature[] }>(url, config).catch(async (error) => {
@@ -73,6 +76,8 @@ export class GeocodeService {
   }
 
   public async getGeoapifyAddress(geoapifyId: string): Promise<Address | null> {
+    if (!this.options.isEnabled) return null;
+
     const address = await this.em.findOne(Address, { geoapifyId });
     if (address) return address;
 

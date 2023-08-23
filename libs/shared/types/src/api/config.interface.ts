@@ -16,12 +16,7 @@ export type ApiConfig = {
     readonly hasuraUrl: string;
     readonly frontendUrl: string;
   };
-  readonly upload: {
-    readonly localPath: string;
-    readonly localPrefix: string;
-  };
   readonly meilisearch: {
-    readonly isEnabled: boolean;
     readonly host: string;
     readonly apiKey: string;
   };
@@ -31,6 +26,7 @@ export type ApiConfig = {
     readonly region: string;
   };
   readonly geoapify: {
+    readonly isEnabled: boolean;
     readonly apiKey: string;
   };
   readonly google: {
@@ -48,18 +44,18 @@ export type ApiConfig = {
     readonly isSeeding: boolean;
   };
   readonly s3: {
-    readonly isEnabled: boolean;
     readonly credentials: {
       readonly accessKeyId: string;
       readonly secretAccessKey: string;
     };
+    readonly rawEndpoint: string;
     readonly endpoint: string;
     readonly region: string;
+    readonly forcePathStyle: boolean;
     readonly bucketNames: Record<BucketNames, string>;
     readonly bucketSeeding: string;
   };
   readonly redis: {
-    readonly isEnabled: boolean;
     readonly host: string;
     readonly port: number;
     readonly password: string;

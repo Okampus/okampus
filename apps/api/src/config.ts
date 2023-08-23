@@ -38,12 +38,6 @@ const parseEnvBoolean = (value: string | undefined, defaultValue: boolean): bool
 if (process.env.NODE_ENV && !['production', 'development', 'test'].includes(process.env.NODE_ENV))
   throw new TypeError('NODE_ENV is not set to a valid value');
 
-const getEnabled = (enabledValue?: string, fallbackVariable?: string): boolean => {
-  const enabled = parseEnvBoolean(enabledValue, true);
-  if (enabled && !fallbackVariable) return false;
-  return enabled;
-};
-
 // Shortcuts
 const nodeEnv = process.env.NODE_ENV ?? 'development';
 const baseDomain = nodeEnv === 'production' ? 'okampus.fr' : 'localhost';
@@ -67,14 +61,9 @@ export const config: ApiConfig = {
     hasuraUrl: nodeEnv === 'development' ? 'http://localhost:8080' : `https://hasura.${baseDomain}`,
     frontendUrl: nodeEnv === 'development' ? 'http://localhost:3000' : `https://okampus.fr`,
   },
-  upload: {
-    localPath: `${appPath}/${process.env.UPLOAD_PATH ?? 'uploads'}`,
-    localPrefix: process.env.UPLOAD_PATH ?? 'uploads',
-  },
   meilisearch: {
-    isEnabled: getEnabled(process.env.MEILISEARCH_ENABLED, process.env.MEILISEARCH_HOST),
     host: process.env.MEILISEARCH_HOST ?? 'localhost:7700',
-    apiKey: process.env.MEILISEARCH_API_KEY ?? 'api-key',
+    apiKey: process.env.MEILISEARCH_MASTER_KEY ?? 'master-key',
   },
   textract: {
     accessKey: process.env.TEXTRACT_API_KEY_ID ?? 'api-key-id',
@@ -82,6 +71,7 @@ export const config: ApiConfig = {
     region: process.env.TEXTRACT_REGION ?? 'region',
   },
   geoapify: {
+    isEnabled: parseEnvBoolean(process.env.GEOAPIFY_ENABLED, false),
     apiKey: process.env.GEOAPIFY_API_KEY ?? 'api-key',
   },
   google: {
@@ -99,13 +89,16 @@ export const config: ApiConfig = {
     port: parseEnvInt(process.env.PSQL_PORT, 5432),
   },
   s3: {
-    isEnabled: parseEnvBoolean(process.env.S3_ENABLED, false),
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID ?? 'access-key-id',
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? 'secret-access-key',
     },
-    endpoint: process.env.S3_ENDPOINT ?? 'endpoint',
-    region: process.env.S3_REGION ?? 'region',
+    rawEndpoint: process.env.S3_ENDPOINT ?? 'localhost:9000',
+    endpoint: parseEnvBoolean(process.env.S3_FORCE_PATH_STYLE, false)
+      ? `http://${process.env.S3_ENDPOINT ?? 'localhost:9000'}`
+      : `https://${process.env.S3_ENDPOINT ?? 'localhost:9000'}`,
+    region: process.env.S3_REGION ?? 'eu-west-2',
+    forcePathStyle: parseEnvBoolean(process.env.S3_FORCE_PATH_STYLE, false),
     bucketNames: {
       [BucketNames.ActorDocuments]: process.env.S3_BUCKET_NAME_ACTOR_DOCUMENTS ?? 'actor-documents',
       [BucketNames.ActorImages]: process.env.S3_BUCKET_NAME_ACTOR_IMAGES ?? 'actor-images',
@@ -120,7 +113,6 @@ export const config: ApiConfig = {
     bucketSeeding: process.env.ORM_SEEDING_BUCKET ?? '',
   },
   redis: {
-    isEnabled: getEnabled(process.env.REDIS_ENABLED, process.env.REDIS_HOST),
     host: process.env.REDIS_HOST ?? 'localhost',
     port: parseEnvInt(process.env.REDIS_PORT, 6379),
     password: process.env.REDIS_PASSWORD ?? '',

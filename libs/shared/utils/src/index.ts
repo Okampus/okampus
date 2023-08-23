@@ -27,6 +27,7 @@ export * from './files/bytes';
 export * from './files/check-mime';
 export * from './files/data-uri-to-blob';
 export * from './files/get-extensions';
+export * from './files/make-s3-url';
 export * from './files/parse-file-mime-category';
 export * from './files/to-base64';
 export * from './files/to-csv';

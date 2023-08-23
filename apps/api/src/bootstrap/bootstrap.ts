@@ -88,9 +88,6 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   app.use(helmet(config.env.isProd() ? {} : defaultCsp));
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
-  if (!config.s3.isEnabled)
-    app.useStaticAssets({ root: config.upload.localPath, prefix: `/${config.upload.localPrefix}` });
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Okampus Web API')
     .setDescription('REST API for Okampus')

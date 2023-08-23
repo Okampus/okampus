@@ -15,7 +15,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "tsc --pretty -p apps/api/tsconfig.migrations.json",
+          "tsc -p apps/api/tsconfig.migrations.json",
           "cross-env MIKRO_ORM_MIGRATION=up node dist/apps/api/main.mjs | tee /dev/null | pino-pretty -c -t"
         ]
       },
@@ -23,7 +23,7 @@
     },
     "serve": {
       "command": "vite serve --config apps/api/vite.config.ts --mode development | tee /dev/null | pino-pretty -c -t",
-      "dependsOn": ["merge", "migration:up"]
+      "dependsOn": ["migration:up"]
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -53,16 +53,13 @@
       }
     },
     "hasura:schema": {
-      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Downloading Hasura schema...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && get-graphql-schema --header X-Hasura-Admin-Secret=${HASURA_GRAPHQL_ADMIN_SECRET} \"http://localhost:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" > apps/api/database/hasura/schema.gql && bash apps/api/database/hasura/close.sh"
-    },
-    "hasura:serve": {
-      "command": "bash apps/api/database/hasura/run.sh"
+      "command": "get-graphql-schema --header X-Hasura-Admin-Secret=${HASURA_GRAPHQL_ADMIN_SECRET} \"http://127.0.0.1:8080/v1/graphql\" | sed -e '1,6d' -e \"s/query_root/Query/\" -e \"s/mutation_root/Mutation/\" -e \"s/subscription_root/Subscription/\" > apps/api/database/hasura/schema.gql"
     },
     "hasura:metadata:apply": {
-      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Applying Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && pnpm run hasura:apply && bash apps/api/database/hasura/close.sh"
+      "command": "pnpm run hasura:apply"
     },
     "hasura:metadata:export": {
-      "command": "bash apps/api/database/hasura/run.sh -d && echo 'Exporting Hasura metadata...' && bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080/healthz)\" != \"200\" ]]; do sleep 1; done' && cd apps/api/database/hasura && hasura metadata export && cd ../../../.. && bash apps/api/database/hasura/close.sh"
+      "command": "cd apps/api/database/hasura && hasura metadata export"
     },
     "graphql:merge": {
       "dependsOn": ["hasura:schema"],

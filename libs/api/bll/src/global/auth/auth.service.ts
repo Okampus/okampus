@@ -260,9 +260,14 @@ export class AuthService extends RequestContext {
       },
     };
 
-    const tokenPromises = [this.createHttpOnlyJwt(accessClaims, TokenType.Access), this.createRefreshToken(sub, req)];
-    const searchKeyPromise = this.configService.get('meilisearch.isEnabled') ? [this.createMeilisearchToken()] : [];
-    addCookiesToResponse(await Promise.all([...tokenPromises, ...searchKeyPromise]).then((arr) => arr.flat()), res);
+    addCookiesToResponse(
+      await Promise.all([
+        this.createHttpOnlyJwt(accessClaims, TokenType.Access),
+        this.createRefreshToken(sub, req),
+        this.createMeilisearchToken(),
+      ]).then((arr) => arr.flat()),
+      res,
+    );
   }
 
   public async addWebSocketTokenIfAuthenticated(res: FastifyReply, sub?: string): Promise<void> {
