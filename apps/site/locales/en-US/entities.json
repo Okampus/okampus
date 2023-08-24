@@ -62,8 +62,8 @@
     },
     "ActorImage": {
       "determinerType": "short",
-      "one": "actor image",
-      "other": "actor images"
+      "one": "image",
+      "other": "images"
     },
     "LegalUnit": {
       "determinerType": "short",
@@ -344,8 +344,8 @@
     },
     "actorImages": {
       "determinerType": "short",
-      "one": "actor images",
-      "other": "actor images"
+      "one": "images",
+      "other": "images"
     },
     "address": {
       "determinerType": "short",

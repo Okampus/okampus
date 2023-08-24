@@ -16,9 +16,9 @@ export const dateFormatters = {
   month: { month: 'long' },
   weekDay: { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
   weekDayHour: { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric', hour12: false },
-  weekDayLong: { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' },
+  weekDayLong: { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' },
   weekDayLongHour: {
-    weekday: 'short',
+    weekday: 'long',
     day: 'numeric',
     month: 'long',
     hour: 'numeric',
