@@ -31,14 +31,6 @@ const today = () => {
   return dateWithoutTimezone(date);
 };
 
-const getDateISOString = (date: string) => {
-  try {
-    return new Date(date).toISOString().slice(0, 16);
-  } catch {
-    return null;
-  }
-};
-
 export type DateInputProps = {
   inputClassName?: string;
   includeTime?: boolean;
@@ -69,17 +61,25 @@ export default memo(
       ...inputProps
     } = props;
 
-    const [dateISOString, setDateISOString] = useState(defaultValue ? getDateISOString(defaultValue) : null);
+    const [dateISOString, setDateISOString] = useState(defaultValue ?? null);
 
     const currentHour = dateISOString?.slice(11, 13);
     const currentMinutes = dateISOString?.slice(14, 16);
 
     useEffect(() => {
+      setTimeout(() => {
+        const value = localRef.current?.value;
+        if (value) setDateISOString(value);
+      }, 200);
+    }, [localRef]);
+
+    useEffect(() => {
       if (props.defaultValue && localRef.current) {
-        localRef.current.value = props.defaultValue;
-        setDateISOString(getDateISOString(props.defaultValue));
+        const date = props.defaultValue ?? props.value;
+        localRef.current.value = date;
+        setDateISOString(date);
       }
-    }, [props.defaultValue, localRef]);
+    }, [props.defaultValue, props.value, localRef]);
 
     const input = (
       <input
@@ -99,7 +99,8 @@ export default memo(
       />
     );
 
-    const info = inputInfo ?? (dateISOString ? format('weekDay', dateWithoutTimezone(new Date(dateISOString))) : null);
+    const includeTimeFormat = includeTime ? 'weekDayLongHour' : 'weekDayLong';
+    const info = inputInfo ?? (dateISOString ? format(includeTimeFormat, new Date(dateISOString)) : null);
     const fieldProps = { label, className, name, description, required, error, info, loading };
 
     return (
@@ -137,7 +138,7 @@ export default memo(
               />
               {
                 <>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[24rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
                     {hours.map((hour) => (
                       <li
                         key={hour}
@@ -151,15 +152,15 @@ export default memo(
                           }
                         }}
                         className={clsx(
-                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer hover:bg-[var(--bg-2)]',
-                          currentHour === hour ? 'bg-[var(--info)] text-white' : 'text-1',
+                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer',
+                          currentHour === hour ? 'bg-[var(--info)] text-white' : 'text-1 hover:bg-[var(--bg-2)]',
                         )}
                       >
                         {hour}
                       </li>
                     ))}
                   </ul>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[24rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
                     {minutes.map((minute) => (
                       <li
                         key={minute}
@@ -173,8 +174,8 @@ export default memo(
                           }
                         }}
                         className={clsx(
-                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer hover:bg-[var(--bg-2)]',
-                          currentMinutes === minute ? 'bg-[var(--info)] text-white' : 'text-1',
+                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer',
+                          currentMinutes === minute ? 'bg-[var(--info)] text-white' : 'text-1 hover:bg-[var(--bg-2)]',
                         )}
                       >
                         {minute}
