@@ -5,7 +5,8 @@ generates:
     documents: "apps/site/**/*.graphql"
     plugins:
       - "typescript"
-      - "typescript-operations"
+      - "typescript-operations":
+          avoidOptionals: true
       - "typescript-react-apollo"
       - "add":
           content: "import type { JSONType } from '@okampus/shared/types';"

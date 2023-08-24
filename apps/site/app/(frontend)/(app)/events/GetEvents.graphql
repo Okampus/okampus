@@ -32,6 +32,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

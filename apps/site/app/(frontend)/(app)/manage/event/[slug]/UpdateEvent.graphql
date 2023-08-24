@@ -19,7 +19,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -30,6 +29,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         city
         state
         country
+        geoapifyId
       }
     }
     state

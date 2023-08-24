@@ -32,6 +32,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

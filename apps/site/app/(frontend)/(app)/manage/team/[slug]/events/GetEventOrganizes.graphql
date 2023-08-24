@@ -272,6 +272,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

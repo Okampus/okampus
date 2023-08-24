@@ -32,6 +32,7 @@ mutation InsertEvent($object: EventInsertInput!) {
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

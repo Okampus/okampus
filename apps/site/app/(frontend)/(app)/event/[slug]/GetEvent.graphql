@@ -32,6 +32,7 @@ query GetEvent($slug: String!) {
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

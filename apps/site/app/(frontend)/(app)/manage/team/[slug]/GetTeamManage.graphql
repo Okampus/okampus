@@ -212,7 +212,6 @@ query GetTeamManage($slug: String!) {
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -223,6 +222,7 @@ query GetTeamManage($slug: String!) {
               city
               state
               country
+              geoapifyId
             }
           }
           state
@@ -629,7 +629,6 @@ query GetTeamManage($slug: String!) {
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -640,6 +639,7 @@ query GetTeamManage($slug: String!) {
               city
               state
               country
+              geoapifyId
             }
             type
             locationDetails
@@ -728,7 +728,6 @@ query GetTeamManage($slug: String!) {
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -739,6 +738,7 @@ query GetTeamManage($slug: String!) {
                 city
                 state
                 country
+                geoapifyId
               }
               type
               locationDetails
@@ -838,6 +838,7 @@ query GetTeamManage($slug: String!) {
                 city
                 state
                 country
+                geoapifyId
               }
             }
           }

@@ -47971,7 +47971,7 @@ export type GetMeQuery = {
               type: string;
               image: { __typename: 'FileUpload'; id: string; url: string };
             }>;
-            team?: {
+            team: {
               __typename: 'Team';
               id: string;
               actor: {
@@ -47994,7 +47994,7 @@ export type GetMeQuery = {
         id: string;
         createdAt: string;
         startDate: string;
-        endDate?: string | null;
+        endDate: string | null;
         teamMemberRoles: Array<{
           __typename?: 'TeamMemberRoles';
           role: {
@@ -48031,7 +48031,7 @@ export type GetMeQuery = {
         id: string;
         createdAt: string;
         state: string;
-        isPresent?: boolean | null;
+        isPresent: boolean | null;
         event: { __typename: 'Event'; id: string; slug: string };
       }>;
       teamJoins: Array<{
@@ -48097,9 +48097,9 @@ export type GetMeQuery = {
         createdAt: string;
         domain: string;
         pointName: string;
-        eventValidationForm?: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
+        eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
         eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
-        adminTeam?: {
+        adminTeam: {
           __typename: 'Team';
           id: string;
           actor: {
@@ -48137,10 +48137,10 @@ export type GetEventJoinQueryVariables = Exact<{
 
 export type GetEventJoinQuery = {
   __typename?: 'Query';
-  eventJoinByPk?: {
+  eventJoinByPk: {
     __typename: 'EventJoin';
     id: string;
-    isPresent?: boolean | null;
+    isPresent: boolean | null;
     state: string;
     event: {
       __typename: 'Event';
@@ -48148,7 +48148,7 @@ export type GetEventJoinQuery = {
       slug: string;
       start: string;
       end: string;
-      maxParticipants?: number | null;
+      maxParticipants: number | null;
       eventOrganizes: Array<{
         __typename: 'EventOrganize';
         id: string;
@@ -48186,12 +48186,12 @@ export type UpdateEventJoinMutationVariables = Exact<{
 
 export type UpdateEventJoinMutation = {
   __typename?: 'Mutation';
-  updateEventJoinByPk?: {
+  updateEventJoinByPk: {
     __typename: 'EventJoin';
     id: string;
     state: string;
-    processedAt?: string | null;
-    processedBy?: {
+    processedAt: string | null;
+    processedBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -48233,20 +48233,20 @@ export type GetEventQuery = {
     state: string;
     price: number;
     isPrivate: boolean;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     pointsAwardedForAttendance: number;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -48254,9 +48254,10 @@ export type GetEventQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -48329,10 +48330,10 @@ export type GetEventQuery = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -48344,18 +48345,18 @@ export type GetEventQuery = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      processedBy?: {
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -48405,7 +48406,7 @@ export type GetEventQuery = {
         };
       };
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -48422,14 +48423,14 @@ export type InsertEventJoinMutationVariables = Exact<{
 
 export type InsertEventJoinMutation = {
   __typename?: 'Mutation';
-  insertEventJoinOne?: { __typename: 'EventJoin'; id: string } | null;
+  insertEventJoinOne: { __typename: 'EventJoin'; id: string } | null;
 };
 
 export type GetEventsQueryVariables = Exact<{
-  where?: InputMaybe<EventBoolExp>;
-  orderBy?: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<EventBoolExp>;
+  orderBy: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventsQuery = {
@@ -48441,25 +48442,25 @@ export type GetEventsQuery = {
     slug: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -48467,9 +48468,10 @@ export type GetEventsQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -48549,10 +48551,10 @@ export type GetEventsQuery = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -48564,17 +48566,17 @@ export type GetEventsQuery = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -48624,14 +48626,14 @@ export type GetEventsQuery = {
           };
         };
       };
-      formSubmission?: {
+      formSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      processedBy?: {
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -48667,7 +48669,7 @@ export type GetEventsQuery = {
         };
       } | null;
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -48690,7 +48692,7 @@ export type GetEventManageQuery = {
     createdAt: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     slug: string;
     description: string;
@@ -48698,19 +48700,18 @@ export type GetEventManageQuery = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       createdAt: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
-        createdAt: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         name: string;
         streetNumber: string;
@@ -48719,9 +48720,10 @@ export type GetEventManageQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: {
+    banner: {
       __typename: 'FileUpload';
       id: string;
       createdAt: string;
@@ -48777,7 +48779,7 @@ export type GetEventManageQuery = {
         joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
         poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
         projects: Array<{
@@ -48785,10 +48787,10 @@ export type GetEventManageQuery = {
           id: string;
           name: string;
           slug: string;
-          banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
+          banner: { __typename: 'FileUpload'; id: string; url: string } | null;
         }>;
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -48844,17 +48846,17 @@ export type GetEventManageQuery = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -48883,14 +48885,14 @@ export type GetEventManageQuery = {
           };
         };
       };
-      formSubmission?: {
+      formSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      processedBy?: {
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -48911,7 +48913,7 @@ export type GetEventManageQuery = {
           }>;
         };
       } | null;
-      participationProcessedBy?: {
+      participationProcessedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -48932,7 +48934,7 @@ export type GetEventManageQuery = {
             image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
           }>;
         };
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           createdAt: string;
@@ -48969,7 +48971,7 @@ export type GetEventManageQuery = {
         } | null;
       } | null;
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -48983,7 +48985,7 @@ export type GetEventManageQuery = {
       createdAt: string;
       isApproved: boolean;
       message: string;
-      eventApprovalStep?: {
+      eventApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -48998,7 +49000,7 @@ export type GetEventManageQuery = {
           description: string;
           order: number;
         }>;
-        previousStep?: {
+        previousStep: {
           __typename: 'EventApprovalStep';
           id: string;
           createdAt: string;
@@ -49007,7 +49009,7 @@ export type GetEventManageQuery = {
           order: number;
         } | null;
       } | null;
-      createdBy?: {
+      createdBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -49026,7 +49028,7 @@ export type GetEventManageQuery = {
             image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
           }>;
         };
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           createdAt: string;
@@ -49041,7 +49043,7 @@ export type GetEventManageQuery = {
         } | null;
       } | null;
     }>;
-    nextEventApprovalStep?: {
+    nextEventApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -49056,7 +49058,7 @@ export type GetEventManageQuery = {
         description: string;
         order: number;
       }>;
-      previousStep?: {
+      previousStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -49065,7 +49067,7 @@ export type GetEventManageQuery = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission?: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -49082,13 +49084,13 @@ export type UpdateEventMutationVariables = Exact<{
 
 export type UpdateEventMutation = {
   __typename?: 'Mutation';
-  updateEventByPk?: {
+  updateEventByPk: {
     __typename: 'Event';
     id: string;
     createdAt: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     slug: string;
     description: string;
@@ -49096,19 +49098,18 @@ export type UpdateEventMutation = {
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       createdAt: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
-        createdAt: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         name: string;
         streetNumber: string;
@@ -49117,9 +49118,10 @@ export type UpdateEventMutation = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: {
+    banner: {
       __typename: 'FileUpload';
       id: string;
       createdAt: string;
@@ -49175,11 +49177,11 @@ export type UpdateEventMutation = {
         joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
         teamMembersAggregate: {
           __typename?: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
         poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -49227,17 +49229,17 @@ export type UpdateEventMutation = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -49266,14 +49268,14 @@ export type UpdateEventMutation = {
           };
         };
       };
-      formSubmission?: {
+      formSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      processedBy?: {
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -49294,7 +49296,7 @@ export type UpdateEventMutation = {
           }>;
         };
       } | null;
-      participationProcessedBy?: {
+      participationProcessedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -49315,7 +49317,7 @@ export type UpdateEventMutation = {
             image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
           }>;
         };
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           createdAt: string;
@@ -49352,7 +49354,7 @@ export type UpdateEventMutation = {
         } | null;
       } | null;
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -49366,7 +49368,7 @@ export type UpdateEventMutation = {
       createdAt: string;
       isApproved: boolean;
       message: string;
-      eventApprovalStep?: {
+      eventApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -49381,7 +49383,7 @@ export type UpdateEventMutation = {
           description: string;
           order: number;
         }>;
-        previousStep?: {
+        previousStep: {
           __typename: 'EventApprovalStep';
           id: string;
           createdAt: string;
@@ -49390,7 +49392,7 @@ export type UpdateEventMutation = {
           order: number;
         } | null;
       } | null;
-      createdBy?: {
+      createdBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -49409,7 +49411,7 @@ export type UpdateEventMutation = {
             image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
           }>;
         };
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           createdAt: string;
@@ -49446,7 +49448,7 @@ export type UpdateEventMutation = {
         } | null;
       } | null;
     }>;
-    nextEventApprovalStep?: {
+    nextEventApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -49461,7 +49463,7 @@ export type UpdateEventMutation = {
         description: string;
         order: number;
       }>;
-      previousStep?: {
+      previousStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -49470,7 +49472,7 @@ export type UpdateEventMutation = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission?: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -49486,13 +49488,13 @@ export type UpdateEventOrganizeProjectManyMutationVariables = Exact<{
 
 export type UpdateEventOrganizeProjectManyMutation = {
   __typename?: 'Mutation';
-  updateEventOrganizeMany?: Array<{
+  updateEventOrganizeMany: Array<{
     __typename?: 'EventOrganizeMutationResponse';
     returning: Array<{
       __typename: 'EventOrganize';
       id: string;
       team: { __typename: 'Team'; id: string; type: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -49512,19 +49514,18 @@ export type UpdateLocationMutationVariables = Exact<{
 
 export type UpdateLocationMutation = {
   __typename?: 'Mutation';
-  updateLocationByPk?: {
+  updateLocationByPk: {
     __typename: 'Location';
     id: string;
     createdAt: string;
     type: string;
     onlineLink: string;
     locationDetails: string;
-    address?: {
+    address: {
       __typename: 'Address';
       id: string;
-      createdAt: string;
-      latitude?: number | null;
-      longitude?: number | null;
+      latitude: number | null;
+      longitude: number | null;
       category: string;
       name: string;
       streetNumber: string;
@@ -49533,6 +49534,7 @@ export type UpdateLocationMutation = {
       city: string;
       state: string;
       country: string;
+      geoapifyId: string | null;
     } | null;
   } | null;
 };
@@ -49548,11 +49550,11 @@ export type GetProjectManageQuery = {
     id: string;
     createdAt: string;
     slug: string;
-    start?: string | null;
-    end?: string | null;
+    start: string | null;
+    end: string | null;
     name: string;
     isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     team: {
       __typename: 'Team';
       id: string;
@@ -49643,10 +49645,10 @@ export type GetProjectManageQuery = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -49660,10 +49662,10 @@ export type GetProjectManageQuery = {
 };
 
 export type GetTeamJoinsQueryVariables = Exact<{
-  where?: InputMaybe<TeamJoinBoolExp>;
-  orderBy?: InputMaybe<Array<TeamJoinOrderBy> | TeamJoinOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<TeamJoinBoolExp>;
+  orderBy: InputMaybe<Array<TeamJoinOrderBy> | TeamJoinOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetTeamJoinsQuery = {
@@ -49718,14 +49720,14 @@ export type GetTeamJoinsQuery = {
         }>;
       };
     };
-    formSubmission?: {
+    formSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
       submission: JSONType;
       form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
     } | null;
-    receivedRole?: {
+    receivedRole: {
       __typename: 'Role';
       id: string;
       createdAt: string;
@@ -49744,7 +49746,7 @@ export type UpdateTeamJoinMutationVariables = Exact<{
 
 export type UpdateTeamJoinMutation = {
   __typename?: 'Mutation';
-  updateTeamJoinByPk?: {
+  updateTeamJoinByPk: {
     __typename: 'TeamJoin';
     id: string;
     state: string;
@@ -49813,15 +49815,15 @@ export type GetUsersWithPointsQuery = {
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
-      processedAt?: string | null;
+      processedAt: string | null;
       event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
     }>;
-    actions: Array<{ __typename: 'Action'; id: string; points?: number | null; pointsProcessedAt?: string | null }>;
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
     missionJoins: Array<{
       __typename: 'MissionJoin';
       id: string;
-      points?: number | null;
-      pointsProcessedAt?: string | null;
+      points: number | null;
+      pointsProcessedAt: string | null;
     }>;
   }>;
 };
@@ -49832,12 +49834,12 @@ export type DeleteSocialsMutationVariables = Exact<{
 
 export type DeleteSocialsMutation = {
   __typename?: 'Mutation';
-  deleteSocial?: {
+  deleteSocial: {
     __typename?: 'SocialMutationResponse';
     returning: Array<{
       __typename: 'Social';
       id: string;
-      deletedAt?: string | null;
+      deletedAt: string | null;
       type: string;
       pseudo: string;
       order: number;
@@ -49852,7 +49854,7 @@ export type InsertSocialsMutationVariables = Exact<{
 
 export type InsertSocialsMutation = {
   __typename?: 'Mutation';
-  insertSocial?: {
+  insertSocial: {
     __typename?: 'SocialMutationResponse';
     returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
   } | null;
@@ -49864,7 +49866,7 @@ export type UpdateSocialsMutationVariables = Exact<{
 
 export type UpdateSocialsMutation = {
   __typename?: 'Mutation';
-  updateSocialMany?: Array<{
+  updateSocialMany: Array<{
     __typename?: 'SocialMutationResponse';
     returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
   } | null> | null;
@@ -49876,7 +49878,7 @@ export type DeleteActorImageMutationVariables = Exact<{
 
 export type DeleteActorImageMutation = {
   __typename?: 'Mutation';
-  deleteActorImageByPk?: {
+  deleteActorImageByPk: {
     __typename: 'ActorImage';
     id: string;
     createdAt: string;
@@ -49923,7 +49925,7 @@ export type GetTeamManageQuery = {
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-    parent?: {
+    parent: {
       __typename: 'Team';
       id: string;
       type: string;
@@ -49959,7 +49961,7 @@ export type GetTeamManageQuery = {
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -50045,7 +50047,7 @@ export type GetTeamManageQuery = {
         __typename: 'EventOrganize';
         id: string;
         createdAt: string;
-        project?: {
+        project: {
           __typename: 'Project';
           id: string;
           createdAt: string;
@@ -50060,7 +50062,7 @@ export type GetTeamManageQuery = {
           createdAt: string;
           start: string;
           end: string;
-          maxParticipants?: number | null;
+          maxParticipants: number | null;
           name: string;
           slug: string;
           description: string;
@@ -50068,19 +50070,18 @@ export type GetTeamManageQuery = {
           price: number;
           pointsAwardedForAttendance: number;
           isPrivate: boolean;
-          location?: {
+          location: {
             __typename: 'Location';
             id: string;
             type: string;
             createdAt: string;
             onlineLink: string;
             locationDetails: string;
-            address?: {
+            address: {
               __typename: 'Address';
               id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
+              latitude: number | null;
+              longitude: number | null;
               category: string;
               name: string;
               streetNumber: string;
@@ -50089,9 +50090,10 @@ export type GetTeamManageQuery = {
               city: string;
               state: string;
               country: string;
+              geoapifyId: string | null;
             } | null;
           } | null;
-          banner?: {
+          banner: {
             __typename: 'FileUpload';
             id: string;
             createdAt: string;
@@ -50162,11 +50164,11 @@ export type GetTeamManageQuery = {
               };
               teamMembersAggregate: {
                 __typename?: 'TeamMemberAggregate';
-                aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+                aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
               };
               poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
             };
-            project?: {
+            project: {
               __typename: 'Project';
               id: string;
               createdAt: string;
@@ -50237,14 +50239,14 @@ export type GetTeamManageQuery = {
           }>;
           eventJoinsAggregate: {
             __typename?: 'EventJoinAggregate';
-            aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+            aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
           };
           eventJoins: Array<{
             __typename: 'EventJoin';
             id: string;
             createdAt: string;
             state: string;
-            isPresent?: boolean | null;
+            isPresent: boolean | null;
             joinedBy: {
               __typename: 'User';
               id: string;
@@ -50304,7 +50306,7 @@ export type GetTeamManageQuery = {
           }>;
         };
       }>;
-      banner?: {
+      banner: {
         __typename: 'FileUpload';
         id: string;
         createdAt: string;
@@ -50320,7 +50322,7 @@ export type GetTeamManageQuery = {
           id: string;
           createdAt: string;
           startDate: string;
-          endDate?: string | null;
+          endDate: string | null;
           teamMemberRoles: Array<{
             __typename?: 'TeamMemberRoles';
             role: {
@@ -50397,18 +50399,18 @@ export type GetTeamManageQuery = {
       type: string;
       financesAggregate: {
         __typename?: 'FinanceAggregate';
-        aggregate?: {
+        aggregate: {
           __typename?: 'FinanceAggregateFields';
-          sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+          sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
         } | null;
       };
-      bank?: {
+      bank: {
         __typename: 'Bank';
         id: string;
         createdAt: string;
         bicSwift: string;
         iban: string;
-        legalUnitLocation?: {
+        legalUnitLocation: {
           __typename: 'LegalUnitLocation';
           id: string;
           createdAt: string;
@@ -50428,7 +50430,7 @@ export type GetTeamManageQuery = {
               image: { __typename: 'FileUpload'; id: string; url: string };
             }>;
           };
-          legalUnit?: {
+          legalUnit: {
             __typename: 'LegalUnit';
             id: string;
             createdAt: string;
@@ -50449,19 +50451,18 @@ export type GetTeamManageQuery = {
               }>;
             };
           } | null;
-          location?: {
+          location: {
             __typename: 'Location';
             id: string;
             createdAt: string;
             type: string;
             locationDetails: string;
             onlineLink: string;
-            address?: {
+            address: {
               __typename: 'Address';
               id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
+              latitude: number | null;
+              longitude: number | null;
               category: string;
               name: string;
               streetNumber: string;
@@ -50470,6 +50471,7 @@ export type GetTeamManageQuery = {
               city: string;
               state: string;
               country: string;
+              geoapifyId: string | null;
             } | null;
           } | null;
         } | null;
@@ -50504,25 +50506,25 @@ export type GetTeamManageQuery = {
         type: string;
         financesAggregate: {
           __typename?: 'FinanceAggregate';
-          aggregate?: {
+          aggregate: {
             __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
           } | null;
         };
-        bank?: {
+        bank: {
           __typename: 'Bank';
           id: string;
           createdAt: string;
           bicSwift: string;
           iban: string;
-          legalUnitLocation?: {
+          legalUnitLocation: {
             __typename: 'LegalUnitLocation';
             id: string;
             createdAt: string;
             locationType: string;
             legalName: string;
             actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
+            legalUnit: {
               __typename: 'LegalUnit';
               id: string;
               createdAt: string;
@@ -50530,19 +50532,18 @@ export type GetTeamManageQuery = {
               legalName: string;
               actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
             } | null;
-            location?: {
+            location: {
               __typename: 'Location';
               id: string;
               createdAt: string;
               type: string;
               locationDetails: string;
               onlineLink: string;
-              address?: {
+              address: {
                 __typename: 'Address';
                 id: string;
-                createdAt: string;
-                latitude?: number | null;
-                longitude?: number | null;
+                latitude: number | null;
+                longitude: number | null;
                 category: string;
                 name: string;
                 streetNumber: string;
@@ -50551,6 +50552,7 @@ export type GetTeamManageQuery = {
                 city: string;
                 state: string;
                 country: string;
+                geoapifyId: string | null;
               } | null;
             } | null;
           } | null;
@@ -50585,7 +50587,7 @@ export type GetTeamManageQuery = {
           };
         };
       }>;
-      parent?: {
+      parent: {
         __typename: 'Account';
         id: string;
         createdAt: string;
@@ -50593,43 +50595,43 @@ export type GetTeamManageQuery = {
         type: string;
         financesAggregate: {
           __typename?: 'FinanceAggregate';
-          aggregate?: {
+          aggregate: {
             __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
           } | null;
         };
-        bank?: {
+        bank: {
           __typename: 'Bank';
           id: string;
           createdAt: string;
           bicSwift: string;
           iban: string;
-          legalUnitLocation?: {
+          legalUnitLocation: {
             __typename: 'LegalUnitLocation';
             id: string;
             createdAt: string;
             locationType: string;
             legalName: string;
             actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
+            legalUnit: {
               __typename: 'LegalUnit';
               id: string;
               type: string;
               legalName: string;
               actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
             } | null;
-            location?: {
+            location: {
               __typename: 'Location';
               id: string;
               type: string;
               createdAt: string;
               onlineLink: string;
               locationDetails: string;
-              address?: {
+              address: {
                 __typename: 'Address';
                 id: string;
-                latitude?: number | null;
-                longitude?: number | null;
+                latitude: number | null;
+                longitude: number | null;
                 category: string;
                 name: string;
                 streetNumber: string;
@@ -50638,6 +50640,7 @@ export type GetTeamManageQuery = {
                 city: string;
                 state: string;
                 country: string;
+                geoapifyId: string | null;
               } | null;
             } | null;
           } | null;
@@ -50696,7 +50699,7 @@ export type InsertActorImageMutationVariables = Exact<{
 
 export type InsertActorImageMutation = {
   __typename?: 'Mutation';
-  insertActorImageOne?: {
+  insertActorImageOne: {
     __typename: 'ActorImage';
     id: string;
     createdAt: string;
@@ -50713,7 +50716,7 @@ export type UpdateActorMutationVariables = Exact<{
 
 export type UpdateActorMutation = {
   __typename?: 'Mutation';
-  updateActorByPk?: {
+  updateActorByPk: {
     __typename: 'Actor';
     id: string;
     slug: string;
@@ -50739,7 +50742,7 @@ export type UpdateTeamMutationVariables = Exact<{
 
 export type UpdateTeamMutation = {
   __typename?: 'Mutation';
-  updateTeamByPk?: {
+  updateTeamByPk: {
     __typename: 'Team';
     id: string;
     createdAt: string;
@@ -50782,7 +50785,7 @@ export type UpdateTeamMutation = {
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -50854,20 +50857,20 @@ export type InsertAccountMutationVariables = Exact<{
 
 export type InsertAccountMutation = {
   __typename?: 'Mutation';
-  insertAccountOne?: { __typename: 'Account'; id: string } | null;
+  insertAccountOne: { __typename: 'Account'; id: string } | null;
 };
 
 export type InsertBankMutationVariables = Exact<{
   object: BankInsertInput;
 }>;
 
-export type InsertBankMutation = { __typename?: 'Mutation'; insertBankOne?: { __typename: 'Bank'; id: string } | null };
+export type InsertBankMutation = { __typename?: 'Mutation'; insertBankOne: { __typename: 'Bank'; id: string } | null };
 
 export type GetEventOrganizesQueryVariables = Exact<{
-  where?: InputMaybe<EventOrganizeBoolExp>;
-  orderBy?: InputMaybe<Array<EventOrganizeOrderBy> | EventOrganizeOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<EventOrganizeBoolExp>;
+  orderBy: InputMaybe<Array<EventOrganizeOrderBy> | EventOrganizeOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventOrganizesQuery = {
@@ -50881,16 +50884,16 @@ export type GetEventOrganizesQuery = {
       state: string;
       start: string;
       end: string;
-      maxParticipants?: number | null;
+      maxParticipants: number | null;
       slug: string;
-      banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
+      banner: { __typename: 'FileUpload'; id: string; url: string } | null;
       eventApprovals: Array<{
         __typename: 'EventApproval';
         id: string;
         createdAt: string;
         isApproved: boolean;
         message: string;
-        eventApprovalStep?: {
+        eventApprovalStep: {
           __typename: 'EventApprovalStep';
           id: string;
           createdAt: string;
@@ -50905,7 +50908,7 @@ export type GetEventOrganizesQuery = {
             description: string;
             order: number;
           }>;
-          previousStep?: {
+          previousStep: {
             __typename: 'EventApprovalStep';
             id: string;
             createdAt: string;
@@ -50914,7 +50917,7 @@ export type GetEventOrganizesQuery = {
             order: number;
           } | null;
         } | null;
-        createdBy?: {
+        createdBy: {
           __typename: 'Individual';
           id: string;
           createdAt: string;
@@ -50933,7 +50936,7 @@ export type GetEventOrganizesQuery = {
               image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
             }>;
           };
-          user?: {
+          user: {
             __typename: 'User';
             id: string;
             createdAt: string;
@@ -50970,14 +50973,14 @@ export type GetEventOrganizesQuery = {
           } | null;
         } | null;
       }>;
-      eventApprovalSubmission?: {
+      eventApprovalSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      nextEventApprovalStep?: {
+      nextEventApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -50992,7 +50995,7 @@ export type GetEventOrganizesQuery = {
           description: string;
           order: number;
         }>;
-        previousStep?: {
+        previousStep: {
           __typename: 'EventApprovalStep';
           id: string;
           createdAt: string;
@@ -51073,7 +51076,7 @@ export type GetEventOrganizesQuery = {
       };
       joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
     };
-    project?: {
+    project: {
       __typename: 'Project';
       id: string;
       createdAt: string;
@@ -51090,25 +51093,25 @@ export type GetEventOrganizesQuery = {
     slug: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -51116,26 +51119,27 @@ export type GetEventOrganizesQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -51185,14 +51189,14 @@ export type GetEventOrganizesQuery = {
           };
         };
       };
-      formSubmission?: {
+      formSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      processedBy?: {
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -51228,7 +51232,7 @@ export type GetEventOrganizesQuery = {
         };
       } | null;
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -51240,10 +51244,10 @@ export type GetEventOrganizesQuery = {
 };
 
 export type GetFinancesQueryVariables = Exact<{
-  where?: InputMaybe<FinanceBoolExp>;
-  orderBy?: InputMaybe<Array<FinanceOrderBy> | FinanceOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<FinanceBoolExp>;
+  orderBy: InputMaybe<Array<FinanceOrderBy> | FinanceOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetFinancesQuery = {
@@ -51271,11 +51275,11 @@ export type GetFinancesQuery = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           individual: {
@@ -51299,11 +51303,11 @@ export type GetFinancesQuery = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           individual: {
@@ -51314,7 +51318,7 @@ export type GetFinancesQuery = {
         } | null;
       } | null;
     };
-    initiatedBy?: {
+    initiatedBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -51332,7 +51336,7 @@ export type GetFinancesQuery = {
         }>;
       };
     } | null;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -51349,14 +51353,14 @@ export type GetFinancesQuery = {
           image: { __typename: 'FileUpload'; id: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
       } | null;
     } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
+    event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
+    project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
     financeAttachments: Array<{
       __typename?: 'FinanceAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
@@ -51375,9 +51379,9 @@ export type GetTenantManageQuery = {
     id: string;
     domain: string;
     pointName: string;
-    eventValidationForm?: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
+    eventValidationForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
     eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
-    adminTeam?: {
+    adminTeam: {
       __typename: 'Team';
       id: string;
       actor: {
@@ -51420,7 +51424,7 @@ export type GetTeamDashboardQuery = {
       id: string;
       name: string;
       type: string;
-      file?: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string } | null;
+      file: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string } | null;
     }>;
     actor: {
       __typename: 'Actor';
@@ -51444,7 +51448,7 @@ export type GetTeamDashboardQuery = {
     joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
     teamMembersAggregate: {
       __typename?: 'TeamMemberAggregate';
-      aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
     };
     poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
     roles: Array<{
@@ -51461,7 +51465,7 @@ export type GetTeamDashboardQuery = {
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -51513,18 +51517,18 @@ export type GetTeamDashboardQuery = {
       type: string;
       financesAggregate: {
         __typename?: 'FinanceAggregate';
-        aggregate?: {
+        aggregate: {
           __typename?: 'FinanceAggregateFields';
-          sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+          sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
         } | null;
       };
-      bank?: {
+      bank: {
         __typename: 'Bank';
         id: string;
         createdAt: string;
         bicSwift: string;
         iban: string;
-        legalUnitLocation?: {
+        legalUnitLocation: {
           __typename: 'LegalUnitLocation';
           id: string;
           createdAt: string;
@@ -51544,7 +51548,7 @@ export type GetTeamDashboardQuery = {
               image: { __typename: 'FileUpload'; id: string; url: string };
             }>;
           };
-          legalUnit?: {
+          legalUnit: {
             __typename: 'LegalUnit';
             id: string;
             createdAt: string;
@@ -51565,19 +51569,18 @@ export type GetTeamDashboardQuery = {
               }>;
             };
           } | null;
-          location?: {
+          location: {
             __typename: 'Location';
             id: string;
             createdAt: string;
             type: string;
             locationDetails: string;
             onlineLink: string;
-            address?: {
+            address: {
               __typename: 'Address';
               id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
+              latitude: number | null;
+              longitude: number | null;
               category: string;
               name: string;
               streetNumber: string;
@@ -51586,6 +51589,7 @@ export type GetTeamDashboardQuery = {
               city: string;
               state: string;
               country: string;
+              geoapifyId: string | null;
             } | null;
           } | null;
         } | null;
@@ -51620,25 +51624,25 @@ export type GetTeamDashboardQuery = {
         type: string;
         financesAggregate: {
           __typename?: 'FinanceAggregate';
-          aggregate?: {
+          aggregate: {
             __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
           } | null;
         };
-        bank?: {
+        bank: {
           __typename: 'Bank';
           id: string;
           createdAt: string;
           bicSwift: string;
           iban: string;
-          legalUnitLocation?: {
+          legalUnitLocation: {
             __typename: 'LegalUnitLocation';
             id: string;
             createdAt: string;
             locationType: string;
             legalName: string;
             actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
+            legalUnit: {
               __typename: 'LegalUnit';
               id: string;
               createdAt: string;
@@ -51646,19 +51650,18 @@ export type GetTeamDashboardQuery = {
               legalName: string;
               actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
             } | null;
-            location?: {
+            location: {
               __typename: 'Location';
               id: string;
               createdAt: string;
               type: string;
               locationDetails: string;
               onlineLink: string;
-              address?: {
+              address: {
                 __typename: 'Address';
                 id: string;
-                createdAt: string;
-                latitude?: number | null;
-                longitude?: number | null;
+                latitude: number | null;
+                longitude: number | null;
                 category: string;
                 name: string;
                 streetNumber: string;
@@ -51667,6 +51670,7 @@ export type GetTeamDashboardQuery = {
                 city: string;
                 state: string;
                 country: string;
+                geoapifyId: string | null;
               } | null;
             } | null;
           } | null;
@@ -51701,7 +51705,7 @@ export type GetTeamDashboardQuery = {
           };
         };
       }>;
-      parent?: {
+      parent: {
         __typename: 'Account';
         id: string;
         createdAt: string;
@@ -51709,43 +51713,43 @@ export type GetTeamDashboardQuery = {
         type: string;
         financesAggregate: {
           __typename?: 'FinanceAggregate';
-          aggregate?: {
+          aggregate: {
             __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
+            sum: { __typename?: 'FinanceSumFields'; amount: number | null } | null;
           } | null;
         };
-        bank?: {
+        bank: {
           __typename: 'Bank';
           id: string;
           createdAt: string;
           bicSwift: string;
           iban: string;
-          legalUnitLocation?: {
+          legalUnitLocation: {
             __typename: 'LegalUnitLocation';
             id: string;
             createdAt: string;
             locationType: string;
             legalName: string;
             actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
+            legalUnit: {
               __typename: 'LegalUnit';
               id: string;
               type: string;
               legalName: string;
               actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
             } | null;
-            location?: {
+            location: {
               __typename: 'Location';
               id: string;
               type: string;
               createdAt: string;
               onlineLink: string;
               locationDetails: string;
-              address?: {
+              address: {
                 __typename: 'Address';
                 id: string;
-                latitude?: number | null;
-                longitude?: number | null;
+                latitude: number | null;
+                longitude: number | null;
                 category: string;
                 name: string;
                 streetNumber: string;
@@ -51754,6 +51758,7 @@ export type GetTeamDashboardQuery = {
                 city: string;
                 state: string;
                 country: string;
+                geoapifyId: string | null;
               } | null;
             } | null;
           } | null;
@@ -51835,27 +51840,27 @@ export type GetTenantUsersWithPointsQuery = {
         }>;
       };
     };
-    actions: Array<{ __typename: 'Action'; id: string; points?: number | null; pointsProcessedAt?: string | null }>;
+    actions: Array<{ __typename: 'Action'; id: string; points: number | null; pointsProcessedAt: string | null }>;
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
-      processedAt?: string | null;
+      processedAt: string | null;
       event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
     }>;
     missionJoins: Array<{
       __typename: 'MissionJoin';
       id: string;
-      points?: number | null;
-      pointsProcessedAt?: string | null;
+      points: number | null;
+      pointsProcessedAt: string | null;
     }>;
   }>;
 };
 
 export type GetEventsValidationQueryVariables = Exact<{
-  where?: InputMaybe<EventBoolExp>;
-  orderBy?: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<EventBoolExp>;
+  orderBy: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventsValidationQuery = {
@@ -51867,25 +51872,25 @@ export type GetEventsValidationQuery = {
     slug: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -51893,10 +51898,11 @@ export type GetEventsValidationQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    nextEventApprovalStep?: {
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    nextEventApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -51911,7 +51917,7 @@ export type GetEventsValidationQuery = {
         description: string;
         order: number;
       }>;
-      previousStep?: {
+      previousStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -51920,7 +51926,7 @@ export type GetEventsValidationQuery = {
         order: number;
       } | null;
     } | null;
-    eventApprovalSubmission?: {
+    eventApprovalSubmission: {
       __typename: 'FormSubmission';
       id: string;
       createdAt: string;
@@ -51933,7 +51939,7 @@ export type GetEventsValidationQuery = {
       createdAt: string;
       isApproved: boolean;
       message: string;
-      eventApprovalStep?: {
+      eventApprovalStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -51948,7 +51954,7 @@ export type GetEventsValidationQuery = {
           description: string;
           order: number;
         }>;
-        previousStep?: {
+        previousStep: {
           __typename: 'EventApprovalStep';
           id: string;
           createdAt: string;
@@ -51957,7 +51963,7 @@ export type GetEventsValidationQuery = {
           order: number;
         } | null;
       } | null;
-      createdBy?: {
+      createdBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -51976,7 +51982,7 @@ export type GetEventsValidationQuery = {
             image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
           }>;
         };
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           createdAt: string;
@@ -52093,10 +52099,10 @@ export type GetEventsValidationQuery = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -52108,17 +52114,17 @@ export type GetEventsValidationQuery = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
       joinedBy: {
         __typename: 'User';
         id: string;
@@ -52168,14 +52174,14 @@ export type GetEventsValidationQuery = {
           };
         };
       };
-      formSubmission?: {
+      formSubmission: {
         __typename: 'FormSubmission';
         id: string;
         createdAt: string;
         submission: JSONType;
         form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
       } | null;
-      processedBy?: {
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -52211,7 +52217,7 @@ export type GetEventsValidationQuery = {
         };
       } | null;
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -52233,11 +52239,11 @@ export type GetProjectQuery = {
     id: string;
     createdAt: string;
     slug: string;
-    start?: string | null;
-    end?: string | null;
+    start: string | null;
+    end: string | null;
     name: string;
     isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     team: {
       __typename: 'Team';
       id: string;
@@ -52330,10 +52336,10 @@ export type GetProjectQuery = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -52380,7 +52386,7 @@ export type GetTeamQuery = {
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    parent?: {
+    parent: {
       __typename: 'Team';
       id: string;
       type: string;
@@ -52416,7 +52422,7 @@ export type GetTeamQuery = {
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -52488,14 +52494,14 @@ export type InsertTeamJoinMutationVariables = Exact<{
 
 export type InsertTeamJoinMutation = {
   __typename?: 'Mutation';
-  insertTeamJoinOne?: { __typename: 'TeamJoin'; id: string } | null;
+  insertTeamJoinOne: { __typename: 'TeamJoin'; id: string } | null;
 };
 
 export type GetTeamsQueryVariables = Exact<{
-  where?: InputMaybe<TeamBoolExp>;
-  orderBy?: InputMaybe<Array<TeamOrderBy> | TeamOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<TeamBoolExp>;
+  orderBy: InputMaybe<Array<TeamOrderBy> | TeamOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetTeamsQuery = {
@@ -52528,7 +52534,7 @@ export type GetTeamsQuery = {
       socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
     };
     joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    parent?: {
+    parent: {
       __typename: 'Team';
       id: string;
       type: string;
@@ -52561,14 +52567,14 @@ export type GetTeamsQuery = {
     }>;
     teamMembersAggregate: {
       __typename?: 'TeamMemberAggregate';
-      aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
     };
     teamMembers: Array<{
       __typename: 'TeamMember';
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -52635,10 +52641,10 @@ export type GetTeamsQuery = {
 };
 
 export type GetCategoriesQueryVariables = Exact<{
-  where?: InputMaybe<TagBoolExp>;
-  orderBy?: InputMaybe<Array<TagOrderBy> | TagOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<TagBoolExp>;
+  orderBy: InputMaybe<Array<TagOrderBy> | TagOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetCategoriesQuery = {
@@ -52649,7 +52655,7 @@ export type GetCategoriesQuery = {
     name: string;
     slug: string;
     color: string;
-    image?: { __typename?: 'FileUpload'; id: string; url: string } | null;
+    image: { __typename?: 'FileUpload'; id: string; url: string } | null;
   }>;
 };
 
@@ -52710,10 +52716,10 @@ export type GetUserQuery = {
 };
 
 export type GetUsersQueryVariables = Exact<{
-  where?: InputMaybe<UserBoolExp>;
-  orderBy?: InputMaybe<Array<UserOrderBy> | UserOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<UserBoolExp>;
+  orderBy: InputMaybe<Array<UserOrderBy> | UserOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetUsersQuery = {
@@ -52775,7 +52781,7 @@ export type GetTenantOidcInfoQuery = {
     isOidcEnabled: boolean;
     oidcName: string;
     domain: string;
-    adminTeam?: {
+    adminTeam: {
       __typename: 'Team';
       id: string;
       actor: {
@@ -52819,13 +52825,13 @@ export type InsertEventApprovalMutationVariables = Exact<{
 
 export type InsertEventApprovalMutation = {
   __typename?: 'Mutation';
-  insertEventApprovalOne?: {
+  insertEventApprovalOne: {
     __typename: 'EventApproval';
     id: string;
     createdAt: string;
     isApproved: boolean;
     message: string;
-    eventApprovalStep?: {
+    eventApprovalStep: {
       __typename: 'EventApprovalStep';
       id: string;
       createdAt: string;
@@ -52840,7 +52846,7 @@ export type InsertEventApprovalMutation = {
         description: string;
         order: number;
       }>;
-      previousStep?: {
+      previousStep: {
         __typename: 'EventApprovalStep';
         id: string;
         createdAt: string;
@@ -52849,7 +52855,7 @@ export type InsertEventApprovalMutation = {
         order: number;
       } | null;
     } | null;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -52868,7 +52874,7 @@ export type InsertEventApprovalMutation = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -52896,11 +52902,11 @@ export type GetProjectsSelectQuery = {
     id: string;
     createdAt: string;
     slug: string;
-    start?: string | null;
-    end?: string | null;
+    start: string | null;
+    end: string | null;
     name: string;
     isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventOrganizes: Array<{
       __typename: 'EventOrganize';
       id: string;
@@ -52909,7 +52915,7 @@ export type GetProjectsSelectQuery = {
         id: string;
         name: string;
         slug: string;
-        banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
+        banner: { __typename: 'FileUpload'; id: string; url: string } | null;
       };
     }>;
   }>;
@@ -52921,32 +52927,32 @@ export type InsertEventMutationVariables = Exact<{
 
 export type InsertEventMutation = {
   __typename?: 'Mutation';
-  insertEventOne?: {
+  insertEventOne: {
     __typename: 'Event';
     id: string;
     createdAt: string;
     slug: string;
     start: string;
     end: string;
-    maxParticipants?: number | null;
+    maxParticipants: number | null;
     name: string;
     state: string;
     price: number;
     pointsAwardedForAttendance: number;
     isPrivate: boolean;
     description: string;
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -52954,9 +52960,10 @@ export type InsertEventMutation = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
+    banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
       tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
@@ -53037,10 +53044,10 @@ export type InsertEventMutation = {
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
         teamMembersAggregate: {
           __typename: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+          aggregate: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
         };
       };
-      project?: {
+      project: {
         __typename: 'Project';
         id: string;
         createdAt: string;
@@ -53052,18 +53059,18 @@ export type InsertEventMutation = {
     }>;
     eventJoinsAggregate: {
       __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
+      aggregate: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
     };
     eventJoins: Array<{
       __typename: 'EventJoin';
       id: string;
       createdAt: string;
       state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      processedBy?: {
+      isPresent: boolean | null;
+      processedAt: string | null;
+      participationProcessedVia: string | null;
+      participationProcessedAt: string | null;
+      processedBy: {
         __typename: 'Individual';
         id: string;
         createdAt: string;
@@ -53113,7 +53120,7 @@ export type InsertEventMutation = {
         };
       };
     }>;
-    joinForm?: {
+    joinForm: {
       __typename: 'Form';
       id: string;
       createdAt: string;
@@ -53130,7 +53137,7 @@ export type InsertFinanceMutationVariables = Exact<{
 
 export type InsertFinanceMutation = {
   __typename?: 'Mutation';
-  insertFinanceOne?: {
+  insertFinanceOne: {
     __typename: 'Finance';
     id: string;
     createdAt: string;
@@ -53153,8 +53160,8 @@ export type InsertFinanceMutation = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
         actor: { __typename: 'Actor'; id: string; slug: string };
@@ -53173,11 +53180,11 @@ export type InsertFinanceMutation = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           individual: {
@@ -53189,7 +53196,7 @@ export type InsertFinanceMutation = {
         actor: { __typename: 'Actor'; id: string; slug: string };
       } | null;
     };
-    initiatedBy?: {
+    initiatedBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -53207,7 +53214,7 @@ export type InsertFinanceMutation = {
         }>;
       };
     } | null;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -53224,14 +53231,14 @@ export type InsertFinanceMutation = {
           image: { __typename: 'FileUpload'; id: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
       } | null;
     } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
+    event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
+    project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
     financeAttachments: Array<{
       __typename?: 'FinanceAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
@@ -53245,13 +53252,13 @@ export type ProcessReceiptQueryVariables = Exact<{
 
 export type ProcessReceiptQuery = {
   __typename?: 'Query';
-  processReceipt?: {
+  processReceipt: {
     __typename: 'ProcessedReceipt';
     address: string;
-    amount?: number | null;
-    date?: string | null;
-    phone?: string | null;
-    vendorName?: string | null;
+    amount: number | null;
+    date: string | null;
+    phone: string | null;
+    vendorName: string | null;
     lineItems: Array<{ __typename: 'LineItem'; name: string; quantity: number; price: number }>;
   } | null;
 };
@@ -53276,7 +53283,7 @@ export type GetFinanceLogsQuery = {
     entityId: string;
     entityName: string;
     eventType: string;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -53295,7 +53302,7 @@ export type GetFinanceLogsQuery = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -53341,7 +53348,7 @@ export type UpdateFinanceMutationVariables = Exact<{
 
 export type UpdateFinanceMutation = {
   __typename?: 'Mutation';
-  updateFinanceByPk?: {
+  updateFinanceByPk: {
     __typename: 'Finance';
     id: string;
     createdAt: string;
@@ -53364,8 +53371,8 @@ export type UpdateFinanceMutation = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
         actor: { __typename: 'Actor'; id: string; slug: string };
@@ -53384,11 +53391,11 @@ export type UpdateFinanceMutation = {
         type: string;
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+      individual: {
         __typename: 'Individual';
         id: string;
-        user?: {
+        user: {
           __typename: 'User';
           id: string;
           individual: {
@@ -53399,7 +53406,7 @@ export type UpdateFinanceMutation = {
         } | null;
       } | null;
     };
-    initiatedBy?: {
+    initiatedBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -53417,7 +53424,7 @@ export type UpdateFinanceMutation = {
         }>;
       };
     } | null;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       actor: {
@@ -53434,14 +53441,14 @@ export type UpdateFinanceMutation = {
           image: { __typename: 'FileUpload'; id: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
       } | null;
     } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
+    event: { __typename: 'Event'; id: string; slug: string; name: string } | null;
+    project: { __typename: 'Project'; id: string; slug: string; name: string } | null;
     financeAttachments: Array<{
       __typename?: 'FinanceAttachments';
       attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
@@ -53465,7 +53472,7 @@ export type GetEventLogsQuery = {
     entityId: string;
     entityName: string;
     eventType: string;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -53484,7 +53491,7 @@ export type GetEventLogsQuery = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -53539,7 +53546,7 @@ export type GetTeamLogsQuery = {
     entityId: string;
     entityName: string;
     eventType: string;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -53558,7 +53565,7 @@ export type GetTeamLogsQuery = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -53613,7 +53620,7 @@ export type GetTenantLogsQuery = {
     entityId: string;
     entityName: string;
     eventType: string;
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -53632,7 +53639,7 @@ export type GetTenantLogsQuery = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -53677,10 +53684,10 @@ export type DeleteFollowMutationVariables = Exact<{
 
 export type DeleteFollowMutation = {
   __typename?: 'Mutation';
-  deleteFollowByPk?: {
+  deleteFollowByPk: {
     __typename: 'Follow';
     id: string;
-    deletedAt?: string | null;
+    deletedAt: string | null;
     actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
   } | null;
 };
@@ -53691,11 +53698,11 @@ export type InsertFollowMutationVariables = Exact<{
 
 export type InsertFollowMutation = {
   __typename?: 'Mutation';
-  insertFollowOne?: {
+  insertFollowOne: {
     __typename: 'Follow';
     id: string;
     actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
-    createdBy?: {
+    createdBy: {
       __typename: 'Individual';
       id: string;
       createdAt: string;
@@ -53714,7 +53721,7 @@ export type InsertFollowMutation = {
           image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
         }>;
       };
-      user?: {
+      user: {
         __typename: 'User';
         id: string;
         createdAt: string;
@@ -53740,14 +53747,14 @@ export type InsertSingleUploadMutationVariables = Exact<{
 
 export type InsertSingleUploadMutation = {
   __typename?: 'Mutation';
-  singleUpload?: { __typename?: 'FileUpload'; id: string; name: string; url: string; createdAt: string } | null;
+  singleUpload: { __typename?: 'FileUpload'; id: string; name: string; url: string; createdAt: string } | null;
 };
 
 export type GetLegalUnitLocationsQueryVariables = Exact<{
-  where?: InputMaybe<LegalUnitLocationBoolExp>;
-  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy> | LegalUnitLocationOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<LegalUnitLocationBoolExp>;
+  orderBy: InputMaybe<Array<LegalUnitLocationOrderBy> | LegalUnitLocationOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetLegalUnitLocationsQuery = {
@@ -53770,18 +53777,18 @@ export type GetLegalUnitLocationsQuery = {
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
     };
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -53789,16 +53796,17 @@ export type GetLegalUnitLocationsQuery = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
   }>;
 };
 
 export type GetLegalUnitsQueryVariables = Exact<{
-  where?: InputMaybe<LegalUnitBoolExp>;
-  orderBy?: InputMaybe<Array<LegalUnitOrderBy> | LegalUnitOrderBy>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  where: InputMaybe<LegalUnitBoolExp>;
+  orderBy: InputMaybe<Array<LegalUnitOrderBy> | LegalUnitOrderBy>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetLegalUnitsQuery = {
@@ -53832,7 +53840,7 @@ export type InsertLegalUnitMutationVariables = Exact<{
 
 export type InsertLegalUnitMutation = {
   __typename?: 'Mutation';
-  insertLegalUnitOne?: {
+  insertLegalUnitOne: {
     __typename: 'LegalUnit';
     id: string;
     createdAt: string;
@@ -53861,7 +53869,7 @@ export type InsertLegalUnitLocationMutationVariables = Exact<{
 
 export type InsertLegalUnitLocationMutation = {
   __typename?: 'Mutation';
-  insertLegalUnitLocationOne?: {
+  insertLegalUnitLocationOne: {
     __typename: 'LegalUnitLocation';
     id: string;
     legalName: string;
@@ -53879,18 +53887,18 @@ export type InsertLegalUnitLocationMutation = {
         image: { __typename: 'FileUpload'; id: string; url: string };
       }>;
     };
-    location?: {
+    location: {
       __typename: 'Location';
       id: string;
       type: string;
       onlineLink: string;
       locationDetails: string;
-      address?: {
+      address: {
         __typename: 'Address';
         id: string;
         name: string;
-        latitude?: number | null;
-        longitude?: number | null;
+        latitude: number | null;
+        longitude: number | null;
         category: string;
         streetNumber: string;
         street: string;
@@ -53898,6 +53906,7 @@ export type InsertLegalUnitLocationMutation = {
         city: string;
         state: string;
         country: string;
+        geoapifyId: string | null;
       } | null;
     } | null;
   } | null;
@@ -53974,7 +53983,7 @@ export type GetTeamPopoverQuery = {
       id: string;
       createdAt: string;
       startDate: string;
-      endDate?: string | null;
+      endDate: string | null;
       teamMemberRoles: Array<{
         __typename?: 'TeamMemberRoles';
         role: {
@@ -54089,7 +54098,7 @@ export type UpdateFormMutationVariables = Exact<{
 
 export type UpdateFormMutation = {
   __typename?: 'Mutation';
-  updateFormByPk?: {
+  updateFormByPk: {
     __typename: 'Form';
     id: string;
     createdAt: string;
@@ -54612,6 +54621,7 @@ export const GetEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -54922,6 +54932,7 @@ export const GetEventsDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -55242,7 +55253,6 @@ export const GetEventManageDocument = gql`
         address {
           __typename
           id
-          createdAt
           latitude
           longitude
           category
@@ -55253,6 +55263,7 @@ export const GetEventManageDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       state
@@ -55749,7 +55760,6 @@ export const UpdateEventDocument = gql`
         address {
           __typename
           id
-          createdAt
           latitude
           longitude
           category
@@ -55760,6 +55770,7 @@ export const UpdateEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       state
@@ -56314,7 +56325,6 @@ export const UpdateLocationDocument = gql`
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -56325,6 +56335,7 @@ export const UpdateLocationDocument = gql`
         city
         state
         country
+        geoapifyId
       }
     }
   }
@@ -57263,7 +57274,6 @@ export const GetTeamManageDocument = gql`
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -57274,6 +57284,7 @@ export const GetTeamManageDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
             }
             state
@@ -57680,7 +57691,6 @@ export const GetTeamManageDocument = gql`
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -57691,6 +57701,7 @@ export const GetTeamManageDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
               type
               locationDetails
@@ -57779,7 +57790,6 @@ export const GetTeamManageDocument = gql`
                 address {
                   __typename
                   id
-                  createdAt
                   latitude
                   longitude
                   category
@@ -57790,6 +57800,7 @@ export const GetTeamManageDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
                 type
                 locationDetails
@@ -57889,6 +57900,7 @@ export const GetTeamManageDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
               }
             }
@@ -58630,6 +58642,7 @@ export const GetEventOrganizesDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -59334,7 +59347,6 @@ export const GetTeamDashboardDocument = gql`
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -59345,6 +59357,7 @@ export const GetTeamDashboardDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
               type
               locationDetails
@@ -59433,7 +59446,6 @@ export const GetTeamDashboardDocument = gql`
                 address {
                   __typename
                   id
-                  createdAt
                   latitude
                   longitude
                   category
@@ -59444,6 +59456,7 @@ export const GetTeamDashboardDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
                 type
                 locationDetails
@@ -59541,6 +59554,7 @@ export const GetTeamDashboardDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
               }
             }
@@ -59783,6 +59797,7 @@ export const GetEventsValidationDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -61406,6 +61421,7 @@ export const InsertEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -62801,6 +62817,7 @@ export const GetLegalUnitLocationsDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
     }
@@ -63023,6 +63040,7 @@ export const InsertLegalUnitLocationDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
     }

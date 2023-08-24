@@ -19,7 +19,6 @@ query GetEventManage($slug: String!) {
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -30,6 +29,7 @@ query GetEventManage($slug: String!) {
         city
         state
         country
+        geoapifyId
       }
     }
     state

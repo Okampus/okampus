@@ -204,7 +204,6 @@ query GetTeamDashboard {
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -215,6 +214,7 @@ query GetTeamDashboard {
               city
               state
               country
+              geoapifyId
             }
             type
             locationDetails
@@ -303,7 +303,6 @@ query GetTeamDashboard {
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -314,6 +313,7 @@ query GetTeamDashboard {
                 city
                 state
                 country
+                geoapifyId
               }
               type
               locationDetails
@@ -411,6 +411,7 @@ query GetTeamDashboard {
                 city
                 state
                 country
+                geoapifyId
               }
             }
           }
