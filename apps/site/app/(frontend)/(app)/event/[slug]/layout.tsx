@@ -1,3 +1,4 @@
+import GroupItem from '../../../../../components/atoms/Item/GroupItem';
 import SideBar from '../../../../../components/layouts/SideBar';
 import EventManageButton from '../../../../../components/layouts/SideBar/ManageButton/EventManageButton';
 import EventSidePanel from '../../../../../components/layouts/SidePanel/EventSidePanel';
@@ -11,7 +12,7 @@ import { getSubscriptionFromQuery } from '../../../../../utils/apollo/get-from-q
 
 import { GetEventDocument } from '@okampus/shared/graphql';
 
-import { IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
+import { IconArrowLeft, IconInfoHexagon, IconListDetails } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventQuery, GetEventQueryVariables } from '@okampus/shared/graphql';
@@ -29,6 +30,8 @@ export default async function EventLayout({ children, params }: EventLayoutProps
   if (!data) return notFound();
   const event = data.event[0];
 
+  const managingTeams = event?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
+
   const baseRoute = `/event/${params.slug}`;
   const eventRoute = (route: string) => `${baseRoute}/${route}`;
   return (
@@ -37,12 +40,25 @@ export default async function EventLayout({ children, params }: EventLayoutProps
       <ApolloSubscribe fragment={SubscribeEventDocument} variables={variables} data-superjson />
       <SideBar header={<SidebarBanner name={event.name} banner={event.banner?.url} />}>
         <EventManageButton slug={params.slug} manage={true} />
+        <GroupItem heading="Présence" headingClassName="ml-3">
+          <LinkList
+            mode="sidebar"
+            items={[
+              { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
+              { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
+            ]}
+          />
+        </GroupItem>
+        <hr className="m-2 border-[var(--border-2)]" />
         <LinkList
           mode="sidebar"
-          items={[
-            { label: 'Informations', href: baseRoute, icon: <IconInfoHexagon /> },
-            { label: 'Inscrits', href: eventRoute('joins'), icon: <IconListDetails /> },
-          ]}
+          items={
+            managingTeams.map((team) => ({
+              label: team.actor.name,
+              href: `/manage/team/${team.actor.slug}/events`,
+              icon: <IconArrowLeft />,
+            })) || []
+          }
         />
       </SideBar>
       {children}
