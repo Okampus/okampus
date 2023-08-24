@@ -40,8 +40,6 @@ export class Event extends TenantScopedEntity implements Searchable {
   [EntityRepositoryType]!: EventRepository;
 
   // TODO: add how long can people register/unregister before event
-  // TODO: add max participants
-  // TODO: add co-organisers as prop
   @Property({ type: 'datetime' })
   start!: Date;
 

@@ -171,6 +171,15 @@
         },
         {
           "columnNames": [
+            "oidc_name"
+          ],
+          "composite": false,
+          "keyName": "tenant_oidc_name_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "event_validation_form_id"
           ],
           "composite": false,

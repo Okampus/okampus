@@ -27,6 +27,7 @@ export class Tenant extends BaseEntity {
   @Property({ type: 'boolean', default: true })
   isOidcEnabled = false;
 
+  @Unique()
   @Property({ type: 'text', default: '' })
   oidcName = '';
 

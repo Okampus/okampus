@@ -120,11 +120,10 @@ export class AuthGuard implements CanActivate {
     const { headers, cookies, reply, req } = this.getRequestContext(host);
 
     /* Find tenant */
-    const tenantDomain = headers[HEADER_TENANT_NAME] as string | undefined;
-    if (!tenantDomain) throw new UnauthorizedException('No tenant name provided');
+    const domain = headers[HEADER_TENANT_NAME] as string | undefined;
+    if (!domain) throw new UnauthorizedException('No tenant name provided');
 
-    // TODO: optimize with caching for tenant & individual
-    const tenant = await this.authService.findTenant(tenantDomain);
+    const tenant = await this.authService.findTenantByDomain(domain);
     if (!tenant) throw new UnauthorizedException('Tenant does not exist');
     requestContext.set('tenant', tenant);
 

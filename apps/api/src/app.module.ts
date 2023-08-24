@@ -227,17 +227,18 @@ export class AppModule implements NestModule, OnModuleInit {
     const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
 
     const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
+    const domain = loadConfig<string>(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
 
     const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
 
     let admin: Individual;
-    const tenant = await this.em.findOne(Tenant, { domain: BASE_TENANT });
+    const tenant = await this.em.findOne(Tenant, { domain });
     if (tenant) {
       admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
     } else {
       // Init base tenant
       const tenant = new Tenant({
-        domain: BASE_TENANT,
+        domain,
         pointName: 'LXP',
         isOidcEnabled: oidc.enabled,
         oidcCallbackUri: oidc.callbackUri,
@@ -374,10 +375,10 @@ export class AppModule implements NestModule, OnModuleInit {
     // Seed base tenant
 
     // eslint-disable-next-line unicorn/no-array-method-this-argument
-    const anyTeam = await this.em.find(Team, { tenant: { domain: BASE_TENANT } });
+    const anyTeam = await this.em.find(Team, { tenant: { domain } });
     if (anyTeam.length === 1 && isSeeding) {
       DatabaseSeeder.pepper = secret;
-      DatabaseSeeder.targetTenant = BASE_TENANT;
+      DatabaseSeeder.targetTenant = domain;
       DatabaseSeeder.upload = this.uploadsService;
       DatabaseSeeder.admin = admin;
 

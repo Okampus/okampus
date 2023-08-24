@@ -8,15 +8,19 @@ import type { Client, TokenSet } from 'openid-client';
 import type { TenantUserResponse } from '@okampus/shared/types';
 
 type Config = { redirect_uri: string; scope: string };
-type Props = { authService: AuthService; tenantSlug: string; client: Client; oidcConfig: Config };
-export function tenantStrategyFactory({ authService, tenantSlug, oidcConfig, client }: Props): Strategy<Individual> {
-  const TenantStrategy = class extends PassportStrategy(Strategy, tenantSlug) {
-    constructor(private readonly authService: AuthService, private readonly client: Client, oidcConfig: Config) {
+type Props = { authService: AuthService; oidcName: string; client: Client; oidcConfig: Config };
+export function tenantStrategyFactory({ authService, oidcName, oidcConfig, client }: Props): Strategy<Individual> {
+  const TenantStrategy = class extends PassportStrategy(Strategy, oidcName) {
+    constructor(
+      private readonly authService: AuthService,
+      private readonly client: Client,
+      oidcConfig: Config,
+    ) {
       super({ client, params: oidcConfig, usePKCE: false });
     }
 
     public async validate(tokenset: TokenSet): Promise<Individual> {
-      const tenant = await this.authService.findTenant(tenantSlug);
+      const tenant = await this.authService.findTenantByOidcName(oidcName);
 
       const data: TenantUserResponse = await this.client.userinfo(tokenset);
 
