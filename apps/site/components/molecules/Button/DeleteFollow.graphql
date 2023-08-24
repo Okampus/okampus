@@ -1,0 +1,15 @@
+mutation DeleteFollow($id: bigint!) {
+  deleteFollowByPk(id: $id) {
+    __typename
+    id
+    deletedAt
+    actor {
+      __typename
+      id
+      email
+      name
+      slug
+      website
+    }
+  }
+}
