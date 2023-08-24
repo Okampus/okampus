@@ -62,7 +62,7 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
     });
   };
 
-  const { openModal, isModalOpen } = useModal();
+  const { closeModal, openModal, isModalOpen } = useModal();
   const banner = getBanner(actor.actorImages)?.image.url;
 
   useEffect(() => {
@@ -80,6 +80,8 @@ export default function BannerEditor({ showEditor, setShowEditor, actor }: Banne
         ),
         onClose: () => setShowEditor(false),
       });
+    } else if (!showEditor && isModalOpen) {
+      closeModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showEditor, actor]);
