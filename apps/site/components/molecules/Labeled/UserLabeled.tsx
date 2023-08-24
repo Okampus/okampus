@@ -13,6 +13,8 @@ export type UserLabeledProps = {
   showCardOnClick?: boolean;
   skeletonClassName?: string;
   className?: string;
+  labelClassName?: string;
+  contentClassName?: string;
 };
 
 export default function UserLabeled({
@@ -24,6 +26,8 @@ export default function UserLabeled({
   showCardOnClick = true,
   skeletonClassName,
   className,
+  labelClassName,
+  contentClassName,
 }: UserLabeledProps) {
   const avatar = getAvatar(user.individual.actor?.actorImages)?.image.url;
   const name = user.individual?.actor?.name;
@@ -45,6 +49,8 @@ export default function UserLabeled({
       wrapper={showCardOnClick ? wrapper : undefined}
       skeletonLabelClassName={skeletonClassName}
       className={className}
+      labelClassName={labelClassName}
+      contentClassName={contentClassName}
     />
   );
 }

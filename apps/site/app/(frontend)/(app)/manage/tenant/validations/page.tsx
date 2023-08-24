@@ -80,7 +80,7 @@ export default function TenantValidationPage() {
             render: (event) => {
               return (
                 <div className="flex gap-4 items-center">
-                  <BannerImage className="h-12 rounded" src={event.banner?.url} name={event.name} />
+                  <BannerImage className="h-12 rounded-xl" src={event.banner?.url} name={event.name} />
                   <div className="flex flex-col">
                     <div className="font-semibold text-0">{event.name}</div>
                     <Link href={`/event/${event.slug}`} className="font-medium underline">

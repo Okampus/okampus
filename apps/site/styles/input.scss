@@ -16,7 +16,7 @@ input:-webkit-autofill:active {
 }
 
 %input {
-  @apply w-full grow min-w-0 rounded-md text-base font-medium outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)] h-[var(--h-input)] max-h-[var(--h-input)];
+  @apply w-full tabular-nums grow min-w-0 rounded-lg text-base outline-none flex items-center text-[var(--text-0)] bg-[var(--bg-input)] h-[var(--h-input)] max-h-[var(--h-input)];
 }
 
 .input {

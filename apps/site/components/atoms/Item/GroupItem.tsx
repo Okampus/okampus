@@ -19,7 +19,7 @@ export default function GroupItem({
   children,
 }: GroupItemProps) {
   return (
-    <div className={clsx(className, 'grow min-w-0 flex flex-col gap-2')}>
+    <div className={clsx(className, 'grow min-w-0 flex flex-col gap-1.5')}>
       <GroupHeading type={type} label={heading} className={headingClassName} />
       {children && (
         <ul className={groupClassName}>

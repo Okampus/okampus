@@ -11,7 +11,7 @@ export default function EventLabeled({ event }: EventLabeledProps) {
 
   return (
     <div className="flex gap-4 items-start">
-      <BannerImage name={event.name} src={event.banner?.url} className="h-24 rounded-2xl" />
+      <BannerImage name={event.name} src={event.banner?.url} className="h-24 rounded-xl" />
       <div className="flex flex-col gap-1">
         <div className="text-primary font-semibold uppercase line-clamp-1 tabular-nums">{displayedStart}</div>
         <div className="text-lg font-bold text-0 line-clamp-2">{event.name}</div>

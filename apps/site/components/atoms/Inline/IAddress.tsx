@@ -20,7 +20,7 @@ export default function IAddress({ address, className, inline = true }: IAddress
 
   return (
     <div>
-      <div className="text-1">{coreAddress}</div>
+      <div className="mt-1 text-1 leading-4">{coreAddress}</div>
       <div className="text-3">
         {address.city} {address.zip}
       </div>

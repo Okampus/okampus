@@ -128,7 +128,7 @@ function FinanceProjectChoiceStep({
           { item: { label: 'Événément hors-projet', value: null } },
           ...teamManage.projects.map((project) => ({
             item: { label: project.name, value: project.id },
-            prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-lg" />,
+            prefix: <BannerImage name={project.name} src={project.banner?.url} className="h-14 rounded-xl" />,
           })),
         ]}
         onClick={(id) => {
@@ -159,7 +159,7 @@ function FinanceEventChoiceStep({ methods: { formMethods, goToStep }, context: {
         { item: { label: 'Dépenses hors événement', value: null } },
         ...events.map((event) => ({
           item: { label: event?.name, value: event.id },
-          prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-lg" />,
+          prefix: <BannerImage name={event?.name} src={event.banner?.url} className="h-14 rounded-xl" />,
         })),
       ]}
       onClick={(id) => {

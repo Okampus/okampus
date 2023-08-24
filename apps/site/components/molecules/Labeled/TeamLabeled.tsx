@@ -2,6 +2,7 @@ import AvatarLabeled from './AvatarLabeled';
 import TeamPopoverCard from '../PopoverCard/TeamPopoverCard';
 
 import { getAvatar } from '../../../utils/actor-image/get-avatar';
+import clsx from 'clsx';
 
 import type { AvatarWrapperProps } from './AvatarLabeled';
 import type { TeamMinimalInfo } from '../../../types/features/team.info';
@@ -16,6 +17,8 @@ export type TeamLabeledProps = {
   showCardOnClick?: boolean;
   skeletonClassName?: string;
   className?: string;
+  labelClassName?: string;
+  contentClassName?: string;
 };
 
 export default function TeamLabeled({
@@ -28,12 +31,14 @@ export default function TeamLabeled({
   showCardOnClick = true,
   skeletonClassName,
   className,
+  labelClassName,
+  contentClassName,
 }: TeamLabeledProps) {
   const avatar = getAvatar(team.actor.actorImages)?.image.url;
   const name = team.actor.name;
 
   const wrapper = ({ children, className }: AvatarWrapperProps) => (
-    <TeamPopoverCard triggerClassName={className} teamId={team.id}>
+    <TeamPopoverCard triggerClassName={clsx(className, 'shrink-0')} teamId={team.id}>
       {children}
     </TeamPopoverCard>
   );
@@ -50,6 +55,8 @@ export default function TeamLabeled({
       wrapper={showCardOnClick ? wrapper : undefined}
       skeletonLabelClassName={skeletonClassName}
       className={className}
+      labelClassName={labelClassName}
+      contentClassName={contentClassName}
     />
   );
 }

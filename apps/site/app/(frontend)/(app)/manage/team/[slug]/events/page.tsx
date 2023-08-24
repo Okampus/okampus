@@ -91,7 +91,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
               return (
                 <div className="flex gap-4 items-center">
                   <BannerImage
-                    className="h-12 rounded"
+                    className="h-12 rounded-xl"
                     src={eventOrganize.event.banner?.url}
                     name={eventOrganize.event.name}
                   />

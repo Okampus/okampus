@@ -18,9 +18,9 @@ export default function LinkItem({
   const selected = checkSelected(href);
   const classes = clsx(
     className,
-    'relative flex items-center px-2.5 py-2 font-medium rounded',
+    'relative flex items-center py-2 font-medium rounded',
     selected ? 'text-[var(--primary)]' : 'text-2 text-0-hover opacity-90 text-hover',
-    large ? 'text-lg gap-3' : 'text-base gap-2.5',
+    large ? 'text-lg gap-3 px-4' : 'text-base gap-2.5 px-2.5',
   );
 
   return (

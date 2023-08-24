@@ -30,7 +30,7 @@ body {
 }
 
 .label-title {
-  @apply text-base font-medium text-[var(--text-0)];
+  @apply text-base font-semibold text-[var(--text-0)];
 }
 
 .page-title {

@@ -182,7 +182,7 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
           </GroupItem>
         </form>
         <div className={clsx('h-full w-full flex flex-col gap-2', !isSmall && 'scrollbar overflow-y-scroll')}>
-          <h3 className="text-2 label-title">Réseaux sociaux</h3>
+          <h3 className="label-title">Réseaux sociaux</h3>
           <SocialsForm formMethods={socialForm} className="pr-[var(--px-content)]" />
         </div>
       </div>
