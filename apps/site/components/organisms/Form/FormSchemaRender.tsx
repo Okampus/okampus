@@ -1,5 +1,6 @@
 // import DateInput from '../Input/DateInput';
 import Field from '../../molecules/Input/Field';
+import FieldSet from '../../molecules/Input/FieldSet';
 import RadioInput from '../../molecules/Input/Selector/RadioInput';
 import SelectInput from '../../molecules/Input/Select/SelectInput';
 import FileInput from '../../molecules/Input/File/FileInput';
@@ -60,7 +61,7 @@ export default function FormSchemaRender<T extends FormSchema>({
           case ControlType.Radio: {
             const selected = typeof data === 'number' ? data : null;
             input = (
-              <Field name={field.name}>
+              <FieldSet label={field.label}>
                 {field.options?.map((option, idx) => {
                   return (
                     <RadioInput
@@ -74,7 +75,7 @@ export default function FormSchemaRender<T extends FormSchema>({
                     />
                   );
                 })}
-              </Field>
+              </FieldSet>
             );
             break;
           }
