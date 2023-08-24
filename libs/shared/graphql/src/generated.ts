@@ -48427,10 +48427,10 @@ export type InsertEventJoinMutation = {
 };
 
 export type GetEventsQueryVariables = Exact<{
-  where: InputMaybe<EventBoolExp>;
-  orderBy: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventBoolExp>;
+  orderBy?: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventsQuery = {
@@ -49662,10 +49662,10 @@ export type GetProjectManageQuery = {
 };
 
 export type GetTeamJoinsQueryVariables = Exact<{
-  where: InputMaybe<TeamJoinBoolExp>;
-  orderBy: InputMaybe<Array<TeamJoinOrderBy> | TeamJoinOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TeamJoinBoolExp>;
+  orderBy?: InputMaybe<Array<TeamJoinOrderBy> | TeamJoinOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetTeamJoinsQuery = {
@@ -50867,10 +50867,10 @@ export type InsertBankMutationVariables = Exact<{
 export type InsertBankMutation = { __typename?: 'Mutation'; insertBankOne: { __typename: 'Bank'; id: string } | null };
 
 export type GetEventOrganizesQueryVariables = Exact<{
-  where: InputMaybe<EventOrganizeBoolExp>;
-  orderBy: InputMaybe<Array<EventOrganizeOrderBy> | EventOrganizeOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventOrganizeBoolExp>;
+  orderBy?: InputMaybe<Array<EventOrganizeOrderBy> | EventOrganizeOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventOrganizesQuery = {
@@ -51244,10 +51244,10 @@ export type GetEventOrganizesQuery = {
 };
 
 export type GetFinancesQueryVariables = Exact<{
-  where: InputMaybe<FinanceBoolExp>;
-  orderBy: InputMaybe<Array<FinanceOrderBy> | FinanceOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FinanceBoolExp>;
+  orderBy?: InputMaybe<Array<FinanceOrderBy> | FinanceOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetFinancesQuery = {
@@ -51857,10 +51857,10 @@ export type GetTenantUsersWithPointsQuery = {
 };
 
 export type GetEventsValidationQueryVariables = Exact<{
-  where: InputMaybe<EventBoolExp>;
-  orderBy: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EventBoolExp>;
+  orderBy?: InputMaybe<Array<EventOrderBy> | EventOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetEventsValidationQuery = {
@@ -52498,10 +52498,10 @@ export type InsertTeamJoinMutation = {
 };
 
 export type GetTeamsQueryVariables = Exact<{
-  where: InputMaybe<TeamBoolExp>;
-  orderBy: InputMaybe<Array<TeamOrderBy> | TeamOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TeamBoolExp>;
+  orderBy?: InputMaybe<Array<TeamOrderBy> | TeamOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetTeamsQuery = {
@@ -52641,10 +52641,10 @@ export type GetTeamsQuery = {
 };
 
 export type GetCategoriesQueryVariables = Exact<{
-  where: InputMaybe<TagBoolExp>;
-  orderBy: InputMaybe<Array<TagOrderBy> | TagOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<TagBoolExp>;
+  orderBy?: InputMaybe<Array<TagOrderBy> | TagOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetCategoriesQuery = {
@@ -52716,10 +52716,10 @@ export type GetUserQuery = {
 };
 
 export type GetUsersQueryVariables = Exact<{
-  where: InputMaybe<UserBoolExp>;
-  orderBy: InputMaybe<Array<UserOrderBy> | UserOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UserBoolExp>;
+  orderBy?: InputMaybe<Array<UserOrderBy> | UserOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetUsersQuery = {
@@ -53751,10 +53751,10 @@ export type InsertSingleUploadMutation = {
 };
 
 export type GetLegalUnitLocationsQueryVariables = Exact<{
-  where: InputMaybe<LegalUnitLocationBoolExp>;
-  orderBy: InputMaybe<Array<LegalUnitLocationOrderBy> | LegalUnitLocationOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LegalUnitLocationBoolExp>;
+  orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy> | LegalUnitLocationOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetLegalUnitLocationsQuery = {
@@ -53803,10 +53803,10 @@ export type GetLegalUnitLocationsQuery = {
 };
 
 export type GetLegalUnitsQueryVariables = Exact<{
-  where: InputMaybe<LegalUnitBoolExp>;
-  orderBy: InputMaybe<Array<LegalUnitOrderBy> | LegalUnitOrderBy>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LegalUnitBoolExp>;
+  orderBy?: InputMaybe<Array<LegalUnitOrderBy> | LegalUnitOrderBy>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 export type GetLegalUnitsQuery = {

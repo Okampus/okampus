@@ -6,7 +6,10 @@ generates:
     plugins:
       - "typescript"
       - "typescript-operations":
-          avoidOptionals: true
+          avoidOptionals:
+            field: true
+            inputValue: false
+            object: false
       - "typescript-react-apollo"
       - "add":
           content: "import type { JSONType } from '@okampus/shared/types';"
