@@ -1,29 +1,29 @@
 'use client';
 
-import AvatarEditor from '../../../../../../components/molecules/ImageEditor/AvatarEditor';
-import BannerEditor from '../../../../../../components/molecules/ImageEditor/BannerEditor';
-import GroupItem from '../../../../../../components/atoms/Item/GroupItem';
-import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
+import AvatarEditor from '../../../../../../../components/molecules/ImageEditor/AvatarEditor';
+import BannerEditor from '../../../../../../../components/molecules/ImageEditor/BannerEditor';
+import GroupItem from '../../../../../../../components/atoms/Item/GroupItem';
+import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 
-import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
-import TextAreaInput from '../../../../../../components/molecules/Input/TextAreaInput';
+import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
+import TextAreaInput from '../../../../../../../components/molecules/Input/TextAreaInput';
 
-import { getAvatar } from '../../../../../../utils/actor-image/get-avatar';
-import { getBanner } from '../../../../../../utils/actor-image/get-banner';
+import { getAvatar } from '../../../../../../../utils/actor-image/get-avatar';
+import { getBanner } from '../../../../../../../utils/actor-image/get-banner';
 
-import { useTeamManage } from '../../../../../../context/navigation';
+import { useTeamManage } from '../../../../../../../context/navigation';
 
-// import { useForm } from '../../../../../../hooks/form/useForm';
-import TextInput from '../../../../../../components/molecules/Input/TextInput';
-import ChangeSetToast from '../../../../../../components/organisms/Form/ChangeSetToast';
+import TextInput from '../../../../../../../components/molecules/Input/TextInput';
+import ChangeSetToast from '../../../../../../../components/organisms/Form/ChangeSetToast';
 
 import { useDeleteActorImageMutation, useUpdateActorMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IconHistory } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 const teamFormSchema = z.object({
   name: z
@@ -75,7 +75,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
   if (!teamManage) return null;
 
   return (
-    <ViewLayout header="Personalisation">
+    <ViewLayout header="Personnalisation" sidePanelIcon={<IconHistory />}>
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
         <ChangeSetToast
           isDirty={formState.isDirty}
