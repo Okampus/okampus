@@ -24,9 +24,8 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
     variables,
   }).catch();
 
-  if (!data) notFound();
-
   const project = data.project[0];
+  if (!project) notFound();
 
   const baseRoute = `/project/manage/${params.slug}`;
   const projectManageRoute = (route: string) => `${baseRoute}/${route}`;

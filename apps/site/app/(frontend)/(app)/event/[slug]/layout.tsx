@@ -27,8 +27,8 @@ export default async function EventLayout({ children, params }: EventLayoutProps
     variables,
   }).catch();
 
-  if (!data) return notFound();
   const event = data.event[0];
+  if (!event) return notFound();
 
   const managingTeams = event?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
 

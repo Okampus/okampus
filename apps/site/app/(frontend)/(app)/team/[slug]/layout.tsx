@@ -29,8 +29,8 @@ async function TeamLayout({ children, params }: TeamLayoutProps) {
     variables,
   }).catch();
 
-  if (!data) notFound();
   const team = data.team[0];
+  if (!team) notFound();
 
   const teamRoute = (route: string) => `/team/${team?.actor?.slug}/${route}`;
   return (

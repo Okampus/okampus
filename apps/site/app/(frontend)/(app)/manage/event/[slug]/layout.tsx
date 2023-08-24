@@ -27,9 +27,8 @@ export default async function ManageEventLayout({ children, params }: ManageEven
     variables,
   }).catch();
 
-  if (!data) notFound();
-
   const eventManage = data.event[0];
+  if (!eventManage) notFound();
 
   const managingTeams = eventManage?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
   const manageEventRoute = (route: string) => `/manage/event/${eventManage?.slug}/${route}`;
