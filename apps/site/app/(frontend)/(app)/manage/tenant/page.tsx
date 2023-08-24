@@ -60,7 +60,7 @@ export default function TenantProfilePage() {
   if (!adminTeam) return null;
 
   return (
-    <ViewLayout header="Personalisation">
+    <ViewLayout header="Personnalisation">
       <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
         <ChangeSetToast
           isDirty={formState.isDirty}
@@ -161,7 +161,7 @@ export default function TenantProfilePage() {
   );
 
   // return (
-  //   <ViewLayout header="Personalisation">
+  //   <ViewLayout header="Personnalisation">
   //     <ChangeSetForm
   //       // @ts-ignore
   //       onSave={(update) => adminTeam?.actor && updateActor({ variables: { update, id: adminTeam.actor.id } })}

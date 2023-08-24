@@ -35,7 +35,7 @@ function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccor
     {
       heading: { label: 'Informations de la page' },
       items: [
-        { label: 'Personalisation', href: `/manage/team/${team?.actor.slug}`, icon: <IconBrush /> },
+        { label: 'Personnalisation', href: `/manage/team/${team?.actor.slug}`, icon: <IconBrush /> },
         { label: 'Réseaux & contacts', href: manageTeamRoute('socials'), icon: <IconNetwork /> },
       ],
     },

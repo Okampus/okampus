@@ -6,12 +6,12 @@ import { useModal } from '../../../../hooks/context/useModal';
 
 import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
 
-import { LegalUnitLocationType } from '@okampus/shared/enums';
 import { useGetLegalUnitLocationsLazyQuery, useInsertLegalUnitLocationMutation } from '@okampus/shared/graphql';
 
 import { useEffect, useState } from 'react';
 import { useThrottle } from 'react-use';
 
+import type { LegalUnitLocationType } from '@okampus/shared/enums';
 import type { ControlledInput } from '@okampus/shared/types';
 import type { LegalUnitLocationMinimalInfo } from '../../../../types/features/legal-unit-location.info';
 
