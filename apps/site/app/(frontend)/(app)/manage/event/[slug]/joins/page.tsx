@@ -18,6 +18,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
+import { IconHistory } from '@tabler/icons-react';
 import { useAtom } from 'jotai';
 
 import type { Submission, FormSchema } from '@okampus/shared/types';
@@ -32,7 +33,12 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
   if (!eventManage) return null;
 
   return (
-    <ViewLayout header="Validation des inscriptions" bottomPadded={false} scrollable={false}>
+    <ViewLayout
+      header="Validation des inscriptions"
+      bottomPadded={false}
+      scrollable={false}
+      sidePanelIcon={<IconHistory />}
+    >
       <ApprovalDashboard
         className="pt-8"
         stateFilter={(join, states) => states.includes(join.state as ApprovalState)}
