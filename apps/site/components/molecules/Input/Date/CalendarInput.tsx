@@ -3,13 +3,12 @@ import ArrowButtonIcon from '../../../atoms/Icon/ArrowButtonIcon';
 
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 
-import { getMonthMatrix, range } from '@okampus/shared/utils';
+import { getCalendar, range } from '@okampus/shared/utils';
 import { WEEKDAYS_SHORT } from '@okampus/shared/consts';
 
 import clsx from 'clsx';
 import { useState } from 'react';
 
-// TODO: improve with year grid
 const years = range({ from: 1970, to: 2050 }).map((year) => ({ value: year, label: year.toString() }));
 
 export type CalendarInputProps = {
@@ -19,18 +18,22 @@ export type CalendarInputProps = {
   setDate: (date: Date) => void;
 };
 
+function dayClass(day: number, date: Date, rowIdx: number) {
+  const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 10);
+
+  if (date.getDate() === day) return 'bg-[var(--info)] text-white';
+  if (isOtherMonth) return 'bg-3-hover text-3 opacity-50';
+  return 'bg-4-hover text-1';
+}
+
 type MonthYear = [number, number];
 export default function CalendarInput({ className, date, setDate, disableSelect }: CalendarInputProps) {
   const { format } = useTranslation();
 
-  const months = Array.from({ length: 12 }, (_, i) => i).map((idx) => ({
-    value: idx,
-    label: format('month', new Date(0, idx, 1)),
-  }));
+  const months = range({ to: 12 }).map((value) => ({ value, label: format('month', new Date(0, value, 1)) }));
 
   const [monthYear, setMonthYear] = useState<MonthYear>([date.getMonth(), date.getFullYear()]);
-  const monthMatrix = getMonthMatrix(...monthYear);
-  const currentMonth = monthMatrix[1][0].month();
+  const monthMatrix = getCalendar(...monthYear);
 
   const [month, year] = monthYear;
   const previousMonthYear: MonthYear = month === 0 ? [11, year - 1] : [month - 1, year];
@@ -92,17 +95,13 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
         {monthMatrix.map((row, rowIdx) => (
           <div key={rowIdx} className="flex">
             {row.map((day, idx) => {
-              const dayClassName = clsx(
-                day.isSame(date, 'day')
-                  ? 'bg-[var(--info)] text-white'
-                  : day.month() === currentMonth
-                  ? 'bg-4-hover text-1'
-                  : 'bg-3-hover text-3 opacity-50',
-                'text-center aspect-square h-10 font-medium rounded-full',
-              );
               return (
-                <button key={idx} onClick={() => setDate(day.toDate())} className={dayClassName}>
-                  {day.format('D')}
+                <button
+                  key={idx}
+                  onClick={() => setDate(new Date(year, month, day))}
+                  className={clsx(dayClass(day, date, rowIdx), 'text-center w-10 h-10 font-medium rounded-full')}
+                >
+                  {day.toString().padStart(2, '0')}
                 </button>
               );
             })}
