@@ -19,7 +19,6 @@ export * from './async/filter-promise-all';
 export * from './async/sleep';
 export * from './colors/color-string-transform';
 export * from './colors/random-color';
-export * from './dates/date-formattters';
 export * from './dates/date-utils';
 export * from './dates/duration-utils';
 export * from './dates/extract-date';
