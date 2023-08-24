@@ -6,6 +6,7 @@ mutation InsertEvent($object: EventInsertInput!) {
     slug
     start
     end
+    maxParticipants
     name
     state
     price
@@ -126,12 +127,26 @@ mutation InsertEvent($object: EventInsertInput!) {
               url
             }
           }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
         }
         joinForm {
           __typename
           id
           schema
           name
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
         }
       }
       project {

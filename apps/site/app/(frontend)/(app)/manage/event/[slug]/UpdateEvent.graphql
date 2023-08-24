@@ -5,6 +5,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     createdAt
     start
     end
+    maxParticipants
     name
     slug
     description
@@ -174,14 +175,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
                   name
                   color
                 }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
               }
             }
           }

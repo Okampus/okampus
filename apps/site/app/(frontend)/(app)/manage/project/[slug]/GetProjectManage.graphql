@@ -119,6 +119,12 @@ query GetProjectManage($slug: String!) {
           schema
           name
         }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
+        }
       }
       project {
         __typename

@@ -47912,6 +47912,14 @@ export type GetMeQuery = {
         name: string;
         slug: string;
         website: string;
+        actorImages: Array<{
+          __typename: 'ActorImage';
+          id: string;
+          createdAt: string;
+          type: string;
+          image: { __typename: 'FileUpload'; id: string; url: string };
+        }>;
+        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
       };
     }>;
     user: {
@@ -48122,52 +48130,6 @@ export type GetMeQuery = {
   };
 };
 
-export type InsertFollowMutationVariables = Exact<{
-  object: FollowInsertInput;
-}>;
-
-export type InsertFollowMutation = {
-  __typename?: 'Mutation';
-  insertFollowOne?: {
-    __typename: 'Follow';
-    id: string;
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: { __typename: 'Actor'; id: string; slug: string };
-        };
-      } | null;
-    } | null;
-  } | null;
-};
-
 export type GetEventJoinQueryVariables = Exact<{
   eventJoinId: Scalars['bigint']['input'];
   userId: Scalars['bigint']['input'];
@@ -48186,6 +48148,7 @@ export type GetEventJoinQuery = {
       slug: string;
       start: string;
       end: string;
+      maxParticipants?: number | null;
       eventOrganizes: Array<{
         __typename: 'EventOrganize';
         id: string;
@@ -48263,14 +48226,15 @@ export type GetEventQuery = {
     id: string;
     createdAt: string;
     description: string;
-    slug: string;
     start: string;
     end: string;
+    slug: string;
     name: string;
     state: string;
     price: number;
-    pointsAwardedForAttendance: number;
     isPrivate: boolean;
+    maxParticipants?: number | null;
+    pointsAwardedForAttendance: number;
     location?: {
       __typename: 'Location';
       id: string;
@@ -48332,14 +48296,6 @@ export type GetEventQuery = {
                 __typename?: 'ActorTags';
                 tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
               }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
             };
           };
         };
@@ -48361,8 +48317,20 @@ export type GetEventQuery = {
             type: string;
             image: { __typename: 'FileUpload'; id: string; url: string };
           }>;
+          socials: Array<{
+            __typename: 'Social';
+            id: string;
+            pseudo: string;
+            url: string;
+            type: string;
+            order: number;
+          }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -48473,6 +48441,7 @@ export type GetEventsQuery = {
     slug: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     state: string;
     price: number;
@@ -48578,6 +48547,10 @@ export type GetEventsQuery = {
           }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -48717,6 +48690,7 @@ export type GetEventManageQuery = {
     createdAt: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     slug: string;
     description: string;
@@ -49114,6 +49088,7 @@ export type UpdateEventMutation = {
     createdAt: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     slug: string;
     description: string;
@@ -49244,14 +49219,6 @@ export type UpdateEventMutation = {
               actorTags: Array<{
                 __typename?: 'ActorTags';
                 tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
               }>;
             };
           };
@@ -49674,6 +49641,10 @@ export type GetProjectManageQuery = {
           }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -50089,6 +50060,7 @@ export type GetTeamManageQuery = {
           createdAt: string;
           start: string;
           end: string;
+          maxParticipants?: number | null;
           name: string;
           slug: string;
           description: string;
@@ -50909,6 +50881,7 @@ export type GetEventOrganizesQuery = {
       state: string;
       start: string;
       end: string;
+      maxParticipants?: number | null;
       slug: string;
       banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
       eventApprovals: Array<{
@@ -51117,6 +51090,7 @@ export type GetEventOrganizesQuery = {
     slug: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     state: string;
     price: number;
@@ -51893,6 +51867,7 @@ export type GetEventsValidationQuery = {
     slug: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     state: string;
     price: number;
@@ -52116,6 +52091,10 @@ export type GetEventsValidationQuery = {
           }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -52349,6 +52328,10 @@ export type GetProjectQuery = {
           }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -52945,6 +52928,7 @@ export type InsertEventMutation = {
     slug: string;
     start: string;
     end: string;
+    maxParticipants?: number | null;
     name: string;
     state: string;
     price: number;
@@ -53041,8 +53025,20 @@ export type InsertEventMutation = {
             type: string;
             image: { __typename: 'FileUpload'; id: string; url: string };
           }>;
+          socials: Array<{
+            __typename: 'Social';
+            id: string;
+            pseudo: string;
+            url: string;
+            type: string;
+            order: number;
+          }>;
         };
         joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
+        teamMembersAggregate: {
+          __typename: 'TeamMemberAggregate';
+          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
+        };
       };
       project?: {
         __typename: 'Project';
@@ -53675,6 +53671,66 @@ export type GetTenantLogsQuery = {
   }>;
 };
 
+export type DeleteFollowMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
+}>;
+
+export type DeleteFollowMutation = {
+  __typename?: 'Mutation';
+  deleteFollowByPk?: {
+    __typename: 'Follow';
+    id: string;
+    deletedAt?: string | null;
+    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+  } | null;
+};
+
+export type InsertFollowMutationVariables = Exact<{
+  object: FollowInsertInput;
+}>;
+
+export type InsertFollowMutation = {
+  __typename?: 'Mutation';
+  insertFollowOne?: {
+    __typename: 'Follow';
+    id: string;
+    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+    createdBy?: {
+      __typename: 'Individual';
+      id: string;
+      createdAt: string;
+      actor: {
+        __typename: 'Actor';
+        id: string;
+        createdAt: string;
+        email: string;
+        name: string;
+        slug: string;
+        website: string;
+        actorImages: Array<{
+          __typename: 'ActorImage';
+          id: string;
+          type: string;
+          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
+        }>;
+      };
+      user?: {
+        __typename: 'User';
+        id: string;
+        createdAt: string;
+        firstName: string;
+        lastName: string;
+        individual: {
+          __typename: 'Individual';
+          id: string;
+          createdAt: string;
+          actor: { __typename: 'Actor'; id: string; slug: string };
+        };
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type InsertSingleUploadMutationVariables = Exact<{
   file: Scalars['Upload']['input'];
   bucket: Scalars['String']['input'];
@@ -54062,6 +54118,25 @@ export const GetMeDocument = gql`
           name
           slug
           website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
         }
       }
       user {
@@ -54340,95 +54415,6 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
-export const InsertFollowDocument = gql`
-  mutation InsertFollow($object: FollowInsertInput!) {
-    insertFollowOne(object: $object) {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        email
-        name
-        slug
-        website
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-export type InsertFollowMutationFn = Apollo.MutationFunction<InsertFollowMutation, InsertFollowMutationVariables>;
-
-/**
- * __useInsertFollowMutation__
- *
- * To run a mutation, you first call `useInsertFollowMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertFollowMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertFollowMutation, { data, loading, error }] = useInsertFollowMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertFollowMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertFollowMutation, InsertFollowMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertFollowMutation, InsertFollowMutationVariables>(InsertFollowDocument, options);
-}
-export type InsertFollowMutationHookResult = ReturnType<typeof useInsertFollowMutation>;
-export type InsertFollowMutationResult = Apollo.MutationResult<InsertFollowMutation>;
-export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<
-  InsertFollowMutation,
-  InsertFollowMutationVariables
->;
 export const GetEventJoinDocument = gql`
   query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     eventJoinByPk(id: $eventJoinId) {
@@ -54442,6 +54428,7 @@ export const GetEventJoinDocument = gql`
         slug
         start
         end
+        maxParticipants
         eventOrganizes {
           __typename
           id
@@ -54597,14 +54584,15 @@ export const GetEventDocument = gql`
       id
       createdAt
       description
-      slug
       start
       end
+      slug
       name
       state
       price
-      pointsAwardedForAttendance
       isPrivate
+      maxParticipants
+      pointsAwardedForAttendance
       location {
         __typename
         id
@@ -54686,14 +54674,6 @@ export const GetEventDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
               }
             }
           }
@@ -54719,12 +54699,26 @@ export const GetEventDocument = gql`
                 url
               }
             }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
           }
           joinForm {
             __typename
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -54902,6 +54896,7 @@ export const GetEventsDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -55031,6 +55026,12 @@ export const GetEventsDocument = gql`
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -55227,6 +55228,7 @@ export const GetEventManageDocument = gql`
       createdAt
       start
       end
+      maxParticipants
       name
       slug
       description
@@ -55733,6 +55735,7 @@ export const UpdateEventDocument = gql`
       createdAt
       start
       end
+      maxParticipants
       name
       slug
       description
@@ -55902,14 +55905,6 @@ export const UpdateEventDocument = gql`
                     name
                     color
                   }
-                }
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
                 }
               }
             }
@@ -56487,6 +56482,12 @@ export const GetProjectManageDocument = gql`
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -57248,6 +57249,7 @@ export const GetTeamManageDocument = gql`
             createdAt
             start
             end
+            maxParticipants
             name
             slug
             description
@@ -58363,6 +58365,7 @@ export const GetEventOrganizesDocument = gql`
         state
         start
         end
+        maxParticipants
         slug
         banner {
           __typename
@@ -58601,6 +58604,7 @@ export const GetEventOrganizesDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -59753,6 +59757,7 @@ export const GetEventsValidationDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -60012,6 +60017,12 @@ export const GetEventsValidationDocument = gql`
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -60340,6 +60351,12 @@ export const GetProjectDocument = gql`
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -61363,6 +61380,7 @@ export const InsertEventDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -61483,12 +61501,26 @@ export const InsertEventDocument = gql`
                 url
               }
             }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
           }
           joinForm {
             __typename
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -62534,6 +62566,143 @@ export function useGetTenantLogsLazyQuery(
 export type GetTenantLogsQueryHookResult = ReturnType<typeof useGetTenantLogsQuery>;
 export type GetTenantLogsLazyQueryHookResult = ReturnType<typeof useGetTenantLogsLazyQuery>;
 export type GetTenantLogsQueryResult = Apollo.QueryResult<GetTenantLogsQuery, GetTenantLogsQueryVariables>;
+export const DeleteFollowDocument = gql`
+  mutation DeleteFollow($id: bigint!) {
+    deleteFollowByPk(id: $id) {
+      __typename
+      id
+      deletedAt
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
+    }
+  }
+`;
+export type DeleteFollowMutationFn = Apollo.MutationFunction<DeleteFollowMutation, DeleteFollowMutationVariables>;
+
+/**
+ * __useDeleteFollowMutation__
+ *
+ * To run a mutation, you first call `useDeleteFollowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFollowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFollowMutation, { data, loading, error }] = useDeleteFollowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFollowMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteFollowMutation, DeleteFollowMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteFollowMutation, DeleteFollowMutationVariables>(DeleteFollowDocument, options);
+}
+export type DeleteFollowMutationHookResult = ReturnType<typeof useDeleteFollowMutation>;
+export type DeleteFollowMutationResult = Apollo.MutationResult<DeleteFollowMutation>;
+export type DeleteFollowMutationOptions = Apollo.BaseMutationOptions<
+  DeleteFollowMutation,
+  DeleteFollowMutationVariables
+>;
+export const InsertFollowDocument = gql`
+  mutation InsertFollow($object: FollowInsertInput!) {
+    insertFollowOne(object: $object) {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type InsertFollowMutationFn = Apollo.MutationFunction<InsertFollowMutation, InsertFollowMutationVariables>;
+
+/**
+ * __useInsertFollowMutation__
+ *
+ * To run a mutation, you first call `useInsertFollowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertFollowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertFollowMutation, { data, loading, error }] = useInsertFollowMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertFollowMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertFollowMutation, InsertFollowMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InsertFollowMutation, InsertFollowMutationVariables>(InsertFollowDocument, options);
+}
+export type InsertFollowMutationHookResult = ReturnType<typeof useInsertFollowMutation>;
+export type InsertFollowMutationResult = Apollo.MutationResult<InsertFollowMutation>;
+export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<
+  InsertFollowMutation,
+  InsertFollowMutationVariables
+>;
 export const InsertSingleUploadDocument = gql`
   mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
     singleUpload(file: $file, bucket: $bucket, entityId: $entityId, entityName: $entityName) {

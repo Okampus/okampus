@@ -16,6 +16,25 @@ query GetMe {
         name
         slug
         website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
       }
     }
     user {

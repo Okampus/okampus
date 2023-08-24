@@ -6,6 +6,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
     slug
     start
     end
+    maxParticipants
     name
     state
     price
@@ -265,6 +266,12 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           id
           schema
           name
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
         }
       }
       project {

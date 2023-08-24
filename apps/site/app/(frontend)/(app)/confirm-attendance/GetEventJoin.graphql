@@ -10,6 +10,7 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
       slug
       start
       end
+      maxParticipants
       eventOrganizes {
         __typename
         id

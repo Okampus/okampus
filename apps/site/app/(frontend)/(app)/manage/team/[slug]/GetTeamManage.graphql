@@ -198,6 +198,7 @@ query GetTeamManage($slug: String!) {
           createdAt
           start
           end
+          maxParticipants
           name
           slug
           description
