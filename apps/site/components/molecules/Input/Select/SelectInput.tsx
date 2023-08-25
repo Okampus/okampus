@@ -38,7 +38,7 @@ export default function SelectInput<T>({
   maxHeight: maxHeightProp = '12rem',
   contentClassName = 'flex flex-col bg-0 text-0 font-medium',
   itemClassName = 'flex items-center gap-2 p-2 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
-  triggerClassName = 'input',
+  triggerClassName = 'input h-[var(--h-input)] max-h-[var(--h-input)]',
   showIcon = true,
   placement = 'bottom-start',
   ...props
@@ -114,7 +114,6 @@ export default function SelectInput<T>({
   const triggerClass = clsx(
     'flex items-center justify-between gap-2',
     triggerClassName,
-    isOpen && '!rounded-b-none',
     disabled && 'pointer-events-none opacity-50',
     error && '!outline !outline-1 outline-offset-2 !outline-[var(--danger)]',
   );
@@ -122,7 +121,7 @@ export default function SelectInput<T>({
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
   const contentProps = {
-    className: clsx(contentClassName, 'scrollbar rounded-b-xl'),
+    className: clsx(contentClassName, 'scrollbar rounded-xl'),
     style: contentStyle,
     ...getFloatingProps(),
   };

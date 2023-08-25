@@ -1,22 +1,39 @@
 import clsx from 'clsx';
+import { forwardRef, useRef } from 'react';
+import { mergeRefs } from 'react-merge-refs';
 
 export type RadioInputProps = {
+  isRadioBefore?: boolean;
   label?: React.ReactNode;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const radioClass = 'w-6 h-6 border-2 rounded-full border-[var(--text-0)] grid place-content-center';
+const radioClass =
+  'appearance-none w-5 h-5 outline outline-2 rounded-full outline-[var(--text-0)] checked:outline-[var(--info)] cursor-pointer';
 const beforeClass =
-  'before:w-4 before:h-4 before:bg-[var(--text-0)] before:rounded-full before:transform before:scale-0 before:transition-transform before:duration-200 before:ease-in-out before:opacity-0 before:grid before:place-content-center before:after:before';
+  'before:absolute before:inset-1 before:w-3 before:h-3 before:bg-[var(--info)] before:content-[""] before:rounded-full before:transform before:scale-0 before:transition-transform before:duration-200 before:ease-in-out';
 
-const radioClassName = clsx(radioClass, beforeClass, 'checked:before:scale-100');
+export default forwardRef<HTMLInputElement, RadioInputProps>(function RadioInput(props, ref) {
+  const localRef = useRef<HTMLInputElement>(null);
+  const { label, isRadioBefore, ...inputProps } = props;
 
-export default function RadioInput(props: RadioInputProps) {
-  const { label, ...inputProps } = props;
+  const radioClassName = clsx(
+    radioClass,
+    beforeClass,
+    isRadioBefore ? 'left-3' : 'right-3',
+    'peer absolute top-1/2 translate-y-[-50%] checked:before:scale-100',
+  );
+
+  const labelClassName = clsx(
+    'peer-checked:outline outline-2 peer-checked:outline-[var(--info)] flex gap-3 p-3 bg-[var(--bg-input)] rounded-lg cursor-pointer hover:bg-[var(--bg-1)]',
+    isRadioBefore ? 'pl-12 pr-3' : 'pl-3 pr-12',
+  );
 
   return (
-    <label className="flex gap-3 p-3 bg-3 rounded cursor-pointer hover:bg-[var(--bg-2)]">
-      <input type="radio" className={radioClassName} {...inputProps} />
-      {label}
-    </label>
+    <div className="relative grow">
+      <input type="radio" ref={mergeRefs([localRef, ref])} className={radioClassName} {...inputProps} />
+      <label onClick={() => localRef.current?.click()} htmlFor={inputProps.name} className={labelClassName}>
+        {label}
+      </label>
+    </div>
   );
-}
+});

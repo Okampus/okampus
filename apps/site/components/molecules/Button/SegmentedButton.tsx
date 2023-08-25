@@ -1,9 +1,6 @@
-'use client';
-
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
 export type SegmentedButtonProps = {
   initialIndex: number;
@@ -12,7 +9,6 @@ export type SegmentedButtonProps = {
 };
 
 export default function SegmentedButton({ initialIndex, options, className }: SegmentedButtonProps) {
-  const id = useId();
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   return (
@@ -20,9 +16,7 @@ export default function SegmentedButton({ initialIndex, options, className }: Se
       {options.map(({ label, action }, idx) => {
         const inner = (
           <>
-            {currentIndex === idx && (
-              <motion.div layoutId={id} className="absolute inset-y-1 inset-x-1.5 z-0 bg-[var(--bg-0)] rounded-lg" />
-            )}
+            {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1.5 z-0 bg-[var(--bg-0)] rounded-lg" />}
             {typeof action === 'string' ? (
               <Link className="z-10" href={action}>
                 {label}

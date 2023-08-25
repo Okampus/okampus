@@ -106,7 +106,7 @@ export default memo(
           };
 
           const buttonClass = clsx(
-            'button !px-3',
+            'font-medium rounded-lg px-3 py-2 border border-[var(--border-1)]',
             selected === idx ? 'bg-2' : 'bg-[var(--bg-input)] opacity-50 hover:opacity-100',
           );
           return (

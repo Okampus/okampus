@@ -145,17 +145,15 @@ export default function TenantProfilePage() {
           </span>
         </GroupItem>
         <hr className="border-color-2 my-10 col-[1/-1] hidden lg-max:block" />
-        <GroupItem heading="Présentation longue" groupClassName="flex flex-col gap-5">
-          <TextAreaInput
-            {...register('bio')}
-            // name="bio"
-            // value={values.bio}
-            // onChange={(value) => changeValues((values) => ({ ...values, bio: value }))}
-            // onErrorChange={(error) => changeErrors({ bio: error })}
-            rows={10}
-            label="Description"
-          />
-        </GroupItem>
+        <TextAreaInput
+          {...register('bio')}
+          // name="bio"
+          // value={values.bio}
+          // onChange={(value) => changeValues((values) => ({ ...values, bio: value }))}
+          // onErrorChange={(error) => changeErrors({ bio: error })}
+          rows={10}
+          label="Description"
+        />
       </form>
     </ViewLayout>
   );

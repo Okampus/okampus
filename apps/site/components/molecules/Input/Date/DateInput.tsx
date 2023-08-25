@@ -110,7 +110,7 @@ export default memo(
           <Popover forcePlacement={true} placement="bottom-start" controlledOpen={isOpen}>
             <PopoverTrigger
               onClick={() => !isOpen && setIsOpen(!isOpen)}
-              className="absolute top-0 bottom-0 right-2.5 bg-[var(--bg-input)]"
+              className="absolute top-[1px] bottom-[1px] right-2.5 bg-[var(--bg-input)]"
             >
               <IconCalendarEvent className="p-0.5" />
             </PopoverTrigger>

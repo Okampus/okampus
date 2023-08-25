@@ -24,6 +24,7 @@ export default function BottomBar() {
       icon: (
         <AvatarImage
           size={null}
+          indicativeSize={28}
           className="rounded-full !h-7 !w-7"
           type="team"
           name={tenant.adminTeam?.actor?.name}
@@ -47,6 +48,7 @@ export default function BottomBar() {
       icon: (
         <AvatarImage
           size={null}
+          indicativeSize={28}
           className="rounded-full !h-7 !w-7"
           name={me.user.individual.actor.name}
           src={getAvatar(me.user.individual.actor.actorImages)?.image.url}

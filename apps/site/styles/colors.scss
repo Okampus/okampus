@@ -4,7 +4,7 @@
   --success: #0bb870;
   --warning: #fa0;
   --danger: #d12c1a;
-  --info: #348adb;
+  --info: #0070f0;
   --bg-label: #f3f3f3cc;
   --bg-input: #e1e1e2;
   --bg-main: #fff;
@@ -29,7 +29,7 @@
 
   &.dark {
     --bg-label: #000a;
-    --bg-input: #000;
+    --bg-input: #222;
     --bg-main: #161616;
     --bg-sidebar: #111;
     --bg-0: #000;
@@ -42,7 +42,7 @@
     --text-2: #bbb;
     --text-3: #999;
     --border-0: #fff;
-    --border-1: #ccc2;
+    --border-1: #ccc3;
     --border-2: #666;
     --border-3: #333;
     --border-4: #111;

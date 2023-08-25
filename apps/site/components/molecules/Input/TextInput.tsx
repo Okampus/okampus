@@ -52,12 +52,12 @@ export default memo(
         aria-description={description}
         aria-invalid={typeof error === 'string'}
         className={clsx(
-          'input',
+          'input h-[var(--h-input)] max-h-[var(--h-input)]',
           inputClassName,
-          startContent && '!rounded-l-none !pl-0',
-          endContent && '!rounded-r-none !pr-0',
+          startContent && '!rounded-l-none !pl-0 !border-l-0',
+          endContent && '!rounded-r-none !pr-0 !border-r-0',
           textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'),
-          !startContent && !endContent && error && '!outline !outline-1 !outline-[var(--danger)]',
+          !startContent && !endContent && error && '!outline !outline-1 !outline-[var(--danger)] text-[var(--danger)]',
         )}
         onChange={onChange}
         {...inputProps}
@@ -75,13 +75,13 @@ export default memo(
             )}
           >
             {startContent && (
-              <div className="flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">
+              <div className="border border-[var(--border-1)] !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">
                 {startContent}
               </div>
             )}
             {input}
             {endContent && (
-              <div className="flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">
+              <div className="border border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">
                 {endContent}
               </div>
             )}

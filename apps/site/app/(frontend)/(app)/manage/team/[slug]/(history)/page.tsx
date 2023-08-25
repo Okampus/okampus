@@ -76,7 +76,7 @@ export default function TeamManageProfilePage({ params }: { params: { slug: stri
 
   return (
     <ViewLayout header="Personnalisation" sidePanelIcon={<IconHistory />}>
-      <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[auto_1fr] gap-x-16">
+      <form onSubmit={onSubmit} className="grid lg-max:grid-cols-1 lg:grid-cols-[21.5rem_1fr] gap-x-16">
         <ChangeSetToast
           isDirty={formState.isDirty}
           isValid={formState.isValid}

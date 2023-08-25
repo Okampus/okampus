@@ -17,7 +17,7 @@ export default function Field({
   name,
   children,
   label,
-  className = 'w-full flex flex-col gap-2',
+  className = 'w-full flex flex-col gap-0.5',
   required,
   error,
   loading,
@@ -25,7 +25,7 @@ export default function Field({
   description,
   horizontal,
 }: FieldProps) {
-  let subtitle = <div className="text-[var(--info)] text-sm px-2">{info}</div>;
+  let subtitle = info ? <div className="text-[var(--info)] text-sm px-2">{info}</div> : null;
   if (loading)
     subtitle = (
       <p className="text-[var(--info)] flex gap-2 text-sm px-2">
