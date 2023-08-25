@@ -10,6 +10,7 @@ export type RadioFreeInputInputProps = UncontrolledSelect & {
   textAlign?: 'left' | 'right';
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
+  value?: string;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'value'>;
 
 export default memo(
@@ -28,6 +29,7 @@ export default memo(
       placeholder,
       startContent,
       endContent,
+      value,
       ...inputProps
     } = props;
 
@@ -44,6 +46,13 @@ export default memo(
         if (choice === -1) setLastInputValue(props.defaultValue);
       }
     }, [props.defaultValue, choices]);
+
+    useEffect(() => {
+      if (selected !== -1 || localRef.current?.value !== value) {
+        const choice = choices.findIndex((choice) => choice.value === value);
+        setSelected(choice);
+      }
+    }, [value]);
 
     const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
 

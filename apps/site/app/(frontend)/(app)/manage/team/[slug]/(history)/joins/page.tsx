@@ -106,11 +106,10 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
 
   const teamJoins = data?.teamJoin;
 
-  const { control, register, setValue, reset, handleSubmit, formState, watch } = useForm({
+  const { control, register, reset, handleSubmit, formState } = useForm({
     defaultValues,
   });
 
-  const membershipFees = watch('membershipFees');
   if (!teamManage) return null;
 
   const onSubmit = handleSubmit((updateData) => {
@@ -150,16 +149,22 @@ export default function TeamManageTeamJoinsPage({ params }: { params: { slug: st
           <FormItem form={teamManage.joinForm} />
         </div>
         <div className="grid xl-max:grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-6">
-          <RadioFreeInput
-            error={formState.errors.membershipFees?.message}
-            defaultValue={defaultValues.membershipFees}
-            label="Montant de la côtisation"
-            options={feesItems}
-            endContent="€"
-            placeholder="Autre montant"
-            {...register('membershipFees', {
-              onChange: (e) => setValue('membershipFees', e.target.value, { shouldDirty: true }),
-            })}
+          <Controller
+            control={control}
+            name="membershipFees"
+            render={({ field }) => {
+              return (
+                <RadioFreeInput
+                  error={formState.errors.membershipFees?.message}
+                  defaultValue={defaultValues.membershipFees}
+                  label="Montant de la côtisation"
+                  options={feesItems}
+                  endContent="€"
+                  placeholder="Autre montant"
+                  {...field}
+                />
+              );
+            }}
           />
           <Controller
             control={control}
