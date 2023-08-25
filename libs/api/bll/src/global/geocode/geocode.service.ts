@@ -14,6 +14,8 @@ import type { ApiConfig, GeocodeAddress } from '@okampus/shared/types';
 type Feature = {
   lon: number;
   lat: number;
+  address_line1?: string;
+  address_line2?: string;
   category?: string;
   result_type: string;
   name?: string;
@@ -33,7 +35,10 @@ export class GeocodeService {
   axiosInstance: AxiosInstance;
   logger = new Logger(GeocodeService.name);
 
-  constructor(private readonly configService: ConfigService, private readonly em: EntityManager) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly em: EntityManager,
+  ) {
     const options = loadConfig<ApiConfig['geoapify']>(this.configService, 'geoapify');
 
     this.axiosInstance = axios.create({ baseURL: 'https://api.geoapify.com', method: 'GET' });
@@ -60,7 +65,7 @@ export class GeocodeService {
       latitude: result.lat,
       longitude: result.lon,
       category: result.category ?? result.result_type,
-      name: result.name ?? '',
+      name: result.name ?? result.address_line1 ?? '',
       streetNumber: result.housenumber ?? '',
       street: result.street,
       zip: result.postcode,
