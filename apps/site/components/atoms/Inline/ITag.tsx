@@ -17,7 +17,13 @@ export default function ITag({ className, content, onRemove, startContent, endCo
   );
 
   return (
-    <li className={tagClassName} onClick={onRemove}>
+    <li
+      className={tagClassName}
+      onClick={(e) => {
+        e.preventDefault();
+        onRemove?.();
+      }}
+    >
       {startContent && <span className="shrink-0">{startContent}</span>}
       <span className="line-clamp-1 break-all font-medium">{content}</span>
       {endContent && <span className="shrink-0">{endContent}</span>}

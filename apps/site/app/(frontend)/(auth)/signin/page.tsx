@@ -125,6 +125,7 @@ export default function SigninPage() {
                     name="tenant"
                     render={({ field }) => (
                       <SelectInput
+                        placeholder="Établissement"
                         name={field.name}
                         onChange={field.onChange}
                         value={field.value}
