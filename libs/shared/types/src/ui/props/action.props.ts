@@ -27,4 +27,5 @@ export type ActionButtonProps = {
   iconPosition?: 'left' | 'right';
   inheritLabel?: boolean;
   small?: boolean;
+  linkInNewTab?: boolean;
 };

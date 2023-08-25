@@ -41,11 +41,11 @@ export default function EventPage({ params }: { params: { slug: string } }) {
 
   const { event } = useEvent(params.slug);
   const me = useMe();
+  const currentUserEventJoin = me.user.eventJoins?.find((join) => join.event.id === event?.id);
 
   const { format } = useTranslation();
   const [, setNotification] = useAtom(notificationAtom);
 
-  const currentUserEventJoin = me.user.eventJoins?.find((join) => join.event.id === event?.id);
   const { openModal } = useModal();
   const { closeBottomSheet, openBottomSheet } = useBottomSheet();
 
@@ -261,6 +261,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                   />
                 ) : null}
                 <ActionButton
+                  linkInNewTab={true}
                   action={{
                     iconOrSwitch: <IconGps />,
                     type: ActionType.Action,
