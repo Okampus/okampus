@@ -72,6 +72,7 @@ export class EventSeeder extends Factory<Event> {
             latitude: faker.location.latitude(),
             longitude: faker.location.longitude(),
             state: faker.location.state(),
+            name: faker.company.name(),
             streetNumber,
             street: rest.join(' '),
             zip: faker.location.zipCode(),
