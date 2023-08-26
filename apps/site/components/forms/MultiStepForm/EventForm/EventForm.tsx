@@ -42,7 +42,7 @@ const eventFormSchema = z
     bannerId: z.string().nullable(),
     address: geocodeAddressSchema.nullable(),
     website: z.string().url({ message: 'Le lien doit être une URL valide.' }).optional().or(z.literal('')),
-    locationDetails: z
+    details: z
       .string()
       .max(1000, { message: "Les détails de l'emplacement de l'événement ne peuvent pas dépasser 1000 caractères." }),
     formSubmission: z.record(z.string(), z.union([z.boolean(), z.string(), z.instanceof(FileList)])).nullable(),
@@ -73,7 +73,7 @@ const eventFormDefaultValues: EventFormSchema = {
   bannerId: null,
   address: null,
   website: '',
-  locationDetails: '',
+  details: '',
   formSubmission: null,
 };
 
@@ -174,7 +174,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
         if (teamManage) {
           const location =
             data.isOnline || !data.address
-              ? { type: LocationType.Online, onlineLink: data.website }
+              ? { type: LocationType.Online, link: data.website }
               : { type: LocationType.Address, address: { data: data.address } };
 
           const formSubmission = data.formSubmission
@@ -205,7 +205,7 @@ export default function EventForm({ teamManage }: EventFormProps) {
               start: data.start.toISOString(),
               end: data.end.toISOString(),
               name: data.name,
-              location: { data: { ...location, actorId: teamManage.actor.id, locationDetails: data.locationDetails } },
+              location: { data: { ...location, actorId: teamManage.actor.id, details: data.details } },
               content: { data: { text: data.description } },
               nextEventApprovalStepId: tenant.eventApprovalSteps[0].id,
             },

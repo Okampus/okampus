@@ -14,8 +14,9 @@ query GetEventManage($slug: String!) {
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id

@@ -27,20 +27,23 @@ export class Location extends TenantScopedEntity {
   type!: LocationType;
 
   @Property({ type: 'text', default: '' })
-  onlineLink = '';
+  link = '';
 
   @Property({ type: 'text', default: '' })
-  locationDetails = '';
+  details = '';
 
-  @ManyToMany({ type: 'FileUpload' })
-  @TransformCollection()
-  images = new Collection<FileUpload>(this);
+  @Property({ type: 'text', default: '' })
+  name = '';
 
   @ManyToOne({ type: 'Actor' })
   actor!: Actor;
 
   @ManyToOne({ type: 'Address', nullable: true, default: null })
   address: Address | null = null;
+
+  @ManyToMany({ type: 'FileUpload' })
+  @TransformCollection()
+  images = new Collection<FileUpload>(this);
 
   constructor(options: LocationOptions) {
     super(options);

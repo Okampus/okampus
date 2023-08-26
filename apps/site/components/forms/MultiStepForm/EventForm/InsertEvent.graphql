@@ -17,8 +17,9 @@ mutation InsertEvent($object: EventInsertInput!) {
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id

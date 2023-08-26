@@ -301,7 +301,7 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
                 ...(data.fileUploadId && { financeAttachments: { data: [{ fileUploadId: data.fileUploadId }] } }),
                 ...(data.website && {
                   location: {
-                    data: { onlineLink: data.website, type: LocationType.Online, actorId: teamManage.actor.id },
+                    data: { link: data.website, type: LocationType.Online, actorId: teamManage.actor.id },
                   },
                 }),
                 accountId: teamManage.accounts.find((account) => account.type === AccountType.Primary)?.id,

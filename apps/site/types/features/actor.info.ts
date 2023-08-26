@@ -7,13 +7,13 @@ export type ActorMinimalInfo = {
   id: string;
   slug: string;
   name: string;
-  email: string;
   website: string;
   actorImages: ActorImageMinimalInfo[];
 };
 
 export type ActorBaseInfo = ActorMinimalInfo & {
   bio: string;
+  email: string;
   status: string;
   socials: SocialInfo[];
 };

@@ -10803,8 +10803,8 @@ type Event {
   joinFormId: bigint
 
   # An object relationship
-  location: Location
-  locationId: bigint
+  location: Location!
+  locationId: bigint!
   maxParticipants: smallint
   meta(
     # JSON select path
@@ -30996,6 +30996,7 @@ type Location {
   createdAt: timestamptz!
   createdById: bigint
   deletedAt: timestamptz
+  details: String!
 
   # An array relationship
   events(
@@ -31109,7 +31110,7 @@ type Location {
     # filter the rows returned
     where: LegalUnitLocationBoolExp
   ): LegalUnitLocationAggregate!
-  locationDetails: String!
+  link: String!
 
   # An array relationship
   locationImages(
@@ -31146,7 +31147,7 @@ type Location {
     # filter the rows returned
     where: LocationImagesBoolExp
   ): LocationImagesAggregate!
-  onlineLink: String!
+  name: String!
 
   # An object relationship
   tenant: Tenant!
@@ -31241,6 +31242,7 @@ input LocationBoolExp {
   createdAt: TimestamptzComparisonExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
+  details: StringComparisonExp
   events: EventBoolExp
   eventsAggregate: EventAggregateBoolExp
   finances: FinanceBoolExp
@@ -31250,10 +31252,10 @@ input LocationBoolExp {
   individual: IndividualBoolExp
   legalUnitLocations: LegalUnitLocationBoolExp
   legalUnitLocationsAggregate: LegalUnitLocationAggregateBoolExp
-  locationDetails: StringComparisonExp
+  link: StringComparisonExp
   locationImages: LocationImagesBoolExp
   locationImagesAggregate: LocationImagesAggregateBoolExp
-  onlineLink: StringComparisonExp
+  name: StringComparisonExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
@@ -31581,15 +31583,16 @@ input LocationInsertInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  details: String
   events: EventArrRelInsertInput
   finances: FinanceArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   individual: IndividualObjRelInsertInput
   legalUnitLocations: LegalUnitLocationArrRelInsertInput
-  locationDetails: String
+  link: String
   locationImages: LocationImagesArrRelInsertInput
-  onlineLink: String
+  name: String
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
@@ -31602,10 +31605,11 @@ type LocationMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  details: String
   hiddenAt: timestamptz
   id: bigint
-  locationDetails: String
-  onlineLink: String
+  link: String
+  name: String
   tenantId: bigint
   type: String
 }
@@ -31617,10 +31621,11 @@ input LocationMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  details: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  locationDetails: OrderBy
-  onlineLink: OrderBy
+  link: OrderBy
+  name: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -31632,10 +31637,11 @@ type LocationMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  details: String
   hiddenAt: timestamptz
   id: bigint
-  locationDetails: String
-  onlineLink: String
+  link: String
+  name: String
   tenantId: bigint
   type: String
 }
@@ -31647,10 +31653,11 @@ input LocationMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  details: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  locationDetails: OrderBy
-  onlineLink: OrderBy
+  link: OrderBy
+  name: OrderBy
   tenantId: OrderBy
   type: OrderBy
 }
@@ -31689,15 +31696,16 @@ input LocationOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
+  details: OrderBy
   eventsAggregate: EventAggregateOrderBy
   financesAggregate: FinanceAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   individual: IndividualOrderBy
   legalUnitLocationsAggregate: LegalUnitLocationAggregateOrderBy
-  locationDetails: OrderBy
+  link: OrderBy
   locationImagesAggregate: LocationImagesAggregateOrderBy
-  onlineLink: OrderBy
+  name: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -31726,16 +31734,19 @@ enum LocationSelectColumn {
   deletedAt
 
   # column name
+  details
+
+  # column name
   hiddenAt
 
   # column name
   id
 
   # column name
-  locationDetails
+  link
 
   # column name
-  onlineLink
+  name
 
   # column name
   tenantId
@@ -31751,10 +31762,11 @@ input LocationSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  details: String
   hiddenAt: timestamptz
   id: bigint
-  locationDetails: String
-  onlineLink: String
+  link: String
+  name: String
   tenantId: bigint
   type: String
 }
@@ -31829,10 +31841,11 @@ input LocationStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
+  details: String
   hiddenAt: timestamptz
   id: bigint
-  locationDetails: String
-  onlineLink: String
+  link: String
+  name: String
   tenantId: bigint
   type: String
 }
@@ -31873,16 +31886,19 @@ enum LocationUpdateColumn {
   deletedAt
 
   # column name
+  details
+
+  # column name
   hiddenAt
 
   # column name
   id
 
   # column name
-  locationDetails
+  link
 
   # column name
-  onlineLink
+  name
 
   # column name
   tenantId
@@ -59218,6 +59234,9 @@ enum TenantConstraint {
 
   # unique or primary key constraint on columns "event_validation_form_id"
   tenant_event_validation_form_id_unique
+
+  # unique or primary key constraint on columns "oidc_name"
+  tenant_oidc_name_unique
 
   # unique or primary key constraint on columns "id"
   tenant_pkey

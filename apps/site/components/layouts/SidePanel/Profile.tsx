@@ -4,11 +4,11 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { IconMail, IconWorldWww } from '@tabler/icons-react';
 import Link from 'next/link';
 
-import type { ActorMinimalInfo } from '../../../types/features/actor.info';
+import type { ActorBaseInfo } from '../../../types/features/actor.info';
 
 export type ProfileProps = {
   type?: 'user' | 'team' | 'tenant';
-  actor?: ActorMinimalInfo;
+  actor?: ActorBaseInfo;
   socials: { type: string; url: string; pseudo: string; order: number }[];
 };
 export default function Profile({ type, actor, socials }: ProfileProps) {
@@ -22,8 +22,8 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
         <div className="w-full flex gap-2.5 justify-center items-center pb-4 px-4 border-color-1">
           {[...socials]
             ?.sort((a, b) => a.order - b.order)
-            .map((social, idx) => (
-              <a key={idx} href={social.url} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
+            .map((social) => (
+              <a key={social.type} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                 <SocialIcon social={social.type} small={true} className="text-0" />
               </a>
             ))}

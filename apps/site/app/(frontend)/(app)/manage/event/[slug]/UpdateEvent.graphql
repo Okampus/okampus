@@ -14,8 +14,9 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id

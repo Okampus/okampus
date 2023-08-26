@@ -8387,8 +8387,8 @@ export type Event = {
   isTemplate: Scalars['Boolean']['output'];
   joinForm?: Maybe<Form>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
-  location?: Maybe<Location>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
+  location: Location;
+  locationId: Scalars['bigint']['output'];
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   meta: Scalars['jsonb']['output'];
   name: Scalars['String']['output'];
@@ -23661,6 +23661,7 @@ export type Location = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details: Scalars['String']['output'];
   events: Array<Event>;
   eventsAggregate: EventAggregate;
   finances: Array<Finance>;
@@ -23670,10 +23671,10 @@ export type Location = {
   individual?: Maybe<Individual>;
   legalUnitLocations: Array<LegalUnitLocation>;
   legalUnitLocationsAggregate: LegalUnitLocationAggregate;
-  locationDetails: Scalars['String']['output'];
+  link: Scalars['String']['output'];
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
-  onlineLink: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
   type: Scalars['String']['output'];
@@ -23838,6 +23839,7 @@ export type LocationBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  details?: InputMaybe<StringComparisonExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
   finances?: InputMaybe<FinanceBoolExp>;
@@ -23847,10 +23849,10 @@ export type LocationBoolExp = {
   individual?: InputMaybe<IndividualBoolExp>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
   legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateBoolExp>;
-  locationDetails?: InputMaybe<StringComparisonExp>;
+  link?: InputMaybe<StringComparisonExp>;
   locationImages?: InputMaybe<LocationImagesBoolExp>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
-  onlineLink?: InputMaybe<StringComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
@@ -24125,15 +24127,16 @@ export type LocationInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
   finances?: InputMaybe<FinanceArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   individual?: InputMaybe<IndividualObjRelInsertInput>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
   locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -24146,10 +24149,11 @@ export type LocationMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  locationDetails?: Maybe<Scalars['String']['output']>;
-  onlineLink?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -24160,10 +24164,11 @@ export type LocationMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -24175,10 +24180,11 @@ export type LocationMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  locationDetails?: Maybe<Scalars['String']['output']>;
-  onlineLink?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -24189,10 +24195,11 @@ export type LocationMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -24223,15 +24230,16 @@ export type LocationOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   individual?: InputMaybe<IndividualOrderBy>;
   legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -24247,10 +24255,11 @@ export enum LocationSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Details = 'details',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  LocationDetails = 'locationDetails',
-  OnlineLink = 'onlineLink',
+  Link = 'link',
+  Name = 'name',
   TenantId = 'tenantId',
   Type = 'type',
 }
@@ -24261,10 +24270,11 @@ export type LocationSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -24331,10 +24341,11 @@ export type LocationStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -24362,10 +24373,11 @@ export enum LocationUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Details = 'details',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  LocationDetails = 'locationDetails',
-  OnlineLink = 'onlineLink',
+  Link = 'link',
+  Name = 'name',
   TenantId = 'tenantId',
   Type = 'type',
 }
@@ -43592,6 +43604,7 @@ export enum TenantConstraint {
   TenantAdminTeamIdUnique = 'tenant_admin_team_id_unique',
   TenantDomainUnique = 'tenant_domain_unique',
   TenantEventValidationFormIdUnique = 'tenant_event_validation_form_id_unique',
+  TenantOidcNameUnique = 'tenant_oidc_name_unique',
   TenantPkey = 'tenant_pkey',
 }
 
@@ -48239,8 +48252,9 @@ export type GetEventQuery = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -48256,7 +48270,7 @@ export type GetEventQuery = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
@@ -48453,8 +48467,9 @@ export type GetEventsQuery = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -48470,7 +48485,7 @@ export type GetEventsQuery = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
@@ -48705,8 +48720,9 @@ export type GetEventManageQuery = {
       id: string;
       createdAt: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -48722,7 +48738,7 @@ export type GetEventManageQuery = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: {
       __typename: 'FileUpload';
       id: string;
@@ -49103,8 +49119,9 @@ export type UpdateEventMutation = {
       id: string;
       createdAt: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -49120,7 +49137,7 @@ export type UpdateEventMutation = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: {
       __typename: 'FileUpload';
       id: string;
@@ -49519,8 +49536,8 @@ export type UpdateLocationMutation = {
     id: string;
     createdAt: string;
     type: string;
-    onlineLink: string;
-    locationDetails: string;
+    link: string;
+    details: string;
     address: {
       __typename: 'Address';
       id: string;
@@ -50075,8 +50092,9 @@ export type GetTeamManageQuery = {
             id: string;
             type: string;
             createdAt: string;
-            onlineLink: string;
-            locationDetails: string;
+            link: string;
+            name: string;
+            details: string;
             address: {
               __typename: 'Address';
               id: string;
@@ -50092,7 +50110,7 @@ export type GetTeamManageQuery = {
               country: string;
               geoapifyId: string | null;
             } | null;
-          } | null;
+          };
           banner: {
             __typename: 'FileUpload';
             id: string;
@@ -50456,8 +50474,9 @@ export type GetTeamManageQuery = {
             id: string;
             createdAt: string;
             type: string;
-            locationDetails: string;
-            onlineLink: string;
+            link: string;
+            name: string;
+            details: string;
             address: {
               __typename: 'Address';
               id: string;
@@ -50537,8 +50556,8 @@ export type GetTeamManageQuery = {
               id: string;
               createdAt: string;
               type: string;
-              locationDetails: string;
-              onlineLink: string;
+              details: string;
+              link: string;
               address: {
                 __typename: 'Address';
                 id: string;
@@ -50625,8 +50644,9 @@ export type GetTeamManageQuery = {
               id: string;
               type: string;
               createdAt: string;
-              onlineLink: string;
-              locationDetails: string;
+              link: string;
+              name: string;
+              details: string;
               address: {
                 __typename: 'Address';
                 id: string;
@@ -51104,8 +51124,9 @@ export type GetEventOrganizesQuery = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -51121,7 +51142,7 @@ export type GetEventOrganizesQuery = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
@@ -51574,8 +51595,9 @@ export type GetTeamDashboardQuery = {
             id: string;
             createdAt: string;
             type: string;
-            locationDetails: string;
-            onlineLink: string;
+            link: string;
+            name: string;
+            details: string;
             address: {
               __typename: 'Address';
               id: string;
@@ -51655,8 +51677,9 @@ export type GetTeamDashboardQuery = {
               id: string;
               createdAt: string;
               type: string;
-              locationDetails: string;
-              onlineLink: string;
+              link: string;
+              name: string;
+              details: string;
               address: {
                 __typename: 'Address';
                 id: string;
@@ -51743,8 +51766,9 @@ export type GetTeamDashboardQuery = {
               id: string;
               type: string;
               createdAt: string;
-              onlineLink: string;
-              locationDetails: string;
+              link: string;
+              name: string;
+              details: string;
               address: {
                 __typename: 'Address';
                 id: string;
@@ -51883,8 +51907,9 @@ export type GetEventsValidationQuery = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -51900,7 +51925,7 @@ export type GetEventsValidationQuery = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     nextEventApprovalStep: {
       __typename: 'EventApprovalStep';
@@ -52494,7 +52519,34 @@ export type InsertTeamJoinMutationVariables = Exact<{
 
 export type InsertTeamJoinMutation = {
   __typename?: 'Mutation';
-  insertTeamJoinOne: { __typename: 'TeamJoin'; id: string } | null;
+  insertTeamJoinOne: {
+    __typename: 'TeamJoin';
+    id: string;
+    createdAt: string;
+    state: string;
+    team: {
+      __typename: 'Team';
+      id: string;
+      createdAt: string;
+      type: string;
+      actor: {
+        __typename: 'Actor';
+        id: string;
+        createdAt: string;
+        email: string;
+        name: string;
+        slug: string;
+        website: string;
+        actorImages: Array<{
+          __typename: 'ActorImage';
+          id: string;
+          createdAt: string;
+          type: string;
+          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
+        }>;
+      };
+    };
+  } | null;
 };
 
 export type GetTeamsQueryVariables = Exact<{
@@ -52945,8 +52997,9 @@ export type InsertEventMutation = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -52962,7 +53015,7 @@ export type InsertEventMutation = {
         country: string;
         geoapifyId: string | null;
       } | null;
-    } | null;
+    };
     banner: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
     eventTags: Array<{
       __typename?: 'EventTags';
@@ -53781,8 +53834,9 @@ export type GetLegalUnitLocationsQuery = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -53891,8 +53945,9 @@ export type InsertLegalUnitLocationMutation = {
       __typename: 'Location';
       id: string;
       type: string;
-      onlineLink: string;
-      locationDetails: string;
+      link: string;
+      name: string;
+      details: string;
       address: {
         __typename: 'Address';
         id: string;
@@ -54606,8 +54661,9 @@ export const GetEventDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -54917,8 +54973,9 @@ export const GetEventsDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -55248,8 +55305,9 @@ export const GetEventManageDocument = gql`
         id
         createdAt
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -55755,8 +55813,9 @@ export const UpdateEventDocument = gql`
         id
         createdAt
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -56320,8 +56379,8 @@ export const UpdateLocationDocument = gql`
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      details
       address {
         __typename
         id
@@ -57269,8 +57328,9 @@ export const GetTeamManageDocument = gql`
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -57688,6 +57748,10 @@ export const GetTeamManageDocument = gql`
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -57703,9 +57767,6 @@ export const GetTeamManageDocument = gql`
                 country
                 geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -57803,8 +57864,8 @@ export const GetTeamManageDocument = gql`
                   geoapifyId
                 }
                 type
-                locationDetails
-                onlineLink
+                details
+                link
               }
             }
             bicSwift
@@ -57885,8 +57946,10 @@ export const GetTeamManageDocument = gql`
                 id
                 type
                 createdAt
-                onlineLink
-                locationDetails
+                type
+                link
+                name
+                details
                 address {
                   __typename
                   id
@@ -58627,8 +58690,9 @@ export const GetEventOrganizesDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -59344,6 +59408,10 @@ export const GetTeamDashboardDocument = gql`
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -59359,9 +59427,6 @@ export const GetTeamDashboardDocument = gql`
                 country
                 geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -59443,6 +59508,10 @@ export const GetTeamDashboardDocument = gql`
                 __typename
                 id
                 createdAt
+                type
+                link
+                name
+                details
                 address {
                   __typename
                   id
@@ -59458,9 +59527,6 @@ export const GetTeamDashboardDocument = gql`
                   country
                   geoapifyId
                 }
-                type
-                locationDetails
-                onlineLink
               }
             }
             bicSwift
@@ -59539,8 +59605,9 @@ export const GetTeamDashboardDocument = gql`
                 id
                 type
                 createdAt
-                onlineLink
-                locationDetails
+                link
+                name
+                details
                 address {
                   __typename
                   id
@@ -59782,8 +59849,9 @@ export const GetEventsValidationDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -60615,6 +60683,37 @@ export const InsertTeamJoinDocument = gql`
     insertTeamJoinOne(object: $object) {
       __typename
       id
+      createdAt
+      state
+      team {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -61406,8 +61505,9 @@ export const InsertEventDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -62802,8 +62902,9 @@ export const GetLegalUnitLocationsDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -63025,8 +63126,9 @@ export const InsertLegalUnitLocationDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id

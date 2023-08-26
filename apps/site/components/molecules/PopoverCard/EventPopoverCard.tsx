@@ -21,10 +21,10 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
       {/* <CloseButtonIcon className="absolute right-4 top-4" onClick={onClose} /> */}
       <BannerImage className="rounded-t-2xl" name={event.name} aspectRatio={4.5} src={event?.banner?.url} />
       <div className="px-10 py-8">
-        <Link href={EVENT_ROUTE(event?.slug)} className="text-2xl font-bold text-1">
+        <Link href={EVENT_ROUTE(event?.slug)} className="text-2xl font-semibold text-0">
           {event?.name}
         </Link>
-        <div className="text-primary font-semibold tabular-nums capitalize">
+        <div className="text-primary font-semibold tabular-nums uppercase">
           {format('dayHourRange', [new Date(event.start), new Date(event.end)])}
         </div>
         <div className="grid grid-cols-[1.25rem_1fr] gap-4 my-8">
@@ -39,16 +39,16 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
           </div>
           <IconLocation className="h-6 w-6" />
           {event.location && <ILocation location={event.location} />}
-          {event?.location?.locationDetails && (
+          {event?.location?.details && (
             <>
               <IconAlignLeft />
-              <div className="line-clamp-4 text-2">{event?.location?.locationDetails}</div>
+              <div className="line-clamp-4 text-2">{event?.location?.details}</div>
             </>
           )}
           {event.description && (
             <>
               <IconPencil />
-              <div className="line-clamp-4 font-medium text-2">{event.description}</div>
+              <div className="line-clamp-4 text-2">{event.description}</div>
             </>
           )}
         </div>

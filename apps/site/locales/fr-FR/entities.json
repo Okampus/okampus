@@ -967,10 +967,10 @@
       "one": "emplacement",
       "other": "emplacements"
     },
-    "locationDetails": {
+    "details": {
       "determinerType": "masculine",
-      "one": "complément d'adresse",
-      "other": "compléments d'adresse"
+      "one": "complément d'information du lieu",
+      "other": "compléments d'information du lieu"
     },
     "locationType": {
       "determinerType": "masculine",
@@ -1102,7 +1102,7 @@
       "one": "portée OIDC",
       "other": "portées OIDC"
     },
-    "onlineLink": {
+    "link": {
       "determinerType": "masculine",
       "one": "lien en ligne",
       "other": "liens en ligne"

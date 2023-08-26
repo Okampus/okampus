@@ -4,8 +4,8 @@ mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
     id
     createdAt
     type
-    onlineLink
-    locationDetails
+    link
+    details
     address {
       __typename
       id

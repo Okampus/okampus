@@ -967,7 +967,7 @@
       "one": "location",
       "other": "locations"
     },
-    "locationDetails": {
+    "details": {
       "determinerType": "short",
       "one": "location details",
       "other": "location details"
@@ -1097,7 +1097,7 @@
       "one": "OIDC scopes",
       "other": "OIDC scopes"
     },
-    "onlineLink": {
+    "link": {
       "determinerType": "short",
       "one": "online link",
       "other": "online links"

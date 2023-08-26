@@ -17,8 +17,9 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id

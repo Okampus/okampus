@@ -17,8 +17,9 @@ query GetEvent($slug: String!) {
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id

@@ -201,6 +201,10 @@ query GetTeamDashboard {
             __typename
             id
             createdAt
+            type
+            link
+            name
+            details
             address {
               __typename
               id
@@ -216,9 +220,6 @@ query GetTeamDashboard {
               country
               geoapifyId
             }
-            type
-            locationDetails
-            onlineLink
           }
         }
         bicSwift
@@ -300,6 +301,10 @@ query GetTeamDashboard {
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -315,9 +320,6 @@ query GetTeamDashboard {
                 country
                 geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -396,8 +398,9 @@ query GetTeamDashboard {
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              link
+              name
+              details
               address {
                 __typename
                 id

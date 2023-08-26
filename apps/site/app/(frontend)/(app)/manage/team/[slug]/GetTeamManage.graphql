@@ -207,8 +207,9 @@ query GetTeamManage($slug: String!) {
             id
             type
             createdAt
-            onlineLink
-            locationDetails
+            link
+            name
+            details
             address {
               __typename
               id
@@ -626,6 +627,10 @@ query GetTeamManage($slug: String!) {
             __typename
             id
             createdAt
+            type
+            link
+            name
+            details
             address {
               __typename
               id
@@ -641,9 +646,6 @@ query GetTeamManage($slug: String!) {
               country
               geoapifyId
             }
-            type
-            locationDetails
-            onlineLink
           }
         }
         bicSwift
@@ -741,8 +743,8 @@ query GetTeamManage($slug: String!) {
                 geoapifyId
               }
               type
-              locationDetails
-              onlineLink
+              details
+              link
             }
           }
           bicSwift
@@ -823,8 +825,10 @@ query GetTeamManage($slug: String!) {
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
