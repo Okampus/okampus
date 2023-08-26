@@ -21,17 +21,20 @@ import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
 import { useModal } from '../../../../../hooks/context/useModal';
 import { useTranslation } from '../../../../../hooks/context/useTranslation';
 
-import { mergeCache } from '../../../../../utils/apollo/merge-cache';
+import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 
+import { UserLoginFragment, getUserLoginWhere } from '../../../../../utils/apollo/fragments';
 import { useInsertEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType, ToastType } from '@okampus/shared/types';
 import { IconGps, IconMail, IconQrcode, IconWorldWww } from '@tabler/icons-react';
 
+import { produce } from 'immer';
 import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-
 import { useMemo } from 'react';
+
+import type { UserLoginInfo } from '../../../../../utils/apollo/fragments';
 
 export default function EventPage({ params }: { params: { slug: string } }) {
   const MapWithMarker = useMemo(
@@ -95,12 +98,19 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                     };
                     insertEventJoin({
                       variables: { object },
-                      onCompleted: ({ insertEventJoinOne: data }) => {
-                        if (!data) return;
-                        mergeCache(
-                          { __typename: 'User', id: me.user.id },
-                          { fieldName: 'eventJoins', fragmentOn: 'EventJoin', data },
-                        );
+                      onCompleted: ({ insertEventJoinOne }) => {
+                        if (!insertEventJoinOne) return;
+
+                        updateFragment<UserLoginInfo>({
+                          __typename: 'UserLogin',
+                          fragment: UserLoginFragment,
+                          where: getUserLoginWhere(me),
+                          update: (data) =>
+                            produce(data, (data) => {
+                              data.user.eventJoins.push(insertEventJoinOne);
+                            }),
+                        });
+
                         closeBottomSheet();
                         setNotification({
                           type: ToastType.Success,
@@ -114,12 +124,19 @@ export default function EventPage({ params }: { params: { slug: string } }) {
             })
           : insertEventJoin({
               variables: { object: { eventId: event.id, joinedById: me.user.individual.id } },
-              onCompleted: ({ insertEventJoinOne: data }) => {
-                if (!data) return;
-                mergeCache(
-                  { __typename: 'User', id: me.user.id },
-                  { fieldName: 'eventJoins', fragmentOn: 'EventJoin', data },
-                );
+              onCompleted: ({ insertEventJoinOne }) => {
+                if (!insertEventJoinOne) return;
+
+                updateFragment<UserLoginInfo>({
+                  __typename: 'UserLogin',
+                  fragment: UserLoginFragment,
+                  where: getUserLoginWhere(me),
+                  update: (data) =>
+                    produce(data, (data) => {
+                      data.user.eventJoins.push(insertEventJoinOne);
+                    }),
+                });
+
                 setNotification({
                   type: ToastType.Success,
                   message: 'Votre inscription a bien été prise en compte !',

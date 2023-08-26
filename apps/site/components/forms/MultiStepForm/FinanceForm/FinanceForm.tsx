@@ -32,9 +32,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../../context/navigation';
-
 import type { LegalUnitMinimalInfo } from '../../../../types/features/legal-unit.info';
+import type { TeamManageInfo } from '../../../../utils/apollo/fragments';
 
 const financeFormSchema = z.object({
   amount: z.string().refine((value) => extractPositiveNumber(value), {
@@ -215,7 +214,6 @@ function FinanceReceiptInputSkip({ methods: { goToStep } }: FinanceFormStepProps
 export type FinanceFormProps = { teamManage: TeamManageInfo };
 export default function FinanceForm({ teamManage }: FinanceFormProps) {
   const { closeModal } = useModal();
-
   const [insertFinance] = useInsertFinanceMutation();
 
   return (
@@ -327,8 +325,10 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
               },
             },
             onCompleted: ({ insertFinanceOne: data }) => {
-              const id = teamManage.id;
-              mergeCache({ __typename: 'Team', id }, { fieldName: 'finances', fragmentOn: 'Finance', data });
+              mergeCache(
+                { __typename: 'Team', id: teamManage.id },
+                { fieldName: 'finances', fragmentOn: 'Finance', data },
+              );
               closeModal();
             },
           });

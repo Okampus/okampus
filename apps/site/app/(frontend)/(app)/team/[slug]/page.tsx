@@ -5,6 +5,7 @@ import AvatarImage from '../../../../../components/atoms/Image/AvatarImage';
 import GroupItem from '../../../../../components/atoms/Item/GroupItem';
 import ViewLayout from '../../../../../components/atoms/Layout/ViewLayout';
 import CTAButton from '../../../../../components/molecules/Button/CTAButton';
+import FollowButton from '../../../../../components/molecules/Button/FollowButton';
 import EventCard from '../../../../../components/molecules/Card/EventCard';
 import FormRenderer from '../../../../../components/organisms/FormRenderer';
 
@@ -12,16 +13,19 @@ import { notificationAtom } from '../../../../../context/global';
 import { useMe, useTeam } from '../../../../../context/navigation';
 import { useBottomSheet } from '../../../../../hooks/context/useBottomSheet';
 import { useQueryAndSubscribe } from '../../../../../hooks/apollo/useQueryAndSubscribe';
-import { mergeCache } from '../../../../../utils/apollo/merge-cache';
+import { updateFragment } from '../../../../../utils/apollo/update-fragment';
+import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
 
 import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
 import { EventState, TeamRoleType } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
+import { produce } from 'immer';
 import { useAtom } from 'jotai';
 import { notFound } from 'next/navigation';
 
 import type { ActionCTA } from '../../../../../components/molecules/Button/CTAButton';
+import type { UserLoginInfo } from '../../../../../utils/apollo/fragments';
 import type { GetEventsQuery, GetEventsQueryVariables } from '@okampus/shared/graphql';
 
 export default function TeamPage({ params }: { params: { slug: string } }) {
@@ -58,7 +62,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
     } else {
       type = ActionType.Primary;
       label = 'Adhérer';
-      action = action = () =>
+      action = () =>
         openBottomSheet({
           node: (
             <FormRenderer
@@ -74,13 +78,19 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                           formSubmission: { data: { submission: data } },
                         },
                       },
-                      onCompleted: ({ insertTeamJoinOne: data }) => {
+                      onCompleted: ({ insertTeamJoinOne }) => {
+                        if (!insertTeamJoinOne) return;
                         closeBottomSheet();
                         setNotification({ message: 'Votre demande a été envoyée', type: ToastType.Success });
-                        mergeCache(
-                          { __typename: 'User', id: me.user.id },
-                          { fieldName: 'teamJoins', fragmentOn: 'TeamJoin', data },
-                        );
+                        updateFragment<UserLoginInfo>({
+                          __typename: 'UserLogin',
+                          fragment: UserLoginFragment,
+                          where: { user: { individual: { actor: { slug: me.user.individual.actor.slug } } } },
+                          update: (userLogin) =>
+                            produce(userLogin, (draft) => {
+                              draft.user.teamJoins.push(insertTeamJoinOne);
+                            }),
+                        });
                       },
                     })
                   : setNotification({
@@ -102,9 +112,12 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
             <AvatarImage size={32} actor={team.actor} type="team" />
             <div className="flex flex-col gap-2">
               {team?.actor.name}
-              <CTAButton className="min-w-[8rem] line-clamp-1" type={type} action={action}>
-                {label}
-              </CTAButton>
+              <span className="flex items-center gap-2">
+                <CTAButton className="min-w-[8rem] line-clamp-1" type={type} action={action}>
+                  {label}
+                </CTAButton>
+                <FollowButton actorId={team.actor.id} />
+              </span>
             </div>
           </div>
           {team?.actor.socials.length > 0 && (
@@ -149,7 +162,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
           <hr className="border-[var(--border-2)] my-12" />
           <GroupItem
             heading="Les derniers événements"
-            groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-8"
+            groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4"
           >
             {events.map((event) => (
               <EventCard key={event.id} event={event} />

@@ -13,8 +13,9 @@ import ChangeSetToast from '../../../../../../../../components/organisms/Form/Ch
 import { useTeamManage } from '../../../../../../../../context/navigation';
 
 import { useCurrentBreakpoint } from '../../../../../../../../hooks/useCurrentBreakpoint';
-import { filterCache, mergeCache } from '../../../../../../../../utils/apollo/merge-cache';
+import { updateFragment } from '../../../../../../../../utils/apollo/update-fragment';
 
+import { TeamFragment } from '../../../../../../../../utils/apollo/fragments';
 import {
   useDeleteSocialsMutation,
   useInsertSocialsMutation,
@@ -31,6 +32,8 @@ import { useForm } from 'react-hook-form';
 
 import * as z from 'zod';
 
+import { produce } from 'immer';
+import type { TeamInfo } from '../../../../../../../../utils/apollo/fragments';
 import type { SocialInfo } from '../../../../../../../../types/features/social.info';
 
 const contactFormSchema = z.object({
@@ -94,11 +97,17 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
           variables: { where: { id: { _in } } },
           onCompleted: ({ deleteSocial: data }) => {
             if (!teamManage.actor || !data) return;
-            filterCache(
-              { __typename: 'Actor', id: teamManage.actor.id },
-              { fieldName: 'socials', typename: 'Social' },
-              data.returning.map((social) => social.id),
-            );
+            updateFragment<TeamInfo>({
+              __typename: 'Team',
+              fragment: TeamFragment,
+              where: { actor: { slug: teamManage.actor.slug } },
+              update: (team) =>
+                produce(team, (draft) => {
+                  draft.actor.socials = draft.actor.socials.filter(
+                    (social) => !data.returning.some((removedSocial) => removedSocial.id === social.id),
+                  );
+                }),
+            });
           },
         }),
       );
@@ -115,12 +124,15 @@ export default function TeamManageSocials({ params }: { params: { slug: string }
             variables: { objects },
             onCompleted: ({ insertSocial: data }) => {
               if (!data) return;
-              for (const social of data.returning) {
-                mergeCache(
-                  { __typename: 'Actor', id: teamManage.actor.id },
-                  { fieldName: 'socials', fragmentOn: 'Social', data: social },
-                );
-              }
+              updateFragment<TeamInfo>({
+                __typename: 'Team',
+                fragment: TeamFragment,
+                where: { actor: { slug: teamManage.actor.slug } },
+                update: (team) =>
+                  produce(team, (draft) => {
+                    draft.actor.socials.push(...data.returning);
+                  }),
+              });
             },
           }),
         );

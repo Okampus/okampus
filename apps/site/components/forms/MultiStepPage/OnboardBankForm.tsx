@@ -13,8 +13,8 @@ import { useInsertBankMutation, useInsertAccountMutation } from '@okampus/shared
 import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
 
 import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
-import type { TeamManageInfo } from '../../../context/navigation';
 import type { LegalUnitLocationMinimalInfo } from '../../../types/features/legal-unit-location.info';
+import type { TeamManageInfo } from '../../../utils/apollo/fragments';
 
 export type OnboardBankFormProps = {
   teamManage: TeamManageInfo;

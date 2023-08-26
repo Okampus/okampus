@@ -1,9 +1,17 @@
 import ActionButton from './ActionButton';
+import { notificationAtom } from '../../../context/global';
 import { useMe } from '../../../context/navigation';
 
+import { updateFragment } from '../../../utils/apollo/update-fragment';
+import { UserLoginFragment, getUserLoginWhere } from '../../../utils/apollo/fragments';
 import { useDeleteFollowMutation, useInsertFollowMutation } from '@okampus/shared/graphql';
+import { ActionType, ToastType } from '@okampus/shared/types';
 
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
+import { produce } from 'immer';
+
+import type { UserLoginInfo } from '../../../utils/apollo/fragments';
 
 export type FollowButtonProps = {
   className?: string;
@@ -12,12 +20,15 @@ export type FollowButtonProps = {
 };
 
 export default function FollowButton({ className, actorId, small }: FollowButtonProps) {
-  const me = useMe();
+  const [, setNotification] = useAtom(notificationAtom);
 
-  const isFollowing = me.user.individual.following.find((followedActor) => followedActor.id === actorId);
+  const me = useMe();
+  const isFollowing = me.user.individual.following.find((followed) => followed.actor.id === actorId);
 
   const [insertFollow] = useInsertFollowMutation();
   const [deleteFollow] = useDeleteFollowMutation();
+
+  console.log({ isFollowing }, me.user.individual.following);
 
   return (
     <ActionButton
@@ -25,11 +36,52 @@ export default function FollowButton({ className, actorId, small }: FollowButton
       className={clsx(className, '!w-36')}
       action={{
         active: !!isFollowing,
-        label: 'Suivre',
+        label: isFollowing ? 'Suivi' : 'Suivre',
+        type: ActionType.Action,
         linkOrActionOrMenu: () =>
           isFollowing
-            ? deleteFollow({ variables: { id: actorId } })
-            : insertFollow({ variables: { object: { followedActorId: actorId } } }),
+            ? deleteFollow({
+                variables: { id: isFollowing.id },
+                onCompleted: ({ deleteFollowByPk }) => {
+                  updateFragment<UserLoginInfo>({
+                    __typename: 'UserLogin',
+                    fragment: UserLoginFragment,
+                    where: getUserLoginWhere(me),
+                    update: (data) =>
+                      produce(data, (data) => {
+                        data.user.individual.following = data.user.individual.following.filter(
+                          (follow) => follow.id !== deleteFollowByPk?.id,
+                        );
+                      }),
+                  });
+
+                  setNotification({
+                    type: ToastType.Success,
+                    message: `Vous ne suivez plus ${deleteFollowByPk?.actor.name} !`,
+                  });
+                },
+              })
+            : insertFollow({
+                variables: { object: { followedActorId: actorId } },
+                onCompleted: ({ insertFollowOne }) => {
+                  if (!insertFollowOne) return;
+
+                  updateFragment<UserLoginInfo>({
+                    __typename: 'UserLogin',
+                    fragment: UserLoginFragment,
+                    where: getUserLoginWhere(me),
+                    update: (data) =>
+                      produce(data, (data) => {
+                        data.user.individual.following.push(insertFollowOne);
+                      }),
+                  });
+
+                  setNotification({
+                    type: ToastType.Success,
+                    message: `Vous suivez désormais ${insertFollowOne.actor.name} !`,
+                  });
+                },
+              }),
       }}
     />
   );

@@ -48,7 +48,7 @@ export default function TeamManageEventsPage({ params }: { params: { slug: strin
   const stepsCount = tenant?.eventApprovalSteps.length;
 
   const variables = {
-    where: { team: { actor: { slug: { _eq: params.slug } } }, event: { state: { _eq: 'Published' } } },
+    where: { team: { actor: { slug: { _eq: params.slug } } } },
     orderBy: [{ event: { start: OrderBy.Asc } }],
   };
 

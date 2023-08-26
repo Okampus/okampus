@@ -12,10 +12,11 @@ import { GetMeDocument } from '@okampus/shared/graphql';
 import { ApolloProvider } from '@apollo/client';
 
 import { useAtom } from 'jotai';
-import type { UserMeInfo } from '../../context/navigation';
+
+import type { UserLoginInfo } from '../../utils/apollo/fragments';
 
 export type ApolloJotaiInitializeMeProps = {
-  me: UserMeInfo;
+  me: UserLoginInfo;
   children: React.ReactNode;
 };
 

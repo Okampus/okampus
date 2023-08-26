@@ -26,7 +26,7 @@ import {
 } from '@tabler/icons-react';
 
 import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListAccordeon';
-import type { TeamManageInfo, TenantInfo } from '../../../context/navigation';
+import type { TeamManageInfo, TenantInfo } from '../../../utils/apollo/fragments';
 
 function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
   const manageTeamRoute = (route: string) => `/manage/team/${team?.actor.slug}/${route}`;
