@@ -212,6 +212,9 @@ dependencies:
   ical-generator:
     specifier: ^5.0.0
     version: 5.0.0(@types/node@20.4.0)(dayjs@1.11.0)
+  immer:
+    specifier: ^10.0.0
+    version: 10.0.2
   ioredis:
     specifier: ^5.3.0
     version: 5.3.0
