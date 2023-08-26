@@ -8,6 +8,7 @@ import PopoverTrigger from '../../../atoms/Popup/Popover/PopoverTrigger';
 import PopoverContent from '../../../atoms/Popup/Popover/PopoverContent';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 import { useOutsideClick } from '../../../../hooks/useOutsideClick';
+import { triggerOnChange } from '../../../../utils/dom/trigger-on-change';
 
 import { range } from '@okampus/shared/utils';
 import { IconCalendarEvent } from '@tabler/icons-react';
@@ -110,7 +111,7 @@ export default memo(
           <Popover forcePlacement={true} placement="bottom-start" controlledOpen={isOpen}>
             <PopoverTrigger
               onClick={() => !isOpen && setIsOpen(!isOpen)}
-              className="absolute top-[1px] bottom-[1px] right-2.5 bg-[var(--bg-input)]"
+              className="absolute top-[1px] bottom-[1px] right-1 px-2 bg-[var(--bg-input)]"
             >
               <IconCalendarEvent className="p-0.5" />
             </PopoverTrigger>
@@ -125,13 +126,12 @@ export default memo(
                 setDate={(date) => {
                   date = dateWithoutTimezone(date);
                   if (localRef.current) {
-                    const isoString = date.toISOString();
-                    localRef.current.value = isoString
+                    const value = date
+                      .toISOString()
                       .replace(/(\d{4}-\d{2}-\d{2})T\d{2}:\d{2}/, `$1T${currentHour ?? '00'}:${currentMinutes ?? '00'}`)
                       .slice(0, 16);
 
-                    localRef.current.dispatchEvent(new Event('change'));
-                    setDateISOString(localRef.current.value || null);
+                    triggerOnChange(localRef.current, value);
                   }
                   setIsOpen(false);
                 }}

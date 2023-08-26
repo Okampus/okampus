@@ -1,4 +1,6 @@
 import FieldSet from '../FieldSet';
+import { triggerOnChange } from '../../../../utils/dom/trigger-on-change';
+
 import clsx from 'clsx';
 
 import { forwardRef, memo, useEffect, useRef, useState } from 'react';
@@ -56,26 +58,11 @@ export default memo(
 
     const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
 
-    function setNativeValue(element: HTMLInputElement, value: string) {
-      const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {};
-      const prototype = Object.getPrototypeOf(element);
-      const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {};
-
-      if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
-        prototypeValueSetter.call(element, value);
-      } else if (valueSetter) {
-        valueSetter.call(element, value);
-      } else {
-        throw new Error('The given element does not have a value setter');
-      }
-    }
-
     const onClickOther = () => {
       setSelected(-1);
       if (localRef.current) {
         localRef.current.focus();
-        setNativeValue(localRef.current, lastInputValue);
-        localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+        triggerOnChange(localRef.current, lastInputValue);
       }
     };
 
@@ -107,10 +94,7 @@ export default memo(
       <FieldSet {...fieldSetProps}>
         {choices.map(({ value, label }, idx) => {
           const onClick = () => {
-            if (localRef.current) {
-              setNativeValue(localRef.current, value);
-              localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            if (localRef.current) triggerOnChange(localRef.current, value);
             setSelected(idx);
           };
 

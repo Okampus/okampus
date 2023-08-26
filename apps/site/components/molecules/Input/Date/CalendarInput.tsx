@@ -94,6 +94,9 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
         {monthMatrix.map((row, rowIdx) => (
           <div key={rowIdx} className="flex">
             {row.map((day, idx) => {
+              const [month, year] =
+                rowIdx > 3 && day < 15 ? nextMonthYear : rowIdx === 0 && day > 20 ? previousMonthYear : monthYear;
+
               return (
                 <button
                   key={idx}
