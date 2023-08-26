@@ -30,7 +30,6 @@ type DayProps = {
   events: EventMinimalInfo[];
 };
 export function Day({ day, className, dayClass, isOtherMonth, events }: DayProps) {
-  const { format } = useTranslation();
   const currentWindowSize = useCurrentBreakpoint();
 
   const [getEvent, { data }] = useGetEventLazyQuery();
@@ -130,7 +129,7 @@ export default function Calendar({ events, monthYear, setMonthYear }: CalendarPr
         {monthMatrix.map((days, rowIdx) => (
           <Fragment key={rowIdx}>
             {days.map((day, idx) => {
-              const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 10);
+              const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 15);
               const className = clsx(rowIdx === 0 ? '' : 'border-t', idx === 0 ? '' : 'border-l');
 
               return (

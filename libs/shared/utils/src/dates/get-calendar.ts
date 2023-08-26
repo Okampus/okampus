@@ -41,7 +41,8 @@ export function getCalendar(month: number, year: number, startDay: StartDay = St
   }
 
   if (week.length > 0) calendar.push(week);
-  else if (calendar.length < 6) {
+  while (calendar.length < 6) {
+    week = [];
     const lastDay = calendar.at(-1)?.at(-1) ?? 0;
     for (let i = 0; i < 7; i++) week.push(lastDay + i + 1);
     calendar.push(week);

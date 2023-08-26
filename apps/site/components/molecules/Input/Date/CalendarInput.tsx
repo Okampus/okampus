@@ -19,7 +19,7 @@ export type CalendarInputProps = {
 };
 
 function dayClass(day: number, date: Date, rowIdx: number) {
-  const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 10);
+  const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 15);
   if (isOtherMonth) return 'bg-3-hover text-3 opacity-50';
   if (date.getDate() === day) return 'bg-[var(--info)] text-white';
   return 'bg-4-hover text-1';
