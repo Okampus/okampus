@@ -47972,7 +47972,6 @@ export type GetMeQuery = {
         following: Array<{
           __typename: 'Follow';
           id: string;
-          createdAt: string;
           actor: {
             __typename: 'Actor';
             id: string;
@@ -47984,21 +47983,7 @@ export type GetMeQuery = {
               type: string;
               image: { __typename: 'FileUpload'; id: string; url: string };
             }>;
-            team: {
-              __typename: 'Team';
-              id: string;
-              actor: {
-                __typename: 'Actor';
-                id: string;
-                slug: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  type: string;
-                  image: { __typename: 'FileUpload'; id: string; url: string };
-                }>;
-              };
-            } | null;
+            team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
           };
         }>;
       };
@@ -48437,7 +48422,14 @@ export type InsertEventJoinMutationVariables = Exact<{
 
 export type InsertEventJoinMutation = {
   __typename?: 'Mutation';
-  insertEventJoinOne: { __typename: 'EventJoin'; id: string } | null;
+  insertEventJoinOne: {
+    __typename: 'EventJoin';
+    id: string;
+    createdAt: string;
+    state: string;
+    isPresent: boolean | null;
+    event: { __typename: 'Event'; id: string; slug: string };
+  } | null;
 };
 
 export type GetEventsQueryVariables = Exact<{
@@ -53754,7 +53746,21 @@ export type InsertFollowMutation = {
   insertFollowOne: {
     __typename: 'Follow';
     id: string;
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
+    actor: {
+      __typename: 'Actor';
+      id: string;
+      email: string;
+      name: string;
+      slug: string;
+      website: string;
+      actorImages: Array<{
+        __typename: 'ActorImage';
+        id: string;
+        type: string;
+        image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
+      }>;
+      team: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
+    };
     createdBy: {
       __typename: 'Individual';
       id: string;
@@ -53767,12 +53773,6 @@ export type InsertFollowMutation = {
         name: string;
         slug: string;
         website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
       };
       user: {
         __typename: 'User';
@@ -54244,7 +54244,6 @@ export const GetMeDocument = gql`
           following {
             __typename
             id
-            createdAt
             actor {
               __typename
               id
@@ -54267,16 +54266,6 @@ export const GetMeDocument = gql`
                   __typename
                   id
                   slug
-                  actorImages {
-                    __typename
-                    id
-                    type
-                    image {
-                      __typename
-                      id
-                      url
-                    }
-                  }
                 }
               }
             }
@@ -54913,6 +54902,14 @@ export const InsertEventJoinDocument = gql`
     insertEventJoinOne(object: $object) {
       __typename
       id
+      createdAt
+      state
+      isPresent
+      event {
+        __typename
+        id
+        slug
+      }
     }
   }
 `;
@@ -62742,6 +62739,26 @@ export const InsertFollowDocument = gql`
         name
         slug
         website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            createdAt
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
       }
       createdBy {
         __typename
@@ -62755,17 +62772,6 @@ export const InsertFollowDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
         }
         user {
           __typename

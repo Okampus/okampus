@@ -78,7 +78,6 @@ query GetMe {
         following {
           __typename
           id
-          createdAt
           actor {
             __typename
             id
@@ -101,16 +100,6 @@ query GetMe {
                 __typename
                 id
                 slug
-                actorImages {
-                  __typename
-                  id
-                  type
-                  image {
-                    __typename
-                    id
-                    url
-                  }
-                }
               }
             }
           }

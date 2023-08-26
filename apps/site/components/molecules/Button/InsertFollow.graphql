@@ -9,6 +9,26 @@ mutation InsertFollow($object: FollowInsertInput!) {
       name
       slug
       website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          createdAt
+          url
+        }
+      }
+      team {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+        }
+      }
     }
     createdBy {
       __typename
@@ -22,17 +42,6 @@ mutation InsertFollow($object: FollowInsertInput!) {
         name
         slug
         website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
       }
       user {
         __typename

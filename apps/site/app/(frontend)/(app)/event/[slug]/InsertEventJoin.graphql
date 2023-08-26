@@ -2,5 +2,13 @@ mutation InsertEventJoin($object: EventJoinInsertInput!) {
   insertEventJoinOne(object: $object) {
     __typename
     id
+    createdAt
+    state
+    isPresent
+    event {
+      __typename
+      id
+      slug
+    }
   }
 }
