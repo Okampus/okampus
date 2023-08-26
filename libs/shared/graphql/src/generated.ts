@@ -49085,6 +49085,29 @@ export type GetEventManageQuery = {
   }>;
 };
 
+export type InsertAddressMutationVariables = Exact<{
+  object: AddressInsertInput;
+}>;
+
+export type InsertAddressMutation = {
+  __typename?: 'Mutation';
+  insertAddressOne: {
+    __typename: 'Address';
+    id: string;
+    name: string;
+    category: string;
+    country: string;
+    state: string;
+    zip: string;
+    city: string;
+    street: string;
+    streetNumber: string;
+    latitude: number | null;
+    longitude: number | null;
+    geoapifyId: string | null;
+  } | null;
+};
+
 export type UpdateEventMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: EventSetInput;
@@ -55793,6 +55816,56 @@ export function useGetEventManageLazyQuery(
 export type GetEventManageQueryHookResult = ReturnType<typeof useGetEventManageQuery>;
 export type GetEventManageLazyQueryHookResult = ReturnType<typeof useGetEventManageLazyQuery>;
 export type GetEventManageQueryResult = Apollo.QueryResult<GetEventManageQuery, GetEventManageQueryVariables>;
+export const InsertAddressDocument = gql`
+  mutation InsertAddress($object: AddressInsertInput!) {
+    insertAddressOne(object: $object) {
+      __typename
+      id
+      name
+      category
+      country
+      state
+      zip
+      city
+      street
+      streetNumber
+      latitude
+      longitude
+      geoapifyId
+    }
+  }
+`;
+export type InsertAddressMutationFn = Apollo.MutationFunction<InsertAddressMutation, InsertAddressMutationVariables>;
+
+/**
+ * __useInsertAddressMutation__
+ *
+ * To run a mutation, you first call `useInsertAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAddressMutation, { data, loading, error }] = useInsertAddressMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertAddressMutation(
+  baseOptions?: Apollo.MutationHookOptions<InsertAddressMutation, InsertAddressMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InsertAddressMutation, InsertAddressMutationVariables>(InsertAddressDocument, options);
+}
+export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddressMutation>;
+export type InsertAddressMutationResult = Apollo.MutationResult<InsertAddressMutation>;
+export type InsertAddressMutationOptions = Apollo.BaseMutationOptions<
+  InsertAddressMutation,
+  InsertAddressMutationVariables
+>;
 export const UpdateEventDocument = gql`
   mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     updateEventByPk(pkColumns: { id: $id }, _set: $update) {
