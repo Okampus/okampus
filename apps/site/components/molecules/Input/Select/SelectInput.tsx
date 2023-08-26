@@ -37,7 +37,7 @@ export default function SelectInput<T>({
   placeholder = 'Votre choix',
   maxHeight: maxHeightProp = '12rem',
   contentClassName = 'flex flex-col bg-0 text-0 font-medium',
-  itemClassName = 'flex items-center gap-2 p-2 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
+  itemClassName = 'flex items-center gap-2 py-2 px-3.5 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
   triggerClassName = 'input h-[var(--h-input)] max-h-[var(--h-input)]',
   showIcon = true,
   placement = 'bottom-start',
@@ -112,10 +112,10 @@ export default function SelectInput<T>({
   const fieldProps = { label, className, name, description, required, error };
 
   const triggerClass = clsx(
-    'flex items-center justify-between gap-2',
+    'flex items-center justify-between gap-1.5',
     triggerClassName,
     disabled && 'pointer-events-none opacity-50',
-    error && '!outline !outline-1 outline-offset-2 !outline-[var(--danger)]',
+    error && '!border-[var(--danger)] !text-[var(--danger)]',
   );
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 
@@ -132,7 +132,7 @@ export default function SelectInput<T>({
     <Field {...fieldProps}>
       <button type="button" {...triggerProps} ref={refs.setReference}>
         {buttonInner}
-        {isOpen ? <IconChevronUp className="w-5 h-5" /> : <IconChevronDown className="w-5 h-5" />}
+        {isOpen ? <IconChevronUp className="w-4 h-4" /> : <IconChevronDown className="w-4 h-4" />}
       </button>
       {isOpen && (
         <FloatingPortal>

@@ -37,7 +37,7 @@ export default function HomePage() {
       <ViewLayout header={welcomeHeader} sidePanelIcon={null}>
         <GroupItem
           heading="Les derniers événements"
-          groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-8"
+          groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4"
         >
           {data?.event?.map((event) => <EventCard key={event.id} event={event} />)}
         </GroupItem>

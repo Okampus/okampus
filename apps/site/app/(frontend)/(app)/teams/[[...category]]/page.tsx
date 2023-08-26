@@ -65,13 +65,7 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
     <>
       <SideBar>
         <SideBarTitle>Découverte</SideBarTitle>
-        <LinkItem
-          pathname={pathname}
-          href="/teams"
-          label="Toutes les associations"
-          icon={<IconBrandSafari />}
-          large={true}
-        />
+        <LinkItem pathname={pathname} href="/teams" label="Toutes les associations" icon={<IconBrandSafari />} />
         {tags
           ? tags.map((tag) => (
               <LinkItem
@@ -89,13 +83,12 @@ export default function TeamsPage({ params }: { params: { category: string[] } }
                   />
                 }
                 customIcon={true}
-                large={true}
               />
             ))
           : Array.from({ length: 8 }, (_, idx) => <SkeletonLinkItem key={idx} />)}
       </SideBar>
       <ViewLayout sidePanelIcon={null} header={header}>
-        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-6">
+        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-4">
           {teams
             ? data.team.map((team) => <TeamCard key={team.id} team={team} />)
             : Array.from({ length: 12 }).map((_, idx) => <Skeleton key={idx} className="w-full h-64" />)}

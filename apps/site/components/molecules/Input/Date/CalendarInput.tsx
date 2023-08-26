@@ -20,9 +20,8 @@ export type CalendarInputProps = {
 
 function dayClass(day: number, date: Date, rowIdx: number) {
   const isOtherMonth = (rowIdx === 0 && day > 20) || (rowIdx > 3 && day < 10);
-
-  if (date.getDate() === day) return 'bg-[var(--info)] text-white';
   if (isOtherMonth) return 'bg-3-hover text-3 opacity-50';
+  if (date.getDate() === day) return 'bg-[var(--info)] text-white';
   return 'bg-4-hover text-1';
 }
 
@@ -67,9 +66,9 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
               <SelectInput
                 name="year"
                 placement="bottom"
-                options={years}
                 triggerClassName="py-2"
                 contentClassName="grid grid-cols-4 bg-0 p-2 text-0 font-medium"
+                options={years}
                 value={year}
                 showIcon={false}
                 onChange={(value) => setMonthYear([month, value])}
@@ -81,13 +80,13 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
           disabled={true}
           direction="right"
           onClick={() => setMonthYear(nextMonthYear)}
-          sizeClassName="h-10"
+          sizeClassName="h-9"
         />
       </header>
       <div className="flex flex-col mx-auto">
         <div className="flex">
           {WEEKDAYS_SHORT.map((day) => (
-            <span key={day} className="flex items-center justify-center text-2 aspect-square h-10">
+            <span key={day} className="flex text-sm items-center justify-center text-2 h-9 w-9">
               {day}
             </span>
           ))}
@@ -99,7 +98,7 @@ export default function CalendarInput({ className, date, setDate, disableSelect 
                 <button
                   key={idx}
                   onClick={() => setDate(new Date(year, month, day))}
-                  className={clsx(dayClass(day, date, rowIdx), 'text-center w-10 h-10 font-medium rounded-full')}
+                  className={clsx(dayClass(day, date, rowIdx), 'text-center w-9 h-9 font-medium rounded-full')}
                 >
                   {day.toString().padStart(2, '0')}
                 </button>

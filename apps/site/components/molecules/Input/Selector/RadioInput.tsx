@@ -24,7 +24,7 @@ export default forwardRef<HTMLInputElement, RadioInputProps>(function RadioInput
   );
 
   const labelClassName = clsx(
-    'peer-checked:outline outline-2 peer-checked:outline-[var(--info)] flex gap-3 p-3 bg-[var(--bg-input)] rounded-lg cursor-pointer hover:bg-[var(--bg-1)]',
+    'peer-checked:outline outline-2 peer-checked:outline-[var(--info)] flex gap-3 py-3 px-3.5 bg-[var(--bg-input)] rounded-lg cursor-pointer hover:bg-[var(--bg-1)]',
     isRadioBefore ? 'pl-12 pr-3' : 'pl-3 pr-12',
   );
 

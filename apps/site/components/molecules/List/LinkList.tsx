@@ -16,7 +16,6 @@ import type { LinkItemProps } from '@okampus/shared/types';
 export type LinkListProps = {
   items: Omit<LinkItemProps, 'pathname'>[];
   heading?: GroupHeadingProps;
-  large?: boolean;
   className?: string;
   mode?: 'sidebar';
 };
@@ -28,7 +27,7 @@ const SideBarLinkItem = (props: LinkItemProps) => {
   return <LinkItem onClick={() => isMobile && setIsSidebarOpen(!isSidebarOpen)} {...props} />;
 };
 
-export default function LinkList({ items, heading, large, className, mode }: LinkListProps) {
+export default function LinkList({ items, heading, className, mode }: LinkListProps) {
   const pathname = usePathname();
   return (
     <ul className={clsx('flex flex-col', className)}>
@@ -39,9 +38,9 @@ export default function LinkList({ items, heading, large, className, mode }: Lin
       )}
       {items.map((item, idx) =>
         mode === 'sidebar' ? (
-          <SideBarLinkItem key={idx} pathname={pathname} {...item} large={large} />
+          <SideBarLinkItem key={idx} pathname={pathname} {...item} />
         ) : (
-          <LinkItem key={idx} pathname={pathname} {...item} large={large} />
+          <LinkItem key={idx} pathname={pathname} {...item} />
         ),
       )}
     </ul>

@@ -7,7 +7,7 @@ import LinkItem from '../../atoms/Item/LinkItem';
 
 import { useMe } from '../../../context/navigation';
 
-import { IconUsers } from '@tabler/icons-react';
+import { IconCalendarEvent, IconUsers } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 
 export default function HomeSideBar() {
@@ -22,7 +22,6 @@ export default function HomeSideBar() {
       label={team.actor.name}
       icon={<AvatarImage actor={team.actor} size={null} type="team" indicativeSize={40} />}
       customIcon={true}
-      large={true}
     />
   ));
 
@@ -32,14 +31,8 @@ export default function HomeSideBar() {
       <div>
         {[
           ...(teams || []),
-          <LinkItem
-            key="teams"
-            pathname={pathname}
-            href="/teams"
-            label="Associations"
-            icon={<IconUsers />}
-            large={true}
-          />,
+          <LinkItem key="teams" pathname={pathname} href="/teams" label="Associations" icon={<IconUsers />} />,
+          <LinkItem key="events" pathname={pathname} href="/events" label="Événements" icon={<IconCalendarEvent />} />,
         ]}
       </div>
     </SideBar>

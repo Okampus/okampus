@@ -1,4 +1,4 @@
-export const BANNER_RATIO = 1 / 2;
+export const BANNER_RATIO = 9 / 16;
 export const BANNER_ASPECT_RATIO = 1 / BANNER_RATIO;
 
 export const DESKTOP_XL_SCREEN_WIDTH = 1536;

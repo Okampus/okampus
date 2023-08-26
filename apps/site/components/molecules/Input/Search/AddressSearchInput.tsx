@@ -39,8 +39,8 @@ function AddressSearchLabel({ highlight, address }: { highlight: string; address
   return (
     <span className="flex items-center gap-2">
       <IconMapPinFilled />
-      <IHighlight text={address.name} highlight={highlight} />
-      <span className="text-2 line-clamp-1">{formatAddress(address)}</span>
+      <IHighlight className="line-clamp-1 leading-4 h-4" text={address.name} highlight={highlight} />
+      <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(address)}</span>
     </span>
   );
 }

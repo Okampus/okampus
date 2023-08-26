@@ -103,27 +103,15 @@ export default function AutoCompleteInput<T>({
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([role, dismiss, listNav]);
 
-  // function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const value = event.target.value;
-  //   setInputValue(value);
-
-  //   if (value) {
-  //     setOpen(true);
-  //     setActiveIndex(0);
-  //   } else {
-  //     setOpen(false);
-  //   }
-  // }
-
   const fieldProps = { label, className, name, description, required, error };
 
   const triggerProps = {
     tabIndex: 0,
     className: clsx(
       triggerClassName,
-      'input !p-2 min-h-[var(--h-input)] flex-wrap cursor-text',
+      'input min-h-[var(--h-input)] flex-wrap cursor-text',
       disabled && 'pointer-events-none opacity-50',
-      error && '!outline !outline-1 outline-offset-2 !outline-[var(--danger)]',
+      error && '!border-[var(--danger)] !text-[var(--danger)]',
       suffix && '!pr-12 relative',
     ),
     ...getReferenceProps({
@@ -180,8 +168,6 @@ export default function AutoCompleteInput<T>({
     }
     setIsOpen(false);
   };
-
-  console.log('Addresses autocomplete', options, options[0]?.value === value[0], selectedItems, selected);
 
   return (
     <>

@@ -21,7 +21,7 @@ input:-webkit-autofill:active {
 
 .input {
   @extend %input;
-  @apply p-3 border border-[var(--border-1)];
+  @apply py-3 px-3.5 border border-[var(--border-1)];
 
   &-unpadded {
     @extend %input;

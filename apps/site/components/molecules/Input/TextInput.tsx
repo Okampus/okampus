@@ -57,7 +57,7 @@ export default memo(
           startContent && '!rounded-l-none !pl-0 !border-l-0',
           endContent && '!rounded-r-none !pr-0 !border-r-0',
           textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'),
-          !startContent && !endContent && error && '!outline !outline-1 !outline-[var(--danger)] text-[var(--danger)]',
+          error && '!border-[var(--danger)] !text-[var(--danger)]',
         )}
         onChange={onChange}
         {...inputProps}
@@ -68,20 +68,25 @@ export default memo(
     return (
       <Field {...fieldProps}>
         {startContent || endContent ? (
-          <div
-            className={clsx(
-              'flex shrink min-w-0 items-stretch font-semibold w-full rounded-md',
-              error && 'outline outline-offset-2 outline-1 outline-[var(--danger)]',
-            )}
-          >
+          <div className="flex shrink min-w-0 items-stretch font-semibold w-full rounded-md">
             {startContent && (
-              <div className="border border-[var(--border-1)] !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">
+              <div
+                className={clsx(
+                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
+                  'border !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0',
+                )}
+              >
                 {startContent}
               </div>
             )}
             {input}
             {endContent && (
-              <div className="border border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">
+              <div
+                className={clsx(
+                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
+                  'border border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0',
+                )}
+              >
                 {endContent}
               </div>
             )}

@@ -12,8 +12,8 @@ export type ITagProps = {
 export default function ITag({ className, content, onRemove, startContent, endContent }: ITagProps) {
   const tagClassName = clsx(
     className,
-    'rounded-md inline-flex items-center gap-2 py-1 px-2 text-0 bg-0 border border-color-1 hover:bg-[var(--bg-1)]',
-    onRemove && 'cursor-pointer',
+    'rounded-lg inline-flex items-center gap-2 py-1 px-2 text-0 bg-0 border border-color-1 hover:bg-[var(--bg-1)]',
+    onRemove && 'cursor-pointer !pr-0.5',
   );
 
   return (

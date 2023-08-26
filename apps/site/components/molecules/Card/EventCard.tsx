@@ -6,6 +6,7 @@ import { notificationAtom } from '../../../context/global';
 import { useTenant } from '../../../context/navigation';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
+import AvatarImage from '../../atoms/Image/AvatarImage';
 import { ToastType } from '@okampus/shared/types';
 
 import { IconArrowUpRight, IconLink } from '@tabler/icons-react';
@@ -13,9 +14,9 @@ import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 
-import type { EventMinimalInfo } from '../../../types/features/event.info';
+import type { EventWithTeamInfo } from '../../../types/features/event.info';
 
-export type EventCardProps = { event: EventMinimalInfo };
+export type EventCardProps = { event: EventWithTeamInfo };
 export default function EventCard({ event }: EventCardProps) {
   const [, setNotification] = useAtom(notificationAtom);
   const { tenant } = useTenant();
@@ -25,12 +26,14 @@ export default function EventCard({ event }: EventCardProps) {
 
   // const displayedAddress =
   //   event.location?.type === LocationType.Online
-  //     ? event.location.locationDetails
+  //     ? event.location.details
   //     : event.location?.address?.name ||
   //       `${event.location?.address?.streetNumber} ${event.location?.address?.street}, ${event.location?.address?.city}`;
 
   const participantsCount = event.eventJoinsAggregate.aggregate?.count || 0;
-  // const organizersString = event.eventOrganizes.map((manage) => manage.team.actor?.name).join(' × ');
+
+  const organizersString = event.eventOrganizes.map((manage) => manage.team.actor?.name).join(' × ');
+  const team = event.eventOrganizes[0]?.team;
 
   return (
     <div>
@@ -43,29 +46,33 @@ export default function EventCard({ event }: EventCardProps) {
         >
           <IconArrowUpRight className="h-8 w-8" />
         </motion.i>
-        <div className="relative mb-4">
+        <div className="relative mb-3">
           <BannerImage className="rounded-xl" src={event.banner?.url} name={event.name} />
         </div>
         <div className="flex flex-col px-4 gap-0.5">
-          <div className="flex justify-between text-1 tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
-            <span>{displayedStart}</span>
-            <span>
-              ⭐ {event.pointsAwardedForAttendance} {tenant?.pointName}
-            </span>
+          <div className="flex justify-between text-[1.075rem] text-1 tracking-tighter font-medium uppercase line-clamp-1 tabular-nums">
+            {displayedStart}
           </div>
-          <div className="font-medium mt-0.5 text-lg text-0 line-clamp-2">{event.name}</div>
-          <div className="flex items-center gap-1.5 text-1 font-medium">
-            {event.price === 0 ? 'Gratuit' : format('euro', event.price)}
-          </div>
-          {event?.eventTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {event?.eventTags.map(({ tag }, idx) => (
-                <span key={idx} className="text-primary font-medium">
-                  #{tag.name}
-                </span>
-              ))}
+          <div className="flex gap-3 mt-0.5">
+            <AvatarImage actor={team.actor} type="team" size={14} className="mt-1" />
+            <div>
+              <div className="font-medium mt-0.5 text-[1.1rem] text-0 line-clamp-2">{event.name}</div>
+              <div className="flex text-[0.925rem] text-1">{organizersString}</div>
+              <div className="flex text-[0.925rem] items-center gap-1.5 text-1">
+                {event.price === 0 ? 'Gratuit' : format('euro', event.price)} • {event.pointsAwardedForAttendance}{' '}
+                {tenant?.pointName}
+              </div>
+              {event?.eventTags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {event?.eventTags.map(({ tag }, idx) => (
+                    <span key={idx} className="text-primary font-medium">
+                      #{tag.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
           {/* <div className="text-1 font-medium flex items-center justify-between">{displayedAddress}</div> */}
         </div>
       </motion.div>
@@ -75,7 +82,7 @@ export default function EventCard({ event }: EventCardProps) {
           <div className="flex items-center gap-2">
             <UserGroup
               itemsCount={participantsCount}
-              size={12}
+              size={10}
               title="Inscrits"
               users={event.eventJoins.map(({ joinedBy }) => joinedBy)}
             />

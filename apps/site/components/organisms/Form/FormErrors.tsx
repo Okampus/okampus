@@ -10,13 +10,13 @@ function InlineErrors({
   return messages ? (
     <ul>
       {Object.entries(messages).map(([key, message]) => (
-        <li key={key} className="text-[var(--danger)]">
+        <li key={key} className="text-[var(--danger)] font-medium">
           • {message}
         </li>
       ))}
     </ul>
   ) : message ? (
-    <span className="text-[var(--danger)]">• {message}</span>
+    <span className="text-[var(--danger)] font-medium">• {message}</span>
   ) : null;
 }
 

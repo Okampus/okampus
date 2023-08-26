@@ -131,7 +131,7 @@ export default function FinanceEdit({ finance, isRevenue }: FinanceEditProps) {
           <hr className="border-[var(--border-2)] my-2" />
         </>
       )}
-      <div>
+      <div className="flex flex-col gap-2">
         <DateInput {...register('payedAt')} label="Date de paiement" />
         <Controller
           control={control}
