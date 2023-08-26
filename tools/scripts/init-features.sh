@@ -8,6 +8,8 @@ nx g hasura-feature actor --folder $1
 nx g hasura-feature follow --subfolder actors --folder $1
 nx g hasura-feature social --subfolder actors --folder $1
 nx g hasura-feature bank --subfolder actors --folder $1
+nx g hasura-feature address --subfolder actors --folder $1 --tenant-scoped false
+nx g hasura-feature location --subfolder actors --folder $1
 nx g hasura-feature legal-unit --subfolder actors --folder $1 --tenant-scoped false --expect-rels actor:name
 nx g hasura-feature legal-unit-location --subfolder actors --folder $1 --tenant-scoped false --expect-rels actor:name
 nx g hasura-feature actor-image --subfolder actors --folder $1

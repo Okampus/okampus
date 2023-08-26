@@ -49,6 +49,8 @@ import {
   AccountsModule,
   EventApprovalsModule,
   BanksModule,
+  AddressesModule,
+  LocationsModule,
 } from '@okampus/api/bll';
 import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -177,6 +179,8 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     TeamJoinsModule,
     TeamsModule,
     ActionsModule,
+    AddressesModule,
+    LocationsModule,
     FollowsModule,
     SocialsModule,
     // InterestsModule,
