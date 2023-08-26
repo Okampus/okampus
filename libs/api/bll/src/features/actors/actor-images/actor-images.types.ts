@@ -27,6 +27,10 @@ export type DeleteActorImageArgsType = {
   where: ActorImageBoolExp;
 };
 
+export type DeleteByPkActorImageArgsType = {
+  id: string;
+};
+
 export type UpdateByPkActorImageArgsType = {
   pkColumns: ActorImagePkColumnsInput;
   _set: ActorImageSetInput;

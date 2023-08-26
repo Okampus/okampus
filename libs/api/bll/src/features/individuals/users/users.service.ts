@@ -26,7 +26,7 @@ export class UsersService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class UsersService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === user.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === user.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class UsersService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === user.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === user.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class UsersService extends RequestContext {
     orderBy?: Array<UserOrderBy>,
     distinctOn?: Array<UserSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('user', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class UsersService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === user.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.User, user, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class UsersService extends RequestContext {
     await Promise.all(
       users.map(async (user) => {
         await this.logsService.deleteLog(EntityName.User, user.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateUser;
   }
 
-  async deleteUserByPk(selectionSet: string[], pkColumns: UserPkColumnsInput) {
-    const user = await this.userRepository.findOneOrFail(pkColumns.id);
+  async deleteUserByPk(selectionSet: string[], id: string) {
+    const user = await this.userRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(user);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete User (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateUserByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateUserByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.User, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.User, id);
     // Custom logic
     return data.updateUserByPk;
   }
@@ -245,7 +250,7 @@ export class UsersService extends RequestContext {
     orderBy?: Array<UserOrderBy>,
     distinctOn?: Array<UserSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class UsersService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.userAggregate;
   }

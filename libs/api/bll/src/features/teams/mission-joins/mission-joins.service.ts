@@ -26,7 +26,7 @@ export class MissionJoinsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly missionJoinRepository: MissionJoinRepository
+    private readonly missionJoinRepository: MissionJoinRepository,
   ) {
     super();
   }
@@ -46,7 +46,7 @@ export class MissionJoinsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === missionJoin.tenant?.id
+            role.tenant?.id === missionJoin.tenant?.id,
         )
     )
       return true;
@@ -67,7 +67,7 @@ export class MissionJoinsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === missionJoin.tenant?.id
+            role.tenant?.id === missionJoin.tenant?.id,
         )
     )
       return true;
@@ -109,7 +109,7 @@ export class MissionJoinsService extends RequestContext {
   async insertMissionJoinOne(
     selectionSet: string[],
     object: MissionJoinInsertInput,
-    onConflict?: MissionJoinOnConflict
+    onConflict?: MissionJoinOnConflict,
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert MissionJoin.');
@@ -136,7 +136,7 @@ export class MissionJoinsService extends RequestContext {
     orderBy?: Array<MissionJoinOrderBy>,
     distinctOn?: Array<MissionJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('missionJoin', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -152,7 +152,7 @@ export class MissionJoinsService extends RequestContext {
   async insertMissionJoin(
     selectionSet: string[],
     objects: Array<MissionJoinInsertInput>,
-    onConflict?: MissionJoinOnConflict
+    onConflict?: MissionJoinOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -201,7 +201,7 @@ export class MissionJoinsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === missionJoin.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.MissionJoin, missionJoin, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -243,24 +243,29 @@ export class MissionJoinsService extends RequestContext {
     await Promise.all(
       missionJoins.map(async (missionJoin) => {
         await this.logsService.deleteLog(EntityName.MissionJoin, missionJoin.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateMissionJoin;
   }
 
-  async deleteMissionJoinByPk(selectionSet: string[], pkColumns: MissionJoinPkColumnsInput) {
-    const missionJoin = await this.missionJoinRepository.findOneOrFail(pkColumns.id);
+  async deleteMissionJoinByPk(selectionSet: string[], id: string) {
+    const missionJoin = await this.missionJoinRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(missionJoin);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete MissionJoin (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete MissionJoin (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateMissionJoinByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateMissionJoinByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.MissionJoin, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.MissionJoin, id);
     // Custom logic
     return data.updateMissionJoinByPk;
   }
@@ -271,7 +276,7 @@ export class MissionJoinsService extends RequestContext {
     orderBy?: Array<MissionJoinOrderBy>,
     distinctOn?: Array<MissionJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -281,7 +286,7 @@ export class MissionJoinsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.missionJoinAggregate;
   }

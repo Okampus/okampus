@@ -26,7 +26,7 @@ export class IndividualsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly individualRepository: IndividualRepository
+    private readonly individualRepository: IndividualRepository,
   ) {
     super();
   }
@@ -46,7 +46,7 @@ export class IndividualsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === individual.tenant?.id
+            role.tenant?.id === individual.tenant?.id,
         )
     )
       return true;
@@ -67,7 +67,7 @@ export class IndividualsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === individual.tenant?.id
+            role.tenant?.id === individual.tenant?.id,
         )
     )
       return true;
@@ -117,7 +117,7 @@ export class IndividualsService extends RequestContext {
     orderBy?: Array<IndividualOrderBy>,
     distinctOn?: Array<IndividualSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('individual', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -133,7 +133,7 @@ export class IndividualsService extends RequestContext {
   async insertIndividual(
     selectionSet: string[],
     objects: Array<IndividualInsertInput>,
-    onConflict?: IndividualOnConflict
+    onConflict?: IndividualOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -182,7 +182,7 @@ export class IndividualsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === individual.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Individual, individual, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -224,24 +224,29 @@ export class IndividualsService extends RequestContext {
     await Promise.all(
       individuals.map(async (individual) => {
         await this.logsService.deleteLog(EntityName.Individual, individual.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateIndividual;
   }
 
-  async deleteIndividualByPk(selectionSet: string[], pkColumns: IndividualPkColumnsInput) {
-    const individual = await this.individualRepository.findOneOrFail(pkColumns.id);
+  async deleteIndividualByPk(selectionSet: string[], id: string) {
+    const individual = await this.individualRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(individual);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Individual (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Individual (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateIndividualByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateIndividualByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Individual, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Individual, id);
     // Custom logic
     return data.updateIndividualByPk;
   }
@@ -252,7 +257,7 @@ export class IndividualsService extends RequestContext {
     orderBy?: Array<IndividualOrderBy>,
     distinctOn?: Array<IndividualSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -262,7 +267,7 @@ export class IndividualsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.individualAggregate;
   }

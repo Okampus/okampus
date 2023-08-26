@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteFormArgsType,
+  DeleteByPkFormArgsType,
   InsertOneFormArgsType,
   InsertFormArgsType,
   UpdateByPkFormArgsType,
@@ -23,7 +24,7 @@ export class FormsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.insertForm(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class FormsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateFormArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.updateFormMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class FormsMutationResolver {
     const { where } = getGraphQLArgs<DeleteFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.deleteForm(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class FormsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.findForm(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class FormsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.insertFormOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class FormsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.findFormByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class FormsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.updateFormByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteFormByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkFormArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.formsService.deleteFormByPk(getSelectionSet(info), pkColumns);
+    return await this.formsService.deleteFormByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class FormsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.formsService.aggregateForm(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

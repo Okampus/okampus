@@ -26,7 +26,7 @@ export class ActionsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly actionRepository: ActionRepository
+    private readonly actionRepository: ActionRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class ActionsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class ActionsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class ActionsService extends RequestContext {
     orderBy?: Array<ActionOrderBy>,
     distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('action', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class ActionsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === action.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Action, action, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class ActionsService extends RequestContext {
     await Promise.all(
       actions.map(async (action) => {
         await this.logsService.deleteLog(EntityName.Action, action.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateAction;
   }
 
-  async deleteActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput) {
-    const action = await this.actionRepository.findOneOrFail(pkColumns.id);
+  async deleteActionByPk(selectionSet: string[], id: string) {
+    const action = await this.actionRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(action);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateActionByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateActionByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Action, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Action, id);
     // Custom logic
     return data.updateActionByPk;
   }
@@ -245,7 +250,7 @@ export class ActionsService extends RequestContext {
     orderBy?: Array<ActionOrderBy>,
     distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class ActionsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.actionAggregate;
   }

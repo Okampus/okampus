@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteAccountArgsType,
+  DeleteByPkAccountArgsType,
   InsertOneAccountArgsType,
   InsertAccountArgsType,
   UpdateByPkAccountArgsType,
@@ -23,7 +24,7 @@ export class AccountsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.insertAccount(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class AccountsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateAccountArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.updateAccountMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class AccountsMutationResolver {
     const { where } = getGraphQLArgs<DeleteAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.deleteAccount(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class AccountsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.findAccount(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class AccountsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.insertAccountOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class AccountsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.findAccountByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class AccountsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.updateAccountByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteAccountByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkAccountArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.accountsService.deleteAccountByPk(getSelectionSet(info), pkColumns);
+    return await this.accountsService.deleteAccountByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class AccountsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.accountsService.aggregateAccount(
       getSelectionSet(info),
@@ -121,7 +122,7 @@ export class AccountsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

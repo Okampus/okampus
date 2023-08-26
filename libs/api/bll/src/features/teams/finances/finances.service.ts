@@ -26,7 +26,7 @@ export class FinancesService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly financeRepository: FinanceRepository
+    private readonly financeRepository: FinanceRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class FinancesService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class FinancesService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class FinancesService extends RequestContext {
     orderBy?: Array<FinanceOrderBy>,
     distinctOn?: Array<FinanceSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('finance', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class FinancesService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === finance.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Finance, finance, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class FinancesService extends RequestContext {
     await Promise.all(
       finances.map(async (finance) => {
         await this.logsService.deleteLog(EntityName.Finance, finance.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateFinance;
   }
 
-  async deleteFinanceByPk(selectionSet: string[], pkColumns: FinancePkColumnsInput) {
-    const finance = await this.financeRepository.findOneOrFail(pkColumns.id);
+  async deleteFinanceByPk(selectionSet: string[], id: string) {
+    const finance = await this.financeRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(finance);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Finance (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Finance (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFinanceByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateFinanceByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Finance, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Finance, id);
     // Custom logic
     return data.updateFinanceByPk;
   }
@@ -245,7 +250,7 @@ export class FinancesService extends RequestContext {
     orderBy?: Array<FinanceOrderBy>,
     distinctOn?: Array<FinanceSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class FinancesService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.financeAggregate;
   }

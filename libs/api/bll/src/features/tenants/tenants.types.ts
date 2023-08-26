@@ -27,6 +27,10 @@ export type DeleteTenantArgsType = {
   where: TenantBoolExp;
 };
 
+export type DeleteByPkTenantArgsType = {
+  id: string;
+};
+
 export type UpdateByPkTenantArgsType = {
   pkColumns: TenantPkColumnsInput;
   _set: TenantSetInput;

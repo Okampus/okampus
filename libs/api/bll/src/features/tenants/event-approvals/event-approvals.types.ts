@@ -27,6 +27,10 @@ export type DeleteEventApprovalArgsType = {
   where: EventApprovalBoolExp;
 };
 
+export type DeleteByPkEventApprovalArgsType = {
+  id: string;
+};
+
 export type UpdateByPkEventApprovalArgsType = {
   pkColumns: EventApprovalPkColumnsInput;
   _set: EventApprovalSetInput;

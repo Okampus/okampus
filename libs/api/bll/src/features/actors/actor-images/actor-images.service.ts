@@ -26,7 +26,7 @@ export class ActorImagesService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly actorImageRepository: ActorImageRepository
+    private readonly actorImageRepository: ActorImageRepository,
   ) {
     super();
   }
@@ -46,7 +46,7 @@ export class ActorImagesService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === actorImage.tenant?.id
+            role.tenant?.id === actorImage.tenant?.id,
         )
     )
       return true;
@@ -67,7 +67,7 @@ export class ActorImagesService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === actorImage.tenant?.id
+            role.tenant?.id === actorImage.tenant?.id,
         )
     )
       return true;
@@ -117,7 +117,7 @@ export class ActorImagesService extends RequestContext {
     orderBy?: Array<ActorImageOrderBy>,
     distinctOn?: Array<ActorImageSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('actorImage', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -133,7 +133,7 @@ export class ActorImagesService extends RequestContext {
   async insertActorImage(
     selectionSet: string[],
     objects: Array<ActorImageInsertInput>,
-    onConflict?: ActorImageOnConflict
+    onConflict?: ActorImageOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -182,7 +182,7 @@ export class ActorImagesService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === actorImage.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.ActorImage, actorImage, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -224,24 +224,29 @@ export class ActorImagesService extends RequestContext {
     await Promise.all(
       actorImages.map(async (actorImage) => {
         await this.logsService.deleteLog(EntityName.ActorImage, actorImage.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateActorImage;
   }
 
-  async deleteActorImageByPk(selectionSet: string[], pkColumns: ActorImagePkColumnsInput) {
-    const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
+  async deleteActorImageByPk(selectionSet: string[], id: string) {
+    const actorImage = await this.actorImageRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(actorImage);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateActorImageByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.ActorImage, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.ActorImage, id);
     // Custom logic
     return data.updateActorImageByPk;
   }
@@ -252,7 +257,7 @@ export class ActorImagesService extends RequestContext {
     orderBy?: Array<ActorImageOrderBy>,
     distinctOn?: Array<ActorImageSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -262,7 +267,7 @@ export class ActorImagesService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.actorImageAggregate;
   }

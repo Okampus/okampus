@@ -26,7 +26,7 @@ export class TeamsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly teamRepository: TeamRepository
+    private readonly teamRepository: TeamRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class TeamsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === team.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === team.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class TeamsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === team.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === team.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class TeamsService extends RequestContext {
     orderBy?: Array<TeamOrderBy>,
     distinctOn?: Array<TeamSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('team', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class TeamsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === team.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Team, team, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class TeamsService extends RequestContext {
     await Promise.all(
       teams.map(async (team) => {
         await this.logsService.deleteLog(EntityName.Team, team.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateTeam;
   }
 
-  async deleteTeamByPk(selectionSet: string[], pkColumns: TeamPkColumnsInput) {
-    const team = await this.teamRepository.findOneOrFail(pkColumns.id);
+  async deleteTeamByPk(selectionSet: string[], id: string) {
+    const team = await this.teamRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(team);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Team (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTeamByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTeamByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Team, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Team, id);
     // Custom logic
     return data.updateTeamByPk;
   }
@@ -245,7 +250,7 @@ export class TeamsService extends RequestContext {
     orderBy?: Array<TeamOrderBy>,
     distinctOn?: Array<TeamSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class TeamsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.teamAggregate;
   }

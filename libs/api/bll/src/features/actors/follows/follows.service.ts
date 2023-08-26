@@ -26,7 +26,7 @@ export class FollowsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly followRepository: FollowRepository
+    private readonly followRepository: FollowRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class FollowsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class FollowsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class FollowsService extends RequestContext {
     orderBy?: Array<FollowOrderBy>,
     distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('follow', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class FollowsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === follow.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Follow, follow, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class FollowsService extends RequestContext {
     await Promise.all(
       follows.map(async (follow) => {
         await this.logsService.deleteLog(EntityName.Follow, follow.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateFollow;
   }
 
-  async deleteFollowByPk(selectionSet: string[], pkColumns: FollowPkColumnsInput) {
-    const follow = await this.followRepository.findOneOrFail(pkColumns.id);
+  async deleteFollowByPk(selectionSet: string[], id: string) {
+    const follow = await this.followRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(follow);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFollowByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateFollowByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Follow, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Follow, id);
     // Custom logic
     return data.updateFollowByPk;
   }
@@ -245,7 +250,7 @@ export class FollowsService extends RequestContext {
     orderBy?: Array<FollowOrderBy>,
     distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class FollowsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.followAggregate;
   }

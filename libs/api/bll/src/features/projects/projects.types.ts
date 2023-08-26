@@ -27,6 +27,10 @@ export type DeleteProjectArgsType = {
   where: ProjectBoolExp;
 };
 
+export type DeleteByPkProjectArgsType = {
+  id: string;
+};
+
 export type UpdateByPkProjectArgsType = {
   pkColumns: ProjectPkColumnsInput;
   _set: ProjectSetInput;

@@ -26,7 +26,7 @@ export class EventJoinsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly eventJoinRepository: EventJoinRepository
+    private readonly eventJoinRepository: EventJoinRepository,
   ) {
     super();
   }
@@ -45,7 +45,8 @@ export class EventJoinsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+            role.tenant?.id === eventJoin.tenant?.id,
         )
     )
       return true;
@@ -65,7 +66,8 @@ export class EventJoinsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === eventJoin.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+            role.tenant?.id === eventJoin.tenant?.id,
         )
     )
       return true;
@@ -132,7 +134,7 @@ export class EventJoinsService extends RequestContext {
     orderBy?: Array<EventJoinOrderBy>,
     distinctOn?: Array<EventJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('eventJoin', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -148,7 +150,7 @@ export class EventJoinsService extends RequestContext {
   async insertEventJoin(
     selectionSet: string[],
     objects: Array<EventJoinInsertInput>,
-    onConflict?: EventJoinOnConflict
+    onConflict?: EventJoinOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -196,7 +198,7 @@ export class EventJoinsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === eventJoin.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.EventJoin, eventJoin, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -238,24 +240,29 @@ export class EventJoinsService extends RequestContext {
     await Promise.all(
       eventJoins.map(async (eventJoin) => {
         await this.logsService.deleteLog(EntityName.EventJoin, eventJoin.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateEventJoin;
   }
 
-  async deleteEventJoinByPk(selectionSet: string[], pkColumns: EventJoinPkColumnsInput) {
-    const eventJoin = await this.eventJoinRepository.findOneOrFail(pkColumns.id);
+  async deleteEventJoinByPk(selectionSet: string[], id: string) {
+    const eventJoin = await this.eventJoinRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(eventJoin);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventJoin (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventJoinByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventJoinByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.EventJoin, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventJoin, id);
     // Custom logic
     return data.updateEventJoinByPk;
   }
@@ -266,7 +273,7 @@ export class EventJoinsService extends RequestContext {
     orderBy?: Array<EventJoinOrderBy>,
     distinctOn?: Array<EventJoinSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -276,7 +283,7 @@ export class EventJoinsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventJoinAggregate;
   }

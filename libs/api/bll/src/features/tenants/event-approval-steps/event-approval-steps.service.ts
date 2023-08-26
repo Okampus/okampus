@@ -26,7 +26,7 @@ export class EventApprovalStepsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly eventApprovalStepRepository: EventApprovalStepRepository
+    private readonly eventApprovalStepRepository: EventApprovalStepRepository,
   ) {
     super();
   }
@@ -47,7 +47,7 @@ export class EventApprovalStepsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === eventApprovalStep.tenant?.id
+            role.tenant?.id === eventApprovalStep.tenant?.id,
         )
     )
       return true;
@@ -70,7 +70,7 @@ export class EventApprovalStepsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === eventApprovalStep.tenant?.id
+            role.tenant?.id === eventApprovalStep.tenant?.id,
         )
     )
       return true;
@@ -97,7 +97,7 @@ export class EventApprovalStepsService extends RequestContext {
   async insertEventApprovalStepOne(
     selectionSet: string[],
     object: EventApprovalStepInsertInput,
-    onConflict?: EventApprovalStepOnConflict
+    onConflict?: EventApprovalStepOnConflict,
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApprovalStep.');
@@ -124,7 +124,7 @@ export class EventApprovalStepsService extends RequestContext {
     orderBy?: Array<EventApprovalStepOrderBy>,
     distinctOn?: Array<EventApprovalStepSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find(
@@ -134,7 +134,7 @@ export class EventApprovalStepsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventApprovalStep;
   }
@@ -148,7 +148,7 @@ export class EventApprovalStepsService extends RequestContext {
   async insertEventApprovalStep(
     selectionSet: string[],
     objects: Array<EventApprovalStepInsertInput>,
-    onConflict?: EventApprovalStepOnConflict
+    onConflict?: EventApprovalStepOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -178,11 +178,11 @@ export class EventApprovalStepsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const eventApprovalSteps = await this.eventApprovalStepRepository.findByIds(
-      updates.map((update) => update.where.id._eq)
+      updates.map((update) => update.where.id._eq),
     );
     for (const update of updates) {
       const eventApprovalStep = eventApprovalSteps.find(
-        (eventApprovalStep) => eventApprovalStep.id === update.where.id._eq
+        (eventApprovalStep) => eventApprovalStep.id === update.where.id._eq,
       );
       if (!eventApprovalStep) throw new NotFoundException(`EventApprovalStep (${update.where.id._eq}) was not found.`);
 
@@ -201,7 +201,7 @@ export class EventApprovalStepsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === eventApprovalStep.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.EventApprovalStep, eventApprovalStep, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -211,7 +211,7 @@ export class EventApprovalStepsService extends RequestContext {
   async updateEventApprovalStepByPk(
     selectionSet: string[],
     pkColumns: EventApprovalStepPkColumnsInput,
-    _set: EventApprovalStepSetInput
+    _set: EventApprovalStepSetInput,
   ) {
     const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
 
@@ -248,24 +248,29 @@ export class EventApprovalStepsService extends RequestContext {
     await Promise.all(
       eventApprovalSteps.map(async (eventApprovalStep) => {
         await this.logsService.deleteLog(EntityName.EventApprovalStep, eventApprovalStep.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateEventApprovalStep;
   }
 
-  async deleteEventApprovalStepByPk(selectionSet: string[], pkColumns: EventApprovalStepPkColumnsInput) {
-    const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(pkColumns.id);
+  async deleteEventApprovalStepByPk(selectionSet: string[], id: string) {
+    const eventApprovalStep = await this.eventApprovalStepRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(eventApprovalStep);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApprovalStep (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventApprovalStepByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventApprovalStepByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.EventApprovalStep, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventApprovalStep, id);
     // Custom logic
     return data.updateEventApprovalStepByPk;
   }
@@ -276,7 +281,7 @@ export class EventApprovalStepsService extends RequestContext {
     orderBy?: Array<EventApprovalStepOrderBy>,
     distinctOn?: Array<EventApprovalStepSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -286,7 +291,7 @@ export class EventApprovalStepsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventApprovalStepAggregate;
   }

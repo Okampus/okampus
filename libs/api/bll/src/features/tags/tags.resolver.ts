@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTagArgsType,
+  DeleteByPkTagArgsType,
   InsertOneTagArgsType,
   InsertTagArgsType,
   UpdateByPkTagArgsType,
@@ -23,7 +24,7 @@ export class TagsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.insertTag(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class TagsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTagArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.updateTagMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class TagsMutationResolver {
     const { where } = getGraphQLArgs<DeleteTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.deleteTag(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class TagsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.findTag(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class TagsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.insertTagOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class TagsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.findTagByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class TagsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.updateTagByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteTagByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTagArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tagsService.deleteTagByPk(getSelectionSet(info), pkColumns);
+    return await this.tagsService.deleteTagByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class TagsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tagsService.aggregateTag(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

@@ -27,6 +27,10 @@ export type DeleteActorArgsType = {
   where: ActorBoolExp;
 };
 
+export type DeleteByPkActorArgsType = {
+  id: string;
+};
+
 export type UpdateByPkActorArgsType = {
   pkColumns: ActorPkColumnsInput;
   _set: ActorSetInput;

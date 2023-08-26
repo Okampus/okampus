@@ -26,7 +26,7 @@ export class LegalUnitLocationsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly legalUnitLocationRepository: LegalUnitLocationRepository
+    private readonly legalUnitLocationRepository: LegalUnitLocationRepository,
   ) {
     super();
   }
@@ -46,7 +46,8 @@ export class LegalUnitLocationsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnitLocation.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+            role.tenant?.id === legalUnitLocation.id,
         )
     )
       return true;
@@ -66,7 +67,8 @@ export class LegalUnitLocationsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnitLocation.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+            role.tenant?.id === legalUnitLocation.id,
         )
     )
       return true;
@@ -95,7 +97,7 @@ export class LegalUnitLocationsService extends RequestContext {
   async insertLegalUnitLocationOne(
     selectionSet: string[],
     object: LegalUnitLocationInsertInput,
-    onConflict?: LegalUnitLocationOnConflict
+    onConflict?: LegalUnitLocationOnConflict,
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert LegalUnitLocation.');
@@ -122,7 +124,7 @@ export class LegalUnitLocationsService extends RequestContext {
     orderBy?: Array<LegalUnitLocationOrderBy>,
     distinctOn?: Array<LegalUnitLocationSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find(
@@ -132,7 +134,7 @@ export class LegalUnitLocationsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.legalUnitLocation;
   }
@@ -146,7 +148,7 @@ export class LegalUnitLocationsService extends RequestContext {
   async insertLegalUnitLocation(
     selectionSet: string[],
     objects: Array<LegalUnitLocationInsertInput>,
-    onConflict?: LegalUnitLocationOnConflict
+    onConflict?: LegalUnitLocationOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -176,11 +178,11 @@ export class LegalUnitLocationsService extends RequestContext {
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
     const legalUnitLocations = await this.legalUnitLocationRepository.findByIds(
-      updates.map((update) => update.where.id._eq)
+      updates.map((update) => update.where.id._eq),
     );
     for (const update of updates) {
       const legalUnitLocation = legalUnitLocations.find(
-        (legalUnitLocation) => legalUnitLocation.id === update.where.id._eq
+        (legalUnitLocation) => legalUnitLocation.id === update.where.id._eq,
       );
       if (!legalUnitLocation) throw new NotFoundException(`LegalUnitLocation (${update.where.id._eq}) was not found.`);
 
@@ -199,7 +201,7 @@ export class LegalUnitLocationsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === legalUnitLocation.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.LegalUnitLocation, legalUnitLocation, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -209,7 +211,7 @@ export class LegalUnitLocationsService extends RequestContext {
   async updateLegalUnitLocationByPk(
     selectionSet: string[],
     pkColumns: LegalUnitLocationPkColumnsInput,
-    _set: LegalUnitLocationSetInput
+    _set: LegalUnitLocationSetInput,
   ) {
     const legalUnitLocation = await this.legalUnitLocationRepository.findOneOrFail(pkColumns.id);
 
@@ -246,24 +248,29 @@ export class LegalUnitLocationsService extends RequestContext {
     await Promise.all(
       legalUnitLocations.map(async (legalUnitLocation) => {
         await this.logsService.deleteLog(EntityName.LegalUnitLocation, legalUnitLocation.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateLegalUnitLocation;
   }
 
-  async deleteLegalUnitLocationByPk(selectionSet: string[], pkColumns: LegalUnitLocationPkColumnsInput) {
-    const legalUnitLocation = await this.legalUnitLocationRepository.findOneOrFail(pkColumns.id);
+  async deleteLegalUnitLocationByPk(selectionSet: string[], id: string) {
+    const legalUnitLocation = await this.legalUnitLocationRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(legalUnitLocation);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnitLocation (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnitLocation (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateLegalUnitLocationByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateLegalUnitLocationByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.LegalUnitLocation, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.LegalUnitLocation, id);
     // Custom logic
     return data.updateLegalUnitLocationByPk;
   }
@@ -274,7 +281,7 @@ export class LegalUnitLocationsService extends RequestContext {
     orderBy?: Array<LegalUnitLocationOrderBy>,
     distinctOn?: Array<LegalUnitLocationSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -284,7 +291,7 @@ export class LegalUnitLocationsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.legalUnitLocationAggregate;
   }

@@ -27,6 +27,10 @@ export type DeleteBotArgsType = {
   where: BotBoolExp;
 };
 
+export type DeleteByPkBotArgsType = {
+  id: string;
+};
+
 export type UpdateByPkBotArgsType = {
   pkColumns: BotPkColumnsInput;
   _set: BotSetInput;

@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteEventApprovalStepArgsType,
+  DeleteByPkEventApprovalStepArgsType,
   InsertOneEventApprovalStepArgsType,
   InsertEventApprovalStepArgsType,
   UpdateByPkEventApprovalStepArgsType,
@@ -23,7 +24,7 @@ export class EventApprovalStepsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.insertEventApprovalStep(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class EventApprovalStepsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateEventApprovalStepArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.updateEventApprovalStepMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class EventApprovalStepsMutationResolver {
     const { where } = getGraphQLArgs<DeleteEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.deleteEventApprovalStep(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class EventApprovalStepsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.findEventApprovalStep(
       getSelectionSet(info),
@@ -66,7 +67,7 @@ export class EventApprovalStepsQueryResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 
@@ -75,7 +76,7 @@ export class EventApprovalStepsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.insertEventApprovalStepOne(getSelectionSet(info), object, onConflict);
   }
@@ -85,7 +86,7 @@ export class EventApprovalStepsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.findEventApprovalStepByPk(getSelectionSet(info), id);
   }
@@ -95,19 +96,19 @@ export class EventApprovalStepsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.updateEventApprovalStepByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteEventApprovalStepByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkEventApprovalStepArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.eventApprovalStepsService.deleteEventApprovalStepByPk(getSelectionSet(info), pkColumns);
+    return await this.eventApprovalStepsService.deleteEventApprovalStepByPk(getSelectionSet(info), id);
   }
 }
 
@@ -120,7 +121,7 @@ export class EventApprovalStepsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.eventApprovalStepsService.aggregateEventApprovalStep(
       getSelectionSet(info),
@@ -128,7 +129,7 @@ export class EventApprovalStepsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

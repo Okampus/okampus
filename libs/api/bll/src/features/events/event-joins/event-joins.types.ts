@@ -27,6 +27,10 @@ export type DeleteEventJoinArgsType = {
   where: EventJoinBoolExp;
 };
 
+export type DeleteByPkEventJoinArgsType = {
+  id: string;
+};
+
 export type UpdateByPkEventJoinArgsType = {
   pkColumns: EventJoinPkColumnsInput;
   _set: EventJoinSetInput;

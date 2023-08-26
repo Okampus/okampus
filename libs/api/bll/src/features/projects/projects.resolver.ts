@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteProjectArgsType,
+  DeleteByPkProjectArgsType,
   InsertOneProjectArgsType,
   InsertProjectArgsType,
   UpdateByPkProjectArgsType,
@@ -23,7 +24,7 @@ export class ProjectsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.insertProject(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class ProjectsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateProjectArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.updateProjectMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class ProjectsMutationResolver {
     const { where } = getGraphQLArgs<DeleteProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.deleteProject(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class ProjectsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.findProject(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class ProjectsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.insertProjectOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class ProjectsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.findProjectByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class ProjectsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.updateProjectByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteProjectByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkProjectArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.projectsService.deleteProjectByPk(getSelectionSet(info), pkColumns);
+    return await this.projectsService.deleteProjectByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class ProjectsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.projectsService.aggregateProject(
       getSelectionSet(info),
@@ -121,7 +122,7 @@ export class ProjectsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

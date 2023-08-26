@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteUserArgsType,
+  DeleteByPkUserArgsType,
   InsertOneUserArgsType,
   InsertUserArgsType,
   UpdateByPkUserArgsType,
@@ -23,7 +24,7 @@ export class UsersMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.insertUser(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class UsersMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateUserArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.updateUserMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class UsersMutationResolver {
     const { where } = getGraphQLArgs<DeleteUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.deleteUser(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class UsersQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.findUser(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class UsersQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.insertUserOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class UsersQueryResolver {
     const { id } = getGraphQLArgs<FindByPkUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.findUserByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class UsersQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.updateUserByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteUserByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkUserArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.usersService.deleteUserByPk(getSelectionSet(info), pkColumns);
+    return await this.usersService.deleteUserByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class UsersQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.usersService.aggregateUser(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

@@ -27,6 +27,10 @@ export type DeleteTeamJoinArgsType = {
   where: TeamJoinBoolExp;
 };
 
+export type DeleteByPkTeamJoinArgsType = {
+  id: string;
+};
+
 export type UpdateByPkTeamJoinArgsType = {
   pkColumns: TeamJoinPkColumnsInput;
   _set: TeamJoinSetInput;

@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteActionArgsType,
+  DeleteByPkActionArgsType,
   InsertOneActionArgsType,
   InsertActionArgsType,
   UpdateByPkActionArgsType,
@@ -23,7 +24,7 @@ export class ActionsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.insertAction(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class ActionsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateActionArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.updateActionMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class ActionsMutationResolver {
     const { where } = getGraphQLArgs<DeleteActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.deleteAction(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class ActionsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.findAction(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class ActionsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.insertActionOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class ActionsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.findActionByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class ActionsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.updateActionByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteActionByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkActionArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.actionsService.deleteActionByPk(getSelectionSet(info), pkColumns);
+    return await this.actionsService.deleteActionByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class ActionsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actionsService.aggregateAction(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

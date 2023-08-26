@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteActorImageArgsType,
+  DeleteByPkActorImageArgsType,
   InsertOneActorImageArgsType,
   InsertActorImageArgsType,
   UpdateByPkActorImageArgsType,
@@ -23,7 +24,7 @@ export class ActorImagesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.insertActorImage(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class ActorImagesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateActorImageArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.updateActorImageMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class ActorImagesMutationResolver {
     const { where } = getGraphQLArgs<DeleteActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.deleteActorImage(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class ActorImagesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.findActorImage(
       getSelectionSet(info),
@@ -66,7 +67,7 @@ export class ActorImagesQueryResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 
@@ -75,7 +76,7 @@ export class ActorImagesQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.insertActorImageOne(getSelectionSet(info), object, onConflict);
   }
@@ -85,7 +86,7 @@ export class ActorImagesQueryResolver {
     const { id } = getGraphQLArgs<FindByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.findActorImageByPk(getSelectionSet(info), id);
   }
@@ -95,19 +96,19 @@ export class ActorImagesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.updateActorImageByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteActorImageByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkActorImageArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.actorImagesService.deleteActorImageByPk(getSelectionSet(info), pkColumns);
+    return await this.actorImagesService.deleteActorImageByPk(getSelectionSet(info), id);
   }
 }
 
@@ -120,7 +121,7 @@ export class ActorImagesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.actorImagesService.aggregateActorImage(
       getSelectionSet(info),
@@ -128,7 +129,7 @@ export class ActorImagesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

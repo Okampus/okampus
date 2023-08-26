@@ -2,7 +2,7 @@ import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
 import { LogsService } from '../../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { TeamJoinRepository, TeamJoin, Team } from '@okampus/api/dal';
+import { TeamJoinRepository, TeamJoin } from '@okampus/api/dal';
 import { EntityName, AdminPermissions, ApprovalState } from '@okampus/shared/enums';
 
 import { EntityManager } from '@mikro-orm/core';
@@ -89,17 +89,12 @@ export class TeamJoinsService extends RequestContext {
     return true;
   }
 
-  async checkCreateRelationships(props: TeamJoinInsertInput) {
+  checkCreateRelationships(props: TeamJoinInsertInput) {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    this.hasuraService.expectIdRelationships(props, [{ path: 'teamId' }]);
-    const team = await this.em.findOneOrFail(Team, { id: props.teamId as string, deletedAt: null });
-
-    if (props.formSubmission?.data) props.formSubmission.data.formId = team.joinForm.id;
-
-    this.hasuraService.expectNestedRelationship(props, [{ path: 'formSubmission' }]);
+    this.hasuraService.expectNestedRelationship(props, [{ path: 'submission' }]);
 
     return true;
   }
@@ -111,7 +106,7 @@ export class TeamJoinsService extends RequestContext {
     const arePropsValid = this.checkPropsConstraints(object);
     if (!arePropsValid) throw new BadRequestException('Props are not valid.');
 
-    const areRelationshipsValid = await this.checkCreateRelationships(object);
+    const areRelationshipsValid = this.checkCreateRelationships(object);
     if (!areRelationshipsValid) throw new BadRequestException('Relationships are not valid.');
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
@@ -239,17 +234,22 @@ export class TeamJoinsService extends RequestContext {
     return data.updateTeamJoin;
   }
 
-  async deleteTeamJoinByPk(selectionSet: string[], pkColumns: TeamJoinPkColumnsInput) {
-    const teamJoin = await this.teamJoinRepository.findOneOrFail(pkColumns.id);
+  async deleteTeamJoinByPk(selectionSet: string[], id: string) {
+    const teamJoin = await this.teamJoinRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(teamJoin);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamJoin (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamJoin (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTeamJoinByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTeamJoinByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.TeamJoin, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.TeamJoin, id);
     // Custom logic
     return data.updateTeamJoinByPk;
   }

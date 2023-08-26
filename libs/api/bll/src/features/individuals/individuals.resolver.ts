@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteIndividualArgsType,
+  DeleteByPkIndividualArgsType,
   InsertOneIndividualArgsType,
   InsertIndividualArgsType,
   UpdateByPkIndividualArgsType,
@@ -23,7 +24,7 @@ export class IndividualsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.insertIndividual(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class IndividualsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateIndividualArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.updateIndividualMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class IndividualsMutationResolver {
     const { where } = getGraphQLArgs<DeleteIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.deleteIndividual(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class IndividualsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.findIndividual(
       getSelectionSet(info),
@@ -66,7 +67,7 @@ export class IndividualsQueryResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 
@@ -75,7 +76,7 @@ export class IndividualsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.insertIndividualOne(getSelectionSet(info), object, onConflict);
   }
@@ -85,7 +86,7 @@ export class IndividualsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.findIndividualByPk(getSelectionSet(info), id);
   }
@@ -95,19 +96,19 @@ export class IndividualsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.updateIndividualByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteIndividualByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkIndividualArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), pkColumns);
+    return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), id);
   }
 }
 
@@ -120,7 +121,7 @@ export class IndividualsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.individualsService.aggregateIndividual(
       getSelectionSet(info),
@@ -128,7 +129,7 @@ export class IndividualsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }

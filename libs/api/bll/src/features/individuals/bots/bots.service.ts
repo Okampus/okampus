@@ -26,7 +26,7 @@ export class BotsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly botRepository: BotRepository
+    private readonly botRepository: BotRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class BotsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bot.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bot.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class BotsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bot.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bot.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class BotsService extends RequestContext {
     orderBy?: Array<BotOrderBy>,
     distinctOn?: Array<BotSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('bot', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class BotsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === bot.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Bot, bot, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class BotsService extends RequestContext {
     await Promise.all(
       bots.map(async (bot) => {
         await this.logsService.deleteLog(EntityName.Bot, bot.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateBot;
   }
 
-  async deleteBotByPk(selectionSet: string[], pkColumns: BotPkColumnsInput) {
-    const bot = await this.botRepository.findOneOrFail(pkColumns.id);
+  async deleteBotByPk(selectionSet: string[], id: string) {
+    const bot = await this.botRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(bot);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bot (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bot (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateBotByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateBotByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Bot, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Bot, id);
     // Custom logic
     return data.updateBotByPk;
   }
@@ -245,7 +250,7 @@ export class BotsService extends RequestContext {
     orderBy?: Array<BotOrderBy>,
     distinctOn?: Array<BotSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class BotsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.botAggregate;
   }

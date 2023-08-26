@@ -26,7 +26,7 @@ export class FormsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly formRepository: FormRepository
+    private readonly formRepository: FormRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class FormsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === form.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === form.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class FormsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === form.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === form.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class FormsService extends RequestContext {
     orderBy?: Array<FormOrderBy>,
     distinctOn?: Array<FormSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('form', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class FormsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === form.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Form, form, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class FormsService extends RequestContext {
     await Promise.all(
       forms.map(async (form) => {
         await this.logsService.deleteLog(EntityName.Form, form.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateForm;
   }
 
-  async deleteFormByPk(selectionSet: string[], pkColumns: FormPkColumnsInput) {
-    const form = await this.formRepository.findOneOrFail(pkColumns.id);
+  async deleteFormByPk(selectionSet: string[], id: string) {
+    const form = await this.formRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(form);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateFormByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Form, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Form, id);
     // Custom logic
     return data.updateFormByPk;
   }
@@ -245,7 +250,7 @@ export class FormsService extends RequestContext {
     orderBy?: Array<FormOrderBy>,
     distinctOn?: Array<FormSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class FormsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.formAggregate;
   }

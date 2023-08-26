@@ -26,7 +26,7 @@ export class LegalUnitsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly legalUnitRepository: LegalUnitRepository
+    private readonly legalUnitRepository: LegalUnitRepository,
   ) {
     super();
   }
@@ -44,7 +44,8 @@ export class LegalUnitsService extends RequestContext {
       this.requester()
         .adminRoles.getItems()
         .some(
-          (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnit.id
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === legalUnit.id,
         )
     )
       return true;
@@ -62,7 +63,8 @@ export class LegalUnitsService extends RequestContext {
       this.requester()
         .adminRoles.getItems()
         .some(
-          (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnit.id
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === legalUnit.id,
         )
     )
       return true;
@@ -114,7 +116,7 @@ export class LegalUnitsService extends RequestContext {
     orderBy?: Array<LegalUnitOrderBy>,
     distinctOn?: Array<LegalUnitSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('legalUnit', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -130,7 +132,7 @@ export class LegalUnitsService extends RequestContext {
   async insertLegalUnit(
     selectionSet: string[],
     objects: Array<LegalUnitInsertInput>,
-    onConflict?: LegalUnitOnConflict
+    onConflict?: LegalUnitOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -178,7 +180,7 @@ export class LegalUnitsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === legalUnit.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.LegalUnit, legalUnit, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -220,24 +222,29 @@ export class LegalUnitsService extends RequestContext {
     await Promise.all(
       legalUnits.map(async (legalUnit) => {
         await this.logsService.deleteLog(EntityName.LegalUnit, legalUnit.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateLegalUnit;
   }
 
-  async deleteLegalUnitByPk(selectionSet: string[], pkColumns: LegalUnitPkColumnsInput) {
-    const legalUnit = await this.legalUnitRepository.findOneOrFail(pkColumns.id);
+  async deleteLegalUnitByPk(selectionSet: string[], id: string) {
+    const legalUnit = await this.legalUnitRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(legalUnit);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnit (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete LegalUnit (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateLegalUnitByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateLegalUnitByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.LegalUnit, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.LegalUnit, id);
     // Custom logic
     return data.updateLegalUnitByPk;
   }
@@ -248,7 +255,7 @@ export class LegalUnitsService extends RequestContext {
     orderBy?: Array<LegalUnitOrderBy>,
     distinctOn?: Array<LegalUnitSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -258,7 +265,7 @@ export class LegalUnitsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.legalUnitAggregate;
   }

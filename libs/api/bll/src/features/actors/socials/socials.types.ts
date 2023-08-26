@@ -27,6 +27,10 @@ export type DeleteSocialArgsType = {
   where: SocialBoolExp;
 };
 
+export type DeleteByPkSocialArgsType = {
+  id: string;
+};
+
 export type UpdateByPkSocialArgsType = {
   pkColumns: SocialPkColumnsInput;
   _set: SocialSetInput;

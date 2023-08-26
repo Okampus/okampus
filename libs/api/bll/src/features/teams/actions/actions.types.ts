@@ -27,6 +27,10 @@ export type DeleteActionArgsType = {
   where: ActionBoolExp;
 };
 
+export type DeleteByPkActionArgsType = {
+  id: string;
+};
+
 export type UpdateByPkActionArgsType = {
   pkColumns: ActionPkColumnsInput;
   _set: ActionSetInput;

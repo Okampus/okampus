@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTenantArgsType,
+  DeleteByPkTenantArgsType,
   InsertOneTenantArgsType,
   InsertTenantArgsType,
   UpdateByPkTenantArgsType,
@@ -23,7 +24,7 @@ export class TenantsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.insertTenant(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class TenantsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTenantArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.updateTenantMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class TenantsMutationResolver {
     const { where } = getGraphQLArgs<DeleteTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.deleteTenant(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class TenantsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.findTenant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class TenantsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.insertTenantOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class TenantsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.findTenantByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class TenantsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.updateTenantByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteTenantByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTenantArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.tenantsService.deleteTenantByPk(getSelectionSet(info), pkColumns);
+    return await this.tenantsService.deleteTenantByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class TenantsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.tenantsService.aggregateTenant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

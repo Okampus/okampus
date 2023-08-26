@@ -26,7 +26,7 @@ export class BanksService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly bankRepository: BankRepository
+    private readonly bankRepository: BankRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class BanksService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bank.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bank.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class BanksService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bank.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bank.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class BanksService extends RequestContext {
     orderBy?: Array<BankOrderBy>,
     distinctOn?: Array<BankSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('bank', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class BanksService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === bank.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Bank, bank, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class BanksService extends RequestContext {
     await Promise.all(
       banks.map(async (bank) => {
         await this.logsService.deleteLog(EntityName.Bank, bank.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateBank;
   }
 
-  async deleteBankByPk(selectionSet: string[], pkColumns: BankPkColumnsInput) {
-    const bank = await this.bankRepository.findOneOrFail(pkColumns.id);
+  async deleteBankByPk(selectionSet: string[], id: string) {
+    const bank = await this.bankRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(bank);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bank (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bank (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateBankByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateBankByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Bank, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Bank, id);
     // Custom logic
     return data.updateBankByPk;
   }
@@ -245,7 +250,7 @@ export class BanksService extends RequestContext {
     orderBy?: Array<BankOrderBy>,
     distinctOn?: Array<BankSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class BanksService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.bankAggregate;
   }

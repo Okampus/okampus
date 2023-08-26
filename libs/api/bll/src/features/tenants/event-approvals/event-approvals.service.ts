@@ -26,7 +26,7 @@ export class EventApprovalsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly eventApprovalRepository: EventApprovalRepository
+    private readonly eventApprovalRepository: EventApprovalRepository,
   ) {
     super();
   }
@@ -47,7 +47,7 @@ export class EventApprovalsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === eventApproval.tenant?.id
+            role.tenant?.id === eventApproval.tenant?.id,
         )
     )
       return true;
@@ -69,7 +69,7 @@ export class EventApprovalsService extends RequestContext {
         .some(
           (role) =>
             role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === eventApproval.tenant?.id
+            role.tenant?.id === eventApproval.tenant?.id,
         )
     )
       return true;
@@ -96,7 +96,7 @@ export class EventApprovalsService extends RequestContext {
   async insertEventApprovalOne(
     selectionSet: string[],
     object: EventApprovalInsertInput,
-    onConflict?: EventApprovalOnConflict
+    onConflict?: EventApprovalOnConflict,
   ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert EventApproval.');
@@ -123,7 +123,7 @@ export class EventApprovalsService extends RequestContext {
     orderBy?: Array<EventApprovalOrderBy>,
     distinctOn?: Array<EventApprovalSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find(
@@ -133,7 +133,7 @@ export class EventApprovalsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventApproval;
   }
@@ -147,7 +147,7 @@ export class EventApprovalsService extends RequestContext {
   async insertEventApproval(
     selectionSet: string[],
     objects: Array<EventApprovalInsertInput>,
-    onConflict?: EventApprovalOnConflict
+    onConflict?: EventApprovalOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -196,7 +196,7 @@ export class EventApprovalsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === eventApproval.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.EventApproval, eventApproval, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -206,7 +206,7 @@ export class EventApprovalsService extends RequestContext {
   async updateEventApprovalByPk(
     selectionSet: string[],
     pkColumns: EventApprovalPkColumnsInput,
-    _set: EventApprovalSetInput
+    _set: EventApprovalSetInput,
   ) {
     const eventApproval = await this.eventApprovalRepository.findOneOrFail(pkColumns.id);
 
@@ -243,24 +243,29 @@ export class EventApprovalsService extends RequestContext {
     await Promise.all(
       eventApprovals.map(async (eventApproval) => {
         await this.logsService.deleteLog(EntityName.EventApproval, eventApproval.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateEventApproval;
   }
 
-  async deleteEventApprovalByPk(selectionSet: string[], pkColumns: EventApprovalPkColumnsInput) {
-    const eventApproval = await this.eventApprovalRepository.findOneOrFail(pkColumns.id);
+  async deleteEventApprovalByPk(selectionSet: string[], id: string) {
+    const eventApproval = await this.eventApprovalRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(eventApproval);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApproval (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete EventApproval (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventApprovalByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventApprovalByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.EventApproval, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.EventApproval, id);
     // Custom logic
     return data.updateEventApprovalByPk;
   }
@@ -271,7 +276,7 @@ export class EventApprovalsService extends RequestContext {
     orderBy?: Array<EventApprovalOrderBy>,
     distinctOn?: Array<EventApprovalSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -281,7 +286,7 @@ export class EventApprovalsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventApprovalAggregate;
   }

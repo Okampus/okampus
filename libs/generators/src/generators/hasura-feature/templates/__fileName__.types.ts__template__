@@ -27,6 +27,10 @@ export type Delete<%= className %>ArgsType = {
   where: <%= className %>BoolExp;
 };
 
+export type DeleteByPk<%= className %>ArgsType = {
+  id: string;
+};
+
 export type UpdateByPk<%= className %>ArgsType = {
   pkColumns: <%= className %>PkColumnsInput;
   _set: <%= className %>SetInput;
@@ -41,7 +45,7 @@ export type Find<%= className %>ArgsType = {
 };
 
 export type FindByPk<%= className %>ArgsType = {
-  <% for(const pk of pkColumns) { %> <%= pk %>: string; <% } %>
+  id: string;
 };
 
 export type Aggregate<%= className %>ArgsType = {

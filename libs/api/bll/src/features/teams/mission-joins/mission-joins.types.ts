@@ -27,6 +27,10 @@ export type DeleteMissionJoinArgsType = {
   where: MissionJoinBoolExp;
 };
 
+export type DeleteByPkMissionJoinArgsType = {
+  id: string;
+};
+
 export type UpdateByPkMissionJoinArgsType = {
   pkColumns: MissionJoinPkColumnsInput;
   _set: MissionJoinSetInput;

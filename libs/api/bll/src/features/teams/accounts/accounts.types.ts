@@ -27,6 +27,10 @@ export type DeleteAccountArgsType = {
   where: AccountBoolExp;
 };
 
+export type DeleteByPkAccountArgsType = {
+  id: string;
+};
+
 export type UpdateByPkAccountArgsType = {
   pkColumns: AccountPkColumnsInput;
   _set: AccountSetInput;

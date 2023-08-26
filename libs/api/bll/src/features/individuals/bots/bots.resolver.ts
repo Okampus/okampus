@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteBotArgsType,
+  DeleteByPkBotArgsType,
   InsertOneBotArgsType,
   InsertBotArgsType,
   UpdateByPkBotArgsType,
@@ -23,7 +24,7 @@ export class BotsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.insertBot(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class BotsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateBotArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.updateBotMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class BotsMutationResolver {
     const { where } = getGraphQLArgs<DeleteBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.deleteBot(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class BotsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.findBot(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class BotsQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.insertBotOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class BotsQueryResolver {
     const { id } = getGraphQLArgs<FindByPkBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.findBotByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class BotsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.updateBotByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteBotByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkBotArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.botsService.deleteBotByPk(getSelectionSet(info), pkColumns);
+    return await this.botsService.deleteBotByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class BotsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.botsService.aggregateBot(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }

@@ -26,7 +26,7 @@ export class SocialsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly socialRepository: SocialRepository
+    private readonly socialRepository: SocialRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class SocialsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === social.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === social.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class SocialsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === social.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === social.tenant?.id,
         )
     )
       return true;
@@ -115,7 +115,7 @@ export class SocialsService extends RequestContext {
     orderBy?: Array<SocialOrderBy>,
     distinctOn?: Array<SocialSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('social', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -175,7 +175,7 @@ export class SocialsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === social.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Social, social, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -217,24 +217,29 @@ export class SocialsService extends RequestContext {
     await Promise.all(
       socials.map(async (social) => {
         await this.logsService.deleteLog(EntityName.Social, social.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateSocial;
   }
 
-  async deleteSocialByPk(selectionSet: string[], pkColumns: SocialPkColumnsInput) {
-    const social = await this.socialRepository.findOneOrFail(pkColumns.id);
+  async deleteSocialByPk(selectionSet: string[], id: string) {
+    const social = await this.socialRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(social);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Social (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateSocialByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateSocialByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Social, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Social, id);
     // Custom logic
     return data.updateSocialByPk;
   }
@@ -245,7 +250,7 @@ export class SocialsService extends RequestContext {
     orderBy?: Array<SocialOrderBy>,
     distinctOn?: Array<SocialSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -255,7 +260,7 @@ export class SocialsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.socialAggregate;
   }

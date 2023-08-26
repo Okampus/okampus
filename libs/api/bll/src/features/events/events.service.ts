@@ -26,7 +26,7 @@ export class EventsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly eventRepository: EventRepository
+    private readonly eventRepository: EventRepository,
   ) {
     super();
   }
@@ -45,7 +45,7 @@ export class EventsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === event.tenant?.id
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === event.tenant?.id,
         )
     )
       return true;
@@ -65,7 +65,7 @@ export class EventsService extends RequestContext {
         .adminRoles.getItems()
         .some(
           (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === event.tenant?.id
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === event.tenant?.id,
         )
     )
       return true;
@@ -121,7 +121,7 @@ export class EventsService extends RequestContext {
     orderBy?: Array<EventOrderBy>,
     distinctOn?: Array<EventSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('event', selectionSet, where, orderBy, distinctOn, limit, offset);
@@ -181,7 +181,7 @@ export class EventsService extends RequestContext {
         const update = updates.find((update) => update.where.id._eq === event.id);
         if (!update) return;
         await this.logsService.updateLog(EntityName.Event, event, update._set);
-      })
+      }),
     );
 
     // Custom logic
@@ -223,24 +223,29 @@ export class EventsService extends RequestContext {
     await Promise.all(
       events.map(async (event) => {
         await this.logsService.deleteLog(EntityName.Event, event.id);
-      })
+      }),
     );
 
     // Custom logic
     return data.updateEvent;
   }
 
-  async deleteEventByPk(selectionSet: string[], pkColumns: EventPkColumnsInput) {
-    const event = await this.eventRepository.findOneOrFail(pkColumns.id);
+  async deleteEventByPk(selectionSet: string[], id: string) {
+    const event = await this.eventRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(event);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Event (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateEventByPk', selectionSet, pkColumns, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateEventByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
-    await this.logsService.deleteLog(EntityName.Event, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Event, id);
     // Custom logic
     return data.updateEventByPk;
   }
@@ -251,7 +256,7 @@ export class EventsService extends RequestContext {
     orderBy?: Array<EventOrderBy>,
     distinctOn?: Array<EventSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.aggregate(
@@ -261,7 +266,7 @@ export class EventsService extends RequestContext {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
     return data.eventAggregate;
   }

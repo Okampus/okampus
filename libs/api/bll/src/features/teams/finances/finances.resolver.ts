@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteFinanceArgsType,
+  DeleteByPkFinanceArgsType,
   InsertOneFinanceArgsType,
   InsertFinanceArgsType,
   UpdateByPkFinanceArgsType,
@@ -23,7 +24,7 @@ export class FinancesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.insertFinance(getSelectionSet(info), objects, onConflict);
   }
@@ -33,7 +34,7 @@ export class FinancesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateFinanceArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.updateFinanceMany(getSelectionSet(info), updates);
   }
@@ -43,7 +44,7 @@ export class FinancesMutationResolver {
     const { where } = getGraphQLArgs<DeleteFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.deleteFinance(getSelectionSet(info), where);
   }
@@ -58,7 +59,7 @@ export class FinancesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.findFinance(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
@@ -68,7 +69,7 @@ export class FinancesQueryResolver {
     const { object, onConflict } = getGraphQLArgs<InsertOneFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.insertFinanceOne(getSelectionSet(info), object, onConflict);
   }
@@ -78,7 +79,7 @@ export class FinancesQueryResolver {
     const { id } = getGraphQLArgs<FindByPkFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.findFinanceByPk(getSelectionSet(info), id);
   }
@@ -88,19 +89,19 @@ export class FinancesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.updateFinanceByPk(getSelectionSet(info), pkColumns, _set);
   }
 
   @Mutation()
   async deleteFinanceByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkFinanceArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
-    return await this.financesService.deleteFinanceByPk(getSelectionSet(info), pkColumns);
+    return await this.financesService.deleteFinanceByPk(getSelectionSet(info), id);
   }
 }
 
@@ -113,7 +114,7 @@ export class FinancesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateFinanceArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues
+      info.variableValues,
     );
     return await this.financesService.aggregateFinance(
       getSelectionSet(info),
@@ -121,7 +122,7 @@ export class FinancesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset
+      offset,
     );
   }
 }
