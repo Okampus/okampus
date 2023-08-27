@@ -1,0 +1,7 @@
+mutation DeleteTeamMemberRole($id: bigint!) {
+  deleteTeamMemberRoleByPk(id: $id) {
+    __typename
+    id
+    deletedAt
+  }
+}

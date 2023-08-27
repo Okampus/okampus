@@ -17,7 +17,7 @@ import { updateFragment } from '../../../../../utils/apollo/update-fragment';
 import { UserLoginFragment } from '../../../../../utils/apollo/fragments';
 
 import { GetTeamDocument, OrderBy, useInsertTeamJoinMutation } from '@okampus/shared/graphql';
-import { EventState, TeamRoleType } from '@okampus/shared/enums';
+import { EventState } from '@okampus/shared/enums';
 import { ActionType, ToastType } from '@okampus/shared/types';
 
 import { produce } from 'immer';
@@ -44,7 +44,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
   if (!team) notFound();
 
   const events = data?.event;
-  const memberRole = team?.roles.find((role) => role.type === TeamRoleType.Member);
+  const memberRole = team.roles.find((role) => !role.type);
 
   const isMember = me.user.teamMembers.some((member) => member.team.id === team.id);
   const isJoining = me.user.teamJoins.some((join) => join.team.id === team.id);

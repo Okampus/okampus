@@ -1,6 +1,6 @@
-import type { JSONType } from '@okampus/shared/types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import type { JSONType } from '@okampus/shared/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -19936,6 +19936,8 @@ export type Individual = {
   createdTeamHistoriesAggregate: TeamHistoryAggregate;
   createdTeamJoins: Array<TeamJoin>;
   createdTeamJoinsAggregate: TeamJoinAggregate;
+  createdTeamMemberRoles: Array<TeamMemberRole>;
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregate;
   createdTeamMembers: Array<TeamMember>;
   createdTeamMembersAggregate: TeamMemberAggregate;
   createdTeamMetrics: Array<TeamMetric>;
@@ -20948,6 +20950,24 @@ export type IndividualCreatedTeamJoinsAggregateArgs = {
 };
 
 
+export type IndividualCreatedTeamMemberRolesArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
+export type IndividualCreatedTeamMemberRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
 export type IndividualCreatedTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21561,6 +21581,8 @@ export type IndividualBoolExp = {
   createdTeamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   createdTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   createdTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
+  createdTeamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   createdTeamMembers?: InputMaybe<TeamMemberBoolExp>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   createdTeamMetrics?: InputMaybe<TeamMetricBoolExp>;
@@ -21691,6 +21713,7 @@ export type IndividualInsertInput = {
   createdTags?: InputMaybe<TagArrRelInsertInput>;
   createdTeamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   createdTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
+  createdTeamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   createdTeamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   createdTeamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   createdTeams?: InputMaybe<TeamArrRelInsertInput>;
@@ -21852,6 +21875,7 @@ export type IndividualOrderBy = {
   createdTagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   createdTeamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   createdTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
+  createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   createdTeamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   createdTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
@@ -26196,8 +26220,8 @@ export type Mutation = {
   deleteTeamJoinByPk?: Maybe<TeamJoin>;
   deleteTeamMember?: Maybe<TeamMemberMutationResponse>;
   deleteTeamMemberByPk?: Maybe<TeamMember>;
-  deleteTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  deleteTeamMemberRolesByPk?: Maybe<TeamMemberRoles>;
+  deleteTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  deleteTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
   deleteTeamMetric?: Maybe<TeamMetricMutationResponse>;
   deleteTeamMetricByPk?: Maybe<TeamMetric>;
   deleteTenant?: Maybe<TenantMutationResponse>;
@@ -26363,8 +26387,8 @@ export type Mutation = {
   insertTeamJoinOne?: Maybe<TeamJoin>;
   insertTeamMember?: Maybe<TeamMemberMutationResponse>;
   insertTeamMemberOne?: Maybe<TeamMember>;
-  insertTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  insertTeamMemberRolesOne?: Maybe<TeamMemberRoles>;
+  insertTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  insertTeamMemberRoleOne?: Maybe<TeamMemberRole>;
   insertTeamMetric?: Maybe<TeamMetricMutationResponse>;
   insertTeamMetricOne?: Maybe<TeamMetric>;
   insertTeamOne?: Maybe<Team>;
@@ -26608,9 +26632,9 @@ export type Mutation = {
   updateTeamMember?: Maybe<TeamMemberMutationResponse>;
   updateTeamMemberByPk?: Maybe<TeamMember>;
   updateTeamMemberMany?: Maybe<Array<Maybe<TeamMemberMutationResponse>>>;
-  updateTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  updateTeamMemberRolesByPk?: Maybe<TeamMemberRoles>;
-  updateTeamMemberRolesMany?: Maybe<Array<Maybe<TeamMemberRolesMutationResponse>>>;
+  updateTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  updateTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
+  updateTeamMemberRoleMany?: Maybe<Array<Maybe<TeamMemberRoleMutationResponse>>>;
   updateTeamMetric?: Maybe<TeamMetricMutationResponse>;
   updateTeamMetricByPk?: Maybe<TeamMetric>;
   updateTeamMetricMany?: Maybe<Array<Maybe<TeamMetricMutationResponse>>>;
@@ -27392,14 +27416,13 @@ export type MutationDeleteTeamMemberByPkArgs = {
 };
 
 
-export type MutationDeleteTeamMemberRolesArgs = {
-  where: TeamMemberRolesBoolExp;
+export type MutationDeleteTeamMemberRoleArgs = {
+  where: TeamMemberRoleBoolExp;
 };
 
 
-export type MutationDeleteTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type MutationDeleteTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 
@@ -28375,15 +28398,15 @@ export type MutationInsertTeamMemberOneArgs = {
 };
 
 
-export type MutationInsertTeamMemberRolesArgs = {
-  objects: Array<TeamMemberRolesInsertInput>;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+export type MutationInsertTeamMemberRoleArgs = {
+  objects: Array<TeamMemberRoleInsertInput>;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
 
-export type MutationInsertTeamMemberRolesOneArgs = {
-  object: TeamMemberRolesInsertInput;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+export type MutationInsertTeamMemberRoleOneArgs = {
+  object: TeamMemberRoleInsertInput;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
 
@@ -29953,22 +29976,22 @@ export type MutationUpdateTeamMemberManyArgs = {
 };
 
 
-export type MutationUpdateTeamMemberRolesArgs = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  where: TeamMemberRolesBoolExp;
+export type MutationUpdateTeamMemberRoleArgs = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  where: TeamMemberRoleBoolExp;
 };
 
 
-export type MutationUpdateTeamMemberRolesByPkArgs = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  pkColumns: TeamMemberRolesPkColumnsInput;
+export type MutationUpdateTeamMemberRoleByPkArgs = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  pkColumns: TeamMemberRolePkColumnsInput;
 };
 
 
-export type MutationUpdateTeamMemberRolesManyArgs = {
-  updates: Array<TeamMemberRolesUpdates>;
+export type MutationUpdateTeamMemberRoleManyArgs = {
+  updates: Array<TeamMemberRoleUpdates>;
 };
 
 
@@ -32075,9 +32098,9 @@ export type Query = {
   teamMember: Array<TeamMember>;
   teamMemberAggregate: TeamMemberAggregate;
   teamMemberByPk?: Maybe<TeamMember>;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
-  teamMemberRolesByPk?: Maybe<TeamMemberRoles>;
+  teamMemberRole: Array<TeamMemberRole>;
+  teamMemberRoleAggregate: TeamMemberRoleAggregate;
+  teamMemberRoleByPk?: Maybe<TeamMemberRole>;
   teamMetric: Array<TeamMetric>;
   teamMetricAggregate: TeamMetricAggregate;
   teamMetricByPk?: Maybe<TeamMetric>;
@@ -33844,27 +33867,26 @@ export type QueryTeamMemberByPkArgs = {
 };
 
 
-export type QueryTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type QueryTeamMemberRoleArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
-export type QueryTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type QueryTeamMemberRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
-export type QueryTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type QueryTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 
@@ -34869,25 +34891,24 @@ export type Role = {
   __typename?: 'Role';
   askedTeamJoins: Array<TeamJoin>;
   askedTeamJoinsAggregate: TeamJoinAggregate;
-  category: Scalars['String']['output'];
+  color: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  isLocked: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   permissions: Array<Scalars['String']['output']>;
   team: Team;
   teamId: Scalars['bigint']['output'];
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
+  type?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -34928,20 +34949,20 @@ export type RoleTeamJoinsAggregateArgs = {
 
 
 export type RoleTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
 export type RoleTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 export type RoleAggregate = {
@@ -34951,8 +34972,6 @@ export type RoleAggregate = {
 };
 
 export type RoleAggregateBoolExp = {
-  bool_and?: InputMaybe<RoleAggregateBoolExpBool_And>;
-  bool_or?: InputMaybe<RoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<RoleAggregateBoolExpCount>;
 };
 
@@ -35017,22 +35036,21 @@ export type RoleBoolExp = {
   _or?: InputMaybe<Array<RoleBoolExp>>;
   askedTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   askedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  category?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  isLocked?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   permissions?: InputMaybe<StringArrayComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesBoolExp>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
@@ -35051,20 +35069,19 @@ export type RoleIncInput = {
 
 export type RoleInsertInput = {
   askedTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -35072,7 +35089,7 @@ export type RoleInsertInput = {
 
 export type RoleMaxFields = {
   __typename?: 'RoleMaxFields';
-  category?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -35086,7 +35103,7 @@ export type RoleMaxFields = {
 };
 
 export type RoleMaxOrderBy = {
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -35101,7 +35118,7 @@ export type RoleMaxOrderBy = {
 
 export type RoleMinFields = {
   __typename?: 'RoleMinFields';
-  category?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -35115,7 +35132,7 @@ export type RoleMinFields = {
 };
 
 export type RoleMinOrderBy = {
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -35147,20 +35164,19 @@ export type RoleOnConflict = {
 
 export type RoleOrderBy = {
   askedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  isLocked?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -35171,13 +35187,12 @@ export type RolePkColumnsInput = {
 };
 
 export enum RoleSelectColumn {
-  Category = 'category',
+  Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  IsLocked = 'isLocked',
   Name = 'name',
   Permissions = 'permissions',
   TeamId = 'teamId',
@@ -35185,22 +35200,13 @@ export enum RoleSelectColumn {
   Type = 'type'
 }
 
-export enum RoleSelectColumnRoleAggregateBoolExpBool_AndArgumentsColumns {
-  IsLocked = 'isLocked'
-}
-
-export enum RoleSelectColumnRoleAggregateBoolExpBool_OrArgumentsColumns {
-  IsLocked = 'isLocked'
-}
-
 export type RoleSetInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -35259,13 +35265,12 @@ export type RoleStreamCursorInput = {
 };
 
 export type RoleStreamCursorValueInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -35289,13 +35294,12 @@ export type RoleSumOrderBy = {
 };
 
 export enum RoleUpdateColumn {
-  Category = 'category',
+  Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  IsLocked = 'isLocked',
   Name = 'name',
   Permissions = 'permissions',
   TeamId = 'teamId',
@@ -37692,10 +37696,10 @@ export type Subscription = {
   teamMember: Array<TeamMember>;
   teamMemberAggregate: TeamMemberAggregate;
   teamMemberByPk?: Maybe<TeamMember>;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
-  teamMemberRolesByPk?: Maybe<TeamMemberRoles>;
-  teamMemberRolesStream: Array<TeamMemberRoles>;
+  teamMemberRole: Array<TeamMemberRole>;
+  teamMemberRoleAggregate: TeamMemberRoleAggregate;
+  teamMemberRoleByPk?: Maybe<TeamMemberRole>;
+  teamMemberRoleStream: Array<TeamMemberRole>;
   teamMemberStream: Array<TeamMember>;
   teamMetric: Array<TeamMetric>;
   teamMetricAggregate: TeamMetricAggregate;
@@ -39935,34 +39939,33 @@ export type SubscriptionTeamMemberByPkArgs = {
 };
 
 
-export type SubscriptionTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type SubscriptionTeamMemberRoleArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
-export type SubscriptionTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type SubscriptionTeamMemberRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
-export type SubscriptionTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type SubscriptionTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
 
-export type SubscriptionTeamMemberRolesStreamArgs = {
+export type SubscriptionTeamMemberRoleStreamArgs = {
   batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<TeamMemberRolesStreamCursorInput>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  cursor: Array<InputMaybe<TeamMemberRoleStreamCursorInput>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
@@ -42441,17 +42444,16 @@ export type TeamMember = {
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   permissions: Scalars['Int']['output'];
-  startDate: Scalars['timestamptz']['output'];
+  start: Scalars['timestamptz']['output'];
   supervisedProjects: Array<ProjectSupervisors>;
   supervisedProjectsAggregate: ProjectSupervisorsAggregate;
   team: Team;
   teamId: Scalars['bigint']['output'];
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
   user: User;
@@ -42478,20 +42480,20 @@ export type TeamMemberSupervisedProjectsAggregateArgs = {
 
 
 export type TeamMemberTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 
 export type TeamMemberTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 export type TeamMemberAggregate = {
@@ -42571,17 +42573,16 @@ export type TeamMemberBoolExp = {
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  endDate?: InputMaybe<TimestamptzComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   permissions?: InputMaybe<IntComparisonExp>;
-  startDate?: InputMaybe<TimestamptzComparisonExp>;
+  start?: InputMaybe<TimestamptzComparisonExp>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsBoolExp>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateBoolExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesBoolExp>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
@@ -42606,15 +42607,14 @@ export type TeamMemberInsertInput = {
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsArrRelInsertInput>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
@@ -42626,11 +42626,10 @@ export type TeamMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -42640,11 +42639,10 @@ export type TeamMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -42655,11 +42653,10 @@ export type TeamMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -42669,11 +42666,10 @@ export type TeamMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -42701,15 +42697,14 @@ export type TeamMemberOrderBy = {
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateOrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   user?: InputMaybe<UserOrderBy>;
@@ -42720,264 +42715,393 @@ export type TeamMemberPkColumnsInput = {
   id: Scalars['bigint']['input'];
 };
 
-export type TeamMemberRoles = {
-  __typename?: 'TeamMemberRoles';
+export type TeamMemberRole = {
+  __typename?: 'TeamMemberRole';
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<Individual>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
   role: Role;
   roleId: Scalars['bigint']['output'];
   teamMember: TeamMember;
   teamMemberId: Scalars['bigint']['output'];
+  tenant: Tenant;
+  tenantId: Scalars['bigint']['output'];
 };
 
-export type TeamMemberRolesAggregate = {
-  __typename?: 'TeamMemberRolesAggregate';
-  aggregate?: Maybe<TeamMemberRolesAggregateFields>;
-  nodes: Array<TeamMemberRoles>;
+export type TeamMemberRoleAggregate = {
+  __typename?: 'TeamMemberRoleAggregate';
+  aggregate?: Maybe<TeamMemberRoleAggregateFields>;
+  nodes: Array<TeamMemberRole>;
 };
 
-export type TeamMemberRolesAggregateBoolExp = {
-  count?: InputMaybe<TeamMemberRolesAggregateBoolExpCount>;
+export type TeamMemberRoleAggregateBoolExp = {
+  count?: InputMaybe<TeamMemberRoleAggregateBoolExpCount>;
 };
 
-export type TeamMemberRolesAggregateFields = {
-  __typename?: 'TeamMemberRolesAggregateFields';
-  avg?: Maybe<TeamMemberRolesAvgFields>;
+export type TeamMemberRoleAggregateFields = {
+  __typename?: 'TeamMemberRoleAggregateFields';
+  avg?: Maybe<TeamMemberRoleAvgFields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<TeamMemberRolesMaxFields>;
-  min?: Maybe<TeamMemberRolesMinFields>;
-  stddev?: Maybe<TeamMemberRolesStddevFields>;
-  stddevPop?: Maybe<TeamMemberRolesStddevPopFields>;
-  stddevSamp?: Maybe<TeamMemberRolesStddevSampFields>;
-  sum?: Maybe<TeamMemberRolesSumFields>;
-  varPop?: Maybe<TeamMemberRolesVarPopFields>;
-  varSamp?: Maybe<TeamMemberRolesVarSampFields>;
-  variance?: Maybe<TeamMemberRolesVarianceFields>;
+  max?: Maybe<TeamMemberRoleMaxFields>;
+  min?: Maybe<TeamMemberRoleMinFields>;
+  stddev?: Maybe<TeamMemberRoleStddevFields>;
+  stddevPop?: Maybe<TeamMemberRoleStddevPopFields>;
+  stddevSamp?: Maybe<TeamMemberRoleStddevSampFields>;
+  sum?: Maybe<TeamMemberRoleSumFields>;
+  varPop?: Maybe<TeamMemberRoleVarPopFields>;
+  varSamp?: Maybe<TeamMemberRoleVarSampFields>;
+  variance?: Maybe<TeamMemberRoleVarianceFields>;
 };
 
 
-export type TeamMemberRolesAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type TeamMemberRoleAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type TeamMemberRolesAggregateOrderBy = {
-  avg?: InputMaybe<TeamMemberRolesAvgOrderBy>;
+export type TeamMemberRoleAggregateOrderBy = {
+  avg?: InputMaybe<TeamMemberRoleAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<TeamMemberRolesMaxOrderBy>;
-  min?: InputMaybe<TeamMemberRolesMinOrderBy>;
-  stddev?: InputMaybe<TeamMemberRolesStddevOrderBy>;
-  stddevPop?: InputMaybe<TeamMemberRolesStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<TeamMemberRolesStddevSampOrderBy>;
-  sum?: InputMaybe<TeamMemberRolesSumOrderBy>;
-  varPop?: InputMaybe<TeamMemberRolesVarPopOrderBy>;
-  varSamp?: InputMaybe<TeamMemberRolesVarSampOrderBy>;
-  variance?: InputMaybe<TeamMemberRolesVarianceOrderBy>;
+  max?: InputMaybe<TeamMemberRoleMaxOrderBy>;
+  min?: InputMaybe<TeamMemberRoleMinOrderBy>;
+  stddev?: InputMaybe<TeamMemberRoleStddevOrderBy>;
+  stddevPop?: InputMaybe<TeamMemberRoleStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<TeamMemberRoleStddevSampOrderBy>;
+  sum?: InputMaybe<TeamMemberRoleSumOrderBy>;
+  varPop?: InputMaybe<TeamMemberRoleVarPopOrderBy>;
+  varSamp?: InputMaybe<TeamMemberRoleVarSampOrderBy>;
+  variance?: InputMaybe<TeamMemberRoleVarianceOrderBy>;
 };
 
-export type TeamMemberRolesArrRelInsertInput = {
-  data: Array<TeamMemberRolesInsertInput>;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+export type TeamMemberRoleArrRelInsertInput = {
+  data: Array<TeamMemberRoleInsertInput>;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
-export type TeamMemberRolesAvgFields = {
-  __typename?: 'TeamMemberRolesAvgFields';
+export type TeamMemberRoleAvgFields = {
+  __typename?: 'TeamMemberRoleAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesAvgOrderBy = {
+export type TeamMemberRoleAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesBoolExp = {
-  _and?: InputMaybe<Array<TeamMemberRolesBoolExp>>;
-  _not?: InputMaybe<TeamMemberRolesBoolExp>;
-  _or?: InputMaybe<Array<TeamMemberRolesBoolExp>>;
+export type TeamMemberRoleBoolExp = {
+  _and?: InputMaybe<Array<TeamMemberRoleBoolExp>>;
+  _not?: InputMaybe<TeamMemberRoleBoolExp>;
+  _or?: InputMaybe<Array<TeamMemberRoleBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<IndividualBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
   role?: InputMaybe<RoleBoolExp>;
   roleId?: InputMaybe<BigintComparisonExp>;
   teamMember?: InputMaybe<TeamMemberBoolExp>;
   teamMemberId?: InputMaybe<BigintComparisonExp>;
+  tenant?: InputMaybe<TenantBoolExp>;
+  tenantId?: InputMaybe<BigintComparisonExp>;
 };
 
-export enum TeamMemberRolesConstraint {
-  TeamMemberRolesPkey = 'team_member_roles_pkey'
+export enum TeamMemberRoleConstraint {
+  TeamMemberRolePkey = 'team_member_role_pkey'
 }
 
-export type TeamMemberRolesIncInput = {
+export type TeamMemberRoleIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesInsertInput = {
+export type TeamMemberRoleInsertInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<IndividualObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   role?: InputMaybe<RoleObjRelInsertInput>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenant?: InputMaybe<TenantObjRelInsertInput>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesMaxFields = {
-  __typename?: 'TeamMemberRolesMaxFields';
+export type TeamMemberRoleMaxFields = {
+  __typename?: 'TeamMemberRoleMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesMaxOrderBy = {
+export type TeamMemberRoleMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesMinFields = {
-  __typename?: 'TeamMemberRolesMinFields';
+export type TeamMemberRoleMinFields = {
+  __typename?: 'TeamMemberRoleMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesMinOrderBy = {
+export type TeamMemberRoleMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesMutationResponse = {
-  __typename?: 'TeamMemberRolesMutationResponse';
+export type TeamMemberRoleMutationResponse = {
+  __typename?: 'TeamMemberRoleMutationResponse';
   affectedRows: Scalars['Int']['output'];
-  returning: Array<TeamMemberRoles>;
+  returning: Array<TeamMemberRole>;
 };
 
-export type TeamMemberRolesOnConflict = {
-  constraint: TeamMemberRolesConstraint;
-  updateColumns?: Array<TeamMemberRolesUpdateColumn>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+export type TeamMemberRoleOnConflict = {
+  constraint: TeamMemberRoleConstraint;
+  updateColumns?: Array<TeamMemberRoleUpdateColumn>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type TeamMemberRolesOrderBy = {
+export type TeamMemberRoleOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<IndividualOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   role?: InputMaybe<RoleOrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMember?: InputMaybe<TeamMemberOrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenant?: InputMaybe<TenantOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesPkColumnsInput = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type TeamMemberRolePkColumnsInput = {
+  id: Scalars['bigint']['input'];
 };
 
-export enum TeamMemberRolesSelectColumn {
+export enum TeamMemberRoleSelectColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
   RoleId = 'roleId',
-  TeamMemberId = 'teamMemberId'
+  TeamMemberId = 'teamMemberId',
+  TenantId = 'tenantId'
 }
 
-export type TeamMemberRolesSetInput = {
+export type TeamMemberRoleSetInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesStddevFields = {
-  __typename?: 'TeamMemberRolesStddevFields';
+export type TeamMemberRoleStddevFields = {
+  __typename?: 'TeamMemberRoleStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevOrderBy = {
+export type TeamMemberRoleStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStddevPopFields = {
-  __typename?: 'TeamMemberRolesStddevPopFields';
+export type TeamMemberRoleStddevPopFields = {
+  __typename?: 'TeamMemberRoleStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevPopOrderBy = {
+export type TeamMemberRoleStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStddevSampFields = {
-  __typename?: 'TeamMemberRolesStddevSampFields';
+export type TeamMemberRoleStddevSampFields = {
+  __typename?: 'TeamMemberRoleStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevSampOrderBy = {
+export type TeamMemberRoleStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStreamCursorInput = {
-  initialValue: TeamMemberRolesStreamCursorValueInput;
+export type TeamMemberRoleStreamCursorInput = {
+  initialValue: TeamMemberRoleStreamCursorValueInput;
   ordering?: InputMaybe<CursorOrdering>;
 };
 
-export type TeamMemberRolesStreamCursorValueInput = {
+export type TeamMemberRoleStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesSumFields = {
-  __typename?: 'TeamMemberRolesSumFields';
+export type TeamMemberRoleSumFields = {
+  __typename?: 'TeamMemberRoleSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesSumOrderBy = {
+export type TeamMemberRoleSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export enum TeamMemberRolesUpdateColumn {
+export enum TeamMemberRoleUpdateColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
   RoleId = 'roleId',
-  TeamMemberId = 'teamMemberId'
+  TeamMemberId = 'teamMemberId',
+  TenantId = 'tenantId'
 }
 
-export type TeamMemberRolesUpdates = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  where: TeamMemberRolesBoolExp;
+export type TeamMemberRoleUpdates = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  where: TeamMemberRoleBoolExp;
 };
 
-export type TeamMemberRolesVarPopFields = {
-  __typename?: 'TeamMemberRolesVarPopFields';
+export type TeamMemberRoleVarPopFields = {
+  __typename?: 'TeamMemberRoleVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarPopOrderBy = {
+export type TeamMemberRoleVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesVarSampFields = {
-  __typename?: 'TeamMemberRolesVarSampFields';
+export type TeamMemberRoleVarSampFields = {
+  __typename?: 'TeamMemberRoleVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarSampOrderBy = {
+export type TeamMemberRoleVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesVarianceFields = {
-  __typename?: 'TeamMemberRolesVarianceFields';
+export type TeamMemberRoleVarianceFields = {
+  __typename?: 'TeamMemberRoleVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarianceOrderBy = {
+export type TeamMemberRoleVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
 export enum TeamMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  StartDate = 'startDate',
+  Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
   UserId = 'userId'
@@ -42987,11 +43111,10 @@ export type TeamMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -43063,11 +43186,10 @@ export type TeamMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -43096,11 +43218,10 @@ export enum TeamMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  StartDate = 'startDate',
+  Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
   UserId = 'userId'
@@ -44105,6 +44226,8 @@ export type Tenant = {
   teamHistoriesAggregate: TeamHistoryAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   teamMembers: Array<TeamMember>;
   teamMembersAggregate: TeamMemberAggregate;
   teamMetrics: Array<TeamMetric>;
@@ -45026,6 +45149,24 @@ export type TenantTeamJoinsAggregateArgs = {
 };
 
 
+export type TenantTeamMemberRolesArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
+export type TenantTeamMemberRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
 export type TenantTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45376,6 +45517,8 @@ export type TenantBoolExp = {
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   teamMembers?: InputMaybe<TeamMemberBoolExp>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   teamMetrics?: InputMaybe<TeamMetricBoolExp>;
@@ -45480,6 +45623,7 @@ export type TenantInsertInput = {
   tags?: InputMaybe<TagArrRelInsertInput>;
   teamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   teamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
@@ -45647,6 +45791,7 @@ export type TenantOrderBy = {
   tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   teamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
@@ -49520,20 +49665,6 @@ export type ReportAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type RoleAggregateBoolExpBool_And = {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_AndArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<RoleBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type RoleAggregateBoolExpBool_Or = {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_OrArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<RoleBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
 export type RoleAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<RoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -49625,10 +49756,10 @@ export type TeamMemberAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type TeamMemberRolesAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type TeamMemberRoleAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TeamMemberRolesBoolExp>;
+  filter?: InputMaybe<TeamMemberRoleBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -49733,7 +49864,7 @@ export type VoteAggregateBoolExpCount = {
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename: 'UserLogin', canManageTenant: boolean, onboardingTeams: Array<{ __typename: 'Team', id: string, membershipFees: number, membershipDuration: string, type: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, following: Array<{ __typename: 'Follow', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null } }> }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }>, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, event: { __typename: 'Event', id: string, slug: string } }>, teamJoins: Array<{ __typename: 'TeamJoin', id: string, createdAt: string, state: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, shortcuts: Array<{ __typename: 'Shortcut', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }>, tenant: { __typename: 'Tenant', id: string, createdAt: string, domain: string, pointName: string, eventValidationForm: { __typename: 'Form', id: string, name: string, schema: JSONType, type: string } | null, eventApprovalSteps: Array<{ __typename: 'EventApprovalStep', id: string, name: string, order: number }>, adminTeam: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, bio: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename: 'UserLogin', canManageTenant: boolean, onboardingTeams: Array<{ __typename: 'Team', id: string, membershipFees: number, membershipDuration: string, type: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, following: Array<{ __typename: 'Follow', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null } }> }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }>, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, event: { __typename: 'Event', id: string, slug: string } }>, teamJoins: Array<{ __typename: 'TeamJoin', id: string, createdAt: string, state: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, shortcuts: Array<{ __typename: 'Shortcut', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }>, tenant: { __typename: 'Tenant', id: string, createdAt: string, domain: string, pointName: string, eventValidationForm: { __typename: 'Form', id: string, name: string, schema: JSONType, type: string } | null, eventApprovalSteps: Array<{ __typename: 'EventApprovalStep', id: string, name: string, order: number }>, adminTeam: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, bio: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null } } } };
 
 export type GetEventJoinQueryVariables = Exact<{
   eventJoinId: Scalars['bigint']['input'];
@@ -49827,7 +49958,7 @@ export type GetTeamJoinsQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamJoinsQuery = { __typename?: 'Query', teamJoin: Array<{ __typename: 'TeamJoin', id: string, state: string, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, receivedRole: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } | null }> };
+export type GetTeamJoinsQuery = { __typename?: 'Query', teamJoin: Array<{ __typename: 'TeamJoin', id: string, state: string, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, receivedRole: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } | null }> };
 
 export type UpdateTeamJoinMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
@@ -49872,19 +50003,19 @@ export type DeleteActorImageMutationVariables = Exact<{
 
 export type DeleteActorImageMutation = { __typename?: 'Mutation', deleteActorImageByPk: { __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string }, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string } } | null };
 
-export type DeleteRoleMutationVariables = Exact<{
+export type DeleteTeamMemberRoleMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
 
-export type DeleteRoleMutation = { __typename?: 'Mutation', deleteRoleByPk: { __typename: 'Role', id: string, name: string, type: string, permissions: Array<string>, category: string } | null };
+export type DeleteTeamMemberRoleMutation = { __typename?: 'Mutation', deleteTeamMemberRoleByPk: { __typename: 'TeamMemberRole', id: string, deletedAt: string | null } | null };
 
 export type GetTeamManageQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
 
-export type GetTeamManageQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, isJoinFormActive: boolean, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, projects: Array<{ __typename: 'Project', id: string, createdAt: string, color: string, description: string, name: string, slug: string, isPrivate: boolean, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, createdAt: string, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, event: { __typename: 'Event', id: string, createdAt: string, start: string, end: string, maxParticipants: number | null, name: string, slug: string, description: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }> }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } }>, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, projectSupervisors: Array<{ __typename?: 'ProjectSupervisors', teamMember: { __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } } }>, projectTags: Array<{ __typename?: 'ProjectTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }> }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, details: string, link: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
+export type GetTeamManageQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, isJoinFormActive: boolean, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, projects: Array<{ __typename: 'Project', id: string, createdAt: string, color: string, description: string, name: string, slug: string, isPrivate: boolean, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, createdAt: string, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, event: { __typename: 'Event', id: string, createdAt: string, start: string, end: string, maxParticipants: number | null, name: string, slug: string, description: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }> }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } }>, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, projectSupervisors: Array<{ __typename?: 'ProjectSupervisors', teamMember: { __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename?: 'TeamMemberRole', role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } } }>, projectTags: Array<{ __typename?: 'ProjectTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }> }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, details: string, link: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
 
 export type InsertActorImageMutationVariables = Exact<{
   object: ActorImageInsertInput;
@@ -49907,7 +50038,7 @@ export type UpdateTeamMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTeamMutation = { __typename?: 'Mutation', updateTeamByPk: { __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } | null };
+export type UpdateTeamMutation = { __typename?: 'Mutation', updateTeamByPk: { __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } | null };
 
 export type InsertAccountMutationVariables = Exact<{
   object: AccountInsertInput;
@@ -49953,7 +50084,7 @@ export type GetTenantManageQuery = { __typename?: 'Query', tenant: Array<{ __typ
 export type GetTeamDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTeamDashboardQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipDuration: string, membershipFees: number, isJoinFormActive: boolean, documents: Array<{ __typename: 'Document', id: string, name: string, type: string, file: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } | null }>, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
+export type GetTeamDashboardQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipDuration: string, membershipFees: number, isJoinFormActive: boolean, documents: Array<{ __typename: 'Document', id: string, name: string, type: string, file: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } | null }>, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
 
 export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -49982,7 +50113,7 @@ export type GetTeamQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipFees: number, membershipDuration: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
+export type GetTeamQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipFees: number, membershipDuration: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
 
 export type InsertTeamJoinMutationVariables = Exact<{
   object: TeamJoinInsertInput;
@@ -49999,7 +50130,7 @@ export type GetTeamsQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamsQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, status: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
+export type GetTeamsQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, status: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
 
 export type GetCategoriesQueryVariables = Exact<{
   where?: InputMaybe<TagBoolExp>;
@@ -50186,7 +50317,7 @@ export type GetTeamPopoverQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamPopoverQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, startDate: string, endDate: string | null, teamMemberRoles: Array<{ __typename?: 'TeamMemberRoles', role: { __typename: 'Role', id: string, createdAt: string, category: string, type: string, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } }> }> };
+export type GetTeamPopoverQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } }> }> };
 
 export type GetUserPopoverQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
@@ -50205,54 +50336,16 @@ export type UpdateFormMutation = { __typename?: 'Mutation', updateFormByPk: { __
 
 
 export const GetMeDocument = gql`
-    query GetMe {
-  me {
-    __typename
-    canManageTenant
-    onboardingTeams {
+      query GetMe {
+    me {
       __typename
-      id
-      membershipFees
-      membershipDuration
-      type
-      actor {
+      canManageTenant
+      onboardingTeams {
         __typename
         id
-        bio
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-        socials(where: {deletedAt: {_isNull: true}}) {
-          __typename
-          id
-          pseudo
-          url
-          type
-          order
-        }
-      }
-    }
-    user {
-      __typename
-      id
-      createdAt
-      firstName
-      lastName
-      individual {
-        __typename
-        id
+        membershipFees
+        membershipDuration
+        type
         actor {
           __typename
           id
@@ -50260,7 +50353,6 @@ export const GetMeDocument = gql`
           email
           name
           slug
-          status
           website
           actorImages {
             __typename
@@ -50282,66 +50374,29 @@ export const GetMeDocument = gql`
             order
           }
         }
-        following {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            name
-            slug
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            team {
-              __typename
-              id
-              actor {
-                __typename
-                id
-                slug
-              }
-            }
-          }
-        }
       }
-      teamMembers(where: {endDate: {_isNull: true}}) {
+      user {
         __typename
         id
         createdAt
-        startDate
-        endDate
-        teamMemberRoles {
-          role {
-            __typename
-            id
-            createdAt
-            category
-            type
-            name
-            permissions
-          }
-        }
-        team {
+        firstName
+        lastName
+        individual {
           __typename
           id
           actor {
             __typename
             id
+            bio
             email
             name
             slug
+            status
             website
             actorImages {
               __typename
               id
+              createdAt
               type
               image {
                 __typename
@@ -50349,27 +50404,134 @@ export const GetMeDocument = gql`
                 url
               }
             }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+          following {
+            __typename
+            id
+            actor {
+              __typename
+              id
+              name
+              slug
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+              team {
+                __typename
+                id
+                actor {
+                  __typename
+                  id
+                  slug
+                }
+              }
+            }
           }
         }
-      }
-      eventJoins {
-        __typename
-        id
-        createdAt
-        state
-        isPresent
-        event {
+        teamMembers(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
-          slug
+          createdAt
+          start
+          teamMemberRoles {
+            __typename
+            id
+            role {
+              __typename
+              id
+              createdAt
+              color
+              type
+              name
+              permissions
+            }
+          }
+          team {
+            __typename
+            id
+            actor {
+              __typename
+              id
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
         }
-      }
-      teamJoins {
-        __typename
-        id
-        createdAt
-        state
-        team {
+        eventJoins {
+          __typename
+          id
+          createdAt
+          state
+          isPresent
+          event {
+            __typename
+            id
+            slug
+          }
+        }
+        teamJoins {
+          __typename
+          id
+          createdAt
+          state
+          team {
+            __typename
+            id
+            createdAt
+            type
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+            }
+          }
+        }
+        shortcuts {
           __typename
           id
           createdAt
@@ -50398,90 +50560,60 @@ export const GetMeDocument = gql`
             }
           }
         }
-      }
-      shortcuts {
-        __typename
-        id
-        createdAt
-        type
-        actor {
+        tenant {
           __typename
           id
           createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
+          domain
+          pointName
+          eventValidationForm {
             __typename
             id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-      }
-      tenant {
-        __typename
-        id
-        createdAt
-        domain
-        pointName
-        eventValidationForm {
-          __typename
-          id
-          name
-          schema
-          type
-        }
-        eventApprovalSteps {
-          __typename
-          id
-          name
-          order
-        }
-        adminTeam {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            bio
             name
-            slug
-            website
-            actorImages {
+            schema
+            type
+          }
+          eventApprovalSteps {
+            __typename
+            id
+            name
+            order
+          }
+          adminTeam {
+            __typename
+            id
+            actor {
               __typename
               id
-              type
-              image {
+              bio
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
-                url
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
               }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
             }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetMeQuery__
@@ -50510,61 +50642,61 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const GetEventJoinDocument = gql`
-    query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
-  eventJoinByPk(id: $eventJoinId) {
-    __typename
-    id
-    isPresent
-    state
-    event {
+      query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
+    eventJoinByPk(id: $eventJoinId) {
       __typename
       id
-      slug
-      start
-      end
-      maxParticipants
-      eventOrganizes {
+      isPresent
+      state
+      event {
         __typename
         id
-        eventSupervisors(where: {user: {id: {_eq: $userId}}}) {
-          user {
-            __typename
-            id
-            individual {
+        slug
+        start
+        end
+        maxParticipants
+        eventOrganizes {
+          __typename
+          id
+          eventSupervisors(where: {user: {id: {_eq: $userId}}}) {
+            user {
               __typename
               id
-              actor {
+              individual {
                 __typename
                 id
-                slug
-                name
+                actor {
+                  __typename
+                  id
+                  slug
+                  name
+                }
               }
             }
           }
-        }
-        team {
-          __typename
-          id
+          team {
+            __typename
+            id
+          }
         }
       }
-    }
-    joinedBy {
-      __typename
-      id
-      individual {
+      joinedBy {
         __typename
         id
-        actor {
+        individual {
           __typename
           id
-          slug
-          name
+          actor {
+            __typename
+            id
+            slug
+            name
+          }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetEventJoinQuery__
@@ -50595,40 +50727,40 @@ export type GetEventJoinQueryHookResult = ReturnType<typeof useGetEventJoinQuery
 export type GetEventJoinLazyQueryHookResult = ReturnType<typeof useGetEventJoinLazyQuery>;
 export type GetEventJoinQueryResult = Apollo.QueryResult<GetEventJoinQuery, GetEventJoinQueryVariables>;
 export const UpdateEventJoinDocument = gql`
-    mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
-  updateEventJoinByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    state
-    processedAt
-    processedBy {
+      mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
+    updateEventJoinByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
-      createdAt
-      actor {
+      state
+      processedAt
+      processedBy {
         __typename
         id
-        slug
-        bio
-        name
-        email
-        status
-        website
-        actorImages {
+        createdAt
+        actor {
           __typename
           id
-          type
-          image {
+          slug
+          bio
+          name
+          email
+          status
+          website
+          actorImages {
             __typename
             id
-            url
+            type
+            image {
+              __typename
+              id
+              url
+            }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 export type UpdateEventJoinMutationFn = Apollo.MutationFunction<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>;
 
 /**
@@ -50657,207 +50789,176 @@ export type UpdateEventJoinMutationHookResult = ReturnType<typeof useUpdateEvent
 export type UpdateEventJoinMutationResult = Apollo.MutationResult<UpdateEventJoinMutation>;
 export type UpdateEventJoinMutationOptions = Apollo.BaseMutationOptions<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>;
 export const GetEventDocument = gql`
-    query GetEvent($slug: String!) {
-  event(where: {slug: {_eq: $slug}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    description
-    start
-    end
-    slug
-    name
-    state
-    price
-    isPrivate
-    maxParticipants
-    pointsAwardedForAttendance
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          name
-          slug
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+      query GetEvent($slug: String!) {
+    event(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
       createdAt
+      description
+      start
+      end
+      slug
+      name
       state
-      isPresent
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      processedBy {
+      price
+      isPrivate
+      maxParticipants
+      pointsAwardedForAttendance
+      location {
         __typename
         id
-        createdAt
-        actor {
+        type
+        link
+        name
+        details
+        address {
           __typename
           id
-          slug
-          bio
           name
-          email
-          status
-          website
-          actorImages {
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        eventSupervisors {
+          user {
             __typename
             id
-            type
-            image {
+            createdAt
+            firstName
+            lastName
+            individual {
               __typename
               id
-              url
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+              }
             }
           }
         }
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            name
+            slug
+            email
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
       }
-      joinedBy {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
-        firstName
-        lastName
-        individual {
+        state
+        isPresent
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+        processedBy {
           __typename
           id
           createdAt
@@ -50868,8 +50969,8 @@ export const GetEventDocument = gql`
             bio
             name
             email
-            website
             status
+            website
             actorImages {
               __typename
               id
@@ -50882,19 +50983,50 @@ export const GetEventDocument = gql`
             }
           }
         }
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+              bio
+              name
+              email
+              website
+              status
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
       }
     }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetEventQuery__
@@ -50924,21 +51056,21 @@ export type GetEventQueryHookResult = ReturnType<typeof useGetEventQuery>;
 export type GetEventLazyQueryHookResult = ReturnType<typeof useGetEventLazyQuery>;
 export type GetEventQueryResult = Apollo.QueryResult<GetEventQuery, GetEventQueryVariables>;
 export const InsertEventJoinDocument = gql`
-    mutation InsertEventJoin($object: EventJoinInsertInput!) {
-  insertEventJoinOne(object: $object) {
-    __typename
-    id
-    createdAt
-    state
-    isPresent
-    event {
+      mutation InsertEventJoin($object: EventJoinInsertInput!) {
+    insertEventJoinOne(object: $object) {
       __typename
       id
-      slug
+      createdAt
+      state
+      isPresent
+      event {
+        __typename
+        id
+        slug
+      }
     }
   }
-}
-    `;
+`;
 export type InsertEventJoinMutationFn = Apollo.MutationFunction<InsertEventJoinMutation, InsertEventJoinMutationVariables>;
 
 /**
@@ -50966,2645 +51098,64 @@ export type InsertEventJoinMutationHookResult = ReturnType<typeof useInsertEvent
 export type InsertEventJoinMutationResult = Apollo.MutationResult<InsertEventJoinMutation>;
 export type InsertEventJoinMutationOptions = Apollo.BaseMutationOptions<InsertEventJoinMutation, InsertEventJoinMutationVariables>;
 export const GetEventsDocument = gql`
-    query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
-  event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    maxParticipants
-    name
-    state
-    price
-    pointsAwardedForAttendance
-    isPrivate
-    description
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+      query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+    event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
       createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        submission
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-          bio
-          status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-  }
-}
-    `;
-
-/**
- * __useGetEventsQuery__
- *
- * To run a query within a React component, call `useGetEventsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
-      }
-export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
-        }
-export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
-export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
-export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;
-export const GetEventManageDocument = gql`
-    query GetEventManage($slug: String!) {
-  event(where: {slug: {_eq: $slug}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    start
-    end
-    maxParticipants
-    name
-    slug
-    description
-    location {
-      __typename
-      id
-      createdAt
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        latitude
-        longitude
-        category
-        name
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    state
-    price
-    pointsAwardedForAttendance
-    banner {
-      __typename
-      id
-      createdAt
-      url
-      size
-      type
-      name
-    }
-    isPrivate
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      team {
-        __typename
-        id
-        createdAt
-        type
-        directorsCategoryName
-        managersCategoryName
-        membersCategoryName
-        actor {
-          __typename
-          id
-          createdAt
-          name
-          slug
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          bio
-          status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        joinForm {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        teamMembersAggregate {
-          aggregate {
-            count
-          }
-        }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
-        }
-        projects {
-          __typename
-          id
-          name
-          slug
-          banner {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
-      __typename
-      id
-      createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-        }
-      }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        submission
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      participationProcessedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    eventApprovals {
-      __typename
-      id
-      createdAt
-      isApproved
-      message
-      eventApprovalStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-        nextSteps {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-        previousStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-    nextEventApprovalStep {
-      __typename
-      id
-      createdAt
-      name
-      description
-      order
-      nextSteps {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-      previousStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-    }
-    eventApprovalSubmission {
-      __typename
-      id
-      createdAt
-      form {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
-      }
-      submission
-    }
-  }
-}
-    `;
-
-/**
- * __useGetEventManageQuery__
- *
- * To run a query within a React component, call `useGetEventManageQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEventManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventManageQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetEventManageQuery(baseOptions: Apollo.QueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
-      }
-export function useGetEventManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
-        }
-export type GetEventManageQueryHookResult = ReturnType<typeof useGetEventManageQuery>;
-export type GetEventManageLazyQueryHookResult = ReturnType<typeof useGetEventManageLazyQuery>;
-export type GetEventManageQueryResult = Apollo.QueryResult<GetEventManageQuery, GetEventManageQueryVariables>;
-export const InsertAddressDocument = gql`
-    mutation InsertAddress($object: AddressInsertInput!) {
-  insertAddressOne(object: $object) {
-    __typename
-    id
-    name
-    category
-    country
-    state
-    zip
-    city
-    street
-    streetNumber
-    latitude
-    longitude
-    geoapifyId
-  }
-}
-    `;
-export type InsertAddressMutationFn = Apollo.MutationFunction<InsertAddressMutation, InsertAddressMutationVariables>;
-
-/**
- * __useInsertAddressMutation__
- *
- * To run a mutation, you first call `useInsertAddressMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertAddressMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertAddressMutation, { data, loading, error }] = useInsertAddressMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertAddressMutation(baseOptions?: Apollo.MutationHookOptions<InsertAddressMutation, InsertAddressMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertAddressMutation, InsertAddressMutationVariables>(InsertAddressDocument, options);
-      }
-export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddressMutation>;
-export type InsertAddressMutationResult = Apollo.MutationResult<InsertAddressMutation>;
-export type InsertAddressMutationOptions = Apollo.BaseMutationOptions<InsertAddressMutation, InsertAddressMutationVariables>;
-export const UpdateEventDocument = gql`
-    mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
-  updateEventByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    createdAt
-    start
-    end
-    maxParticipants
-    name
-    slug
-    description
-    location {
-      __typename
-      id
-      createdAt
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        latitude
-        longitude
-        category
-        name
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    state
-    price
-    pointsAwardedForAttendance
-    banner {
-      __typename
-      id
-      createdAt
-      url
-      size
-      type
-      name
-    }
-    isPrivate
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          name
-          slug
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          bio
-          status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        directorsCategoryName
-        managersCategoryName
-        membersCategoryName
-        joinForm {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        teamMembersAggregate {
-          aggregate {
-            count
-          }
-        }
-        poles {
-          __typename
-          id
-          createdAt
-          name
-          description
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
-      __typename
-      id
-      createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-        }
-      }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        submission
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      participationProcessedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          email
-          name
-          bio
-          status
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    eventApprovals {
-      __typename
-      id
-      createdAt
-      isApproved
-      message
-      eventApprovalStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-        nextSteps {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-        previousStep {
-          __typename
-          id
-          createdAt
-          name
-          description
-          order
-        }
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    nextEventApprovalStep {
-      __typename
-      id
-      createdAt
-      name
-      description
-      order
-      nextSteps {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-      previousStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-    }
-    eventApprovalSubmission {
-      __typename
-      id
-      createdAt
-      form {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
-      }
-      submission
-    }
-  }
-}
-    `;
-export type UpdateEventMutationFn = Apollo.MutationFunction<UpdateEventMutation, UpdateEventMutationVariables>;
-
-/**
- * __useUpdateEventMutation__
- *
- * To run a mutation, you first call `useUpdateEventMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateEventMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateEventMutation, { data, loading, error }] = useUpdateEventMutation({
- *   variables: {
- *      id: // value for 'id'
- *      update: // value for 'update'
- *   },
- * });
- */
-export function useUpdateEventMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventMutation, UpdateEventMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateEventMutation, UpdateEventMutationVariables>(UpdateEventDocument, options);
-      }
-export type UpdateEventMutationHookResult = ReturnType<typeof useUpdateEventMutation>;
-export type UpdateEventMutationResult = Apollo.MutationResult<UpdateEventMutation>;
-export type UpdateEventMutationOptions = Apollo.BaseMutationOptions<UpdateEventMutation, UpdateEventMutationVariables>;
-export const UpdateEventOrganizeProjectManyDocument = gql`
-    mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
-  updateEventOrganizeMany(updates: $updates) {
-    returning {
-      __typename
-      id
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-  }
-}
-    `;
-export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
-
-/**
- * __useUpdateEventOrganizeProjectManyMutation__
- *
- * To run a mutation, you first call `useUpdateEventOrganizeProjectManyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateEventOrganizeProjectManyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateEventOrganizeProjectManyMutation, { data, loading, error }] = useUpdateEventOrganizeProjectManyMutation({
- *   variables: {
- *      updates: // value for 'updates'
- *   },
- * });
- */
-export function useUpdateEventOrganizeProjectManyMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>(UpdateEventOrganizeProjectManyDocument, options);
-      }
-export type UpdateEventOrganizeProjectManyMutationHookResult = ReturnType<typeof useUpdateEventOrganizeProjectManyMutation>;
-export type UpdateEventOrganizeProjectManyMutationResult = Apollo.MutationResult<UpdateEventOrganizeProjectManyMutation>;
-export type UpdateEventOrganizeProjectManyMutationOptions = Apollo.BaseMutationOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
-export const UpdateLocationDocument = gql`
-    mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
-  updateLocationByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    createdAt
-    type
-    link
-    details
-    address {
-      __typename
-      id
-      latitude
-      longitude
-      category
-      name
-      streetNumber
-      street
-      zip
-      city
-      state
-      country
-      geoapifyId
-    }
-  }
-}
-    `;
-export type UpdateLocationMutationFn = Apollo.MutationFunction<UpdateLocationMutation, UpdateLocationMutationVariables>;
-
-/**
- * __useUpdateLocationMutation__
- *
- * To run a mutation, you first call `useUpdateLocationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateLocationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateLocationMutation, { data, loading, error }] = useUpdateLocationMutation({
- *   variables: {
- *      id: // value for 'id'
- *      update: // value for 'update'
- *   },
- * });
- */
-export function useUpdateLocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
-      }
-export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
-export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
-export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<UpdateLocationMutation, UpdateLocationMutationVariables>;
-export const GetProjectManageDocument = gql`
-    query GetProjectManage($slug: String!) {
-  project(where: {slug: {_eq: $slug}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    name
-    isPrivate
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    team {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        slug
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    eventOrganizes {
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetProjectManageQuery__
- *
- * To run a query within a React component, call `useGetProjectManageQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProjectManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProjectManageQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetProjectManageQuery(baseOptions: Apollo.QueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
-      }
-export function useGetProjectManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
-        }
-export type GetProjectManageQueryHookResult = ReturnType<typeof useGetProjectManageQuery>;
-export type GetProjectManageLazyQueryHookResult = ReturnType<typeof useGetProjectManageLazyQuery>;
-export type GetProjectManageQueryResult = Apollo.QueryResult<GetProjectManageQuery, GetProjectManageQueryVariables>;
-export const GetTeamJoinsDocument = gql`
-    query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit: Int, $offset: Int) {
-  teamJoin(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    state
-    joinedBy {
-      __typename
-      id
-      createdAt
-      firstName
-      lastName
-      individual {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          bio
-          name
-          email
-          website
-          status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-    team {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    formSubmission {
-      __typename
-      id
-      createdAt
-      submission
-      form {
-        __typename
-        id
-        createdAt
-        schema
-        name
-        type
-      }
-    }
-    receivedRole {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-  }
-}
-    `;
-
-/**
- * __useGetTeamJoinsQuery__
- *
- * To run a query within a React component, call `useGetTeamJoinsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamJoinsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamJoinsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetTeamJoinsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
-      }
-export function useGetTeamJoinsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
-        }
-export type GetTeamJoinsQueryHookResult = ReturnType<typeof useGetTeamJoinsQuery>;
-export type GetTeamJoinsLazyQueryHookResult = ReturnType<typeof useGetTeamJoinsLazyQuery>;
-export type GetTeamJoinsQueryResult = Apollo.QueryResult<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>;
-export const UpdateTeamJoinDocument = gql`
-    mutation UpdateTeamJoin($id: bigint!, $update: TeamJoinSetInput!) {
-  updateTeamJoinByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    state
-    joinedBy {
-      __typename
-      id
-      createdAt
-      firstName
-      lastName
-      individual {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          slug
-          bio
-          name
-          email
-          website
-          status
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export type UpdateTeamJoinMutationFn = Apollo.MutationFunction<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
-
-/**
- * __useUpdateTeamJoinMutation__
- *
- * To run a mutation, you first call `useUpdateTeamJoinMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTeamJoinMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateTeamJoinMutation, { data, loading, error }] = useUpdateTeamJoinMutation({
- *   variables: {
- *      id: // value for 'id'
- *      update: // value for 'update'
- *   },
- * });
- */
-export function useUpdateTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>(UpdateTeamJoinDocument, options);
-      }
-export type UpdateTeamJoinMutationHookResult = ReturnType<typeof useUpdateTeamJoinMutation>;
-export type UpdateTeamJoinMutationResult = Apollo.MutationResult<UpdateTeamJoinMutation>;
-export type UpdateTeamJoinMutationOptions = Apollo.BaseMutationOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
-export const GetUsersWithPointsDocument = gql`
-    query GetUsersWithPoints($slug: String!) {
-  user(
-    where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}}, {eventJoins: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}}]}
-  ) {
-    __typename
-    id
-    createdAt
-    firstName
-    lastName
-    individual {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        slug
-        bio
-        name
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    eventJoins(
-      where: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}
-    ) {
-      __typename
-      id
-      processedAt
-      event {
-        __typename
-        id
-        slug
-        pointsAwardedForAttendance
-      }
-    }
-    actions(
-      where: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}
-    ) {
-      __typename
-      id
-      points
-      pointsProcessedAt
-    }
-    missionJoins(
-      where: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}
-    ) {
-      __typename
-      id
-      points
-      pointsProcessedAt
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUsersWithPointsQuery__
- *
- * To run a query within a React component, call `useGetUsersWithPointsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersWithPointsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUsersWithPointsQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetUsersWithPointsQuery(baseOptions: Apollo.QueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
-      }
-export function useGetUsersWithPointsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
-        }
-export type GetUsersWithPointsQueryHookResult = ReturnType<typeof useGetUsersWithPointsQuery>;
-export type GetUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetUsersWithPointsLazyQuery>;
-export type GetUsersWithPointsQueryResult = Apollo.QueryResult<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>;
-export const DeleteSocialsDocument = gql`
-    mutation DeleteSocials($where: SocialBoolExp!) {
-  deleteSocial(where: $where) {
-    returning {
-      __typename
-      id
-      deletedAt
-      type
-      pseudo
-      order
-      url
-    }
-  }
-}
-    `;
-export type DeleteSocialsMutationFn = Apollo.MutationFunction<DeleteSocialsMutation, DeleteSocialsMutationVariables>;
-
-/**
- * __useDeleteSocialsMutation__
- *
- * To run a mutation, you first call `useDeleteSocialsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteSocialsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteSocialsMutation, { data, loading, error }] = useDeleteSocialsMutation({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useDeleteSocialsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteSocialsMutation, DeleteSocialsMutationVariables>(DeleteSocialsDocument, options);
-      }
-export type DeleteSocialsMutationHookResult = ReturnType<typeof useDeleteSocialsMutation>;
-export type DeleteSocialsMutationResult = Apollo.MutationResult<DeleteSocialsMutation>;
-export type DeleteSocialsMutationOptions = Apollo.BaseMutationOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>;
-export const InsertSocialsDocument = gql`
-    mutation InsertSocials($objects: [SocialInsertInput!]!) {
-  insertSocial(objects: $objects) {
-    returning {
-      __typename
-      id
-      type
-      pseudo
-      order
-      url
-    }
-  }
-}
-    `;
-export type InsertSocialsMutationFn = Apollo.MutationFunction<InsertSocialsMutation, InsertSocialsMutationVariables>;
-
-/**
- * __useInsertSocialsMutation__
- *
- * To run a mutation, you first call `useInsertSocialsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertSocialsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertSocialsMutation, { data, loading, error }] = useInsertSocialsMutation({
- *   variables: {
- *      objects: // value for 'objects'
- *   },
- * });
- */
-export function useInsertSocialsMutation(baseOptions?: Apollo.MutationHookOptions<InsertSocialsMutation, InsertSocialsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertSocialsMutation, InsertSocialsMutationVariables>(InsertSocialsDocument, options);
-      }
-export type InsertSocialsMutationHookResult = ReturnType<typeof useInsertSocialsMutation>;
-export type InsertSocialsMutationResult = Apollo.MutationResult<InsertSocialsMutation>;
-export type InsertSocialsMutationOptions = Apollo.BaseMutationOptions<InsertSocialsMutation, InsertSocialsMutationVariables>;
-export const UpdateSocialsDocument = gql`
-    mutation UpdateSocials($updates: [SocialUpdates!]!) {
-  updateSocialMany(updates: $updates) {
-    returning {
-      __typename
-      id
-      type
-      pseudo
-      order
-      url
-    }
-  }
-}
-    `;
-export type UpdateSocialsMutationFn = Apollo.MutationFunction<UpdateSocialsMutation, UpdateSocialsMutationVariables>;
-
-/**
- * __useUpdateSocialsMutation__
- *
- * To run a mutation, you first call `useUpdateSocialsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateSocialsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateSocialsMutation, { data, loading, error }] = useUpdateSocialsMutation({
- *   variables: {
- *      updates: // value for 'updates'
- *   },
- * });
- */
-export function useUpdateSocialsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSocialsMutation, UpdateSocialsMutationVariables>(UpdateSocialsDocument, options);
-      }
-export type UpdateSocialsMutationHookResult = ReturnType<typeof useUpdateSocialsMutation>;
-export type UpdateSocialsMutationResult = Apollo.MutationResult<UpdateSocialsMutation>;
-export type UpdateSocialsMutationOptions = Apollo.BaseMutationOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>;
-export const DeleteActorImageDocument = gql`
-    mutation DeleteActorImage($id: bigint!) {
-  deleteActorImageByPk(id: $id) {
-    __typename
-    id
-    createdAt
-    type
-    image {
-      __typename
-      id
-      url
-    }
-    actor {
-      __typename
-      id
-      email
-      name
       slug
-      website
-    }
-  }
-}
-    `;
-export type DeleteActorImageMutationFn = Apollo.MutationFunction<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
-
-/**
- * __useDeleteActorImageMutation__
- *
- * To run a mutation, you first call `useDeleteActorImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteActorImageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteActorImageMutation, { data, loading, error }] = useDeleteActorImageMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteActorImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteActorImageMutation, DeleteActorImageMutationVariables>(DeleteActorImageDocument, options);
-      }
-export type DeleteActorImageMutationHookResult = ReturnType<typeof useDeleteActorImageMutation>;
-export type DeleteActorImageMutationResult = Apollo.MutationResult<DeleteActorImageMutation>;
-export type DeleteActorImageMutationOptions = Apollo.BaseMutationOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
-export const DeleteRoleDocument = gql`
-    mutation DeleteRole($id: bigint!) {
-  deleteRoleByPk(id: $id) {
-    __typename
-    id
-    name
-    type
-    permissions
-    type
-    category
-  }
-}
-    `;
-export type DeleteRoleMutationFn = Apollo.MutationFunction<DeleteRoleMutation, DeleteRoleMutationVariables>;
-
-/**
- * __useDeleteRoleMutation__
- *
- * To run a mutation, you first call `useDeleteRoleMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteRoleMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteRoleMutation, { data, loading, error }] = useDeleteRoleMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteRoleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRoleMutation, DeleteRoleMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteRoleMutation, DeleteRoleMutationVariables>(DeleteRoleDocument, options);
-      }
-export type DeleteRoleMutationHookResult = ReturnType<typeof useDeleteRoleMutation>;
-export type DeleteRoleMutationResult = Apollo.MutationResult<DeleteRoleMutation>;
-export type DeleteRoleMutationOptions = Apollo.BaseMutationOptions<DeleteRoleMutation, DeleteRoleMutationVariables>;
-export const GetTeamManageDocument = gql`
-    query GetTeamManage($slug: String!) {
-  team(where: {actor: {slug: {_eq: $slug}}}) {
-    __typename
-    id
-    createdAt
-    type
-    membershipFees
-    membershipDuration
-    actor {
-      __typename
-      id
-      createdAt
-      email
+      start
+      end
+      maxParticipants
       name
-      slug
-      website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      bio
-      status
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    joinForm {
-      __typename
-      id
-      schema
-      name
-    }
-    parent {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
+      state
+      price
+      pointsAwardedForAttendance
+      isPrivate
       description
-    }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembers {
-      __typename
-      id
-      createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
+      location {
+        __typename
+        id
+        type
+        link
+        name
+        details
+        address {
           __typename
           id
-          createdAt
+          name
+          latitude
+          longitude
           category
-          type
-          name
-          permissions
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            bio
-            slug
-            status
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-    }
-    projects {
-      __typename
-      id
-      createdAt
-      color
-      description
-      name
-      slug
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-      eventOrganizes {
-        __typename
-        id
-        createdAt
-        project {
-          __typename
-          id
-          createdAt
-          name
-          slug
-          color
-          isPrivate
-        }
-        event {
-          __typename
-          id
-          createdAt
-          start
-          end
-          maxParticipants
-          name
-          slug
-          description
-          location {
-            __typename
-            id
-            type
-            createdAt
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
-          }
+          streetNumber
+          street
+          zip
+          city
           state
-          price
-          pointsAwardedForAttendance
-          banner {
-            __typename
-            id
-            createdAt
-            url
-            size
-            type
-            name
-          }
-          isPrivate
-          eventTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          eventOrganizes {
-            __typename
-            id
-            team {
-              __typename
-              id
-              createdAt
-              type
-              actor {
-                __typename
-                id
-                createdAt
-                email
-                name
-                slug
-                website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
-                bio
-                status
-                actorTags {
-                  tag {
-                    __typename
-                    id
-                    createdAt
-                    slug
-                    name
-                    color
-                  }
-                }
-                socials(where: {deletedAt: {_isNull: true}}) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
-              }
-              directorsCategoryName
-              managersCategoryName
-              membersCategoryName
-              joinForm {
-                __typename
-                id
-                createdAt
-                schema
-                name
-                type
-              }
-              teamMembersAggregate {
-                aggregate {
-                  count
-                }
-              }
-              poles {
-                __typename
-                id
-                createdAt
-                name
-                description
-              }
-            }
-            project {
-              __typename
-              id
-              createdAt
-              name
-              slug
-              color
-              isPrivate
-            }
-            eventSupervisors {
-              user {
-                __typename
-                id
-                createdAt
-                firstName
-                lastName
-                individual {
-                  __typename
-                  id
-                  createdAt
-                  actor {
-                    __typename
-                    id
-                    createdAt
-                    email
-                    name
-                    slug
-                    website
-                    actorImages {
-                      __typename
-                      id
-                      createdAt
-                      type
-                      image {
-                        __typename
-                        id
-                        createdAt
-                        url
-                        size
-                        type
-                      }
-                    }
-                    bio
-                    status
-                    actorTags {
-                      tag {
-                        __typename
-                        id
-                        createdAt
-                        slug
-                        name
-                        color
-                      }
-                    }
-                    socials(where: {deletedAt: {_isNull: true}}) {
-                      __typename
-                      id
-                      pseudo
-                      url
-                      type
-                      order
-                    }
-                  }
-                }
-              }
-            }
-          }
-          eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-            aggregate {
-              count
-            }
-          }
-          eventJoins(where: {state: {_eq: "Approved"}}, limit: 3) {
-            __typename
-            id
-            createdAt
-            state
-            isPresent
-            joinedBy {
-              __typename
-              id
-              createdAt
-              firstName
-              lastName
-              individual {
-                __typename
-                id
-                createdAt
-                actor {
-                  __typename
-                  id
-                  createdAt
-                  email
-                  name
-                  slug
-                  website
-                  actorImages {
-                    __typename
-                    id
-                    createdAt
-                    type
-                    image {
-                      __typename
-                      id
-                      createdAt
-                      url
-                      size
-                      type
-                    }
-                  }
-                  bio
-                  status
-                  actorTags {
-                    tag {
-                      __typename
-                      id
-                      createdAt
-                      slug
-                      name
-                      color
-                    }
-                  }
-                  socials(where: {deletedAt: {_isNull: true}}) {
-                    __typename
-                    id
-                    pseudo
-                    url
-                    type
-                    order
-                  }
-                }
-              }
-            }
-          }
+          country
+          geoapifyId
         }
       }
       banner {
         __typename
         id
-        createdAt
         url
-        size
         type
-        name
       }
-      projectSupervisors {
-        teamMember {
+      eventTags {
+        tag {
           __typename
           id
           createdAt
-          startDate
-          endDate
-          teamMemberRoles {
-            role {
-              __typename
-              id
-              createdAt
-              category
-              type
-              name
-              permissions
-            }
-          }
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        eventSupervisors {
           user {
             __typename
             id
@@ -53661,50 +51212,16 @@ export const GetTeamManageDocument = gql`
             }
           }
         }
-      }
-      projectTags {
-        tag {
+        team {
           __typename
           id
-          createdAt
-          slug
-          name
-          color
-        }
-      }
-      isPrivate
-    }
-    membershipDuration
-    membershipFees
-    isJoinFormActive
-    accounts {
-      __typename
-      id
-      createdAt
-      financesAggregate {
-        aggregate {
-          sum {
-            amount
-          }
-        }
-      }
-      bank {
-        __typename
-        id
-        createdAt
-        legalUnitLocation {
-          __typename
-          id
-          createdAt
-          locationType
-          legalName
+          type
           actor {
             __typename
             id
-            slug
-            email
-            website
             name
+            slug
+            website
             actorImages {
               __typename
               id
@@ -53716,544 +51233,110 @@ export const GetTeamManageDocument = gql`
               }
             }
           }
-          legalUnit {
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
             __typename
             id
             createdAt
-            type
-            legalName
             actor {
               __typename
               id
-              slug
+              createdAt
               email
-              website
               name
+              slug
+              website
               actorImages {
                 __typename
                 id
+                createdAt
                 type
                 image {
                   __typename
                   id
+                  createdAt
                   url
+                  size
+                  type
                 }
               }
-            }
-          }
-          location {
-            __typename
-            id
-            createdAt
-            type
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
-          }
-        }
-        bicSwift
-        iban
-      }
-      name
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-      }
-      type
-      children {
-        __typename
-        id
-        createdAt
-        financesAggregate {
-          aggregate {
-            sum {
-              amount
-            }
-          }
-        }
-        name
-        type
-        bank {
-          __typename
-          id
-          createdAt
-          legalUnitLocation {
-            __typename
-            id
-            createdAt
-            locationType
-            legalName
-            actor {
-              website
-              name
-            }
-            legalUnit {
-              __typename
-              id
-              createdAt
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
               }
-            }
-            location {
-              __typename
-              id
-              createdAt
-              address {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-              type
-              details
-              link
-            }
-          }
-          bicSwift
-          iban
-        }
-        team {
-          __typename
-          id
-          createdAt
-          type
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
+                pseudo
                 url
-                size
                 type
+                order
               }
             }
           }
         }
-      }
-      parent {
-        __typename
-        id
-        createdAt
-        name
-        type
-        financesAggregate {
-          aggregate {
-            sum {
-              amount
-            }
-          }
-        }
-        bank {
+        formSubmission {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          submission
+          form {
             __typename
             id
             createdAt
-            locationType
-            legalName
-            actor {
-              website
-              name
-            }
-            legalUnit {
-              __typename
-              id
-              type
-              legalName
-              actor {
-                __typename
-                id
-                createdAt
-                website
-                name
-              }
-            }
-            location {
-              __typename
-              id
-              type
-              createdAt
-              type
-              link
-              name
-              details
-              address {
-                __typename
-                id
-                latitude
-                longitude
-                category
-                name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
-              }
-            }
-          }
-          bicSwift
-          iban
-        }
-        team {
-          __typename
-          id
-          createdAt
-          type
-          actor {
-            __typename
-            id
-            createdAt
-            email
+            schema
             name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
+            type
           }
         }
-      }
-    }
-    teamHistories(
-      where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
-    ) {
-      __typename
-      id
-      createdAt
-      eventDate
-    }
-    teams {
-      __typename
-      id
-      createdAt
-      type
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetTeamManageQuery__
- *
- * To run a query within a React component, call `useGetTeamManageQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamManageQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetTeamManageQuery(baseOptions: Apollo.QueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
-      }
-export function useGetTeamManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
-        }
-export type GetTeamManageQueryHookResult = ReturnType<typeof useGetTeamManageQuery>;
-export type GetTeamManageLazyQueryHookResult = ReturnType<typeof useGetTeamManageLazyQuery>;
-export type GetTeamManageQueryResult = Apollo.QueryResult<GetTeamManageQuery, GetTeamManageQueryVariables>;
-export const InsertActorImageDocument = gql`
-    mutation InsertActorImage($object: ActorImageInsertInput!) {
-  insertActorImageOne(object: $object) {
-    __typename
-    id
-    createdAt
-    type
-    image {
-      __typename
-      id
-      url
-    }
-    actor {
-      __typename
-      id
-      email
-      name
-      slug
-      website
-    }
-  }
-}
-    `;
-export type InsertActorImageMutationFn = Apollo.MutationFunction<InsertActorImageMutation, InsertActorImageMutationVariables>;
-
-/**
- * __useInsertActorImageMutation__
- *
- * To run a mutation, you first call `useInsertActorImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertActorImageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertActorImageMutation, { data, loading, error }] = useInsertActorImageMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertActorImageMutation(baseOptions?: Apollo.MutationHookOptions<InsertActorImageMutation, InsertActorImageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertActorImageMutation, InsertActorImageMutationVariables>(InsertActorImageDocument, options);
-      }
-export type InsertActorImageMutationHookResult = ReturnType<typeof useInsertActorImageMutation>;
-export type InsertActorImageMutationResult = Apollo.MutationResult<InsertActorImageMutation>;
-export type InsertActorImageMutationOptions = Apollo.BaseMutationOptions<InsertActorImageMutation, InsertActorImageMutationVariables>;
-export const UpdateActorDocument = gql`
-    mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
-  updateActorByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    slug
-    bio
-    name
-    status
-    email
-    website
-    actorImages {
-      __typename
-      id
-      type
-      image {
-        __typename
-        id
-        url
-      }
-    }
-    socials(where: {deletedAt: {_isNull: true}}) {
-      __typename
-      id
-      pseudo
-      url
-      type
-      order
-    }
-  }
-}
-    `;
-export type UpdateActorMutationFn = Apollo.MutationFunction<UpdateActorMutation, UpdateActorMutationVariables>;
-
-/**
- * __useUpdateActorMutation__
- *
- * To run a mutation, you first call `useUpdateActorMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateActorMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateActorMutation, { data, loading, error }] = useUpdateActorMutation({
- *   variables: {
- *      id: // value for 'id'
- *      update: // value for 'update'
- *   },
- * });
- */
-export function useUpdateActorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActorMutation, UpdateActorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateActorMutation, UpdateActorMutationVariables>(UpdateActorDocument, options);
-      }
-export type UpdateActorMutationHookResult = ReturnType<typeof useUpdateActorMutation>;
-export type UpdateActorMutationResult = Apollo.MutationResult<UpdateActorMutation>;
-export type UpdateActorMutationOptions = Apollo.BaseMutationOptions<UpdateActorMutation, UpdateActorMutationVariables>;
-export const UpdateTeamDocument = gql`
-    mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
-  updateTeamByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    createdAt
-    type
-    membershipFees
-    membershipDuration
-    actor {
-      __typename
-      id
-      slug
-      bio
-      name
-      status
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembers {
-      __typename
-      id
-      createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
-          __typename
-          id
-          createdAt
-          category
-          type
-          name
-          permissions
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        processedBy {
           __typename
           id
           createdAt
@@ -54301,122 +51384,943 @@ export const UpdateTeamDocument = gql`
             }
           }
         }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
       }
     }
   }
-}
-    `;
-export type UpdateTeamMutationFn = Apollo.MutationFunction<UpdateTeamMutation, UpdateTeamMutationVariables>;
+`;
 
 /**
- * __useUpdateTeamMutation__
+ * __useGetEventsQuery__
  *
- * To run a mutation, you first call `useUpdateTeamMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTeamMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useGetEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [updateTeamMutation, { data, loading, error }] = useUpdateTeamMutation({
+ * const { data, loading, error } = useGetEventsQuery({
  *   variables: {
- *      id: // value for 'id'
- *      update: // value for 'update'
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useUpdateTeamMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamMutation, UpdateTeamMutationVariables>) {
+export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateTeamMutation, UpdateTeamMutationVariables>(UpdateTeamDocument, options);
+        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
       }
-export type UpdateTeamMutationHookResult = ReturnType<typeof useUpdateTeamMutation>;
-export type UpdateTeamMutationResult = Apollo.MutationResult<UpdateTeamMutation>;
-export type UpdateTeamMutationOptions = Apollo.BaseMutationOptions<UpdateTeamMutation, UpdateTeamMutationVariables>;
-export const InsertAccountDocument = gql`
-    mutation InsertAccount($object: AccountInsertInput!) {
-  insertAccountOne(object: $object) {
-    __typename
-    id
-  }
-}
-    `;
-export type InsertAccountMutationFn = Apollo.MutationFunction<InsertAccountMutation, InsertAccountMutationVariables>;
-
-/**
- * __useInsertAccountMutation__
- *
- * To run a mutation, you first call `useInsertAccountMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertAccountMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertAccountMutation, { data, loading, error }] = useInsertAccountMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertAccountMutation(baseOptions?: Apollo.MutationHookOptions<InsertAccountMutation, InsertAccountMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertAccountMutation, InsertAccountMutationVariables>(InsertAccountDocument, options);
-      }
-export type InsertAccountMutationHookResult = ReturnType<typeof useInsertAccountMutation>;
-export type InsertAccountMutationResult = Apollo.MutationResult<InsertAccountMutation>;
-export type InsertAccountMutationOptions = Apollo.BaseMutationOptions<InsertAccountMutation, InsertAccountMutationVariables>;
-export const InsertBankDocument = gql`
-    mutation InsertBank($object: BankInsertInput!) {
-  insertBankOne(object: $object) {
-    __typename
-    id
-  }
-}
-    `;
-export type InsertBankMutationFn = Apollo.MutationFunction<InsertBankMutation, InsertBankMutationVariables>;
-
-/**
- * __useInsertBankMutation__
- *
- * To run a mutation, you first call `useInsertBankMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertBankMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertBankMutation, { data, loading, error }] = useInsertBankMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertBankMutation(baseOptions?: Apollo.MutationHookOptions<InsertBankMutation, InsertBankMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertBankMutation, InsertBankMutationVariables>(InsertBankDocument, options);
-      }
-export type InsertBankMutationHookResult = ReturnType<typeof useInsertBankMutation>;
-export type InsertBankMutationResult = Apollo.MutationResult<InsertBankMutation>;
-export type InsertBankMutationOptions = Apollo.BaseMutationOptions<InsertBankMutation, InsertBankMutationVariables>;
-export const GetEventOrganizesDocument = gql`
-    query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOrderBy!], $limit: Int, $offset: Int) {
-  eventOrganize(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    event {
+export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
+export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
+export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
+export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;
+export const GetEventManageDocument = gql`
+      query GetEventManage($slug: String!) {
+    event(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
-      name
-      state
+      createdAt
       start
       end
       maxParticipants
+      name
       slug
+      description
+      location {
+        __typename
+        id
+        createdAt
+        type
+        link
+        name
+        details
+        address {
+          __typename
+          id
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      state
+      price
+      pointsAwardedForAttendance
       banner {
         __typename
         id
+        createdAt
         url
+        size
+        type
+        name
+      }
+      isPrivate
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        team {
+          __typename
+          id
+          createdAt
+          type
+          directorsCategoryName
+          managersCategoryName
+          membersCategoryName
+          actor {
+            __typename
+            id
+            createdAt
+            name
+            slug
+            email
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+          joinForm {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          teamMembersAggregate {
+            aggregate {
+              count
+            }
+          }
+          poles {
+            __typename
+            id
+            createdAt
+            name
+            description
+          }
+          projects {
+            __typename
+            id
+            name
+            slug
+            banner {
+              __typename
+              id
+              url
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+        eventSupervisors {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: {deletedAt: {_isNull: true}}) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+            }
+          }
+        }
+      }
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+              bio
+              name
+              email
+              status
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+        }
+        formSubmission {
+          __typename
+          id
+          createdAt
+          form {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          submission
+        }
+        processedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            email
+            name
+            bio
+            status
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+        participationProcessedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            email
+            name
+            bio
+            status
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
+      eventApprovals {
+        __typename
+        id
+        createdAt
+        isApproved
+        message
+        eventApprovalStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+          nextSteps {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+          previousStep {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+        }
+        createdBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+              }
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                slug
+              }
+            }
+          }
+        }
+      }
+      nextEventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      eventApprovalSubmission {
+        __typename
+        id
+        createdAt
+        form {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
+        submission
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetEventManageQuery__
+ *
+ * To run a query within a React component, call `useGetEventManageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventManageQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetEventManageQuery(baseOptions: Apollo.QueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
+      }
+export function useGetEventManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
+        }
+export type GetEventManageQueryHookResult = ReturnType<typeof useGetEventManageQuery>;
+export type GetEventManageLazyQueryHookResult = ReturnType<typeof useGetEventManageLazyQuery>;
+export type GetEventManageQueryResult = Apollo.QueryResult<GetEventManageQuery, GetEventManageQueryVariables>;
+export const InsertAddressDocument = gql`
+      mutation InsertAddress($object: AddressInsertInput!) {
+    insertAddressOne(object: $object) {
+      __typename
+      id
+      name
+      category
+      country
+      state
+      zip
+      city
+      street
+      streetNumber
+      latitude
+      longitude
+      geoapifyId
+    }
+  }
+`;
+export type InsertAddressMutationFn = Apollo.MutationFunction<InsertAddressMutation, InsertAddressMutationVariables>;
+
+/**
+ * __useInsertAddressMutation__
+ *
+ * To run a mutation, you first call `useInsertAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAddressMutation, { data, loading, error }] = useInsertAddressMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertAddressMutation(baseOptions?: Apollo.MutationHookOptions<InsertAddressMutation, InsertAddressMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertAddressMutation, InsertAddressMutationVariables>(InsertAddressDocument, options);
+      }
+export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddressMutation>;
+export type InsertAddressMutationResult = Apollo.MutationResult<InsertAddressMutation>;
+export type InsertAddressMutationOptions = Apollo.BaseMutationOptions<InsertAddressMutation, InsertAddressMutationVariables>;
+export const UpdateEventDocument = gql`
+      mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
+    updateEventByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      createdAt
+      start
+      end
+      maxParticipants
+      name
+      slug
+      description
+      location {
+        __typename
+        id
+        createdAt
+        type
+        link
+        name
+        details
+        address {
+          __typename
+          id
+          latitude
+          longitude
+          category
+          name
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      state
+      price
+      pointsAwardedForAttendance
+      banner {
+        __typename
+        id
+        createdAt
+        url
+        size
+        type
+        name
+      }
+      isPrivate
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            name
+            slug
+            email
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+          directorsCategoryName
+          managersCategoryName
+          membersCategoryName
+          joinForm {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          teamMembersAggregate {
+            aggregate {
+              count
+            }
+          }
+          poles {
+            __typename
+            id
+            createdAt
+            name
+            description
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+        eventSupervisors {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+              bio
+              name
+              email
+              status
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+        }
+        formSubmission {
+          __typename
+          id
+          createdAt
+          form {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          submission
+        }
+        processedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            email
+            name
+            bio
+            status
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+        participationProcessedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            email
+            name
+            bio
+            status
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
       }
       eventApprovals {
         __typename
@@ -54509,20 +52413,6 @@ export const GetEventOrganizesDocument = gql`
           }
         }
       }
-      eventApprovalSubmission {
-        __typename
-        id
-        createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        submission
-      }
       nextEventApprovalStep {
         __typename
         id
@@ -54547,222 +52437,7 @@ export const GetEventOrganizesDocument = gql`
           order
         }
       }
-    }
-    eventSupervisors {
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-    }
-    team {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      joinForm {
-        __typename
-        id
-        schema
-        name
-      }
-    }
-    project {
-      __typename
-      id
-      createdAt
-      name
-      slug
-      color
-      isPrivate
-    }
-  }
-  event {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    maxParticipants
-    name
-    state
-    price
-    pointsAwardedForAttendance
-    isPrivate
-    description
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
-      __typename
-      id
-      createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-      formSubmission {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
@@ -54776,10 +52451,850 @@ export const GetEventOrganizesDocument = gql`
         }
         submission
       }
-      processedBy {
+    }
+  }
+`;
+export type UpdateEventMutationFn = Apollo.MutationFunction<UpdateEventMutation, UpdateEventMutationVariables>;
+
+/**
+ * __useUpdateEventMutation__
+ *
+ * To run a mutation, you first call `useUpdateEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateEventMutation, { data, loading, error }] = useUpdateEventMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateEventMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventMutation, UpdateEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEventMutation, UpdateEventMutationVariables>(UpdateEventDocument, options);
+      }
+export type UpdateEventMutationHookResult = ReturnType<typeof useUpdateEventMutation>;
+export type UpdateEventMutationResult = Apollo.MutationResult<UpdateEventMutation>;
+export type UpdateEventMutationOptions = Apollo.BaseMutationOptions<UpdateEventMutation, UpdateEventMutationVariables>;
+export const UpdateEventOrganizeProjectManyDocument = gql`
+      mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
+    updateEventOrganizeMany(updates: $updates) {
+      returning {
+        __typename
+        id
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+    }
+  }
+`;
+export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
+
+/**
+ * __useUpdateEventOrganizeProjectManyMutation__
+ *
+ * To run a mutation, you first call `useUpdateEventOrganizeProjectManyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateEventOrganizeProjectManyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateEventOrganizeProjectManyMutation, { data, loading, error }] = useUpdateEventOrganizeProjectManyMutation({
+ *   variables: {
+ *      updates: // value for 'updates'
+ *   },
+ * });
+ */
+export function useUpdateEventOrganizeProjectManyMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>(UpdateEventOrganizeProjectManyDocument, options);
+      }
+export type UpdateEventOrganizeProjectManyMutationHookResult = ReturnType<typeof useUpdateEventOrganizeProjectManyMutation>;
+export type UpdateEventOrganizeProjectManyMutationResult = Apollo.MutationResult<UpdateEventOrganizeProjectManyMutation>;
+export type UpdateEventOrganizeProjectManyMutationOptions = Apollo.BaseMutationOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
+export const UpdateLocationDocument = gql`
+      mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
+    updateLocationByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      createdAt
+      type
+      link
+      details
+      address {
+        __typename
+        id
+        latitude
+        longitude
+        category
+        name
+        streetNumber
+        street
+        zip
+        city
+        state
+        country
+        geoapifyId
+      }
+    }
+  }
+`;
+export type UpdateLocationMutationFn = Apollo.MutationFunction<UpdateLocationMutation, UpdateLocationMutationVariables>;
+
+/**
+ * __useUpdateLocationMutation__
+ *
+ * To run a mutation, you first call `useUpdateLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLocationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLocationMutation, { data, loading, error }] = useUpdateLocationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateLocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
+      }
+export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
+export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
+export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<UpdateLocationMutation, UpdateLocationMutationVariables>;
+export const GetProjectManageDocument = gql`
+      query GetProjectManage($slug: String!) {
+    project(where: {slug: {_eq: $slug}}, limit: 1) {
+      __typename
+      id
+      createdAt
+      slug
+      start
+      end
+      name
+      isPrivate
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          slug
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      eventOrganizes {
+        eventSupervisors {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: {deletedAt: {_isNull: true}}) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+            }
+          }
+        }
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetProjectManageQuery__
+ *
+ * To run a query within a React component, call `useGetProjectManageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectManageQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetProjectManageQuery(baseOptions: Apollo.QueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
+      }
+export function useGetProjectManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
+        }
+export type GetProjectManageQueryHookResult = ReturnType<typeof useGetProjectManageQuery>;
+export type GetProjectManageLazyQueryHookResult = ReturnType<typeof useGetProjectManageLazyQuery>;
+export type GetProjectManageQueryResult = Apollo.QueryResult<GetProjectManageQuery, GetProjectManageQueryVariables>;
+export const GetTeamJoinsDocument = gql`
+      query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit: Int, $offset: Int) {
+    teamJoin(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      __typename
+      id
+      state
+      joinedBy {
         __typename
         id
         createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            bio
+            name
+            email
+            website
+            status
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+      team {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      formSubmission {
+        __typename
+        id
+        createdAt
+        submission
+        form {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
+      }
+      receivedRole {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTeamJoinsQuery__
+ *
+ * To run a query within a React component, call `useGetTeamJoinsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamJoinsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamJoinsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetTeamJoinsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
+      }
+export function useGetTeamJoinsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
+        }
+export type GetTeamJoinsQueryHookResult = ReturnType<typeof useGetTeamJoinsQuery>;
+export type GetTeamJoinsLazyQueryHookResult = ReturnType<typeof useGetTeamJoinsLazyQuery>;
+export type GetTeamJoinsQueryResult = Apollo.QueryResult<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>;
+export const UpdateTeamJoinDocument = gql`
+      mutation UpdateTeamJoin($id: bigint!, $update: TeamJoinSetInput!) {
+    updateTeamJoinByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      state
+      joinedBy {
+        __typename
+        id
+        createdAt
+        firstName
+        lastName
+        individual {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            slug
+            bio
+            name
+            email
+            website
+            status
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type UpdateTeamJoinMutationFn = Apollo.MutationFunction<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
+
+/**
+ * __useUpdateTeamJoinMutation__
+ *
+ * To run a mutation, you first call `useUpdateTeamJoinMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTeamJoinMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTeamJoinMutation, { data, loading, error }] = useUpdateTeamJoinMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>(UpdateTeamJoinDocument, options);
+      }
+export type UpdateTeamJoinMutationHookResult = ReturnType<typeof useUpdateTeamJoinMutation>;
+export type UpdateTeamJoinMutationResult = Apollo.MutationResult<UpdateTeamJoinMutation>;
+export type UpdateTeamJoinMutationOptions = Apollo.BaseMutationOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
+export const GetUsersWithPointsDocument = gql`
+      query GetUsersWithPoints($slug: String!) {
+    user(
+      where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}}, {eventJoins: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}}]}
+    ) {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+          bio
+          name
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      eventJoins(
+        where: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}
+      ) {
+        __typename
+        id
+        processedAt
+        event {
+          __typename
+          id
+          slug
+          pointsAwardedForAttendance
+        }
+      }
+      actions(
+        where: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}
+      ) {
+        __typename
+        id
+        points
+        pointsProcessedAt
+      }
+      missionJoins(
+        where: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}
+      ) {
+        __typename
+        id
+        points
+        pointsProcessedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetUsersWithPointsQuery__
+ *
+ * To run a query within a React component, call `useGetUsersWithPointsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersWithPointsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersWithPointsQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetUsersWithPointsQuery(baseOptions: Apollo.QueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
+      }
+export function useGetUsersWithPointsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
+        }
+export type GetUsersWithPointsQueryHookResult = ReturnType<typeof useGetUsersWithPointsQuery>;
+export type GetUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetUsersWithPointsLazyQuery>;
+export type GetUsersWithPointsQueryResult = Apollo.QueryResult<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>;
+export const DeleteSocialsDocument = gql`
+      mutation DeleteSocials($where: SocialBoolExp!) {
+    deleteSocial(where: $where) {
+      returning {
+        __typename
+        id
+        deletedAt
+        type
+        pseudo
+        order
+        url
+      }
+    }
+  }
+`;
+export type DeleteSocialsMutationFn = Apollo.MutationFunction<DeleteSocialsMutation, DeleteSocialsMutationVariables>;
+
+/**
+ * __useDeleteSocialsMutation__
+ *
+ * To run a mutation, you first call `useDeleteSocialsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSocialsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSocialsMutation, { data, loading, error }] = useDeleteSocialsMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useDeleteSocialsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSocialsMutation, DeleteSocialsMutationVariables>(DeleteSocialsDocument, options);
+      }
+export type DeleteSocialsMutationHookResult = ReturnType<typeof useDeleteSocialsMutation>;
+export type DeleteSocialsMutationResult = Apollo.MutationResult<DeleteSocialsMutation>;
+export type DeleteSocialsMutationOptions = Apollo.BaseMutationOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>;
+export const InsertSocialsDocument = gql`
+      mutation InsertSocials($objects: [SocialInsertInput!]!) {
+    insertSocial(objects: $objects) {
+      returning {
+        __typename
+        id
+        type
+        pseudo
+        order
+        url
+      }
+    }
+  }
+`;
+export type InsertSocialsMutationFn = Apollo.MutationFunction<InsertSocialsMutation, InsertSocialsMutationVariables>;
+
+/**
+ * __useInsertSocialsMutation__
+ *
+ * To run a mutation, you first call `useInsertSocialsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertSocialsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertSocialsMutation, { data, loading, error }] = useInsertSocialsMutation({
+ *   variables: {
+ *      objects: // value for 'objects'
+ *   },
+ * });
+ */
+export function useInsertSocialsMutation(baseOptions?: Apollo.MutationHookOptions<InsertSocialsMutation, InsertSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertSocialsMutation, InsertSocialsMutationVariables>(InsertSocialsDocument, options);
+      }
+export type InsertSocialsMutationHookResult = ReturnType<typeof useInsertSocialsMutation>;
+export type InsertSocialsMutationResult = Apollo.MutationResult<InsertSocialsMutation>;
+export type InsertSocialsMutationOptions = Apollo.BaseMutationOptions<InsertSocialsMutation, InsertSocialsMutationVariables>;
+export const UpdateSocialsDocument = gql`
+      mutation UpdateSocials($updates: [SocialUpdates!]!) {
+    updateSocialMany(updates: $updates) {
+      returning {
+        __typename
+        id
+        type
+        pseudo
+        order
+        url
+      }
+    }
+  }
+`;
+export type UpdateSocialsMutationFn = Apollo.MutationFunction<UpdateSocialsMutation, UpdateSocialsMutationVariables>;
+
+/**
+ * __useUpdateSocialsMutation__
+ *
+ * To run a mutation, you first call `useUpdateSocialsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSocialsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSocialsMutation, { data, loading, error }] = useUpdateSocialsMutation({
+ *   variables: {
+ *      updates: // value for 'updates'
+ *   },
+ * });
+ */
+export function useUpdateSocialsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSocialsMutation, UpdateSocialsMutationVariables>(UpdateSocialsDocument, options);
+      }
+export type UpdateSocialsMutationHookResult = ReturnType<typeof useUpdateSocialsMutation>;
+export type UpdateSocialsMutationResult = Apollo.MutationResult<UpdateSocialsMutation>;
+export type UpdateSocialsMutationOptions = Apollo.BaseMutationOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>;
+export const DeleteActorImageDocument = gql`
+      mutation DeleteActorImage($id: bigint!) {
+    deleteActorImageByPk(id: $id) {
+      __typename
+      id
+      createdAt
+      type
+      image {
+        __typename
+        id
+        url
+      }
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
+    }
+  }
+`;
+export type DeleteActorImageMutationFn = Apollo.MutationFunction<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
+
+/**
+ * __useDeleteActorImageMutation__
+ *
+ * To run a mutation, you first call `useDeleteActorImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActorImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActorImageMutation, { data, loading, error }] = useDeleteActorImageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteActorImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteActorImageMutation, DeleteActorImageMutationVariables>(DeleteActorImageDocument, options);
+      }
+export type DeleteActorImageMutationHookResult = ReturnType<typeof useDeleteActorImageMutation>;
+export type DeleteActorImageMutationResult = Apollo.MutationResult<DeleteActorImageMutation>;
+export type DeleteActorImageMutationOptions = Apollo.BaseMutationOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
+export const DeleteTeamMemberRoleDocument = gql`
+      mutation DeleteTeamMemberRole($id: bigint!) {
+    deleteTeamMemberRoleByPk(id: $id) {
+      __typename
+      id
+      deletedAt
+    }
+  }
+`;
+export type DeleteTeamMemberRoleMutationFn = Apollo.MutationFunction<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>;
+
+/**
+ * __useDeleteTeamMemberRoleMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamMemberRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamMemberRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamMemberRoleMutation, { data, loading, error }] = useDeleteTeamMemberRoleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTeamMemberRoleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>(DeleteTeamMemberRoleDocument, options);
+      }
+export type DeleteTeamMemberRoleMutationHookResult = ReturnType<typeof useDeleteTeamMemberRoleMutation>;
+export type DeleteTeamMemberRoleMutationResult = Apollo.MutationResult<DeleteTeamMemberRoleMutation>;
+export type DeleteTeamMemberRoleMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>;
+export const GetTeamManageDocument = gql`
+      query GetTeamManage($slug: String!) {
+    team(where: {actor: {slug: {_eq: $slug}}}) {
+      __typename
+      id
+      createdAt
+      type
+      membershipFees
+      membershipDuration
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        bio
+        status
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      joinForm {
+        __typename
+        id
+        schema
+        name
+      }
+      parent {
+        __typename
+        id
+        type
         actor {
           __typename
           id
@@ -54796,49 +53311,1663 @@ export const GetEventOrganizesDocument = gql`
             image {
               __typename
               id
+              url
+            }
+          }
+        }
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      roles {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+      teamMembers {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
+          __typename
+          id
+          role {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              bio
+              slug
+              status
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+      projects {
+        __typename
+        id
+        createdAt
+        color
+        description
+        name
+        slug
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+        eventOrganizes {
+          __typename
+          id
+          createdAt
+          project {
+            __typename
+            id
+            createdAt
+            name
+            slug
+            color
+            isPrivate
+          }
+          event {
+            __typename
+            id
+            createdAt
+            start
+            end
+            maxParticipants
+            name
+            slug
+            description
+            location {
+              __typename
+              id
+              type
+              createdAt
+              link
+              name
+              details
+              address {
+                __typename
+                id
+                latitude
+                longitude
+                category
+                name
+                streetNumber
+                street
+                zip
+                city
+                state
+                country
+                geoapifyId
+              }
+            }
+            state
+            price
+            pointsAwardedForAttendance
+            banner {
+              __typename
+              id
               createdAt
               url
               size
               type
+              name
             }
-          }
-          bio
-          status
-          actorTags {
-            tag {
+            isPrivate
+            eventTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            eventOrganizes {
+              __typename
+              id
+              team {
+                __typename
+                id
+                createdAt
+                type
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  email
+                  name
+                  slug
+                  website
+                  actorImages {
+                    __typename
+                    id
+                    createdAt
+                    type
+                    image {
+                      __typename
+                      id
+                      createdAt
+                      url
+                      size
+                      type
+                    }
+                  }
+                  bio
+                  status
+                  actorTags {
+                    tag {
+                      __typename
+                      id
+                      createdAt
+                      slug
+                      name
+                      color
+                    }
+                  }
+                  socials(where: {deletedAt: {_isNull: true}}) {
+                    __typename
+                    id
+                    pseudo
+                    url
+                    type
+                    order
+                  }
+                }
+                directorsCategoryName
+                managersCategoryName
+                membersCategoryName
+                joinForm {
+                  __typename
+                  id
+                  createdAt
+                  schema
+                  name
+                  type
+                }
+                teamMembersAggregate {
+                  aggregate {
+                    count
+                  }
+                }
+                poles {
+                  __typename
+                  id
+                  createdAt
+                  name
+                  description
+                }
+              }
+              project {
+                __typename
+                id
+                createdAt
+                name
+                slug
+                color
+                isPrivate
+              }
+              eventSupervisors {
+                user {
+                  __typename
+                  id
+                  createdAt
+                  firstName
+                  lastName
+                  individual {
+                    __typename
+                    id
+                    createdAt
+                    actor {
+                      __typename
+                      id
+                      createdAt
+                      email
+                      name
+                      slug
+                      website
+                      actorImages {
+                        __typename
+                        id
+                        createdAt
+                        type
+                        image {
+                          __typename
+                          id
+                          createdAt
+                          url
+                          size
+                          type
+                        }
+                      }
+                      bio
+                      status
+                      actorTags {
+                        tag {
+                          __typename
+                          id
+                          createdAt
+                          slug
+                          name
+                          color
+                        }
+                      }
+                      socials(where: {deletedAt: {_isNull: true}}) {
+                        __typename
+                        id
+                        pseudo
+                        url
+                        type
+                        order
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+              aggregate {
+                count
+              }
+            }
+            eventJoins(where: {state: {_eq: "Approved"}}, limit: 3) {
               __typename
               id
               createdAt
-              slug
-              name
-              color
+              state
+              isPresent
+              joinedBy {
+                __typename
+                id
+                createdAt
+                firstName
+                lastName
+                individual {
+                  __typename
+                  id
+                  createdAt
+                  actor {
+                    __typename
+                    id
+                    createdAt
+                    email
+                    name
+                    slug
+                    website
+                    actorImages {
+                      __typename
+                      id
+                      createdAt
+                      type
+                      image {
+                        __typename
+                        id
+                        createdAt
+                        url
+                        size
+                        type
+                      }
+                    }
+                    bio
+                    status
+                    actorTags {
+                      tag {
+                        __typename
+                        id
+                        createdAt
+                        slug
+                        name
+                        color
+                      }
+                    }
+                    socials(where: {deletedAt: {_isNull: true}}) {
+                      __typename
+                      id
+                      pseudo
+                      url
+                      type
+                      order
+                    }
+                  }
+                }
+              }
             }
           }
-          socials(where: {deletedAt: {_isNull: true}}) {
+        }
+        banner {
+          __typename
+          id
+          createdAt
+          url
+          size
+          type
+          name
+        }
+        projectSupervisors {
+          teamMember {
             __typename
             id
-            pseudo
-            url
+            createdAt
+            start
+            teamMemberRoles(where: {deletedAt: {_isNull: true}}) {
+              role {
+                __typename
+                id
+                createdAt
+                color
+                type
+                name
+                permissions
+              }
+            }
+            user {
+              __typename
+              id
+              createdAt
+              firstName
+              lastName
+              individual {
+                __typename
+                id
+                createdAt
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  email
+                  name
+                  slug
+                  website
+                  actorImages {
+                    __typename
+                    id
+                    createdAt
+                    type
+                    image {
+                      __typename
+                      id
+                      createdAt
+                      url
+                      size
+                      type
+                    }
+                  }
+                  bio
+                  status
+                  actorTags {
+                    tag {
+                      __typename
+                      id
+                      createdAt
+                      slug
+                      name
+                      color
+                    }
+                  }
+                  socials(where: {deletedAt: {_isNull: true}}) {
+                    __typename
+                    id
+                    pseudo
+                    url
+                    type
+                    order
+                  }
+                }
+              }
+            }
+          }
+        }
+        projectTags {
+          tag {
+            __typename
+            id
+            createdAt
+            slug
+            name
+            color
+          }
+        }
+        isPrivate
+      }
+      membershipDuration
+      membershipFees
+      isJoinFormActive
+      accounts {
+        __typename
+        id
+        createdAt
+        financesAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        bank {
+          __typename
+          id
+          createdAt
+          legalUnitLocation {
+            __typename
+            id
+            createdAt
+            locationType
+            legalName
+            actor {
+              __typename
+              id
+              slug
+              email
+              website
+              name
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+            legalUnit {
+              __typename
+              id
+              createdAt
+              type
+              legalName
+              actor {
+                __typename
+                id
+                slug
+                email
+                website
+                name
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+              }
+            }
+            location {
+              __typename
+              id
+              createdAt
+              type
+              link
+              name
+              details
+              address {
+                __typename
+                id
+                latitude
+                longitude
+                category
+                name
+                streetNumber
+                street
+                zip
+                city
+                state
+                country
+                geoapifyId
+              }
+            }
+          }
+          bicSwift
+          iban
+        }
+        name
+        team {
+          __typename
+          id
+          createdAt
+          type
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+          }
+        }
+        type
+        children {
+          __typename
+          id
+          createdAt
+          financesAggregate {
+            aggregate {
+              sum {
+                amount
+              }
+            }
+          }
+          name
+          type
+          bank {
+            __typename
+            id
+            createdAt
+            legalUnitLocation {
+              __typename
+              id
+              createdAt
+              locationType
+              legalName
+              actor {
+                website
+                name
+              }
+              legalUnit {
+                __typename
+                id
+                createdAt
+                type
+                legalName
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  website
+                  name
+                }
+              }
+              location {
+                __typename
+                id
+                createdAt
+                address {
+                  __typename
+                  id
+                  latitude
+                  longitude
+                  category
+                  name
+                  streetNumber
+                  street
+                  zip
+                  city
+                  state
+                  country
+                  geoapifyId
+                }
+                type
+                details
+                link
+              }
+            }
+            bicSwift
+            iban
+          }
+          team {
+            __typename
+            id
+            createdAt
             type
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+            }
+          }
+        }
+        parent {
+          __typename
+          id
+          createdAt
+          name
+          type
+          financesAggregate {
+            aggregate {
+              sum {
+                amount
+              }
+            }
+          }
+          bank {
+            __typename
+            id
+            createdAt
+            legalUnitLocation {
+              __typename
+              id
+              createdAt
+              locationType
+              legalName
+              actor {
+                website
+                name
+              }
+              legalUnit {
+                __typename
+                id
+                type
+                legalName
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  website
+                  name
+                }
+              }
+              location {
+                __typename
+                id
+                type
+                createdAt
+                type
+                link
+                name
+                details
+                address {
+                  __typename
+                  id
+                  latitude
+                  longitude
+                  category
+                  name
+                  streetNumber
+                  street
+                  zip
+                  city
+                  state
+                  country
+                  geoapifyId
+                }
+              }
+            }
+            bicSwift
+            iban
+          }
+          team {
+            __typename
+            id
+            createdAt
+            type
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+      teamHistories(
+        where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
+      ) {
+        __typename
+        id
+        createdAt
+        eventDate
+      }
+      teams {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTeamManageQuery__
+ *
+ * To run a query within a React component, call `useGetTeamManageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamManageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamManageQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetTeamManageQuery(baseOptions: Apollo.QueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
+      }
+export function useGetTeamManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
+        }
+export type GetTeamManageQueryHookResult = ReturnType<typeof useGetTeamManageQuery>;
+export type GetTeamManageLazyQueryHookResult = ReturnType<typeof useGetTeamManageLazyQuery>;
+export type GetTeamManageQueryResult = Apollo.QueryResult<GetTeamManageQuery, GetTeamManageQueryVariables>;
+export const InsertActorImageDocument = gql`
+      mutation InsertActorImage($object: ActorImageInsertInput!) {
+    insertActorImageOne(object: $object) {
+      __typename
+      id
+      createdAt
+      type
+      image {
+        __typename
+        id
+        url
+      }
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
+    }
+  }
+`;
+export type InsertActorImageMutationFn = Apollo.MutationFunction<InsertActorImageMutation, InsertActorImageMutationVariables>;
+
+/**
+ * __useInsertActorImageMutation__
+ *
+ * To run a mutation, you first call `useInsertActorImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertActorImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertActorImageMutation, { data, loading, error }] = useInsertActorImageMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertActorImageMutation(baseOptions?: Apollo.MutationHookOptions<InsertActorImageMutation, InsertActorImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertActorImageMutation, InsertActorImageMutationVariables>(InsertActorImageDocument, options);
+      }
+export type InsertActorImageMutationHookResult = ReturnType<typeof useInsertActorImageMutation>;
+export type InsertActorImageMutationResult = Apollo.MutationResult<InsertActorImageMutation>;
+export type InsertActorImageMutationOptions = Apollo.BaseMutationOptions<InsertActorImageMutation, InsertActorImageMutationVariables>;
+export const UpdateActorDocument = gql`
+      mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
+    updateActorByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      slug
+      bio
+      name
+      status
+      email
+      website
+      actorImages {
+        __typename
+        id
+        type
+        image {
+          __typename
+          id
+          url
+        }
+      }
+      socials(where: {deletedAt: {_isNull: true}}) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
+      }
+    }
+  }
+`;
+export type UpdateActorMutationFn = Apollo.MutationFunction<UpdateActorMutation, UpdateActorMutationVariables>;
+
+/**
+ * __useUpdateActorMutation__
+ *
+ * To run a mutation, you first call `useUpdateActorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateActorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateActorMutation, { data, loading, error }] = useUpdateActorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateActorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActorMutation, UpdateActorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateActorMutation, UpdateActorMutationVariables>(UpdateActorDocument, options);
+      }
+export type UpdateActorMutationHookResult = ReturnType<typeof useUpdateActorMutation>;
+export type UpdateActorMutationResult = Apollo.MutationResult<UpdateActorMutation>;
+export type UpdateActorMutationOptions = Apollo.BaseMutationOptions<UpdateActorMutation, UpdateActorMutationVariables>;
+export const UpdateTeamDocument = gql`
+      mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
+    updateTeamByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      createdAt
+      type
+      membershipFees
+      membershipDuration
+      actor {
+        __typename
+        id
+        slug
+        bio
+        name
+        status
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      roles {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+      teamMembers {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
+          __typename
+          id
+          role {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type UpdateTeamMutationFn = Apollo.MutationFunction<UpdateTeamMutation, UpdateTeamMutationVariables>;
+
+/**
+ * __useUpdateTeamMutation__
+ *
+ * To run a mutation, you first call `useUpdateTeamMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTeamMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTeamMutation, { data, loading, error }] = useUpdateTeamMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateTeamMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamMutation, UpdateTeamMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTeamMutation, UpdateTeamMutationVariables>(UpdateTeamDocument, options);
+      }
+export type UpdateTeamMutationHookResult = ReturnType<typeof useUpdateTeamMutation>;
+export type UpdateTeamMutationResult = Apollo.MutationResult<UpdateTeamMutation>;
+export type UpdateTeamMutationOptions = Apollo.BaseMutationOptions<UpdateTeamMutation, UpdateTeamMutationVariables>;
+export const InsertAccountDocument = gql`
+      mutation InsertAccount($object: AccountInsertInput!) {
+    insertAccountOne(object: $object) {
+      __typename
+      id
+    }
+  }
+`;
+export type InsertAccountMutationFn = Apollo.MutationFunction<InsertAccountMutation, InsertAccountMutationVariables>;
+
+/**
+ * __useInsertAccountMutation__
+ *
+ * To run a mutation, you first call `useInsertAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAccountMutation, { data, loading, error }] = useInsertAccountMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertAccountMutation(baseOptions?: Apollo.MutationHookOptions<InsertAccountMutation, InsertAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertAccountMutation, InsertAccountMutationVariables>(InsertAccountDocument, options);
+      }
+export type InsertAccountMutationHookResult = ReturnType<typeof useInsertAccountMutation>;
+export type InsertAccountMutationResult = Apollo.MutationResult<InsertAccountMutation>;
+export type InsertAccountMutationOptions = Apollo.BaseMutationOptions<InsertAccountMutation, InsertAccountMutationVariables>;
+export const InsertBankDocument = gql`
+      mutation InsertBank($object: BankInsertInput!) {
+    insertBankOne(object: $object) {
+      __typename
+      id
+    }
+  }
+`;
+export type InsertBankMutationFn = Apollo.MutationFunction<InsertBankMutation, InsertBankMutationVariables>;
+
+/**
+ * __useInsertBankMutation__
+ *
+ * To run a mutation, you first call `useInsertBankMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertBankMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertBankMutation, { data, loading, error }] = useInsertBankMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertBankMutation(baseOptions?: Apollo.MutationHookOptions<InsertBankMutation, InsertBankMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertBankMutation, InsertBankMutationVariables>(InsertBankDocument, options);
+      }
+export type InsertBankMutationHookResult = ReturnType<typeof useInsertBankMutation>;
+export type InsertBankMutationResult = Apollo.MutationResult<InsertBankMutation>;
+export type InsertBankMutationOptions = Apollo.BaseMutationOptions<InsertBankMutation, InsertBankMutationVariables>;
+export const GetEventOrganizesDocument = gql`
+      query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOrderBy!], $limit: Int, $offset: Int) {
+    eventOrganize(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      event {
+        __typename
+        id
+        name
+        state
+        start
+        end
+        maxParticipants
+        slug
+        banner {
+          __typename
+          id
+          url
+        }
+        eventApprovals {
+          __typename
+          id
+          createdAt
+          isApproved
+          message
+          eventApprovalStep {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+            nextSteps {
+              __typename
+              id
+              createdAt
+              name
+              description
+              order
+            }
+            previousStep {
+              __typename
+              id
+              createdAt
+              name
+              description
+              order
+            }
+          }
+          createdBy {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                }
+              }
+            }
+            user {
+              __typename
+              id
+              createdAt
+              firstName
+              lastName
+              individual {
+                __typename
+                id
+                createdAt
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  email
+                  name
+                  slug
+                  website
+                  actorImages {
+                    __typename
+                    id
+                    createdAt
+                    type
+                    image {
+                      __typename
+                      id
+                      createdAt
+                      url
+                      size
+                      type
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        eventApprovalSubmission {
+          __typename
+          id
+          createdAt
+          form {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          submission
+        }
+        nextEventApprovalStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+          nextSteps {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+          previousStep {
+            __typename
+            id
+            createdAt
+            name
+            description
             order
           }
         }
       }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
+      eventSupervisors {
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+        joinForm {
+          __typename
+          id
+          schema
+          name
+        }
+      }
+      project {
+        __typename
+        id
+        createdAt
+        name
+        slug
+        color
+        isPrivate
+      }
     }
-    joinForm {
+    event {
       __typename
       id
       createdAt
-      schema
+      slug
+      start
+      end
+      maxParticipants
       name
-      type
+      state
+      price
+      pointsAwardedForAttendance
+      isPrivate
+      description
+      location {
+        __typename
+        id
+        type
+        link
+        name
+        details
+        address {
+          __typename
+          id
+          name
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+        formSubmission {
+          __typename
+          id
+          createdAt
+          form {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          submission
+        }
+        processedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetEventOrganizesQuery__
@@ -54871,109 +55000,18 @@ export type GetEventOrganizesQueryHookResult = ReturnType<typeof useGetEventOrga
 export type GetEventOrganizesLazyQueryHookResult = ReturnType<typeof useGetEventOrganizesLazyQuery>;
 export type GetEventOrganizesQueryResult = Apollo.QueryResult<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>;
 export const GetFinancesDocument = gql`
-    query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
-  finance(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    amount
-    category
-    description
-    method
-    payedAt
-    payedByType
-    payedBy {
+      query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
+    finance(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
-      name
-      slug
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      team {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      individual {
-        __typename
-        id
-        user {
-          __typename
-          id
-          individual {
-            __typename
-            id
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-    receivedBy {
-      __typename
-      id
-      name
-      slug
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      team {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      individual {
-        __typename
-        id
-        user {
-          __typename
-          id
-          individual {
-            __typename
-            id
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-    initiatedBy {
-      __typename
-      id
-      actor {
+      createdAt
+      amount
+      category
+      description
+      method
+      payedAt
+      payedByType
+      payedBy {
         __typename
         id
         name
@@ -54990,33 +55028,7 @@ export const GetFinancesDocument = gql`
             url
           }
         }
-      }
-    }
-    createdBy {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        name
-        slug
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        individual {
+        team {
           __typename
           id
           actor {
@@ -55025,33 +55037,150 @@ export const GetFinancesDocument = gql`
             slug
           }
         }
+        individual {
+          __typename
+          id
+          user {
+            __typename
+            id
+            individual {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+              }
+            }
+          }
+        }
       }
-    }
-    event {
-      __typename
-      id
-      slug
-      name
-    }
-    project {
-      __typename
-      id
-      slug
-      name
-    }
-    financeAttachments {
-      attachment {
+      receivedBy {
         __typename
         id
         name
-        size
-        type
-        url
+        slug
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        individual {
+          __typename
+          id
+          user {
+            __typename
+            id
+            individual {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+              }
+            }
+          }
+        }
+      }
+      initiatedBy {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          name
+          slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      createdBy {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          name
+          slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          individual {
+            __typename
+            id
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+      event {
+        __typename
+        id
+        slug
+        name
+      }
+      project {
+        __typename
+        id
+        slug
+        name
+      }
+      financeAttachments {
+        attachment {
+          __typename
+          id
+          name
+          size
+          type
+          url
+        }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetFinancesQuery__
@@ -55084,52 +55213,52 @@ export type GetFinancesQueryHookResult = ReturnType<typeof useGetFinancesQuery>;
 export type GetFinancesLazyQueryHookResult = ReturnType<typeof useGetFinancesLazyQuery>;
 export type GetFinancesQueryResult = Apollo.QueryResult<GetFinancesQuery, GetFinancesQueryVariables>;
 export const GetTenantManageDocument = gql`
-    query GetTenantManage($domain: String!) {
-  tenant(where: {domain: {_eq: $domain}}) {
-    __typename
-    id
-    domain
-    pointName
-    eventValidationForm {
+      query GetTenantManage($domain: String!) {
+    tenant(where: {domain: {_eq: $domain}}) {
       __typename
       id
-      name
-      schema
-      type
-    }
-    eventApprovalSteps {
-      __typename
-      id
-      name
-      order
-    }
-    adminTeam {
-      __typename
-      id
-      actor {
+      domain
+      pointName
+      eventValidationForm {
         __typename
         id
-        slug
         name
-        bio
-        email
-        website
-        status
-        actorImages {
+        schema
+        type
+      }
+      eventApprovalSteps {
+        __typename
+        id
+        name
+        order
+      }
+      adminTeam {
+        __typename
+        id
+        actor {
           __typename
           id
-          type
-          image {
+          slug
+          name
+          bio
+          email
+          website
+          status
+          actorImages {
             __typename
             id
-            url
+            type
+            image {
+              __typename
+              id
+              url
+            }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTenantManageQuery__
@@ -55159,190 +55288,167 @@ export type GetTenantManageQueryHookResult = ReturnType<typeof useGetTenantManag
 export type GetTenantManageLazyQueryHookResult = ReturnType<typeof useGetTenantManageLazyQuery>;
 export type GetTenantManageQueryResult = Apollo.QueryResult<GetTenantManageQuery, GetTenantManageQueryVariables>;
 export const GetTeamDashboardDocument = gql`
-    query GetTeamDashboard {
-  team(
-    where: {type: {_in: ["Association", "Club"]}}
-    orderBy: {actor: {name: ASC}}
-  ) {
-    __typename
-    id
-    createdAt
-    type
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    documents {
-      __typename
-      id
-      name
-      type
-      file {
-        __typename
-        id
-        name
-        size
-        type
-        url
-      }
-    }
-    actor {
-      __typename
-      id
-      createdAt
-      email
-      name
-      slug
-      website
-      actorImages {
-        __typename
-        id
-        createdAt
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      bio
-      status
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    joinForm {
-      __typename
-      id
-      schema
-      name
-    }
-    teamMembersAggregate {
-      aggregate {
-        count
-      }
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles(where: {deletedAt: {_isNull: false}}) {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembers(
-      where: {teamMemberRoles: {role: {category: {_eq: "Directors"}}}, deletedAt: {_isNull: true}}
+      query GetTeamDashboard {
+    team(
+      where: {type: {_in: ["Association", "Club"]}}
+      orderBy: {actor: {name: ASC}}
     ) {
       __typename
       id
       createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
+      type
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      documents {
+        __typename
+        id
+        name
+        type
+        file {
           __typename
           id
-          createdAt
-          category
-          type
           name
-          permissions
+          size
+          type
+          url
         }
       }
-      user {
+      actor {
         __typename
         id
         createdAt
-        firstName
-        lastName
-        individual {
+        email
+        name
+        slug
+        website
+        actorImages {
           __typename
           id
           createdAt
-          actor {
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        bio
+        status
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      joinForm {
+        __typename
+        id
+        schema
+        name
+      }
+      teamMembersAggregate {
+        aggregate {
+          count
+        }
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      roles(where: {deletedAt: {_isNull: false}}) {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+      teamMembers(
+        where: {teamMemberRoles: {role: {type: {_in: ["President", "Treasurer", "Secretary"]}}}, deletedAt: {_isNull: true}}
+      ) {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
+          __typename
+          id
+          role {
             __typename
             id
             createdAt
-            email
+            color
+            type
             name
-            bio
-            slug
-            status
-            website
-            actorImages {
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
               __typename
               id
               createdAt
-              type
-              image {
+              email
+              name
+              bio
+              slug
+              status
+              website
+              actorImages {
                 __typename
                 id
-                url
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
               }
             }
           }
         }
       }
-    }
-    membershipDuration
-    membershipFees
-    isJoinFormActive
-    accounts {
-      __typename
-      id
-      createdAt
-      financesAggregate {
-        aggregate {
-          sum {
-            amount
-          }
-        }
-      }
-      bank {
+      membershipDuration
+      membershipFees
+      isJoinFormActive
+      accounts {
         __typename
         id
         createdAt
-        legalUnitLocation {
+        financesAggregate {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+        bank {
           __typename
           id
           createdAt
-          locationType
-          legalName
-          actor {
-            __typename
-            id
-            slug
-            email
-            website
-            name
-            actorImages {
-              __typename
-              id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-          }
-          legalUnit {
+          legalUnitLocation {
             __typename
             id
             createdAt
-            type
+            locationType
             legalName
             actor {
               __typename
@@ -55362,93 +55468,6 @@ export const GetTeamDashboardDocument = gql`
                 }
               }
             }
-          }
-          location {
-            __typename
-            id
-            createdAt
-            type
-            link
-            name
-            details
-            address {
-              __typename
-              id
-              latitude
-              longitude
-              category
-              name
-              streetNumber
-              street
-              zip
-              city
-              state
-              country
-              geoapifyId
-            }
-          }
-        }
-        bicSwift
-        iban
-      }
-      name
-      team {
-        __typename
-        id
-        createdAt
-        type
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-        }
-      }
-      type
-      children {
-        __typename
-        id
-        createdAt
-        financesAggregate {
-          aggregate {
-            sum {
-              amount
-            }
-          }
-        }
-        name
-        type
-        bank {
-          __typename
-          id
-          createdAt
-          legalUnitLocation {
-            __typename
-            id
-            createdAt
-            locationType
-            legalName
-            actor {
-              website
-              name
-            }
             legalUnit {
               __typename
               id
@@ -55458,9 +55477,20 @@ export const GetTeamDashboardDocument = gql`
               actor {
                 __typename
                 id
-                createdAt
+                slug
+                email
                 website
                 name
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
               }
             }
             location {
@@ -55491,6 +55521,7 @@ export const GetTeamDashboardDocument = gql`
           bicSwift
           iban
         }
+        name
         team {
           __typename
           id
@@ -55520,138 +55551,237 @@ export const GetTeamDashboardDocument = gql`
             }
           }
         }
-      }
-      parent {
-        __typename
-        id
-        createdAt
-        financesAggregate {
-          aggregate {
-            sum {
-              amount
-            }
-          }
-        }
-        bank {
+        type
+        children {
           __typename
           id
           createdAt
-          legalUnitLocation {
+          financesAggregate {
+            aggregate {
+              sum {
+                amount
+              }
+            }
+          }
+          name
+          type
+          bank {
             __typename
             id
             createdAt
-            locationType
-            legalName
-            actor {
-              website
-              name
-            }
-            legalUnit {
+            legalUnitLocation {
               __typename
               id
-              type
+              createdAt
+              locationType
               legalName
               actor {
-                __typename
-                id
-                createdAt
                 website
                 name
               }
-            }
-            location {
-              __typename
-              id
-              type
-              createdAt
-              link
-              name
-              details
-              address {
+              legalUnit {
                 __typename
                 id
-                latitude
-                longitude
-                category
+                createdAt
+                type
+                legalName
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  website
+                  name
+                }
+              }
+              location {
+                __typename
+                id
+                createdAt
+                type
+                link
                 name
-                streetNumber
-                street
-                zip
-                city
-                state
-                country
-                geoapifyId
+                details
+                address {
+                  __typename
+                  id
+                  latitude
+                  longitude
+                  category
+                  name
+                  streetNumber
+                  street
+                  zip
+                  city
+                  state
+                  country
+                  geoapifyId
+                }
               }
             }
+            bicSwift
+            iban
           }
-          bicSwift
-          iban
-        }
-        name
-        team {
-          __typename
-          id
-          createdAt
-          type
-          actor {
+          team {
             __typename
             id
             createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            actor {
               __typename
               id
-              type
-              image {
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
-                url
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
         }
-        type
+        parent {
+          __typename
+          id
+          createdAt
+          financesAggregate {
+            aggregate {
+              sum {
+                amount
+              }
+            }
+          }
+          bank {
+            __typename
+            id
+            createdAt
+            legalUnitLocation {
+              __typename
+              id
+              createdAt
+              locationType
+              legalName
+              actor {
+                website
+                name
+              }
+              legalUnit {
+                __typename
+                id
+                type
+                legalName
+                actor {
+                  __typename
+                  id
+                  createdAt
+                  website
+                  name
+                }
+              }
+              location {
+                __typename
+                id
+                type
+                createdAt
+                link
+                name
+                details
+                address {
+                  __typename
+                  id
+                  latitude
+                  longitude
+                  category
+                  name
+                  streetNumber
+                  street
+                  zip
+                  city
+                  state
+                  country
+                  geoapifyId
+                }
+              }
+            }
+            bicSwift
+            iban
+          }
+          name
+          team {
+            __typename
+            id
+            createdAt
+            type
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+          type
+        }
       }
-    }
-    teamHistories(
-      where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
-    ) {
-      __typename
-      id
-      createdAt
-      eventDate
-    }
-    teams {
-      __typename
-      id
-      createdAt
-      type
-      actor {
+      teamHistories(
+        where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
+      ) {
         __typename
         id
         createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
+        eventDate
+      }
+      teams {
+        __typename
+        id
+        createdAt
+        type
+        actor {
           __typename
           id
-          type
-          image {
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
-            url
+            type
+            image {
+              __typename
+              id
+              url
+            }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTeamDashboardQuery__
@@ -55680,64 +55810,64 @@ export type GetTeamDashboardQueryHookResult = ReturnType<typeof useGetTeamDashbo
 export type GetTeamDashboardLazyQueryHookResult = ReturnType<typeof useGetTeamDashboardLazyQuery>;
 export type GetTeamDashboardQueryResult = Apollo.QueryResult<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>;
 export const GetTenantUsersWithPointsDocument = gql`
-    query GetTenantUsersWithPoints {
-  user(
-    where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}}}, {eventJoins: {participationProcessedAt: {_isNull: false}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}}}]}
-  ) {
-    __typename
-    id
-    createdAt
-    firstName
-    lastName
-    individual {
+      query GetTenantUsersWithPoints {
+    user(
+      where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}}}, {eventJoins: {participationProcessedAt: {_isNull: false}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}}}]}
+    ) {
       __typename
       id
-      actor {
+      createdAt
+      firstName
+      lastName
+      individual {
         __typename
         id
-        slug
-        bio
-        name
-        email
-        website
-        actorImages {
+        actor {
           __typename
           id
-          type
-          image {
+          slug
+          bio
+          name
+          email
+          website
+          actorImages {
             __typename
             id
-            url
+            type
+            image {
+              __typename
+              id
+              url
+            }
           }
         }
       }
-    }
-    actions(where: {pointsProcessedAt: {_isNull: false}}) {
-      __typename
-      id
-      points
-      pointsProcessedAt
-    }
-    eventJoins(where: {participationProcessedAt: {_isNull: false}}) {
-      __typename
-      id
-      processedAt
-      event {
+      actions(where: {pointsProcessedAt: {_isNull: false}}) {
         __typename
         id
-        slug
-        pointsAwardedForAttendance
+        points
+        pointsProcessedAt
+      }
+      eventJoins(where: {participationProcessedAt: {_isNull: false}}) {
+        __typename
+        id
+        processedAt
+        event {
+          __typename
+          id
+          slug
+          pointsAwardedForAttendance
+        }
+      }
+      missionJoins(where: {pointsProcessedAt: {_isNull: false}}) {
+        __typename
+        id
+        points
+        pointsProcessedAt
       }
     }
-    missionJoins(where: {pointsProcessedAt: {_isNull: false}}) {
-      __typename
-      id
-      points
-      pointsProcessedAt
-    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTenantUsersWithPointsQuery__
@@ -55766,80 +55896,427 @@ export type GetTenantUsersWithPointsQueryHookResult = ReturnType<typeof useGetTe
 export type GetTenantUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsLazyQuery>;
 export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>;
 export const GetEventsValidationDocument = gql`
-    query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
-  event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    maxParticipants
-    name
-    state
-    price
-    pointsAwardedForAttendance
-    isPrivate
-    description
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    nextEventApprovalStep {
+      query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+    event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
       createdAt
+      slug
+      start
+      end
+      maxParticipants
       name
+      state
+      price
+      pointsAwardedForAttendance
+      isPrivate
       description
-      order
-      nextSteps {
+      location {
+        __typename
+        id
+        type
+        link
+        name
+        details
+        address {
+          __typename
+          id
+          name
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      nextEventApprovalStep {
         __typename
         id
         createdAt
         name
         description
         order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
       }
-      previousStep {
+      eventApprovalSubmission {
         __typename
         id
         createdAt
-        name
-        description
-        order
+        submission
+        form {
+          __typename
+          id
+          createdAt
+          schema
+          name
+          type
+        }
       }
-    }
-    eventApprovalSubmission {
-      __typename
-      id
-      createdAt
-      submission
-      form {
+      eventApprovals {
+        __typename
+        id
+        createdAt
+        isApproved
+        message
+        eventApprovalStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+          nextSteps {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+          previousStep {
+            __typename
+            id
+            createdAt
+            name
+            description
+            order
+          }
+        }
+        createdBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+              }
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        eventSupervisors {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: {deletedAt: {_isNull: true}}) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+            }
+          }
+        }
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+            name
+            email
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+        __typename
+        id
+        createdAt
+        state
+        isPresent
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+        formSubmission {
+          __typename
+          id
+          createdAt
+          form {
+            __typename
+            id
+            createdAt
+            schema
+            name
+            type
+          }
+          submission
+        }
+        processedBy {
+          __typename
+          id
+          createdAt
+          actor {
+            __typename
+            id
+            createdAt
+            email
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              createdAt
+              type
+              image {
+                __typename
+                id
+                createdAt
+                url
+                size
+                type
+              }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+        }
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+      }
+      joinForm {
         __typename
         id
         createdAt
@@ -55848,7 +56325,1020 @@ export const GetEventsValidationDocument = gql`
         type
       }
     }
-    eventApprovals {
+  }
+`;
+
+/**
+ * __useGetEventsValidationQuery__
+ *
+ * To run a query within a React component, call `useGetEventsValidationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEventsValidationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEventsValidationQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetEventsValidationQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
+      }
+export function useGetEventsValidationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
+        }
+export type GetEventsValidationQueryHookResult = ReturnType<typeof useGetEventsValidationQuery>;
+export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEventsValidationLazyQuery>;
+export type GetEventsValidationQueryResult = Apollo.QueryResult<GetEventsValidationQuery, GetEventsValidationQueryVariables>;
+export const GetProjectDocument = gql`
+      query GetProject($slug: String!) {
+    project(where: {slug: {_eq: $slug}}, limit: 1) {
+      __typename
+      id
+      createdAt
+      slug
+      start
+      end
+      name
+      isPrivate
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      team {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          slug
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        event {
+          __typename
+          id
+          slug
+          name
+        }
+        eventSupervisors {
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            individual {
+              __typename
+              id
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  createdAt
+                  type
+                  image {
+                    __typename
+                    id
+                    createdAt
+                    url
+                    size
+                    type
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: {deletedAt: {_isNull: true}}) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
+            }
+          }
+        }
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            name
+            slug
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetProjectQuery__
+ *
+ * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+      }
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+        }
+export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
+export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
+export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export const GetTeamDocument = gql`
+      query GetTeam($slug: String!) {
+    team(where: {actor: {slug: {_eq: $slug}}}, limit: 1) {
+      __typename
+      id
+      createdAt
+      type
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      membershipFees
+      membershipDuration
+      actor {
+        __typename
+        id
+        slug
+        bio
+        name
+        status
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
+      parent {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      roles {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+      teamMembers {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
+          __typename
+          id
+          role {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTeamQuery__
+ *
+ * To run a query within a React component, call `useGetTeamQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+      }
+export function useGetTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+        }
+export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
+export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
+export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
+export const InsertTeamJoinDocument = gql`
+      mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
+    insertTeamJoinOne(object: $object) {
+      __typename
+      id
+      createdAt
+      state
+      team {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type InsertTeamJoinMutationFn = Apollo.MutationFunction<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>;
+
+/**
+ * __useInsertTeamJoinMutation__
+ *
+ * To run a mutation, you first call `useInsertTeamJoinMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertTeamJoinMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertTeamJoinMutation, { data, loading, error }] = useInsertTeamJoinMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>(InsertTeamJoinDocument, options);
+      }
+export type InsertTeamJoinMutationHookResult = ReturnType<typeof useInsertTeamJoinMutation>;
+export type InsertTeamJoinMutationResult = Apollo.MutationResult<InsertTeamJoinMutation>;
+export type InsertTeamJoinMutationOptions = Apollo.BaseMutationOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>;
+export const GetTeamsDocument = gql`
+      query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offset: Int) {
+    team(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      __typename
+      id
+      createdAt
+      type
+      membershipFees
+      membershipDuration
+      actor {
+        __typename
+        id
+        slug
+        status
+        bio
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
+      }
+      parent {
+        __typename
+        id
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      roles {
+        __typename
+        id
+        createdAt
+        color
+        type
+        name
+        permissions
+      }
+      teamMembersAggregate {
+        aggregate {
+          count
+        }
+      }
+      teamMembers {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
+          __typename
+          id
+          role {
+            __typename
+            id
+            createdAt
+            color
+            type
+            name
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: {deletedAt: {_isNull: true}}) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTeamsQuery__
+ *
+ * To run a query within a React component, call `useGetTeamsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+      }
+export function useGetTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+        }
+export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
+export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
+export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
+export const GetCategoriesDocument = gql`
+      query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $offset: Int) {
+    tag(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      id
+      name
+      slug
+      color
+      image {
+        id
+        url
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetUserDocument = gql`
+      query GetUser($slug: String!) {
+    user(where: {individual: {actor: {slug: {_eq: $slug}}}}, limit: 1) {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+          status
+          bio
+          name
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+          socials(where: {deletedAt: {_isNull: true}}) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
+        }
+      }
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
+        __typename
+        id
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUsersDocument = gql`
+      query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offset: Int) {
+    user(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      __typename
+      id
+      createdAt
+      firstName
+      lastName
+      individual {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          slug
+          name
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
+        __typename
+        id
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetTenantOidcInfoDocument = gql`
+      query GetTenantOidcInfo {
+    tenant {
+      __typename
+      id
+      isOidcEnabled
+      oidcName
+      domain
+      adminTeam {
+        __typename
+        id
+        actor {
+          __typename
+          id
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetTenantOidcInfoQuery__
+ *
+ * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantOidcInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTenantOidcInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+      }
+export function useGetTenantOidcInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+        }
+export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
+export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
+export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
+export const UserLoginDocument = gql`
+      mutation UserLogin($dto: LoginInput!) {
+    login(dto: $dto) {
+      __typename
+      canManageTenant
+      user {
+        __typename
+        id
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        tenant {
+          __typename
+          id
+          domain
+        }
+      }
+    }
+  }
+`;
+export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
+
+/**
+ * __useUserLoginMutation__
+ *
+ * To run a mutation, you first call `useUserLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userLoginMutation, { data, loading, error }] = useUserLoginMutation({
+ *   variables: {
+ *      dto: // value for 'dto'
+ *   },
+ * });
+ */
+export function useUserLoginMutation(baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
+      }
+export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
+export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
+export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
+export const InsertEventApprovalDocument = gql`
+      mutation InsertEventApproval($object: EventApprovalInsertInput!) {
+    insertEventApprovalOne(object: $object) {
       __typename
       id
       createdAt
@@ -55915,1372 +57405,14 @@ export const GetEventsValidationDocument = gql`
             actor {
               __typename
               id
-              createdAt
-              email
-              name
               slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          slug
-          name
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
-      __typename
-      id
-      createdAt
-      state
-      isPresent
-      joinedBy {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-      formSubmission {
-        __typename
-        id
-        createdAt
-        form {
-          __typename
-          id
-          createdAt
-          schema
-          name
-          type
-        }
-        submission
-      }
-      processedBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            createdAt
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-              size
-              type
-            }
-          }
-          bio
-          status
-          actorTags {
-            tag {
-              __typename
-              id
-              createdAt
-              slug
-              name
-              color
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-      }
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-  }
-}
-    `;
-
-/**
- * __useGetEventsValidationQuery__
- *
- * To run a query within a React component, call `useGetEventsValidationQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEventsValidationQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEventsValidationQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetEventsValidationQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
-      }
-export function useGetEventsValidationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
-        }
-export type GetEventsValidationQueryHookResult = ReturnType<typeof useGetEventsValidationQuery>;
-export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEventsValidationLazyQuery>;
-export type GetEventsValidationQueryResult = Apollo.QueryResult<GetEventsValidationQuery, GetEventsValidationQueryVariables>;
-export const GetProjectDocument = gql`
-    query GetProject($slug: String!) {
-  project(where: {slug: {_eq: $slug}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    name
-    isPrivate
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    team {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        slug
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      event {
-        __typename
-        id
-        slug
-        name
-      }
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetProjectQuery__
- *
- * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProjectQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-      }
-export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-        }
-export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
-export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
-export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
-export const GetTeamDocument = gql`
-    query GetTeam($slug: String!) {
-  team(where: {actor: {slug: {_eq: $slug}}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    type
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    membershipFees
-    membershipDuration
-    actor {
-      __typename
-      id
-      slug
-      bio
-      name
-      status
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    parent {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembers {
-      __typename
-      id
-      createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
-          __typename
-          id
-          createdAt
-          category
-          type
-          name
-          permissions
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
             }
           }
         }
       }
     }
   }
-}
-    `;
-
-/**
- * __useGetTeamQuery__
- *
- * To run a query within a React component, call `useGetTeamQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
-      }
-export function useGetTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
-        }
-export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
-export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
-export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
-export const InsertTeamJoinDocument = gql`
-    mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
-  insertTeamJoinOne(object: $object) {
-    __typename
-    id
-    createdAt
-    state
-    team {
-      __typename
-      id
-      createdAt
-      type
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-            size
-            type
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export type InsertTeamJoinMutationFn = Apollo.MutationFunction<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>;
-
-/**
- * __useInsertTeamJoinMutation__
- *
- * To run a mutation, you first call `useInsertTeamJoinMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertTeamJoinMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertTeamJoinMutation, { data, loading, error }] = useInsertTeamJoinMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>(InsertTeamJoinDocument, options);
-      }
-export type InsertTeamJoinMutationHookResult = ReturnType<typeof useInsertTeamJoinMutation>;
-export type InsertTeamJoinMutationResult = Apollo.MutationResult<InsertTeamJoinMutation>;
-export type InsertTeamJoinMutationOptions = Apollo.BaseMutationOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>;
-export const GetTeamsDocument = gql`
-    query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offset: Int) {
-  team(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    type
-    membershipFees
-    membershipDuration
-    actor {
-      __typename
-      id
-      slug
-      status
-      bio
-      name
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    parent {
-      __typename
-      id
-      type
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          createdAt
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembersAggregate {
-      aggregate {
-        count
-      }
-    }
-    teamMembers {
-      __typename
-      id
-      createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
-          __typename
-          id
-          createdAt
-          category
-          type
-          name
-          permissions
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: {deletedAt: {_isNull: true}}) {
-              __typename
-              id
-              pseudo
-              url
-              type
-              order
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetTeamsQuery__
- *
- * To run a query within a React component, call `useGetTeamsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTeamsQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
-      }
-export function useGetTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
-        }
-export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
-export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
-export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
-export const GetCategoriesDocument = gql`
-    query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $offset: Int) {
-  tag(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    id
-    name
-    slug
-    color
-    image {
-      id
-      url
-    }
-  }
-}
-    `;
-
-/**
- * __useGetCategoriesQuery__
- *
- * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCategoriesQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-      }
-export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-        }
-export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
-export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
-export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
-export const GetUserDocument = gql`
-    query GetUser($slug: String!) {
-  user(where: {individual: {actor: {slug: {_eq: $slug}}}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    firstName
-    lastName
-    individual {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        slug
-        status
-        bio
-        name
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-        socials(where: {deletedAt: {_isNull: true}}) {
-          __typename
-          id
-          pseudo
-          url
-          type
-          order
-        }
-      }
-    }
-    teamMembers(where: {endDate: {_isNull: true}}) {
-      __typename
-      id
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserQuery__
- *
- * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserQuery({
- *   variables: {
- *      slug: // value for 'slug'
- *   },
- * });
- */
-export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-      }
-export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-        }
-export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
-export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
-export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
-export const GetUsersDocument = gql`
-    query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offset: Int) {
-  user(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    firstName
-    lastName
-    individual {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        slug
-        name
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    teamMembers(where: {endDate: {_isNull: true}}) {
-      __typename
-      id
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          slug
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUsersQuery__
- *
- * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUsersQuery({
- *   variables: {
- *      where: // value for 'where'
- *      orderBy: // value for 'orderBy'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *   },
- * });
- */
-export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-      }
-export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-        }
-export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
-export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
-export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
-export const GetTenantOidcInfoDocument = gql`
-    query GetTenantOidcInfo {
-  tenant {
-    __typename
-    id
-    isOidcEnabled
-    oidcName
-    domain
-    adminTeam {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetTenantOidcInfoQuery__
- *
- * To run a query within a React component, call `useGetTenantOidcInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTenantOidcInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTenantOidcInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetTenantOidcInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
-      }
-export function useGetTenantOidcInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
-        }
-export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
-export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
-export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
-export const UserLoginDocument = gql`
-    mutation UserLogin($dto: LoginInput!) {
-  login(dto: $dto) {
-    __typename
-    canManageTenant
-    user {
-      __typename
-      id
-      individual {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      tenant {
-        __typename
-        id
-        domain
-      }
-    }
-  }
-}
-    `;
-export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
-
-/**
- * __useUserLoginMutation__
- *
- * To run a mutation, you first call `useUserLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUserLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [userLoginMutation, { data, loading, error }] = useUserLoginMutation({
- *   variables: {
- *      dto: // value for 'dto'
- *   },
- * });
- */
-export function useUserLoginMutation(baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
-      }
-export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
-export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
-export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
-export const InsertEventApprovalDocument = gql`
-    mutation InsertEventApproval($object: EventApprovalInsertInput!) {
-  insertEventApprovalOne(object: $object) {
-    __typename
-    id
-    createdAt
-    isApproved
-    message
-    eventApprovalStep {
-      __typename
-      id
-      createdAt
-      name
-      description
-      order
-      nextSteps {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-      previousStep {
-        __typename
-        id
-        createdAt
-        name
-        description
-        order
-      }
-    }
-    createdBy {
-      __typename
-      id
-      createdAt
-      actor {
-        __typename
-        id
-        createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
-      }
-    }
-  }
-}
-    `;
+`;
 export type InsertEventApprovalMutationFn = Apollo.MutationFunction<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>;
 
 /**
@@ -57308,40 +57440,40 @@ export type InsertEventApprovalMutationHookResult = ReturnType<typeof useInsertE
 export type InsertEventApprovalMutationResult = Apollo.MutationResult<InsertEventApprovalMutation>;
 export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>;
 export const GetProjectsSelectDocument = gql`
-    query GetProjectsSelect($slug: String!) {
-  project(where: {team: {actor: {slug: {_eq: $slug}}}}) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    name
-    isPrivate
-    banner {
+      query GetProjectsSelect($slug: String!) {
+    project(where: {team: {actor: {slug: {_eq: $slug}}}}) {
       __typename
       id
-      url
-      type
-    }
-    eventOrganizes {
-      __typename
-      id
-      event {
+      createdAt
+      slug
+      start
+      end
+      name
+      isPrivate
+      banner {
         __typename
         id
-        name
-        slug
-        banner {
+        url
+        type
+      }
+      eventOrganizes {
+        __typename
+        id
+        event {
           __typename
           id
-          url
+          name
+          slug
+          banner {
+            __typename
+            id
+            url
+          }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProjectsSelectQuery__
@@ -57371,215 +57503,184 @@ export type GetProjectsSelectQueryHookResult = ReturnType<typeof useGetProjectsS
 export type GetProjectsSelectLazyQueryHookResult = ReturnType<typeof useGetProjectsSelectLazyQuery>;
 export type GetProjectsSelectQueryResult = Apollo.QueryResult<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>;
 export const InsertEventDocument = gql`
-    mutation InsertEvent($object: EventInsertInput!) {
-  insertEventOne(object: $object) {
-    __typename
-    id
-    createdAt
-    slug
-    start
-    end
-    maxParticipants
-    name
-    state
-    price
-    pointsAwardedForAttendance
-    isPrivate
-    description
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
-    banner {
-      __typename
-      id
-      url
-      type
-    }
-    eventTags {
-      tag {
-        __typename
-        id
-        createdAt
-        slug
-        name
-        color
-      }
-    }
-    eventOrganizes {
-      __typename
-      id
-      eventSupervisors {
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: {deletedAt: {_isNull: true}}) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
-            }
-          }
-        }
-      }
-      team {
-        __typename
-        id
-        type
-        actor {
-          __typename
-          id
-          name
-          slug
-          email
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              url
-            }
-          }
-          socials(where: {deletedAt: {_isNull: true}}) {
-            __typename
-            id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        joinForm {
-          __typename
-          id
-          schema
-          name
-        }
-        teamMembersAggregate {
-          __typename
-          aggregate {
-            count
-          }
-        }
-      }
-      project {
-        __typename
-        id
-        createdAt
-        name
-        slug
-        color
-        isPrivate
-      }
-    }
-    eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
-      aggregate {
-        count
-      }
-    }
-    eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
+      mutation InsertEvent($object: EventInsertInput!) {
+    insertEventOne(object: $object) {
       __typename
       id
       createdAt
+      slug
+      start
+      end
+      maxParticipants
+      name
       state
-      isPresent
-      processedAt
-      participationProcessedVia
-      participationProcessedAt
-      processedBy {
+      price
+      pointsAwardedForAttendance
+      isPrivate
+      description
+      location {
         __typename
         id
-        createdAt
-        actor {
+        type
+        link
+        name
+        details
+        address {
           __typename
           id
-          slug
-          bio
           name
-          email
-          status
-          website
-          actorImages {
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
+        }
+      }
+      banner {
+        __typename
+        id
+        url
+        type
+      }
+      eventTags {
+        tag {
+          __typename
+          id
+          createdAt
+          slug
+          name
+          color
+        }
+      }
+      eventOrganizes {
+        __typename
+        id
+        eventSupervisors {
+          user {
             __typename
             id
-            type
-            image {
+            createdAt
+            firstName
+            lastName
+            individual {
               __typename
               id
-              url
+              createdAt
+              actor {
+                __typename
+                id
+                createdAt
+                email
+                name
+                slug
+                website
+                actorImages {
+                  __typename
+                  id
+                  type
+                  image {
+                    __typename
+                    id
+                    url
+                  }
+                }
+                bio
+                status
+                actorTags {
+                  tag {
+                    __typename
+                    id
+                    createdAt
+                    slug
+                    name
+                    color
+                  }
+                }
+                socials(where: {deletedAt: {_isNull: true}}) {
+                  __typename
+                  id
+                  pseudo
+                  url
+                  type
+                  order
+                }
+              }
             }
           }
         }
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            name
+            slug
+            email
+            website
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
+          }
+          joinForm {
+            __typename
+            id
+            schema
+            name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
+        }
+        project {
+          __typename
+          id
+          createdAt
+          name
+          slug
+          color
+          isPrivate
+        }
       }
-      joinedBy {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
+        aggregate {
+          count
+        }
+      }
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
-        firstName
-        lastName
-        individual {
+        state
+        isPresent
+        processedAt
+        participationProcessedVia
+        participationProcessedAt
+        processedBy {
           __typename
           id
           createdAt
@@ -57590,8 +57691,8 @@ export const InsertEventDocument = gql`
             bio
             name
             email
-            website
             status
+            website
             actorImages {
               __typename
               id
@@ -57604,19 +57705,50 @@ export const InsertEventDocument = gql`
             }
           }
         }
+        joinedBy {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+              bio
+              name
+              email
+              website
+              status
+              actorImages {
+                __typename
+                id
+                type
+                image {
+                  __typename
+                  id
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+      joinForm {
+        __typename
+        id
+        createdAt
+        schema
+        name
+        type
       }
     }
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
   }
-}
-    `;
+`;
 export type InsertEventMutationFn = Apollo.MutationFunction<InsertEventMutation, InsertEventMutationVariables>;
 
 /**
@@ -57644,82 +57776,145 @@ export type InsertEventMutationHookResult = ReturnType<typeof useInsertEventMuta
 export type InsertEventMutationResult = Apollo.MutationResult<InsertEventMutation>;
 export type InsertEventMutationOptions = Apollo.BaseMutationOptions<InsertEventMutation, InsertEventMutationVariables>;
 export const InsertFinanceDocument = gql`
-    mutation InsertFinance($object: FinanceInsertInput!) {
-  insertFinanceOne(object: $object) {
-    __typename
-    id
-    createdAt
-    amount
-    category
-    description
-    method
-    payedAt
-    payedByType
-    payedBy {
+      mutation InsertFinance($object: FinanceInsertInput!) {
+    insertFinanceOne(object: $object) {
       __typename
       id
-      name
-      slug
-      email
-      website
-      actorImages {
+      createdAt
+      amount
+      category
+      description
+      method
+      payedAt
+      payedByType
+      payedBy {
         __typename
         id
-        type
-        image {
+        name
+        slug
+        email
+        website
+        actorImages {
           __typename
           id
-          url
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
         }
       }
-      team {
+      receivedBy {
+        __typename
+        id
+        name
+        slug
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        individual {
+          __typename
+          id
+          user {
+            __typename
+            id
+            individual {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+              }
+            }
+          }
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+      }
+      initiatedBy {
         __typename
         id
         actor {
           __typename
           id
+          name
           slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
         }
       }
-      individual {
+      createdBy {
         __typename
         id
         actor {
           __typename
           id
+          name
           slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
         }
-      }
-    }
-    receivedBy {
-      __typename
-      id
-      name
-      slug
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      team {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      individual {
-        __typename
-        id
         user {
           __typename
           id
@@ -57733,95 +57928,32 @@ export const InsertFinanceDocument = gql`
             }
           }
         }
-        actor {
-          __typename
-          id
-          slug
-        }
       }
-    }
-    initiatedBy {
-      __typename
-      id
-      actor {
+      event {
         __typename
         id
-        name
         slug
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        name
       }
-    }
-    createdBy {
-      __typename
-      id
-      actor {
+      project {
         __typename
         id
-        name
         slug
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        individual {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
-      }
-    }
-    event {
-      __typename
-      id
-      slug
-      name
-    }
-    project {
-      __typename
-      id
-      slug
-      name
-    }
-    financeAttachments {
-      attachment {
-        __typename
-        id
         name
-        size
-        type
-        url
+      }
+      financeAttachments {
+        attachment {
+          __typename
+          id
+          name
+          size
+          type
+          url
+        }
       }
     }
   }
-}
-    `;
+`;
 export type InsertFinanceMutationFn = Apollo.MutationFunction<InsertFinanceMutation, InsertFinanceMutationVariables>;
 
 /**
@@ -57849,23 +57981,23 @@ export type InsertFinanceMutationHookResult = ReturnType<typeof useInsertFinance
 export type InsertFinanceMutationResult = Apollo.MutationResult<InsertFinanceMutation>;
 export type InsertFinanceMutationOptions = Apollo.BaseMutationOptions<InsertFinanceMutation, InsertFinanceMutationVariables>;
 export const ProcessReceiptDocument = gql`
-    query ProcessReceipt($key: String!) {
-  processReceipt(key: $key) {
-    __typename
-    address
-    amount
-    date
-    phone
-    vendorName
-    lineItems {
+      query ProcessReceipt($key: String!) {
+    processReceipt(key: $key) {
       __typename
-      name
-      quantity
-      price
+      address
+      amount
+      date
+      phone
+      vendorName
+      lineItems {
+        __typename
+        name
+        quantity
+        price
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useProcessReceiptQuery__
@@ -57895,10 +58027,10 @@ export type ProcessReceiptQueryHookResult = ReturnType<typeof useProcessReceiptQ
 export type ProcessReceiptLazyQueryHookResult = ReturnType<typeof useProcessReceiptLazyQuery>;
 export type ProcessReceiptQueryResult = Apollo.QueryResult<ProcessReceiptQuery, ProcessReceiptQueryVariables>;
 export const LogoutDocument = gql`
-    mutation Logout {
-  logout
-}
-    `;
+      mutation Logout {
+    logout
+  }
+`;
 export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
@@ -57925,71 +58057,72 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const GetFinanceLogsDocument = gql`
-    query GetFinanceLogs($id: bigint!) {
-  financeLogs(id: $id) {
-    __typename
-    id
-    createdAt
-    context
-    diff
-    note
-    entityId
-    entityName
-    eventType
-    createdBy {
+      query GetFinanceLogs($id: bigint!) {
+    financeLogs(id: $id) {
       __typename
       id
       createdAt
-      actor {
+      context
+      diff
+      note
+      entityId
+      entityName
+      eventType
+      createdBy {
         __typename
         id
         createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
-              type
-              image {
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
                 createdAt
-                url
-                size
                 type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
@@ -57997,8 +58130,7 @@ export const GetFinanceLogsDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetFinanceLogsQuery__
@@ -58028,82 +58160,140 @@ export type GetFinanceLogsQueryHookResult = ReturnType<typeof useGetFinanceLogsQ
 export type GetFinanceLogsLazyQueryHookResult = ReturnType<typeof useGetFinanceLogsLazyQuery>;
 export type GetFinanceLogsQueryResult = Apollo.QueryResult<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>;
 export const UpdateFinanceDocument = gql`
-    mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
-  updateFinanceByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    createdAt
-    amount
-    category
-    description
-    method
-    payedAt
-    payedByType
-    payedBy {
+      mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
+    updateFinanceByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
-      name
-      slug
-      email
-      website
-      actorImages {
+      createdAt
+      amount
+      category
+      description
+      method
+      payedAt
+      payedByType
+      payedBy {
         __typename
         id
-        type
-        image {
+        name
+        slug
+        email
+        website
+        actorImages {
           __typename
           id
-          url
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        individual {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
         }
       }
-      team {
+      receivedBy {
+        __typename
+        id
+        name
+        slug
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        team {
+          __typename
+          id
+          actor {
+            __typename
+            id
+            slug
+          }
+        }
+        individual {
+          __typename
+          id
+          user {
+            __typename
+            id
+            individual {
+              __typename
+              id
+              actor {
+                __typename
+                id
+                slug
+              }
+            }
+          }
+        }
+      }
+      initiatedBy {
         __typename
         id
         actor {
           __typename
           id
+          name
           slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
         }
       }
-      individual {
+      createdBy {
         __typename
         id
         actor {
           __typename
           id
+          name
           slug
+          email
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              url
+            }
+          }
         }
-      }
-    }
-    receivedBy {
-      __typename
-      id
-      name
-      slug
-      email
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          url
-        }
-      }
-      team {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-      individual {
-        __typename
-        id
         user {
           __typename
           id
@@ -58118,89 +58308,31 @@ export const UpdateFinanceDocument = gql`
           }
         }
       }
-    }
-    initiatedBy {
-      __typename
-      id
-      actor {
+      event {
         __typename
         id
-        name
         slug
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
+        name
       }
-    }
-    createdBy {
-      __typename
-      id
-      actor {
+      project {
         __typename
         id
-        name
         slug
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        individual {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
-      }
-    }
-    event {
-      __typename
-      id
-      slug
-      name
-    }
-    project {
-      __typename
-      id
-      slug
-      name
-    }
-    financeAttachments {
-      attachment {
-        __typename
-        id
         name
-        size
-        type
-        url
+      }
+      financeAttachments {
+        attachment {
+          __typename
+          id
+          name
+          size
+          type
+          url
+        }
       }
     }
   }
-}
-    `;
+`;
 export type UpdateFinanceMutationFn = Apollo.MutationFunction<UpdateFinanceMutation, UpdateFinanceMutationVariables>;
 
 /**
@@ -58229,71 +58361,72 @@ export type UpdateFinanceMutationHookResult = ReturnType<typeof useUpdateFinance
 export type UpdateFinanceMutationResult = Apollo.MutationResult<UpdateFinanceMutation>;
 export type UpdateFinanceMutationOptions = Apollo.BaseMutationOptions<UpdateFinanceMutation, UpdateFinanceMutationVariables>;
 export const GetEventLogsDocument = gql`
-    query GetEventLogs($id: bigint!) {
-  eventLogs(id: $id) {
-    __typename
-    id
-    createdAt
-    context
-    diff
-    note
-    entityId
-    entityName
-    eventType
-    createdBy {
+      query GetEventLogs($id: bigint!) {
+    eventLogs(id: $id) {
       __typename
       id
       createdAt
-      actor {
+      context
+      diff
+      note
+      entityId
+      entityName
+      eventType
+      createdBy {
         __typename
         id
         createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
-              type
-              image {
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
                 createdAt
-                url
-                size
                 type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
@@ -58301,8 +58434,7 @@ export const GetEventLogsDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetEventLogsQuery__
@@ -58332,71 +58464,72 @@ export type GetEventLogsQueryHookResult = ReturnType<typeof useGetEventLogsQuery
 export type GetEventLogsLazyQueryHookResult = ReturnType<typeof useGetEventLogsLazyQuery>;
 export type GetEventLogsQueryResult = Apollo.QueryResult<GetEventLogsQuery, GetEventLogsQueryVariables>;
 export const GetTeamLogsDocument = gql`
-    query GetTeamLogs($id: bigint!) {
-  teamLogs(id: $id) {
-    __typename
-    id
-    createdAt
-    context
-    diff
-    note
-    entityId
-    entityName
-    eventType
-    createdBy {
+      query GetTeamLogs($id: bigint!) {
+    teamLogs(id: $id) {
       __typename
       id
       createdAt
-      actor {
+      context
+      diff
+      note
+      entityId
+      entityName
+      eventType
+      createdBy {
         __typename
         id
         createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
-              type
-              image {
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
                 createdAt
-                url
-                size
                 type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
@@ -58404,8 +58537,7 @@ export const GetTeamLogsDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTeamLogsQuery__
@@ -58435,71 +58567,72 @@ export type GetTeamLogsQueryHookResult = ReturnType<typeof useGetTeamLogsQuery>;
 export type GetTeamLogsLazyQueryHookResult = ReturnType<typeof useGetTeamLogsLazyQuery>;
 export type GetTeamLogsQueryResult = Apollo.QueryResult<GetTeamLogsQuery, GetTeamLogsQueryVariables>;
 export const GetTenantLogsDocument = gql`
-    query GetTenantLogs($id: bigint!) {
-  tenantLogs(id: $id) {
-    __typename
-    id
-    createdAt
-    context
-    diff
-    note
-    entityId
-    entityName
-    eventType
-    createdBy {
+      query GetTenantLogs($id: bigint!) {
+    tenantLogs(id: $id) {
       __typename
       id
       createdAt
-      actor {
+      context
+      diff
+      note
+      entityId
+      entityName
+      eventType
+      createdBy {
         __typename
         id
         createdAt
-        email
-        name
-        slug
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            createdAt
-            url
-          }
-        }
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
-              type
-              image {
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
                 __typename
                 id
                 createdAt
-                url
-                size
                 type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
@@ -58507,8 +58640,7 @@ export const GetTenantLogsDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTenantLogsQuery__
@@ -58538,22 +58670,22 @@ export type GetTenantLogsQueryHookResult = ReturnType<typeof useGetTenantLogsQue
 export type GetTenantLogsLazyQueryHookResult = ReturnType<typeof useGetTenantLogsLazyQuery>;
 export type GetTenantLogsQueryResult = Apollo.QueryResult<GetTenantLogsQuery, GetTenantLogsQueryVariables>;
 export const DeleteFollowDocument = gql`
-    mutation DeleteFollow($id: bigint!) {
-  deleteFollowByPk(id: $id) {
-    __typename
-    id
-    deletedAt
-    actor {
+      mutation DeleteFollow($id: bigint!) {
+    deleteFollowByPk(id: $id) {
       __typename
       id
-      email
-      name
-      slug
-      website
+      deletedAt
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+      }
     }
   }
-}
-    `;
+`;
 export type DeleteFollowMutationFn = Apollo.MutationFunction<DeleteFollowMutation, DeleteFollowMutationVariables>;
 
 /**
@@ -58581,61 +58713,31 @@ export type DeleteFollowMutationHookResult = ReturnType<typeof useDeleteFollowMu
 export type DeleteFollowMutationResult = Apollo.MutationResult<DeleteFollowMutation>;
 export type DeleteFollowMutationOptions = Apollo.BaseMutationOptions<DeleteFollowMutation, DeleteFollowMutationVariables>;
 export const InsertFollowDocument = gql`
-    mutation InsertFollow($object: FollowInsertInput!) {
-  insertFollowOne(object: $object) {
-    __typename
-    id
-    actor {
+      mutation InsertFollow($object: FollowInsertInput!) {
+    insertFollowOne(object: $object) {
       __typename
       id
-      email
-      name
-      slug
-      website
-      actorImages {
-        __typename
-        id
-        type
-        image {
-          __typename
-          id
-          createdAt
-          url
-        }
-      }
-      team {
-        __typename
-        id
-        actor {
-          __typename
-          id
-          slug
-        }
-      }
-    }
-    createdBy {
-      __typename
-      id
-      createdAt
       actor {
         __typename
         id
-        createdAt
         email
         name
         slug
         website
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
+        actorImages {
           __typename
           id
-          createdAt
+          type
+          image {
+            __typename
+            id
+            createdAt
+            url
+          }
+        }
+        team {
+          __typename
+          id
           actor {
             __typename
             id
@@ -58643,10 +58745,40 @@ export const InsertFollowDocument = gql`
           }
         }
       }
+      createdBy {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
     }
   }
-}
-    `;
+`;
 export type InsertFollowMutationFn = Apollo.MutationFunction<InsertFollowMutation, InsertFollowMutationVariables>;
 
 /**
@@ -58674,20 +58806,20 @@ export type InsertFollowMutationHookResult = ReturnType<typeof useInsertFollowMu
 export type InsertFollowMutationResult = Apollo.MutationResult<InsertFollowMutation>;
 export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<InsertFollowMutation, InsertFollowMutationVariables>;
 export const InsertSingleUploadDocument = gql`
-    mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
-  singleUpload(
-    file: $file
-    bucket: $bucket
-    entityId: $entityId
-    entityName: $entityName
-  ) {
-    id
-    name
-    url
-    createdAt
+      mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
+    singleUpload(
+      file: $file
+      bucket: $bucket
+      entityId: $entityId
+      entityName: $entityName
+    ) {
+      id
+      name
+      url
+      createdAt
+    }
   }
-}
-    `;
+`;
 export type InsertSingleUploadMutationFn = Apollo.MutationFunction<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>;
 
 /**
@@ -58718,60 +58850,60 @@ export type InsertSingleUploadMutationHookResult = ReturnType<typeof useInsertSi
 export type InsertSingleUploadMutationResult = Apollo.MutationResult<InsertSingleUploadMutation>;
 export type InsertSingleUploadMutationOptions = Apollo.BaseMutationOptions<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>;
 export const GetLegalUnitLocationsDocument = gql`
-    query GetLegalUnitLocations($where: LegalUnitLocationBoolExp, $orderBy: [LegalUnitLocationOrderBy!], $limit: Int, $offset: Int) {
-  legalUnitLocation(
-    where: $where
-    orderBy: $orderBy
-    limit: $limit
-    offset: $offset
-  ) {
-    __typename
-    id
-    legalName
-    actor {
+      query GetLegalUnitLocations($where: LegalUnitLocationBoolExp, $orderBy: [LegalUnitLocationOrderBy!], $limit: Int, $offset: Int) {
+    legalUnitLocation(
+      where: $where
+      orderBy: $orderBy
+      limit: $limit
+      offset: $offset
+    ) {
       __typename
       id
-      slug
-      name
-      email
-      website
-      actorImages {
+      legalName
+      actor {
+        __typename
+        id
+        slug
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+      location {
         __typename
         id
         type
-        image {
+        link
+        name
+        details
+        address {
           __typename
           id
-          url
+          name
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
         }
       }
     }
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetLegalUnitLocationsQuery__
@@ -58804,34 +58936,34 @@ export type GetLegalUnitLocationsQueryHookResult = ReturnType<typeof useGetLegal
 export type GetLegalUnitLocationsLazyQueryHookResult = ReturnType<typeof useGetLegalUnitLocationsLazyQuery>;
 export type GetLegalUnitLocationsQueryResult = Apollo.QueryResult<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>;
 export const GetLegalUnitsDocument = gql`
-    query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $limit: Int, $offset: Int) {
-  legalUnit(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
-    __typename
-    id
-    createdAt
-    type
-    legalName
-    actor {
+      query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $limit: Int, $offset: Int) {
+    legalUnit(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
-      slug
-      name
-      email
-      website
-      actorImages {
+      createdAt
+      type
+      legalName
+      actor {
         __typename
         id
-        type
-        image {
+        slug
+        name
+        email
+        website
+        actorImages {
           __typename
           id
-          url
+          type
+          image {
+            __typename
+            id
+            url
+          }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetLegalUnitsQuery__
@@ -58864,34 +58996,34 @@ export type GetLegalUnitsQueryHookResult = ReturnType<typeof useGetLegalUnitsQue
 export type GetLegalUnitsLazyQueryHookResult = ReturnType<typeof useGetLegalUnitsLazyQuery>;
 export type GetLegalUnitsQueryResult = Apollo.QueryResult<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>;
 export const InsertLegalUnitDocument = gql`
-    mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
-  insertLegalUnitOne(object: $object) {
-    __typename
-    id
-    createdAt
-    type
-    legalName
-    actor {
+      mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
+    insertLegalUnitOne(object: $object) {
       __typename
       id
-      slug
-      name
-      email
-      website
-      actorImages {
+      createdAt
+      type
+      legalName
+      actor {
         __typename
         id
-        type
-        image {
+        slug
+        name
+        email
+        website
+        actorImages {
           __typename
           id
-          url
+          type
+          image {
+            __typename
+            id
+            url
+          }
         }
       }
     }
   }
-}
-    `;
+`;
 export type InsertLegalUnitMutationFn = Apollo.MutationFunction<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>;
 
 /**
@@ -58919,55 +59051,55 @@ export type InsertLegalUnitMutationHookResult = ReturnType<typeof useInsertLegal
 export type InsertLegalUnitMutationResult = Apollo.MutationResult<InsertLegalUnitMutation>;
 export type InsertLegalUnitMutationOptions = Apollo.BaseMutationOptions<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>;
 export const InsertLegalUnitLocationDocument = gql`
-    mutation InsertLegalUnitLocation($object: LegalUnitLocationInsertInput!) {
-  insertLegalUnitLocationOne(object: $object) {
-    __typename
-    id
-    legalName
-    actor {
+      mutation InsertLegalUnitLocation($object: LegalUnitLocationInsertInput!) {
+    insertLegalUnitLocationOne(object: $object) {
       __typename
       id
-      slug
-      name
-      email
-      website
-      actorImages {
+      legalName
+      actor {
+        __typename
+        id
+        slug
+        name
+        email
+        website
+        actorImages {
+          __typename
+          id
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+      }
+      location {
         __typename
         id
         type
-        image {
+        link
+        name
+        details
+        address {
           __typename
           id
-          url
+          name
+          latitude
+          longitude
+          category
+          streetNumber
+          street
+          zip
+          city
+          state
+          country
+          geoapifyId
         }
       }
     }
-    location {
-      __typename
-      id
-      type
-      link
-      name
-      details
-      address {
-        __typename
-        id
-        name
-        latitude
-        longitude
-        category
-        streetNumber
-        street
-        zip
-        city
-        state
-        country
-        geoapifyId
-      }
-    }
   }
-}
-    `;
+`;
 export type InsertLegalUnitLocationMutationFn = Apollo.MutationFunction<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>;
 
 /**
@@ -58995,23 +59127,23 @@ export type InsertLegalUnitLocationMutationHookResult = ReturnType<typeof useIns
 export type InsertLegalUnitLocationMutationResult = Apollo.MutationResult<InsertLegalUnitLocationMutation>;
 export type InsertLegalUnitLocationMutationOptions = Apollo.BaseMutationOptions<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>;
 export const SearchLocationDocument = gql`
-    query SearchLocation($query: String!) {
-  searchLocation(query: $query) {
-    __typename
-    geoapifyId
-    name
-    category
-    latitude
-    longitude
-    street
-    streetNumber
-    city
-    zip
-    state
-    country
+      query SearchLocation($query: String!) {
+    searchLocation(query: $query) {
+      __typename
+      geoapifyId
+      name
+      category
+      latitude
+      longitude
+      street
+      streetNumber
+      city
+      zip
+      state
+      country
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useSearchLocationQuery__
@@ -59041,118 +59173,111 @@ export type SearchLocationQueryHookResult = ReturnType<typeof useSearchLocationQ
 export type SearchLocationLazyQueryHookResult = ReturnType<typeof useSearchLocationLazyQuery>;
 export type SearchLocationQueryResult = Apollo.QueryResult<SearchLocationQuery, SearchLocationQueryVariables>;
 export const GetTeamPopoverDocument = gql`
-    query GetTeamPopover($id: bigint!) {
-  team(where: {id: {_eq: $id}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    type
-    membershipFees
-    membershipDuration
-    actor {
+      query GetTeamPopover($id: bigint!) {
+    team(where: {id: {_eq: $id}}, limit: 1) {
       __typename
       id
-      slug
-      bio
-      name
-      status
-      email
-      website
-      actorImages {
+      createdAt
+      type
+      membershipFees
+      membershipDuration
+      actor {
         __typename
         id
-        type
-        image {
+        slug
+        bio
+        name
+        status
+        email
+        website
+        actorImages {
           __typename
           id
-          url
-        }
-      }
-      socials(where: {deletedAt: {_isNull: true}}) {
-        __typename
-        id
-        pseudo
-        url
-        type
-        order
-      }
-    }
-    directorsCategoryName
-    managersCategoryName
-    membersCategoryName
-    joinForm {
-      __typename
-      id
-      createdAt
-      schema
-      name
-      type
-    }
-    poles {
-      __typename
-      id
-      createdAt
-      name
-      description
-    }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
-    teamMembers {
-      __typename
-      id
-      createdAt
-      startDate
-      endDate
-      teamMemberRoles {
-        role {
-          __typename
-          id
-          createdAt
-          category
           type
-          name
-          permissions
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: {deletedAt: {_isNull: true}}) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
         }
       }
-      user {
+      directorsCategoryName
+      managersCategoryName
+      membersCategoryName
+      joinForm {
         __typename
         id
         createdAt
-        firstName
-        lastName
-        individual {
+        schema
+        name
+        type
+      }
+      poles {
+        __typename
+        id
+        createdAt
+        name
+        description
+      }
+      teamMembers {
+        __typename
+        id
+        createdAt
+        start
+        teamMemberRoles {
           __typename
           id
-          createdAt
-          actor {
+          role {
             __typename
             id
             createdAt
-            bio
-            email
+            color
+            type
             name
-            slug
-            status
-            website
-            actorImages {
+            permissions
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
               __typename
               id
               createdAt
-              type
-              image {
+              bio
+              email
+              name
+              slug
+              status
+              website
+              actorImages {
                 __typename
                 id
                 createdAt
-                url
-                size
                 type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
               }
             }
           }
@@ -59160,8 +59285,7 @@ export const GetTeamPopoverDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetTeamPopoverQuery__
@@ -59191,47 +59315,24 @@ export type GetTeamPopoverQueryHookResult = ReturnType<typeof useGetTeamPopoverQ
 export type GetTeamPopoverLazyQueryHookResult = ReturnType<typeof useGetTeamPopoverLazyQuery>;
 export type GetTeamPopoverQueryResult = Apollo.QueryResult<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>;
 export const GetUserPopoverDocument = gql`
-    query GetUserPopover($id: bigint!) {
-  user(where: {id: {_eq: $id}}, limit: 1) {
-    __typename
-    id
-    createdAt
-    firstName
-    lastName
-    individual {
+      query GetUserPopover($id: bigint!) {
+    user(where: {id: {_eq: $id}}, limit: 1) {
       __typename
       id
-      actor {
+      createdAt
+      firstName
+      lastName
+      individual {
         __typename
         id
-        slug
-        bio
-        name
-        email
-        website
-        actorImages {
-          __typename
-          id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-      }
-    }
-    teamMembers(where: {endDate: {_isNull: true}}) {
-      __typename
-      id
-      team {
-        __typename
-        id
-        type
         actor {
           __typename
           id
           slug
+          bio
+          name
+          email
+          website
           actorImages {
             __typename
             id
@@ -59244,10 +59345,33 @@ export const GetUserPopoverDocument = gql`
           }
         }
       }
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
+        __typename
+        id
+        team {
+          __typename
+          id
+          type
+          actor {
+            __typename
+            id
+            slug
+            actorImages {
+              __typename
+              id
+              type
+              image {
+                __typename
+                id
+                url
+              }
+            }
+          }
+        }
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetUserPopoverQuery__
@@ -59277,17 +59401,17 @@ export type GetUserPopoverQueryHookResult = ReturnType<typeof useGetUserPopoverQ
 export type GetUserPopoverLazyQueryHookResult = ReturnType<typeof useGetUserPopoverLazyQuery>;
 export type GetUserPopoverQueryResult = Apollo.QueryResult<GetUserPopoverQuery, GetUserPopoverQueryVariables>;
 export const UpdateFormDocument = gql`
-    mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
-  updateFormByPk(pkColumns: {id: $id}, _set: $update) {
-    __typename
-    id
-    createdAt
-    schema
-    name
-    type
+      mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
+    updateFormByPk(pkColumns: {id: $id}, _set: $update) {
+      __typename
+      id
+      createdAt
+      schema
+      name
+      type
+    }
   }
-}
-    `;
+`;
 export type UpdateFormMutationFn = Apollo.MutationFunction<UpdateFormMutation, UpdateFormMutationVariables>;
 
 /**

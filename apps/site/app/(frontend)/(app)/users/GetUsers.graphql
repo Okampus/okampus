@@ -27,7 +27,7 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
         }
       }
     }
-    teamMembers(where: { endDate: { _isNull: true } }) {
+    teamMembers(where: { deletedAt: { _isNull: true } }) {
       __typename
       id
       team {
