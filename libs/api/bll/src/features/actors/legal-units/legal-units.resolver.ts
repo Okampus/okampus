@@ -11,7 +11,7 @@ import type {
   UpdateLegalUnitArgsType,
   FindLegalUnitArgsType,
   FindByPkLegalUnitArgsType,
-  AggregateLegalUnitArgsType,
+  AggregateLegalUnitArgsType
 } from './legal-units.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class LegalUnitsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.insertLegalUnit(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class LegalUnitsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateLegalUnitArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.updateLegalUnitMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class LegalUnitsMutationResolver {
     const { where } = getGraphQLArgs<DeleteLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.deleteLegalUnit(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class LegalUnitsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.findLegalUnit(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertLegalUnitOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.insertLegalUnitOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async legalUnitByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkLegalUnitArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.legalUnitsService.findLegalUnitByPk(getSelectionSet(info), id);
+    return await this.legalUnitsService.findLegalUnitByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class LegalUnitsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.updateLegalUnitByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class LegalUnitsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.deleteLegalUnitByPk(getSelectionSet(info), id);
   }
@@ -114,7 +115,7 @@ export class LegalUnitsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.legalUnitsService.aggregateLegalUnit(
       getSelectionSet(info),
@@ -122,7 +123,7 @@ export class LegalUnitsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

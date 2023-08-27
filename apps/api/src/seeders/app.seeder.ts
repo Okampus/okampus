@@ -558,7 +558,9 @@ export class DatabaseSeeder extends Seeder {
           if (account) {
             const treasurer = parentTeam.team.teamMembers
               .getItems()
-              .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user;
+              .find(({ teamMemberRoles: roles }) =>
+                roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer),
+              )?.user;
 
             const childAccount = new Account({
               name: 'Compte principal',
@@ -602,8 +604,9 @@ export class DatabaseSeeder extends Seeder {
                 receivedBy: team.actor,
                 createdBy: parentTeam.team.teamMembers
                   .getItems()
-                  .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user
-                  .individual,
+                  .find(({ teamMemberRoles: roles }) =>
+                    roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer),
+                  )?.user.individual,
                 state: FinanceState.Completed,
                 tenant,
               }),
@@ -648,7 +651,7 @@ export class DatabaseSeeder extends Seeder {
           user,
           startDate: new Date(),
           team: team,
-          roles: [roles[i]],
+          teamMemberRoles: [roles[i]],
           permissions: 0,
           createdBy: user.individual,
           tenant: team.tenant,

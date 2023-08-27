@@ -40,15 +40,7 @@ export class IndividualsService extends RequestContext {
 
   checkPermsDelete(individual: Individual) {
     if (individual.deletedAt) throw new NotFoundException(`Individual was deleted on ${individual.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === individual.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === individual.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -61,15 +53,7 @@ export class IndividualsService extends RequestContext {
     if (individual.deletedAt) throw new NotFoundException(`Individual was deleted on ${individual.deletedAt}.`);
     if (individual.hiddenAt) throw new NotFoundException('Individual must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === individual.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === individual.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -78,6 +62,7 @@ export class IndividualsService extends RequestContext {
 
   checkPropsConstraints(props: IndividualSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -88,10 +73,17 @@ export class IndividualsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertIndividualOne(selectionSet: string[], object: IndividualInsertInput, onConflict?: IndividualOnConflict) {
+  async insertIndividualOne(
+    selectionSet: string[],
+    object: IndividualInsertInput,
+    onConflict?: IndividualOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Individual.');
 
@@ -103,10 +95,10 @@ export class IndividualsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertIndividualOne', selectionSet, object, onConflict);
-
+  
     const individual = await this.individualRepository.findOneOrFail(data.insertIndividualOne.id);
     await this.logsService.createLog(EntityName.Individual, individual);
-
+    
     // Custom logic
     return data.insertIndividualOne;
   }
@@ -124,9 +116,12 @@ export class IndividualsService extends RequestContext {
     return data.individual;
   }
 
-  async findIndividualByPk(selectionSet: string[], id: string) {
+  async findIndividualByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('individualByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('individualByPk', selectionSet, {  id,  });
     return data.individualByPk;
   }
 
@@ -158,7 +153,10 @@ export class IndividualsService extends RequestContext {
     return data.insertIndividual;
   }
 
-  async updateIndividualMany(selectionSet: string[], updates: Array<IndividualUpdates>) {
+  async updateIndividualMany(
+    selectionSet: string[],
+    updates: Array<IndividualUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -168,8 +166,7 @@ export class IndividualsService extends RequestContext {
       if (!individual) throw new NotFoundException(`Individual (${update.where.id._eq}) was not found.`);
 
       const canUpdate = this.checkPermsUpdate(update._set, individual);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update Individual (${update.where.id._eq}).`);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update Individual (${update.where.id._eq}).`);
 
       const arePropsValid = this.checkPropsConstraints(update._set);
       if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
@@ -177,19 +174,21 @@ export class IndividualsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateIndividualMany', selectionSet, updates);
 
-    await Promise.all(
-      individuals.map(async (individual) => {
-        const update = updates.find((update) => update.where.id._eq === individual.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Individual, individual, update._set);
-      }),
-    );
+    await Promise.all(individuals.map(async (individual) => {
+      const update = updates.find((update) => update.where.id._eq === individual.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Individual, individual, update._set);
+    }));
 
     // Custom logic
     return data.updateIndividualMany;
   }
 
-  async updateIndividualByPk(selectionSet: string[], pkColumns: IndividualPkColumnsInput, _set: IndividualSetInput) {
+  async updateIndividualByPk(
+    selectionSet: string[],
+    pkColumns: IndividualPkColumnsInput,
+    _set: IndividualSetInput,
+  ) {
     const individual = await this.individualRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, individual);
@@ -206,10 +205,12 @@ export class IndividualsService extends RequestContext {
     return data.updateIndividualByPk;
   }
 
-  async deleteIndividual(selectionSet: string[], where: IndividualBoolExp) {
+  async deleteIndividual(
+    selectionSet: string[],
+    where: IndividualBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const individuals = await this.individualRepository.findByIds(where.id._in);
     for (const individual of individuals) {
@@ -217,34 +218,28 @@ export class IndividualsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Individual (${individual.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateIndividual', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateIndividual', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      individuals.map(async (individual) => {
-        await this.logsService.deleteLog(EntityName.Individual, individual.id);
-      }),
-    );
+    await Promise.all(individuals.map(async (individual) => {
+      await this.logsService.deleteLog(EntityName.Individual, individual.id);
+    }));
 
     // Custom logic
     return data.updateIndividual;
   }
 
-  async deleteIndividualByPk(selectionSet: string[], id: string) {
+  async deleteIndividualByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const individual = await this.individualRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(individual);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Individual (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateIndividualByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateIndividualByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Individual, id);
     // Custom logic
@@ -257,18 +252,10 @@ export class IndividualsService extends RequestContext {
     orderBy?: Array<IndividualOrderBy>,
     distinctOn?: Array<IndividualSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'individualAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('individualAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.individualAggregate;
   }
 }

@@ -201,13 +201,13 @@ export class HasuraService extends RequestContext {
 
     const teamMember = await this.teamMemberRepository.findOne(
       { team: { id: teamId }, user: individual.user },
-      { populate: ['roles'] },
+      { populate: ['teamMemberRoles', 'teamMemberRoles.role'] },
     );
 
     if (!teamMember)
       throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
 
-    if (!teamMember.roles.getItems().some((role) => role.permissions.includes(permission)))
+    if (!teamMember.teamMemberRoles.getItems().some(({ role }) => role.permissions.includes(permission)))
       throw new ForbiddenException(
         `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`,
       );

@@ -69,27 +69,31 @@ query GetTeamDashboard {
       name
       description
     }
-    roles {
+    roles(where: { deletedAt: { _isNull: false } }) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
     }
-    teamMembers(where: { teamMemberRoles: { role: { category: { _eq: "Directors" } } }, endDate: { _isNull: true } }) {
+    teamMembers(
+      where: {
+        teamMemberRoles: { role: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
+        deletedAt: { _isNull: true }
+      }
+    ) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions

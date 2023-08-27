@@ -11,7 +11,7 @@ import type {
   UpdateBankArgsType,
   FindBankArgsType,
   FindByPkBankArgsType,
-  AggregateBankArgsType,
+  AggregateBankArgsType
 } from './banks.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class BanksMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.insertBank(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class BanksMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateBankArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.updateBankMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class BanksMutationResolver {
     const { where } = getGraphQLArgs<DeleteBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.deleteBank(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class BanksQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.findBank(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertBankOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.insertBankOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async bankByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkBankArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.banksService.findBankByPk(getSelectionSet(info), id);
+    return await this.banksService.findBankByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class BanksQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.updateBankByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class BanksQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.banksService.deleteBankByPk(getSelectionSet(info), id);
   }
@@ -114,8 +115,15 @@ export class BanksQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.banksService.aggregateBank(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.banksService.aggregateBank(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

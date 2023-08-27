@@ -11,7 +11,7 @@ import type {
   UpdateFollowArgsType,
   FindFollowArgsType,
   FindByPkFollowArgsType,
-  AggregateFollowArgsType,
+  AggregateFollowArgsType
 } from './follows.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class FollowsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.insertFollow(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class FollowsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateFollowArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.updateFollowMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class FollowsMutationResolver {
     const { where } = getGraphQLArgs<DeleteFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.deleteFollow(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class FollowsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.findFollow(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertFollowOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.insertFollowOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async followByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkFollowArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.followsService.findFollowByPk(getSelectionSet(info), id);
+    return await this.followsService.findFollowByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class FollowsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.updateFollowByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class FollowsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.followsService.deleteFollowByPk(getSelectionSet(info), id);
   }
@@ -114,8 +115,15 @@ export class FollowsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.followsService.aggregateFollow(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.followsService.aggregateFollow(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

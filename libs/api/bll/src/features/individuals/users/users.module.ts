@@ -1,5 +1,9 @@
 import { UsersService } from './users.service';
-import { UsersMutationResolver, UsersQueryAggregateResolver, UsersQueryResolver } from './users.resolver';
+import { 
+  UsersMutationResolver,
+  UsersQueryAggregateResolver, 
+  UsersQueryResolver
+} from './users.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -8,7 +12,12 @@ import { User } from '@okampus/api/dal';
 
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([User])],
-  providers: [UsersMutationResolver, UsersQueryResolver, UsersQueryAggregateResolver, UsersService],
+  providers: [
+    UsersMutationResolver,
+    UsersQueryResolver, 
+    UsersQueryAggregateResolver,
+    UsersService
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

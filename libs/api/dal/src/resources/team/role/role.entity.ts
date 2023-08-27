@@ -1,9 +1,9 @@
 import { RoleRepository } from './role.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { Team } from '../team.entity';
 import { Entity, Property, ManyToOne, Enum, EnumType, EntityRepositoryType, ArrayType } from '@mikro-orm/core';
-import { RoleCategory, TeamRoleType } from '@okampus/shared/enums';
+import { Colors, TeamRoleType } from '@okampus/shared/enums';
 
-import type { Team } from '../team.entity';
 import type { RoleOptions } from './role.options';
 
 @Entity({ customRepository: () => RoleRepository })
@@ -19,14 +19,11 @@ export class Role extends TenantScopedEntity {
   @ManyToOne({ type: 'Team', inversedBy: 'roles' })
   team!: Team;
 
-  @Enum({ items: () => RoleCategory, type: EnumType })
-  category!: RoleCategory;
+  @Enum({ items: () => Colors, type: EnumType })
+  color = Colors.Blue;
 
-  @Enum({ items: () => TeamRoleType, type: EnumType, default: TeamRoleType.Member })
-  type: TeamRoleType = TeamRoleType.Member;
-
-  @Property({ type: 'boolean', default: true })
-  isLocked = false;
+  @Enum({ items: () => TeamRoleType, type: EnumType, default: null, nullable: true })
+  type: TeamRoleType | null = null;
 
   constructor(options: RoleOptions) {
     super(options);

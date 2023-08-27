@@ -11,7 +11,7 @@ import type {
   UpdateAccountArgsType,
   FindAccountArgsType,
   FindByPkAccountArgsType,
-  AggregateAccountArgsType,
+  AggregateAccountArgsType
 } from './accounts.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class AccountsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.insertAccount(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class AccountsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateAccountArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.updateAccountMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class AccountsMutationResolver {
     const { where } = getGraphQLArgs<DeleteAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.deleteAccount(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class AccountsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.findAccount(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertAccountOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.insertAccountOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async accountByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkAccountArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.accountsService.findAccountByPk(getSelectionSet(info), id);
+    return await this.accountsService.findAccountByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class AccountsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.updateAccountByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class AccountsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.deleteAccountByPk(getSelectionSet(info), id);
   }
@@ -114,7 +115,7 @@ export class AccountsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.accountsService.aggregateAccount(
       getSelectionSet(info),
@@ -122,7 +123,7 @@ export class AccountsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

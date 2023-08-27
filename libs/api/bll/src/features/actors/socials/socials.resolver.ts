@@ -11,7 +11,7 @@ import type {
   UpdateSocialArgsType,
   FindSocialArgsType,
   FindByPkSocialArgsType,
-  AggregateSocialArgsType,
+  AggregateSocialArgsType
 } from './socials.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class SocialsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.insertSocial(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class SocialsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateSocialArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.updateSocialMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class SocialsMutationResolver {
     const { where } = getGraphQLArgs<DeleteSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.deleteSocial(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class SocialsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.findSocial(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertSocialOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.insertSocialOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async socialByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkSocialArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.socialsService.findSocialByPk(getSelectionSet(info), id);
+    return await this.socialsService.findSocialByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class SocialsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.updateSocialByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class SocialsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.socialsService.deleteSocialByPk(getSelectionSet(info), id);
   }
@@ -114,8 +115,15 @@ export class SocialsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.socialsService.aggregateSocial(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.socialsService.aggregateSocial(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

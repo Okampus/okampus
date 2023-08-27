@@ -1,12 +1,12 @@
 import { TeamMemberRepository } from './team-member.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { User } from '../../individual/user/user.entity';
+import { Team } from '../team.entity';
 import { TransformCollection } from '@okampus/api/shards';
-import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 
-import type { User } from '../../individual/user/user.entity';
-import type { Role } from '../role/role.entity';
-import type { Team } from '../team.entity';
 import type { TeamMemberOptions } from './team-member.options';
+import type { TeamMemberRole } from '../team-member-role/team-member-role.entity';
 
 @Entity({ customRepository: () => TeamMemberRepository })
 export class TeamMember extends TenantScopedEntity {
@@ -18,18 +18,15 @@ export class TeamMember extends TenantScopedEntity {
   @ManyToOne({ type: 'User' })
   user!: User;
 
-  @ManyToMany({ type: 'Role' })
+  @OneToMany({ type: 'TeamMemberRole', mappedBy: 'teamMember' })
   @TransformCollection()
-  roles = new Collection<Role>(this);
+  teamMemberRoles = new Collection<TeamMemberRole>(this);
 
   @Property({ type: 'int', default: 0 })
   permissions!: number;
 
   @Property({ type: 'datetime', defaultRaw: 'CURRENT_TIMESTAMP' })
-  startDate = new Date();
-
-  @Property({ type: 'datetime', nullable: true, default: null })
-  endDate: Date | null = null;
+  start = new Date();
 
   constructor(options: TeamMemberOptions) {
     super(options);

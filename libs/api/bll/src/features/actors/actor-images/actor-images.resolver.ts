@@ -11,7 +11,7 @@ import type {
   UpdateActorImageArgsType,
   FindActorImageArgsType,
   FindByPkActorImageArgsType,
-  AggregateActorImageArgsType,
+  AggregateActorImageArgsType
 } from './actor-images.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class ActorImagesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.insertActorImage(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class ActorImagesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateActorImageArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.updateActorImageMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class ActorImagesMutationResolver {
     const { where } = getGraphQLArgs<DeleteActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.deleteActorImage(getSelectionSet(info), where);
   }
@@ -59,36 +59,30 @@ export class ActorImagesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.actorImagesService.findActorImage(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.actorImagesService.findActorImage(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertActorImageOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.insertActorImageOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async actorImageByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkActorImageArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.actorImagesService.findActorImageByPk(getSelectionSet(info), id);
+    return await this.actorImagesService.findActorImageByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +90,7 @@ export class ActorImagesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.updateActorImageByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +100,7 @@ export class ActorImagesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.deleteActorImageByPk(getSelectionSet(info), id);
   }
@@ -121,7 +115,7 @@ export class ActorImagesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorImagesService.aggregateActorImage(
       getSelectionSet(info),
@@ -129,7 +123,7 @@ export class ActorImagesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

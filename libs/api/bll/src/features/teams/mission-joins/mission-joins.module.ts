@@ -1,8 +1,8 @@
 import { MissionJoinsService } from './mission-joins.service';
-import {
+import { 
   MissionJoinsMutationResolver,
-  MissionJoinsQueryAggregateResolver,
-  MissionJoinsQueryResolver,
+  MissionJoinsQueryAggregateResolver, 
+  MissionJoinsQueryResolver
 } from './mission-joins.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
@@ -14,9 +14,9 @@ import { MissionJoin } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([MissionJoin])],
   providers: [
     MissionJoinsMutationResolver,
-    MissionJoinsQueryResolver,
+    MissionJoinsQueryResolver, 
     MissionJoinsQueryAggregateResolver,
-    MissionJoinsService,
+    MissionJoinsService
   ],
   exports: [MissionJoinsService],
 })

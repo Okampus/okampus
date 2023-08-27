@@ -1,8 +1,8 @@
 import { IndividualsService } from './individuals.service';
-import {
+import { 
   IndividualsMutationResolver,
-  IndividualsQueryAggregateResolver,
-  IndividualsQueryResolver,
+  IndividualsQueryAggregateResolver, 
+  IndividualsQueryResolver
 } from './individuals.resolver';
 import { HasuraModule } from '../../global/graphql/hasura.module';
 import { LogsModule } from '../logs/logs.module';
@@ -14,9 +14,9 @@ import { Individual } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([Individual])],
   providers: [
     IndividualsMutationResolver,
-    IndividualsQueryResolver,
+    IndividualsQueryResolver, 
     IndividualsQueryAggregateResolver,
-    IndividualsService,
+    IndividualsService
   ],
   exports: [IndividualsService],
 })

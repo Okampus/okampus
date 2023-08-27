@@ -81,7 +81,7 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
@@ -95,14 +95,13 @@ query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offs
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions

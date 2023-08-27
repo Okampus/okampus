@@ -105,18 +105,17 @@ query GetMe {
           }
         }
       }
-      teamMembers(where: { endDate: { _isNull: true } }) {
+      teamMembers(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions

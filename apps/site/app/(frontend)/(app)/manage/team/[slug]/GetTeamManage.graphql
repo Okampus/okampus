@@ -81,7 +81,7 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
@@ -90,14 +90,13 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions
@@ -474,14 +473,13 @@ query GetTeamManage($slug: String!) {
           __typename
           id
           createdAt
-          startDate
-          endDate
-          teamMemberRoles {
+          start
+          teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
             role {
               __typename
               id
               createdAt
-              category
+              color
               type
               name
               permissions

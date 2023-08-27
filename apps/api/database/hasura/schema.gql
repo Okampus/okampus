@@ -26852,6 +26852,42 @@ type Individual {
   ): TeamJoinAggregate!
 
   # An array relationship
+  createdTeamMemberRoles(
+    # distinct select on columns
+    distinctOn: [TeamMemberRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamMemberRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
+
+  # An aggregate relationship
+  createdTeamMemberRolesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamMemberRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamMemberRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
+
+  # An array relationship
   createdTeamMembers(
     # distinct select on columns
     distinctOn: [TeamMemberSelectColumn!]
@@ -27916,6 +27952,8 @@ input IndividualBoolExp {
   createdTeamHistoriesAggregate: TeamHistoryAggregateBoolExp
   createdTeamJoins: TeamJoinBoolExp
   createdTeamJoinsAggregate: TeamJoinAggregateBoolExp
+  createdTeamMemberRoles: TeamMemberRoleBoolExp
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   createdTeamMembers: TeamMemberBoolExp
   createdTeamMembersAggregate: TeamMemberAggregateBoolExp
   createdTeamMetrics: TeamMetricBoolExp
@@ -28052,6 +28090,7 @@ input IndividualInsertInput {
   createdTags: TagArrRelInsertInput
   createdTeamHistories: TeamHistoryArrRelInsertInput
   createdTeamJoins: TeamJoinArrRelInsertInput
+  createdTeamMemberRoles: TeamMemberRoleArrRelInsertInput
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
@@ -28223,6 +28262,7 @@ input IndividualOrderBy {
   createdTagsAggregate: TagAggregateOrderBy
   createdTeamHistoriesAggregate: TeamHistoryAggregateOrderBy
   createdTeamJoinsAggregate: TeamJoinAggregateOrderBy
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
@@ -34123,14 +34163,14 @@ type Mutation {
   # delete single row from the table: "team_member"
   deleteTeamMemberByPk(id: bigint!): TeamMember
 
-  # delete data from the table: "team_member_roles"
-  deleteTeamMemberRoles(
+  # delete data from the table: "team_member_role"
+  deleteTeamMemberRole(
     # filter the rows which have to be deleted
-    where: TeamMemberRolesBoolExp!
-  ): TeamMemberRolesMutationResponse
+    where: TeamMemberRoleBoolExp!
+  ): TeamMemberRoleMutationResponse
 
-  # delete single row from the table: "team_member_roles"
-  deleteTeamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
+  # delete single row from the table: "team_member_role"
+  deleteTeamMemberRoleByPk(id: bigint!): TeamMemberRole
 
   # delete data from the table: "team_metric"
   deleteTeamMetric(
@@ -35527,23 +35567,23 @@ type Mutation {
     onConflict: TeamMemberOnConflict
   ): TeamMember
 
-  # insert data into the table: "team_member_roles"
-  insertTeamMemberRoles(
+  # insert data into the table: "team_member_role"
+  insertTeamMemberRole(
     # the rows to be inserted
-    objects: [TeamMemberRolesInsertInput!]!
+    objects: [TeamMemberRoleInsertInput!]!
 
     # upsert condition
-    onConflict: TeamMemberRolesOnConflict
-  ): TeamMemberRolesMutationResponse
+    onConflict: TeamMemberRoleOnConflict
+  ): TeamMemberRoleMutationResponse
 
-  # insert a single row into the table: "team_member_roles"
-  insertTeamMemberRolesOne(
+  # insert a single row into the table: "team_member_role"
+  insertTeamMemberRoleOne(
     # the row to be inserted
-    object: TeamMemberRolesInsertInput!
+    object: TeamMemberRoleInsertInput!
 
     # upsert condition
-    onConflict: TeamMemberRolesOnConflict
-  ): TeamMemberRoles
+    onConflict: TeamMemberRoleOnConflict
+  ): TeamMemberRole
 
   # insert data into the table: "team_metric"
   insertTeamMetric(
@@ -37906,33 +37946,33 @@ type Mutation {
     updates: [TeamMemberUpdates!]!
   ): [TeamMemberMutationResponse]
 
-  # update data of the table: "team_member_roles"
-  updateTeamMemberRoles(
+  # update data of the table: "team_member_role"
+  updateTeamMemberRole(
     # increments the numeric columns with given value of the filtered values
-    _inc: TeamMemberRolesIncInput
+    _inc: TeamMemberRoleIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: TeamMemberRolesSetInput
+    _set: TeamMemberRoleSetInput
 
     # filter the rows which have to be updated
-    where: TeamMemberRolesBoolExp!
-  ): TeamMemberRolesMutationResponse
+    where: TeamMemberRoleBoolExp!
+  ): TeamMemberRoleMutationResponse
 
-  # update single row of the table: "team_member_roles"
-  updateTeamMemberRolesByPk(
+  # update single row of the table: "team_member_role"
+  updateTeamMemberRoleByPk(
     # increments the numeric columns with given value of the filtered values
-    _inc: TeamMemberRolesIncInput
+    _inc: TeamMemberRoleIncInput
 
     # sets the columns of the filtered rows to the given values
-    _set: TeamMemberRolesSetInput
-    pkColumns: TeamMemberRolesPkColumnsInput!
-  ): TeamMemberRoles
+    _set: TeamMemberRoleSetInput
+    pkColumns: TeamMemberRolePkColumnsInput!
+  ): TeamMemberRole
 
-  # update multiples rows of table: "team_member_roles"
-  updateTeamMemberRolesMany(
+  # update multiples rows of table: "team_member_role"
+  updateTeamMemberRoleMany(
     # updates to execute, in order
-    updates: [TeamMemberRolesUpdates!]!
-  ): [TeamMemberRolesMutationResponse]
+    updates: [TeamMemberRoleUpdates!]!
+  ): [TeamMemberRoleMutationResponse]
 
   # update data of the table: "team_metric"
   updateTeamMetric(
@@ -43232,10 +43272,10 @@ type Query {
   # fetch data from the table: "team_member" using primary key columns
   teamMemberByPk(id: bigint!): TeamMember
 
-  # An array relationship
-  teamMemberRoles(
+  # fetch data from the table: "team_member_role"
+  teamMemberRole(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -43244,16 +43284,16 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): [TeamMemberRoles!]!
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
 
-  # An aggregate relationship
-  teamMemberRolesAggregate(
+  # fetch aggregated fields from the table: "team_member_role"
+  teamMemberRoleAggregate(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -43262,14 +43302,14 @@ type Query {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): TeamMemberRolesAggregate!
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
 
-  # fetch data from the table: "team_member_roles" using primary key columns
-  teamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
+  # fetch data from the table: "team_member_role" using primary key columns
+  teamMemberRoleByPk(id: bigint!): TeamMemberRole
 
   # fetch data from the table: "team_metric"
   teamMetric(
@@ -44618,7 +44658,7 @@ type Role {
     # filter the rows returned
     where: TeamJoinBoolExp
   ): TeamJoinAggregate!
-  category: String!
+  color: String!
   createdAt: timestamptz!
 
   # An object relationship
@@ -44627,7 +44667,6 @@ type Role {
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  isLocked: Boolean!
   name: String!
   permissions: [String!]!
 
@@ -44674,7 +44713,7 @@ type Role {
   # An array relationship
   teamMemberRoles(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -44683,16 +44722,16 @@ type Role {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): [TeamMemberRoles!]!
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
 
   # An aggregate relationship
   teamMemberRolesAggregate(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -44701,16 +44740,16 @@ type Role {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): TeamMemberRolesAggregate!
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
 
   # An object relationship
   tenant: Tenant!
   tenantId: bigint!
-  type: String!
+  type: String
 }
 
 # aggregated selection of "role"
@@ -44720,23 +44759,7 @@ type RoleAggregate {
 }
 
 input RoleAggregateBoolExp {
-  bool_and: roleAggregateBoolExpBool_and
-  bool_or: roleAggregateBoolExpBool_or
   count: roleAggregateBoolExpCount
-}
-
-input roleAggregateBoolExpBool_and {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: RoleBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input roleAggregateBoolExpBool_or {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: RoleBoolExp
-  predicate: BooleanComparisonExp!
 }
 
 input roleAggregateBoolExpCount {
@@ -44807,22 +44830,21 @@ input RoleBoolExp {
   _or: [RoleBoolExp!]
   askedTeamJoins: TeamJoinBoolExp
   askedTeamJoinsAggregate: TeamJoinAggregateBoolExp
-  category: StringComparisonExp
+  color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   permissions: StringArrayComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
-  teamMemberRoles: TeamMemberRolesBoolExp
-  teamMemberRolesAggregate: TeamMemberRolesAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
@@ -44845,20 +44867,19 @@ input RoleIncInput {
 # input type for inserting data into table "role"
 input RoleInsertInput {
   askedTeamJoins: TeamJoinArrRelInsertInput
-  category: String
+  color: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
-  teamMemberRoles: TeamMemberRolesArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
@@ -44866,7 +44887,7 @@ input RoleInsertInput {
 
 # aggregate max on columns
 type RoleMaxFields {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -44881,7 +44902,7 @@ type RoleMaxFields {
 
 # order by max() on columns of table "role"
 input RoleMaxOrderBy {
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -44896,7 +44917,7 @@ input RoleMaxOrderBy {
 
 # aggregate min on columns
 type RoleMinFields {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -44911,7 +44932,7 @@ type RoleMinFields {
 
 # order by min() on columns of table "role"
 input RoleMinOrderBy {
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -44951,20 +44972,19 @@ input RoleOnConflict {
 # Ordering options when selecting data from "role".
 input RoleOrderBy {
   askedTeamJoinsAggregate: TeamJoinAggregateOrderBy
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isLocked: OrderBy
   name: OrderBy
   permissions: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
-  teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -44978,7 +44998,7 @@ input RolePkColumnsInput {
 # select columns of table "role"
 enum RoleSelectColumn {
   # column name
-  category
+  color
 
   # column name
   createdAt
@@ -44996,9 +45016,6 @@ enum RoleSelectColumn {
   id
 
   # column name
-  isLocked
-
-  # column name
   name
 
   # column name
@@ -45014,27 +45031,14 @@ enum RoleSelectColumn {
   type
 }
 
-# select "roleAggregateBoolExpBool_andArgumentsColumns" columns of table "role"
-enum RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns {
-  # column name
-  isLocked
-}
-
-# select "roleAggregateBoolExpBool_orArgumentsColumns" columns of table "role"
-enum RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns {
-  # column name
-  isLocked
-}
-
 # input type for updating data in table "role"
 input RoleSetInput {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -45101,13 +45105,12 @@ input RoleStreamCursorInput {
 
 # Initial value of the column from where the streaming should start
 input RoleStreamCursorValueInput {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -45134,7 +45137,7 @@ input RoleSumOrderBy {
 # update columns of table "role"
 enum RoleUpdateColumn {
   # column name
-  category
+  color
 
   # column name
   createdAt
@@ -45150,9 +45153,6 @@ enum RoleUpdateColumn {
 
   # column name
   id
-
-  # column name
-  isLocked
 
   # column name
   name
@@ -51473,10 +51473,10 @@ type Subscription {
   # fetch data from the table: "team_member" using primary key columns
   teamMemberByPk(id: bigint!): TeamMember
 
-  # An array relationship
-  teamMemberRoles(
+  # fetch data from the table: "team_member_role"
+  teamMemberRole(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51485,16 +51485,16 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): [TeamMemberRoles!]!
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
 
-  # An aggregate relationship
-  teamMemberRolesAggregate(
+  # fetch aggregated fields from the table: "team_member_role"
+  teamMemberRoleAggregate(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -51503,26 +51503,26 @@ type Subscription {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): TeamMemberRolesAggregate!
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
 
-  # fetch data from the table: "team_member_roles" using primary key columns
-  teamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
+  # fetch data from the table: "team_member_role" using primary key columns
+  teamMemberRoleByPk(id: bigint!): TeamMemberRole
 
-  # fetch data from the table in a streaming manner: "team_member_roles"
-  teamMemberRolesStream(
+  # fetch data from the table in a streaming manner: "team_member_role"
+  teamMemberRoleStream(
     # maximum number of rows returned in a single batch
     batchSize: Int!
 
     # cursor to stream the results returned by the query
-    cursor: [TeamMemberRolesStreamCursorInput]!
+    cursor: [TeamMemberRoleStreamCursorInput]!
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): [TeamMemberRoles!]!
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
 
   # fetch data from the table in a streaming manner: "team_member"
   teamMemberStream(
@@ -54920,11 +54920,10 @@ type TeamMember {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
-  startDate: timestamptz!
+  start: timestamptz!
 
   # An array relationship
   supervisedProjects(
@@ -54969,7 +54968,7 @@ type TeamMember {
   # An array relationship
   teamMemberRoles(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -54978,16 +54977,16 @@ type TeamMember {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): [TeamMemberRoles!]!
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
 
   # An aggregate relationship
   teamMemberRolesAggregate(
     # distinct select on columns
-    distinctOn: [TeamMemberRolesSelectColumn!]
+    distinctOn: [TeamMemberRoleSelectColumn!]
 
     # limit the number of rows returned
     limit: Int
@@ -54996,11 +54995,11 @@ type TeamMember {
     offset: Int
 
     # sort the rows by one or more columns
-    orderBy: [TeamMemberRolesOrderBy!]
+    orderBy: [TeamMemberRoleOrderBy!]
 
     # filter the rows returned
-    where: TeamMemberRolesBoolExp
-  ): TeamMemberRolesAggregate!
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
 
   # An object relationship
   tenant: Tenant!
@@ -55095,17 +55094,16 @@ input TeamMemberBoolExp {
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  endDate: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  startDate: TimestamptzComparisonExp
+  start: TimestamptzComparisonExp
   supervisedProjects: ProjectSupervisorsBoolExp
   supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
-  teamMemberRoles: TeamMemberRolesBoolExp
-  teamMemberRolesAggregate: TeamMemberRolesAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   user: UserBoolExp
@@ -55134,15 +55132,14 @@ input TeamMemberInsertInput {
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
-  teamMemberRoles: TeamMemberRolesArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   user: UserObjRelInsertInput
@@ -55154,11 +55151,10 @@ type TeamMemberMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -55169,11 +55165,10 @@ input TeamMemberMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -55184,11 +55179,10 @@ type TeamMemberMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -55199,11 +55193,10 @@ input TeamMemberMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -55239,15 +55232,14 @@ input TeamMemberOrderBy {
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
-  teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   user: UserOrderBy
@@ -55259,8 +55251,17 @@ input TeamMemberPkColumnsInput {
   id: bigint!
 }
 
-# columns and relationships of "team_member_roles"
-type TeamMemberRoles {
+# columns and relationships of "team_member_role"
+type TeamMemberRole {
+  createdAt: timestamptz!
+
+  # An object relationship
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
+
   # An object relationship
   role: Role!
   roleId: bigint!
@@ -55268,292 +55269,442 @@ type TeamMemberRoles {
   # An object relationship
   teamMember: TeamMember!
   teamMemberId: bigint!
+
+  # An object relationship
+  tenant: Tenant!
+  tenantId: bigint!
 }
 
-# aggregated selection of "team_member_roles"
-type TeamMemberRolesAggregate {
-  aggregate: TeamMemberRolesAggregateFields
-  nodes: [TeamMemberRoles!]!
+# aggregated selection of "team_member_role"
+type TeamMemberRoleAggregate {
+  aggregate: TeamMemberRoleAggregateFields
+  nodes: [TeamMemberRole!]!
 }
 
-input TeamMemberRolesAggregateBoolExp {
-  count: teamMemberRolesAggregateBoolExpCount
+input TeamMemberRoleAggregateBoolExp {
+  count: teamMemberRoleAggregateBoolExpCount
 }
 
-input teamMemberRolesAggregateBoolExpCount {
-  arguments: [TeamMemberRolesSelectColumn!]
+input teamMemberRoleAggregateBoolExpCount {
+  arguments: [TeamMemberRoleSelectColumn!]
   distinct: Boolean
-  filter: TeamMemberRolesBoolExp
+  filter: TeamMemberRoleBoolExp
   predicate: IntComparisonExp!
 }
 
-# aggregate fields of "team_member_roles"
-type TeamMemberRolesAggregateFields {
-  avg: TeamMemberRolesAvgFields
-  count(columns: [TeamMemberRolesSelectColumn!], distinct: Boolean): Int!
-  max: TeamMemberRolesMaxFields
-  min: TeamMemberRolesMinFields
-  stddev: TeamMemberRolesStddevFields
-  stddevPop: TeamMemberRolesStddevPopFields
-  stddevSamp: TeamMemberRolesStddevSampFields
-  sum: TeamMemberRolesSumFields
-  varPop: TeamMemberRolesVarPopFields
-  varSamp: TeamMemberRolesVarSampFields
-  variance: TeamMemberRolesVarianceFields
+# aggregate fields of "team_member_role"
+type TeamMemberRoleAggregateFields {
+  avg: TeamMemberRoleAvgFields
+  count(columns: [TeamMemberRoleSelectColumn!], distinct: Boolean): Int!
+  max: TeamMemberRoleMaxFields
+  min: TeamMemberRoleMinFields
+  stddev: TeamMemberRoleStddevFields
+  stddevPop: TeamMemberRoleStddevPopFields
+  stddevSamp: TeamMemberRoleStddevSampFields
+  sum: TeamMemberRoleSumFields
+  varPop: TeamMemberRoleVarPopFields
+  varSamp: TeamMemberRoleVarSampFields
+  variance: TeamMemberRoleVarianceFields
 }
 
-# order by aggregate values of table "team_member_roles"
-input TeamMemberRolesAggregateOrderBy {
-  avg: TeamMemberRolesAvgOrderBy
+# order by aggregate values of table "team_member_role"
+input TeamMemberRoleAggregateOrderBy {
+  avg: TeamMemberRoleAvgOrderBy
   count: OrderBy
-  max: TeamMemberRolesMaxOrderBy
-  min: TeamMemberRolesMinOrderBy
-  stddev: TeamMemberRolesStddevOrderBy
-  stddevPop: TeamMemberRolesStddevPopOrderBy
-  stddevSamp: TeamMemberRolesStddevSampOrderBy
-  sum: TeamMemberRolesSumOrderBy
-  varPop: TeamMemberRolesVarPopOrderBy
-  varSamp: TeamMemberRolesVarSampOrderBy
-  variance: TeamMemberRolesVarianceOrderBy
+  max: TeamMemberRoleMaxOrderBy
+  min: TeamMemberRoleMinOrderBy
+  stddev: TeamMemberRoleStddevOrderBy
+  stddevPop: TeamMemberRoleStddevPopOrderBy
+  stddevSamp: TeamMemberRoleStddevSampOrderBy
+  sum: TeamMemberRoleSumOrderBy
+  varPop: TeamMemberRoleVarPopOrderBy
+  varSamp: TeamMemberRoleVarSampOrderBy
+  variance: TeamMemberRoleVarianceOrderBy
 }
 
-# input type for inserting array relation for remote table "team_member_roles"
-input TeamMemberRolesArrRelInsertInput {
-  data: [TeamMemberRolesInsertInput!]!
+# input type for inserting array relation for remote table "team_member_role"
+input TeamMemberRoleArrRelInsertInput {
+  data: [TeamMemberRoleInsertInput!]!
 
   # upsert condition
-  onConflict: TeamMemberRolesOnConflict
+  onConflict: TeamMemberRoleOnConflict
 }
 
 # aggregate avg on columns
-type TeamMemberRolesAvgFields {
+type TeamMemberRoleAvgFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by avg() on columns of table "team_member_roles"
-input TeamMemberRolesAvgOrderBy {
+# order by avg() on columns of table "team_member_role"
+input TeamMemberRoleAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-# Boolean expression to filter rows from the table "team_member_roles". All fields are combined with a logical 'AND'.
-input TeamMemberRolesBoolExp {
-  _and: [TeamMemberRolesBoolExp!]
-  _not: TeamMemberRolesBoolExp
-  _or: [TeamMemberRolesBoolExp!]
+# Boolean expression to filter rows from the table "team_member_role". All fields are combined with a logical 'AND'.
+input TeamMemberRoleBoolExp {
+  _and: [TeamMemberRoleBoolExp!]
+  _not: TeamMemberRoleBoolExp
+  _or: [TeamMemberRoleBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
   role: RoleBoolExp
   roleId: BigintComparisonExp
   teamMember: TeamMemberBoolExp
   teamMemberId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
 }
 
-# unique or primary key constraints on table "team_member_roles"
-enum TeamMemberRolesConstraint {
-  # unique or primary key constraint on columns "role_id", "team_member_id"
-  team_member_roles_pkey
+# unique or primary key constraints on table "team_member_role"
+enum TeamMemberRoleConstraint {
+  # unique or primary key constraint on columns "id"
+  team_member_role_pkey
 }
 
-# input type for incrementing numeric columns in table "team_member_roles"
-input TeamMemberRolesIncInput {
+# input type for incrementing numeric columns in table "team_member_role"
+input TeamMemberRoleIncInput {
+  createdById: bigint
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-# input type for inserting data into table "team_member_roles"
-input TeamMemberRolesInsertInput {
+# input type for inserting data into table "team_member_role"
+input TeamMemberRoleInsertInput {
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   role: RoleObjRelInsertInput
   roleId: bigint
   teamMember: TeamMemberObjRelInsertInput
   teamMemberId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
 }
 
 # aggregate max on columns
-type TeamMemberRolesMaxFields {
+type TeamMemberRoleMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-# order by max() on columns of table "team_member_roles"
-input TeamMemberRolesMaxOrderBy {
+# order by max() on columns of table "team_member_role"
+input TeamMemberRoleMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate min on columns
-type TeamMemberRolesMinFields {
+type TeamMemberRoleMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-# order by min() on columns of table "team_member_roles"
-input TeamMemberRolesMinOrderBy {
+# order by min() on columns of table "team_member_role"
+input TeamMemberRoleMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-# response of any mutation on the table "team_member_roles"
-type TeamMemberRolesMutationResponse {
+# response of any mutation on the table "team_member_role"
+type TeamMemberRoleMutationResponse {
   # number of rows affected by the mutation
   affectedRows: Int!
 
   # data from the rows affected by the mutation
-  returning: [TeamMemberRoles!]!
+  returning: [TeamMemberRole!]!
 }
 
-# on_conflict condition type for table "team_member_roles"
-input TeamMemberRolesOnConflict {
-  constraint: TeamMemberRolesConstraint!
-  updateColumns: [TeamMemberRolesUpdateColumn!]! = []
-  where: TeamMemberRolesBoolExp
+# on_conflict condition type for table "team_member_role"
+input TeamMemberRoleOnConflict {
+  constraint: TeamMemberRoleConstraint!
+  updateColumns: [TeamMemberRoleUpdateColumn!]! = []
+  where: TeamMemberRoleBoolExp
 }
 
-# Ordering options when selecting data from "team_member_roles".
-input TeamMemberRolesOrderBy {
+# Ordering options when selecting data from "team_member_role".
+input TeamMemberRoleOrderBy {
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   role: RoleOrderBy
   roleId: OrderBy
   teamMember: TeamMemberOrderBy
   teamMemberId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
 }
 
-# primary key columns input for table: team_member_roles
-input TeamMemberRolesPkColumnsInput {
-  roleId: bigint!
-  teamMemberId: bigint!
+# primary key columns input for table: team_member_role
+input TeamMemberRolePkColumnsInput {
+  id: bigint!
 }
 
-# select columns of table "team_member_roles"
-enum TeamMemberRolesSelectColumn {
+# select columns of table "team_member_role"
+enum TeamMemberRoleSelectColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
   # column name
   roleId
 
   # column name
   teamMemberId
+
+  # column name
+  tenantId
 }
 
-# input type for updating data in table "team_member_roles"
-input TeamMemberRolesSetInput {
+# input type for updating data in table "team_member_role"
+input TeamMemberRoleSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
 # aggregate stddev on columns
-type TeamMemberRolesStddevFields {
+type TeamMemberRoleStddevFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by stddev() on columns of table "team_member_roles"
-input TeamMemberRolesStddevOrderBy {
+# order by stddev() on columns of table "team_member_role"
+input TeamMemberRoleStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate stddevPop on columns
-type TeamMemberRolesStddevPopFields {
+type TeamMemberRoleStddevPopFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by stddevPop() on columns of table "team_member_roles"
-input TeamMemberRolesStddevPopOrderBy {
+# order by stddevPop() on columns of table "team_member_role"
+input TeamMemberRoleStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate stddevSamp on columns
-type TeamMemberRolesStddevSampFields {
+type TeamMemberRoleStddevSampFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by stddevSamp() on columns of table "team_member_roles"
-input TeamMemberRolesStddevSampOrderBy {
+# order by stddevSamp() on columns of table "team_member_role"
+input TeamMemberRoleStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-# Streaming cursor of the table "team_member_roles"
-input TeamMemberRolesStreamCursorInput {
+# Streaming cursor of the table "team_member_role"
+input TeamMemberRoleStreamCursorInput {
   # Stream column input with initial value
-  initialValue: TeamMemberRolesStreamCursorValueInput!
+  initialValue: TeamMemberRoleStreamCursorValueInput!
 
   # cursor ordering
   ordering: CursorOrdering
 }
 
 # Initial value of the column from where the streaming should start
-input TeamMemberRolesStreamCursorValueInput {
+input TeamMemberRoleStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
 # aggregate sum on columns
-type TeamMemberRolesSumFields {
+type TeamMemberRoleSumFields {
+  createdById: bigint
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-# order by sum() on columns of table "team_member_roles"
-input TeamMemberRolesSumOrderBy {
+# order by sum() on columns of table "team_member_role"
+input TeamMemberRoleSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-# update columns of table "team_member_roles"
-enum TeamMemberRolesUpdateColumn {
+# update columns of table "team_member_role"
+enum TeamMemberRoleUpdateColumn {
+  # column name
+  createdAt
+
+  # column name
+  createdById
+
+  # column name
+  deletedAt
+
+  # column name
+  hiddenAt
+
+  # column name
+  id
+
   # column name
   roleId
 
   # column name
   teamMemberId
+
+  # column name
+  tenantId
 }
 
-input TeamMemberRolesUpdates {
+input TeamMemberRoleUpdates {
   # increments the numeric columns with given value of the filtered values
-  _inc: TeamMemberRolesIncInput
+  _inc: TeamMemberRoleIncInput
 
   # sets the columns of the filtered rows to the given values
-  _set: TeamMemberRolesSetInput
+  _set: TeamMemberRoleSetInput
 
   # filter the rows which have to be updated
-  where: TeamMemberRolesBoolExp!
+  where: TeamMemberRoleBoolExp!
 }
 
 # aggregate variance on columns
-type TeamMemberRolesVarianceFields {
+type TeamMemberRoleVarianceFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by variance() on columns of table "team_member_roles"
-input TeamMemberRolesVarianceOrderBy {
+# order by variance() on columns of table "team_member_role"
+input TeamMemberRoleVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate varPop on columns
-type TeamMemberRolesVarPopFields {
+type TeamMemberRoleVarPopFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by varPop() on columns of table "team_member_roles"
-input TeamMemberRolesVarPopOrderBy {
+# order by varPop() on columns of table "team_member_role"
+input TeamMemberRoleVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # aggregate varSamp on columns
-type TeamMemberRolesVarSampFields {
+type TeamMemberRoleVarSampFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-# order by varSamp() on columns of table "team_member_roles"
-input TeamMemberRolesVarSampOrderBy {
+# order by varSamp() on columns of table "team_member_role"
+input TeamMemberRoleVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 # select columns of table "team_member"
@@ -55568,9 +55719,6 @@ enum TeamMemberSelectColumn {
   deletedAt
 
   # column name
-  endDate
-
-  # column name
   hiddenAt
 
   # column name
@@ -55580,7 +55728,7 @@ enum TeamMemberSelectColumn {
   permissions
 
   # column name
-  startDate
+  start
 
   # column name
   teamId
@@ -55597,11 +55745,10 @@ input TeamMemberSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -55681,11 +55828,10 @@ input TeamMemberStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -55723,9 +55869,6 @@ enum TeamMemberUpdateColumn {
   deletedAt
 
   # column name
-  endDate
-
-  # column name
   hiddenAt
 
   # column name
@@ -55735,7 +55878,7 @@ enum TeamMemberUpdateColumn {
   permissions
 
   # column name
-  startDate
+  start
 
   # column name
   teamId
@@ -58670,6 +58813,42 @@ type Tenant {
   ): TeamJoinAggregate!
 
   # An array relationship
+  teamMemberRoles(
+    # distinct select on columns
+    distinctOn: [TeamMemberRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamMemberRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamMemberRoleBoolExp
+  ): [TeamMemberRole!]!
+
+  # An aggregate relationship
+  teamMemberRolesAggregate(
+    # distinct select on columns
+    distinctOn: [TeamMemberRoleSelectColumn!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    orderBy: [TeamMemberRoleOrderBy!]
+
+    # filter the rows returned
+    where: TeamMemberRoleBoolExp
+  ): TeamMemberRoleAggregate!
+
+  # An array relationship
   teamMembers(
     # distinct select on columns
     distinctOn: [TeamMemberSelectColumn!]
@@ -59204,6 +59383,8 @@ input TenantBoolExp {
   teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   teamMembers: TeamMemberBoolExp
   teamMembersAggregate: TeamMemberAggregateBoolExp
   teamMetrics: TeamMetricBoolExp
@@ -59320,6 +59501,7 @@ input TenantInsertInput {
   tags: TagArrRelInsertInput
   teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -59497,6 +59679,7 @@ input TenantOrderBy {
   tagsAggregate: TagAggregateOrderBy
   teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy

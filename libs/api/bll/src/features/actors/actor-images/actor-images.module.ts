@@ -1,8 +1,8 @@
 import { ActorImagesService } from './actor-images.service';
-import {
+import { 
   ActorImagesMutationResolver,
-  ActorImagesQueryAggregateResolver,
-  ActorImagesQueryResolver,
+  ActorImagesQueryAggregateResolver, 
+  ActorImagesQueryResolver
 } from './actor-images.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
@@ -14,9 +14,9 @@ import { ActorImage } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([ActorImage])],
   providers: [
     ActorImagesMutationResolver,
-    ActorImagesQueryResolver,
+    ActorImagesQueryResolver, 
     ActorImagesQueryAggregateResolver,
-    ActorImagesService,
+    ActorImagesService
   ],
   exports: [ActorImagesService],
 })

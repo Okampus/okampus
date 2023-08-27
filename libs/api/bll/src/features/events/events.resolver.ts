@@ -11,7 +11,7 @@ import type {
   UpdateEventArgsType,
   FindEventArgsType,
   FindByPkEventArgsType,
-  AggregateEventArgsType,
+  AggregateEventArgsType
 } from './events.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class EventsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.insertEvent(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class EventsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateEventArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.updateEventMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class EventsMutationResolver {
     const { where } = getGraphQLArgs<DeleteEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.deleteEvent(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class EventsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.findEvent(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertEventOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.insertEventOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async eventByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventsService.findEventByPk(getSelectionSet(info), id);
+    return await this.eventsService.findEventByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class EventsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.updateEventByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class EventsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.eventsService.deleteEventByPk(getSelectionSet(info), id);
   }
@@ -114,8 +115,15 @@ export class EventsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.eventsService.aggregateEvent(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.eventsService.aggregateEvent(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

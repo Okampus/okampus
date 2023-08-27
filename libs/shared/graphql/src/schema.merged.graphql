@@ -17958,6 +17958,8 @@ type Individual {
   createdTeamHistoriesAggregate(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): TeamHistoryAggregate!
   createdTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   createdTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
+  createdTeamMemberRoles(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  createdTeamMemberRolesAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
   createdTeamMembers(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
   createdTeamMembersAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
   createdTeamMetrics(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): [TeamMetric!]!
@@ -18195,6 +18197,8 @@ input IndividualBoolExp {
   createdTeamHistoriesAggregate: TeamHistoryAggregateBoolExp
   createdTeamJoins: TeamJoinBoolExp
   createdTeamJoinsAggregate: TeamJoinAggregateBoolExp
+  createdTeamMemberRoles: TeamMemberRoleBoolExp
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   createdTeamMembers: TeamMemberBoolExp
   createdTeamMembersAggregate: TeamMemberAggregateBoolExp
   createdTeamMetrics: TeamMetricBoolExp
@@ -18325,6 +18329,7 @@ input IndividualInsertInput {
   createdTags: TagArrRelInsertInput
   createdTeamHistories: TeamHistoryArrRelInsertInput
   createdTeamJoins: TeamJoinArrRelInsertInput
+  createdTeamMemberRoles: TeamMemberRoleArrRelInsertInput
   createdTeamMembers: TeamMemberArrRelInsertInput
   createdTeamMetrics: TeamMetricArrRelInsertInput
   createdTeams: TeamArrRelInsertInput
@@ -18483,6 +18488,7 @@ input IndividualOrderBy {
   createdTagsAggregate: TagAggregateOrderBy
   createdTeamHistoriesAggregate: TeamHistoryAggregateOrderBy
   createdTeamJoinsAggregate: TeamJoinAggregateOrderBy
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   createdTeamMembersAggregate: TeamMemberAggregateOrderBy
   createdTeamMetricsAggregate: TeamMetricAggregateOrderBy
   createdTeamsAggregate: TeamAggregateOrderBy
@@ -22437,8 +22443,8 @@ type Mutation {
   deleteTeamJoinByPk(id: bigint!): TeamJoin
   deleteTeamMember(where: TeamMemberBoolExp!): TeamMemberMutationResponse
   deleteTeamMemberByPk(id: bigint!): TeamMember
-  deleteTeamMemberRoles(where: TeamMemberRolesBoolExp!): TeamMemberRolesMutationResponse
-  deleteTeamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
+  deleteTeamMemberRole(where: TeamMemberRoleBoolExp!): TeamMemberRoleMutationResponse
+  deleteTeamMemberRoleByPk(id: bigint!): TeamMemberRole
   deleteTeamMetric(where: TeamMetricBoolExp!): TeamMetricMutationResponse
   deleteTeamMetricByPk(id: bigint!): TeamMetric
   deleteTenant(where: TenantBoolExp!): TenantMutationResponse
@@ -22604,8 +22610,8 @@ type Mutation {
   insertTeamJoinOne(object: TeamJoinInsertInput!, onConflict: TeamJoinOnConflict): TeamJoin
   insertTeamMember(objects: [TeamMemberInsertInput!]!, onConflict: TeamMemberOnConflict): TeamMemberMutationResponse
   insertTeamMemberOne(object: TeamMemberInsertInput!, onConflict: TeamMemberOnConflict): TeamMember
-  insertTeamMemberRoles(objects: [TeamMemberRolesInsertInput!]!, onConflict: TeamMemberRolesOnConflict): TeamMemberRolesMutationResponse
-  insertTeamMemberRolesOne(object: TeamMemberRolesInsertInput!, onConflict: TeamMemberRolesOnConflict): TeamMemberRoles
+  insertTeamMemberRole(objects: [TeamMemberRoleInsertInput!]!, onConflict: TeamMemberRoleOnConflict): TeamMemberRoleMutationResponse
+  insertTeamMemberRoleOne(object: TeamMemberRoleInsertInput!, onConflict: TeamMemberRoleOnConflict): TeamMemberRole
   insertTeamMetric(objects: [TeamMetricInsertInput!]!, onConflict: TeamMetricOnConflict): TeamMetricMutationResponse
   insertTeamMetricOne(object: TeamMetricInsertInput!, onConflict: TeamMetricOnConflict): TeamMetric
   insertTeamOne(object: TeamInsertInput!, onConflict: TeamOnConflict): Team
@@ -22846,9 +22852,9 @@ type Mutation {
   updateTeamMember(_inc: TeamMemberIncInput, _set: TeamMemberSetInput, where: TeamMemberBoolExp!): TeamMemberMutationResponse
   updateTeamMemberByPk(_inc: TeamMemberIncInput, _set: TeamMemberSetInput, pkColumns: TeamMemberPkColumnsInput!): TeamMember
   updateTeamMemberMany(updates: [TeamMemberUpdates!]!): [TeamMemberMutationResponse]
-  updateTeamMemberRoles(_inc: TeamMemberRolesIncInput, _set: TeamMemberRolesSetInput, where: TeamMemberRolesBoolExp!): TeamMemberRolesMutationResponse
-  updateTeamMemberRolesByPk(_inc: TeamMemberRolesIncInput, _set: TeamMemberRolesSetInput, pkColumns: TeamMemberRolesPkColumnsInput!): TeamMemberRoles
-  updateTeamMemberRolesMany(updates: [TeamMemberRolesUpdates!]!): [TeamMemberRolesMutationResponse]
+  updateTeamMemberRole(_inc: TeamMemberRoleIncInput, _set: TeamMemberRoleSetInput, where: TeamMemberRoleBoolExp!): TeamMemberRoleMutationResponse
+  updateTeamMemberRoleByPk(_inc: TeamMemberRoleIncInput, _set: TeamMemberRoleSetInput, pkColumns: TeamMemberRolePkColumnsInput!): TeamMemberRole
+  updateTeamMemberRoleMany(updates: [TeamMemberRoleUpdates!]!): [TeamMemberRoleMutationResponse]
   updateTeamMetric(_inc: TeamMetricIncInput, _set: TeamMetricSetInput, where: TeamMetricBoolExp!): TeamMetricMutationResponse
   updateTeamMetricByPk(_inc: TeamMetricIncInput, _set: TeamMetricSetInput, pkColumns: TeamMetricPkColumnsInput!): TeamMetric
   updateTeamMetricMany(updates: [TeamMetricUpdates!]!): [TeamMetricMutationResponse]
@@ -24610,9 +24616,9 @@ type Query {
   teamMember(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
   teamMemberAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
   teamMemberByPk(id: bigint!): TeamMember
-  teamMemberRoles(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): [TeamMemberRoles!]!
-  teamMemberRolesAggregate(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): TeamMemberRolesAggregate!
-  teamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
+  teamMemberRole(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  teamMemberRoleAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
+  teamMemberRoleByPk(id: bigint!): TeamMemberRole
   teamMetric(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): [TeamMetric!]!
   teamMetricAggregate(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): TeamMetricAggregate!
   teamMetricByPk(id: bigint!): TeamMetric
@@ -25392,25 +25398,24 @@ input ReportVarSampOrderBy {
 type Role {
   askedTeamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   askedTeamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
-  category: String!
+  color: String!
   createdAt: timestamptz!
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint!
-  isLocked: Boolean!
   name: String!
   permissions: [String!]!
   team: Team!
   teamId: bigint!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
-  teamMemberRoles(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): [TeamMemberRoles!]!
-  teamMemberRolesAggregate(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): TeamMemberRolesAggregate!
+  teamMemberRoles(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  teamMemberRolesAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
   tenant: Tenant!
   tenantId: bigint!
-  type: String!
+  type: String
 }
 
 type RoleAggregate {
@@ -25419,23 +25424,7 @@ type RoleAggregate {
 }
 
 input RoleAggregateBoolExp {
-  bool_and: roleAggregateBoolExpBool_and
-  bool_or: roleAggregateBoolExpBool_or
   count: roleAggregateBoolExpCount
-}
-
-input roleAggregateBoolExpBool_and {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns!
-  distinct: Boolean
-  filter: RoleBoolExp
-  predicate: BooleanComparisonExp!
-}
-
-input roleAggregateBoolExpBool_or {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns!
-  distinct: Boolean
-  filter: RoleBoolExp
-  predicate: BooleanComparisonExp!
 }
 
 input roleAggregateBoolExpCount {
@@ -25498,22 +25487,21 @@ input RoleBoolExp {
   _or: [RoleBoolExp!]
   askedTeamJoins: TeamJoinBoolExp
   askedTeamJoinsAggregate: TeamJoinAggregateBoolExp
-  category: StringComparisonExp
+  color: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
-  isLocked: BooleanComparisonExp
   name: StringComparisonExp
   permissions: StringArrayComparisonExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
-  teamMemberRoles: TeamMemberRolesBoolExp
-  teamMemberRolesAggregate: TeamMemberRolesAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   type: StringComparisonExp
@@ -25532,27 +25520,26 @@ input RoleIncInput {
 
 input RoleInsertInput {
   askedTeamJoins: TeamJoinArrRelInsertInput
-  category: String
+  color: String
   createdAt: timestamptz
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   team: TeamObjRelInsertInput
   teamId: bigint
   teamJoins: TeamJoinArrRelInsertInput
-  teamMemberRoles: TeamMemberRolesArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   type: String
 }
 
 type RoleMaxFields {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25566,7 +25553,7 @@ type RoleMaxFields {
 }
 
 input RoleMaxOrderBy {
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25580,7 +25567,7 @@ input RoleMaxOrderBy {
 }
 
 type RoleMinFields {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25594,7 +25581,7 @@ type RoleMinFields {
 }
 
 input RoleMinOrderBy {
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25625,20 +25612,19 @@ input RoleOnConflict {
 
 input RoleOrderBy {
   askedTeamJoinsAggregate: TeamJoinAggregateOrderBy
-  category: OrderBy
+  color: OrderBy
   createdAt: OrderBy
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
-  isLocked: OrderBy
   name: OrderBy
   permissions: OrderBy
   team: TeamOrderBy
   teamId: OrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
-  teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   type: OrderBy
@@ -25649,13 +25635,12 @@ input RolePkColumnsInput {
 }
 
 enum RoleSelectColumn {
-  category
+  color
   createdAt
   createdById
   deletedAt
   hiddenAt
   id
-  isLocked
   name
   permissions
   teamId
@@ -25663,22 +25648,13 @@ enum RoleSelectColumn {
   type
 }
 
-enum RoleSelectColumnRoleAggregateBoolExpBool_andArgumentsColumns {
-  isLocked
-}
-
-enum RoleSelectColumnRoleAggregateBoolExpBool_orArgumentsColumns {
-  isLocked
-}
-
 input RoleSetInput {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -25734,13 +25710,12 @@ input RoleStreamCursorInput {
 }
 
 input RoleStreamCursorValueInput {
-  category: String
+  color: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
   hiddenAt: timestamptz
   id: bigint
-  isLocked: Boolean
   name: String
   permissions: [String!]
   teamId: bigint
@@ -25763,13 +25738,12 @@ input RoleSumOrderBy {
 }
 
 enum RoleUpdateColumn {
-  category
+  color
   createdAt
   createdById
   deletedAt
   hiddenAt
   id
-  isLocked
   name
   permissions
   teamId
@@ -28035,10 +28009,10 @@ type Subscription {
   teamMember(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
   teamMemberAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
   teamMemberByPk(id: bigint!): TeamMember
-  teamMemberRoles(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): [TeamMemberRoles!]!
-  teamMemberRolesAggregate(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): TeamMemberRolesAggregate!
-  teamMemberRolesByPk(roleId: bigint!, teamMemberId: bigint!): TeamMemberRoles
-  teamMemberRolesStream(batchSize: Int!, cursor: [TeamMemberRolesStreamCursorInput]!, where: TeamMemberRolesBoolExp): [TeamMemberRoles!]!
+  teamMemberRole(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  teamMemberRoleAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
+  teamMemberRoleByPk(id: bigint!): TeamMemberRole
+  teamMemberRoleStream(batchSize: Int!, cursor: [TeamMemberRoleStreamCursorInput]!, where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
   teamMemberStream(batchSize: Int!, cursor: [TeamMemberStreamCursorInput]!, where: TeamMemberBoolExp): [TeamMember!]!
   teamMetric(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): [TeamMetric!]!
   teamMetricAggregate(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): TeamMetricAggregate!
@@ -29817,17 +29791,16 @@ type TeamMember {
   createdBy: Individual
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint!
   permissions: Int!
-  startDate: timestamptz!
+  start: timestamptz!
   supervisedProjects(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): [ProjectSupervisors!]!
   supervisedProjectsAggregate(distinctOn: [ProjectSupervisorsSelectColumn!], limit: Int, offset: Int, orderBy: [ProjectSupervisorsOrderBy!], where: ProjectSupervisorsBoolExp): ProjectSupervisorsAggregate!
   team: Team!
   teamId: bigint!
-  teamMemberRoles(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): [TeamMemberRoles!]!
-  teamMemberRolesAggregate(distinctOn: [TeamMemberRolesSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRolesOrderBy!], where: TeamMemberRolesBoolExp): TeamMemberRolesAggregate!
+  teamMemberRoles(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  teamMemberRolesAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
   tenant: Tenant!
   tenantId: bigint!
   user: User!
@@ -29909,17 +29882,16 @@ input TeamMemberBoolExp {
   createdBy: IndividualBoolExp
   createdById: BigintComparisonExp
   deletedAt: TimestamptzComparisonExp
-  endDate: TimestamptzComparisonExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   permissions: IntComparisonExp
-  startDate: TimestamptzComparisonExp
+  start: TimestamptzComparisonExp
   supervisedProjects: ProjectSupervisorsBoolExp
   supervisedProjectsAggregate: ProjectSupervisorsAggregateBoolExp
   team: TeamBoolExp
   teamId: BigintComparisonExp
-  teamMemberRoles: TeamMemberRolesBoolExp
-  teamMemberRolesAggregate: TeamMemberRolesAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   tenant: TenantBoolExp
   tenantId: BigintComparisonExp
   user: UserBoolExp
@@ -29944,15 +29916,14 @@ input TeamMemberInsertInput {
   createdBy: IndividualObjRelInsertInput
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   supervisedProjects: ProjectSupervisorsArrRelInsertInput
   team: TeamObjRelInsertInput
   teamId: bigint
-  teamMemberRoles: TeamMemberRolesArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   tenant: TenantObjRelInsertInput
   tenantId: bigint
   user: UserObjRelInsertInput
@@ -29963,11 +29934,10 @@ type TeamMemberMaxFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -29977,11 +29947,10 @@ input TeamMemberMaxOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -29991,11 +29960,10 @@ type TeamMemberMinFields {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -30005,11 +29973,10 @@ input TeamMemberMinOrderBy {
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
   userId: OrderBy
@@ -30036,15 +30003,14 @@ input TeamMemberOrderBy {
   createdBy: IndividualOrderBy
   createdById: OrderBy
   deletedAt: OrderBy
-  endDate: OrderBy
   hiddenAt: OrderBy
   id: OrderBy
   permissions: OrderBy
-  startDate: OrderBy
+  start: OrderBy
   supervisedProjectsAggregate: ProjectSupervisorsAggregateOrderBy
   team: TeamOrderBy
   teamId: OrderBy
-  teamMemberRolesAggregate: TeamMemberRolesAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
   user: UserOrderBy
@@ -30055,251 +30021,380 @@ input TeamMemberPkColumnsInput {
   id: bigint!
 }
 
-type TeamMemberRoles {
+type TeamMemberRole {
+  createdAt: timestamptz!
+  createdBy: Individual
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint!
   role: Role!
   roleId: bigint!
   teamMember: TeamMember!
   teamMemberId: bigint!
+  tenant: Tenant!
+  tenantId: bigint!
 }
 
-type TeamMemberRolesAggregate {
-  aggregate: TeamMemberRolesAggregateFields
-  nodes: [TeamMemberRoles!]!
+type TeamMemberRoleAggregate {
+  aggregate: TeamMemberRoleAggregateFields
+  nodes: [TeamMemberRole!]!
 }
 
-input TeamMemberRolesAggregateBoolExp {
-  count: teamMemberRolesAggregateBoolExpCount
+input TeamMemberRoleAggregateBoolExp {
+  count: teamMemberRoleAggregateBoolExpCount
 }
 
-input teamMemberRolesAggregateBoolExpCount {
-  arguments: [TeamMemberRolesSelectColumn!]
+input teamMemberRoleAggregateBoolExpCount {
+  arguments: [TeamMemberRoleSelectColumn!]
   distinct: Boolean
-  filter: TeamMemberRolesBoolExp
+  filter: TeamMemberRoleBoolExp
   predicate: IntComparisonExp!
 }
 
-type TeamMemberRolesAggregateFields {
-  avg: TeamMemberRolesAvgFields
-  count(columns: [TeamMemberRolesSelectColumn!], distinct: Boolean): Int!
-  max: TeamMemberRolesMaxFields
-  min: TeamMemberRolesMinFields
-  stddev: TeamMemberRolesStddevFields
-  stddevPop: TeamMemberRolesStddevPopFields
-  stddevSamp: TeamMemberRolesStddevSampFields
-  sum: TeamMemberRolesSumFields
-  varPop: TeamMemberRolesVarPopFields
-  varSamp: TeamMemberRolesVarSampFields
-  variance: TeamMemberRolesVarianceFields
+type TeamMemberRoleAggregateFields {
+  avg: TeamMemberRoleAvgFields
+  count(columns: [TeamMemberRoleSelectColumn!], distinct: Boolean): Int!
+  max: TeamMemberRoleMaxFields
+  min: TeamMemberRoleMinFields
+  stddev: TeamMemberRoleStddevFields
+  stddevPop: TeamMemberRoleStddevPopFields
+  stddevSamp: TeamMemberRoleStddevSampFields
+  sum: TeamMemberRoleSumFields
+  varPop: TeamMemberRoleVarPopFields
+  varSamp: TeamMemberRoleVarSampFields
+  variance: TeamMemberRoleVarianceFields
 }
 
-input TeamMemberRolesAggregateOrderBy {
-  avg: TeamMemberRolesAvgOrderBy
+input TeamMemberRoleAggregateOrderBy {
+  avg: TeamMemberRoleAvgOrderBy
   count: OrderBy
-  max: TeamMemberRolesMaxOrderBy
-  min: TeamMemberRolesMinOrderBy
-  stddev: TeamMemberRolesStddevOrderBy
-  stddevPop: TeamMemberRolesStddevPopOrderBy
-  stddevSamp: TeamMemberRolesStddevSampOrderBy
-  sum: TeamMemberRolesSumOrderBy
-  varPop: TeamMemberRolesVarPopOrderBy
-  varSamp: TeamMemberRolesVarSampOrderBy
-  variance: TeamMemberRolesVarianceOrderBy
+  max: TeamMemberRoleMaxOrderBy
+  min: TeamMemberRoleMinOrderBy
+  stddev: TeamMemberRoleStddevOrderBy
+  stddevPop: TeamMemberRoleStddevPopOrderBy
+  stddevSamp: TeamMemberRoleStddevSampOrderBy
+  sum: TeamMemberRoleSumOrderBy
+  varPop: TeamMemberRoleVarPopOrderBy
+  varSamp: TeamMemberRoleVarSampOrderBy
+  variance: TeamMemberRoleVarianceOrderBy
 }
 
-input TeamMemberRolesArrRelInsertInput {
-  data: [TeamMemberRolesInsertInput!]!
-  onConflict: TeamMemberRolesOnConflict
+input TeamMemberRoleArrRelInsertInput {
+  data: [TeamMemberRoleInsertInput!]!
+  onConflict: TeamMemberRoleOnConflict
 }
 
-type TeamMemberRolesAvgFields {
+type TeamMemberRoleAvgFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesAvgOrderBy {
+input TeamMemberRoleAvgOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-input TeamMemberRolesBoolExp {
-  _and: [TeamMemberRolesBoolExp!]
-  _not: TeamMemberRolesBoolExp
-  _or: [TeamMemberRolesBoolExp!]
+input TeamMemberRoleBoolExp {
+  _and: [TeamMemberRoleBoolExp!]
+  _not: TeamMemberRoleBoolExp
+  _or: [TeamMemberRoleBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  createdBy: IndividualBoolExp
+  createdById: BigintComparisonExp
+  deletedAt: TimestamptzComparisonExp
+  hiddenAt: TimestamptzComparisonExp
+  id: BigintComparisonExp
   role: RoleBoolExp
   roleId: BigintComparisonExp
   teamMember: TeamMemberBoolExp
   teamMemberId: BigintComparisonExp
+  tenant: TenantBoolExp
+  tenantId: BigintComparisonExp
 }
 
-enum TeamMemberRolesConstraint {
-  team_member_roles_pkey
+enum TeamMemberRoleConstraint {
+  team_member_role_pkey
 }
 
-input TeamMemberRolesIncInput {
+input TeamMemberRoleIncInput {
+  createdById: bigint
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-input TeamMemberRolesInsertInput {
+input TeamMemberRoleInsertInput {
+  createdAt: timestamptz
+  createdBy: IndividualObjRelInsertInput
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   role: RoleObjRelInsertInput
   roleId: bigint
   teamMember: TeamMemberObjRelInsertInput
   teamMemberId: bigint
+  tenant: TenantObjRelInsertInput
+  tenantId: bigint
 }
 
-type TeamMemberRolesMaxFields {
+type TeamMemberRoleMaxFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-input TeamMemberRolesMaxOrderBy {
+input TeamMemberRoleMaxOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesMinFields {
+type TeamMemberRoleMinFields {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-input TeamMemberRolesMinOrderBy {
+input TeamMemberRoleMinOrderBy {
+  createdAt: OrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesMutationResponse {
+type TeamMemberRoleMutationResponse {
   affectedRows: Int!
-  returning: [TeamMemberRoles!]!
+  returning: [TeamMemberRole!]!
 }
 
-input TeamMemberRolesOnConflict {
-  constraint: TeamMemberRolesConstraint!
-  updateColumns: [TeamMemberRolesUpdateColumn!]! = []
-  where: TeamMemberRolesBoolExp
+input TeamMemberRoleOnConflict {
+  constraint: TeamMemberRoleConstraint!
+  updateColumns: [TeamMemberRoleUpdateColumn!]! = []
+  where: TeamMemberRoleBoolExp
 }
 
-input TeamMemberRolesOrderBy {
+input TeamMemberRoleOrderBy {
+  createdAt: OrderBy
+  createdBy: IndividualOrderBy
+  createdById: OrderBy
+  deletedAt: OrderBy
+  hiddenAt: OrderBy
+  id: OrderBy
   role: RoleOrderBy
   roleId: OrderBy
   teamMember: TeamMemberOrderBy
   teamMemberId: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
 }
 
-input TeamMemberRolesPkColumnsInput {
-  roleId: bigint!
-  teamMemberId: bigint!
+input TeamMemberRolePkColumnsInput {
+  id: bigint!
 }
 
-enum TeamMemberRolesSelectColumn {
+enum TeamMemberRoleSelectColumn {
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
   roleId
   teamMemberId
+  tenantId
 }
 
-input TeamMemberRolesSetInput {
+input TeamMemberRoleSetInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-type TeamMemberRolesStddevFields {
+type TeamMemberRoleStddevFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesStddevOrderBy {
+input TeamMemberRoleStddevOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesStddevPopFields {
+type TeamMemberRoleStddevPopFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesStddevPopOrderBy {
+input TeamMemberRoleStddevPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesStddevSampFields {
+type TeamMemberRoleStddevSampFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesStddevSampOrderBy {
+input TeamMemberRoleStddevSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-input TeamMemberRolesStreamCursorInput {
-  initialValue: TeamMemberRolesStreamCursorValueInput!
+input TeamMemberRoleStreamCursorInput {
+  initialValue: TeamMemberRoleStreamCursorValueInput!
   ordering: CursorOrdering
 }
 
-input TeamMemberRolesStreamCursorValueInput {
+input TeamMemberRoleStreamCursorValueInput {
+  createdAt: timestamptz
+  createdById: bigint
+  deletedAt: timestamptz
+  hiddenAt: timestamptz
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-type TeamMemberRolesSumFields {
+type TeamMemberRoleSumFields {
+  createdById: bigint
+  id: bigint
   roleId: bigint
   teamMemberId: bigint
+  tenantId: bigint
 }
 
-input TeamMemberRolesSumOrderBy {
+input TeamMemberRoleSumOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-enum TeamMemberRolesUpdateColumn {
+enum TeamMemberRoleUpdateColumn {
+  createdAt
+  createdById
+  deletedAt
+  hiddenAt
+  id
   roleId
   teamMemberId
+  tenantId
 }
 
-input TeamMemberRolesUpdates {
-  _inc: TeamMemberRolesIncInput
-  _set: TeamMemberRolesSetInput
-  where: TeamMemberRolesBoolExp!
+input TeamMemberRoleUpdates {
+  _inc: TeamMemberRoleIncInput
+  _set: TeamMemberRoleSetInput
+  where: TeamMemberRoleBoolExp!
 }
 
-type TeamMemberRolesVarianceFields {
+type TeamMemberRoleVarianceFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesVarianceOrderBy {
+input TeamMemberRoleVarianceOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesVarPopFields {
+type TeamMemberRoleVarPopFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesVarPopOrderBy {
+input TeamMemberRoleVarPopOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
-type TeamMemberRolesVarSampFields {
+type TeamMemberRoleVarSampFields {
+  createdById: Float
+  id: Float
   roleId: Float
   teamMemberId: Float
+  tenantId: Float
 }
 
-input TeamMemberRolesVarSampOrderBy {
+input TeamMemberRoleVarSampOrderBy {
+  createdById: OrderBy
+  id: OrderBy
   roleId: OrderBy
   teamMemberId: OrderBy
+  tenantId: OrderBy
 }
 
 enum TeamMemberSelectColumn {
   createdAt
   createdById
   deletedAt
-  endDate
   hiddenAt
   id
   permissions
-  startDate
+  start
   teamId
   tenantId
   userId
@@ -30309,11 +30404,10 @@ input TeamMemberSetInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -30382,11 +30476,10 @@ input TeamMemberStreamCursorValueInput {
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
-  endDate: timestamptz
   hiddenAt: timestamptz
   id: bigint
   permissions: Int
-  startDate: timestamptz
+  start: timestamptz
   teamId: bigint
   tenantId: bigint
   userId: bigint
@@ -30414,11 +30507,10 @@ enum TeamMemberUpdateColumn {
   createdAt
   createdById
   deletedAt
-  endDate
   hiddenAt
   id
   permissions
-  startDate
+  start
   teamId
   tenantId
   userId
@@ -31397,6 +31489,8 @@ type Tenant {
   teamHistoriesAggregate(distinctOn: [TeamHistorySelectColumn!], limit: Int, offset: Int, orderBy: [TeamHistoryOrderBy!], where: TeamHistoryBoolExp): TeamHistoryAggregate!
   teamJoins(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): [TeamJoin!]!
   teamJoinsAggregate(distinctOn: [TeamJoinSelectColumn!], limit: Int, offset: Int, orderBy: [TeamJoinOrderBy!], where: TeamJoinBoolExp): TeamJoinAggregate!
+  teamMemberRoles(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): [TeamMemberRole!]!
+  teamMemberRolesAggregate(distinctOn: [TeamMemberRoleSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberRoleOrderBy!], where: TeamMemberRoleBoolExp): TeamMemberRoleAggregate!
   teamMembers(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): [TeamMember!]!
   teamMembersAggregate(distinctOn: [TeamMemberSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMemberOrderBy!], where: TeamMemberBoolExp): TeamMemberAggregate!
   teamMetrics(distinctOn: [TeamMetricSelectColumn!], limit: Int, offset: Int, orderBy: [TeamMetricOrderBy!], where: TeamMetricBoolExp): [TeamMetric!]!
@@ -31618,6 +31712,8 @@ input TenantBoolExp {
   teamHistoriesAggregate: TeamHistoryAggregateBoolExp
   teamJoins: TeamJoinBoolExp
   teamJoinsAggregate: TeamJoinAggregateBoolExp
+  teamMemberRoles: TeamMemberRoleBoolExp
+  teamMemberRolesAggregate: TeamMemberRoleAggregateBoolExp
   teamMembers: TeamMemberBoolExp
   teamMembersAggregate: TeamMemberAggregateBoolExp
   teamMetrics: TeamMetricBoolExp
@@ -31722,6 +31818,7 @@ input TenantInsertInput {
   tags: TagArrRelInsertInput
   teamHistories: TeamHistoryArrRelInsertInput
   teamJoins: TeamJoinArrRelInsertInput
+  teamMemberRoles: TeamMemberRoleArrRelInsertInput
   teamMembers: TeamMemberArrRelInsertInput
   teamMetrics: TeamMetricArrRelInsertInput
   teams: TeamArrRelInsertInput
@@ -31886,6 +31983,7 @@ input TenantOrderBy {
   tagsAggregate: TagAggregateOrderBy
   teamHistoriesAggregate: TeamHistoryAggregateOrderBy
   teamJoinsAggregate: TeamJoinAggregateOrderBy
+  teamMemberRolesAggregate: TeamMemberRoleAggregateOrderBy
   teamMembersAggregate: TeamMemberAggregateOrderBy
   teamMetricsAggregate: TeamMetricAggregateOrderBy
   teamsAggregate: TeamAggregateOrderBy

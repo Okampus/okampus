@@ -11,7 +11,7 @@ import type {
   UpdateTeamJoinArgsType,
   FindTeamJoinArgsType,
   FindByPkTeamJoinArgsType,
-  AggregateTeamJoinArgsType,
+  AggregateTeamJoinArgsType
 } from './team-joins.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class TeamJoinsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.insertTeamJoin(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class TeamJoinsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateTeamJoinArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.updateTeamJoinMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class TeamJoinsMutationResolver {
     const { where } = getGraphQLArgs<DeleteTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.deleteTeamJoin(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class TeamJoinsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.findTeamJoin(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertTeamJoinOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.insertTeamJoinOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async teamJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTeamJoinArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.teamJoinsService.findTeamJoinByPk(getSelectionSet(info), id);
+    return await this.teamJoinsService.findTeamJoinByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class TeamJoinsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.updateTeamJoinByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class TeamJoinsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.deleteTeamJoinByPk(getSelectionSet(info), id);
   }
@@ -114,7 +115,7 @@ export class TeamJoinsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.teamJoinsService.aggregateTeamJoin(
       getSelectionSet(info),
@@ -122,7 +123,7 @@ export class TeamJoinsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

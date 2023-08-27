@@ -51,6 +51,9 @@ import {
   BanksModule,
   AddressesModule,
   LocationsModule,
+  RolesModule,
+  TeamMembersModule,
+  TeamMemberRolesModule,
 } from '@okampus/api/bll';
 import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -183,6 +186,9 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     LocationsModule,
     FollowsModule,
     SocialsModule,
+    RolesModule,
+    TeamMembersModule,
+    TeamMemberRolesModule,
     // InterestsModule,
     // MetricsModule,
     // ReactionsModule,

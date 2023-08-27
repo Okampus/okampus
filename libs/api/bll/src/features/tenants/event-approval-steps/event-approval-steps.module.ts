@@ -1,8 +1,8 @@
 import { EventApprovalStepsService } from './event-approval-steps.service';
-import {
+import { 
   EventApprovalStepsMutationResolver,
-  EventApprovalStepsQueryAggregateResolver,
-  EventApprovalStepsQueryResolver,
+  EventApprovalStepsQueryAggregateResolver, 
+  EventApprovalStepsQueryResolver
 } from './event-approval-steps.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
@@ -14,9 +14,9 @@ import { EventApprovalStep } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([EventApprovalStep])],
   providers: [
     EventApprovalStepsMutationResolver,
-    EventApprovalStepsQueryResolver,
+    EventApprovalStepsQueryResolver, 
     EventApprovalStepsQueryAggregateResolver,
-    EventApprovalStepsService,
+    EventApprovalStepsService
   ],
   exports: [EventApprovalStepsService],
 })

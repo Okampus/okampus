@@ -40,14 +40,7 @@ export class FollowsService extends RequestContext {
 
   checkPermsDelete(follow: Follow) {
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === follow.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class FollowsService extends RequestContext {
     if (follow.deletedAt) throw new NotFoundException(`Follow was deleted on ${follow.deletedAt}.`);
     if (follow.hiddenAt) throw new NotFoundException('Follow must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === follow.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class FollowsService extends RequestContext {
 
   checkPropsConstraints(props: FollowSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class FollowsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertFollowOne(selectionSet: string[], object: FollowInsertInput, onConflict?: FollowOnConflict) {
+  async insertFollowOne(
+    selectionSet: string[],
+    object: FollowInsertInput,
+    onConflict?: FollowOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
 
@@ -101,10 +95,10 @@ export class FollowsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertFollowOne', selectionSet, object, onConflict);
-
+  
     const follow = await this.followRepository.findOneOrFail(data.insertFollowOne.id);
     await this.logsService.createLog(EntityName.Follow, follow);
-
+    
     // Custom logic
     return data.insertFollowOne;
   }
@@ -122,13 +116,20 @@ export class FollowsService extends RequestContext {
     return data.follow;
   }
 
-  async findFollowByPk(selectionSet: string[], id: string) {
+  async findFollowByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('followByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('followByPk', selectionSet, {  id,  });
     return data.followByPk;
   }
 
-  async insertFollow(selectionSet: string[], objects: Array<FollowInsertInput>, onConflict?: FollowOnConflict) {
+  async insertFollow(
+    selectionSet: string[],
+    objects: Array<FollowInsertInput>,
+    onConflict?: FollowOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Follow.');
@@ -152,7 +153,10 @@ export class FollowsService extends RequestContext {
     return data.insertFollow;
   }
 
-  async updateFollowMany(selectionSet: string[], updates: Array<FollowUpdates>) {
+  async updateFollowMany(
+    selectionSet: string[],
+    updates: Array<FollowUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class FollowsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateFollowMany', selectionSet, updates);
 
-    await Promise.all(
-      follows.map(async (follow) => {
-        const update = updates.find((update) => update.where.id._eq === follow.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Follow, follow, update._set);
-      }),
-    );
+    await Promise.all(follows.map(async (follow) => {
+      const update = updates.find((update) => update.where.id._eq === follow.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Follow, follow, update._set);
+    }));
 
     // Custom logic
     return data.updateFollowMany;
   }
 
-  async updateFollowByPk(selectionSet: string[], pkColumns: FollowPkColumnsInput, _set: FollowSetInput) {
+  async updateFollowByPk(
+    selectionSet: string[],
+    pkColumns: FollowPkColumnsInput,
+    _set: FollowSetInput,
+  ) {
     const follow = await this.followRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, follow);
@@ -199,10 +205,12 @@ export class FollowsService extends RequestContext {
     return data.updateFollowByPk;
   }
 
-  async deleteFollow(selectionSet: string[], where: FollowBoolExp) {
+  async deleteFollow(
+    selectionSet: string[],
+    where: FollowBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const follows = await this.followRepository.findByIds(where.id._in);
     for (const follow of follows) {
@@ -210,34 +218,28 @@ export class FollowsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${follow.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateFollow', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateFollow', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      follows.map(async (follow) => {
-        await this.logsService.deleteLog(EntityName.Follow, follow.id);
-      }),
-    );
+    await Promise.all(follows.map(async (follow) => {
+      await this.logsService.deleteLog(EntityName.Follow, follow.id);
+    }));
 
     // Custom logic
     return data.updateFollow;
   }
 
-  async deleteFollowByPk(selectionSet: string[], id: string) {
+  async deleteFollowByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const follow = await this.followRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(follow);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Follow (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateFollowByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateFollowByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Follow, id);
     // Custom logic
@@ -250,18 +252,10 @@ export class FollowsService extends RequestContext {
     orderBy?: Array<FollowOrderBy>,
     distinctOn?: Array<FollowSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'followAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('followAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.followAggregate;
   }
 }

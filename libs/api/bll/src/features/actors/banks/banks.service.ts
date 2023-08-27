@@ -40,14 +40,7 @@ export class BanksService extends RequestContext {
 
   checkPermsDelete(bank: Bank) {
     if (bank.deletedAt) throw new NotFoundException(`Bank was deleted on ${bank.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bank.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bank.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class BanksService extends RequestContext {
     if (bank.deletedAt) throw new NotFoundException(`Bank was deleted on ${bank.deletedAt}.`);
     if (bank.hiddenAt) throw new NotFoundException('Bank must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bank.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bank.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class BanksService extends RequestContext {
 
   checkPropsConstraints(props: BankSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class BanksService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertBankOne(selectionSet: string[], object: BankInsertInput, onConflict?: BankOnConflict) {
+  async insertBankOne(
+    selectionSet: string[],
+    object: BankInsertInput,
+    onConflict?: BankOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Bank.');
 
@@ -101,10 +95,10 @@ export class BanksService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertBankOne', selectionSet, object, onConflict);
-
+  
     const bank = await this.bankRepository.findOneOrFail(data.insertBankOne.id);
     await this.logsService.createLog(EntityName.Bank, bank);
-
+    
     // Custom logic
     return data.insertBankOne;
   }
@@ -122,13 +116,20 @@ export class BanksService extends RequestContext {
     return data.bank;
   }
 
-  async findBankByPk(selectionSet: string[], id: string) {
+  async findBankByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('bankByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('bankByPk', selectionSet, {  id,  });
     return data.bankByPk;
   }
 
-  async insertBank(selectionSet: string[], objects: Array<BankInsertInput>, onConflict?: BankOnConflict) {
+  async insertBank(
+    selectionSet: string[],
+    objects: Array<BankInsertInput>,
+    onConflict?: BankOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Bank.');
@@ -152,7 +153,10 @@ export class BanksService extends RequestContext {
     return data.insertBank;
   }
 
-  async updateBankMany(selectionSet: string[], updates: Array<BankUpdates>) {
+  async updateBankMany(
+    selectionSet: string[],
+    updates: Array<BankUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class BanksService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateBankMany', selectionSet, updates);
 
-    await Promise.all(
-      banks.map(async (bank) => {
-        const update = updates.find((update) => update.where.id._eq === bank.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Bank, bank, update._set);
-      }),
-    );
+    await Promise.all(banks.map(async (bank) => {
+      const update = updates.find((update) => update.where.id._eq === bank.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Bank, bank, update._set);
+    }));
 
     // Custom logic
     return data.updateBankMany;
   }
 
-  async updateBankByPk(selectionSet: string[], pkColumns: BankPkColumnsInput, _set: BankSetInput) {
+  async updateBankByPk(
+    selectionSet: string[],
+    pkColumns: BankPkColumnsInput,
+    _set: BankSetInput,
+  ) {
     const bank = await this.bankRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, bank);
@@ -199,10 +205,12 @@ export class BanksService extends RequestContext {
     return data.updateBankByPk;
   }
 
-  async deleteBank(selectionSet: string[], where: BankBoolExp) {
+  async deleteBank(
+    selectionSet: string[],
+    where: BankBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const banks = await this.bankRepository.findByIds(where.id._in);
     for (const bank of banks) {
@@ -210,34 +218,28 @@ export class BanksService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bank (${bank.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateBank', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateBank', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      banks.map(async (bank) => {
-        await this.logsService.deleteLog(EntityName.Bank, bank.id);
-      }),
-    );
+    await Promise.all(banks.map(async (bank) => {
+      await this.logsService.deleteLog(EntityName.Bank, bank.id);
+    }));
 
     // Custom logic
     return data.updateBank;
   }
 
-  async deleteBankByPk(selectionSet: string[], id: string) {
+  async deleteBankByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const bank = await this.bankRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(bank);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Bank (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateBankByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateBankByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Bank, id);
     // Custom logic
@@ -250,18 +252,10 @@ export class BanksService extends RequestContext {
     orderBy?: Array<BankOrderBy>,
     distinctOn?: Array<BankSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'bankAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('bankAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.bankAggregate;
   }
 }

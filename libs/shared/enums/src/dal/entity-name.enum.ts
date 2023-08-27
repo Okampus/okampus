@@ -31,6 +31,7 @@ export enum EntityName {
 
   Pole = 'Pole',
   Role = 'Role',
+  TeamMemberRole = 'TeamMemberRole',
 
   Account = 'Account',
   AccountAllocate = 'AccountAllocate',

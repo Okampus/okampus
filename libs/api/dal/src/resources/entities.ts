@@ -32,6 +32,7 @@ import { TeamJoin } from './team/team-join/team-join.entity';
 import { TeamMember } from './team/team-member/team-member.entity';
 import { TeamMetric } from './team/team-metric/team-metric.entity';
 import { Role } from './team/role/role.entity';
+import { TeamMemberRole } from './team/team-member-role/team-member-role.entity';
 import { Team } from './team/team.entity';
 import { EventApprovalStep } from './tenant/event-approval-step/event-approval-step.entity';
 import { EventApproval } from './tenant/event-approval/event-approval.entity';
@@ -100,6 +101,7 @@ export const allEntities = [
 
   Pole,
   Role,
+  TeamMemberRole,
 
   Account,
   Expense,

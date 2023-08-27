@@ -1,0 +1,11 @@
+mutation DeleteRole($id: bigint!) {
+  deleteRoleByPk(id: $id) {
+    __typename
+    id
+    name
+    type
+    permissions
+    type
+    category
+  }
+}

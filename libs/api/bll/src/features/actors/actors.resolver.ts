@@ -11,7 +11,7 @@ import type {
   UpdateActorArgsType,
   FindActorArgsType,
   FindByPkActorArgsType,
-  AggregateActorArgsType,
+  AggregateActorArgsType
 } from './actors.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class ActorsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.insertActor(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class ActorsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateActorArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.updateActorMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class ActorsMutationResolver {
     const { where } = getGraphQLArgs<DeleteActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.deleteActor(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class ActorsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.findActor(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertActorOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.insertActorOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async actorByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkActorArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.actorsService.findActorByPk(getSelectionSet(info), id);
+    return await this.actorsService.findActorByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class ActorsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.updateActorByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class ActorsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.actorsService.deleteActorByPk(getSelectionSet(info), id);
   }
@@ -114,8 +115,15 @@ export class ActorsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.actorsService.aggregateActor(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.actorsService.aggregateActor(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

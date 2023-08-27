@@ -11,7 +11,7 @@ import type {
   UpdateIndividualArgsType,
   FindIndividualArgsType,
   FindByPkIndividualArgsType,
-  AggregateIndividualArgsType,
+  AggregateIndividualArgsType
 } from './individuals.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class IndividualsMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.insertIndividual(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class IndividualsMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateIndividualArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.updateIndividualMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class IndividualsMutationResolver {
     const { where } = getGraphQLArgs<DeleteIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.deleteIndividual(getSelectionSet(info), where);
   }
@@ -59,36 +59,30 @@ export class IndividualsQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.individualsService.findIndividual(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    return await this.individualsService.findIndividual(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertIndividualOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.insertIndividualOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async individualByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkIndividualArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.individualsService.findIndividualByPk(getSelectionSet(info), id);
+    return await this.individualsService.findIndividualByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -96,7 +90,7 @@ export class IndividualsQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.updateIndividualByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -106,7 +100,7 @@ export class IndividualsQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), id);
   }
@@ -121,7 +115,7 @@ export class IndividualsQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.individualsService.aggregateIndividual(
       getSelectionSet(info),
@@ -129,7 +123,7 @@ export class IndividualsQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

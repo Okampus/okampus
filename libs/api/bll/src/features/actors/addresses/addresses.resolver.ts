@@ -11,7 +11,7 @@ import type {
   UpdateAddressArgsType,
   FindAddressArgsType,
   FindByPkAddressArgsType,
-  AggregateAddressArgsType,
+  AggregateAddressArgsType
 } from './addresses.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -24,7 +24,7 @@ export class AddressesMutationResolver {
     const { objects, onConflict } = getGraphQLArgs<InsertAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.insertAddress(getSelectionSet(info), objects, onConflict);
   }
@@ -34,7 +34,7 @@ export class AddressesMutationResolver {
     const { updates } = getGraphQLArgs<{ updates: UpdateAddressArgsType[] }>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.updateAddressMany(getSelectionSet(info), updates);
   }
@@ -44,7 +44,7 @@ export class AddressesMutationResolver {
     const { where } = getGraphQLArgs<DeleteAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.deleteAddress(getSelectionSet(info), where);
   }
@@ -59,29 +59,30 @@ export class AddressesQueryResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<FindAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.findAddress(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertAddressOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.insertAddressOne(getSelectionSet(info), object, onConflict);
   }
 
   @Query()
   async addressByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkAddressArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
-    return await this.addressesService.findAddressByPk(getSelectionSet(info), id);
+    return await this.addressesService.findAddressByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -89,7 +90,7 @@ export class AddressesQueryResolver {
     const { pkColumns, _set } = getGraphQLArgs<UpdateByPkAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.updateAddressByPk(getSelectionSet(info), pkColumns, _set);
   }
@@ -99,7 +100,7 @@ export class AddressesQueryResolver {
     const { id } = getGraphQLArgs<DeleteByPkAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.deleteAddressByPk(getSelectionSet(info), id);
   }
@@ -114,7 +115,7 @@ export class AddressesQueryAggregateResolver {
     const { where, orderBy, distinctOn, limit, offset } = getGraphQLArgs<AggregateAddressArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
-      info.variableValues,
+      info.variableValues
     );
     return await this.addressesService.aggregateAddress(
       getSelectionSet(info),
@@ -122,7 +123,7 @@ export class AddressesQueryAggregateResolver {
       orderBy,
       distinctOn,
       limit,
-      offset,
+      offset
     );
   }
 }

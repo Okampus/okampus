@@ -40,14 +40,7 @@ export class ActionsService extends RequestContext {
 
   checkPermsDelete(action: Action) {
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === action.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class ActionsService extends RequestContext {
     if (action.deletedAt) throw new NotFoundException(`Action was deleted on ${action.deletedAt}.`);
     if (action.hiddenAt) throw new NotFoundException('Action must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id,
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === action.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class ActionsService extends RequestContext {
 
   checkPropsConstraints(props: ActionSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class ActionsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertActionOne(selectionSet: string[], object: ActionInsertInput, onConflict?: ActionOnConflict) {
+  async insertActionOne(
+    selectionSet: string[],
+    object: ActionInsertInput,
+    onConflict?: ActionOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
 
@@ -101,10 +95,10 @@ export class ActionsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertActionOne', selectionSet, object, onConflict);
-
+  
     const action = await this.actionRepository.findOneOrFail(data.insertActionOne.id);
     await this.logsService.createLog(EntityName.Action, action);
-
+    
     // Custom logic
     return data.insertActionOne;
   }
@@ -122,13 +116,20 @@ export class ActionsService extends RequestContext {
     return data.action;
   }
 
-  async findActionByPk(selectionSet: string[], id: string) {
+  async findActionByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('actionByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('actionByPk', selectionSet, {  id,  });
     return data.actionByPk;
   }
 
-  async insertAction(selectionSet: string[], objects: Array<ActionInsertInput>, onConflict?: ActionOnConflict) {
+  async insertAction(
+    selectionSet: string[],
+    objects: Array<ActionInsertInput>,
+    onConflict?: ActionOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Action.');
@@ -152,7 +153,10 @@ export class ActionsService extends RequestContext {
     return data.insertAction;
   }
 
-  async updateActionMany(selectionSet: string[], updates: Array<ActionUpdates>) {
+  async updateActionMany(
+    selectionSet: string[],
+    updates: Array<ActionUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class ActionsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateActionMany', selectionSet, updates);
 
-    await Promise.all(
-      actions.map(async (action) => {
-        const update = updates.find((update) => update.where.id._eq === action.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Action, action, update._set);
-      }),
-    );
+    await Promise.all(actions.map(async (action) => {
+      const update = updates.find((update) => update.where.id._eq === action.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Action, action, update._set);
+    }));
 
     // Custom logic
     return data.updateActionMany;
   }
 
-  async updateActionByPk(selectionSet: string[], pkColumns: ActionPkColumnsInput, _set: ActionSetInput) {
+  async updateActionByPk(
+    selectionSet: string[],
+    pkColumns: ActionPkColumnsInput,
+    _set: ActionSetInput,
+  ) {
     const action = await this.actionRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, action);
@@ -199,10 +205,12 @@ export class ActionsService extends RequestContext {
     return data.updateActionByPk;
   }
 
-  async deleteAction(selectionSet: string[], where: ActionBoolExp) {
+  async deleteAction(
+    selectionSet: string[],
+    where: ActionBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actions = await this.actionRepository.findByIds(where.id._in);
     for (const action of actions) {
@@ -210,34 +218,28 @@ export class ActionsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${action.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateAction', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateAction', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      actions.map(async (action) => {
-        await this.logsService.deleteLog(EntityName.Action, action.id);
-      }),
-    );
+    await Promise.all(actions.map(async (action) => {
+      await this.logsService.deleteLog(EntityName.Action, action.id);
+    }));
 
     // Custom logic
     return data.updateAction;
   }
 
-  async deleteActionByPk(selectionSet: string[], id: string) {
+  async deleteActionByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
     const action = await this.actionRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(action);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Action (${id}).`);
 
-    const data = await this.hasuraService.updateByPk(
-      'updateActionByPk',
-      selectionSet,
-      { id },
-      {
-        deletedAt: new Date().toISOString(),
-      },
-    );
+    const data = await this.hasuraService.updateByPk('updateActionByPk', selectionSet, { id }, {
+      deletedAt: new Date().toISOString(),
+    });
 
     await this.logsService.deleteLog(EntityName.Action, id);
     // Custom logic
@@ -250,18 +252,10 @@ export class ActionsService extends RequestContext {
     orderBy?: Array<ActionOrderBy>,
     distinctOn?: Array<ActionSelectColumn>,
     limit?: number,
-    offset?: number,
+    offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'actionAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset,
-    );
+    const data = await this.hasuraService.aggregate('actionAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.actionAggregate;
   }
 }
