@@ -1,5 +1,7 @@
 'use client';
 
+import EmptyStateImage from '../../../components/atoms/Image/EmptyStateImage';
+
 import HomeSideBar from '../../../components/layouts/SideBar/HomeSideBar';
 import GroupItem from '../../../components/atoms/Item/GroupItem';
 import ViewLayout from '../../../components/atoms/Layout/ViewLayout';
@@ -8,6 +10,7 @@ import EventCard from '../../../components/molecules/Card/EventCard';
 import { useMe } from '../../../context/navigation';
 import { useQueryAndSubscribe } from '../../../hooks/apollo/useQueryAndSubscribe';
 
+import { ReactComponent as MilestonesEmptyState } from '@okampus/assets/svg/empty-state/milestones.svg';
 import { GetEventsDocument, OrderBy } from '@okampus/shared/graphql';
 import { EventState } from '@okampus/shared/enums';
 
@@ -31,6 +34,8 @@ export default function HomePage() {
     variables,
   });
 
+  const events = data?.event ?? [];
+
   return (
     <>
       <HomeSideBar />
@@ -39,7 +44,15 @@ export default function HomePage() {
           heading="Les derniers événements"
           groupClassName="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4"
         >
-          {data?.event?.map((event) => <EventCard key={event.id} event={event} />)}
+          {events.length > 0 ? (
+            events.map((event) => <EventCard key={event.id} event={event} />)
+          ) : (
+            <EmptyStateImage
+              image={MilestonesEmptyState}
+              title="Aucun événement à venir pour le moment"
+              subtitle="Vous retrouverez les événements à l'affiche sur la page d'accueil"
+            />
+          )}
         </GroupItem>
       </ViewLayout>
     </>
