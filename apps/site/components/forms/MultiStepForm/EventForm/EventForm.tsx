@@ -22,7 +22,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import type { FormStepContext } from '../../../organisms/Form/MultiStepForm';
-import type { TeamManageInfo } from '../../../../context/navigation';
+import type { TeamManageInfo } from '../../../../utils/apollo/fragments';
 import type { useFormContext } from 'react-hook-form';
 
 const eventFormSchema = z

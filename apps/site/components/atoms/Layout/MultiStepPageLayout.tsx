@@ -1,9 +1,14 @@
+'use client';
+
 import ViewLayout from './ViewLayout';
 import SidePanel from '../../layouts/SidePanel';
 import ActionButton from '../../molecules/Button/ActionButton';
+
 import { clsx } from 'clsx';
 import { useState } from 'react';
 import { IconCircleCheck } from '@tabler/icons-react';
+
+import type { ViewLayoutProps } from './ViewLayout';
 
 export type MultiStepPageStepContext<T> = {
   values: T;
@@ -22,24 +27,17 @@ export type MultiStepPageStep<T> = {
 
 export type MultiStepPageLayoutProps<T> = {
   initialData: T;
-  header?: string;
-  scrollable?: boolean;
-  bottomPadded?: boolean;
   initialStep?: number;
-  className?: string;
   steps: MultiStepPageStep<T>[];
   onSubmit: (values: T) => void;
-};
+} & Omit<ViewLayoutProps, 'children'>;
 
 export default function MultiStepPageLayout<T>({
   initialData,
-  header,
-  scrollable = true,
-  bottomPadded = true,
   initialStep,
-  className,
   steps,
   onSubmit,
+  ...viewLayoutProps
 }: MultiStepPageLayoutProps<T>) {
   const [currentStep, setCurrentStep] = useState(initialStep ?? 0);
   const [data, setData] = useState<T>(initialData);
@@ -54,10 +52,7 @@ export default function MultiStepPageLayout<T>({
   return (
     <>
       <ViewLayout
-        innerClassName={className}
-        header={header}
-        bottomPadded={bottomPadded}
-        scrollable={scrollable}
+        {...viewLayoutProps}
         sidePanelIcon={
           <ActionButton
             action={{

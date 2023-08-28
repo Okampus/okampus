@@ -1,3 +1,4 @@
+import BottomBar from '../../../components/layouts/BottomBar';
 import BottomSheet from '../../../components/layouts/BottomSheet';
 import Modal from '../../../components/layouts/Modal';
 import Notification from '../../../components/layouts/Notification';
@@ -7,7 +8,6 @@ import RedirectSignin from '../../../components/wrappers/RedirectSignin';
 
 import { getApolloQuery } from '../../../ssr/getApolloQuery';
 
-import BottomBar from '../../../components/layouts/BottomBar';
 import { GetMeDocument } from '@okampus/shared/graphql';
 import { redirect } from 'next/navigation';
 
