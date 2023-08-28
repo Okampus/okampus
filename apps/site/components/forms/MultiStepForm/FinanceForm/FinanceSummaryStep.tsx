@@ -35,6 +35,7 @@ export default function FinanceSummaryStep({
     label: t(`enums.PaymentMethod.${value}`),
     value,
   }));
+
   const payedByTypes = Object.entries(PayedByType).map(([, value]) => ({
     label: t(`enums.PayedByType.${value}`),
     value,
@@ -86,7 +87,7 @@ export default function FinanceSummaryStep({
                 options={
                   teamManage?.teamMembers.map((teamMember) => ({
                     label: <UserLabeled user={teamMember.user} showCardOnClick={false} small={true} />,
-                    value: teamMember.user.individual?.id,
+                    value: teamMember.user?.id,
                   })) || []
                 }
                 {...field}

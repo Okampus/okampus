@@ -107,42 +107,36 @@ query GetTeamManage($slug: String!) {
       user {
         __typename
         id
-        createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          bio
+          slug
+          status
+          website
+          actorImages {
             __typename
             id
             createdAt
-            email
-            name
-            bio
-            slug
-            status
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
-              __typename
-              id
-              pseudo
               url
-              type
-              order
             }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
           }
         }
       }
@@ -341,78 +335,6 @@ query GetTeamManage($slug: String!) {
                 createdAt
                 firstName
                 lastName
-                individual {
-                  __typename
-                  id
-                  createdAt
-                  actor {
-                    __typename
-                    id
-                    createdAt
-                    email
-                    name
-                    slug
-                    website
-                    actorImages {
-                      __typename
-                      id
-                      createdAt
-                      type
-                      image {
-                        __typename
-                        id
-                        createdAt
-                        url
-                        size
-                        type
-                      }
-                    }
-                    bio
-                    status
-                    actorTags {
-                      tag {
-                        __typename
-                        id
-                        createdAt
-                        slug
-                        name
-                        color
-                      }
-                    }
-                    socials(where: { deletedAt: { _isNull: true } }) {
-                      __typename
-                      id
-                      pseudo
-                      url
-                      type
-                      order
-                    }
-                  }
-                }
-              }
-            }
-          }
-          eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
-            aggregate {
-              count
-            }
-          }
-          eventJoins(where: { state: { _eq: "Approved" } }, limit: 3) {
-            __typename
-            id
-            createdAt
-            state
-            isPresent
-            joinedBy {
-              __typename
-              id
-              createdAt
-              firstName
-              lastName
-              individual {
-                __typename
-                id
-                createdAt
                 actor {
                   __typename
                   id
@@ -459,44 +381,23 @@ query GetTeamManage($slug: String!) {
               }
             }
           }
-        }
-      }
-      banner {
-        __typename
-        id
-        createdAt
-        url
-        size
-        type
-        name
-      }
-      projectSupervisors {
-        teamMember {
-          __typename
-          id
-          createdAt
-          start
-          teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
-            role {
-              __typename
-              id
-              createdAt
-              color
-              type
-              name
-              permissions
+          eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+            aggregate {
+              count
             }
           }
-          user {
+          eventJoins(where: { state: { _eq: "Approved" } }, limit: 3) {
             __typename
             id
             createdAt
-            firstName
-            lastName
-            individual {
+            state
+            isPresent
+            joinedBy {
               __typename
               id
               createdAt
+              firstName
+              lastName
               actor {
                 __typename
                 id
@@ -539,6 +440,84 @@ query GetTeamManage($slug: String!) {
                   type
                   order
                 }
+              }
+            }
+          }
+        }
+      }
+      banner {
+        __typename
+        id
+        createdAt
+        url
+        size
+        type
+        name
+      }
+      projectSupervisors {
+        teamMember {
+          __typename
+          id
+          createdAt
+          start
+          teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
+            role {
+              __typename
+              id
+              createdAt
+              color
+              type
+              name
+              permissions
+            }
+          }
+          user {
+            __typename
+            id
+            createdAt
+            firstName
+            lastName
+            actor {
+              __typename
+              id
+              createdAt
+              email
+              name
+              slug
+              website
+              actorImages {
+                __typename
+                id
+                createdAt
+                type
+                image {
+                  __typename
+                  id
+                  createdAt
+                  url
+                  size
+                  type
+                }
+              }
+              bio
+              status
+              actorTags {
+                tag {
+                  __typename
+                  id
+                  createdAt
+                  slug
+                  name
+                  color
+                }
+              }
+              socials(where: { deletedAt: { _isNull: true } }) {
+                __typename
+                id
+                pseudo
+                url
+                type
+                order
               }
             }
           }

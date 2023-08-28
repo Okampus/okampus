@@ -15,7 +15,7 @@ import {
   MEILISEARCH_ID_SEPARATOR,
   MEILISEARCH_TYPE_FIELD,
 } from '@okampus/shared/consts';
-import { Event, Individual, Team, Tenant } from '@okampus/api/dal';
+import { Event, User, Team, Tenant } from '@okampus/api/dal';
 import { SearchableEntities } from '@okampus/shared/enums';
 
 import { MeiliSearch } from 'meilisearch';
@@ -30,7 +30,7 @@ async function toIndexed(entities: Searchable[], type: string): Promise<Searchab
       const indexedEntity = await toSearchable(entity);
       const id = MeiliSearchService.getEntityId(entity, type);
       return { ...indexedEntity, id, entityId: entity.id.toString(), entityType: type };
-    })
+    }),
   );
 }
 
@@ -42,7 +42,10 @@ export class MeiliSearchService {
   logger = new Logger(MeiliSearchService.name);
   filterables = ['category', 'tags', 'score', 'entityType'];
 
-  constructor(private readonly configService: ConfigService, private readonly em: EntityManager) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly em: EntityManager,
+  ) {
     const options = loadConfig<ApiConfig['meilisearch']>(this.configService, 'meilisearch');
     this.client = new MeiliSearch(options);
   }
@@ -53,11 +56,11 @@ export class MeiliSearchService {
   }
 
   canBeIndexed(entity: Searchable): boolean {
-    if (entity instanceof Individual && entity.actor.slug === ANON_ACCOUNT_SLUG) return false;
+    if (entity instanceof User && entity.actor.slug === ANON_ACCOUNT_SLUG) return false;
     return true;
   }
 
-  public static indexedEntities = [Event, Team, Individual] as const;
+  public static indexedEntities = [Event, Team, User] as const;
 
   public static getEntityId(entity: Searchable, type: string): string {
     return [entity.tenant.id, type, entity.id.toString()]
@@ -140,16 +143,16 @@ export class MeiliSearchService {
 
   private async countEntities(type: string, tenantId: string): Promise<[name: string, count: number]> {
     const query = { tenant: { id: tenantId } };
-    if (type === Individual.name) {
+    if (type === User.name) {
       const filter = { tenant: { id: tenantId }, actor: { slug: { $ne: ANON_ACCOUNT_SLUG } } };
-      return [type, await this.em.count(Individual, filter)];
+      return [type, await this.em.count(User, filter)];
     }
 
     return [type, await this.em.count<Searchable>(type, query)];
   }
 
   private async getEntities(entityName: SearchableEntities, tenantId: string): Promise<Searchable[]> {
-    if (entityName === SearchableEntities.User) return await this.em.find(Individual, { tenant: { id: tenantId } });
+    if (entityName === SearchableEntities.User) return await this.em.find(User, { tenant: { id: tenantId } });
     if (entityName === SearchableEntities.Team) return await this.em.find(Team, { tenant: { id: tenantId } });
     if (entityName === SearchableEntities.Event) return await this.em.find(Event, { tenant: { id: tenantId } });
     return [];

@@ -5,7 +5,7 @@ import { Collection, Entity, EntityRepositoryType, ManyToMany, OneToOne, Propert
 
 import type { Tag } from '../actor/tag/tag.entity';
 import type { Content } from '../content/content.entity';
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 import type { IssueOptions } from './issue.options';
 
 @Entity({ customRepository: () => IssueRepository })
@@ -27,9 +27,9 @@ export abstract class Issue extends TenantScopedEntity {
   @OneToOne({ type: 'Content', onDelete: 'CASCADE' })
   content!: Content;
 
-  @ManyToMany({ type: 'Individual' })
+  @ManyToMany({ type: 'User' })
   @TransformCollection()
-  contributors = new Collection<Individual>(this, this.createdBy ? [this.createdBy] : []);
+  contributors = new Collection<User>(this, this.createdBy ? [this.createdBy] : []);
 
   constructor(options: IssueOptions) {
     super(options);

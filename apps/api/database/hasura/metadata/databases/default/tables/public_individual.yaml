@@ -1,35 +1,35 @@
 table:
-  name: individual
+  name: user
   schema: public
 object_relationships:
   - name: actor
     using:
       foreign_key_constraint_on: actor_id
-  - name: bot
-    using:
-      foreign_key_constraint_on:
-        column: individual_id
-        table:
-          name: bot
-          schema: public
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-  - name: user
+array_relationships:
+  - name: actions
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: user_id
         table:
-          name: user
+          name: action
           schema: public
-array_relationships:
+  - name: classGroupTeachers
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: class_group_teacher
+          schema: public
   - name: contributorIssues
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: user_id
         table:
           name: issue_contributors
           schema: public
@@ -74,13 +74,6 @@ array_relationships:
         column: created_by_id
         table:
           name: bank
-          schema: public
-  - name: createdBots
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: bot
           schema: public
   - name: createdCampusClusters
     using:
@@ -264,12 +257,12 @@ array_relationships:
         table:
           name: grant
           schema: public
-  - name: createdIndividuals
+  - name: createdUsers
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: individual
+          name: user
           schema: public
   - name: createdIssues
     using:
@@ -446,13 +439,6 @@ array_relationships:
         table:
           name: thread
           schema: public
-  - name: createdUsers
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: user
-          schema: public
   - name: createdValidations
     using:
       foreign_key_constraint_on:
@@ -466,6 +452,20 @@ array_relationships:
         column: created_by_id
         table:
           name: vote
+          schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: joined_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: eventSupervisors
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: event_supervisor
           schema: public
   - name: following
     using:
@@ -481,10 +481,17 @@ array_relationships:
         table:
           name: finance
           schema: public
+  - name: missionJoins
+    using:
+      foreign_key_constraint_on:
+        column: joined_by_id
+        table:
+          name: mission_join
+          schema: public
   - name: notifieeEventApprovalSteps
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: user_id
         table:
           name: event_approval_step_notifiees
           schema: public
@@ -551,17 +558,45 @@ array_relationships:
         table:
           name: grant
           schema: public
+  - name: sessions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: session
+          schema: public
+  - name: shortcuts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: shortcut
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: joined_by_id
+        table:
+          name: team_join
+          schema: public
+  - name: teamMembers
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: team_member
+          schema: public
   - name: threadContributors
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: user_id
         table:
           name: thread_contributors
           schema: public
   - name: validatorEventApprovalStep
     using:
       foreign_key_constraint_on:
-        column: individual_id
+        column: user_id
         table:
           name: event_approval_step_validators
           schema: public

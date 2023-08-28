@@ -28,7 +28,7 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
 
   if (!userId) return <>{children}</>;
 
-  const user = data?.user?.[0];
+  const user = data?.userByPk;
   return (
     <Popover forcePlacement={true} crossAxis={false} placementOffset={16} placement="right-start">
       <PopoverTrigger className={triggerClassName} onClick={() => getUser()}>
@@ -37,13 +37,13 @@ export default function UserPopoverCard({ userId, triggerClassName, children }: 
       <PopoverContent popoverClassName="rounded-t-2xl md:rounded-2xl bg-1">
         {user ? (
           <PopoverCard
-            link={USER_ROUTE(user.individual?.actor?.slug)}
-            name={user.individual?.actor?.name}
-            avatar={getAvatar(user.individual?.actor?.actorImages)?.image.url}
-            banner={getBanner(user.individual?.actor?.actorImages)?.image.url}
+            link={USER_ROUTE(user.actor?.slug)}
+            name={user.actor?.name}
+            avatar={getAvatar(user.actor?.actorImages)?.image.url}
+            banner={getBanner(user.actor?.actorImages)?.image.url}
             type="user"
           >
-            {user.individual?.actor?.bio && <div className="text-2">{user.individual.actor.bio}</div>}
+            {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
             <hr className="my-2 border-color-3" />
             <GroupItem heading="Actif depuis">
               <div className="flex items-center gap-1.5">

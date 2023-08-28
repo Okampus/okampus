@@ -99,8 +99,8 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
       label: 'Payé par',
       align: Align.Left,
       render: (value: FinanceMinimalInfo) => {
-        return value.initiatedBy?.user ? (
-          <UserLabeled user={{ ...value.initiatedBy.user, individual: value.initiatedBy }} />
+        return value.initiatedBy ? (
+          <UserLabeled user={value.initiatedBy} />
         ) : (
           <TextBadge color="grey" label="Inconnu" />
         );

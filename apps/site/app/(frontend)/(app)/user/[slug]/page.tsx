@@ -13,14 +13,14 @@ export default function UserPage({ params }: { params: { slug: string } }) {
   return (
     <ViewLayout
       innerClassName="relative"
-      headerPrefix={<AvatarImage size={16} actor={user.individual.actor} type="user" />}
-      headerPrefixSmall={<AvatarImage size={12} actor={user.individual.actor} type="user" />}
-      header={user.individual.actor.name}
+      headerPrefix={<AvatarImage size={16} actor={user.actor} type="user" />}
+      headerPrefixSmall={<AvatarImage size={12} actor={user.actor} type="user" />}
+      header={user.actor.name}
     >
       <div className="shrink-0 flex flex-col">
-        {user.individual?.actor.socials.length > 0 && (
+        {user.actor.socials.length > 0 && (
           <div className="flex flex-wrap gap-3 items-center">
-            {user.individual?.actor.socials.map(
+            {user.actor.socials.map(
               (social) =>
                 social.url && (
                   <a

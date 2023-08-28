@@ -48,36 +48,36 @@ export default function TenantDashboardPage() {
       align: Align.Left,
       label: 'Président',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
+        const teamMember = value.teamMembers.find((member) =>
           member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Director),
-        )?.user;
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Trésorier',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
+        const teamMember = value.teamMembers.find((member) =>
           member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Treasurer),
-        )?.user;
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {
       align: Align.Left,
       label: 'Secrétaire',
       render: (value: TeamDashboardInfo) => {
-        const user = value.teamMembers.find((member) =>
+        const teamMember = value.teamMembers.find((member) =>
           member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Secretary),
-        )?.user;
+        );
 
-        if (!user) return <TextBadge color="grey" label="Manquant" />;
-        return <UserLabeled user={user} />;
+        if (!teamMember?.user) return <TextBadge color="grey" label="Manquant" />;
+        return <UserLabeled user={teamMember.user} />;
       },
     },
     {

@@ -32,7 +32,7 @@ import type {
 } from '../utils/apollo/fragments';
 
 export function useUser(slug: string) {
-  const where = { individual: { actor: { slug } } };
+  const where = { user: { actor: { slug } } };
   const user = useTypedFragment<UserInfo>({ __typename: 'User', fragment: UserFragment, where });
   return { user };
 }
@@ -46,8 +46,9 @@ export function useMeSlug() {
 
 export function useMe() {
   const slug = useMeSlug();
-  const where = { user: { individual: { actor: { slug } } } };
+  const where = { user: { actor: { slug } } };
   const me = useTypedFragment<UserLoginInfo>({ __typename: 'UserLogin', fragment: UserLoginFragment, where });
+
   if (!me) redirect('/signin');
 
   return me;

@@ -53,22 +53,12 @@ mutation InsertEventApproval($object: EventApprovalInsertInput!) {
           }
         }
       }
-      user {
+      firstName
+      lastName
+      actor {
         __typename
         id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
+        slug
       }
     }
   }

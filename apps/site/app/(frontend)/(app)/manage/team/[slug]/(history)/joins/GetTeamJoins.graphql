@@ -9,28 +9,23 @@ query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit
       createdAt
       firstName
       lastName
-      individual {
+      actor {
         __typename
         id
-        createdAt
-        actor {
+        slug
+        bio
+        name
+        email
+        website
+        status
+        actorImages {
           __typename
           id
-          slug
-          bio
-          name
-          email
-          website
-          status
-          actorImages {
+          type
+          image {
             __typename
             id
-            type
-            image {
-              __typename
-              id
-              url
-            }
+            url
           }
         }
       }

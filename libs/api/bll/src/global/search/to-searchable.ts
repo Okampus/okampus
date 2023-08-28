@@ -1,29 +1,29 @@
 import { load } from '@okampus/api/shards';
 import { ActorImageType } from '@okampus/shared/enums';
 
-import { Team, Event, Individual } from '@okampus/api/dal';
+import { Team, Event, User } from '@okampus/api/dal';
 import type { BaseSearchable, Searchable } from '@okampus/api/dal';
 
-export function individualToSearchable(individual: Individual): BaseSearchable {
-  if (!individual.actor) throw new Error('Actor is not defined.');
+export function userToSearchable(user: User): BaseSearchable {
+  if (!user.actor) throw new Error('Actor is not defined.');
 
   const thumbnail =
-    load(individual.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null;
-  const tags = load(individual.actor.tags).map((tag) => tag.name);
+    load(user.actor.actorImages).find((image) => image.type === ActorImageType.Avatar)?.image?.url ?? null;
+  const tags = load(user.actor.tags).map((tag) => tag.name);
 
   return {
-    name: individual.actor.name,
-    slug: individual.actor.slug,
+    name: user.actor.name,
+    slug: user.actor.slug,
     tags,
     thumbnail,
-    description: individual.actor.bio,
-    entityType: 'individual',
+    description: user.actor.bio,
+    entityType: 'user',
     categories: [],
-    createdAt: individual.createdAt.getTime(),
-    // updatedAt: individual.updatedAt.getTime(),
+    createdAt: user.createdAt.getTime(),
+    // updatedAt: user.updatedAt.getTime(),
     events: [],
     teams: [],
-    individuals: [],
+    users: [],
   };
 }
 
@@ -43,7 +43,7 @@ export function teamToSearchable(team: Team): BaseSearchable {
     categories,
     createdAt: team.createdAt.getTime(),
     // updatedAt: team.updatedAt.getTime(),
-    individuals: [],
+    users: [],
     events: [],
     teams,
     tags: [],
@@ -64,7 +64,7 @@ export function eventToSearchable(event: Event): BaseSearchable {
     categories: [event.state, ...(event.location?.address?.city ? [event.location.address.city] : [])],
     createdAt: event.createdAt.getTime(),
     // updatedAt: event.updatedAt.getTime(),
-    individuals: [],
+    users: [],
     events: [],
     teams,
     tags,
@@ -72,7 +72,7 @@ export function eventToSearchable(event: Event): BaseSearchable {
 }
 
 export function toSearchable(entity: Searchable) {
-  if (entity instanceof Individual) return individualToSearchable(entity);
+  if (entity instanceof User) return userToSearchable(entity);
   if (entity instanceof Team) return teamToSearchable(entity);
   if (entity instanceof Event) return eventToSearchable(entity);
   throw new Error('Unknown entity type.');

@@ -1,5 +1,5 @@
-import type { Individual } from './individual/individual.entity';
+import type { User } from './user/user.entity';
 
 export type BaseOptions = {
-  createdBy?: Individual | null;
+  createdBy?: User | null;
 };

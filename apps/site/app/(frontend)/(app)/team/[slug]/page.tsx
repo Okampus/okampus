@@ -85,7 +85,7 @@ export default function TeamPage({ params }: { params: { slug: string } }) {
                         updateFragment<UserLoginInfo>({
                           __typename: 'UserLogin',
                           fragment: UserLoginFragment,
-                          where: { user: { individual: { actor: { slug: me.user.individual.actor.slug } } } },
+                          where: { user: { user: { actor: { slug: me.user.actor.slug } } } },
                           update: (userLogin) =>
                             produce(userLogin, (draft) => {
                               draft.user.teamJoins.push(insertTeamJoinOne);

@@ -1,5 +1,5 @@
-import type { ActorTeamIndividualInfo } from './actor.info';
-import type { IndividualMinimalInfo } from './individual.info';
+import type { ActorTeamUserInfo } from './actor.info';
+import type { UserMinimalInfo } from './user.info';
 import type { LegalUnitMinimalInfo } from './legal-unit.info';
 
 export type FinanceMinimalInfo = {
@@ -9,11 +9,11 @@ export type FinanceMinimalInfo = {
   description: string;
   method: string;
   payedAt: string;
-  payedBy: ActorTeamIndividualInfo;
+  payedBy: ActorTeamUserInfo;
   payedByType: string;
-  receivedBy: ActorTeamIndividualInfo;
-  createdBy?: IndividualMinimalInfo | null;
-  initiatedBy?: IndividualMinimalInfo | null;
+  receivedBy: ActorTeamUserInfo;
+  createdBy?: UserMinimalInfo | null;
+  initiatedBy?: UserMinimalInfo | null;
   project?: { id: string; name: string } | null;
   event?: { id: string; name: string } | null;
   legalUnit?: LegalUnitMinimalInfo | null;

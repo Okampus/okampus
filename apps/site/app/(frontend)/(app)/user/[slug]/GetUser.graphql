@@ -1,40 +1,36 @@
 query GetUser($slug: String!) {
-  user(where: { individual: { actor: { slug: { _eq: $slug } } } }, limit: 1) {
+  user(where: { actor: { slug: { _eq: $slug } } }, limit: 1) {
     __typename
     id
     createdAt
     firstName
     lastName
-    individual {
+    actor {
       __typename
       id
-      actor {
+      slug
+      status
+      bio
+      name
+      email
+      website
+      actorImages {
         __typename
         id
-        slug
-        status
-        bio
-        name
-        email
-        website
-        actorImages {
+        type
+        image {
           __typename
           id
-          type
-          image {
-            __typename
-            id
-            url
-          }
-        }
-        socials(where: { deletedAt: { _isNull: true } }) {
-          __typename
-          id
-          pseudo
           url
-          type
-          order
         }
+      }
+      socials(where: { deletedAt: { _isNull: true } }) {
+        __typename
+        id
+        pseudo
+        url
+        type
+        order
       }
     }
     teamMembers(where: { deletedAt: { _isNull: true } }) {

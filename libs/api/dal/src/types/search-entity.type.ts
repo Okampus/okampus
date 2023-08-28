@@ -10,7 +10,7 @@ export interface BaseSearchable {
   createdAt: number;
   events: string[];
   teams: string[];
-  individuals: string[];
+  users: string[];
   [key: string]: unknown;
 }
 

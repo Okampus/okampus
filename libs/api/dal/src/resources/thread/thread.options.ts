@@ -1,6 +1,6 @@
 import type { Event } from '../event/event.entity';
 import type { Tag } from '../actor/tag/tag.entity';
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
 import type { Content } from '../content/content.entity';
 import type { ThreadProps } from './thread.props';
@@ -12,5 +12,5 @@ export type ThreadOptions = ThreadProps &
     event?: Event | null;
     issue?: Issue | null;
     rootContent?: Content;
-    contributors?: Individual[];
+    contributors?: User[];
   };

@@ -1,14 +1,16 @@
-import type { User } from '../../individual/user/user.entity';
-import type { FormSubmission } from '../../form-submission/form-submission.entity';
+import type { FileUpload } from '../../file-upload/file-upload.entity';
+import type { Bank } from '../../actor/bank/bank.entity';
+import type { User } from '../../user/user.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { Role } from '../role/role.entity';
-import type { Team } from '../team.entity';
+import type { Finance } from '../finance/finance.entity';
 import type { ExpenseProps } from './expense.props';
+import type { ExpenseItem } from '../expense-item/expense-item.entity';
 
 export type ExpenseOptions = ExpenseProps &
   TenantScopedOptions & {
-    formSubmission: FormSubmission;
-    joinedBy: User;
-    team: Team;
-    askedRole: Role;
+    bank: Bank;
+    processedBy: User;
+    finance: Finance;
+    expenseReport: FileUpload;
+    expenseItems?: ExpenseItem[];
   };

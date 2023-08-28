@@ -24,7 +24,7 @@ import type { Actor } from '../../actor/actor.entity';
 import type { Account } from '../account/account.entity';
 import type { Tag } from '../../actor/tag/tag.entity';
 import type { Location } from '../../actor/location/location.entity';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => FinanceRepository })
@@ -55,8 +55,8 @@ export class Finance extends TenantScopedEntity {
   @ManyToOne({ type: 'Actor' })
   payedBy!: Actor;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  initiatedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  initiatedBy: User | null = null;
 
   @Property({ type: 'datetime' })
   payedAt!: Date;

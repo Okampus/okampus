@@ -1,4 +1,4 @@
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 import type { Team } from '../team/team.entity';
 import type { TenantScopedOptions } from '../tenant-scoped.options';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
@@ -8,7 +8,7 @@ import type { ActorProps } from './actor.props';
 export type ActorOptions = ActorProps &
   TenantScopedOptions & {
     tags?: Tag[];
-    individual?: Individual | null;
+    user?: User | null;
     team?: Team | null;
     legalUnit?: LegalUnit | null;
   };

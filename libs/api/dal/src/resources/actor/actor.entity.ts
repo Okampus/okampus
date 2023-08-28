@@ -19,7 +19,7 @@ import type { Bank } from './bank/bank.entity';
 import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
 import type { Report } from '../content/report/report.entity';
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 import type { Team } from '../team/team.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
@@ -53,8 +53,8 @@ export class Actor extends TenantScopedEntity {
   @Unique()
   ical = randomId();
 
-  @OneToOne({ type: 'Individual', mappedBy: 'actor' })
-  individual?: Individual;
+  @OneToOne({ type: 'User', mappedBy: 'actor' })
+  user?: User;
 
   @OneToOne({ type: 'Team', mappedBy: 'actor' })
   team?: Team;

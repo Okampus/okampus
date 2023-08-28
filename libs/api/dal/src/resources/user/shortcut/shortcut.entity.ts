@@ -3,9 +3,9 @@ import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { ShortcutType } from '@okampus/shared/enums';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne } from '@mikro-orm/core';
 
-import type { User } from '../user/user.entity';
-import type { Actor } from '../../actor/actor.entity';
 import type { ShortcutOptions } from './shortcut.options';
+import type { User } from '../user.entity';
+import type { Actor } from '../../actor/actor.entity';
 
 @Entity({ customRepository: () => ShortcutRepository })
 export class Shortcut extends TenantScopedEntity {

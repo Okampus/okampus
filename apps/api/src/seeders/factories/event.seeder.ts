@@ -84,7 +84,7 @@ export class EventSeeder extends Factory<Event> {
         ? new FormSubmission({
             form: this.team.tenant.eventValidationForm,
             submission: generateRandomSubmission(this.team.tenant.eventValidationForm.schema as FormSchema),
-            createdBy: supervisor.individual,
+            createdBy: supervisor,
             tenant: this.team.tenant,
           })
         : null;
@@ -115,11 +115,11 @@ export class EventSeeder extends Factory<Event> {
               },
             ],
             type: FormType.Event,
-            createdBy: supervisor.individual,
+            createdBy: supervisor,
             tenant: this.team.tenant,
           })
         : null,
-      createdBy: supervisor.individual,
+      createdBy: supervisor,
       tenant: this.team.tenant,
     };
   }

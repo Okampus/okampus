@@ -8,8 +8,7 @@ import type { Pole } from '../pole/pole.entity';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';
 import type { TeamJoinOptions } from './team-join.options';
-import type { User } from '../../individual/user/user.entity';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => TeamJoinRepository })
 export class TeamJoin extends TenantScopedEntity {
@@ -21,8 +20,8 @@ export class TeamJoin extends TenantScopedEntity {
   @ManyToOne({ type: 'User' })
   joinedBy!: User;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  processedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  processedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;

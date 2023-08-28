@@ -88,7 +88,7 @@ import { readFile as readFileAsync, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { UploadsService } from '@okampus/api/bll';
-import type { EventApprovalStep, Individual, User, BaseEntity } from '@okampus/api/dal';
+import type { EventApprovalStep, User, BaseEntity } from '@okampus/api/dal';
 import type { SocialType } from '@okampus/shared/enums';
 
 import type { EntityManager } from '@mikro-orm/core';
@@ -156,10 +156,10 @@ export async function readYaml(path: string) {
 
 async function createEventApprovalStep(
   em: EntityManager,
-  validators: Individual[],
+  validators: User[],
   tenant: Tenant,
   order: number,
-  createdBy: Individual | null,
+  createdBy: User | null,
 ): Promise<EventApprovalStep> {
   const step = await new EventApprovalStepSeeder(em, tenant, order, createdBy).createOne();
   step.validators.add(validators);
@@ -300,7 +300,7 @@ export class DatabaseSeeder extends Seeder {
   public static pepper: Buffer;
   public static targetTenant: string;
   public static upload: UploadsService;
-  public static admin: Individual;
+  public static admin: User;
 
   private readonly logger = new ConsoleLogger('Seeder');
 
@@ -382,7 +382,7 @@ export class DatabaseSeeder extends Seeder {
     const bankLocations = await new LegalUnitLocationSeeder(em, banks, tenant, tags).create(20);
 
     let restAdmins = admins;
-    let stepAdmins: Individual[];
+    let stepAdmins: User[];
 
     this.logger.log('Seeding team categories..');
 
@@ -559,8 +559,8 @@ export class DatabaseSeeder extends Seeder {
           if (account) {
             const treasurer = parentTeam.team.teamMembers
               .getItems()
-              .find(({ teamMemberRoles }) =>
-                teamMemberRoles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
+              .find(({ teamMemberRoles: roles }) =>
+                roles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
               )?.user;
 
             const childAccount = new Account({
@@ -583,8 +583,8 @@ export class DatabaseSeeder extends Seeder {
                 category: FinanceCategory.Subvention,
                 payedBy: parentTeam.team.actor,
                 receivedBy: team.actor,
-                initiatedBy: treasurer?.individual,
-                createdBy: treasurer?.individual,
+                initiatedBy: treasurer,
+                createdBy: treasurer,
                 state: FinanceState.Completed,
                 tenant,
               }),
@@ -601,13 +601,13 @@ export class DatabaseSeeder extends Seeder {
                 method: PaymentMethod.Transfer,
                 category: FinanceCategory.Subvention,
                 payedBy: parentTeam.team.actor,
-                initiatedBy: treasurer?.individual,
+                initiatedBy: treasurer,
                 receivedBy: team.actor,
                 createdBy: parentTeam.team.teamMembers
                   .getItems()
                   .find(({ teamMemberRoles }) =>
                     teamMemberRoles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
-                  )?.user.individual,
+                  )?.user,
                 state: FinanceState.Completed,
                 tenant,
               }),
@@ -652,7 +652,7 @@ export class DatabaseSeeder extends Seeder {
           user,
           start: new Date(),
           team: team,
-          createdBy: user.individual,
+          createdBy: user,
           tenant: team.tenant,
         });
 
@@ -660,45 +660,45 @@ export class DatabaseSeeder extends Seeder {
         return teamMember;
       };
 
-      for (const [i, member] of managers.entries()) if (member.user) membersMap[member.id] = newMember(member.user, i);
-      for (const member of members) if (member.user) membersMap[member.id] = newMember(member.user, roles.length - 1);
+      for (const [i, member] of managers.entries()) if (member) membersMap[member.id] = newMember(member, i);
+      for (const member of members) if (member) membersMap[member.id] = newMember(member, roles.length - 1);
 
       const teamMembers = Object.values(membersMap);
 
       for (const member of teamMembers) {
         const user = member.user;
         if (user) {
-          const createdBy = member.user.individual;
+          const createdBy = member.user;
           user.shortcuts.add(
-            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user, createdBy, tenant }),
+            new Shortcut({ type: ShortcutType.Team, targetActor: team.actor, user: user, createdBy, tenant }),
           );
         }
       }
 
       const requesters = randomFromArray(others, N_REQUESTERS);
 
-      const teamJoins = requesters.flatMap((individual) => {
-        if (!individual.user) return [];
+      const teamJoins = requesters.flatMap((user) => {
+        if (!user) return [];
 
         let createdBy;
         let processedBy;
         if (Math.random() > 0.5) {
           createdBy = pickOneFromArray(managers);
-          processedBy = individual;
+          processedBy = user;
         } else {
-          createdBy = individual;
+          createdBy = user;
           processedBy = pickOneFromArray(managers);
         }
 
         const teamJoin = new TeamJoin({
           team: team,
           askedRole: roles[5],
-          joinedBy: individual.user,
+          joinedBy: user,
           state: ApprovalState.Pending,
           formSubmission: new FormSubmission({
             submission: { motivation: faker.lorem.lines(4) },
             form: team.joinForm,
-            createdBy: individual,
+            createdBy: user,
             tenant,
           }),
           receivedRole: roles[5],
@@ -741,14 +741,14 @@ export class DatabaseSeeder extends Seeder {
           const action = new Action({
             project,
             team,
-            user,
+            user: user,
             points: randomInt(1, 5),
             state: ApprovalState.Approved,
             pointsProcessedBy: pickOneFromArray(managers),
             pointsProcessedAt: createdAt,
             name: pickOneFromArray(potentialRoles),
             description: faker.lorem.paragraph(randomInt(2, 12)),
-            createdBy: user.individual,
+            createdBy: user,
             tenant,
           });
 
@@ -796,7 +796,7 @@ export class DatabaseSeeder extends Seeder {
           });
 
           const eventOrganizes = events.map((event) => {
-            const createdBy = pickOneFromArray(teamMembers).user.individual;
+            const createdBy = pickOneFromArray(teamMembers).user;
             const eventOrganize = new EventOrganize({ team, event, createdBy, tenant, project });
             const supervisors = randomFromArray(teamMembers, 1, 3).map(
               ({ user }) => new EventSupervisor({ eventOrganize, user, createdBy, tenant }),
@@ -823,9 +823,9 @@ export class DatabaseSeeder extends Seeder {
                   project,
                   amount: -amount,
                   category: category === FinanceCategory.Subvention ? FinanceCategory.Other : category,
-                  payedBy: pickOneFromArray(teamMembers).user.individual.actor,
-                  initiatedBy: pickOneFromArray(teamMembers).user.individual,
-                  createdBy: pickOneFromArray(teamMembers).user.individual,
+                  payedBy: pickOneFromArray(teamMembers).user.actor,
+                  initiatedBy: pickOneFromArray(teamMembers).user,
+                  createdBy: pickOneFromArray(teamMembers).user,
                   payedAt: faker.date.between({ from: start, to: createdAt }),
                   method: randomEnum(PaymentMethod),
                   state: FinanceState.Completed,
@@ -868,13 +868,13 @@ export class DatabaseSeeder extends Seeder {
 
             // Generate event registrations
             eventJoins.push(
-              ...randomFromArray([...managers, ...students], 4, 20).flatMap((individual) => {
-                if (!individual.user) return [];
+              ...randomFromArray([...managers, ...students], 4, 20).flatMap((user) => {
+                if (!user) return [];
 
                 const entities: BaseEntity[] = [];
 
                 let presence = null;
-                if (Math.random() > 0.2) presence = Math.random() > 0.2 ? true : false;
+                if (Math.random() > 0.2) presence = Math.random() > 0.25;
 
                 let action = null;
                 if (presence && Math.random() > 0.5) {
@@ -886,11 +886,11 @@ export class DatabaseSeeder extends Seeder {
                     description: faker.lorem.lines(2),
                     points: randomInt(1, 10),
                     team: team,
-                    user: individual.user,
+                    user,
                     pointsProcessedAt,
                     pointsProcessedBy: pickOneFromArray(managers),
                     state: ApprovalState.Approved,
-                    createdBy: individual,
+                    createdBy: user,
                     tenant: team.tenant,
                   });
 
@@ -907,7 +907,7 @@ export class DatabaseSeeder extends Seeder {
 
                 const eventJoin = new EventJoin({
                   actions: action ? [action] : [],
-                  joinedBy: individual.user,
+                  joinedBy: user,
                   state,
                   processedBy: pickOneFromArray(managers),
                   processedAt: pointsProcessedAt,
@@ -918,7 +918,7 @@ export class DatabaseSeeder extends Seeder {
                         formSubmission: new FormSubmission({
                           submission: { payed: Math.random() > 0.5 },
                           form: event.joinForm,
-                          createdBy: individual,
+                          createdBy: user,
                           tenant: team.tenant,
                         }),
                       }
@@ -930,7 +930,7 @@ export class DatabaseSeeder extends Seeder {
                         participationProcessedBy: pickOneFromArray(managers),
                         participationProcessedVia: Math.random() > 0.5 ? ProcessedVia.QR : ProcessedVia.Manual,
                       }),
-                  createdBy: individual,
+                  createdBy: user,
                   tenant: team.tenant,
                 });
 
@@ -951,7 +951,7 @@ export class DatabaseSeeder extends Seeder {
                       new MissionJoin({
                         eventJoin,
                         state,
-                        joinedBy: individual.user,
+                        joinedBy: user,
                         mission: mission[0],
                         processedAt: event.start,
                         processedBy: state === ApprovalState.Approved ? pickOneFromArray(managers) : null,
@@ -962,7 +962,7 @@ export class DatabaseSeeder extends Seeder {
                               pointsProcessedBy: pickOneFromArray(managers),
                             }
                           : {}),
-                        createdBy: individual,
+                        createdBy: user,
                         tenant,
                       }),
                     );

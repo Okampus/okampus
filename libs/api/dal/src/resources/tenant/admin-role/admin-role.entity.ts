@@ -3,7 +3,7 @@ import { AdminRoleRepository } from './admin-role.repository';
 import { BaseEntity } from '../../base.entity';
 import { ArrayType, Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { AdminRoleOptions } from './admin-role.options';
 import type { Tenant } from '../tenant.entity';
 
@@ -11,8 +11,8 @@ import type { Tenant } from '../tenant.entity';
 export class AdminRole extends BaseEntity {
   [EntityRepositoryType]!: AdminRoleRepository;
 
-  @ManyToOne({ type: 'Individual' })
-  individual!: Individual;
+  @ManyToOne({ type: 'User' })
+  user!: User;
 
   @ManyToOne({ type: 'Tenant', nullable: true, default: null })
   tenant: Tenant | null = null;

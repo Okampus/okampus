@@ -3,7 +3,7 @@ import { TenantScopedEntity } from '../..';
 import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { EventApprovalStepOptions } from './event-approval-step.options';
 
 @Entity({ customRepository: () => EventApprovalStepRepository })
@@ -19,13 +19,13 @@ export class EventApprovalStep extends TenantScopedEntity {
   @Property({ type: 'string', default: '' })
   description = '';
 
-  @ManyToMany({ type: 'Individual' })
+  @ManyToMany({ type: 'User' })
   @TransformCollection()
-  validators = new Collection<Individual>(this);
+  validators = new Collection<User>(this);
 
-  @ManyToMany({ type: 'Individual' })
+  @ManyToMany({ type: 'User' })
   @TransformCollection()
-  notifiees = new Collection<Individual>(this);
+  notifiees = new Collection<User>(this);
 
   @OneToMany({ type: 'EventApprovalStep', mappedBy: 'previousStep' })
   @TransformCollection()

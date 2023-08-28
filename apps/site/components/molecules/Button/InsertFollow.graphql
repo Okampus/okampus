@@ -34,6 +34,8 @@ mutation InsertFollow($object: FollowInsertInput!) {
       __typename
       id
       createdAt
+      firstName
+      lastName
       actor {
         __typename
         id
@@ -42,23 +44,6 @@ mutation InsertFollow($object: FollowInsertInput!) {
         name
         slug
         website
-      }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
       }
     }
   }

@@ -5,7 +5,7 @@
       "one": "log",
       "other": "logs"
     },
-    "Individual": {
+    "User": {
       "determinerType": "masculine",
       "one": "individu",
       "other": "individus"
@@ -792,7 +792,7 @@
       "one": "image",
       "other": "images"
     },
-    "individual": {
+    "user": {
       "determinerType": "masculine",
       "one": "individu",
       "other": "individus"

@@ -96,7 +96,7 @@ export default function TeamManagePointsPage({ params }: { params: { slug: strin
 
   const columns = [
     {
-      data: ({ user }: { user: UserWithPointsInfo }) => user.individual.actor.name,
+      data: ({ user }: { user: UserWithPointsInfo }) => user.actor.name,
       label: 'Membre / Participant',
       render: ({ user }: { user: UserWithPointsInfo }) => {
         return <UserLabeled user={user} />;

@@ -1,6 +1,6 @@
-import { RequestContext } from '../../../shards/abstract/request-context';
-import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { RequestContext } from '../../shards/abstract/request-context';
+import { HasuraService } from '../../global/graphql/hasura.service';
+import { LogsService } from '../logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { UserRepository, User } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';

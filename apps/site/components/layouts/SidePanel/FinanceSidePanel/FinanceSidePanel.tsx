@@ -44,8 +44,8 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Paiement fait par
-          {finance.initiatedBy?.user ? (
-            <UserLabeled user={{ ...finance.initiatedBy.user, individual: finance.initiatedBy }} />
+          {finance.initiatedBy ? (
+            <UserLabeled user={finance.initiatedBy} />
           ) : (
             <div className="text-1 font-semibold text-sm">Inconnu</div>
           )}
@@ -53,8 +53,8 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
           Ajouté par
-          {finance.createdBy?.user ? (
-            <UserLabeled user={{ ...finance.createdBy.user, individual: finance.createdBy }} small={true} />
+          {finance.createdBy ? (
+            <UserLabeled user={finance.createdBy} small={true} />
           ) : (
             <div className="text-1 font-semibold text-sm">Système</div>
           )}

@@ -18,26 +18,26 @@ export type UserSidePanelProps = { user: UserBaseInfo };
 export default function UserSidePanel({ user }: UserSidePanelProps) {
   const { format } = useTranslation();
 
-  const banner = getBanner(user.individual.actor.actorImages)?.image.url;
-  const avatar = getAvatar(user.individual.actor.actorImages)?.image.url;
+  const banner = getBanner(user.actor.actorImages)?.image.url;
+  const avatar = getAvatar(user.actor.actorImages)?.image.url;
 
   return (
     <SidePanel>
-      <BannerImage src={banner} name={user.individual.actor.name} />
+      <BannerImage src={banner} name={user.actor.name} />
       <div className="text-0 p-4 relative">
         <AvatarImage
           src={avatar}
-          name={user.individual.actor.name}
+          name={user.actor.name}
           size={28}
           className="absolute -translate-y-[80%] border-4 border-[var(--bg-0)]"
           type="user"
         />
         <div className="rounded-xl bg-main mt-8 p-3">
-          <div className="text-xl font-semibold font-title">{user.individual.actor.name}</div>
+          <div className="text-xl font-semibold font-title">{user.actor.name}</div>
           <div className="mb-3 text-1 text-sm">
             {user.firstName} {user.lastName}
           </div>
-          {user.individual?.actor?.bio && <div className="text-2">{user.individual.actor.bio}</div>}
+          {user.actor?.bio && <div className="text-2">{user.actor.bio}</div>}
           <hr className="my-3 border-color-3" />
           <GroupItem heading="Actif depuis">
             <div className="flex items-center gap-1.5">

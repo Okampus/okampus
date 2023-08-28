@@ -15,18 +15,16 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
         __typename
         id
         eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
+          __typename
+          id
           user {
             __typename
             id
-            individual {
+            actor {
               __typename
               id
-              actor {
-                __typename
-                id
-                slug
-                name
-              }
+              slug
+              name
             }
           }
         }
@@ -39,15 +37,11 @@ query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     joinedBy {
       __typename
       id
-      individual {
+      actor {
         __typename
         id
-        actor {
-          __typename
-          id
-          slug
-          name
-        }
+        slug
+        name
       }
     }
   }

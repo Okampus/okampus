@@ -43,12 +43,12 @@ export type TeamManageInfo = NonNullable<GetTeamManageQueryResult['data']>['team
 export type ProjectInfo = NonNullable<GetProjectQueryResult['data']>['project'][number];
 export type ProjectManageInfo = NonNullable<GetProjectManageQueryResult['data']>['project'][number];
 
-export function getUserWhere(user: { individual: { actor: { slug: string } } }) {
-  return { individual: { actor: { slug: user.individual.actor.slug } } };
+export function getUserWhere(user: { user: { actor: { slug: string } } }) {
+  return { actor: { slug: user.user.actor.slug } };
 }
 
-export function getUserLoginWhere(userLogin: { user: { individual: { actor: { slug: string } } } }) {
-  return { user: { individual: { actor: { slug: userLogin.user.individual.actor.slug } } } };
+export function getUserLoginWhere(userLogin: { user: { actor: { slug: string } } }) {
+  return { user: { actor: { slug: userLogin.user.actor.slug } } };
 }
 
 export function getTenantWhere(tenant: { domain: string }) {

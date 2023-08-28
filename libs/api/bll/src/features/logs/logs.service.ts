@@ -4,7 +4,7 @@ import { EntityManager } from '@mikro-orm/core';
 
 import {
   BaseEntity,
-  Individual,
+  User,
   Log,
   LogRepository,
   Team,
@@ -35,7 +35,7 @@ import type { LogDiff } from '@okampus/shared/types';
 
 export type LogContext = {
   event?: Event;
-  individual?: Individual;
+  user?: User;
   team?: Team;
 };
 
@@ -49,7 +49,7 @@ export class LogsService extends RequestContext {
     private readonly eventRepository: EventRepository,
     private readonly financeRepository: FinanceRepository,
     private readonly teamRepository: TeamRepository,
-    private readonly tenantRepository: TenantRepository
+    private readonly tenantRepository: TenantRepository,
   ) {
     super();
   }
@@ -57,10 +57,10 @@ export class LogsService extends RequestContext {
   async createLog(entityName: EntityName, entity: BaseEntity, context: LogContext = {}) {
     const createLog = new Log({
       eventType: EventType.Create,
-      context: this.requester().bot ? EventContext.Bot : EventContext.User,
+      context: this.requester().isBot ? EventContext.Bot : EventContext.User,
       entityName,
       entityId: entity.id,
-      individual: context.individual || this.requester(),
+      user: context.user ?? this.requester(),
       event: context.event,
       team: context.team,
       createdBy: this.requester(),
@@ -72,10 +72,10 @@ export class LogsService extends RequestContext {
   async deleteLog(entityName: EntityName, entityId: string, context: LogContext = {}) {
     const deleteLog = new Log({
       eventType: EventType.Delete,
-      context: this.requester().bot ? EventContext.Bot : EventContext.User,
+      context: this.requester().isBot ? EventContext.Bot : EventContext.User,
       entityName,
       entityId,
-      individual: context.individual || this.requester(),
+      user: context.user ?? this.requester(),
       event: context.event,
       team: context.team,
       createdBy: this.requester(),
@@ -88,7 +88,7 @@ export class LogsService extends RequestContext {
     entityName: EntityName,
     entity: BaseEntity,
     _set: Record<string, unknown>,
-    context: LogContext & { ignoreFields?: string[] } = {}
+    context: LogContext & { ignoreFields?: string[] } = {},
   ) {
     const diff: LogDiff = {};
     for (const [key, value] of Object.entries(_set)) {
@@ -134,10 +134,10 @@ export class LogsService extends RequestContext {
     if (Object.keys(diff).length > 0) {
       const updateLog = new Log({
         eventType: EventType.Update,
-        context: this.requester().bot ? EventContext.Bot : EventContext.User,
+        context: this.requester().isBot ? EventContext.Bot : EventContext.User,
         entityName,
         entityId: entity.id,
-        individual: context.individual || this.requester(),
+        user: context.user ?? this.requester(),
         event: context.event,
         team: context.team,
         diff,
@@ -155,7 +155,7 @@ export class LogsService extends RequestContext {
     //   tenant: {
     //     adminRoles: {
     //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
-    //       individual: { id: this.requester().id },
+    //       user: { id: this.requester().id },
     //     },
     //   },
     // });
@@ -178,7 +178,7 @@ export class LogsService extends RequestContext {
     //   tenant: {
     //     adminRoles: {
     //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
-    //       individual: { id: this.requester().id },
+    //       user: { id: this.requester().id },
     //     },
     //   },
     // });
@@ -191,7 +191,7 @@ export class LogsService extends RequestContext {
     return await this.logRepository.find(
       { entityId: id, entityName: EntityName.Finance },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { populate: this.autoPopulate() as any }
+      { populate: this.autoPopulate() as any },
     );
   }
 
@@ -202,7 +202,7 @@ export class LogsService extends RequestContext {
     //   tenant: {
     //     adminRoles: {
     //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
-    //       individual: { id: this.requester().id },
+    //       user: { id: this.requester().id },
     //     },
     //   },
     // });
@@ -223,7 +223,7 @@ export class LogsService extends RequestContext {
     //   tenant: {
     //     adminRoles: {
     //       permissions: { $in: [AdminPermissions.ManageTenantEntities] },
-    //       individual: { id: this.requester().id },
+    //       user: { id: this.requester().id },
     //     },
     //   },
     // });

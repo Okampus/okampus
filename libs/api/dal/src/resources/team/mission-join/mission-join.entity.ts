@@ -4,9 +4,8 @@ import { Entity, Property, Enum, ManyToOne, EnumType, EntityRepositoryType, OneT
 import { ApprovalState } from '@okampus/shared/enums';
 
 import type { MissionJoinOptions } from './mission-join.options';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { User } from '../../individual/user/user.entity';
 import type { Project } from '../../project/project.entity';
 import type { Mission } from '../mission/mission.entity';
 
@@ -20,14 +19,14 @@ export class MissionJoin extends TenantScopedEntity {
   @Property({ type: 'smallint', nullable: true, default: null })
   points: number | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  processedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  processedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  pointsProcessedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  pointsProcessedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   pointsProcessedAt: Date | null = null;

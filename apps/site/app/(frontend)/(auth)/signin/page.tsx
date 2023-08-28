@@ -41,7 +41,7 @@ export default function SigninPage() {
   const [login] = useUserLoginMutation({
     onCompleted: (data) => {
       if (data.login) {
-        setMeSlug(data.login.user.individual.actor.slug);
+        setMeSlug(data.login.user.actor.slug);
         const next = cookieStore.get(NEXT_PAGE_COOKIE);
         cookieStore.remove(NEXT_PAGE_COOKIE);
         router.push(next === '/signin' ? '/' : next || '/');
@@ -61,7 +61,7 @@ export default function SigninPage() {
     })
       .then(({ data }) => {
         if (data?.login) {
-          setMeSlug(data.login.user.individual.actor.slug);
+          setMeSlug(data.login.user.actor.slug);
           const next = cookieStore.get(NEXT_PAGE_COOKIE);
           cookieStore.remove(NEXT_PAGE_COOKIE);
           router.push(next === '/signin' ? '/' : next || '/');

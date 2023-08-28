@@ -107,8 +107,8 @@ export const apolloClient = new ApolloClient({
       Project: { keyFields: ['slug'] },
       Team: { keyFields: ['actor', ['slug']] },
       Tenant: { keyFields: ['domain'] },
-      User: { keyFields: ['individual', ['actor', ['slug']]] },
-      UserLogin: { keyFields: ['user', ['individual', ['actor', ['slug']]]] },
+      User: { keyFields: ['actor', ['slug']] },
+      UserLogin: { keyFields: ['user', ['actor', ['slug']]] },
     },
   }),
 });
@@ -118,5 +118,5 @@ export type CacheIdWhere =
   | { slug: string } // Event, Project
   | { actor: { slug: string } } // Team
   | { domain: string } // Tenant
-  | { individual: { actor: { slug: string } } } // User
-  | { user: { individual: { actor: { slug: string } } } }; // UserLogin
+  | { user: { actor: { slug: string } } } // User
+  | { user: { user: { actor: { slug: string } } } }; // UserLogin

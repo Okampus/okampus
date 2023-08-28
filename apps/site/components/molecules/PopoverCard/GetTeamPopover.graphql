@@ -76,33 +76,28 @@ query GetTeamPopover($id: bigint!) {
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          bio
+          email
+          name
+          slug
+          status
+          website
+          actorImages {
             __typename
             id
             createdAt
-            bio
-            email
-            name
-            slug
-            status
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
+              url
+              size
               type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
             }
           }
         }

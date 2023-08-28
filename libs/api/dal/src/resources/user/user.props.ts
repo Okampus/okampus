@@ -1,8 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString, IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class UserProps {
+  @Field(() => String)
+  @IsOptional()
+  @IsString()
+  status?: string;
+
   @Field(() => String)
   @IsString()
   firstName!: string;

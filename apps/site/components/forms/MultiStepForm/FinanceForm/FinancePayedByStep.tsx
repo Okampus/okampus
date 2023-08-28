@@ -25,7 +25,7 @@ export default function FinancePayedByStep({
   const items = Object.keys(PayedByType).map((key) => ({ label: t(`enums.PayedByType.${key}`), value: key }));
   const options = teamManage.teamMembers.map(({ user }) => ({
     label: <UserLabeled user={user} showCardOnClick={false} small={true} />,
-    value: user.individual.id,
+    value: user.id,
   }));
 
   return (

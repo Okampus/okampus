@@ -1,4 +1,4 @@
-import type { User } from '../user/user.entity';
+import type { User } from '../user.entity';
 import type { SessionProps } from './session.props';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 

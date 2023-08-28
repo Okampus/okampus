@@ -83,7 +83,7 @@ const forbiddenFields = [
   'tenantId',
   'tenant',
   'createdById',
-  'individual',
+  'user',
   'deletedAt',
   'hiddenAt',
 ];
@@ -196,11 +196,8 @@ export class HasuraService extends RequestContext {
   }
 
   async checkTeamPermissions(teamId: string, permission: TeamPermissions | TenantPermissions) {
-    const individual = this.requester();
-    if (!individual.user) throw new InternalServerErrorException('No user found in individual.');
-
     const teamMember = await this.teamMemberRepository.findOne(
-      { team: { id: teamId }, user: individual.user },
+      { team: { id: teamId }, user: this.requester() },
       { populate: ['teamMemberRoles', 'teamMemberRoles.role'] },
     );
 

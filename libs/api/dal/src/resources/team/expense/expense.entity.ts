@@ -19,7 +19,7 @@ import type { ExpenseItem } from '../expense-item/expense-item.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 import type { Finance } from '../finance/finance.entity';
 import type { ExpenseOptions } from './expense.options';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => ExpenseRepository })
 export class Expense extends TenantScopedEntity {
@@ -34,14 +34,14 @@ export class Expense extends TenantScopedEntity {
   @Property({ type: 'datetime', nullable: true, default: null })
   lastNotifiedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  processedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  processedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;
 
   @OneToOne({ type: 'Finance', mappedBy: 'expense' })
-  finance?: Finance;
+  finance!: Finance;
 
   @ManyToOne({ type: 'FileUpload' })
   expenseReport!: FileUpload;

@@ -1,4 +1,4 @@
-export const INDIVIDUAL_SLUG_PARAM = 'individualSlug';
+export const INDIVIDUAL_SLUG_PARAM = 'userSlug';
 
 export const CATEGORY_SLUG_PARAM = 'categorySlug';
 export const TEAM_SLUG_PARAM = 'teamSlug';

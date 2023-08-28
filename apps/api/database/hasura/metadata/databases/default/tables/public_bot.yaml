@@ -5,9 +5,9 @@ object_relationships:
   - name: createdBy
     using:
       foreign_key_constraint_on: created_by_id
-  - name: individual
+  - name: user
     using:
-      foreign_key_constraint_on: individual_id
+      foreign_key_constraint_on: user_id
   - name: owner
     using:
       foreign_key_constraint_on: owner_id

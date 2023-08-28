@@ -4,7 +4,7 @@ import type { ActorOptions } from '../actor.options';
 import type { LegalUnit } from '../legal-unit/legal-unit.entity';
 
 export type LegalUnitLocationOptions = LegalUnitLocationProps &
-  Omit<ActorOptions, 'individual' | 'team'> & {
+  Omit<ActorOptions, 'user' | 'team'> & {
     legalUnit?: LegalUnit;
     location?: Location;
   };

@@ -9,7 +9,7 @@ import type { LogOptions } from './log.options';
 import type { Tenant } from '..';
 import type { Team } from '../team/team.entity';
 import type { Event } from '../event/event.entity';
-import type { Individual } from '../individual/individual.entity';
+import type { User } from '../user/user.entity';
 
 import type { LogDiff } from '@okampus/shared/types';
 
@@ -23,8 +23,8 @@ export class Log {
   @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   createdAt!: Date;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  createdBy: Individual | null = null; // null for system
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  createdBy: User | null = null; // null for system
 
   @Enum({ items: () => EventType, type: EnumType })
   eventType!: EventType;
@@ -50,8 +50,8 @@ export class Log {
   @ManyToOne({ type: 'Event', nullable: true, default: null })
   event: Event | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  individual: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  user: User | null = null;
 
   @ManyToOne({ type: 'Tenant', nullable: true, default: null })
   tenant: Tenant | null = null;

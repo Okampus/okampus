@@ -13,26 +13,22 @@ query GetTenantUsersWithPoints {
     createdAt
     firstName
     lastName
-    individual {
+    actor {
       __typename
       id
-      actor {
+      slug
+      bio
+      name
+      email
+      website
+      actorImages {
         __typename
         id
-        slug
-        bio
-        name
-        email
-        website
-        actorImages {
+        type
+        image {
           __typename
           id
-          type
-          image {
-            __typename
-            id
-            url
-          }
+          url
         }
       }
     }

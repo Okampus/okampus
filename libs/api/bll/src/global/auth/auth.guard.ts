@@ -130,7 +130,7 @@ export class AuthGuard implements CanActivate {
     const isTenantPublic = this.reflector.getAllAndOverride<boolean>(IS_TENANT_PUBLIC, targets);
     if (isTenantPublic) return true;
 
-    /* Get individual */
+    /* Get user */
     const { token, tokenType } = this.getAuthInfo(headers, cookies);
 
     /* Bot token case */
@@ -141,8 +141,8 @@ export class AuthGuard implements CanActivate {
     }
 
     if (!req || !reply) throw new InternalServerErrorException('No request provided in GraphQL context');
-    const individual = await this.authService.validateUserToken(token, tokenType, req, reply);
-    requestContext.set('requester', individual);
+    const user = await this.authService.validateUserToken(token, tokenType, req, reply);
+    requestContext.set('requester', user);
     requestContext.set('token', token);
 
     return true;

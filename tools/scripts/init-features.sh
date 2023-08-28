@@ -16,9 +16,7 @@ nx g hasura-feature actor-image --subfolder actors --folder $1
 nx g hasura-feature event --folder $1 --expect-rels content,location,eventOrganizes
 nx g hasura-feature event-join --subfolder events --folder $1 --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Approved || props.state === enum!ApprovalState.Rejected;by:participationProcessedById_at:participationProcessedAt_if:props.isPresent !== null'
 nx g hasura-feature form --folder $1
-nx g hasura-feature individual --folder $1
-nx g hasura-feature user --subfolder individuals --folder $1
-nx g hasura-feature bot --subfolder individuals --folder $1
+nx g hasura-feature user --folder $1
 nx g hasura-feature project --folder $1
 nx g hasura-feature team --folder $1
 nx g hasura-feature account --subfolder teams --folder $1

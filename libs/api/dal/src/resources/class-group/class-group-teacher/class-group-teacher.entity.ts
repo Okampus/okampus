@@ -1,12 +1,12 @@
 import { ClassGroupTeacherRepository } from './class-group-teacher.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
+import { User } from '../../user/user.entity';
+import { ClassGroup } from '../class-group.entity';
 import { TransformCollection } from '@okampus/api/shards';
 import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 
-import type { ClassGroup } from '../class-group.entity';
-import type { Subject } from '../subject/subject.entity';
-import type { User } from '../../individual/user/user.entity';
 import type { ClassGroupTeacherOptions } from './class-group-teacher.options';
+import type { Subject } from '../subject/subject.entity';
 
 @Entity({ customRepository: () => ClassGroupTeacherRepository })
 export class ClassGroupTeacher extends TenantScopedEntity {

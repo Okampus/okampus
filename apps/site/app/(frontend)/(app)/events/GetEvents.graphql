@@ -62,52 +62,47 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           createdAt
           firstName
           lastName
-          individual {
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            slug
+            website
+            actorImages {
               __typename
               id
               createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
+              type
+              image {
                 __typename
                 id
                 createdAt
+                url
+                size
                 type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
               }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
+            }
+            bio
+            status
+            actorTags {
+              tag {
                 __typename
                 id
-                pseudo
-                url
-                type
-                order
+                createdAt
+                slug
+                name
+                color
               }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
             }
           }
         }
@@ -173,52 +168,47 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
             createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
+              url
+              size
               type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
             }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
+          }
+          bio
+          status
+          actorTags {
+            tag {
               __typename
               id
-              pseudo
-              url
-              type
-              order
+              createdAt
+              slug
+              name
+              color
             }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
           }
         }
       }

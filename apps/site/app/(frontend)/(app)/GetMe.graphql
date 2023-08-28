@@ -43,22 +43,46 @@ query GetMe {
       createdAt
       firstName
       lastName
-      individual {
+      actor {
+        __typename
+        id
+        bio
+        email
+        name
+        slug
+        status
+        website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            url
+          }
+        }
+        socials(where: { deletedAt: { _isNull: true } }) {
+          __typename
+          id
+          pseudo
+          url
+          type
+          order
+        }
+      }
+      following {
         __typename
         id
         actor {
           __typename
           id
-          bio
-          email
           name
           slug
-          status
-          website
           actorImages {
             __typename
             id
-            createdAt
             type
             image {
               __typename
@@ -66,41 +90,13 @@ query GetMe {
               url
             }
           }
-          socials(where: { deletedAt: { _isNull: true } }) {
+          team {
             __typename
             id
-            pseudo
-            url
-            type
-            order
-          }
-        }
-        following {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            name
-            slug
-            actorImages {
+            actor {
               __typename
               id
-              type
-              image {
-                __typename
-                id
-                url
-              }
-            }
-            team {
-              __typename
-              id
-              actor {
-                __typename
-                id
-                slug
-              }
+              slug
             }
           }
         }

@@ -1,7 +1,7 @@
 import type { TeamMemberProps } from './team-member.props';
 import type { Team } from '../team.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
-import type { User } from '../../individual/user/user.entity';
+import type { User } from '../../user/user.entity';
 
 export type TeamMemberOptions = TeamMemberProps &
   TenantScopedOptions & {

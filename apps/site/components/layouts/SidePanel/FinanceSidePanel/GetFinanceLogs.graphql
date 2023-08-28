@@ -33,41 +33,8 @@ query GetFinanceLogs($id: bigint!) {
           }
         }
       }
-      user {
-        __typename
-        id
-        createdAt
-        firstName
-        lastName
-        individual {
-          __typename
-          id
-          createdAt
-          actor {
-            __typename
-            id
-            createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
-              __typename
-              id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
-            }
-          }
-        }
-      }
+      firstName
+      lastName
     }
   }
 }

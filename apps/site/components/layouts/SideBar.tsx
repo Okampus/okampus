@@ -29,8 +29,8 @@ export default function SideBar({ children, header }: SideBarProps) {
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
 
   const me = useMe();
-  const avatar = getAvatar(me.user.individual?.actor?.actorImages);
-  const name = me.user.individual?.actor?.name;
+  const avatar = getAvatar(me.user?.actor?.actorImages);
+  const name = me.user?.actor?.name;
 
   const router = useRouter();
   const [logout] = useLogoutMutation({ onCompleted: () => router.push('/signin') });
@@ -80,7 +80,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                   <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>
-                    <div className="text-2 text-xs font-medium">{me.user.individual?.actor?.email}</div>
+                    <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>
                   </div>
                 </div>
               </PopoverTrigger>
@@ -92,7 +92,7 @@ export default function SideBar({ children, header }: SideBarProps) {
                       <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                       <div className="flex flex-col items-start">
                         <div className="text-1 font-semibold">{name}</div>
-                        <div className="text-2 text-xs font-medium">{me.user.individual?.actor?.email}</div>
+                        <div className="text-2 text-xs font-medium">{me.user?.actor?.email}</div>
                       </div>
                     </div>
                   }

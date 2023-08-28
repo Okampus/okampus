@@ -47,13 +47,6 @@ array_relationships:
         table:
           name: bank
           schema: public
-  - name: bots
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: bot
-          schema: public
   - name: campusClusters
     using:
       foreign_key_constraint_on:
@@ -242,13 +235,6 @@ array_relationships:
         column: tenant_id
         table:
           name: grant
-          schema: public
-  - name: individuals
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: individual
           schema: public
   - name: issues
     using:

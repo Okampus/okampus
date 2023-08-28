@@ -1,7 +1,7 @@
 type Log {
   id: String!
   createdAt: timestamptz!
-  createdBy: Individual
+  createdBy: User
   eventType: String!
   context: String!
   entityName: String!
@@ -10,7 +10,7 @@ type Log {
   note: String!
   team: Team
   event: Event
-  individual: Individual
+  user: User
   tenant: Tenant
 }
 

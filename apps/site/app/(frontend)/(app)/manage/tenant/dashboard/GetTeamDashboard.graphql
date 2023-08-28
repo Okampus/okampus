@@ -107,30 +107,25 @@ query GetTeamDashboard {
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          bio
+          slug
+          status
+          website
+          actorImages {
             __typename
             id
             createdAt
-            email
-            name
-            bio
-            slug
-            status
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
-              createdAt
-              type
-              image {
-                __typename
-                id
-                url
-              }
+              url
             }
           }
         }

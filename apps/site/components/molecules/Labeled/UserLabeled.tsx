@@ -29,8 +29,8 @@ export default function UserLabeled({
   labelClassName,
   contentClassName,
 }: UserLabeledProps) {
-  const avatar = getAvatar(user.individual.actor?.actorImages)?.image.url;
-  const name = user.individual?.actor?.name;
+  const avatar = getAvatar(user.actor?.actorImages)?.image.url;
+  const name = user.actor?.name;
 
   const wrapper = ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <UserPopoverCard triggerClassName={className} userId={user.id}>

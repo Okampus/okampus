@@ -4,9 +4,8 @@ import { Entity, Property, Enum, ManyToOne, EnumType, EntityRepositoryType } fro
 import { ApprovalState } from '@okampus/shared/enums';
 
 import type { ActionOptions } from './action.options';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { User } from '../../individual/user/user.entity';
 import type { Project } from '../../project/project.entity';
 import type { Team } from '../team.entity';
 
@@ -26,8 +25,8 @@ export class Action extends TenantScopedEntity {
   @Enum({ items: () => ApprovalState, type: EnumType })
   state: ApprovalState = ApprovalState.Pending;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  pointsProcessedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  pointsProcessedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   pointsProcessedAt: Date | null = null;

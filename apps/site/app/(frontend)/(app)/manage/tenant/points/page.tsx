@@ -95,7 +95,7 @@ export default function TenantOrganizePointsPage() {
 
   const columns = [
     {
-      data: ({ user }: GroupedUser) => user.individual.actor.name,
+      data: ({ user }: GroupedUser) => user.actor.name,
       label: 'Membre / Participant',
       render: ({ user }: GroupedUser) => {
         return <UserLabeled user={user} />;

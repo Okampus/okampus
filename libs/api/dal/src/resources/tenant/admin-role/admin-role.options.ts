@@ -1,8 +1,8 @@
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { Tenant } from '../tenant.entity';
 
 export type AdminRoleOptions = {
-  individual: Individual;
+  user: User;
   tenant: Tenant | null;
   permissions: number[];
 };

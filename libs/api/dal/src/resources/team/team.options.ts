@@ -5,7 +5,7 @@ import type { Team } from './team.entity';
 import type { TeamProps } from './team.props';
 
 export type TeamOptions = TeamProps &
-  Omit<ActorOptions, 'individual' | 'team'> & {
+  Omit<ActorOptions, 'user' | 'team'> & {
     parent?: Team | null;
     tags?: Tag[];
     video?: FileUpload;

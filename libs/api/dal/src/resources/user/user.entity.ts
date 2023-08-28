@@ -1,25 +1,41 @@
 import { UserRepository } from './user.repository';
-import { TenantScopedEntity } from '../../tenant-scoped.entity';
-import { Collection, Entity, OneToMany, OneToOne, Property } from '@mikro-orm/core';
+import { TenantScopedEntity } from '..';
+import { Actor } from '../actor/actor.entity';
+import { Collection, Entity, EntityRepositoryType, OneToMany, OneToOne, Property } from '@mikro-orm/core';
 import { TransformCollection } from '@okampus/api/shards';
 
 import type { UserOptions } from './user.options';
-import type { Individual } from '../individual.entity';
-import type { Shortcut } from '../shortcut/shortcut.entity';
-import type { Session } from '../session/session.entity';
-import type { TeamJoin } from '../../team/team-join/team-join.entity';
-import type { TeamMember } from '../../team/team-member/team-member.entity';
+import type { AdminRole } from '../tenant/admin-role/admin-role.entity';
+import type { Shortcut } from './shortcut/shortcut.entity';
+import type { TeamJoin } from '../team/team-join/team-join.entity';
+import type { TeamMember } from '../team/team-member/team-member.entity';
+import type { Session } from '@sentry/node';
 
 @Entity({ customRepository: () => UserRepository })
 export class User extends TenantScopedEntity {
+  [EntityRepositoryType]!: UserRepository;
+
+  @Property({ type: 'text', nullable: true, default: null, hidden: true })
+  passwordHash: string | null = null;
+
+  @Property({ type: 'boolean', default: false })
+  isBot = false;
+
+  @OneToOne({ type: 'Actor', inversedBy: 'user' })
+  actor: Actor;
+
+  @OneToMany({ type: 'AdminRole', mappedBy: 'user' })
+  @TransformCollection()
+  adminRoles = new Collection<AdminRole>(this);
+
   @Property({ type: 'text' })
   firstName!: string;
 
-  @Property({ type: 'array', default: [] })
-  middleNames: string[] = [];
-
   @Property({ type: 'text' })
   lastName!: string;
+
+  @Property({ type: 'array', default: [] })
+  middleNames: string[] = [];
 
   @Property({ type: 'float', default: 0 })
   points = 0;
@@ -28,7 +44,6 @@ export class User extends TenantScopedEntity {
   // @TransformCollection()
   // interests = new Collection<Interest>(this);
 
-  //// User session settings
   @Property({ type: 'boolean', default: false })
   isOnboardingFinished = false;
 
@@ -45,10 +60,6 @@ export class User extends TenantScopedEntity {
   /** Anonymize my data when my account is deactivated */
   @Property({ type: 'boolean', default: false })
   isDataAnonymizedOnDeactivation = false;
-  ////
-
-  @OneToOne({ type: 'Individual', inversedBy: 'user' })
-  individual!: Individual;
 
   @OneToMany({ type: 'TeamMember', mappedBy: 'user' })
   @TransformCollection()
@@ -66,8 +77,23 @@ export class User extends TenantScopedEntity {
   @TransformCollection()
   sessions = new Collection<Session>(this);
 
+  // @OneToMany('BadgeUnlock', 'user')
+  // @TransformCollection()
+  // badgesUnlocked = new Collection<BadgeUnlock>(this);
+
   constructor(options: UserOptions) {
     super(options);
     this.assign(options);
+
+    this.actor = new Actor({
+      name: options.name ?? `${options.firstName} ${options.lastName}`,
+      bio: options.bio,
+      email: options.email,
+      slug: options.slug,
+      tags: options.tags,
+      createdBy: options.createdBy,
+      tenant: options.tenant,
+      user: this,
+    });
   }
 }

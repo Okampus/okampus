@@ -1,15 +1,14 @@
+import { SessionRepository } from './session.repository';
 import { TenantScopedEntity } from '../..';
-import { BotRepository } from '../bot/bot.repository';
+import { User } from '../user.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, JsonType, ManyToOne, Property } from '@mikro-orm/core';
 import { SessionClientType } from '@okampus/shared/enums';
 
 import type { JSONObject } from '@okampus/shared/types';
-import type { User } from '../user/user.entity';
 import type { SessionOptions } from './session.options';
-
-@Entity({ customRepository: () => BotRepository })
+@Entity({ customRepository: () => SessionRepository })
 export class Session extends TenantScopedEntity {
-  [EntityRepositoryType]!: BotRepository;
+  [EntityRepositoryType]!: SessionRepository;
 
   @Property({ type: 'string' })
   ip!: string;

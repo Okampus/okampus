@@ -1,7 +1,13 @@
 'use client';
 
 import Field from './Field';
+import { notificationAtom } from '../../../context/global';
+
+import { ToastType } from '@okampus/shared/types';
+import { IconCopy } from '@tabler/icons-react';
+
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { createRef, forwardRef, memo, useEffect } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 
@@ -18,6 +24,7 @@ export type TextInputProps = {
 
 export default memo(
   forwardRef<HTMLInputElement, TextInputProps>(function TextInput(props, ref) {
+    const [, setNotification] = useAtom(notificationAtom);
     const localRef = createRef<HTMLInputElement>();
 
     useEffect(() => {
@@ -79,7 +86,20 @@ export default memo(
                 {startContent}
               </div>
             )}
-            {input}
+            <div className="relative">
+              {input}
+              {copyable && (
+                <IconCopy
+                  onClick={() => {
+                    navigator.clipboard.writeText(localRef.current?.value ?? '');
+                    setNotification({
+                      message: 'Valeur copiée dans le presse-papier',
+                      type: ToastType.Info,
+                    });
+                  }}
+                />
+              )}
+            </div>
             {endContent && (
               <div
                 className={clsx(

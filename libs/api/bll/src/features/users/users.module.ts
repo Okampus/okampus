@@ -4,8 +4,8 @@ import {
   UsersQueryAggregateResolver, 
   UsersQueryResolver
 } from './users.resolver';
-import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { HasuraModule } from '../../global/graphql/hasura.module';
+import { LogsModule } from '../logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { User } from '@okampus/api/dal';

@@ -1,6 +1,4 @@
 export enum EntityName {
-  Individual = 'Individual',
-  Bot = 'Bot',
   User = 'User',
 
   Tenant = 'Tenant',

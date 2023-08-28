@@ -23,12 +23,12 @@ export default function FollowButton({ className, actorId, small }: FollowButton
   const [, setNotification] = useAtom(notificationAtom);
 
   const me = useMe();
-  const isFollowing = me.user.individual.following.find((followed) => followed.actor.id === actorId);
+  const isFollowing = me.user.following.find((followed) => followed.actor.id === actorId);
 
   const [insertFollow] = useInsertFollowMutation();
   const [deleteFollow] = useDeleteFollowMutation();
 
-  console.log({ isFollowing }, me.user.individual.following);
+  console.log({ isFollowing }, me.user.following);
 
   return (
     <ActionButton
@@ -49,7 +49,7 @@ export default function FollowButton({ className, actorId, small }: FollowButton
                     where: getUserLoginWhere(me),
                     update: (data) =>
                       produce(data, (data) => {
-                        data.user.individual.following = data.user.individual.following.filter(
+                        data.user.following = data.user.following.filter(
                           (follow) => follow.id !== deleteFollowByPk?.id,
                         );
                       }),
@@ -72,7 +72,7 @@ export default function FollowButton({ className, actorId, small }: FollowButton
                     where: getUserLoginWhere(me),
                     update: (data) =>
                       produce(data, (data) => {
-                        data.user.individual.following.push(insertFollowOne);
+                        data.user.following.push(insertFollowOne);
                       }),
                   });
 

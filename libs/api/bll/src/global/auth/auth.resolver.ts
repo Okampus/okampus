@@ -10,13 +10,13 @@ import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Individual, IndividualRepository } from '@okampus/api/dal';
+import { User, UserRepository } from '@okampus/api/dal';
 import { TenantPublic } from '@okampus/api/shards';
 import { getSelectionSet } from '@okampus/shared/utils';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import { AdminPermissions, TokenExpiration, TokenType } from '@okampus/shared/enums';
 
-import type { Tenant, User } from '@okampus/api/dal';
+import type { Tenant } from '@okampus/api/dal';
 import type { LoginDto } from './auth.types';
 import type { GQLContext } from '../../types/gql-context';
 import type { ApiConfig } from '@okampus/shared/types';
@@ -25,7 +25,7 @@ import type { GraphQLResolveInfo } from 'graphql';
 @Resolver('User')
 export class AuthResolver {
   constructor(
-    private readonly individualRepository: IndividualRepository,
+    private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
     private readonly authService: AuthService,
@@ -68,14 +68,14 @@ export class AuthResolver {
 
   @Query()
   public async me(
-    @Requester() requester: Individual,
+    @Requester() requester: User,
     @ReqTenant() tenant: Tenant,
     @Info() info: GraphQLResolveInfo,
   ): Promise<{
     user: User;
     canManageTenant: boolean;
   }> {
-    if (!requester.user) throw new BadRequestException('No user found');
+    if (!requester) throw new BadRequestException('No user found');
 
     const selectionSet = getSelectionSet(info);
 
@@ -83,7 +83,7 @@ export class AuthResolver {
       ? await this.hasuraService.findByPk(
           'userByPk',
           selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: requester.user.id },
+          { id: requester.id },
         )
       : undefined;
 

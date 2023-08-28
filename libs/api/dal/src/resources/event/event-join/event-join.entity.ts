@@ -14,12 +14,11 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { ApprovalState, ProcessedVia } from '@okampus/shared/enums';
 
-import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
-import type { Individual } from '../../individual/individual.entity';
-import type { User } from '../../individual/user/user.entity';
-import type { FormSubmission } from '../../form-submission/form-submission.entity';
 import type { EventJoinOptions } from './event-join.options';
 import type { Event } from '../event.entity';
+import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
+import type { User } from '../../user/user.entity';
+import type { FormSubmission } from '../../form-submission/form-submission.entity';
 import type { Action } from '../../team/action/action.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 
@@ -33,14 +32,14 @@ export class EventJoin extends TenantScopedEntity {
   @Property({ type: 'boolean', nullable: true, default: null })
   isPresent: boolean | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  processedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  processedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   processedAt: Date | null = null;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  participationProcessedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  participationProcessedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   participationProcessedAt: Date | null = null;

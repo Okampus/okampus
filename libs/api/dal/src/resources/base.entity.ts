@@ -1,7 +1,7 @@
 import { ManyToOne, PrimaryKey, Property, t } from '@mikro-orm/core';
 import { isIn } from '@okampus/shared/utils';
 
-import type { Individual } from './individual/individual.entity';
+import type { User } from './user/user.entity';
 
 export abstract class BaseEntity {
   @PrimaryKey({ type: t.bigint, defaultRaw: '"public"."snowflake"()', autoincrement: false })
@@ -10,8 +10,8 @@ export abstract class BaseEntity {
   @Property({ type: 'datetime', defaultRaw: 'current_timestamp' })
   createdAt!: Date;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  createdBy: Individual | null = null; // null for system
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  createdBy: User | null = null; // null for system
 
   @Property({ type: 'datetime', nullable: true, default: null })
   deletedAt: Date | null = null;

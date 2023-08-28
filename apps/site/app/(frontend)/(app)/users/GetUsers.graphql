@@ -5,25 +5,21 @@ query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offs
     createdAt
     firstName
     lastName
-    individual {
+    actor {
       __typename
       id
-      actor {
+      slug
+      name
+      email
+      website
+      actorImages {
         __typename
         id
-        slug
-        name
-        email
-        website
-        actorImages {
+        type
+        image {
           __typename
           id
-          type
-          image {
-            __typename
-            id
-            url
-          }
+          url
         }
       }
     }

@@ -77,8 +77,8 @@ export default function ManageEventConfirmAttendancePage({ params }: { params: {
   let message = 'Chargement...';
   if (success !== null && eventJoin)
     message = success
-      ? `Présence de ${eventJoin.joinedBy.individual.actor.name} validée.`
-      : `La présence de ${eventJoin.joinedBy.individual.actor.name} n'a pas pu être validée.`;
+      ? `Présence de ${eventJoin.joinedBy.actor.name} validée.`
+      : `La présence de ${eventJoin.joinedBy.actor.name} n'a pas pu être validée.`;
 
   return (
     <CenteredLayout>

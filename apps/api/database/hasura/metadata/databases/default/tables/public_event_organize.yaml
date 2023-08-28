@@ -5,9 +5,6 @@ object_relationships:
   - name: event
     using:
       foreign_key_constraint_on: event_id
-  - name: individual
-    using:
-      foreign_key_constraint_on: created_by_id
   - name: project
     using:
       foreign_key_constraint_on: project_id
@@ -17,6 +14,9 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by_id
 array_relationships:
   - name: eventSupervisors
     using:

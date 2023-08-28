@@ -18,7 +18,7 @@ import { FinanceState } from '@okampus/shared/enums';
 import type { Team } from '../team.entity';
 import type { GrantOptions } from './grant.options';
 import type { Project } from '../../project/project.entity';
-import type { Individual } from '../../individual/individual.entity';
+import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => GrantRepository })
@@ -34,8 +34,8 @@ export class Grant extends TenantScopedEntity {
   @Enum({ items: () => FinanceState, default: FinanceState.Completed, type: EnumType })
   state = FinanceState.Completed;
 
-  @ManyToOne({ type: 'Individual', nullable: true, default: null })
-  receivedAmountProcessedBy: Individual | null = null;
+  @ManyToOne({ type: 'User', nullable: true, default: null })
+  receivedAmountProcessedBy: User | null = null;
 
   @Property({ type: 'datetime', nullable: true, default: null })
   receivedAmountProcessedAt: Date | null = null;

@@ -68,38 +68,28 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
               }
             }
           }
-          user {
+          firstName
+          lastName
+          actor {
             __typename
             id
             createdAt
-            firstName
-            lastName
-            individual {
+            email
+            name
+            slug
+            website
+            actorImages {
               __typename
               id
               createdAt
-              actor {
+              type
+              image {
                 __typename
                 id
                 createdAt
-                email
-                name
-                slug
-                website
-                actorImages {
-                  __typename
-                  id
-                  createdAt
-                  type
-                  image {
-                    __typename
-                    id
-                    createdAt
-                    url
-                    size
-                    type
-                  }
-                }
+                url
+                size
+                type
               }
             }
           }
@@ -151,52 +141,47 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
             createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
+              url
+              size
               type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
             }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
+          }
+          bio
+          status
+          actorTags {
+            tag {
               __typename
               id
-              pseudo
-              url
-              type
-              order
+              createdAt
+              slug
+              name
+              color
             }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
           }
         }
       }
@@ -309,52 +294,47 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
           createdAt
-          actor {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
             createdAt
-            email
-            name
-            slug
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
               createdAt
+              url
+              size
               type
-              image {
-                __typename
-                id
-                createdAt
-                url
-                size
-                type
-              }
             }
-            bio
-            status
-            actorTags {
-              tag {
-                __typename
-                id
-                createdAt
-                slug
-                name
-                color
-              }
-            }
-            socials(where: { deletedAt: { _isNull: true } }) {
+          }
+          bio
+          status
+          actorTags {
+            tag {
               __typename
               id
-              pseudo
-              url
-              type
-              order
+              createdAt
+              slug
+              name
+              color
             }
+          }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
           }
         }
       }

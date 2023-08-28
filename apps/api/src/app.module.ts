@@ -25,11 +25,9 @@ import {
   TagsModule,
   FinancesModule,
   ProjectsModule,
-  IndividualsModule,
-  BotsModule,
+  UsersModule,
   LegalUnitsModule,
   LegalUnitLocationsModule,
-  UsersModule,
   EventJoinsModule,
   FormsModule,
   ActionsModule,
@@ -55,7 +53,7 @@ import {
   TeamMembersModule,
   TeamMemberRolesModule,
 } from '@okampus/api/bll';
-import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
+import { AdminRole, Form, User, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
 
 import {
@@ -153,7 +151,6 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
 
     // // Custom modules
     // AnnouncementsModule,
-    IndividualsModule,
     UsersModule,
     // BadgesModule,
     // BlogsModule,
@@ -162,7 +159,6 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     // ClassMembershipsModule,
     // ContentsModule,
     // FavoritesModule,
-    BotsModule,
     HealthModule,
     EventsModule,
     EventApprovalsModule,
@@ -241,10 +237,10 @@ export class AppModule implements NestModule, OnModuleInit {
 
     const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
 
-    let admin: Individual;
+    let admin: User;
     const tenant = await this.em.findOne(Tenant, { domain });
     if (tenant) {
-      admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+      admin = await this.em.findOneOrFail(User, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
     } else {
       // Init base tenant
       const tenant = new Tenant({
@@ -261,32 +257,34 @@ export class AppModule implements NestModule, OnModuleInit {
 
       await this.em.persistAndFlush([tenant]);
 
-      const anon = new Individual({
+      const anon = new User({
         slug: ANON_ACCOUNT_SLUG,
         name: `${ANON_ACCOUNT_FIRST_NAME} ${ANON_ACCOUNT_LAST_NAME}`,
-        userProps: { firstName: ANON_ACCOUNT_FIRST_NAME, lastName: ANON_ACCOUNT_LAST_NAME },
+        firstName: ANON_ACCOUNT_FIRST_NAME,
+        lastName: ANON_ACCOUNT_LAST_NAME,
         email: ANON_ACCOUNT_EMAIL,
         createdBy: null,
         tenant,
       });
 
-      admin = new Individual({
+      admin = new User({
         slug: ADMIN_ACCOUNT_SLUG,
         name: `${ADMIN_ACCOUNT_FIRST_NAME} ${ADMIN_ACCOUNT_LAST_NAME}`,
-        userProps: { firstName: ADMIN_ACCOUNT_FIRST_NAME, lastName: ADMIN_ACCOUNT_LAST_NAME },
+        firstName: ADMIN_ACCOUNT_FIRST_NAME,
+        lastName: ADMIN_ACCOUNT_LAST_NAME,
         email: ADMIN_ACCOUNT_EMAIL,
         createdBy: null,
         tenant,
       });
 
       const baseAdminRole = new AdminRole({
-        individual: admin,
+        user: admin,
         permissions: [AdminPermissions.CreateTenant, AdminPermissions.ManageTenantEntities],
         tenant: null,
       });
 
       const tenantAdminRole = new AdminRole({
-        individual: admin,
+        user: admin,
         permissions: [AdminPermissions.ManageTenantEntities, AdminPermissions.DeleteTenantEntities],
         tenant,
       });
@@ -369,7 +367,7 @@ export class AppModule implements NestModule, OnModuleInit {
           await Promise.all(subscribersResult.data.map(deletePromise));
         } while (subscribers.data.length > 0);
 
-        const admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
+        const admin = await this.em.findOneOrFail(User, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
         this.logger.log(`Adding admin (${admin.id}) subscriber to Novu...`);
         await novu.subscribers.identify(admin.id, {
           email: ADMIN_ACCOUNT_EMAIL,

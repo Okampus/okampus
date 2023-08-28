@@ -154,48 +154,43 @@ query GetEventManage($slug: String!) {
           createdAt
           firstName
           lastName
-          individual {
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            slug
+            website
+            actorImages {
               __typename
               id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
+              type
+              image {
                 __typename
                 id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
-              }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
                 url
-                type
-                order
               }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
+              }
+            }
+            socials(where: { deletedAt: { _isNull: true } }) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
             }
           }
         }
@@ -218,28 +213,23 @@ query GetEventManage($slug: String!) {
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
-          createdAt
-          actor {
+          slug
+          bio
+          name
+          email
+          status
+          website
+          actorImages {
             __typename
             id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
-              type
-              image {
-                __typename
-                id
-                url
-              }
+              url
             }
           }
         }
@@ -290,6 +280,8 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        firstName
+        lastName
         actor {
           __typename
           id
@@ -311,41 +303,6 @@ query GetEventManage($slug: String!) {
               url
               size
               type
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
             }
           }
         }
@@ -393,6 +350,8 @@ query GetEventManage($slug: String!) {
         __typename
         id
         createdAt
+        firstName
+        lastName
         actor {
           __typename
           id
@@ -410,23 +369,6 @@ query GetEventManage($slug: String!) {
               id
               createdAt
               url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
             }
           }
         }

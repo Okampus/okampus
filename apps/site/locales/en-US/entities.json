@@ -5,10 +5,10 @@
       "one": "log",
       "other": "logs"
     },
-    "Individual": {
+    "User": {
       "determinerType": "long",
-      "one": "individual",
-      "other": "individuals"
+      "one": "user",
+      "other": "users"
     },
     "Bot": {
       "determinerType": "long",
@@ -792,10 +792,10 @@
       "one": "image",
       "other": "images"
     },
-    "individual": {
+    "user": {
       "determinerType": "masculine",
-      "one": "individual",
-      "other": "individuals"
+      "one": "user",
+      "other": "users"
     },
     "ip": {
       "determinerType": "masculine",

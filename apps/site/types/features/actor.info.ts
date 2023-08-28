@@ -18,9 +18,7 @@ export type ActorBaseInfo = ActorMinimalInfo & {
   socials: SocialInfo[];
 };
 
-export type ActorTeamIndividualInfo = ActorMinimalInfo & {
+export type ActorTeamUserInfo = ActorMinimalInfo & {
   team?: Omit<TeamMinimalInfo, 'actor'> | null;
-  individual?: {
-    user?: Omit<UserMinimalInfo, 'individual'> | null;
-  } | null;
+  user?: Omit<UserMinimalInfo, 'actor'> | null;
 };

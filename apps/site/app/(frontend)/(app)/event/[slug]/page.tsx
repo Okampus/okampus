@@ -92,7 +92,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                           submission,
                           formId: event.joinForm?.id,
                           tenantId: me.user.tenant.id,
-                          createdById: me.user.individual.id,
+                          createdById: me.user.id,
                         },
                       },
                     };
@@ -123,7 +123,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
               ),
             })
           : insertEventJoin({
-              variables: { object: { eventId: event.id, joinedById: me.user.individual.id } },
+              variables: { object: { eventId: event.id, joinedById: me.user.id } },
               onCompleted: ({ insertEventJoinOne }) => {
                 if (!insertEventJoinOne) return;
 

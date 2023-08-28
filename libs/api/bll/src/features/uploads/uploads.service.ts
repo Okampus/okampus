@@ -17,11 +17,11 @@ import { Readable } from 'node:stream';
 import { promises as fs } from 'node:fs';
 
 import type { HTTPResource } from '../../types/http-resource.type';
-import type { Individual, Tenant } from '@okampus/api/dal';
+import type { User, Tenant } from '@okampus/api/dal';
 import type { ApiConfig, MulterFile } from '@okampus/shared/types';
 
 type UploadContext = {
-  createdBy: Individual | null;
+  createdBy: User | null;
   entityName: EntityName;
   entityId: string | null;
   tenant: Tenant;
@@ -162,7 +162,7 @@ export class UploadsService extends RequestContext {
     fieldname: string,
     type: EntityName.EventJoin | EntityName.Team,
     entityId: string,
-    createdBy: Individual | null,
+    createdBy: User | null,
     tenant: Tenant,
   ): Promise<FileUpload> {
     const qrCode = await QRCodeGenerator.toDataURL(data);
@@ -173,9 +173,9 @@ export class UploadsService extends RequestContext {
     return await this.createImageUpload(file, Buckets.QR, context, 150);
   }
 
-  public async uploadSignature(file: MulterFile, createdBy: Individual, tenant: Tenant) {
-    if (!createdBy?.user) throw new BadRequestException('Requester is not a user');
-    const context = { createdBy, tenant, entityName: EntityName.User, entityId: createdBy.user.id };
+  public async uploadSignature(file: MulterFile, createdBy: User, tenant: Tenant) {
+    if (createdBy.isBot) throw new BadRequestException('Requester is not a user');
+    const context = { createdBy, tenant, entityName: EntityName.User, entityId: createdBy.id };
     return await this.createImageUpload(file, Buckets.Signatures, context, 300);
   }
 }

@@ -62,39 +62,34 @@ query GetEvent($slug: String!) {
           createdAt
           firstName
           lastName
-          individual {
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            slug
+            website
+            actorImages {
               __typename
               id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
+              type
+              image {
                 __typename
                 id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
+                url
               }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
               }
             }
           }
@@ -198,28 +193,23 @@ query GetEvent($slug: String!) {
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
-          createdAt
-          actor {
+          slug
+          bio
+          name
+          email
+          website
+          status
+          actorImages {
             __typename
             id
-            slug
-            bio
-            name
-            email
-            website
-            status
-            actorImages {
+            type
+            image {
               __typename
               id
-              type
-              image {
-                __typename
-                id
-                url
-              }
+              url
             }
           }
         }

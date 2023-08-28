@@ -35,21 +35,13 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
           slug
         }
       }
-      individual {
+      user {
         __typename
         id
-        user {
+        actor {
           __typename
           id
-          individual {
-            __typename
-            id
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
+          slug
         }
       }
     }
@@ -79,21 +71,13 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
           slug
         }
       }
-      individual {
+      user {
         __typename
         id
-        user {
+        actor {
           __typename
           id
-          individual {
-            __typename
-            id
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
+          slug
         }
       }
     }
@@ -140,18 +124,10 @@ query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: I
           }
         }
       }
-      user {
+      actor {
         __typename
         id
-        individual {
-          __typename
-          id
-          actor {
-            __typename
-            id
-            slug
-          }
-        }
+        slug
       }
     }
     event {

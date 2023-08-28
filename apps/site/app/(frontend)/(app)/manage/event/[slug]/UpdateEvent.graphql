@@ -143,39 +143,34 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
           createdAt
           firstName
           lastName
-          individual {
+          actor {
             __typename
             id
             createdAt
-            actor {
+            email
+            name
+            slug
+            website
+            actorImages {
               __typename
               id
-              createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
+              type
+              image {
                 __typename
                 id
-                type
-                image {
-                  __typename
-                  id
-                  url
-                }
+                url
               }
-              bio
-              status
-              actorTags {
-                tag {
-                  __typename
-                  id
-                  createdAt
-                  slug
-                  name
-                  color
-                }
+            }
+            bio
+            status
+            actorTags {
+              tag {
+                __typename
+                id
+                createdAt
+                slug
+                name
+                color
               }
             }
           }
@@ -199,28 +194,23 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         createdAt
         firstName
         lastName
-        individual {
+        actor {
           __typename
           id
-          createdAt
-          actor {
+          slug
+          bio
+          name
+          email
+          status
+          website
+          actorImages {
             __typename
             id
-            slug
-            bio
-            name
-            email
-            status
-            website
-            actorImages {
+            type
+            image {
               __typename
               id
-              type
-              image {
-                __typename
-                id
-                url
-              }
+              url
             }
           }
         }
@@ -295,38 +285,28 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
             }
           }
         }
-        user {
+        firstName
+        lastName
+        actor {
           __typename
           id
           createdAt
-          firstName
-          lastName
-          individual {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
             createdAt
-            actor {
+            type
+            image {
               __typename
               id
               createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              url
+              size
+              type
             }
           }
         }
@@ -394,38 +374,28 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
             }
           }
         }
-        user {
+        firstName
+        lastName
+        actor {
           __typename
           id
           createdAt
-          firstName
-          lastName
-          individual {
+          email
+          name
+          slug
+          website
+          actorImages {
             __typename
             id
             createdAt
-            actor {
+            type
+            image {
               __typename
               id
               createdAt
-              email
-              name
-              slug
-              website
-              actorImages {
-                __typename
-                id
-                createdAt
-                type
-                image {
-                  __typename
-                  id
-                  createdAt
-                  url
-                  size
-                  type
-                }
-              }
+              url
+              size
+              type
             }
           }
         }

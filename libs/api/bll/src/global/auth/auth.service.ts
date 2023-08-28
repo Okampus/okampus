@@ -26,7 +26,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { JwtService } from '@nestjs/jwt';
 
-import { Individual, Session, Shortcut, TeamMember, TeamMemberRole, Tenant, User, Team } from '@okampus/api/dal';
+import { User, Session, Shortcut, TeamMember, TeamMemberRole, Tenant, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
 import {
   AdminPermissions,
@@ -40,7 +40,7 @@ import {
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
-import type { IndividualOptions, SessionProps } from '@okampus/api/dal';
+import type { UserOptions, SessionProps } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
 import type { JwtSignOptions } from '@nestjs/jwt';
@@ -53,11 +53,7 @@ const deviceDetector = new DeviceDetector();
 type HttpOnlyTokens = TokenType.Access | TokenType.Refresh;
 type AuthTokens = HttpOnlyTokens | TokenType.WebSocket;
 
-const individualPopulate = ['actor', 'adminRoles'];
-const loginUserPopulate = [...individualPopulate, 'user'];
-// const loginBotPopulate = [...individualPopulate, 'bot'];
-
-const userPopulate = ['individual', ...individualPopulate.map((path) => `individual.${path}`)];
+const userPopulate = ['actor', 'adminRoles'];
 const sessionPopulate = ['user', ...userPopulate.map((path) => `user.${path}`)];
 
 @Injectable()
@@ -101,15 +97,15 @@ export class AuthService extends RequestContext {
   }
 
   public async findUser(id: string) {
-    return await this.em.findOneOrFail(Individual, { id });
+    return await this.em.findOneOrFail(User, { id });
   }
 
   public async findUserBySlug(slug: string) {
-    return await this.em.findOneOrFail(Individual, { actor: { slug } });
+    return await this.em.findOneOrFail(User, { actor: { slug } });
   }
 
-  public async createUser(createUser: IndividualOptions) {
-    const user = new Individual(createUser);
+  public async createUser(createUser: UserOptions) {
+    const user = new User(createUser);
     await this.em.persistAndFlush(user);
     return user;
   }
@@ -141,16 +137,12 @@ export class AuthService extends RequestContext {
     throw new UnauthorizedException('Invalid token claims');
   }
 
-  public async validateBotToken(token: string): Promise<Individual> {
+  public async validateBotToken(token: string): Promise<User> {
     const decoded = await this.processToken(token, { req: RequestType.Http }, this.botSignOptions);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const bot = await this.em.findOneOrFail<Individual, any>(
-      Individual,
-      { id: decoded.sub },
-      { populate: individualPopulate },
-    );
-    if (bot.bot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
+    const bot = await this.em.findOneOrFail<User, any>(User, { id: decoded.sub }, { populate: userPopulate });
+    if (!bot.isBot || !bot.passwordHash) throw new UnauthorizedException('Token not set'); // TODO: signalize odd state
 
     const isTokenValid = await verify(bot.passwordHash, token, { secret: this.pepper });
     if (!isTokenValid) throw new UnauthorizedException('Invalid credentials');
@@ -159,7 +151,7 @@ export class AuthService extends RequestContext {
   }
 
   public async createBotToken(sub: string): Promise<string> {
-    const bot = await this.em.findOneOrFail(Individual, { id: sub, bot: { $ne: null } });
+    const bot = await this.em.findOneOrFail(User, { id: sub, isBot: true });
     const token = await this.jwtService.signAsync({ sub: bot.id, req: RequestType.Http }, this.botSignOptions);
 
     bot.passwordHash = await hash(token, { secret: this.pepper });
@@ -263,7 +255,7 @@ export class AuthService extends RequestContext {
   }
 
   public async createSession(
-    userSession: SessionProps,
+    sessionProps: SessionProps,
     tenant: Tenant,
     token: string,
     tokenFamily: string,
@@ -273,8 +265,14 @@ export class AuthService extends RequestContext {
     if (!user) throw new InternalServerErrorException('User info not found');
 
     const refreshTokenHash = await hash(token, { secret: this.pepper });
-    const createdBy = user.individual;
-    const session = new Session({ ...userSession, user, refreshTokenHash, tokenFamily, createdBy, tenant });
+    const session = new Session({
+      ...sessionProps,
+      user,
+      refreshTokenHash,
+      tokenFamily,
+      createdBy: user,
+      tenant,
+    });
 
     await this.em.persistAndFlush(session);
     return session;
@@ -306,7 +304,7 @@ export class AuthService extends RequestContext {
     type: TokenType,
     req: FastifyRequest,
     res: FastifyReply,
-  ): Promise<Individual> {
+  ): Promise<User> {
     const claims = { req: type === TokenType.WebSocket ? RequestType.WebSocket : RequestType.Http, tok: type };
     const options = type === TokenType.Refresh ? this.refreshSignOptions : this.accessSignOptions;
 
@@ -329,7 +327,7 @@ export class AuthService extends RequestContext {
       await this.refreshSession(req, res, sub);
     }
 
-    return session.user.individual;
+    return session.user;
   }
 
   public async login(
@@ -343,51 +341,50 @@ export class AuthService extends RequestContext {
     onboardingTeams: Team[];
   }> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const individual = await this.em.findOne<Individual, any>(
-      Individual,
+    const user = await this.em.findOne<User, any>(
+      User,
       { actor: { $or: [{ slug: body.username }, { email: body.username }] }, tenant: this.tenant() },
-      { populate: loginUserPopulate },
+      { populate: userPopulate },
     );
 
-    if (!individual?.user) throw new UnauthorizedException('This user does not yet exist.');
-    if (!individual.passwordHash) throw new UnauthorizedException('This user does not yet have a password set.');
+    if (!user) throw new UnauthorizedException('This user does not yet exist.');
+    if (!user.passwordHash) throw new UnauthorizedException('This user does not yet have a password set.');
 
-    const isPasswordValid = await verify(individual.passwordHash, body.password, { secret: this.pepper });
+    const isPasswordValid = await verify(user.passwordHash, body.password, { secret: this.pepper });
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials.');
 
-    await this.refreshSession(req, res, individual.user.id);
+    await this.refreshSession(req, res, user.id);
 
-    requestContext.set('requester', individual);
+    requestContext.set('requester', user);
 
     const userData = selectionSet.some((field) => field.startsWith('user'))
       ? await this.hasuraService.findByPk(
           'userByPk',
           selectionSet.filter((field) => field.startsWith('user')).map((field) => field.replace('user.', '')),
-          { id: individual.user.id },
+          { id: user.id },
         )
       : undefined;
 
     // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teams = await this.em.find(Team, {
       $or: [
-        { expectingPresidentEmail: { $eq: individual.actor.email } },
-        { expectingTreasurerEmail: { $eq: individual.actor.email } },
-        { expectingSecretaryEmail: { $eq: individual.actor.email } },
+        { expectingPresidentEmail: { $eq: user.actor.email } },
+        { expectingTreasurerEmail: { $eq: user.actor.email } },
+        { expectingSecretaryEmail: { $eq: user.actor.email } },
       ],
     });
 
-    const user = individual.user;
     await Promise.all(
       teams.map(async (team) => {
-        if (team.expectingPresidentEmail === individual.actor.email) {
+        if (team.expectingPresidentEmail === user.actor.email) {
           team.expectingPresidentEmail = '';
           await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
         }
-        if (team.expectingSecretaryEmail === individual.actor.email) {
+        if (team.expectingSecretaryEmail === user.actor.email) {
           team.expectingSecretaryEmail = '';
           await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
         }
-        if (team.expectingTreasurerEmail === individual.actor.email) {
+        if (team.expectingTreasurerEmail === user.actor.email) {
           team.expectingTreasurerEmail = '';
           await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
         }
@@ -401,14 +398,14 @@ export class AuthService extends RequestContext {
           selectionSet
             .filter((field) => field.startsWith('onboardingTeams'))
             .map((field) => field.replace('onboardingTeams.', '')),
-          { expectingPresidentEmail: { _eq: individual.actor.email } },
+          { expectingPresidentEmail: { _eq: user.actor.email } },
         )
       : undefined;
 
     return {
       ...(userData && { user: userData.userByPk }),
       ...(teamsData && { onboardingTeams: teamsData.team }),
-      canManageTenant: individual.adminRoles
+      canManageTenant: user.adminRoles
         .getItems()
         .some((role) =>
           role.tenant === null
