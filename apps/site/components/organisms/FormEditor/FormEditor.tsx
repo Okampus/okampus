@@ -49,6 +49,13 @@ const controlOptions = [
   { label: 'Cases à cocher', value: ControlType.MultiCheckbox },
 ];
 
+function OptionPrefix({ type, index }: { type: ControlType; index: number }) {
+  if (type === ControlType.Select) return <div className="text-0 tabular-nums">{index + 1}.</div>;
+  if (type === ControlType.Radio) return <input type="radio" disabled={true} />;
+  if (type === ControlType.MultiCheckbox) return <input type="checkbox" disabled={true} />;
+  return null;
+}
+
 export type FormEditorProps = { form: FormMinimalInfo };
 export default function FormEditor({ form }: FormEditorProps) {
   const [selectedTab, setSelectedTab] = useState(QUESTIONS);
@@ -63,7 +70,7 @@ export default function FormEditor({ form }: FormEditorProps) {
   useKeyPressEvent('Escape', closeBottomSheet);
 
   const defaultFields: FormSchema = Array.isArray(form.schema) ? form.schema : [];
-  const { register, trigger, formState, watch, reset, setValue, control, handleSubmit } = useForm({
+  const { register, formState, watch, reset, setValue, control, handleSubmit } = useForm({
     defaultValues: { fields: defaultFields },
     mode: 'all',
   });
@@ -85,6 +92,7 @@ export default function FormEditor({ form }: FormEditorProps) {
 
   return (
     <BottomSheetLayout
+      horizontalPadding={false}
       topbar={
         <div className="flex gap-4 items-center text-1">
           <IconCheckupList className="w-8 h-8" />
@@ -101,7 +109,7 @@ export default function FormEditor({ form }: FormEditorProps) {
           />
           <div className="grow w-full flex justify-center gap-4 scrollbar overflow-y-scroll">
             {selectedTab === QUESTIONS ? (
-              <form className="mt-8 flex gap-12" onSubmit={onSubmit}>
+              <form className="mt-8 w-full flex gap-12 justify-center" onSubmit={onSubmit}>
                 <ChangeSetToast
                   isDirty={formState.isDirty}
                   isValid={formState.isValid}
@@ -119,21 +127,14 @@ export default function FormEditor({ form }: FormEditorProps) {
                       <ul
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className="mb-[calc(2.5*var(--h-topbar))]"
+                        className="mb-[calc(2.5*var(--h-topbar))] w-full max-w-4xl"
                       >
                         {fields.map((field, idx) => {
                           const options = field.options ?? [newOption(0)];
-                          let optionPrefix: ((idx: number) => React.ReactNode) | null = null;
-                          // eslint-disable-next-line unicorn/prefer-switch
-                          if (field.type === ControlType.Select)
-                            optionPrefix = (idx: number) => <div className="text-0 tabular-nums">{idx + 1}.</div>;
-                          else if (field.type === ControlType.Radio)
-                            optionPrefix = (idx: number) => <input type="radio" disabled={true} />;
-                          else if (field.type === ControlType.MultiCheckbox)
-                            optionPrefix = (idx: number) => <input type="checkbox" disabled={true} />;
+                          const optionPrefix = <OptionPrefix type={field.type} index={idx} />;
 
                           return (
-                            <Draggable key={`field.${idx}`} draggableId={`field-${idx}`} index={idx}>
+                            <Draggable key={`field.${idx}`} draggableId={`field.${idx}`} index={idx}>
                               {(provided) => (
                                 <DragListItem
                                   className="flex flex-col md-max:gap-2"
@@ -214,7 +215,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                                                         }
                                                       >
                                                         <span className="flex items-center gap-2 w-full">
-                                                          {optionPrefix?.(optionIdx)}
+                                                          {optionPrefix}
                                                           <input
                                                             className="bg-transparent w-full outline-none border-b border-transparent hover:border-[var(--border-3)] active:border-[var(--border-3)] focus:border-[var(--border-3)]"
                                                             value={option.value}
@@ -242,7 +243,7 @@ export default function FormEditor({ form }: FormEditorProps) {
                                         </Droppable>
                                       </DragDropContext>
                                       <span className="flex items-center gap-2 pl-6">
-                                        {optionPrefix(options.length + 1)}
+                                        {optionPrefix}
                                         <span
                                           className="border-b border-transparent hover:border-[var(--border-3)] w-full cursor-text mr-2"
                                           onClick={() => {
@@ -280,13 +281,13 @@ export default function FormEditor({ form }: FormEditorProps) {
                   </Droppable>
                 </DragDropContext>
                 <div
-                  className="sm-max:absolute sm-max:bottom-[calc(3*var(--h-topbar))] sm-max:right-[var(--px-content)] sm:sticky sm:top-6 bg-[var(--primary)] text-white rounded-full p-2 h-fit"
-                  onClick={(e) => e.stopPropagation()}
+                  className="sm-max:absolute sm-max:bottom-[calc(3*var(--h-topbar))] sm-max:right-[var(--px-content)] sm:sticky sm:top-6 bg-[var(--primary)] text-white rounded-full p-2 h-fit "
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setValue('fields', [...fields, newQuestion(fields.length)], { shouldDirty: true });
+                  }}
                 >
-                  <IconPlus
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={() => setValue('fields', [...fields, newQuestion(fields.length)], { shouldDirty: true })}
-                  />
+                  <IconPlus className="w-8 h-8 cursor-pointer" />
                 </div>
               </form>
             ) : (

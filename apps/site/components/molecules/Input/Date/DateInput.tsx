@@ -8,6 +8,7 @@ import PopoverTrigger from '../../../atoms/Popup/Popover/PopoverTrigger';
 import PopoverContent from '../../../atoms/Popup/Popover/PopoverContent';
 import { useTranslation } from '../../../../hooks/context/useTranslation';
 import { useOutsideClick } from '../../../../hooks/useOutsideClick';
+import { triggerOnChange } from '../../../../utils/dom/trigger-on-change';
 
 import { range } from '@okampus/shared/utils';
 import { IconCalendarEvent } from '@tabler/icons-react';
@@ -29,14 +30,6 @@ const today = () => {
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   return dateWithoutTimezone(date);
-};
-
-const getDateISOString = (date: string) => {
-  try {
-    return new Date(date).toISOString().slice(0, 16);
-  } catch {
-    return null;
-  }
 };
 
 export type DateInputProps = {
@@ -69,17 +62,25 @@ export default memo(
       ...inputProps
     } = props;
 
-    const [dateISOString, setDateISOString] = useState(defaultValue ? getDateISOString(defaultValue) : null);
+    const [dateISOString, setDateISOString] = useState(defaultValue ?? null);
 
     const currentHour = dateISOString?.slice(11, 13);
     const currentMinutes = dateISOString?.slice(14, 16);
 
     useEffect(() => {
+      setTimeout(() => {
+        const value = localRef.current?.value;
+        if (value) setDateISOString(value);
+      }, 200);
+    }, [localRef]);
+
+    useEffect(() => {
       if (props.defaultValue && localRef.current) {
-        localRef.current.value = props.defaultValue;
-        setDateISOString(getDateISOString(props.defaultValue));
+        const date = props.defaultValue ?? props.value;
+        localRef.current.value = date;
+        setDateISOString(date);
       }
-    }, [props.defaultValue, localRef]);
+    }, [props.defaultValue, props.value, localRef]);
 
     const input = (
       <input
@@ -99,7 +100,8 @@ export default memo(
       />
     );
 
-    const info = inputInfo ?? (dateISOString ? format('weekDay', dateWithoutTimezone(new Date(dateISOString))) : null);
+    const includeTimeFormat = includeTime ? 'weekDayLongHour' : 'weekDayLong';
+    const info = inputInfo ?? (dateISOString ? format(includeTimeFormat, new Date(dateISOString)) : null);
     const fieldProps = { label, className, name, description, required, error, info, loading };
 
     return (
@@ -109,7 +111,7 @@ export default memo(
           <Popover forcePlacement={true} placement="bottom-start" controlledOpen={isOpen}>
             <PopoverTrigger
               onClick={() => !isOpen && setIsOpen(!isOpen)}
-              className="absolute top-0 bottom-0 right-2.5 bg-[var(--bg-input)]"
+              className="absolute top-[1px] bottom-[1px] right-1 px-2 bg-[var(--bg-input)]"
             >
               <IconCalendarEvent className="p-0.5" />
             </PopoverTrigger>
@@ -124,20 +126,19 @@ export default memo(
                 setDate={(date) => {
                   date = dateWithoutTimezone(date);
                   if (localRef.current) {
-                    const isoString = date.toISOString();
-                    localRef.current.value = isoString
+                    const value = date
+                      .toISOString()
                       .replace(/(\d{4}-\d{2}-\d{2})T\d{2}:\d{2}/, `$1T${currentHour ?? '00'}:${currentMinutes ?? '00'}`)
                       .slice(0, 16);
 
-                    localRef.current.dispatchEvent(new Event('change'));
-                    setDateISOString(localRef.current.value || null);
+                    triggerOnChange(localRef.current, value);
                   }
                   setIsOpen(false);
                 }}
               />
               {
                 <>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[24rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
                     {hours.map((hour) => (
                       <li
                         key={hour}
@@ -151,15 +152,15 @@ export default memo(
                           }
                         }}
                         className={clsx(
-                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer hover:bg-[var(--bg-2)]',
-                          currentHour === hour ? 'bg-[var(--info)] text-white' : 'text-1',
+                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer',
+                          currentHour === hour ? 'bg-[var(--info)] text-white' : 'text-1 hover:bg-[var(--bg-2)]',
                         )}
                       >
                         {hour}
                       </li>
                     ))}
                   </ul>
-                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[24rem]">
+                  <ul className="flex flex-col scrollbar overflow-y-scroll border-l border-color-2 h-[20rem]">
                     {minutes.map((minute) => (
                       <li
                         key={minute}
@@ -173,8 +174,8 @@ export default memo(
                           }
                         }}
                         className={clsx(
-                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer hover:bg-[var(--bg-2)]',
-                          currentMinutes === minute ? 'bg-[var(--info)] text-white' : 'text-1',
+                          'shrink-0 flex justify-center items-center w-16 h-10 font-medium cursor-pointer',
+                          currentMinutes === minute ? 'bg-[var(--info)] text-white' : 'text-1 hover:bg-[var(--bg-2)]',
                         )}
                       >
                         {minute}

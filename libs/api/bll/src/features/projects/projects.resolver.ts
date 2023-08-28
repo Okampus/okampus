@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteProjectArgsType,
+  DeleteByPkProjectArgsType,
   InsertOneProjectArgsType,
   InsertProjectArgsType,
   UpdateByPkProjectArgsType,
   UpdateProjectArgsType,
   FindProjectArgsType,
   FindByPkProjectArgsType,
-  AggregateProjectArgsType,
+  AggregateProjectArgsType
 } from './projects.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class ProjectsQueryResolver {
     return await this.projectsService.findProject(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertProjectOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneProjectArgsType>(
@@ -75,12 +77,12 @@ export class ProjectsQueryResolver {
 
   @Query()
   async projectByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkProjectArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.projectsService.findProjectByPk(getSelectionSet(info), id);
+    return await this.projectsService.findProjectByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class ProjectsQueryResolver {
 
   @Mutation()
   async deleteProjectByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkProjectArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkProjectArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.projectsService.deleteProjectByPk(getSelectionSet(info), pkColumns);
+    return await this.projectsService.deleteProjectByPk(getSelectionSet(info), id);
   }
 }
 

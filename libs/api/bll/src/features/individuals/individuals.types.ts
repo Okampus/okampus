@@ -27,6 +27,10 @@ export type DeleteIndividualArgsType = {
   where: IndividualBoolExp;
 };
 
+export type DeleteByPkIndividualArgsType = {
+  id: string;
+};
+
 export type UpdateByPkIndividualArgsType = {
   pkColumns: IndividualPkColumnsInput;
   _set: IndividualSetInput;

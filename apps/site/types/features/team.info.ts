@@ -8,7 +8,7 @@ export type TeamMinimalInfo = {
 export type TeamCardInfo = TeamMinimalInfo & {
   actor: ActorBaseInfo;
   teamMembersAggregate: {
-    aggregate?: {
+    aggregate: {
       count: number;
     } | null;
   };

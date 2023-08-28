@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteActorArgsType,
+  DeleteByPkActorArgsType,
   InsertOneActorArgsType,
   InsertActorArgsType,
   UpdateByPkActorArgsType,
   UpdateActorArgsType,
   FindActorArgsType,
   FindByPkActorArgsType,
-  AggregateActorArgsType,
+  AggregateActorArgsType
 } from './actors.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class ActorsQueryResolver {
     return await this.actorsService.findActor(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertActorOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneActorArgsType>(
@@ -75,12 +77,12 @@ export class ActorsQueryResolver {
 
   @Query()
   async actorByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkActorArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorsService.findActorByPk(getSelectionSet(info), id);
+    return await this.actorsService.findActorByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class ActorsQueryResolver {
 
   @Mutation()
   async deleteActorByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkActorArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkActorArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorsService.deleteActorByPk(getSelectionSet(info), pkColumns);
+    return await this.actorsService.deleteActorByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class ActorsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorsService.aggregateActor(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.actorsService.aggregateActor(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

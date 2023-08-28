@@ -26,7 +26,7 @@ export class ActorImagesService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly actorImageRepository: ActorImageRepository
+    private readonly actorImageRepository: ActorImageRepository,
   ) {
     super();
   }
@@ -40,15 +40,7 @@ export class ActorImagesService extends RequestContext {
 
   checkPermsDelete(actorImage: ActorImage) {
     if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
-            role.tenant?.id === actorImage.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === actorImage.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -61,15 +53,7 @@ export class ActorImagesService extends RequestContext {
     if (actorImage.deletedAt) throw new NotFoundException(`ActorImage was deleted on ${actorImage.deletedAt}.`);
     if (actorImage.hiddenAt) throw new NotFoundException('ActorImage must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
-            role.tenant?.id === actorImage.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === actorImage.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -78,6 +62,7 @@ export class ActorImagesService extends RequestContext {
 
   checkPropsConstraints(props: ActorImageSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -88,10 +73,17 @@ export class ActorImagesService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertActorImageOne(selectionSet: string[], object: ActorImageInsertInput, onConflict?: ActorImageOnConflict) {
+  async insertActorImageOne(
+    selectionSet: string[],
+    object: ActorImageInsertInput,
+    onConflict?: ActorImageOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert ActorImage.');
 
@@ -103,10 +95,10 @@ export class ActorImagesService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertActorImageOne', selectionSet, object, onConflict);
-
+  
     const actorImage = await this.actorImageRepository.findOneOrFail(data.insertActorImageOne.id);
     await this.logsService.createLog(EntityName.ActorImage, actorImage);
-
+    
     // Custom logic
     return data.insertActorImageOne;
   }
@@ -117,23 +109,26 @@ export class ActorImagesService extends RequestContext {
     orderBy?: Array<ActorImageOrderBy>,
     distinctOn?: Array<ActorImageSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('actorImage', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.actorImage;
   }
 
-  async findActorImageByPk(selectionSet: string[], id: string) {
+  async findActorImageByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('actorImageByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('actorImageByPk', selectionSet, {  id,  });
     return data.actorImageByPk;
   }
 
   async insertActorImage(
     selectionSet: string[],
     objects: Array<ActorImageInsertInput>,
-    onConflict?: ActorImageOnConflict
+    onConflict?: ActorImageOnConflict,
   ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
@@ -158,7 +153,10 @@ export class ActorImagesService extends RequestContext {
     return data.insertActorImage;
   }
 
-  async updateActorImageMany(selectionSet: string[], updates: Array<ActorImageUpdates>) {
+  async updateActorImageMany(
+    selectionSet: string[],
+    updates: Array<ActorImageUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -168,8 +166,7 @@ export class ActorImagesService extends RequestContext {
       if (!actorImage) throw new NotFoundException(`ActorImage (${update.where.id._eq}) was not found.`);
 
       const canUpdate = this.checkPermsUpdate(update._set, actorImage);
-      if (!canUpdate)
-        throw new ForbiddenException(`You are not allowed to update ActorImage (${update.where.id._eq}).`);
+      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update ActorImage (${update.where.id._eq}).`);
 
       const arePropsValid = this.checkPropsConstraints(update._set);
       if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
@@ -177,19 +174,21 @@ export class ActorImagesService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateActorImageMany', selectionSet, updates);
 
-    await Promise.all(
-      actorImages.map(async (actorImage) => {
-        const update = updates.find((update) => update.where.id._eq === actorImage.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.ActorImage, actorImage, update._set);
-      })
-    );
+    await Promise.all(actorImages.map(async (actorImage) => {
+      const update = updates.find((update) => update.where.id._eq === actorImage.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.ActorImage, actorImage, update._set);
+    }));
 
     // Custom logic
     return data.updateActorImageMany;
   }
 
-  async updateActorImageByPk(selectionSet: string[], pkColumns: ActorImagePkColumnsInput, _set: ActorImageSetInput) {
+  async updateActorImageByPk(
+    selectionSet: string[],
+    pkColumns: ActorImagePkColumnsInput,
+    _set: ActorImageSetInput,
+  ) {
     const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, actorImage);
@@ -206,10 +205,12 @@ export class ActorImagesService extends RequestContext {
     return data.updateActorImageByPk;
   }
 
-  async deleteActorImage(selectionSet: string[], where: ActorImageBoolExp) {
+  async deleteActorImage(
+    selectionSet: string[],
+    where: ActorImageBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const actorImages = await this.actorImageRepository.findByIds(where.id._in);
     for (const actorImage of actorImages) {
@@ -217,31 +218,30 @@ export class ActorImagesService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${actorImage.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateActorImage', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateActorImage', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      actorImages.map(async (actorImage) => {
-        await this.logsService.deleteLog(EntityName.ActorImage, actorImage.id);
-      })
-    );
+    await Promise.all(actorImages.map(async (actorImage) => {
+      await this.logsService.deleteLog(EntityName.ActorImage, actorImage.id);
+    }));
 
     // Custom logic
     return data.updateActorImage;
   }
 
-  async deleteActorImageByPk(selectionSet: string[], pkColumns: ActorImagePkColumnsInput) {
-    const actorImage = await this.actorImageRepository.findOneOrFail(pkColumns.id);
+  async deleteActorImageByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
+    const actorImage = await this.actorImageRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(actorImage);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete ActorImage (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, pkColumns, {
+    const data = await this.hasuraService.updateByPk('updateActorImageByPk', selectionSet, { id }, {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(EntityName.ActorImage, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.ActorImage, id);
     // Custom logic
     return data.updateActorImageByPk;
   }
@@ -255,15 +255,7 @@ export class ActorImagesService extends RequestContext {
     offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'actorImageAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    const data = await this.hasuraService.aggregate('actorImageAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.actorImageAggregate;
   }
 }

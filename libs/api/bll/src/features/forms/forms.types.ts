@@ -27,6 +27,10 @@ export type DeleteFormArgsType = {
   where: FormBoolExp;
 };
 
+export type DeleteByPkFormArgsType = {
+  id: string;
+};
+
 export type UpdateByPkFormArgsType = {
   pkColumns: FormPkColumnsInput;
   _set: FormSetInput;

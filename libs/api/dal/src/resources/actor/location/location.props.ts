@@ -12,10 +12,10 @@ export class LocationProps {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  locationDetails?: string = '';
+  details?: string = '';
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  onlineLink?: string = '';
+  link?: string = '';
 }

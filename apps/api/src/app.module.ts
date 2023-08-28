@@ -49,6 +49,11 @@ import {
   AccountsModule,
   EventApprovalsModule,
   BanksModule,
+  AddressesModule,
+  LocationsModule,
+  RolesModule,
+  TeamMembersModule,
+  TeamMemberRolesModule,
 } from '@okampus/api/bll';
 import { AdminRole, Form, Individual, Team, Tenant } from '@okampus/api/dal';
 import { ExceptionsFilter } from '@okampus/api/shards';
@@ -84,6 +89,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { EntityManager, MikroORM } from '@mikro-orm/core';
 import { hash } from 'argon2';
 
+import type { ApiConfig } from '@okampus/shared/types';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
@@ -176,8 +182,13 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     TeamJoinsModule,
     TeamsModule,
     ActionsModule,
+    AddressesModule,
+    LocationsModule,
     FollowsModule,
     SocialsModule,
+    RolesModule,
+    TeamMembersModule,
+    TeamMemberRolesModule,
     // InterestsModule,
     // MetricsModule,
     // ReactionsModule,
@@ -225,15 +236,29 @@ export class AppModule implements NestModule, OnModuleInit {
     const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
     const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
 
+    const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
+    const domain = loadConfig<string>(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
+
     const isSeeding = loadConfig<boolean>(this.configService, 'database.isSeeding');
 
     let admin: Individual;
-    const tenant = await this.em.findOne(Tenant, { domain: BASE_TENANT });
+    const tenant = await this.em.findOne(Tenant, { domain });
     if (tenant) {
       admin = await this.em.findOneOrFail(Individual, { actor: { slug: ADMIN_ACCOUNT_SLUG } });
     } else {
       // Init base tenant
-      const tenant = new Tenant({ domain: BASE_TENANT, pointName: 'LXP' });
+      const tenant = new Tenant({
+        domain,
+        pointName: 'LXP',
+        isOidcEnabled: oidc.enabled,
+        oidcCallbackUri: oidc.callbackUri,
+        oidcClientId: oidc.clientId,
+        oidcClientSecret: oidc.clientSecret,
+        oidcDiscoveryUrl: oidc.discoveryUrl,
+        oidcName: oidc.name,
+        oidcScopes: oidc.scopes,
+      });
+
       await this.em.persistAndFlush([tenant]);
 
       const anon = new Individual({
@@ -360,10 +385,10 @@ export class AppModule implements NestModule, OnModuleInit {
     // Seed base tenant
 
     // eslint-disable-next-line unicorn/no-array-method-this-argument
-    const anyTeam = await this.em.find(Team, { tenant: { domain: BASE_TENANT } });
+    const anyTeam = await this.em.find(Team, { tenant: { domain } });
     if (anyTeam.length === 1 && isSeeding) {
       DatabaseSeeder.pepper = secret;
-      DatabaseSeeder.targetTenant = BASE_TENANT;
+      DatabaseSeeder.targetTenant = domain;
       DatabaseSeeder.upload = this.uploadsService;
       DatabaseSeeder.admin = admin;
 

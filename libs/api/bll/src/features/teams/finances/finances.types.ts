@@ -27,6 +27,10 @@ export type DeleteFinanceArgsType = {
   where: FinanceBoolExp;
 };
 
+export type DeleteByPkFinanceArgsType = {
+  id: string;
+};
+
 export type UpdateByPkFinanceArgsType = {
   pkColumns: FinancePkColumnsInput;
   _set: FinanceSetInput;

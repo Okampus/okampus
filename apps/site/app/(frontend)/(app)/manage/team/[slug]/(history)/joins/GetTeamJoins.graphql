@@ -75,7 +75,7 @@ query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions

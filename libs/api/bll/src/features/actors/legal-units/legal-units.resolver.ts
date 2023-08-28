@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteLegalUnitArgsType,
+  DeleteByPkLegalUnitArgsType,
   InsertOneLegalUnitArgsType,
   InsertLegalUnitArgsType,
   UpdateByPkLegalUnitArgsType,
   UpdateLegalUnitArgsType,
   FindLegalUnitArgsType,
   FindByPkLegalUnitArgsType,
-  AggregateLegalUnitArgsType,
+  AggregateLegalUnitArgsType
 } from './legal-units.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class LegalUnitsQueryResolver {
     return await this.legalUnitsService.findLegalUnit(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertLegalUnitOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneLegalUnitArgsType>(
@@ -75,12 +77,12 @@ export class LegalUnitsQueryResolver {
 
   @Query()
   async legalUnitByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkLegalUnitArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.legalUnitsService.findLegalUnitByPk(getSelectionSet(info), id);
+    return await this.legalUnitsService.findLegalUnitByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class LegalUnitsQueryResolver {
 
   @Mutation()
   async deleteLegalUnitByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkLegalUnitArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkLegalUnitArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.legalUnitsService.deleteLegalUnitByPk(getSelectionSet(info), pkColumns);
+    return await this.legalUnitsService.deleteLegalUnitByPk(getSelectionSet(info), id);
   }
 }
 

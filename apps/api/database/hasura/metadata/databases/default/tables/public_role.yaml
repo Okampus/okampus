@@ -31,5 +31,5 @@ array_relationships:
       foreign_key_constraint_on:
         column: role_id
         table:
-          name: team_member_roles
+          name: team_member_role
           schema: public

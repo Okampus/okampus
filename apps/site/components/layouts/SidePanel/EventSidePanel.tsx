@@ -1,12 +1,11 @@
 'use client';
 
-import UserLabeled from '../../molecules/Labeled/UserLabeled';
+import SidePanel from '../SidePanel';
 import GroupItem from '../../atoms/Item/GroupItem';
-
-import TeamLabeled from '../../molecules/Labeled/TeamLabeled';
+import UserLabeled from '../../molecules/Labeled/UserLabeled';
 
 import { useEvent } from '../../../context/navigation';
-import SidePanel from '../SidePanel';
+
 import Link from 'next/link';
 
 const labeledClassName = 'bg-2-hover rounded-lg p-2 w-full';
@@ -17,13 +16,21 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
   if (!event?.eventJoinsAggregate.aggregate) return null;
 
   const count = event.eventJoinsAggregate.aggregate.count;
+
+  const supervisors = event.eventOrganizes.flatMap(({ eventSupervisors, team }) =>
+    eventSupervisors.map(({ user }) => [user, team] as const),
+  );
+
   return (
     <SidePanel>
-      <GroupItem className="my-[var(--py-content)] px-3" headingClassName="px-2" heading="Organisé par">
-        {event.eventOrganizes.map(({ team }) => (
-          <li key={team.id}>
-            <TeamLabeled team={team} full={true} className="bg-2-hover rounded-lg p-2 w-full" />
-          </li>
+      <GroupItem
+        className="my-[var(--py-content)] px-3"
+        headingClassName="px-2"
+        groupClassName="flex flex-col"
+        heading={`Responsables — ${supervisors.length}`}
+      >
+        {supervisors.map(([user, team]) => (
+          <UserLabeled key={user.id} user={user} full={true} className={labeledClassName} content={team.actor.name} />
         ))}
       </GroupItem>
       <GroupItem
@@ -36,7 +43,7 @@ export default function EventSidePanel({ slug }: EventSidePanelProps) {
           <UserLabeled key={joinedBy.id} user={joinedBy} full={true} className={labeledClassName} />
         ))}
         {count > 12 && (
-          <Link href={`/event/${slug}/joins`} className="more-button px-3 py-4">
+          <Link key="all" href={`/event/${slug}/joins`} className="more-button px-3 py-4">
             Voir tous les inscrits
           </Link>
         )}

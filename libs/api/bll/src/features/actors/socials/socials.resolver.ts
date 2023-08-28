@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteSocialArgsType,
+  DeleteByPkSocialArgsType,
   InsertOneSocialArgsType,
   InsertSocialArgsType,
   UpdateByPkSocialArgsType,
   UpdateSocialArgsType,
   FindSocialArgsType,
   FindByPkSocialArgsType,
-  AggregateSocialArgsType,
+  AggregateSocialArgsType
 } from './socials.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class SocialsQueryResolver {
     return await this.socialsService.findSocial(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertSocialOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneSocialArgsType>(
@@ -75,12 +77,12 @@ export class SocialsQueryResolver {
 
   @Query()
   async socialByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkSocialArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.socialsService.findSocialByPk(getSelectionSet(info), id);
+    return await this.socialsService.findSocialByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class SocialsQueryResolver {
 
   @Mutation()
   async deleteSocialByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkSocialArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkSocialArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.socialsService.deleteSocialByPk(getSelectionSet(info), pkColumns);
+    return await this.socialsService.deleteSocialByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class SocialsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.socialsService.aggregateSocial(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.socialsService.aggregateSocial(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

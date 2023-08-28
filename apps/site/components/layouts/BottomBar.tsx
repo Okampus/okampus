@@ -5,7 +5,7 @@ import AvatarImage from '../atoms/Image/AvatarImage';
 import { getAvatar } from '../../utils/actor-image/get-avatar';
 
 import { ReactComponent as OkampusLogo } from '@okampus/assets/svg/brands/okampus.svg';
-import { IconAt, IconBrandSafari } from '@tabler/icons-react';
+import { IconBell, IconBrandSafari } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function BottomBar() {
@@ -24,6 +24,7 @@ export default function BottomBar() {
       icon: (
         <AvatarImage
           size={null}
+          indicativeSize={28}
           className="rounded-full !h-7 !w-7"
           type="team"
           name={tenant.adminTeam?.actor?.name}
@@ -37,9 +38,9 @@ export default function BottomBar() {
       icon: <IconBrandSafari className="h-7 w-7" />,
     },
     {
-      label: 'Mentions',
+      label: 'Notifications',
       href: '/notifications',
-      icon: <IconAt className="h-7 w-7" />,
+      icon: <IconBell className="h-7 w-7" />,
     },
     {
       label: 'Profil',
@@ -47,6 +48,7 @@ export default function BottomBar() {
       icon: (
         <AvatarImage
           size={null}
+          indicativeSize={28}
           className="rounded-full !h-7 !w-7"
           name={me.user.individual.actor.name}
           src={getAvatar(me.user.individual.actor.actorImages)?.image.url}
@@ -56,7 +58,7 @@ export default function BottomBar() {
   ];
 
   return (
-    <nav className="text-0 fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-color-2">
+    <nav className="text-0 fixed z-[101] bottom-0 inset-x-0 bg-main hidden h-[var(--h-bottombar)] md-max:flex items-stretch justify-between px-6 sm:px-12 pt-1.5 border-t border-color-1">
       {bottomBarLinks.map((link) => (
         <Link
           href={link.href}

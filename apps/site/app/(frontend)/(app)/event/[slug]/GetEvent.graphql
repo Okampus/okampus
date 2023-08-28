@@ -4,20 +4,22 @@ query GetEvent($slug: String!) {
     id
     createdAt
     description
-    slug
     start
     end
+    slug
     name
     state
     price
-    pointsAwardedForAttendance
     isPrivate
+    maxParticipants
+    pointsAwardedForAttendance
     location {
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
@@ -31,6 +33,7 @@ query GetEvent($slug: String!) {
         city
         state
         country
+        geoapifyId
       }
     }
     banner {
@@ -93,14 +96,6 @@ query GetEvent($slug: String!) {
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
-              }
             }
           }
         }
@@ -126,12 +121,26 @@ query GetEvent($slug: String!) {
               url
             }
           }
+          socials(where: { deletedAt: { _isNull: true } }) {
+            __typename
+            id
+            pseudo
+            url
+            type
+            order
+          }
         }
         joinForm {
           __typename
           id
           schema
           name
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
         }
       }
       project {

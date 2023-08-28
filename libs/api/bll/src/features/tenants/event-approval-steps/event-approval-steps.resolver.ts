@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteEventApprovalStepArgsType,
+  DeleteByPkEventApprovalStepArgsType,
   InsertOneEventApprovalStepArgsType,
   InsertEventApprovalStepArgsType,
   UpdateByPkEventApprovalStepArgsType,
   UpdateEventApprovalStepArgsType,
   FindEventApprovalStepArgsType,
   FindByPkEventApprovalStepArgsType,
-  AggregateEventApprovalStepArgsType,
+  AggregateEventApprovalStepArgsType
 } from './event-approval-steps.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class EventApprovalStepsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalStepsService.findEventApprovalStep(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.eventApprovalStepsService.findEventApprovalStep(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertEventApprovalStepOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class EventApprovalStepsQueryResolver {
 
   @Query()
   async eventApprovalStepByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventApprovalStepArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalStepsService.findEventApprovalStepByPk(getSelectionSet(info), id);
+    return await this.eventApprovalStepsService.findEventApprovalStepByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class EventApprovalStepsQueryResolver {
 
   @Mutation()
   async deleteEventApprovalStepByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkEventApprovalStepArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkEventApprovalStepArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalStepsService.deleteEventApprovalStepByPk(getSelectionSet(info), pkColumns);
+    return await this.eventApprovalStepsService.deleteEventApprovalStepByPk(getSelectionSet(info), id);
   }
 }
 

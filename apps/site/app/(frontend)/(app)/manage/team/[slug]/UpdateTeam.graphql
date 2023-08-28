@@ -56,7 +56,7 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
@@ -65,14 +65,15 @@ mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
+        __typename
+        id
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions

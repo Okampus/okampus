@@ -26,7 +26,7 @@ export class ProjectsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly projectRepository: ProjectRepository
+    private readonly projectRepository: ProjectRepository,
   ) {
     super();
   }
@@ -40,14 +40,7 @@ export class ProjectsService extends RequestContext {
 
   checkPermsDelete(project: Project) {
     if (project.deletedAt) throw new NotFoundException(`Project was deleted on ${project.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === project.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === project.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class ProjectsService extends RequestContext {
     if (project.deletedAt) throw new NotFoundException(`Project was deleted on ${project.deletedAt}.`);
     if (project.hiddenAt) throw new NotFoundException('Project must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === project.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === project.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class ProjectsService extends RequestContext {
 
   checkPropsConstraints(props: ProjectSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class ProjectsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertProjectOne(selectionSet: string[], object: ProjectInsertInput, onConflict?: ProjectOnConflict) {
+  async insertProjectOne(
+    selectionSet: string[],
+    object: ProjectInsertInput,
+    onConflict?: ProjectOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
 
@@ -101,10 +95,10 @@ export class ProjectsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertProjectOne', selectionSet, object, onConflict);
-
+  
     const project = await this.projectRepository.findOneOrFail(data.insertProjectOne.id);
     await this.logsService.createLog(EntityName.Project, project);
-
+    
     // Custom logic
     return data.insertProjectOne;
   }
@@ -115,20 +109,27 @@ export class ProjectsService extends RequestContext {
     orderBy?: Array<ProjectOrderBy>,
     distinctOn?: Array<ProjectSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('project', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.project;
   }
 
-  async findProjectByPk(selectionSet: string[], id: string) {
+  async findProjectByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('projectByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('projectByPk', selectionSet, {  id,  });
     return data.projectByPk;
   }
 
-  async insertProject(selectionSet: string[], objects: Array<ProjectInsertInput>, onConflict?: ProjectOnConflict) {
+  async insertProject(
+    selectionSet: string[],
+    objects: Array<ProjectInsertInput>,
+    onConflict?: ProjectOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Project.');
@@ -152,7 +153,10 @@ export class ProjectsService extends RequestContext {
     return data.insertProject;
   }
 
-  async updateProjectMany(selectionSet: string[], updates: Array<ProjectUpdates>) {
+  async updateProjectMany(
+    selectionSet: string[],
+    updates: Array<ProjectUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class ProjectsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateProjectMany', selectionSet, updates);
 
-    await Promise.all(
-      projects.map(async (project) => {
-        const update = updates.find((update) => update.where.id._eq === project.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Project, project, update._set);
-      })
-    );
+    await Promise.all(projects.map(async (project) => {
+      const update = updates.find((update) => update.where.id._eq === project.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Project, project, update._set);
+    }));
 
     // Custom logic
     return data.updateProjectMany;
   }
 
-  async updateProjectByPk(selectionSet: string[], pkColumns: ProjectPkColumnsInput, _set: ProjectSetInput) {
+  async updateProjectByPk(
+    selectionSet: string[],
+    pkColumns: ProjectPkColumnsInput,
+    _set: ProjectSetInput,
+  ) {
     const project = await this.projectRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, project);
@@ -199,10 +205,12 @@ export class ProjectsService extends RequestContext {
     return data.updateProjectByPk;
   }
 
-  async deleteProject(selectionSet: string[], where: ProjectBoolExp) {
+  async deleteProject(
+    selectionSet: string[],
+    where: ProjectBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const projects = await this.projectRepository.findByIds(where.id._in);
     for (const project of projects) {
@@ -210,31 +218,30 @@ export class ProjectsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Project (${project.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateProject', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateProject', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      projects.map(async (project) => {
-        await this.logsService.deleteLog(EntityName.Project, project.id);
-      })
-    );
+    await Promise.all(projects.map(async (project) => {
+      await this.logsService.deleteLog(EntityName.Project, project.id);
+    }));
 
     // Custom logic
     return data.updateProject;
   }
 
-  async deleteProjectByPk(selectionSet: string[], pkColumns: ProjectPkColumnsInput) {
-    const project = await this.projectRepository.findOneOrFail(pkColumns.id);
+  async deleteProjectByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
+    const project = await this.projectRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(project);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Project (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Project (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateProjectByPk', selectionSet, pkColumns, {
+    const data = await this.hasuraService.updateByPk('updateProjectByPk', selectionSet, { id }, {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(EntityName.Project, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Project, id);
     // Custom logic
     return data.updateProjectByPk;
   }
@@ -248,15 +255,7 @@ export class ProjectsService extends RequestContext {
     offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'projectAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    const data = await this.hasuraService.aggregate('projectAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.projectAggregate;
   }
 }

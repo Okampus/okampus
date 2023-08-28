@@ -4,6 +4,7 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   Delete<%= className %>ArgsType,
+  DeleteByPk<%= className %>ArgsType,
   InsertOne<%= className %>ArgsType,
   Insert<%= className %>ArgsType,
   UpdateByPk<%= className %>ArgsType,
@@ -62,7 +63,7 @@ export class <%= pluralClassName %>QueryResolver {
     );
     return await this.<%= pluralPropertyName %>Service.find<%= className %>(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
-  
+
 
   @Mutation()
   async insert<%= className %>One(@Info() info: GraphQLResolveInfo) {
@@ -96,12 +97,12 @@ export class <%= pluralClassName %>QueryResolver {
 
   @Mutation()
   async delete<%= className %>ByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPk<%= className %>ArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPk<%= className %>ArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.<%= pluralPropertyName %>Service.delete<%= className %>ByPk(getSelectionSet(info), pkColumns);
+    return await this.<%= pluralPropertyName %>Service.delete<%= className %>ByPk(getSelectionSet(info), id);
   }
 }
 
@@ -117,11 +118,11 @@ export class <%= pluralClassName %>QueryAggregateResolver {
       info.variableValues
     );
     return await this.<%= pluralPropertyName %>Service.aggregate<%= className %>(
-      getSelectionSet(info), 
-      where, 
-      orderBy, 
-      distinctOn, 
-      limit, 
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
       offset
     );
   }

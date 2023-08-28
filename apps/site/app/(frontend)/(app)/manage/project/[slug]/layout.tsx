@@ -24,9 +24,8 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
     variables,
   }).catch();
 
-  if (!data) notFound();
-
   const project = data.project[0];
+  if (!project) notFound();
 
   const baseRoute = `/project/manage/${params.slug}`;
   const projectManageRoute = (route: string) => `${baseRoute}/${route}`;
@@ -37,6 +36,7 @@ export default async function ProjectManageLayout({ children, params }: ProjectM
       <SideBar header={<SidebarBanner name={project.name} banner={project.banner?.url} />}>
         <ProjectManageButton slug={params.slug} manage={true} />
         <LinkList
+          mode="sidebar"
           items={[
             { label: 'Présentation', href: baseRoute, icon: <IconUsers /> },
             { label: 'Événements', href: projectManageRoute('events'), icon: <IconCalendarCog /> },

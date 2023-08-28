@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteEventArgsType,
+  DeleteByPkEventArgsType,
   InsertOneEventArgsType,
   InsertEventArgsType,
   UpdateByPkEventArgsType,
   UpdateEventArgsType,
   FindEventArgsType,
   FindByPkEventArgsType,
-  AggregateEventArgsType,
+  AggregateEventArgsType
 } from './events.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class EventsQueryResolver {
     return await this.eventsService.findEvent(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertEventOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventArgsType>(
@@ -75,12 +77,12 @@ export class EventsQueryResolver {
 
   @Query()
   async eventByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventsService.findEventByPk(getSelectionSet(info), id);
+    return await this.eventsService.findEventByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class EventsQueryResolver {
 
   @Mutation()
   async deleteEventByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkEventArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkEventArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventsService.deleteEventByPk(getSelectionSet(info), pkColumns);
+    return await this.eventsService.deleteEventByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class EventsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventsService.aggregateEvent(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.eventsService.aggregateEvent(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

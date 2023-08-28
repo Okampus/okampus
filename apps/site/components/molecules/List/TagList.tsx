@@ -15,11 +15,7 @@ export default forwardRef<HTMLUListElement, TagListProps>(function TagList(
   ref,
 ) {
   return (
-    <ul
-      ref={ref}
-      className={clsx('w-full flex flex-wrap gap-2 gap-x-2 gap-y-1 overflow-hidden', className)}
-      {...ulProps}
-    >
+    <ul ref={ref} className={clsx('flex flex-wrap gap-2 gap-x-2 gap-y-1 overflow-hidden', className)} {...ulProps}>
       {tags.map((tag, idx) => (
         <ITag
           key={idx}

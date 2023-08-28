@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteLegalUnitLocationArgsType,
+  DeleteByPkLegalUnitLocationArgsType,
   InsertOneLegalUnitLocationArgsType,
   InsertLegalUnitLocationArgsType,
   UpdateByPkLegalUnitLocationArgsType,
   UpdateLegalUnitLocationArgsType,
   FindLegalUnitLocationArgsType,
   FindByPkLegalUnitLocationArgsType,
-  AggregateLegalUnitLocationArgsType,
+  AggregateLegalUnitLocationArgsType
 } from './legal-unit-locations.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class LegalUnitLocationsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.legalUnitLocationsService.findLegalUnitLocation(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.legalUnitLocationsService.findLegalUnitLocation(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertLegalUnitLocationOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class LegalUnitLocationsQueryResolver {
 
   @Query()
   async legalUnitLocationByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkLegalUnitLocationArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkLegalUnitLocationArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.legalUnitLocationsService.findLegalUnitLocationByPk(getSelectionSet(info), id);
+    return await this.legalUnitLocationsService.findLegalUnitLocationByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class LegalUnitLocationsQueryResolver {
 
   @Mutation()
   async deleteLegalUnitLocationByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkLegalUnitLocationArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkLegalUnitLocationArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.legalUnitLocationsService.deleteLegalUnitLocationByPk(getSelectionSet(info), pkColumns);
+    return await this.legalUnitLocationsService.deleteLegalUnitLocationByPk(getSelectionSet(info), id);
   }
 }
 

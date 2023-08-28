@@ -4,8 +4,8 @@ import BannerImage from '../../atoms/Image/BannerImage';
 import ILocation from '../../atoms/Inline/ILocation';
 import Skeleton from '../../atoms/Skeleton/Skeleton';
 
+import { useTranslation } from '../../../hooks/context/useTranslation';
 import { EVENT_ROUTE } from '@okampus/shared/consts';
-import { formatDateRangeDayOfWeek } from '@okampus/shared/utils';
 
 import { IconAlignLeft, IconLocation, IconPencil, IconUsers } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -14,16 +14,18 @@ import type { EventDetailsInfo } from '../../../types/features/event.info';
 
 export type EventPopoverCardProps = { event?: EventDetailsInfo };
 export default function EventPopoverCard({ event }: EventPopoverCardProps) {
+  const { format } = useTranslation();
+
   return event ? (
     <div className="text-0 relative bg-main shadow-lg dark:shadow-[#333] rounded-t-2xl md:rounded-2xl w-full md:w-[34rem]">
       {/* <CloseButtonIcon className="absolute right-4 top-4" onClick={onClose} /> */}
       <BannerImage className="rounded-t-2xl" name={event.name} aspectRatio={4.5} src={event?.banner?.url} />
       <div className="px-10 py-8">
-        <Link href={EVENT_ROUTE(event?.slug)} className="text-2xl font-bold text-1">
+        <Link href={EVENT_ROUTE(event?.slug)} className="text-2xl font-semibold text-0">
           {event?.name}
         </Link>
-        <div className="text-primary font-semibold tabular-nums capitalize">
-          {formatDateRangeDayOfWeek(event.start, event.end)}
+        <div className="text-primary font-semibold tabular-nums uppercase">
+          {format('dayHourRange', [new Date(event.start), new Date(event.end)])}
         </div>
         <div className="grid grid-cols-[1.25rem_1fr] gap-4 my-8">
           <IconUsers className="h-6 w-6 mt-1.5" />
@@ -37,16 +39,16 @@ export default function EventPopoverCard({ event }: EventPopoverCardProps) {
           </div>
           <IconLocation className="h-6 w-6" />
           {event.location && <ILocation location={event.location} />}
-          {event?.location?.locationDetails && (
+          {event?.location?.details && (
             <>
               <IconAlignLeft />
-              <div className="line-clamp-4 text-2">{event?.location?.locationDetails}</div>
+              <div className="line-clamp-4 text-2">{event?.location?.details}</div>
             </>
           )}
           {event.description && (
             <>
               <IconPencil />
-              <div className="line-clamp-4 font-medium text-2">{event.description}</div>
+              <div className="line-clamp-4 text-2">{event.description}</div>
             </>
           )}
         </div>

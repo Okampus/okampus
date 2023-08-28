@@ -43,7 +43,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         <div className="text-1 text-center font-medium">{t(`enums.PaymentMethod.${finance.method}`)}</div>
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
-          Payée par
+          Paiement fait par
           {finance.initiatedBy?.user ? (
             <UserLabeled user={{ ...finance.initiatedBy.user, individual: finance.initiatedBy }} />
           ) : (
@@ -52,7 +52,7 @@ export default function FinanceSidePanel({ finance, teamManageActorId, onClose }
         </div>
         <hr className="border-[var(--border-1)] w-full my-2" />
         <div className="flex gap-2 items-center">
-          Ajoutée par
+          Ajouté par
           {finance.createdBy?.user ? (
             <UserLabeled user={{ ...finance.createdBy.user, individual: finance.createdBy }} small={true} />
           ) : (

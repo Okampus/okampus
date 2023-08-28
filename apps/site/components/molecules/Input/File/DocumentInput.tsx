@@ -80,7 +80,7 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
   return (
     <div
       className={clsx(
-        'relative p-5 h-[35rem] aspect-square rounded-sm flex flex-col gap-6 items-center bg-1 justify-center overflow-hidden',
+        'relative p-5 h-[35rem] w-full max-w-[35rem] rounded-sm flex flex-col gap-6 items-center bg-1 justify-center overflow-hidden',
         document ? 'border border-transparent hover:border-blue-500' : 'file-uploader',
       )}
       ref={wrapperRef}
@@ -125,7 +125,7 @@ export default function DocumentInput({ onChange, uploadContext }: DocumentInput
             <div className="px-8 mb-0.5 w-full flex items-center gap-1.5 text-sm text-2 opacity-50 before:h-[1px] before:flex-1 before:bg-gray-300 after:h-[1px] after:flex-1 after:bg-gray-300">
               OU
             </div>
-            <button className="button bg-opposite text-opposite">Parcourir l&apos;ordinateur...</button>
+            <button className="button bg-opposite text-opposite">Parcourir...</button>
           </div>
         </>
       )}

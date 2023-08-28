@@ -58,7 +58,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <div className="cursor-pointer text-1 p-4 bg-0">
       <div className="relative pb-6">
         <div className="flex xl-max:flex-col gap-8">
-          <BannerImage className="xl:h-[16rem] rounded-2xl" src={project.banner?.url} name={project.name} />
+          <BannerImage className="xl:h-[16rem] rounded-xl" src={project.banner?.url} name={project.name} />
           <div className="flex flex-col gap-1">
             <span className="title">
               <span>{project.name}</span>

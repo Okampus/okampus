@@ -20,7 +20,6 @@ import type { HTTPResource } from '../../types/http-resource.type';
 import type { Individual, Tenant } from '@okampus/api/dal';
 import type { ApiConfig, MulterFile } from '@okampus/shared/types';
 
-type ActorEntity = EntityName.Team | EntityName.User | EntityName.Bot;
 type UploadContext = {
   createdBy: Individual | null;
   entityName: EntityName;
@@ -58,7 +57,7 @@ export class UploadsService extends RequestContext {
   constructor(
     private readonly configService: ConfigService,
     private readonly hasuraService: HasuraService,
-    private readonly em: EntityManager
+    private readonly em: EntityManager,
   ) {
     super();
 
@@ -76,7 +75,7 @@ export class UploadsService extends RequestContext {
     type: string,
     key: string,
     bucket: Buckets,
-    context: UploadContext
+    context: UploadContext,
   ): Promise<HTTPResource> {
     const Bucket = this.bucketNames[bucket];
     const ContentLength = size || stream.readableLength;
@@ -100,8 +99,7 @@ export class UploadsService extends RequestContext {
     this.logger.log(`Uploading ${key} to ${Bucket}..`);
     try {
       const command = new PutObjectCommand({ Bucket, Key, ACL, ContentLength, ContentType: type, Body: stream });
-
-      const { ETag } = await this.s3Client.send(command);
+      const { ETag } = await this.s3Client.send(command, { requestTimeout: 300_000 });
       if (!ETag) throw new BadRequestException('Failed to upload file to S3');
 
       this.logger.debug(`Uploaded ${key} to ${Bucket} (${ContentLength} bytes, etag: ${ETag})!`);
@@ -140,7 +138,7 @@ export class UploadsService extends RequestContext {
     file: MulterFile,
     bucket: Buckets,
     context: UploadContext,
-    height: number
+    height: number,
   ): Promise<FileUpload> {
     if (!checkImage(file)) throw new BadRequestException(`${context.entityName} file is not an image.`);
 
@@ -155,7 +153,7 @@ export class UploadsService extends RequestContext {
     return this.createUpload(
       { ...file, buffer, createReadStream: () => Readable.from(buffer), mimetype: 'image/webp', size: buffer.length },
       bucket,
-      context
+      context,
     );
   }
 
@@ -165,7 +163,7 @@ export class UploadsService extends RequestContext {
     type: EntityName.EventJoin | EntityName.Team,
     entityId: string,
     createdBy: Individual | null,
-    tenant: Tenant
+    tenant: Tenant,
   ): Promise<FileUpload> {
     const qrCode = await QRCodeGenerator.toDataURL(data);
     const buffer = Buffer.from(qrCode.split(',')[1], 'base64');

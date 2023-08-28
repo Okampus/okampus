@@ -44,7 +44,7 @@ export default function DarkModeToggle({
   checked = false,
   size = 24,
   moonColor = 'white',
-  sunColor = 'black',
+  sunColor = '#555',
   style,
   className,
 }: DarkModeToggleProps) {

@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteBotArgsType,
+  DeleteByPkBotArgsType,
   InsertOneBotArgsType,
   InsertBotArgsType,
   UpdateByPkBotArgsType,
   UpdateBotArgsType,
   FindBotArgsType,
   FindByPkBotArgsType,
-  AggregateBotArgsType,
+  AggregateBotArgsType
 } from './bots.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class BotsQueryResolver {
     return await this.botsService.findBot(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertBotOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneBotArgsType>(
@@ -75,12 +77,12 @@ export class BotsQueryResolver {
 
   @Query()
   async botByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkBotArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.botsService.findBotByPk(getSelectionSet(info), id);
+    return await this.botsService.findBotByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class BotsQueryResolver {
 
   @Mutation()
   async deleteBotByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkBotArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkBotArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.botsService.deleteBotByPk(getSelectionSet(info), pkColumns);
+    return await this.botsService.deleteBotByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class BotsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.botsService.aggregateBot(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.botsService.aggregateBot(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

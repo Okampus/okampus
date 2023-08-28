@@ -29,7 +29,7 @@ export default function TeamEventsPage({ params }: { params: { slug: string } })
   return (
     <ViewLayout header="Événements">
       {events.length > 0 ? (
-        <div className="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-8">
+        <div className="mt-2 w-full grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}

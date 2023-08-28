@@ -52,12 +52,12 @@ export default memo(
         aria-description={description}
         aria-invalid={typeof error === 'string'}
         className={clsx(
-          'input',
+          'input h-[var(--h-input)] max-h-[var(--h-input)]',
           inputClassName,
-          startContent && '!rounded-l-none !pl-0',
-          endContent && '!rounded-r-none !pr-0',
+          startContent && '!rounded-l-none !pl-0 !border-l-0',
+          endContent && '!rounded-r-none !pr-0 !border-r-0',
           textAlign && (textAlign === 'right' ? 'text-right' : 'text-left'),
-          !startContent && !endContent && error && '!outline !outline-1 !outline-[var(--danger)]',
+          error && '!border-[var(--danger)] !text-[var(--danger)]',
         )}
         onChange={onChange}
         {...inputProps}
@@ -68,18 +68,27 @@ export default memo(
     return (
       <Field {...fieldProps}>
         {startContent || endContent ? (
-          <div
-            className={clsx(
-              'flex shrink min-w-0 items-stretch font-semibold w-full rounded-md',
-              error && 'outline outline-offset-2 outline-1 outline-[var(--danger)]',
-            )}
-          >
+          <div className="flex shrink min-w-0 items-stretch font-semibold w-full rounded-md">
             {startContent && (
-              <div className="flex items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0">{startContent}</div>
+              <div
+                className={clsx(
+                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
+                  'border !border-r-0 flex h-[var(--h-input)] items-center pl-3 bg-[var(--bg-input)] rounded-l-md shrink-0',
+                )}
+              >
+                {startContent}
+              </div>
             )}
             {input}
             {endContent && (
-              <div className="flex items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0">{endContent}</div>
+              <div
+                className={clsx(
+                  error ? 'border-[var(--danger)] !text-[var(--danger)]' : 'border-[var(--border-1)]',
+                  'border border-[var(--border-1)] !border-l-0 flex h-[var(--h-input)] items-center pr-3 bg-[var(--bg-input)] rounded-r-md shrink-0',
+                )}
+              >
+                {endContent}
+              </div>
             )}
           </div>
         ) : (

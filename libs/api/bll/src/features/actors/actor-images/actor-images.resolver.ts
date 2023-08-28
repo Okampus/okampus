@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteActorImageArgsType,
+  DeleteByPkActorImageArgsType,
   InsertOneActorImageArgsType,
   InsertActorImageArgsType,
   UpdateByPkActorImageArgsType,
   UpdateActorImageArgsType,
   FindActorImageArgsType,
   FindByPkActorImageArgsType,
-  AggregateActorImageArgsType,
+  AggregateActorImageArgsType
 } from './actor-images.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class ActorImagesQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorImagesService.findActorImage(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.actorImagesService.findActorImage(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertActorImageOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class ActorImagesQueryResolver {
 
   @Query()
   async actorImageByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkActorImageArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorImagesService.findActorImageByPk(getSelectionSet(info), id);
+    return await this.actorImagesService.findActorImageByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class ActorImagesQueryResolver {
 
   @Mutation()
   async deleteActorImageByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkActorImageArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkActorImageArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actorImagesService.deleteActorImageByPk(getSelectionSet(info), pkColumns);
+    return await this.actorImagesService.deleteActorImageByPk(getSelectionSet(info), id);
   }
 }
 

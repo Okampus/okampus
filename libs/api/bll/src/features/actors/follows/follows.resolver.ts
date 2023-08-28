@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteFollowArgsType,
+  DeleteByPkFollowArgsType,
   InsertOneFollowArgsType,
   InsertFollowArgsType,
   UpdateByPkFollowArgsType,
   UpdateFollowArgsType,
   FindFollowArgsType,
   FindByPkFollowArgsType,
-  AggregateFollowArgsType,
+  AggregateFollowArgsType
 } from './follows.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class FollowsQueryResolver {
     return await this.followsService.findFollow(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertFollowOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneFollowArgsType>(
@@ -75,12 +77,12 @@ export class FollowsQueryResolver {
 
   @Query()
   async followByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkFollowArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.followsService.findFollowByPk(getSelectionSet(info), id);
+    return await this.followsService.findFollowByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class FollowsQueryResolver {
 
   @Mutation()
   async deleteFollowByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkFollowArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkFollowArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.followsService.deleteFollowByPk(getSelectionSet(info), pkColumns);
+    return await this.followsService.deleteFollowByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class FollowsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.followsService.aggregateFollow(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.followsService.aggregateFollow(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

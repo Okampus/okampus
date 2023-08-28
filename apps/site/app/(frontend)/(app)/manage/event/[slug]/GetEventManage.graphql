@@ -5,6 +5,7 @@ query GetEventManage($slug: String!) {
     createdAt
     start
     end
+    maxParticipants
     name
     slug
     description
@@ -13,12 +14,12 @@ query GetEventManage($slug: String!) {
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -29,6 +30,7 @@ query GetEventManage($slug: String!) {
         city
         state
         country
+        geoapifyId
       }
     }
     state

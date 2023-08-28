@@ -27,6 +27,10 @@ export type DeleteFollowArgsType = {
   where: FollowBoolExp;
 };
 
+export type DeleteByPkFollowArgsType = {
+  id: string;
+};
+
 export type UpdateByPkFollowArgsType = {
   pkColumns: FollowPkColumnsInput;
   _set: FollowSetInput;

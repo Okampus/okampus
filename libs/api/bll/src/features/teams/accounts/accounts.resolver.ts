@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteAccountArgsType,
+  DeleteByPkAccountArgsType,
   InsertOneAccountArgsType,
   InsertAccountArgsType,
   UpdateByPkAccountArgsType,
   UpdateAccountArgsType,
   FindAccountArgsType,
   FindByPkAccountArgsType,
-  AggregateAccountArgsType,
+  AggregateAccountArgsType
 } from './accounts.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class AccountsQueryResolver {
     return await this.accountsService.findAccount(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertAccountOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneAccountArgsType>(
@@ -75,12 +77,12 @@ export class AccountsQueryResolver {
 
   @Query()
   async accountByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkAccountArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.accountsService.findAccountByPk(getSelectionSet(info), id);
+    return await this.accountsService.findAccountByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class AccountsQueryResolver {
 
   @Mutation()
   async deleteAccountByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkAccountArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkAccountArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.accountsService.deleteAccountByPk(getSelectionSet(info), pkColumns);
+    return await this.accountsService.deleteAccountByPk(getSelectionSet(info), id);
   }
 }
 

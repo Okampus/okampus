@@ -6,7 +6,7 @@ import BannerImage from '../../../../../../components/atoms/Image/BannerImage';
 import ModalLayout from '../../../../../../components/atoms/Layout/ModalLayout';
 import ViewLayout from '../../../../../../components/atoms/Layout/ViewLayout';
 
-import EventApprovalModal from '../../../../../../components/modals/EventApprovalModal';
+import EventApprovalForm from '../../../../../../components/forms/MultiStepForm/EventApprovalForm/EventApprovalForm';
 import ActionButton from '../../../../../../components/molecules/Button/ActionButton';
 import FormSubmissionRender from '../../../../../../components/organisms/Form/FormSubmissionRender';
 import UserLabeled from '../../../../../../components/molecules/Labeled/UserLabeled';
@@ -80,7 +80,7 @@ export default function TenantValidationPage() {
             render: (event) => {
               return (
                 <div className="flex gap-4 items-center">
-                  <BannerImage className="h-12 rounded" src={event.banner?.url} name={event.name} />
+                  <BannerImage className="h-12 rounded-xl" src={event.banner?.url} name={event.name} />
                   <div className="flex flex-col">
                     <div className="font-semibold text-0">{event.name}</div>
                     <Link href={`/event/${event.slug}`} className="font-medium underline">
@@ -188,7 +188,7 @@ export default function TenantValidationPage() {
                       label: 'Valider',
                       type: ActionType.Success,
                       linkOrActionOrMenu: () =>
-                        openModal({ node: <EventApprovalModal event={event} isApproved={true} /> }),
+                        openModal({ node: <EventApprovalForm event={event} isApproved={true} /> }),
                     }}
                   />
                   <ActionButton
@@ -197,7 +197,7 @@ export default function TenantValidationPage() {
                       label: 'Refuser',
                       type: ActionType.Danger,
                       linkOrActionOrMenu: () =>
-                        openModal({ node: <EventApprovalModal event={event} isApproved={false} /> }),
+                        openModal({ node: <EventApprovalForm event={event} isApproved={false} /> }),
                     }}
                   />
                 </div>

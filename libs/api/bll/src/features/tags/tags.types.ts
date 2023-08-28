@@ -27,6 +27,10 @@ export type DeleteTagArgsType = {
   where: TagBoolExp;
 };
 
+export type DeleteByPkTagArgsType = {
+  id: string;
+};
+
 export type UpdateByPkTagArgsType = {
   pkColumns: TagPkColumnsInput;
   _set: TagSetInput;

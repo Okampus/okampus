@@ -5,10 +5,11 @@ import {
   byteFormatters,
   cutoffs,
   dateFormatters,
+  dateRangeFormatters,
   listFormatters,
   numberFormatters,
   pluralFormatters,
-  timeFormatters,
+  relativeTimeFormatters,
   units,
 } from '../config/i18n';
 import { SITE_URL } from '../context/consts';
@@ -84,9 +85,12 @@ const cachedFormatters = cache(async function getFormatters(lang: Locale): Promi
   const date = mapObject(dateFormatters, (_, config) => ({
     format: (date: Date) => new Intl.DateTimeFormat(lang, config).format(date).replace(', ', ' • '),
   }));
+  const dateRange = mapObject(dateRangeFormatters, (_, config) => ({
+    format: (value: [Date, Date]) => new Intl.DateTimeFormat(lang, config).formatRange(value[0], value[1]),
+  }));
   const number = mapObject(numberFormatters, (_, config) => new Intl.NumberFormat(lang, config));
   const list = mapObject(listFormatters, (_, config) => new Intl.ListFormat(lang, config));
-  const relativeTime = mapObject(timeFormatters, (_, config) => {
+  const relativeTime = mapObject(relativeTimeFormatters, (_, config) => {
     const formatter = new Intl.RelativeTimeFormat(lang, config);
     return {
       format: (timeMs: number) => {
@@ -102,7 +106,7 @@ const cachedFormatters = cache(async function getFormatters(lang: Locale): Promi
     return { format: (value: number) => formatter.select(value) };
   });
 
-  return { ...byte, ...date, ...number, ...list, ...relativeTime, ...plural };
+  return { ...byte, ...date, ...dateRange, ...number, ...list, ...relativeTime, ...plural };
 });
 
 export type DeterminerType = 'indefinite' | 'definite' | 'indefinite_plural' | 'definite_plural';

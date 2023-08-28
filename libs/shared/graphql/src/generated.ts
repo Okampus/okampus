@@ -11,16 +11,16 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  Upload: { input: File; output: File };
-  bigint: { input: string; output: string };
-  jsonb: { input: JSONType; output: JSONType };
-  smallint: { input: number; output: number };
-  timestamptz: { input: string; output: string };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Upload: { input: File; output: File; }
+  bigint: { input: string; output: string; }
+  jsonb: { input: JSONType; output: JSONType; }
+  smallint: { input: number; output: number; }
+  timestamptz: { input: string; output: string; }
 };
 
 export type Account = {
@@ -47,6 +47,7 @@ export type Account = {
   type: Scalars['String']['output'];
 };
 
+
 export type AccountChildrenArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -54,6 +55,7 @@ export type AccountChildrenArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type AccountChildrenAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -63,6 +65,7 @@ export type AccountChildrenAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type AccountFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -70,6 +73,7 @@ export type AccountFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type AccountFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -103,6 +107,7 @@ export type AccountAggregateFields = {
   varSamp?: Maybe<AccountVarSampFields>;
   variance?: Maybe<AccountVarianceFields>;
 };
+
 
 export type AccountAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<AccountSelectColumn>>;
@@ -174,7 +179,7 @@ export type AccountBoolExp = {
 };
 
 export enum AccountConstraint {
-  AccountPkey = 'account_pkey',
+  AccountPkey = 'account_pkey'
 }
 
 export type AccountIncInput = {
@@ -318,7 +323,7 @@ export enum AccountSelectColumn {
   ParentId = 'parentId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type AccountSetInput = {
@@ -441,7 +446,7 @@ export enum AccountUpdateColumn {
   ParentId = 'parentId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type AccountUpdates = {
@@ -559,6 +564,7 @@ export type ActionAggregateFields = {
   variance?: Maybe<ActionVarianceFields>;
 };
 
+
 export type ActionAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ActionSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -638,7 +644,7 @@ export type ActionBoolExp = {
 };
 
 export enum ActionConstraint {
-  ActionPkey = 'action_pkey',
+  ActionPkey = 'action_pkey'
 }
 
 export type ActionIncInput = {
@@ -815,7 +821,7 @@ export enum ActionSelectColumn {
   State = 'state',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ActionSetInput = {
@@ -977,7 +983,7 @@ export enum ActionUpdateColumn {
   State = 'state',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ActionUpdates = {
@@ -1106,6 +1112,7 @@ export type Actor = {
   website: Scalars['String']['output'];
 };
 
+
 export type ActorActorImagesArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1113,6 +1120,7 @@ export type ActorActorImagesArgs = {
   orderBy?: InputMaybe<Array<ActorImageOrderBy>>;
   where?: InputMaybe<ActorImageBoolExp>;
 };
+
 
 export type ActorActorImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -1122,6 +1130,7 @@ export type ActorActorImagesAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type ActorActorTagsArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1129,6 +1138,7 @@ export type ActorActorTagsArgs = {
   orderBy?: InputMaybe<Array<ActorTagsOrderBy>>;
   where?: InputMaybe<ActorTagsBoolExp>;
 };
+
 
 export type ActorActorTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
@@ -1138,6 +1148,7 @@ export type ActorActorTagsAggregateArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type ActorBanksArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1145,6 +1156,7 @@ export type ActorBanksArgs = {
   orderBy?: InputMaybe<Array<BankOrderBy>>;
   where?: InputMaybe<BankBoolExp>;
 };
+
 
 export type ActorBanksAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -1154,6 +1166,7 @@ export type ActorBanksAggregateArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type ActorFollowersArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1161,6 +1174,7 @@ export type ActorFollowersArgs = {
   orderBy?: InputMaybe<Array<FollowOrderBy>>;
   where?: InputMaybe<FollowBoolExp>;
 };
+
 
 export type ActorFollowersAggregateArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
@@ -1170,6 +1184,7 @@ export type ActorFollowersAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type ActorLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1177,6 +1192,7 @@ export type ActorLocationsArgs = {
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
 };
+
 
 export type ActorLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -1186,6 +1202,7 @@ export type ActorLocationsAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type ActorOwnedBotsArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1193,6 +1210,7 @@ export type ActorOwnedBotsArgs = {
   orderBy?: InputMaybe<Array<BotOrderBy>>;
   where?: InputMaybe<BotBoolExp>;
 };
+
 
 export type ActorOwnedBotsAggregateArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
@@ -1202,6 +1220,7 @@ export type ActorOwnedBotsAggregateArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type ActorPayedFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1209,6 +1228,7 @@ export type ActorPayedFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type ActorPayedFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -1218,6 +1238,7 @@ export type ActorPayedFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type ActorReceivedFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1225,6 +1246,7 @@ export type ActorReceivedFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type ActorReceivedFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -1234,6 +1256,7 @@ export type ActorReceivedFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type ActorReportsArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1241,6 +1264,7 @@ export type ActorReportsArgs = {
   orderBy?: InputMaybe<Array<ReportOrderBy>>;
   where?: InputMaybe<ReportBoolExp>;
 };
+
 
 export type ActorReportsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -1250,6 +1274,7 @@ export type ActorReportsAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type ActorShortcutsArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1257,6 +1282,7 @@ export type ActorShortcutsArgs = {
   orderBy?: InputMaybe<Array<ShortcutOrderBy>>;
   where?: InputMaybe<ShortcutBoolExp>;
 };
+
 
 export type ActorShortcutsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -1266,6 +1292,7 @@ export type ActorShortcutsAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type ActorSocialsArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1273,6 +1300,7 @@ export type ActorSocialsArgs = {
   orderBy?: InputMaybe<Array<SocialOrderBy>>;
   where?: InputMaybe<SocialBoolExp>;
 };
+
 
 export type ActorSocialsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
@@ -1306,6 +1334,7 @@ export type ActorAggregateFields = {
   varSamp?: Maybe<ActorVarSampFields>;
   variance?: Maybe<ActorVarianceFields>;
 };
+
 
 export type ActorAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ActorSelectColumn>>;
@@ -1394,7 +1423,7 @@ export type ActorBoolExp = {
 export enum ActorConstraint {
   ActorIcalUnique = 'actor_ical_unique',
   ActorPkey = 'actor_pkey',
-  ActorSlugUnique = 'actor_slug_unique',
+  ActorSlugUnique = 'actor_slug_unique'
 }
 
 export type ActorImage = {
@@ -1438,6 +1467,7 @@ export type ActorImageAggregateFields = {
   varSamp?: Maybe<ActorImageVarSampFields>;
   variance?: Maybe<ActorImageVarianceFields>;
 };
+
 
 export type ActorImageAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -1501,7 +1531,7 @@ export type ActorImageBoolExp = {
 
 export enum ActorImageConstraint {
   ActorImageImageIdUnique = 'actor_image_image_id_unique',
-  ActorImagePkey = 'actor_image_pkey',
+  ActorImagePkey = 'actor_image_pkey'
 }
 
 export type ActorImageIncInput = {
@@ -1624,7 +1654,7 @@ export enum ActorImageSelectColumn {
   Id = 'id',
   ImageId = 'imageId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ActorImageSetInput = {
@@ -1733,7 +1763,7 @@ export enum ActorImageUpdateColumn {
   Id = 'id',
   ImageId = 'imageId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ActorImageUpdates = {
@@ -1965,7 +1995,7 @@ export enum ActorSelectColumn {
   Slug = 'slug',
   Status = 'status',
   TenantId = 'tenantId',
-  Website = 'website',
+  Website = 'website'
 }
 
 export type ActorSetInput = {
@@ -2090,6 +2120,7 @@ export type ActorTagsAggregateFields = {
   variance?: Maybe<ActorTagsVarianceFields>;
 };
 
+
 export type ActorTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ActorTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2136,7 +2167,7 @@ export type ActorTagsBoolExp = {
 };
 
 export enum ActorTagsConstraint {
-  ActorTagsPkey = 'actor_tags_pkey',
+  ActorTagsPkey = 'actor_tags_pkey'
 }
 
 export type ActorTagsIncInput = {
@@ -2199,7 +2230,7 @@ export type ActorTagsPkColumnsInput = {
 
 export enum ActorTagsSelectColumn {
   ActorId = 'actorId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type ActorTagsSetInput = {
@@ -2263,7 +2294,7 @@ export type ActorTagsSumOrderBy = {
 
 export enum ActorTagsUpdateColumn {
   ActorId = 'actorId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type ActorTagsUpdates = {
@@ -2318,7 +2349,7 @@ export enum ActorUpdateColumn {
   Slug = 'slug',
   Status = 'status',
   TenantId = 'tenantId',
-  Website = 'website',
+  Website = 'website'
 }
 
 export type ActorUpdates = {
@@ -2388,6 +2419,7 @@ export type Address = {
   zip: Scalars['String']['output'];
 };
 
+
 export type AddressLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2395,6 +2427,7 @@ export type AddressLocationsArgs = {
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
 };
+
 
 export type AddressLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -2428,6 +2461,7 @@ export type AddressAggregateFields = {
   varSamp?: Maybe<AddressVarSampFields>;
   variance?: Maybe<AddressVarianceFields>;
 };
+
 
 export type AddressAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<AddressSelectColumn>>;
@@ -2493,7 +2527,7 @@ export type AddressBoolExp = {
 };
 
 export enum AddressConstraint {
-  AddressPkey = 'address_pkey',
+  AddressPkey = 'address_pkey'
 }
 
 export type AddressIncInput = {
@@ -2670,7 +2704,7 @@ export enum AddressSelectColumn {
   State = 'state',
   Street = 'street',
   StreetNumber = 'streetNumber',
-  Zip = 'zip',
+  Zip = 'zip'
 }
 
 export type AddressSetInput = {
@@ -2789,7 +2823,7 @@ export enum AddressUpdateColumn {
   State = 'state',
   Street = 'street',
   StreetNumber = 'streetNumber',
-  Zip = 'zip',
+  Zip = 'zip'
 }
 
 export type AddressUpdates = {
@@ -2866,6 +2900,7 @@ export type Bank = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type BankAccountsArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2873,6 +2908,7 @@ export type BankAccountsArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type BankAccountsAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -2882,6 +2918,7 @@ export type BankAccountsAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type BankExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2889,6 +2926,7 @@ export type BankExpensesArgs = {
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type BankExpensesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -2922,6 +2960,7 @@ export type BankAggregateFields = {
   varSamp?: Maybe<BankVarSampFields>;
   variance?: Maybe<BankVarianceFields>;
 };
+
 
 export type BankAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<BankSelectColumn>>;
@@ -2990,7 +3029,7 @@ export type BankBoolExp = {
 };
 
 export enum BankConstraint {
-  BankPkey = 'bank_pkey',
+  BankPkey = 'bank_pkey'
 }
 
 export type BankIncInput = {
@@ -3131,7 +3170,7 @@ export enum BankSelectColumn {
   Iban = 'iban',
   Id = 'id',
   LegalUnitLocationId = 'legalUnitLocationId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type BankSetInput = {
@@ -3246,7 +3285,7 @@ export enum BankUpdateColumn {
   Iban = 'iban',
   Id = 'id',
   LegalUnitLocationId = 'legalUnitLocationId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type BankUpdates = {
@@ -3371,6 +3410,7 @@ export type BotAggregateFields = {
   variance?: Maybe<BotVarianceFields>;
 };
 
+
 export type BotAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<BotSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3432,7 +3472,7 @@ export type BotBoolExp = {
 
 export enum BotConstraint {
   BotIndividualIdUnique = 'bot_individual_id_unique',
-  BotPkey = 'bot_pkey',
+  BotPkey = 'bot_pkey'
 }
 
 export type BotIncInput = {
@@ -3548,7 +3588,7 @@ export enum BotSelectColumn {
   Id = 'id',
   IndividualId = 'individualId',
   OwnerId = 'ownerId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type BotSetInput = {
@@ -3654,7 +3694,7 @@ export enum BotUpdateColumn {
   Id = 'id',
   IndividualId = 'individualId',
   OwnerId = 'ownerId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type BotUpdates = {
@@ -3756,6 +3796,7 @@ export type CampusAggregateFields = {
   variance?: Maybe<CampusVarianceFields>;
 };
 
+
 export type CampusAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CampusSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -3833,6 +3874,7 @@ export type CampusCluster = {
   tenantOrganizesAggregate: TenantOrganizeAggregate;
 };
 
+
 export type CampusClusterCampusesArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3840,6 +3882,7 @@ export type CampusClusterCampusesArgs = {
   orderBy?: InputMaybe<Array<CampusOrderBy>>;
   where?: InputMaybe<CampusBoolExp>;
 };
+
 
 export type CampusClusterCampusesAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -3849,6 +3892,7 @@ export type CampusClusterCampusesAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type CampusClusterTenantOrganizesArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3856,6 +3900,7 @@ export type CampusClusterTenantOrganizesArgs = {
   orderBy?: InputMaybe<Array<TenantOrganizeOrderBy>>;
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
+
 
 export type CampusClusterTenantOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -3889,6 +3934,7 @@ export type CampusClusterAggregateFields = {
   varSamp?: Maybe<CampusClusterVarSampFields>;
   variance?: Maybe<CampusClusterVarianceFields>;
 };
+
 
 export type CampusClusterAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CampusClusterSelectColumn>>;
@@ -3947,7 +3993,7 @@ export type CampusClusterBoolExp = {
 };
 
 export enum CampusClusterConstraint {
-  CampusClusterPkey = 'campus_cluster_pkey',
+  CampusClusterPkey = 'campus_cluster_pkey'
 }
 
 export type CampusClusterIncInput = {
@@ -4054,7 +4100,7 @@ export enum CampusClusterSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CampusClusterSetInput = {
@@ -4141,7 +4187,7 @@ export enum CampusClusterUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CampusClusterUpdates = {
@@ -4190,7 +4236,7 @@ export type CampusClusterVarianceOrderBy = {
 };
 
 export enum CampusConstraint {
-  CampusPkey = 'campus_pkey',
+  CampusPkey = 'campus_pkey'
 }
 
 export type CampusIncInput = {
@@ -4308,7 +4354,7 @@ export enum CampusSelectColumn {
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CampusSetInput = {
@@ -4417,7 +4463,7 @@ export enum CampusUpdateColumn {
   Id = 'id',
   LocationId = 'locationId',
   Name = 'name',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CampusUpdates = {
@@ -4495,6 +4541,7 @@ export type Canteen = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type CanteenCanteenFoodsArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -4502,6 +4549,7 @@ export type CanteenCanteenFoodsArgs = {
   orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
+
 
 export type CanteenCanteenFoodsAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -4511,6 +4559,7 @@ export type CanteenCanteenFoodsAggregateArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type CanteenCanteenMenusArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -4518,6 +4567,7 @@ export type CanteenCanteenMenusArgs = {
   orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
+
 
 export type CanteenCanteenMenusAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
@@ -4551,6 +4601,7 @@ export type CanteenAggregateFields = {
   varSamp?: Maybe<CanteenVarSampFields>;
   variance?: Maybe<CanteenVarianceFields>;
 };
+
 
 export type CanteenAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CanteenSelectColumn>>;
@@ -4610,7 +4661,7 @@ export type CanteenBoolExp = {
 };
 
 export enum CanteenConstraint {
-  CanteenPkey = 'canteen_pkey',
+  CanteenPkey = 'canteen_pkey'
 }
 
 export type CanteenFood = {
@@ -4651,6 +4702,7 @@ export type CanteenFoodAggregateFields = {
   varSamp?: Maybe<CanteenFoodVarSampFields>;
   variance?: Maybe<CanteenFoodVarianceFields>;
 };
+
 
 export type CanteenFoodAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -4708,7 +4760,7 @@ export type CanteenFoodBoolExp = {
 };
 
 export enum CanteenFoodConstraint {
-  CanteenFoodPkey = 'canteen_food_pkey',
+  CanteenFoodPkey = 'canteen_food_pkey'
 }
 
 export type CanteenFoodIncInput = {
@@ -4809,7 +4861,7 @@ export enum CanteenFoodSelectColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenFoodSetInput = {
@@ -4904,7 +4956,7 @@ export enum CanteenFoodUpdateColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenFoodUpdates = {
@@ -5039,6 +5091,7 @@ export type CanteenMenuAggregateFields = {
   variance?: Maybe<CanteenMenuVarianceFields>;
 };
 
+
 export type CanteenMenuAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5095,7 +5148,7 @@ export type CanteenMenuBoolExp = {
 };
 
 export enum CanteenMenuConstraint {
-  CanteenMenuPkey = 'canteen_menu_pkey',
+  CanteenMenuPkey = 'canteen_menu_pkey'
 }
 
 export type CanteenMenuIncInput = {
@@ -5196,7 +5249,7 @@ export enum CanteenMenuSelectColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenMenuSetInput = {
@@ -5291,7 +5344,7 @@ export enum CanteenMenuUpdateColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenMenuUpdates = {
@@ -5409,7 +5462,7 @@ export enum CanteenSelectColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenSetInput = {
@@ -5496,7 +5549,7 @@ export enum CanteenUpdateColumn {
   Description = 'description',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type CanteenUpdates = {
@@ -5563,6 +5616,7 @@ export type ClassGroup = {
   type: Scalars['String']['output'];
 };
 
+
 export type ClassGroupClassGroupTeachersArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5570,6 +5624,7 @@ export type ClassGroupClassGroupTeachersArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
+
 
 export type ClassGroupClassGroupTeachersAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -5579,6 +5634,7 @@ export type ClassGroupClassGroupTeachersAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type ClassGroupSubjectClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5586,6 +5642,7 @@ export type ClassGroupSubjectClassGroupsArgs = {
   orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
+
 
 export type ClassGroupSubjectClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
@@ -5619,6 +5676,7 @@ export type ClassGroupAggregateFields = {
   varSamp?: Maybe<ClassGroupVarSampFields>;
   variance?: Maybe<ClassGroupVarianceFields>;
 };
+
 
 export type ClassGroupAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ClassGroupSelectColumn>>;
@@ -5679,7 +5737,7 @@ export type ClassGroupBoolExp = {
 };
 
 export enum ClassGroupConstraint {
-  ClassGroupPkey = 'class_group_pkey',
+  ClassGroupPkey = 'class_group_pkey'
 }
 
 export type ClassGroupIncInput = {
@@ -5795,7 +5853,7 @@ export enum ClassGroupSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ClassGroupSetInput = {
@@ -5897,6 +5955,7 @@ export type ClassGroupTeacher = {
   userId: Scalars['bigint']['output'];
 };
 
+
 export type ClassGroupTeacherClassGroupTeacherSubjectsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5904,6 +5963,7 @@ export type ClassGroupTeacherClassGroupTeacherSubjectsArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
+
 
 export type ClassGroupTeacherClassGroupTeacherSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
@@ -5937,6 +5997,7 @@ export type ClassGroupTeacherAggregateFields = {
   varSamp?: Maybe<ClassGroupTeacherVarSampFields>;
   variance?: Maybe<ClassGroupTeacherVarianceFields>;
 };
+
 
 export type ClassGroupTeacherAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -6002,7 +6063,7 @@ export type ClassGroupTeacherBoolExp = {
 };
 
 export enum ClassGroupTeacherConstraint {
-  ClassGroupTeacherPkey = 'class_group_teacher_pkey',
+  ClassGroupTeacherPkey = 'class_group_teacher_pkey'
 }
 
 export type ClassGroupTeacherIncInput = {
@@ -6134,7 +6195,7 @@ export enum ClassGroupTeacherSelectColumn {
   Id = 'id',
   StartDate = 'startDate',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ClassGroupTeacherSetInput = {
@@ -6252,6 +6313,7 @@ export type ClassGroupTeacherSubjectsAggregateFields = {
   variance?: Maybe<ClassGroupTeacherSubjectsVarianceFields>;
 };
 
+
 export type ClassGroupTeacherSubjectsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6298,7 +6360,7 @@ export type ClassGroupTeacherSubjectsBoolExp = {
 };
 
 export enum ClassGroupTeacherSubjectsConstraint {
-  ClassGroupTeacherSubjectsPkey = 'class_group_teacher_subjects_pkey',
+  ClassGroupTeacherSubjectsPkey = 'class_group_teacher_subjects_pkey'
 }
 
 export type ClassGroupTeacherSubjectsIncInput = {
@@ -6361,7 +6423,7 @@ export type ClassGroupTeacherSubjectsPkColumnsInput = {
 
 export enum ClassGroupTeacherSubjectsSelectColumn {
   ClassGroupTeacherId = 'classGroupTeacherId',
-  SubjectId = 'subjectId',
+  SubjectId = 'subjectId'
 }
 
 export type ClassGroupTeacherSubjectsSetInput = {
@@ -6425,7 +6487,7 @@ export type ClassGroupTeacherSubjectsSumOrderBy = {
 
 export enum ClassGroupTeacherSubjectsUpdateColumn {
   ClassGroupTeacherId = 'classGroupTeacherId',
-  SubjectId = 'subjectId',
+  SubjectId = 'subjectId'
 }
 
 export type ClassGroupTeacherSubjectsUpdates = {
@@ -6494,7 +6556,7 @@ export enum ClassGroupTeacherUpdateColumn {
   Id = 'id',
   StartDate = 'startDate',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ClassGroupTeacherUpdates = {
@@ -6562,7 +6624,7 @@ export enum ClassGroupUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ClassGroupUpdates = {
@@ -6649,6 +6711,7 @@ export type CohortAggregateFields = {
   variance?: Maybe<CohortVarianceFields>;
 };
 
+
 export type CohortAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<CohortSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -6705,7 +6768,7 @@ export type CohortBoolExp = {
 };
 
 export enum CohortConstraint {
-  CohortPkey = 'cohort_pkey',
+  CohortPkey = 'cohort_pkey'
 }
 
 export type CohortIncInput = {
@@ -6811,7 +6874,7 @@ export enum CohortSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Year = 'year',
+  Year = 'year'
 }
 
 export type CohortSetInput = {
@@ -6906,7 +6969,7 @@ export enum CohortUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Year = 'year',
+  Year = 'year'
 }
 
 export type CohortUpdates = {
@@ -7009,6 +7072,7 @@ export type Content = {
   votesAggregate: VoteAggregate;
 };
 
+
 export type ContentChildrenArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7016,6 +7080,7 @@ export type ContentChildrenArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type ContentChildrenAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -7025,6 +7090,7 @@ export type ContentChildrenAggregateArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type ContentContentAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7032,6 +7098,7 @@ export type ContentContentAttachmentsArgs = {
   orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
+
 
 export type ContentContentAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
@@ -7041,6 +7108,7 @@ export type ContentContentAttachmentsAggregateArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type ContentFavoritesArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7048,6 +7116,7 @@ export type ContentFavoritesArgs = {
   orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
   where?: InputMaybe<FavoriteBoolExp>;
 };
+
 
 export type ContentFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
@@ -7057,6 +7126,7 @@ export type ContentFavoritesAggregateArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type ContentReactionsArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7064,6 +7134,7 @@ export type ContentReactionsArgs = {
   orderBy?: InputMaybe<Array<ReactionOrderBy>>;
   where?: InputMaybe<ReactionBoolExp>;
 };
+
 
 export type ContentReactionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -7073,6 +7144,7 @@ export type ContentReactionsAggregateArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type ContentRepliesArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7080,6 +7152,7 @@ export type ContentRepliesArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type ContentRepliesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -7089,6 +7162,7 @@ export type ContentRepliesAggregateArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type ContentReportsArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7096,6 +7170,7 @@ export type ContentReportsArgs = {
   orderBy?: InputMaybe<Array<ReportOrderBy>>;
   where?: InputMaybe<ReportBoolExp>;
 };
+
 
 export type ContentReportsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -7105,6 +7180,7 @@ export type ContentReportsAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type ContentValidationsArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7112,6 +7188,7 @@ export type ContentValidationsArgs = {
   orderBy?: InputMaybe<Array<ValidationOrderBy>>;
   where?: InputMaybe<ValidationBoolExp>;
 };
+
 
 export type ContentValidationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
@@ -7121,6 +7198,7 @@ export type ContentValidationsAggregateArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type ContentViewsArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7128,6 +7206,7 @@ export type ContentViewsArgs = {
   orderBy?: InputMaybe<Array<ViewOrderBy>>;
   where?: InputMaybe<ViewBoolExp>;
 };
+
 
 export type ContentViewsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
@@ -7137,6 +7216,7 @@ export type ContentViewsAggregateArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type ContentVotesArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -7144,6 +7224,7 @@ export type ContentVotesArgs = {
   orderBy?: InputMaybe<Array<VoteOrderBy>>;
   where?: InputMaybe<VoteBoolExp>;
 };
+
 
 export type ContentVotesAggregateArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
@@ -7179,6 +7260,7 @@ export type ContentAggregateFields = {
   varSamp?: Maybe<ContentVarSampFields>;
   variance?: Maybe<ContentVarianceFields>;
 };
+
 
 export type ContentAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ContentSelectColumn>>;
@@ -7237,6 +7319,7 @@ export type ContentAttachmentsAggregateFields = {
   variance?: Maybe<ContentAttachmentsVarianceFields>;
 };
 
+
 export type ContentAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7283,7 +7366,7 @@ export type ContentAttachmentsBoolExp = {
 };
 
 export enum ContentAttachmentsConstraint {
-  ContentAttachmentsPkey = 'content_attachments_pkey',
+  ContentAttachmentsPkey = 'content_attachments_pkey'
 }
 
 export type ContentAttachmentsIncInput = {
@@ -7346,7 +7429,7 @@ export type ContentAttachmentsPkColumnsInput = {
 
 export enum ContentAttachmentsSelectColumn {
   ContentId = 'contentId',
-  FileUploadId = 'fileUploadId',
+  FileUploadId = 'fileUploadId'
 }
 
 export type ContentAttachmentsSetInput = {
@@ -7410,7 +7493,7 @@ export type ContentAttachmentsSumOrderBy = {
 
 export enum ContentAttachmentsUpdateColumn {
   ContentId = 'contentId',
-  FileUploadId = 'fileUploadId',
+  FileUploadId = 'fileUploadId'
 }
 
 export type ContentAttachmentsUpdates = {
@@ -7514,7 +7597,7 @@ export type ContentBoolExp = {
 };
 
 export enum ContentConstraint {
-  ContentPkey = 'content_pkey',
+  ContentPkey = 'content_pkey'
 }
 
 export type ContentIncInput = {
@@ -7672,15 +7755,15 @@ export enum ContentSelectColumn {
   ReplyingToId = 'replyingToId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Text = 'text',
+  Text = 'text'
 }
 
 export enum ContentSelectColumnContentAggregateBoolExpBool_AndArgumentsColumns {
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = 'isAnonymous'
 }
 
 export enum ContentSelectColumnContentAggregateBoolExpBool_OrArgumentsColumns {
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = 'isAnonymous'
 }
 
 export type ContentSetInput = {
@@ -7803,7 +7886,7 @@ export enum ContentUpdateColumn {
   ReplyingToId = 'replyingToId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Text = 'text',
+  Text = 'text'
 }
 
 export type ContentUpdates = {
@@ -7871,7 +7954,7 @@ export type ContentVarianceOrderBy = {
 
 export enum CursorOrdering {
   Asc = 'ASC',
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export type Document = {
@@ -7920,6 +8003,7 @@ export type DocumentAggregateFields = {
   varSamp?: Maybe<DocumentVarSampFields>;
   variance?: Maybe<DocumentVarianceFields>;
 };
+
 
 export type DocumentAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -7992,7 +8076,7 @@ export type DocumentBoolExp = {
 
 export enum DocumentConstraint {
   DocumentFileIdUnique = 'document_file_id_unique',
-  DocumentPkey = 'document_pkey',
+  DocumentPkey = 'document_pkey'
 }
 
 export type DocumentIncInput = {
@@ -8147,7 +8231,7 @@ export enum DocumentSelectColumn {
   TeamId = 'teamId',
   TenantId = 'tenantId',
   Type = 'type',
-  YearVersion = 'yearVersion',
+  YearVersion = 'yearVersion'
 }
 
 export type DocumentSetInput = {
@@ -8284,7 +8368,7 @@ export enum DocumentUpdateColumn {
   TeamId = 'teamId',
   TenantId = 'tenantId',
   Type = 'type',
-  YearVersion = 'yearVersion',
+  YearVersion = 'yearVersion'
 }
 
 export type DocumentUpdates = {
@@ -8387,8 +8471,8 @@ export type Event = {
   isTemplate: Scalars['Boolean']['output'];
   joinForm?: Maybe<Form>;
   joinFormId?: Maybe<Scalars['bigint']['output']>;
-  location?: Maybe<Location>;
-  locationId?: Maybe<Scalars['bigint']['output']>;
+  location: Location;
+  locationId: Scalars['bigint']['output'];
   maxParticipants?: Maybe<Scalars['smallint']['output']>;
   meta: Scalars['jsonb']['output'];
   name: Scalars['String']['output'];
@@ -8403,6 +8487,7 @@ export type Event = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type EventEventApprovalsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8410,6 +8495,7 @@ export type EventEventApprovalsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
 };
+
 
 export type EventEventApprovalsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -8419,6 +8505,7 @@ export type EventEventApprovalsAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type EventEventFavoritesArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8426,6 +8513,7 @@ export type EventEventFavoritesArgs = {
   orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
+
 
 export type EventEventFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -8435,6 +8523,7 @@ export type EventEventFavoritesAggregateArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type EventEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8442,6 +8531,7 @@ export type EventEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type EventEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -8451,6 +8541,7 @@ export type EventEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type EventEventOrganizesArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8458,6 +8549,7 @@ export type EventEventOrganizesArgs = {
   orderBy?: InputMaybe<Array<EventOrganizeOrderBy>>;
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
+
 
 export type EventEventOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -8467,6 +8559,7 @@ export type EventEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type EventEventTagsArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8474,6 +8567,7 @@ export type EventEventTagsArgs = {
   orderBy?: InputMaybe<Array<EventTagsOrderBy>>;
   where?: InputMaybe<EventTagsBoolExp>;
 };
+
 
 export type EventEventTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
@@ -8483,6 +8577,7 @@ export type EventEventTagsAggregateArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type EventFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8491,6 +8586,7 @@ export type EventFinancesArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type EventFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8498,6 +8594,7 @@ export type EventFinancesAggregateArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type EventMetaArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
@@ -8529,6 +8626,7 @@ export type EventAggregateFields = {
   varSamp?: Maybe<EventVarSampFields>;
   variance?: Maybe<EventVarianceFields>;
 };
+
 
 export type EventAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventSelectColumn>>;
@@ -8598,6 +8696,7 @@ export type EventApprovalAggregateFields = {
   variance?: Maybe<EventApprovalVarianceFields>;
 };
 
+
 export type EventApprovalAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventApprovalSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -8660,7 +8759,7 @@ export type EventApprovalBoolExp = {
 };
 
 export enum EventApprovalConstraint {
-  EventApprovalPkey = 'event_approval_pkey',
+  EventApprovalPkey = 'event_approval_pkey'
 }
 
 export type EventApprovalIncInput = {
@@ -8781,15 +8880,15 @@ export enum EventApprovalSelectColumn {
   Id = 'id',
   IsApproved = 'isApproved',
   Message = 'message',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_AndArgumentsColumns {
-  IsApproved = 'isApproved',
+  IsApproved = 'isApproved'
 }
 
 export enum EventApprovalSelectColumnEventApprovalAggregateBoolExpBool_OrArgumentsColumns {
-  IsApproved = 'isApproved',
+  IsApproved = 'isApproved'
 }
 
 export type EventApprovalSetInput = {
@@ -8883,6 +8982,7 @@ export type EventApprovalStep = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type EventApprovalStepEventApprovalStepNotifieesArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8890,6 +8990,7 @@ export type EventApprovalStepEventApprovalStepNotifieesArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
+
 
 export type EventApprovalStepEventApprovalStepNotifieesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
@@ -8899,6 +9000,7 @@ export type EventApprovalStepEventApprovalStepNotifieesAggregateArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type EventApprovalStepEventApprovalStepValidatorsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8906,6 +9008,7 @@ export type EventApprovalStepEventApprovalStepValidatorsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
+
 
 export type EventApprovalStepEventApprovalStepValidatorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
@@ -8915,6 +9018,7 @@ export type EventApprovalStepEventApprovalStepValidatorsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type EventApprovalStepEventApprovalsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8922,6 +9026,7 @@ export type EventApprovalStepEventApprovalsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
 };
+
 
 export type EventApprovalStepEventApprovalsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -8931,6 +9036,7 @@ export type EventApprovalStepEventApprovalsAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type EventApprovalStepNextStepEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8938,6 +9044,7 @@ export type EventApprovalStepNextStepEventsArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type EventApprovalStepNextStepEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -8947,6 +9054,7 @@ export type EventApprovalStepNextStepEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type EventApprovalStepNextStepsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8954,6 +9062,7 @@ export type EventApprovalStepNextStepsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepOrderBy>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
+
 
 export type EventApprovalStepNextStepsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -8987,6 +9096,7 @@ export type EventApprovalStepAggregateFields = {
   varSamp?: Maybe<EventApprovalStepVarSampFields>;
   variance?: Maybe<EventApprovalStepVarianceFields>;
 };
+
 
 export type EventApprovalStepAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -9059,7 +9169,7 @@ export type EventApprovalStepBoolExp = {
 };
 
 export enum EventApprovalStepConstraint {
-  EventApprovalStepPkey = 'event_approval_step_pkey',
+  EventApprovalStepPkey = 'event_approval_step_pkey'
 }
 
 export type EventApprovalStepIncInput = {
@@ -9184,6 +9294,7 @@ export type EventApprovalStepNotifieesAggregateFields = {
   variance?: Maybe<EventApprovalStepNotifieesVarianceFields>;
 };
 
+
 export type EventApprovalStepNotifieesAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -9230,7 +9341,7 @@ export type EventApprovalStepNotifieesBoolExp = {
 };
 
 export enum EventApprovalStepNotifieesConstraint {
-  EventApprovalStepNotifieesPkey = 'event_approval_step_notifiees_pkey',
+  EventApprovalStepNotifieesPkey = 'event_approval_step_notifiees_pkey'
 }
 
 export type EventApprovalStepNotifieesIncInput = {
@@ -9293,7 +9404,7 @@ export type EventApprovalStepNotifieesPkColumnsInput = {
 
 export enum EventApprovalStepNotifieesSelectColumn {
   EventApprovalStepId = 'eventApprovalStepId',
-  IndividualId = 'individualId',
+  IndividualId = 'individualId'
 }
 
 export type EventApprovalStepNotifieesSetInput = {
@@ -9357,7 +9468,7 @@ export type EventApprovalStepNotifieesSumOrderBy = {
 
 export enum EventApprovalStepNotifieesUpdateColumn {
   EventApprovalStepId = 'eventApprovalStepId',
-  IndividualId = 'individualId',
+  IndividualId = 'individualId'
 }
 
 export type EventApprovalStepNotifieesUpdates = {
@@ -9445,7 +9556,7 @@ export enum EventApprovalStepSelectColumn {
   Name = 'name',
   Order = 'order',
   PreviousStepId = 'previousStepId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventApprovalStepSetInput = {
@@ -9557,7 +9668,7 @@ export enum EventApprovalStepUpdateColumn {
   Name = 'name',
   Order = 'order',
   PreviousStepId = 'previousStepId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventApprovalStepUpdates = {
@@ -9598,6 +9709,7 @@ export type EventApprovalStepValidatorsAggregateFields = {
   varSamp?: Maybe<EventApprovalStepValidatorsVarSampFields>;
   variance?: Maybe<EventApprovalStepValidatorsVarianceFields>;
 };
+
 
 export type EventApprovalStepValidatorsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
@@ -9645,7 +9757,7 @@ export type EventApprovalStepValidatorsBoolExp = {
 };
 
 export enum EventApprovalStepValidatorsConstraint {
-  EventApprovalStepValidatorsPkey = 'event_approval_step_validators_pkey',
+  EventApprovalStepValidatorsPkey = 'event_approval_step_validators_pkey'
 }
 
 export type EventApprovalStepValidatorsIncInput = {
@@ -9708,7 +9820,7 @@ export type EventApprovalStepValidatorsPkColumnsInput = {
 
 export enum EventApprovalStepValidatorsSelectColumn {
   EventApprovalStepId = 'eventApprovalStepId',
-  IndividualId = 'individualId',
+  IndividualId = 'individualId'
 }
 
 export type EventApprovalStepValidatorsSetInput = {
@@ -9772,7 +9884,7 @@ export type EventApprovalStepValidatorsSumOrderBy = {
 
 export enum EventApprovalStepValidatorsUpdateColumn {
   EventApprovalStepId = 'eventApprovalStepId',
-  IndividualId = 'individualId',
+  IndividualId = 'individualId'
 }
 
 export type EventApprovalStepValidatorsUpdates = {
@@ -9910,7 +10022,7 @@ export enum EventApprovalUpdateColumn {
   Id = 'id',
   IsApproved = 'isApproved',
   Message = 'message',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventApprovalUpdates = {
@@ -10056,7 +10168,7 @@ export type EventBoolExp = {
 export enum EventConstraint {
   EventEventApprovalSubmissionIdUnique = 'event_event_approval_submission_id_unique',
   EventPkey = 'event_pkey',
-  EventSlugUnique = 'event_slug_unique',
+  EventSlugUnique = 'event_slug_unique'
 }
 
 export type EventDeleteAtPathInput = {
@@ -10109,6 +10221,7 @@ export type EventFavoriteAggregateFields = {
   varSamp?: Maybe<EventFavoriteVarSampFields>;
   variance?: Maybe<EventFavoriteVarianceFields>;
 };
+
 
 export type EventFavoriteAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -10166,7 +10279,7 @@ export type EventFavoriteBoolExp = {
 };
 
 export enum EventFavoriteConstraint {
-  EventFavoritePkey = 'event_favorite_pkey',
+  EventFavoritePkey = 'event_favorite_pkey'
 }
 
 export type EventFavoriteIncInput = {
@@ -10267,7 +10380,7 @@ export enum EventFavoriteSelectColumn {
   EventId = 'eventId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventFavoriteSetInput = {
@@ -10362,7 +10475,7 @@ export enum EventFavoriteUpdateColumn {
   EventId = 'eventId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventFavoriteUpdates = {
@@ -10504,6 +10617,7 @@ export type EventJoin = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type EventJoinActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -10511,6 +10625,7 @@ export type EventJoinActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type EventJoinActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -10546,6 +10661,7 @@ export type EventJoinAggregateFields = {
   varSamp?: Maybe<EventJoinVarSampFields>;
   variance?: Maybe<EventJoinVarianceFields>;
 };
+
 
 export type EventJoinAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -10635,7 +10751,7 @@ export type EventJoinBoolExp = {
 };
 
 export enum EventJoinConstraint {
-  EventJoinPkey = 'event_join_pkey',
+  EventJoinPkey = 'event_join_pkey'
 }
 
 export type EventJoinIncInput = {
@@ -10836,15 +10952,15 @@ export enum EventJoinSelectColumn {
   ProcessedById = 'processedById',
   QrCodeId = 'qrCodeId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_AndArgumentsColumns {
-  IsPresent = 'isPresent',
+  IsPresent = 'isPresent'
 }
 
 export enum EventJoinSelectColumnEventJoinAggregateBoolExpBool_OrArgumentsColumns {
-  IsPresent = 'isPresent',
+  IsPresent = 'isPresent'
 }
 
 export type EventJoinSetInput = {
@@ -11020,7 +11136,7 @@ export enum EventJoinUpdateColumn {
   ProcessedById = 'processedById',
   QrCodeId = 'qrCodeId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventJoinUpdates = {
@@ -11284,6 +11400,7 @@ export type EventOrganize = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type EventOrganizeEventSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -11291,6 +11408,7 @@ export type EventOrganizeEventSupervisorsArgs = {
   orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
+
 
 export type EventOrganizeEventSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -11300,6 +11418,7 @@ export type EventOrganizeEventSupervisorsAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type EventOrganizeMissionsArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -11307,6 +11426,7 @@ export type EventOrganizeMissionsArgs = {
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type EventOrganizeMissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -11340,6 +11460,7 @@ export type EventOrganizeAggregateFields = {
   varSamp?: Maybe<EventOrganizeVarSampFields>;
   variance?: Maybe<EventOrganizeVarianceFields>;
 };
+
 
 export type EventOrganizeAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -11410,7 +11531,7 @@ export type EventOrganizeBoolExp = {
 };
 
 export enum EventOrganizeConstraint {
-  EventOrganizePkey = 'event_organize_pkey',
+  EventOrganizePkey = 'event_organize_pkey'
 }
 
 export type EventOrganizeIncInput = {
@@ -11547,7 +11668,7 @@ export enum EventOrganizeSelectColumn {
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventOrganizeSetInput = {
@@ -11667,7 +11788,7 @@ export enum EventOrganizeUpdateColumn {
   Id = 'id',
   ProjectId = 'projectId',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventOrganizeUpdates = {
@@ -11765,19 +11886,19 @@ export enum EventSelectColumn {
   Slug = 'slug',
   Start = 'start',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum EventSelectColumnEventAggregateBoolExpBool_AndArgumentsColumns {
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
   IsPrivate = 'isPrivate',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export enum EventSelectColumnEventAggregateBoolExpBool_OrArgumentsColumns {
   IsAutoAcceptingJoins = 'isAutoAcceptingJoins',
   IsPrivate = 'isPrivate',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export type EventSetInput = {
@@ -11997,6 +12118,7 @@ export type EventSupervisorAggregateFields = {
   variance?: Maybe<EventSupervisorVarianceFields>;
 };
 
+
 export type EventSupervisorAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -12058,7 +12180,7 @@ export type EventSupervisorBoolExp = {
 };
 
 export enum EventSupervisorConstraint {
-  EventSupervisorPkey = 'event_supervisor_pkey',
+  EventSupervisorPkey = 'event_supervisor_pkey'
 }
 
 export type EventSupervisorIncInput = {
@@ -12176,7 +12298,7 @@ export enum EventSupervisorSelectColumn {
   Id = 'id',
   TenantId = 'tenantId',
   Title = 'title',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type EventSupervisorSetInput = {
@@ -12285,7 +12407,7 @@ export enum EventSupervisorUpdateColumn {
   Id = 'id',
   TenantId = 'tenantId',
   Title = 'title',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type EventSupervisorUpdates = {
@@ -12378,6 +12500,7 @@ export type EventTagsAggregateFields = {
   variance?: Maybe<EventTagsVarianceFields>;
 };
 
+
 export type EventTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<EventTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -12424,7 +12547,7 @@ export type EventTagsBoolExp = {
 };
 
 export enum EventTagsConstraint {
-  EventTagsPkey = 'event_tags_pkey',
+  EventTagsPkey = 'event_tags_pkey'
 }
 
 export type EventTagsIncInput = {
@@ -12487,7 +12610,7 @@ export type EventTagsPkColumnsInput = {
 
 export enum EventTagsSelectColumn {
   EventId = 'eventId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type EventTagsSetInput = {
@@ -12551,7 +12674,7 @@ export type EventTagsSumOrderBy = {
 
 export enum EventTagsUpdateColumn {
   EventId = 'eventId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type EventTagsUpdates = {
@@ -12617,7 +12740,7 @@ export enum EventUpdateColumn {
   Slug = 'slug',
   Start = 'start',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type EventUpdates = {
@@ -12743,6 +12866,7 @@ export type Expense = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type ExpenseExpenseItemsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -12750,6 +12874,7 @@ export type ExpenseExpenseItemsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type ExpenseExpenseItemsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -12783,6 +12908,7 @@ export type ExpenseAggregateFields = {
   varSamp?: Maybe<ExpenseVarSampFields>;
   variance?: Maybe<ExpenseVarianceFields>;
 };
+
 
 export type ExpenseAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -12855,7 +12981,7 @@ export type ExpenseBoolExp = {
 };
 
 export enum ExpenseConstraint {
-  ExpensePkey = 'expense_pkey',
+  ExpensePkey = 'expense_pkey'
 }
 
 export type ExpenseIncInput = {
@@ -12914,6 +13040,7 @@ export type ExpenseItem = {
   unitCost: Scalars['Float']['output'];
 };
 
+
 export type ExpenseItemExpenseItemAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -12921,6 +13048,7 @@ export type ExpenseItemExpenseItemAttachmentsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
+
 
 export type ExpenseItemExpenseItemAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
@@ -12954,6 +13082,7 @@ export type ExpenseItemAggregateFields = {
   varSamp?: Maybe<ExpenseItemVarSampFields>;
   variance?: Maybe<ExpenseItemVarianceFields>;
 };
+
 
 export type ExpenseItemAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -13012,6 +13141,7 @@ export type ExpenseItemAttachmentsAggregateFields = {
   variance?: Maybe<ExpenseItemAttachmentsVarianceFields>;
 };
 
+
 export type ExpenseItemAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -13058,7 +13188,7 @@ export type ExpenseItemAttachmentsBoolExp = {
 };
 
 export enum ExpenseItemAttachmentsConstraint {
-  ExpenseItemAttachmentsPkey = 'expense_item_attachments_pkey',
+  ExpenseItemAttachmentsPkey = 'expense_item_attachments_pkey'
 }
 
 export type ExpenseItemAttachmentsIncInput = {
@@ -13121,7 +13251,7 @@ export type ExpenseItemAttachmentsPkColumnsInput = {
 
 export enum ExpenseItemAttachmentsSelectColumn {
   ExpenseItemId = 'expenseItemId',
-  FileUploadId = 'fileUploadId',
+  FileUploadId = 'fileUploadId'
 }
 
 export type ExpenseItemAttachmentsSetInput = {
@@ -13185,7 +13315,7 @@ export type ExpenseItemAttachmentsSumOrderBy = {
 
 export enum ExpenseItemAttachmentsUpdateColumn {
   ExpenseItemId = 'expenseItemId',
-  FileUploadId = 'fileUploadId',
+  FileUploadId = 'fileUploadId'
 }
 
 export type ExpenseItemAttachmentsUpdates = {
@@ -13275,7 +13405,7 @@ export type ExpenseItemBoolExp = {
 };
 
 export enum ExpenseItemConstraint {
-  ExpenseItemPkey = 'expense_item_pkey',
+  ExpenseItemPkey = 'expense_item_pkey'
 }
 
 export type ExpenseItemIncInput = {
@@ -13437,7 +13567,7 @@ export enum ExpenseItemSelectColumn {
   PayedAt = 'payedAt',
   Quantity = 'quantity',
   TenantId = 'tenantId',
-  UnitCost = 'unitCost',
+  UnitCost = 'unitCost'
 }
 
 export type ExpenseItemSetInput = {
@@ -13577,7 +13707,7 @@ export enum ExpenseItemUpdateColumn {
   PayedAt = 'payedAt',
   Quantity = 'quantity',
   TenantId = 'tenantId',
-  UnitCost = 'unitCost',
+  UnitCost = 'unitCost'
 }
 
 export type ExpenseItemUpdates = {
@@ -13772,7 +13902,7 @@ export enum ExpenseSelectColumn {
   ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ExpenseSetInput = {
@@ -13901,7 +14031,7 @@ export enum ExpenseUpdateColumn {
   ProcessedAt = 'processedAt',
   ProcessedById = 'processedById',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ExpenseUpdates = {
@@ -14006,6 +14136,7 @@ export type FavoriteAggregateFields = {
   variance?: Maybe<FavoriteVarianceFields>;
 };
 
+
 export type FavoriteAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FavoriteSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -14062,7 +14193,7 @@ export type FavoriteBoolExp = {
 };
 
 export enum FavoriteConstraint {
-  FavoritePkey = 'favorite_pkey',
+  FavoritePkey = 'favorite_pkey'
 }
 
 export type FavoriteIncInput = {
@@ -14163,7 +14294,7 @@ export enum FavoriteSelectColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FavoriteSetInput = {
@@ -14258,7 +14389,7 @@ export enum FavoriteUpdateColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FavoriteUpdates = {
@@ -14365,6 +14496,7 @@ export type FileUpload = {
   url: Scalars['String']['output'];
 };
 
+
 export type FileUploadContentAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14372,6 +14504,7 @@ export type FileUploadContentAttachmentsArgs = {
   orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
+
 
 export type FileUploadContentAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
@@ -14381,6 +14514,7 @@ export type FileUploadContentAttachmentsAggregateArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type FileUploadEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14388,6 +14522,7 @@ export type FileUploadEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type FileUploadEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -14397,6 +14532,7 @@ export type FileUploadEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type FileUploadEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14404,6 +14540,7 @@ export type FileUploadEventsArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type FileUploadEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -14413,6 +14550,7 @@ export type FileUploadEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type FileUploadExpenseItemAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14420,6 +14558,7 @@ export type FileUploadExpenseItemAttachmentsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemAttachmentsOrderBy>>;
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
+
 
 export type FileUploadExpenseItemAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
@@ -14429,6 +14568,7 @@ export type FileUploadExpenseItemAttachmentsAggregateArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type FileUploadExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14436,6 +14576,7 @@ export type FileUploadExpensesArgs = {
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type FileUploadExpensesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -14445,6 +14586,7 @@ export type FileUploadExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type FileUploadFinanceAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14452,6 +14594,7 @@ export type FileUploadFinanceAttachmentsArgs = {
   orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
+
 
 export type FileUploadFinanceAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
@@ -14461,6 +14604,7 @@ export type FileUploadFinanceAttachmentsAggregateArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type FileUploadFormSubmissionAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14468,6 +14612,7 @@ export type FileUploadFormSubmissionAttachmentsArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
+
 
 export type FileUploadFormSubmissionAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
@@ -14477,6 +14622,7 @@ export type FileUploadFormSubmissionAttachmentsAggregateArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type FileUploadGrantAllocateAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14484,6 +14630,7 @@ export type FileUploadGrantAllocateAttachmentsArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
+
 
 export type FileUploadGrantAllocateAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
@@ -14493,6 +14640,7 @@ export type FileUploadGrantAllocateAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type FileUploadGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14500,6 +14648,7 @@ export type FileUploadGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type FileUploadGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -14509,6 +14658,7 @@ export type FileUploadGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type FileUploadGrantAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14516,6 +14666,7 @@ export type FileUploadGrantAttachmentsArgs = {
   orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
+
 
 export type FileUploadGrantAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
@@ -14525,6 +14676,7 @@ export type FileUploadGrantAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type FileUploadGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14532,6 +14684,7 @@ export type FileUploadGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type FileUploadGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -14541,6 +14694,7 @@ export type FileUploadGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type FileUploadLocationImagesArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14548,6 +14702,7 @@ export type FileUploadLocationImagesArgs = {
   orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
   where?: InputMaybe<LocationImagesBoolExp>;
 };
+
 
 export type FileUploadLocationImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
@@ -14557,6 +14712,7 @@ export type FileUploadLocationImagesAggregateArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type FileUploadProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14564,6 +14720,7 @@ export type FileUploadProjectsArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type FileUploadProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -14573,6 +14730,7 @@ export type FileUploadProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type FileUploadSignatureGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14580,6 +14738,7 @@ export type FileUploadSignatureGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type FileUploadSignatureGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -14589,6 +14748,7 @@ export type FileUploadSignatureGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type FileUploadSignedGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14596,6 +14756,7 @@ export type FileUploadSignedGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type FileUploadSignedGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -14605,6 +14766,7 @@ export type FileUploadSignedGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type FileUploadTagsArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14612,6 +14774,7 @@ export type FileUploadTagsArgs = {
   orderBy?: InputMaybe<Array<TagOrderBy>>;
   where?: InputMaybe<TagBoolExp>;
 };
+
 
 export type FileUploadTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
@@ -14621,6 +14784,7 @@ export type FileUploadTagsAggregateArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type FileUploadTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -14628,6 +14792,7 @@ export type FileUploadTeamsArgs = {
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type FileUploadTeamsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -14661,6 +14826,7 @@ export type FileUploadAggregateFields = {
   varSamp?: Maybe<FileUploadVarSampFields>;
   variance?: Maybe<FileUploadVarianceFields>;
 };
+
 
 export type FileUploadAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FileUploadSelectColumn>>;
@@ -14757,7 +14923,7 @@ export type FileUploadBoolExp = {
 };
 
 export enum FileUploadConstraint {
-  FileUploadPkey = 'file_upload_pkey',
+  FileUploadPkey = 'file_upload_pkey'
 }
 
 export type FileUploadIncInput = {
@@ -14927,7 +15093,7 @@ export enum FileUploadSelectColumn {
   Size = 'size',
   TenantId = 'tenantId',
   Type = 'type',
-  Url = 'url',
+  Url = 'url'
 }
 
 export type FileUploadSetInput = {
@@ -15034,7 +15200,7 @@ export enum FileUploadUpdateColumn {
   Size = 'size',
   TenantId = 'tenantId',
   Type = 'type',
-  Url = 'url',
+  Url = 'url'
 }
 
 export type FileUploadUpdates = {
@@ -15132,6 +15298,7 @@ export type Finance = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type FinanceFinanceAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -15139,6 +15306,7 @@ export type FinanceFinanceAttachmentsArgs = {
   orderBy?: InputMaybe<Array<FinanceAttachmentsOrderBy>>;
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
+
 
 export type FinanceFinanceAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
@@ -15148,6 +15316,7 @@ export type FinanceFinanceAttachmentsAggregateArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type FinanceFinanceTagsArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -15155,6 +15324,7 @@ export type FinanceFinanceTagsArgs = {
   orderBy?: InputMaybe<Array<FinanceTagsOrderBy>>;
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
+
 
 export type FinanceFinanceTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
@@ -15164,6 +15334,7 @@ export type FinanceFinanceTagsAggregateArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type FinanceGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -15171,6 +15342,7 @@ export type FinanceGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type FinanceGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -15206,6 +15378,7 @@ export type FinanceAggregateFields = {
   varSamp?: Maybe<FinanceVarSampFields>;
   variance?: Maybe<FinanceVarianceFields>;
 };
+
 
 export type FinanceAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -15264,6 +15437,7 @@ export type FinanceAttachmentsAggregateFields = {
   variance?: Maybe<FinanceAttachmentsVarianceFields>;
 };
 
+
 export type FinanceAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -15310,7 +15484,7 @@ export type FinanceAttachmentsBoolExp = {
 };
 
 export enum FinanceAttachmentsConstraint {
-  FinanceAttachmentsPkey = 'finance_attachments_pkey',
+  FinanceAttachmentsPkey = 'finance_attachments_pkey'
 }
 
 export type FinanceAttachmentsIncInput = {
@@ -15373,7 +15547,7 @@ export type FinanceAttachmentsPkColumnsInput = {
 
 export enum FinanceAttachmentsSelectColumn {
   FileUploadId = 'fileUploadId',
-  FinanceId = 'financeId',
+  FinanceId = 'financeId'
 }
 
 export type FinanceAttachmentsSetInput = {
@@ -15437,7 +15611,7 @@ export type FinanceAttachmentsSumOrderBy = {
 
 export enum FinanceAttachmentsUpdateColumn {
   FileUploadId = 'fileUploadId',
-  FinanceId = 'financeId',
+  FinanceId = 'financeId'
 }
 
 export type FinanceAttachmentsUpdates = {
@@ -15560,7 +15734,7 @@ export type FinanceBoolExp = {
 
 export enum FinanceConstraint {
   FinanceExpenseIdUnique = 'finance_expense_id_unique',
-  FinancePkey = 'finance_pkey',
+  FinancePkey = 'finance_pkey'
 }
 
 export type FinanceIncInput = {
@@ -15805,15 +15979,15 @@ export enum FinanceSelectColumn {
   ReceivedById = 'receivedById',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum FinanceSelectColumnFinanceAggregateBoolExpBool_AndArgumentsColumns {
-  IsOnline = 'isOnline',
+  IsOnline = 'isOnline'
 }
 
 export enum FinanceSelectColumnFinanceAggregateBoolExpBool_OrArgumentsColumns {
-  IsOnline = 'isOnline',
+  IsOnline = 'isOnline'
 }
 
 export type FinanceSetInput = {
@@ -16038,6 +16212,7 @@ export type FinanceTagsAggregateFields = {
   variance?: Maybe<FinanceTagsVarianceFields>;
 };
 
+
 export type FinanceTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FinanceTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16084,7 +16259,7 @@ export type FinanceTagsBoolExp = {
 };
 
 export enum FinanceTagsConstraint {
-  FinanceTagsPkey = 'finance_tags_pkey',
+  FinanceTagsPkey = 'finance_tags_pkey'
 }
 
 export type FinanceTagsIncInput = {
@@ -16147,7 +16322,7 @@ export type FinanceTagsPkColumnsInput = {
 
 export enum FinanceTagsSelectColumn {
   FinanceId = 'financeId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type FinanceTagsSetInput = {
@@ -16211,7 +16386,7 @@ export type FinanceTagsSumOrderBy = {
 
 export enum FinanceTagsUpdateColumn {
   FinanceId = 'financeId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type FinanceTagsUpdates = {
@@ -16276,7 +16451,7 @@ export enum FinanceUpdateColumn {
   ReceivedById = 'receivedById',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FinanceUpdates = {
@@ -16435,6 +16610,7 @@ export type FollowAggregateFields = {
   variance?: Maybe<FollowVarianceFields>;
 };
 
+
 export type FollowAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FollowSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16491,7 +16667,7 @@ export type FollowBoolExp = {
 };
 
 export enum FollowConstraint {
-  FollowPkey = 'follow_pkey',
+  FollowPkey = 'follow_pkey'
 }
 
 export type FollowIncInput = {
@@ -16592,7 +16768,7 @@ export enum FollowSelectColumn {
   FollowedActorId = 'followedActorId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FollowSetInput = {
@@ -16687,7 +16863,7 @@ export enum FollowUpdateColumn {
   FollowedActorId = 'followedActorId',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FollowUpdates = {
@@ -16766,6 +16942,7 @@ export type Form = {
   type: Scalars['String']['output'];
 };
 
+
 export type FormEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -16773,6 +16950,7 @@ export type FormEventsArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type FormEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -16782,6 +16960,7 @@ export type FormEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type FormFormSubmissionsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -16790,6 +16969,7 @@ export type FormFormSubmissionsArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
+
 export type FormFormSubmissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -16797,6 +16977,7 @@ export type FormFormSubmissionsAggregateArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionOrderBy>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type FormSchemaArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
@@ -16828,6 +17009,7 @@ export type FormAggregateFields = {
   varSamp?: Maybe<FormVarSampFields>;
   variance?: Maybe<FormVarianceFields>;
 };
+
 
 export type FormAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FormSelectColumn>>;
@@ -16898,7 +17080,7 @@ export type FormBoolExp = {
 };
 
 export enum FormConstraint {
-  FormPkey = 'form_pkey',
+  FormPkey = 'form_pkey'
 }
 
 export type FormDeleteAtPathInput = {
@@ -17047,21 +17229,21 @@ export enum FormSelectColumn {
   Name = 'name',
   Schema = 'schema',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export enum FormSelectColumnFormAggregateBoolExpBool_AndArgumentsColumns {
   IsAllowingEditingAnswers = 'isAllowingEditingAnswers',
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
-  IsLocked = 'isLocked',
+  IsLocked = 'isLocked'
 }
 
 export enum FormSelectColumnFormAggregateBoolExpBool_OrArgumentsColumns {
   IsAllowingEditingAnswers = 'isAllowingEditingAnswers',
   IsAllowingMultipleAnswers = 'isAllowingMultipleAnswers',
   IsEnabled = 'isEnabled',
-  IsLocked = 'isLocked',
+  IsLocked = 'isLocked'
 }
 
 export type FormSetInput = {
@@ -17162,6 +17344,7 @@ export type FormSubmission = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type FormSubmissionEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -17169,6 +17352,7 @@ export type FormSubmissionEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type FormSubmissionEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -17178,6 +17362,7 @@ export type FormSubmissionEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type FormSubmissionFormSubmissionAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -17185,6 +17370,7 @@ export type FormSubmissionFormSubmissionAttachmentsArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionAttachmentsOrderBy>>;
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
+
 
 export type FormSubmissionFormSubmissionAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
@@ -17194,9 +17380,11 @@ export type FormSubmissionFormSubmissionAttachmentsAggregateArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type FormSubmissionSubmissionArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
 };
+
 
 export type FormSubmissionTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -17205,6 +17393,7 @@ export type FormSubmissionTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type FormSubmissionTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -17238,6 +17427,7 @@ export type FormSubmissionAggregateFields = {
   varSamp?: Maybe<FormSubmissionVarSampFields>;
   variance?: Maybe<FormSubmissionVarianceFields>;
 };
+
 
 export type FormSubmissionAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FormSubmissionSelectColumn>>;
@@ -17300,6 +17490,7 @@ export type FormSubmissionAttachmentsAggregateFields = {
   variance?: Maybe<FormSubmissionAttachmentsVarianceFields>;
 };
 
+
 export type FormSubmissionAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -17346,7 +17537,7 @@ export type FormSubmissionAttachmentsBoolExp = {
 };
 
 export enum FormSubmissionAttachmentsConstraint {
-  FormSubmissionAttachmentsPkey = 'form_submission_attachments_pkey',
+  FormSubmissionAttachmentsPkey = 'form_submission_attachments_pkey'
 }
 
 export type FormSubmissionAttachmentsIncInput = {
@@ -17409,7 +17600,7 @@ export type FormSubmissionAttachmentsPkColumnsInput = {
 
 export enum FormSubmissionAttachmentsSelectColumn {
   FileUploadId = 'fileUploadId',
-  FormSubmissionId = 'formSubmissionId',
+  FormSubmissionId = 'formSubmissionId'
 }
 
 export type FormSubmissionAttachmentsSetInput = {
@@ -17473,7 +17664,7 @@ export type FormSubmissionAttachmentsSumOrderBy = {
 
 export enum FormSubmissionAttachmentsUpdateColumn {
   FileUploadId = 'fileUploadId',
-  FormSubmissionId = 'formSubmissionId',
+  FormSubmissionId = 'formSubmissionId'
 }
 
 export type FormSubmissionAttachmentsUpdates = {
@@ -17555,7 +17746,7 @@ export type FormSubmissionBoolExp = {
 };
 
 export enum FormSubmissionConstraint {
-  FormSubmissionPkey = 'form_submission_pkey',
+  FormSubmissionPkey = 'form_submission_pkey'
 }
 
 export type FormSubmissionDeleteAtPathInput = {
@@ -17688,7 +17879,7 @@ export enum FormSubmissionSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FormSubmissionSetInput = {
@@ -17786,7 +17977,7 @@ export enum FormSubmissionUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Submission = 'submission',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type FormSubmissionUpdates = {
@@ -17871,7 +18062,7 @@ export enum FormUpdateColumn {
   Name = 'name',
   Schema = 'schema',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type FormUpdates = {
@@ -17969,6 +18160,7 @@ export type Grant = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type GrantGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -17976,6 +18168,7 @@ export type GrantGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type GrantGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -17985,6 +18178,7 @@ export type GrantGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type GrantGrantAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -17992,6 +18186,7 @@ export type GrantGrantAttachmentsArgs = {
   orderBy?: InputMaybe<Array<GrantAttachmentsOrderBy>>;
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
+
 
 export type GrantGrantAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
@@ -18001,6 +18196,7 @@ export type GrantGrantAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type GrantProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -18008,6 +18204,7 @@ export type GrantProjectsArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type GrantProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -18041,6 +18238,7 @@ export type GrantAggregateFields = {
   varSamp?: Maybe<GrantVarSampFields>;
   variance?: Maybe<GrantVarianceFields>;
 };
+
 
 export type GrantAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<GrantSelectColumn>>;
@@ -18089,6 +18287,7 @@ export type GrantAllocate = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type GrantAllocateGrantAllocateAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -18096,6 +18295,7 @@ export type GrantAllocateGrantAllocateAttachmentsArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateAttachmentsOrderBy>>;
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
+
 
 export type GrantAllocateGrantAllocateAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
@@ -18129,6 +18329,7 @@ export type GrantAllocateAggregateFields = {
   varSamp?: Maybe<GrantAllocateVarSampFields>;
   variance?: Maybe<GrantAllocateVarianceFields>;
 };
+
 
 export type GrantAllocateAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -18187,6 +18388,7 @@ export type GrantAllocateAttachmentsAggregateFields = {
   variance?: Maybe<GrantAllocateAttachmentsVarianceFields>;
 };
 
+
 export type GrantAllocateAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -18233,7 +18435,7 @@ export type GrantAllocateAttachmentsBoolExp = {
 };
 
 export enum GrantAllocateAttachmentsConstraint {
-  GrantAllocateAttachmentsPkey = 'grant_allocate_attachments_pkey',
+  GrantAllocateAttachmentsPkey = 'grant_allocate_attachments_pkey'
 }
 
 export type GrantAllocateAttachmentsIncInput = {
@@ -18296,7 +18498,7 @@ export type GrantAllocateAttachmentsPkColumnsInput = {
 
 export enum GrantAllocateAttachmentsSelectColumn {
   FileUploadId = 'fileUploadId',
-  GrantAllocateId = 'grantAllocateId',
+  GrantAllocateId = 'grantAllocateId'
 }
 
 export type GrantAllocateAttachmentsSetInput = {
@@ -18360,7 +18562,7 @@ export type GrantAllocateAttachmentsSumOrderBy = {
 
 export enum GrantAllocateAttachmentsUpdateColumn {
   FileUploadId = 'fileUploadId',
-  GrantAllocateId = 'grantAllocateId',
+  GrantAllocateId = 'grantAllocateId'
 }
 
 export type GrantAllocateAttachmentsUpdates = {
@@ -18460,7 +18662,7 @@ export type GrantAllocateBoolExp = {
 };
 
 export enum GrantAllocateConstraint {
-  GrantAllocatePkey = 'grant_allocate_pkey',
+  GrantAllocatePkey = 'grant_allocate_pkey'
 }
 
 export type GrantAllocateIncInput = {
@@ -18638,7 +18840,7 @@ export enum GrantAllocateSelectColumn {
   ReceivedAmountProcessedById = 'receivedAmountProcessedById',
   SignatureId = 'signatureId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type GrantAllocateSetInput = {
@@ -18805,7 +19007,7 @@ export enum GrantAllocateUpdateColumn {
   ReceivedAmountProcessedById = 'receivedAmountProcessedById',
   SignatureId = 'signatureId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type GrantAllocateUpdates = {
@@ -18933,6 +19135,7 @@ export type GrantAttachmentsAggregateFields = {
   variance?: Maybe<GrantAttachmentsVarianceFields>;
 };
 
+
 export type GrantAttachmentsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -18979,7 +19182,7 @@ export type GrantAttachmentsBoolExp = {
 };
 
 export enum GrantAttachmentsConstraint {
-  GrantAttachmentsPkey = 'grant_attachments_pkey',
+  GrantAttachmentsPkey = 'grant_attachments_pkey'
 }
 
 export type GrantAttachmentsIncInput = {
@@ -19042,7 +19245,7 @@ export type GrantAttachmentsPkColumnsInput = {
 
 export enum GrantAttachmentsSelectColumn {
   FileUploadId = 'fileUploadId',
-  GrantId = 'grantId',
+  GrantId = 'grantId'
 }
 
 export type GrantAttachmentsSetInput = {
@@ -19106,7 +19309,7 @@ export type GrantAttachmentsSumOrderBy = {
 
 export enum GrantAttachmentsUpdateColumn {
   FileUploadId = 'fileUploadId',
-  GrantId = 'grantId',
+  GrantId = 'grantId'
 }
 
 export type GrantAttachmentsUpdates = {
@@ -19206,7 +19409,7 @@ export type GrantBoolExp = {
 };
 
 export enum GrantConstraint {
-  GrantPkey = 'grant_pkey',
+  GrantPkey = 'grant_pkey'
 }
 
 export type GrantIncInput = {
@@ -19378,7 +19581,7 @@ export enum GrantSelectColumn {
   SignatureId = 'signatureId',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type GrantSetInput = {
@@ -19534,7 +19737,7 @@ export enum GrantUpdateColumn {
   SignatureId = 'signatureId',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type GrantUpdates = {
@@ -19733,6 +19936,8 @@ export type Individual = {
   createdTeamHistoriesAggregate: TeamHistoryAggregate;
   createdTeamJoins: Array<TeamJoin>;
   createdTeamJoinsAggregate: TeamJoinAggregate;
+  createdTeamMemberRoles: Array<TeamMemberRole>;
+  createdTeamMemberRolesAggregate: TeamMemberRoleAggregate;
   createdTeamMembers: Array<TeamMember>;
   createdTeamMembersAggregate: TeamMemberAggregate;
   createdTeamMetrics: Array<TeamMetric>;
@@ -19790,6 +19995,7 @@ export type Individual = {
   viewedAggregate: ViewAggregate;
 };
 
+
 export type IndividualContributorIssuesArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19797,6 +20003,7 @@ export type IndividualContributorIssuesArgs = {
   orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
+
 
 export type IndividualContributorIssuesAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
@@ -19806,6 +20013,7 @@ export type IndividualContributorIssuesAggregateArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type IndividualCreatedAccountsArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19813,6 +20021,7 @@ export type IndividualCreatedAccountsArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type IndividualCreatedAccountsAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -19822,6 +20031,7 @@ export type IndividualCreatedAccountsAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type IndividualCreatedActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19829,6 +20039,7 @@ export type IndividualCreatedActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type IndividualCreatedActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -19838,6 +20049,7 @@ export type IndividualCreatedActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type IndividualCreatedActorImagesArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19845,6 +20057,7 @@ export type IndividualCreatedActorImagesArgs = {
   orderBy?: InputMaybe<Array<ActorImageOrderBy>>;
   where?: InputMaybe<ActorImageBoolExp>;
 };
+
 
 export type IndividualCreatedActorImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -19854,6 +20067,7 @@ export type IndividualCreatedActorImagesAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type IndividualCreatedActorsArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19861,6 +20075,7 @@ export type IndividualCreatedActorsArgs = {
   orderBy?: InputMaybe<Array<ActorOrderBy>>;
   where?: InputMaybe<ActorBoolExp>;
 };
+
 
 export type IndividualCreatedActorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
@@ -19870,6 +20085,7 @@ export type IndividualCreatedActorsAggregateArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type IndividualCreatedAddressesArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19877,6 +20093,7 @@ export type IndividualCreatedAddressesArgs = {
   orderBy?: InputMaybe<Array<AddressOrderBy>>;
   where?: InputMaybe<AddressBoolExp>;
 };
+
 
 export type IndividualCreatedAddressesAggregateArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
@@ -19886,6 +20103,7 @@ export type IndividualCreatedAddressesAggregateArgs = {
   where?: InputMaybe<AddressBoolExp>;
 };
 
+
 export type IndividualCreatedBanksArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19893,6 +20111,7 @@ export type IndividualCreatedBanksArgs = {
   orderBy?: InputMaybe<Array<BankOrderBy>>;
   where?: InputMaybe<BankBoolExp>;
 };
+
 
 export type IndividualCreatedBanksAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -19902,6 +20121,7 @@ export type IndividualCreatedBanksAggregateArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type IndividualCreatedBotsArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19909,6 +20129,7 @@ export type IndividualCreatedBotsArgs = {
   orderBy?: InputMaybe<Array<BotOrderBy>>;
   where?: InputMaybe<BotBoolExp>;
 };
+
 
 export type IndividualCreatedBotsAggregateArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
@@ -19918,6 +20139,7 @@ export type IndividualCreatedBotsAggregateArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type IndividualCreatedCampusClustersArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19925,6 +20147,7 @@ export type IndividualCreatedCampusClustersArgs = {
   orderBy?: InputMaybe<Array<CampusClusterOrderBy>>;
   where?: InputMaybe<CampusClusterBoolExp>;
 };
+
 
 export type IndividualCreatedCampusClustersAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
@@ -19934,6 +20157,7 @@ export type IndividualCreatedCampusClustersAggregateArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type IndividualCreatedCampusesArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19941,6 +20165,7 @@ export type IndividualCreatedCampusesArgs = {
   orderBy?: InputMaybe<Array<CampusOrderBy>>;
   where?: InputMaybe<CampusBoolExp>;
 };
+
 
 export type IndividualCreatedCampusesAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -19950,6 +20175,7 @@ export type IndividualCreatedCampusesAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type IndividualCreatedCanteenFoodsArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19957,6 +20183,7 @@ export type IndividualCreatedCanteenFoodsArgs = {
   orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
+
 
 export type IndividualCreatedCanteenFoodsAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -19966,6 +20193,7 @@ export type IndividualCreatedCanteenFoodsAggregateArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type IndividualCreatedCanteenMenusArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19973,6 +20201,7 @@ export type IndividualCreatedCanteenMenusArgs = {
   orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
+
 
 export type IndividualCreatedCanteenMenusAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
@@ -19982,6 +20211,7 @@ export type IndividualCreatedCanteenMenusAggregateArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type IndividualCreatedCanteensArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19989,6 +20219,7 @@ export type IndividualCreatedCanteensArgs = {
   orderBy?: InputMaybe<Array<CanteenOrderBy>>;
   where?: InputMaybe<CanteenBoolExp>;
 };
+
 
 export type IndividualCreatedCanteensAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
@@ -19998,6 +20229,7 @@ export type IndividualCreatedCanteensAggregateArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type IndividualCreatedClassGroupTeachersArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20005,6 +20237,7 @@ export type IndividualCreatedClassGroupTeachersArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
+
 
 export type IndividualCreatedClassGroupTeachersAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -20014,6 +20247,7 @@ export type IndividualCreatedClassGroupTeachersAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type IndividualCreatedClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20021,6 +20255,7 @@ export type IndividualCreatedClassGroupsArgs = {
   orderBy?: InputMaybe<Array<ClassGroupOrderBy>>;
   where?: InputMaybe<ClassGroupBoolExp>;
 };
+
 
 export type IndividualCreatedClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
@@ -20030,6 +20265,7 @@ export type IndividualCreatedClassGroupsAggregateArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type IndividualCreatedCohortsArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20037,6 +20273,7 @@ export type IndividualCreatedCohortsArgs = {
   orderBy?: InputMaybe<Array<CohortOrderBy>>;
   where?: InputMaybe<CohortBoolExp>;
 };
+
 
 export type IndividualCreatedCohortsAggregateArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
@@ -20046,6 +20283,7 @@ export type IndividualCreatedCohortsAggregateArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type IndividualCreatedContentsArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20053,6 +20291,7 @@ export type IndividualCreatedContentsArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type IndividualCreatedContentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -20062,6 +20301,7 @@ export type IndividualCreatedContentsAggregateArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type IndividualCreatedDocumentsArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20069,6 +20309,7 @@ export type IndividualCreatedDocumentsArgs = {
   orderBy?: InputMaybe<Array<DocumentOrderBy>>;
   where?: InputMaybe<DocumentBoolExp>;
 };
+
 
 export type IndividualCreatedDocumentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -20078,6 +20319,7 @@ export type IndividualCreatedDocumentsAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type IndividualCreatedEventApprovalStepsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20085,6 +20327,7 @@ export type IndividualCreatedEventApprovalStepsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepOrderBy>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
+
 
 export type IndividualCreatedEventApprovalStepsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -20094,6 +20337,7 @@ export type IndividualCreatedEventApprovalStepsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type IndividualCreatedEventApprovalsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20101,6 +20345,7 @@ export type IndividualCreatedEventApprovalsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
 };
+
 
 export type IndividualCreatedEventApprovalsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -20110,6 +20355,7 @@ export type IndividualCreatedEventApprovalsAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type IndividualCreatedEventFavoritesArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20117,6 +20363,7 @@ export type IndividualCreatedEventFavoritesArgs = {
   orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
+
 
 export type IndividualCreatedEventFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -20126,6 +20373,7 @@ export type IndividualCreatedEventFavoritesAggregateArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type IndividualCreatedEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20133,6 +20381,7 @@ export type IndividualCreatedEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type IndividualCreatedEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -20142,6 +20391,7 @@ export type IndividualCreatedEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type IndividualCreatedEventOrganizesArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20149,6 +20399,7 @@ export type IndividualCreatedEventOrganizesArgs = {
   orderBy?: InputMaybe<Array<EventOrganizeOrderBy>>;
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
+
 
 export type IndividualCreatedEventOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -20158,6 +20409,7 @@ export type IndividualCreatedEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type IndividualCreatedEventSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20165,6 +20417,7 @@ export type IndividualCreatedEventSupervisorsArgs = {
   orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
+
 
 export type IndividualCreatedEventSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -20174,6 +20427,7 @@ export type IndividualCreatedEventSupervisorsAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type IndividualCreatedEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20181,6 +20435,7 @@ export type IndividualCreatedEventsArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type IndividualCreatedEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -20190,6 +20445,7 @@ export type IndividualCreatedEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type IndividualCreatedExpenseItemsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20197,6 +20453,7 @@ export type IndividualCreatedExpenseItemsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type IndividualCreatedExpenseItemsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -20206,6 +20463,7 @@ export type IndividualCreatedExpenseItemsAggregateArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type IndividualCreatedExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20213,6 +20471,7 @@ export type IndividualCreatedExpensesArgs = {
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type IndividualCreatedExpensesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -20222,6 +20481,7 @@ export type IndividualCreatedExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type IndividualCreatedFavoritesArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20229,6 +20489,7 @@ export type IndividualCreatedFavoritesArgs = {
   orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
   where?: InputMaybe<FavoriteBoolExp>;
 };
+
 
 export type IndividualCreatedFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
@@ -20238,6 +20499,7 @@ export type IndividualCreatedFavoritesAggregateArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type IndividualCreatedFileUploadsArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20245,6 +20507,7 @@ export type IndividualCreatedFileUploadsArgs = {
   orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
   where?: InputMaybe<FileUploadBoolExp>;
 };
+
 
 export type IndividualCreatedFileUploadsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
@@ -20254,6 +20517,7 @@ export type IndividualCreatedFileUploadsAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type IndividualCreatedFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20261,6 +20525,7 @@ export type IndividualCreatedFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type IndividualCreatedFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -20270,6 +20535,7 @@ export type IndividualCreatedFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type IndividualCreatedFormSubmissionsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20277,6 +20543,7 @@ export type IndividualCreatedFormSubmissionsArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionOrderBy>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type IndividualCreatedFormSubmissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
@@ -20286,6 +20553,7 @@ export type IndividualCreatedFormSubmissionsAggregateArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
+
 export type IndividualCreatedFormsArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20293,6 +20561,7 @@ export type IndividualCreatedFormsArgs = {
   orderBy?: InputMaybe<Array<FormOrderBy>>;
   where?: InputMaybe<FormBoolExp>;
 };
+
 
 export type IndividualCreatedFormsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
@@ -20302,6 +20571,7 @@ export type IndividualCreatedFormsAggregateArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type IndividualCreatedGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20309,6 +20579,7 @@ export type IndividualCreatedGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type IndividualCreatedGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -20318,6 +20589,7 @@ export type IndividualCreatedGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type IndividualCreatedGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20325,6 +20597,7 @@ export type IndividualCreatedGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type IndividualCreatedGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -20334,6 +20607,7 @@ export type IndividualCreatedGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type IndividualCreatedIndividualsArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20341,6 +20615,7 @@ export type IndividualCreatedIndividualsArgs = {
   orderBy?: InputMaybe<Array<IndividualOrderBy>>;
   where?: InputMaybe<IndividualBoolExp>;
 };
+
 
 export type IndividualCreatedIndividualsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
@@ -20350,6 +20625,7 @@ export type IndividualCreatedIndividualsAggregateArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type IndividualCreatedIssuesArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20357,6 +20633,7 @@ export type IndividualCreatedIssuesArgs = {
   orderBy?: InputMaybe<Array<IssueOrderBy>>;
   where?: InputMaybe<IssueBoolExp>;
 };
+
 
 export type IndividualCreatedIssuesAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
@@ -20366,6 +20643,7 @@ export type IndividualCreatedIssuesAggregateArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type IndividualCreatedLegalUnitLocationsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20373,6 +20651,7 @@ export type IndividualCreatedLegalUnitLocationsArgs = {
   orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
+
 
 export type IndividualCreatedLegalUnitLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -20382,6 +20661,7 @@ export type IndividualCreatedLegalUnitLocationsAggregateArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type IndividualCreatedLegalUnitsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20389,6 +20669,7 @@ export type IndividualCreatedLegalUnitsArgs = {
   orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
   where?: InputMaybe<LegalUnitBoolExp>;
 };
+
 
 export type IndividualCreatedLegalUnitsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
@@ -20398,6 +20679,7 @@ export type IndividualCreatedLegalUnitsAggregateArgs = {
   where?: InputMaybe<LegalUnitBoolExp>;
 };
 
+
 export type IndividualCreatedLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20405,6 +20687,7 @@ export type IndividualCreatedLocationsArgs = {
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
 };
+
 
 export type IndividualCreatedLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -20414,6 +20697,7 @@ export type IndividualCreatedLocationsAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type IndividualCreatedMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20421,6 +20705,7 @@ export type IndividualCreatedMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type IndividualCreatedMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -20430,6 +20715,7 @@ export type IndividualCreatedMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type IndividualCreatedMissionsArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20437,6 +20723,7 @@ export type IndividualCreatedMissionsArgs = {
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type IndividualCreatedMissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -20446,6 +20733,7 @@ export type IndividualCreatedMissionsAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type IndividualCreatedPolesArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20453,6 +20741,7 @@ export type IndividualCreatedPolesArgs = {
   orderBy?: InputMaybe<Array<PoleOrderBy>>;
   where?: InputMaybe<PoleBoolExp>;
 };
+
 
 export type IndividualCreatedPolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
@@ -20462,6 +20751,7 @@ export type IndividualCreatedPolesAggregateArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type IndividualCreatedProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20469,6 +20759,7 @@ export type IndividualCreatedProjectsArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type IndividualCreatedProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -20478,6 +20769,7 @@ export type IndividualCreatedProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type IndividualCreatedReactionsArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20485,6 +20777,7 @@ export type IndividualCreatedReactionsArgs = {
   orderBy?: InputMaybe<Array<ReactionOrderBy>>;
   where?: InputMaybe<ReactionBoolExp>;
 };
+
 
 export type IndividualCreatedReactionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -20494,6 +20787,7 @@ export type IndividualCreatedReactionsAggregateArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type IndividualCreatedReportsArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20501,6 +20795,7 @@ export type IndividualCreatedReportsArgs = {
   orderBy?: InputMaybe<Array<ReportOrderBy>>;
   where?: InputMaybe<ReportBoolExp>;
 };
+
 
 export type IndividualCreatedReportsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -20510,6 +20805,7 @@ export type IndividualCreatedReportsAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type IndividualCreatedRolesArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20517,6 +20813,7 @@ export type IndividualCreatedRolesArgs = {
   orderBy?: InputMaybe<Array<RoleOrderBy>>;
   where?: InputMaybe<RoleBoolExp>;
 };
+
 
 export type IndividualCreatedRolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
@@ -20526,6 +20823,7 @@ export type IndividualCreatedRolesAggregateArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type IndividualCreatedSessionsArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20533,6 +20831,7 @@ export type IndividualCreatedSessionsArgs = {
   orderBy?: InputMaybe<Array<SessionOrderBy>>;
   where?: InputMaybe<SessionBoolExp>;
 };
+
 
 export type IndividualCreatedSessionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
@@ -20542,6 +20841,7 @@ export type IndividualCreatedSessionsAggregateArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type IndividualCreatedShortcutsArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20549,6 +20849,7 @@ export type IndividualCreatedShortcutsArgs = {
   orderBy?: InputMaybe<Array<ShortcutOrderBy>>;
   where?: InputMaybe<ShortcutBoolExp>;
 };
+
 
 export type IndividualCreatedShortcutsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -20558,6 +20859,7 @@ export type IndividualCreatedShortcutsAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type IndividualCreatedSocialsArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20565,6 +20867,7 @@ export type IndividualCreatedSocialsArgs = {
   orderBy?: InputMaybe<Array<SocialOrderBy>>;
   where?: InputMaybe<SocialBoolExp>;
 };
+
 
 export type IndividualCreatedSocialsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
@@ -20574,6 +20877,7 @@ export type IndividualCreatedSocialsAggregateArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type IndividualCreatedSubjectsArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20581,6 +20885,7 @@ export type IndividualCreatedSubjectsArgs = {
   orderBy?: InputMaybe<Array<SubjectOrderBy>>;
   where?: InputMaybe<SubjectBoolExp>;
 };
+
 
 export type IndividualCreatedSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
@@ -20590,6 +20895,7 @@ export type IndividualCreatedSubjectsAggregateArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type IndividualCreatedTagsArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20597,6 +20903,7 @@ export type IndividualCreatedTagsArgs = {
   orderBy?: InputMaybe<Array<TagOrderBy>>;
   where?: InputMaybe<TagBoolExp>;
 };
+
 
 export type IndividualCreatedTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
@@ -20606,6 +20913,7 @@ export type IndividualCreatedTagsAggregateArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type IndividualCreatedTeamHistoriesArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20613,6 +20921,7 @@ export type IndividualCreatedTeamHistoriesArgs = {
   orderBy?: InputMaybe<Array<TeamHistoryOrderBy>>;
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
+
 
 export type IndividualCreatedTeamHistoriesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -20622,6 +20931,7 @@ export type IndividualCreatedTeamHistoriesAggregateArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type IndividualCreatedTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20629,6 +20939,7 @@ export type IndividualCreatedTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type IndividualCreatedTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -20638,6 +20949,25 @@ export type IndividualCreatedTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
+export type IndividualCreatedTeamMemberRolesArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
+export type IndividualCreatedTeamMemberRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
 export type IndividualCreatedTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20645,6 +20975,7 @@ export type IndividualCreatedTeamMembersArgs = {
   orderBy?: InputMaybe<Array<TeamMemberOrderBy>>;
   where?: InputMaybe<TeamMemberBoolExp>;
 };
+
 
 export type IndividualCreatedTeamMembersAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -20654,6 +20985,7 @@ export type IndividualCreatedTeamMembersAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type IndividualCreatedTeamMetricsArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20661,6 +20993,7 @@ export type IndividualCreatedTeamMetricsArgs = {
   orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
   where?: InputMaybe<TeamMetricBoolExp>;
 };
+
 
 export type IndividualCreatedTeamMetricsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
@@ -20670,6 +21003,7 @@ export type IndividualCreatedTeamMetricsAggregateArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type IndividualCreatedTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20677,6 +21011,7 @@ export type IndividualCreatedTeamsArgs = {
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type IndividualCreatedTeamsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -20686,6 +21021,7 @@ export type IndividualCreatedTeamsAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type IndividualCreatedTenantOrganizesArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20693,6 +21029,7 @@ export type IndividualCreatedTenantOrganizesArgs = {
   orderBy?: InputMaybe<Array<TenantOrganizeOrderBy>>;
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
+
 
 export type IndividualCreatedTenantOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -20702,6 +21039,7 @@ export type IndividualCreatedTenantOrganizesAggregateArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type IndividualCreatedTenantsArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20709,6 +21047,7 @@ export type IndividualCreatedTenantsArgs = {
   orderBy?: InputMaybe<Array<TenantOrderBy>>;
   where?: InputMaybe<TenantBoolExp>;
 };
+
 
 export type IndividualCreatedTenantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
@@ -20718,6 +21057,7 @@ export type IndividualCreatedTenantsAggregateArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
+
 export type IndividualCreatedThreadsArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20725,6 +21065,7 @@ export type IndividualCreatedThreadsArgs = {
   orderBy?: InputMaybe<Array<ThreadOrderBy>>;
   where?: InputMaybe<ThreadBoolExp>;
 };
+
 
 export type IndividualCreatedThreadsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
@@ -20734,6 +21075,7 @@ export type IndividualCreatedThreadsAggregateArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type IndividualCreatedUsersArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20741,6 +21083,7 @@ export type IndividualCreatedUsersArgs = {
   orderBy?: InputMaybe<Array<UserOrderBy>>;
   where?: InputMaybe<UserBoolExp>;
 };
+
 
 export type IndividualCreatedUsersAggregateArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
@@ -20750,6 +21093,7 @@ export type IndividualCreatedUsersAggregateArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type IndividualCreatedValidationsArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20757,6 +21101,7 @@ export type IndividualCreatedValidationsArgs = {
   orderBy?: InputMaybe<Array<ValidationOrderBy>>;
   where?: InputMaybe<ValidationBoolExp>;
 };
+
 
 export type IndividualCreatedValidationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
@@ -20766,6 +21111,7 @@ export type IndividualCreatedValidationsAggregateArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type IndividualCreatedVotesArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20773,6 +21119,7 @@ export type IndividualCreatedVotesArgs = {
   orderBy?: InputMaybe<Array<VoteOrderBy>>;
   where?: InputMaybe<VoteBoolExp>;
 };
+
 
 export type IndividualCreatedVotesAggregateArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
@@ -20782,6 +21129,7 @@ export type IndividualCreatedVotesAggregateArgs = {
   where?: InputMaybe<VoteBoolExp>;
 };
 
+
 export type IndividualFollowingArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20789,6 +21137,7 @@ export type IndividualFollowingArgs = {
   orderBy?: InputMaybe<Array<FollowOrderBy>>;
   where?: InputMaybe<FollowBoolExp>;
 };
+
 
 export type IndividualFollowingAggregateArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
@@ -20798,6 +21147,7 @@ export type IndividualFollowingAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type IndividualInitiatedFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20805,6 +21155,7 @@ export type IndividualInitiatedFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type IndividualInitiatedFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -20814,6 +21165,7 @@ export type IndividualInitiatedFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type IndividualNotifieeEventApprovalStepsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20821,6 +21173,7 @@ export type IndividualNotifieeEventApprovalStepsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepNotifieesOrderBy>>;
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
+
 
 export type IndividualNotifieeEventApprovalStepsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
@@ -20830,6 +21183,7 @@ export type IndividualNotifieeEventApprovalStepsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type IndividualParticipationProcessedEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20837,6 +21191,7 @@ export type IndividualParticipationProcessedEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type IndividualParticipationProcessedEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -20846,6 +21201,7 @@ export type IndividualParticipationProcessedEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type IndividualPointsProcessedActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20853,6 +21209,7 @@ export type IndividualPointsProcessedActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type IndividualPointsProcessedActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -20862,6 +21219,7 @@ export type IndividualPointsProcessedActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type IndividualPointsProcessedMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20869,6 +21227,7 @@ export type IndividualPointsProcessedMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type IndividualPointsProcessedMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -20878,6 +21237,7 @@ export type IndividualPointsProcessedMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type IndividualProcessedEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20885,6 +21245,7 @@ export type IndividualProcessedEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type IndividualProcessedEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -20894,6 +21255,7 @@ export type IndividualProcessedEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type IndividualProcessedExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20901,6 +21263,7 @@ export type IndividualProcessedExpensesArgs = {
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type IndividualProcessedExpensesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -20910,6 +21273,7 @@ export type IndividualProcessedExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type IndividualProcessedMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20917,6 +21281,7 @@ export type IndividualProcessedMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type IndividualProcessedMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -20926,6 +21291,7 @@ export type IndividualProcessedMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type IndividualProcessedTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20933,6 +21299,7 @@ export type IndividualProcessedTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type IndividualProcessedTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -20942,6 +21309,7 @@ export type IndividualProcessedTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type IndividualReceivedAmountProcessedGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20949,6 +21317,7 @@ export type IndividualReceivedAmountProcessedGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type IndividualReceivedAmountProcessedGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -20958,6 +21327,7 @@ export type IndividualReceivedAmountProcessedGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type IndividualReceivedAmountProcessedGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20965,6 +21335,7 @@ export type IndividualReceivedAmountProcessedGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type IndividualReceivedAmountProcessedGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -20974,6 +21345,7 @@ export type IndividualReceivedAmountProcessedGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type IndividualThreadContributorsArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20981,6 +21353,7 @@ export type IndividualThreadContributorsArgs = {
   orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
+
 
 export type IndividualThreadContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
@@ -20990,6 +21363,7 @@ export type IndividualThreadContributorsAggregateArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type IndividualValidatorEventApprovalStepArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20997,6 +21371,7 @@ export type IndividualValidatorEventApprovalStepArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepValidatorsOrderBy>>;
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
+
 
 export type IndividualValidatorEventApprovalStepAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
@@ -21006,6 +21381,7 @@ export type IndividualValidatorEventApprovalStepAggregateArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type IndividualViewedArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21013,6 +21389,7 @@ export type IndividualViewedArgs = {
   orderBy?: InputMaybe<Array<ViewOrderBy>>;
   where?: InputMaybe<ViewBoolExp>;
 };
+
 
 export type IndividualViewedAggregateArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
@@ -21046,6 +21423,7 @@ export type IndividualAggregateFields = {
   varSamp?: Maybe<IndividualVarSampFields>;
   variance?: Maybe<IndividualVarianceFields>;
 };
+
 
 export type IndividualAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<IndividualSelectColumn>>;
@@ -21203,6 +21581,8 @@ export type IndividualBoolExp = {
   createdTeamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   createdTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   createdTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
+  createdTeamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   createdTeamMembers?: InputMaybe<TeamMemberBoolExp>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   createdTeamMetrics?: InputMaybe<TeamMetricBoolExp>;
@@ -21262,7 +21642,7 @@ export type IndividualBoolExp = {
 
 export enum IndividualConstraint {
   IndividualActorIdUnique = 'individual_actor_id_unique',
-  IndividualPkey = 'individual_pkey',
+  IndividualPkey = 'individual_pkey'
 }
 
 export type IndividualIncInput = {
@@ -21333,6 +21713,7 @@ export type IndividualInsertInput = {
   createdTags?: InputMaybe<TagArrRelInsertInput>;
   createdTeamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   createdTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
+  createdTeamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   createdTeamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   createdTeamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   createdTeams?: InputMaybe<TeamArrRelInsertInput>;
@@ -21494,6 +21875,7 @@ export type IndividualOrderBy = {
   createdTagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   createdTeamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   createdTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
+  createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   createdTeamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   createdTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
@@ -21540,7 +21922,7 @@ export enum IndividualSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   PasswordHash = 'passwordHash',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type IndividualSetInput = {
@@ -21641,7 +22023,7 @@ export enum IndividualUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   PasswordHash = 'passwordHash',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type IndividualUpdates = {
@@ -21727,6 +22109,7 @@ export type Issue = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type IssueIssueContributorsArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21734,6 +22117,7 @@ export type IssueIssueContributorsArgs = {
   orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
+
 
 export type IssueIssueContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
@@ -21743,6 +22127,7 @@ export type IssueIssueContributorsAggregateArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type IssueIssueTagsArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -21750,6 +22135,7 @@ export type IssueIssueTagsArgs = {
   orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
   where?: InputMaybe<IssueTagsBoolExp>;
 };
+
 
 export type IssueIssueTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
@@ -21783,6 +22169,7 @@ export type IssueAggregateFields = {
   varSamp?: Maybe<IssueVarSampFields>;
   variance?: Maybe<IssueVarianceFields>;
 };
+
 
 export type IssueAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<IssueSelectColumn>>;
@@ -21847,7 +22234,7 @@ export type IssueBoolExp = {
 
 export enum IssueConstraint {
   IssueContentIdUnique = 'issue_content_id_unique',
-  IssuePkey = 'issue_pkey',
+  IssuePkey = 'issue_pkey'
 }
 
 export type IssueContributors = {
@@ -21882,6 +22269,7 @@ export type IssueContributorsAggregateFields = {
   varSamp?: Maybe<IssueContributorsVarSampFields>;
   variance?: Maybe<IssueContributorsVarianceFields>;
 };
+
 
 export type IssueContributorsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<IssueContributorsSelectColumn>>;
@@ -21929,7 +22317,7 @@ export type IssueContributorsBoolExp = {
 };
 
 export enum IssueContributorsConstraint {
-  IssueContributorsPkey = 'issue_contributors_pkey',
+  IssueContributorsPkey = 'issue_contributors_pkey'
 }
 
 export type IssueContributorsIncInput = {
@@ -21992,7 +22380,7 @@ export type IssueContributorsPkColumnsInput = {
 
 export enum IssueContributorsSelectColumn {
   IndividualId = 'individualId',
-  IssueId = 'issueId',
+  IssueId = 'issueId'
 }
 
 export type IssueContributorsSetInput = {
@@ -22056,7 +22444,7 @@ export type IssueContributorsSumOrderBy = {
 
 export enum IssueContributorsUpdateColumn {
   IndividualId = 'individualId',
-  IssueId = 'issueId',
+  IssueId = 'issueId'
 }
 
 export type IssueContributorsUpdates = {
@@ -22219,7 +22607,7 @@ export enum IssueSelectColumn {
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type IssueSetInput = {
@@ -22344,6 +22732,7 @@ export type IssueTagsAggregateFields = {
   variance?: Maybe<IssueTagsVarianceFields>;
 };
 
+
 export type IssueTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<IssueTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -22390,7 +22779,7 @@ export type IssueTagsBoolExp = {
 };
 
 export enum IssueTagsConstraint {
-  IssueTagsPkey = 'issue_tags_pkey',
+  IssueTagsPkey = 'issue_tags_pkey'
 }
 
 export type IssueTagsIncInput = {
@@ -22453,7 +22842,7 @@ export type IssueTagsPkColumnsInput = {
 
 export enum IssueTagsSelectColumn {
   IssueId = 'issueId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type IssueTagsSetInput = {
@@ -22517,7 +22906,7 @@ export type IssueTagsSumOrderBy = {
 
 export enum IssueTagsUpdateColumn {
   IssueId = 'issueId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type IssueTagsUpdates = {
@@ -22568,7 +22957,7 @@ export enum IssueUpdateColumn {
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type IssueUpdates = {
@@ -22673,6 +23062,7 @@ export type LegalUnit = {
   type: Scalars['String']['output'];
 };
 
+
 export type LegalUnitExpenseItemsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22680,6 +23070,7 @@ export type LegalUnitExpenseItemsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type LegalUnitExpenseItemsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -22689,6 +23080,7 @@ export type LegalUnitExpenseItemsAggregateArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type LegalUnitGrandFundTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22696,6 +23088,7 @@ export type LegalUnitGrandFundTeamsArgs = {
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type LegalUnitGrandFundTeamsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -22705,6 +23098,7 @@ export type LegalUnitGrandFundTeamsAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type LegalUnitLegalUnitLocationsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22712,6 +23106,7 @@ export type LegalUnitLegalUnitLocationsArgs = {
   orderBy?: InputMaybe<Array<LegalUnitLocationOrderBy>>;
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
+
 
 export type LegalUnitLegalUnitLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -22721,6 +23116,7 @@ export type LegalUnitLegalUnitLocationsAggregateArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type LegalUnitLegalUnitsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22728,6 +23124,7 @@ export type LegalUnitLegalUnitsArgs = {
   orderBy?: InputMaybe<Array<LegalUnitOrderBy>>;
   where?: InputMaybe<LegalUnitBoolExp>;
 };
+
 
 export type LegalUnitLegalUnitsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
@@ -22761,6 +23158,7 @@ export type LegalUnitAggregateFields = {
   varSamp?: Maybe<LegalUnitVarSampFields>;
   variance?: Maybe<LegalUnitVarianceFields>;
 };
+
 
 export type LegalUnitAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<LegalUnitSelectColumn>>;
@@ -22836,7 +23234,7 @@ export type LegalUnitBoolExp = {
 
 export enum LegalUnitConstraint {
   LegalUnitActorIdUnique = 'legal_unit_actor_id_unique',
-  LegalUnitPkey = 'legal_unit_pkey',
+  LegalUnitPkey = 'legal_unit_pkey'
 }
 
 export type LegalUnitIncInput = {
@@ -22892,6 +23290,7 @@ export type LegalUnitLocation = {
   nic?: Maybe<Scalars['String']['output']>;
 };
 
+
 export type LegalUnitLocationBanksArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22899,6 +23298,7 @@ export type LegalUnitLocationBanksArgs = {
   orderBy?: InputMaybe<Array<BankOrderBy>>;
   where?: InputMaybe<BankBoolExp>;
 };
+
 
 export type LegalUnitLocationBanksAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -22932,6 +23332,7 @@ export type LegalUnitLocationAggregateFields = {
   varSamp?: Maybe<LegalUnitLocationVarSampFields>;
   variance?: Maybe<LegalUnitLocationVarianceFields>;
 };
+
 
 export type LegalUnitLocationAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -23001,7 +23402,7 @@ export type LegalUnitLocationBoolExp = {
 
 export enum LegalUnitLocationConstraint {
   LegalUnitLocationActorIdUnique = 'legal_unit_location_actor_id_unique',
-  LegalUnitLocationPkey = 'legal_unit_location_pkey',
+  LegalUnitLocationPkey = 'legal_unit_location_pkey'
 }
 
 export type LegalUnitLocationIncInput = {
@@ -23141,7 +23542,7 @@ export enum LegalUnitLocationSelectColumn {
   LegalUnitId = 'legalUnitId',
   LocationId = 'locationId',
   LocationType = 'locationType',
-  Nic = 'nic',
+  Nic = 'nic'
 }
 
 export type LegalUnitLocationSetInput = {
@@ -23264,7 +23665,7 @@ export enum LegalUnitLocationUpdateColumn {
   LegalUnitId = 'legalUnitId',
   LocationId = 'locationId',
   LocationType = 'locationType',
-  Nic = 'nic',
+  Nic = 'nic'
 }
 
 export type LegalUnitLocationUpdates = {
@@ -23459,7 +23860,7 @@ export enum LegalUnitSelectColumn {
   LegalName = 'legalName',
   ParentId = 'parentId',
   Siren = 'siren',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type LegalUnitSetInput = {
@@ -23583,7 +23984,7 @@ export enum LegalUnitUpdateColumn {
   LegalName = 'legalName',
   ParentId = 'parentId',
   Siren = 'siren',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type LegalUnitUpdates = {
@@ -23661,6 +24062,7 @@ export type Location = {
   createdAt: Scalars['timestamptz']['output'];
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details: Scalars['String']['output'];
   events: Array<Event>;
   eventsAggregate: EventAggregate;
   finances: Array<Finance>;
@@ -23670,14 +24072,15 @@ export type Location = {
   individual?: Maybe<Individual>;
   legalUnitLocations: Array<LegalUnitLocation>;
   legalUnitLocationsAggregate: LegalUnitLocationAggregate;
-  locationDetails: Scalars['String']['output'];
+  link: Scalars['String']['output'];
   locationImages: Array<LocationImages>;
   locationImagesAggregate: LocationImagesAggregate;
-  onlineLink: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
   type: Scalars['String']['output'];
 };
+
 
 export type LocationCampusesArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -23687,6 +24090,7 @@ export type LocationCampusesArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type LocationCampusesAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -23694,6 +24098,7 @@ export type LocationCampusesAggregateArgs = {
   orderBy?: InputMaybe<Array<CampusOrderBy>>;
   where?: InputMaybe<CampusBoolExp>;
 };
+
 
 export type LocationEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -23703,6 +24108,7 @@ export type LocationEventsArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type LocationEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -23710,6 +24116,7 @@ export type LocationEventsAggregateArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type LocationFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -23719,6 +24126,7 @@ export type LocationFinancesArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type LocationFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -23726,6 +24134,7 @@ export type LocationFinancesAggregateArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type LocationLegalUnitLocationsArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -23735,6 +24144,7 @@ export type LocationLegalUnitLocationsArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type LocationLegalUnitLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -23743,6 +24153,7 @@ export type LocationLegalUnitLocationsAggregateArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type LocationLocationImagesArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -23750,6 +24161,7 @@ export type LocationLocationImagesArgs = {
   orderBy?: InputMaybe<Array<LocationImagesOrderBy>>;
   where?: InputMaybe<LocationImagesBoolExp>;
 };
+
 
 export type LocationLocationImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
@@ -23783,6 +24195,7 @@ export type LocationAggregateFields = {
   varSamp?: Maybe<LocationVarSampFields>;
   variance?: Maybe<LocationVarianceFields>;
 };
+
 
 export type LocationAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<LocationSelectColumn>>;
@@ -23838,6 +24251,7 @@ export type LocationBoolExp = {
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  details?: InputMaybe<StringComparisonExp>;
   events?: InputMaybe<EventBoolExp>;
   eventsAggregate?: InputMaybe<EventAggregateBoolExp>;
   finances?: InputMaybe<FinanceBoolExp>;
@@ -23847,17 +24261,17 @@ export type LocationBoolExp = {
   individual?: InputMaybe<IndividualBoolExp>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationBoolExp>;
   legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateBoolExp>;
-  locationDetails?: InputMaybe<StringComparisonExp>;
+  link?: InputMaybe<StringComparisonExp>;
   locationImages?: InputMaybe<LocationImagesBoolExp>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateBoolExp>;
-  onlineLink?: InputMaybe<StringComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
 };
 
 export enum LocationConstraint {
-  LocationPkey = 'location_pkey',
+  LocationPkey = 'location_pkey'
 }
 
 export type LocationImages = {
@@ -23892,6 +24306,7 @@ export type LocationImagesAggregateFields = {
   varSamp?: Maybe<LocationImagesVarSampFields>;
   variance?: Maybe<LocationImagesVarianceFields>;
 };
+
 
 export type LocationImagesAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<LocationImagesSelectColumn>>;
@@ -23939,7 +24354,7 @@ export type LocationImagesBoolExp = {
 };
 
 export enum LocationImagesConstraint {
-  LocationImagesPkey = 'location_images_pkey',
+  LocationImagesPkey = 'location_images_pkey'
 }
 
 export type LocationImagesIncInput = {
@@ -24002,7 +24417,7 @@ export type LocationImagesPkColumnsInput = {
 
 export enum LocationImagesSelectColumn {
   FileUploadId = 'fileUploadId',
-  LocationId = 'locationId',
+  LocationId = 'locationId'
 }
 
 export type LocationImagesSetInput = {
@@ -24066,7 +24481,7 @@ export type LocationImagesSumOrderBy = {
 
 export enum LocationImagesUpdateColumn {
   FileUploadId = 'fileUploadId',
-  LocationId = 'locationId',
+  LocationId = 'locationId'
 }
 
 export type LocationImagesUpdates = {
@@ -24125,15 +24540,16 @@ export type LocationInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventArrRelInsertInput>;
   finances?: InputMaybe<FinanceArrRelInsertInput>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   individual?: InputMaybe<IndividualObjRelInsertInput>;
   legalUnitLocations?: InputMaybe<LegalUnitLocationArrRelInsertInput>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
   locationImages?: InputMaybe<LocationImagesArrRelInsertInput>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -24146,10 +24562,11 @@ export type LocationMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  locationDetails?: Maybe<Scalars['String']['output']>;
-  onlineLink?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -24160,10 +24577,11 @@ export type LocationMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -24175,10 +24593,11 @@ export type LocationMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  locationDetails?: Maybe<Scalars['String']['output']>;
-  onlineLink?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -24189,10 +24608,11 @@ export type LocationMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
 };
@@ -24223,15 +24643,16 @@ export type LocationOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
+  details?: InputMaybe<OrderBy>;
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   individual?: InputMaybe<IndividualOrderBy>;
   legalUnitLocationsAggregate?: InputMaybe<LegalUnitLocationAggregateOrderBy>;
-  locationDetails?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
   locationImagesAggregate?: InputMaybe<LocationImagesAggregateOrderBy>;
-  onlineLink?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -24247,12 +24668,13 @@ export enum LocationSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Details = 'details',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  LocationDetails = 'locationDetails',
-  OnlineLink = 'onlineLink',
+  Link = 'link',
+  Name = 'name',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type LocationSetInput = {
@@ -24261,10 +24683,11 @@ export type LocationSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -24331,10 +24754,11 @@ export type LocationStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  locationDetails?: InputMaybe<Scalars['String']['input']>;
-  onlineLink?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -24362,12 +24786,13 @@ export enum LocationUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
+  Details = 'details',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  LocationDetails = 'locationDetails',
-  OnlineLink = 'onlineLink',
+  Link = 'link',
+  Name = 'name',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type LocationUpdates = {
@@ -24477,6 +24902,7 @@ export type Mission = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type MissionMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -24484,6 +24910,7 @@ export type MissionMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type MissionMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -24519,6 +24946,7 @@ export type MissionAggregateFields = {
   varSamp?: Maybe<MissionVarSampFields>;
   variance?: Maybe<MissionVarianceFields>;
 };
+
 
 export type MissionAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<MissionSelectColumn>>;
@@ -24600,7 +25028,7 @@ export type MissionBoolExp = {
 };
 
 export enum MissionConstraint {
-  MissionPkey = 'mission_pkey',
+  MissionPkey = 'mission_pkey'
 }
 
 export type MissionIncInput = {
@@ -24671,6 +25099,7 @@ export type MissionJoin = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type MissionJoinEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -24678,6 +25107,7 @@ export type MissionJoinEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type MissionJoinEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -24711,6 +25141,7 @@ export type MissionJoinAggregateFields = {
   varSamp?: Maybe<MissionJoinVarSampFields>;
   variance?: Maybe<MissionJoinVarianceFields>;
 };
+
 
 export type MissionJoinAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -24797,7 +25228,7 @@ export type MissionJoinBoolExp = {
 
 export enum MissionJoinConstraint {
   MissionJoinEventJoinIdUnique = 'mission_join_event_join_id_unique',
-  MissionJoinPkey = 'mission_join_pkey',
+  MissionJoinPkey = 'mission_join_pkey'
 }
 
 export type MissionJoinIncInput = {
@@ -24984,7 +25415,7 @@ export enum MissionJoinSelectColumn {
   ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type MissionJoinSetInput = {
@@ -25154,7 +25585,7 @@ export enum MissionJoinUpdateColumn {
   ProcessedById = 'processedById',
   ProjectId = 'projectId',
   State = 'state',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type MissionJoinUpdates = {
@@ -25382,17 +25813,17 @@ export enum MissionSelectColumn {
   ProjectId = 'projectId',
   Quantity = 'quantity',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum MissionSelectColumnMissionAggregateBoolExpBool_AndArgumentsColumns {
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export enum MissionSelectColumnMissionAggregateBoolExpBool_OrArgumentsColumns {
   IsAutoAcceptingMembers = 'isAutoAcceptingMembers',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export type MissionSetInput = {
@@ -25557,7 +25988,7 @@ export enum MissionUpdateColumn {
   ProjectId = 'projectId',
   Quantity = 'quantity',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type MissionUpdates = {
@@ -25789,8 +26220,8 @@ export type Mutation = {
   deleteTeamJoinByPk?: Maybe<TeamJoin>;
   deleteTeamMember?: Maybe<TeamMemberMutationResponse>;
   deleteTeamMemberByPk?: Maybe<TeamMember>;
-  deleteTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  deleteTeamMemberRolesByPk?: Maybe<TeamMemberRoles>;
+  deleteTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  deleteTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
   deleteTeamMetric?: Maybe<TeamMetricMutationResponse>;
   deleteTeamMetricByPk?: Maybe<TeamMetric>;
   deleteTenant?: Maybe<TenantMutationResponse>;
@@ -25956,8 +26387,8 @@ export type Mutation = {
   insertTeamJoinOne?: Maybe<TeamJoin>;
   insertTeamMember?: Maybe<TeamMemberMutationResponse>;
   insertTeamMemberOne?: Maybe<TeamMember>;
-  insertTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  insertTeamMemberRolesOne?: Maybe<TeamMemberRoles>;
+  insertTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  insertTeamMemberRoleOne?: Maybe<TeamMemberRole>;
   insertTeamMetric?: Maybe<TeamMetricMutationResponse>;
   insertTeamMetricOne?: Maybe<TeamMetric>;
   insertTeamOne?: Maybe<Team>;
@@ -26201,9 +26632,9 @@ export type Mutation = {
   updateTeamMember?: Maybe<TeamMemberMutationResponse>;
   updateTeamMemberByPk?: Maybe<TeamMember>;
   updateTeamMemberMany?: Maybe<Array<Maybe<TeamMemberMutationResponse>>>;
-  updateTeamMemberRoles?: Maybe<TeamMemberRolesMutationResponse>;
-  updateTeamMemberRolesByPk?: Maybe<TeamMemberRoles>;
-  updateTeamMemberRolesMany?: Maybe<Array<Maybe<TeamMemberRolesMutationResponse>>>;
+  updateTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
+  updateTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
+  updateTeamMemberRoleMany?: Maybe<Array<Maybe<TeamMemberRoleMutationResponse>>>;
   updateTeamMetric?: Maybe<TeamMetricMutationResponse>;
   updateTeamMetricByPk?: Maybe<TeamMetric>;
   updateTeamMetricMany?: Maybe<Array<Maybe<TeamMetricMutationResponse>>>;
@@ -26236,1542 +26667,1879 @@ export type Mutation = {
   updateVoteMany?: Maybe<Array<Maybe<VoteMutationResponse>>>;
 };
 
+
 export type MutationDeleteAccountArgs = {
   where: AccountBoolExp;
 };
+
 
 export type MutationDeleteAccountByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteActionArgs = {
   where: ActionBoolExp;
 };
+
 
 export type MutationDeleteActionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteActorArgs = {
   where: ActorBoolExp;
 };
+
 
 export type MutationDeleteActorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteActorImageArgs = {
   where: ActorImageBoolExp;
 };
+
 
 export type MutationDeleteActorImageByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteActorTagsArgs = {
   where: ActorTagsBoolExp;
 };
+
 
 export type MutationDeleteActorTagsByPkArgs = {
   actorId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteAddressArgs = {
   where: AddressBoolExp;
 };
+
 
 export type MutationDeleteAddressByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteBankArgs = {
   where: BankBoolExp;
 };
+
 
 export type MutationDeleteBankByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteBotArgs = {
   where: BotBoolExp;
 };
+
 
 export type MutationDeleteBotByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCampusArgs = {
   where: CampusBoolExp;
 };
+
 
 export type MutationDeleteCampusByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCampusClusterArgs = {
   where: CampusClusterBoolExp;
 };
+
 
 export type MutationDeleteCampusClusterByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCanteenArgs = {
   where: CanteenBoolExp;
 };
+
 
 export type MutationDeleteCanteenByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCanteenFoodArgs = {
   where: CanteenFoodBoolExp;
 };
+
 
 export type MutationDeleteCanteenFoodByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCanteenMenuArgs = {
   where: CanteenMenuBoolExp;
 };
+
 
 export type MutationDeleteCanteenMenuByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteClassGroupArgs = {
   where: ClassGroupBoolExp;
 };
+
 
 export type MutationDeleteClassGroupByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteClassGroupTeacherArgs = {
   where: ClassGroupTeacherBoolExp;
 };
+
 
 export type MutationDeleteClassGroupTeacherByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteClassGroupTeacherSubjectsArgs = {
   where: ClassGroupTeacherSubjectsBoolExp;
 };
+
 
 export type MutationDeleteClassGroupTeacherSubjectsByPkArgs = {
   classGroupTeacherId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteCohortArgs = {
   where: CohortBoolExp;
 };
+
 
 export type MutationDeleteCohortByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteContentArgs = {
   where: ContentBoolExp;
 };
 
+
 export type MutationDeleteContentAttachmentsArgs = {
   where: ContentAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteContentAttachmentsByPkArgs = {
   contentId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteContentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteDocumentArgs = {
   where: DocumentBoolExp;
 };
 
+
 export type MutationDeleteDocumentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteEventArgs = {
   where: EventBoolExp;
 };
 
+
 export type MutationDeleteEventApprovalArgs = {
   where: EventApprovalBoolExp;
 };
+
 
 export type MutationDeleteEventApprovalByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteEventApprovalStepArgs = {
   where: EventApprovalStepBoolExp;
 };
+
 
 export type MutationDeleteEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteEventApprovalStepNotifieesArgs = {
   where: EventApprovalStepNotifieesBoolExp;
 };
+
 
 export type MutationDeleteEventApprovalStepNotifieesByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteEventApprovalStepValidatorsArgs = {
   where: EventApprovalStepValidatorsBoolExp;
 };
+
 
 export type MutationDeleteEventApprovalStepValidatorsByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteEventByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteEventFavoriteArgs = {
   where: EventFavoriteBoolExp;
 };
 
+
 export type MutationDeleteEventFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteEventJoinArgs = {
   where: EventJoinBoolExp;
 };
 
+
 export type MutationDeleteEventJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteEventOrganizeArgs = {
   where: EventOrganizeBoolExp;
 };
 
+
 export type MutationDeleteEventOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteEventSupervisorArgs = {
   where: EventSupervisorBoolExp;
 };
 
+
 export type MutationDeleteEventSupervisorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteEventTagsArgs = {
   where: EventTagsBoolExp;
 };
+
 
 export type MutationDeleteEventTagsByPkArgs = {
   eventId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteExpenseArgs = {
   where: ExpenseBoolExp;
 };
+
 
 export type MutationDeleteExpenseByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteExpenseItemArgs = {
   where: ExpenseItemBoolExp;
 };
 
+
 export type MutationDeleteExpenseItemAttachmentsArgs = {
   where: ExpenseItemAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteExpenseItemAttachmentsByPkArgs = {
   expenseItemId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteFavoriteArgs = {
   where: FavoriteBoolExp;
 };
 
+
 export type MutationDeleteFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteFileUploadArgs = {
   where: FileUploadBoolExp;
 };
 
+
 export type MutationDeleteFileUploadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteFinanceArgs = {
   where: FinanceBoolExp;
 };
 
+
 export type MutationDeleteFinanceAttachmentsArgs = {
   where: FinanceAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteFinanceAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   financeId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFinanceByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFinanceTagsArgs = {
   where: FinanceTagsBoolExp;
 };
+
 
 export type MutationDeleteFinanceTagsByPkArgs = {
   financeId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFollowArgs = {
   where: FollowBoolExp;
 };
+
 
 export type MutationDeleteFollowByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFormArgs = {
   where: FormBoolExp;
 };
+
 
 export type MutationDeleteFormByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFormSubmissionArgs = {
   where: FormSubmissionBoolExp;
 };
 
+
 export type MutationDeleteFormSubmissionAttachmentsArgs = {
   where: FormSubmissionAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteFormSubmissionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   formSubmissionId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteGrantArgs = {
   where: GrantBoolExp;
 };
 
+
 export type MutationDeleteGrantAllocateArgs = {
   where: GrantAllocateBoolExp;
 };
 
+
 export type MutationDeleteGrantAllocateAttachmentsArgs = {
   where: GrantAllocateAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteGrantAllocateAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantAllocateId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteGrantAttachmentsArgs = {
   where: GrantAttachmentsBoolExp;
 };
+
 
 export type MutationDeleteGrantAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteGrantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteIndividualArgs = {
   where: IndividualBoolExp;
 };
 
+
 export type MutationDeleteIndividualByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteIssueArgs = {
   where: IssueBoolExp;
 };
 
+
 export type MutationDeleteIssueByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteIssueContributorsArgs = {
   where: IssueContributorsBoolExp;
 };
+
 
 export type MutationDeleteIssueContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   issueId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteIssueTagsArgs = {
   where: IssueTagsBoolExp;
 };
+
 
 export type MutationDeleteIssueTagsByPkArgs = {
   issueId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteLegalUnitArgs = {
   where: LegalUnitBoolExp;
 };
+
 
 export type MutationDeleteLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteLegalUnitLocationArgs = {
   where: LegalUnitLocationBoolExp;
 };
+
 
 export type MutationDeleteLegalUnitLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteLocationArgs = {
   where: LocationBoolExp;
 };
+
 
 export type MutationDeleteLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteLocationImagesArgs = {
   where: LocationImagesBoolExp;
 };
+
 
 export type MutationDeleteLocationImagesByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   locationId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteMissionArgs = {
   where: MissionBoolExp;
 };
+
 
 export type MutationDeleteMissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteMissionJoinArgs = {
   where: MissionJoinBoolExp;
 };
+
 
 export type MutationDeleteMissionJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeletePoleArgs = {
   where: PoleBoolExp;
 };
+
 
 export type MutationDeletePoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteProjectArgs = {
   where: ProjectBoolExp;
 };
+
 
 export type MutationDeleteProjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteProjectSupervisorsArgs = {
   where: ProjectSupervisorsBoolExp;
 };
+
 
 export type MutationDeleteProjectSupervisorsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   teamMemberId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteProjectTagsArgs = {
   where: ProjectTagsBoolExp;
 };
+
 
 export type MutationDeleteProjectTagsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteReactionArgs = {
   where: ReactionBoolExp;
 };
+
 
 export type MutationDeleteReactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteReportArgs = {
   where: ReportBoolExp;
 };
+
 
 export type MutationDeleteReportByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteRoleArgs = {
   where: RoleBoolExp;
 };
+
 
 export type MutationDeleteRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteSessionArgs = {
   where: SessionBoolExp;
 };
+
 
 export type MutationDeleteSessionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteShortcutArgs = {
   where: ShortcutBoolExp;
 };
+
 
 export type MutationDeleteShortcutByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteSocialArgs = {
   where: SocialBoolExp;
 };
+
 
 export type MutationDeleteSocialByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteSubjectArgs = {
   where: SubjectBoolExp;
 };
+
 
 export type MutationDeleteSubjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteSubjectClassGroupsArgs = {
   where: SubjectClassGroupsBoolExp;
 };
+
 
 export type MutationDeleteSubjectClassGroupsByPkArgs = {
   classGroupId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteTagArgs = {
   where: TagBoolExp;
 };
+
 
 export type MutationDeleteTagByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteTeamArgs = {
   where: TeamBoolExp;
 };
+
 
 export type MutationDeleteTeamByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteTeamHistoryArgs = {
   where: TeamHistoryBoolExp;
 };
+
 
 export type MutationDeleteTeamHistoryByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteTeamJoinArgs = {
   where: TeamJoinBoolExp;
 };
+
 
 export type MutationDeleteTeamJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteTeamMemberArgs = {
   where: TeamMemberBoolExp;
 };
+
 
 export type MutationDeleteTeamMemberByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteTeamMemberRolesArgs = {
-  where: TeamMemberRolesBoolExp;
+
+export type MutationDeleteTeamMemberRoleArgs = {
+  where: TeamMemberRoleBoolExp;
 };
 
-export type MutationDeleteTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+
+export type MutationDeleteTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteTeamMetricArgs = {
   where: TeamMetricBoolExp;
 };
 
+
 export type MutationDeleteTeamMetricByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteTenantArgs = {
   where: TenantBoolExp;
 };
 
+
 export type MutationDeleteTenantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteTenantOrganizeArgs = {
   where: TenantOrganizeBoolExp;
 };
 
+
 export type MutationDeleteTenantOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationDeleteThreadArgs = {
   where: ThreadBoolExp;
 };
 
+
 export type MutationDeleteThreadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteThreadContributorsArgs = {
   where: ThreadContributorsBoolExp;
 };
+
 
 export type MutationDeleteThreadContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteThreadTagsArgs = {
   where: ThreadTagsBoolExp;
 };
+
 
 export type MutationDeleteThreadTagsByPkArgs = {
   tagId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteUserArgs = {
   where: UserBoolExp;
 };
+
 
 export type MutationDeleteUserByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteValidationArgs = {
   where: ValidationBoolExp;
 };
+
 
 export type MutationDeleteValidationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteViewArgs = {
   where: ViewBoolExp;
 };
+
 
 export type MutationDeleteViewByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type MutationDeleteVoteArgs = {
   where: VoteBoolExp;
 };
 
+
 export type MutationDeleteVoteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type MutationInsertAccountArgs = {
   objects: Array<AccountInsertInput>;
   onConflict?: InputMaybe<AccountOnConflict>;
 };
 
+
 export type MutationInsertAccountOneArgs = {
   object: AccountInsertInput;
   onConflict?: InputMaybe<AccountOnConflict>;
 };
+
 
 export type MutationInsertActionArgs = {
   objects: Array<ActionInsertInput>;
   onConflict?: InputMaybe<ActionOnConflict>;
 };
 
+
 export type MutationInsertActionOneArgs = {
   object: ActionInsertInput;
   onConflict?: InputMaybe<ActionOnConflict>;
 };
+
 
 export type MutationInsertActorArgs = {
   objects: Array<ActorInsertInput>;
   onConflict?: InputMaybe<ActorOnConflict>;
 };
 
+
 export type MutationInsertActorImageArgs = {
   objects: Array<ActorImageInsertInput>;
   onConflict?: InputMaybe<ActorImageOnConflict>;
 };
+
 
 export type MutationInsertActorImageOneArgs = {
   object: ActorImageInsertInput;
   onConflict?: InputMaybe<ActorImageOnConflict>;
 };
 
+
 export type MutationInsertActorOneArgs = {
   object: ActorInsertInput;
   onConflict?: InputMaybe<ActorOnConflict>;
 };
+
 
 export type MutationInsertActorTagsArgs = {
   objects: Array<ActorTagsInsertInput>;
   onConflict?: InputMaybe<ActorTagsOnConflict>;
 };
 
+
 export type MutationInsertActorTagsOneArgs = {
   object: ActorTagsInsertInput;
   onConflict?: InputMaybe<ActorTagsOnConflict>;
 };
+
 
 export type MutationInsertAddressArgs = {
   objects: Array<AddressInsertInput>;
   onConflict?: InputMaybe<AddressOnConflict>;
 };
 
+
 export type MutationInsertAddressOneArgs = {
   object: AddressInsertInput;
   onConflict?: InputMaybe<AddressOnConflict>;
 };
+
 
 export type MutationInsertBankArgs = {
   objects: Array<BankInsertInput>;
   onConflict?: InputMaybe<BankOnConflict>;
 };
 
+
 export type MutationInsertBankOneArgs = {
   object: BankInsertInput;
   onConflict?: InputMaybe<BankOnConflict>;
 };
+
 
 export type MutationInsertBotArgs = {
   objects: Array<BotInsertInput>;
   onConflict?: InputMaybe<BotOnConflict>;
 };
 
+
 export type MutationInsertBotOneArgs = {
   object: BotInsertInput;
   onConflict?: InputMaybe<BotOnConflict>;
 };
+
 
 export type MutationInsertCampusArgs = {
   objects: Array<CampusInsertInput>;
   onConflict?: InputMaybe<CampusOnConflict>;
 };
 
+
 export type MutationInsertCampusClusterArgs = {
   objects: Array<CampusClusterInsertInput>;
   onConflict?: InputMaybe<CampusClusterOnConflict>;
 };
+
 
 export type MutationInsertCampusClusterOneArgs = {
   object: CampusClusterInsertInput;
   onConflict?: InputMaybe<CampusClusterOnConflict>;
 };
 
+
 export type MutationInsertCampusOneArgs = {
   object: CampusInsertInput;
   onConflict?: InputMaybe<CampusOnConflict>;
 };
+
 
 export type MutationInsertCanteenArgs = {
   objects: Array<CanteenInsertInput>;
   onConflict?: InputMaybe<CanteenOnConflict>;
 };
 
+
 export type MutationInsertCanteenFoodArgs = {
   objects: Array<CanteenFoodInsertInput>;
   onConflict?: InputMaybe<CanteenFoodOnConflict>;
 };
+
 
 export type MutationInsertCanteenFoodOneArgs = {
   object: CanteenFoodInsertInput;
   onConflict?: InputMaybe<CanteenFoodOnConflict>;
 };
 
+
 export type MutationInsertCanteenMenuArgs = {
   objects: Array<CanteenMenuInsertInput>;
   onConflict?: InputMaybe<CanteenMenuOnConflict>;
 };
+
 
 export type MutationInsertCanteenMenuOneArgs = {
   object: CanteenMenuInsertInput;
   onConflict?: InputMaybe<CanteenMenuOnConflict>;
 };
 
+
 export type MutationInsertCanteenOneArgs = {
   object: CanteenInsertInput;
   onConflict?: InputMaybe<CanteenOnConflict>;
 };
+
 
 export type MutationInsertClassGroupArgs = {
   objects: Array<ClassGroupInsertInput>;
   onConflict?: InputMaybe<ClassGroupOnConflict>;
 };
 
+
 export type MutationInsertClassGroupOneArgs = {
   object: ClassGroupInsertInput;
   onConflict?: InputMaybe<ClassGroupOnConflict>;
 };
+
 
 export type MutationInsertClassGroupTeacherArgs = {
   objects: Array<ClassGroupTeacherInsertInput>;
   onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
 };
 
+
 export type MutationInsertClassGroupTeacherOneArgs = {
   object: ClassGroupTeacherInsertInput;
   onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
 };
+
 
 export type MutationInsertClassGroupTeacherSubjectsArgs = {
   objects: Array<ClassGroupTeacherSubjectsInsertInput>;
   onConflict?: InputMaybe<ClassGroupTeacherSubjectsOnConflict>;
 };
 
+
 export type MutationInsertClassGroupTeacherSubjectsOneArgs = {
   object: ClassGroupTeacherSubjectsInsertInput;
   onConflict?: InputMaybe<ClassGroupTeacherSubjectsOnConflict>;
 };
+
 
 export type MutationInsertCohortArgs = {
   objects: Array<CohortInsertInput>;
   onConflict?: InputMaybe<CohortOnConflict>;
 };
 
+
 export type MutationInsertCohortOneArgs = {
   object: CohortInsertInput;
   onConflict?: InputMaybe<CohortOnConflict>;
 };
+
 
 export type MutationInsertContentArgs = {
   objects: Array<ContentInsertInput>;
   onConflict?: InputMaybe<ContentOnConflict>;
 };
 
+
 export type MutationInsertContentAttachmentsArgs = {
   objects: Array<ContentAttachmentsInsertInput>;
   onConflict?: InputMaybe<ContentAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertContentAttachmentsOneArgs = {
   object: ContentAttachmentsInsertInput;
   onConflict?: InputMaybe<ContentAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertContentOneArgs = {
   object: ContentInsertInput;
   onConflict?: InputMaybe<ContentOnConflict>;
 };
+
 
 export type MutationInsertDocumentArgs = {
   objects: Array<DocumentInsertInput>;
   onConflict?: InputMaybe<DocumentOnConflict>;
 };
 
+
 export type MutationInsertDocumentOneArgs = {
   object: DocumentInsertInput;
   onConflict?: InputMaybe<DocumentOnConflict>;
 };
+
 
 export type MutationInsertEventArgs = {
   objects: Array<EventInsertInput>;
   onConflict?: InputMaybe<EventOnConflict>;
 };
 
+
 export type MutationInsertEventApprovalArgs = {
   objects: Array<EventApprovalInsertInput>;
   onConflict?: InputMaybe<EventApprovalOnConflict>;
 };
+
 
 export type MutationInsertEventApprovalOneArgs = {
   object: EventApprovalInsertInput;
   onConflict?: InputMaybe<EventApprovalOnConflict>;
 };
 
+
 export type MutationInsertEventApprovalStepArgs = {
   objects: Array<EventApprovalStepInsertInput>;
   onConflict?: InputMaybe<EventApprovalStepOnConflict>;
 };
+
 
 export type MutationInsertEventApprovalStepNotifieesArgs = {
   objects: Array<EventApprovalStepNotifieesInsertInput>;
   onConflict?: InputMaybe<EventApprovalStepNotifieesOnConflict>;
 };
 
+
 export type MutationInsertEventApprovalStepNotifieesOneArgs = {
   object: EventApprovalStepNotifieesInsertInput;
   onConflict?: InputMaybe<EventApprovalStepNotifieesOnConflict>;
 };
+
 
 export type MutationInsertEventApprovalStepOneArgs = {
   object: EventApprovalStepInsertInput;
   onConflict?: InputMaybe<EventApprovalStepOnConflict>;
 };
 
+
 export type MutationInsertEventApprovalStepValidatorsArgs = {
   objects: Array<EventApprovalStepValidatorsInsertInput>;
   onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
 };
+
 
 export type MutationInsertEventApprovalStepValidatorsOneArgs = {
   object: EventApprovalStepValidatorsInsertInput;
   onConflict?: InputMaybe<EventApprovalStepValidatorsOnConflict>;
 };
 
+
 export type MutationInsertEventFavoriteArgs = {
   objects: Array<EventFavoriteInsertInput>;
   onConflict?: InputMaybe<EventFavoriteOnConflict>;
 };
+
 
 export type MutationInsertEventFavoriteOneArgs = {
   object: EventFavoriteInsertInput;
   onConflict?: InputMaybe<EventFavoriteOnConflict>;
 };
 
+
 export type MutationInsertEventJoinArgs = {
   objects: Array<EventJoinInsertInput>;
   onConflict?: InputMaybe<EventJoinOnConflict>;
 };
+
 
 export type MutationInsertEventJoinOneArgs = {
   object: EventJoinInsertInput;
   onConflict?: InputMaybe<EventJoinOnConflict>;
 };
 
+
 export type MutationInsertEventOneArgs = {
   object: EventInsertInput;
   onConflict?: InputMaybe<EventOnConflict>;
 };
+
 
 export type MutationInsertEventOrganizeArgs = {
   objects: Array<EventOrganizeInsertInput>;
   onConflict?: InputMaybe<EventOrganizeOnConflict>;
 };
 
+
 export type MutationInsertEventOrganizeOneArgs = {
   object: EventOrganizeInsertInput;
   onConflict?: InputMaybe<EventOrganizeOnConflict>;
 };
+
 
 export type MutationInsertEventSupervisorArgs = {
   objects: Array<EventSupervisorInsertInput>;
   onConflict?: InputMaybe<EventSupervisorOnConflict>;
 };
 
+
 export type MutationInsertEventSupervisorOneArgs = {
   object: EventSupervisorInsertInput;
   onConflict?: InputMaybe<EventSupervisorOnConflict>;
 };
+
 
 export type MutationInsertEventTagsArgs = {
   objects: Array<EventTagsInsertInput>;
   onConflict?: InputMaybe<EventTagsOnConflict>;
 };
 
+
 export type MutationInsertEventTagsOneArgs = {
   object: EventTagsInsertInput;
   onConflict?: InputMaybe<EventTagsOnConflict>;
 };
+
 
 export type MutationInsertExpenseArgs = {
   objects: Array<ExpenseInsertInput>;
   onConflict?: InputMaybe<ExpenseOnConflict>;
 };
 
+
 export type MutationInsertExpenseItemArgs = {
   objects: Array<ExpenseItemInsertInput>;
   onConflict?: InputMaybe<ExpenseItemOnConflict>;
 };
+
 
 export type MutationInsertExpenseItemAttachmentsArgs = {
   objects: Array<ExpenseItemAttachmentsInsertInput>;
   onConflict?: InputMaybe<ExpenseItemAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertExpenseItemAttachmentsOneArgs = {
   object: ExpenseItemAttachmentsInsertInput;
   onConflict?: InputMaybe<ExpenseItemAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertExpenseItemOneArgs = {
   object: ExpenseItemInsertInput;
   onConflict?: InputMaybe<ExpenseItemOnConflict>;
 };
 
+
 export type MutationInsertExpenseOneArgs = {
   object: ExpenseInsertInput;
   onConflict?: InputMaybe<ExpenseOnConflict>;
 };
+
 
 export type MutationInsertFavoriteArgs = {
   objects: Array<FavoriteInsertInput>;
   onConflict?: InputMaybe<FavoriteOnConflict>;
 };
 
+
 export type MutationInsertFavoriteOneArgs = {
   object: FavoriteInsertInput;
   onConflict?: InputMaybe<FavoriteOnConflict>;
 };
+
 
 export type MutationInsertFileUploadArgs = {
   objects: Array<FileUploadInsertInput>;
   onConflict?: InputMaybe<FileUploadOnConflict>;
 };
 
+
 export type MutationInsertFileUploadOneArgs = {
   object: FileUploadInsertInput;
   onConflict?: InputMaybe<FileUploadOnConflict>;
 };
+
 
 export type MutationInsertFinanceArgs = {
   objects: Array<FinanceInsertInput>;
   onConflict?: InputMaybe<FinanceOnConflict>;
 };
 
+
 export type MutationInsertFinanceAttachmentsArgs = {
   objects: Array<FinanceAttachmentsInsertInput>;
   onConflict?: InputMaybe<FinanceAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertFinanceAttachmentsOneArgs = {
   object: FinanceAttachmentsInsertInput;
   onConflict?: InputMaybe<FinanceAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertFinanceOneArgs = {
   object: FinanceInsertInput;
   onConflict?: InputMaybe<FinanceOnConflict>;
 };
+
 
 export type MutationInsertFinanceTagsArgs = {
   objects: Array<FinanceTagsInsertInput>;
   onConflict?: InputMaybe<FinanceTagsOnConflict>;
 };
 
+
 export type MutationInsertFinanceTagsOneArgs = {
   object: FinanceTagsInsertInput;
   onConflict?: InputMaybe<FinanceTagsOnConflict>;
 };
+
 
 export type MutationInsertFollowArgs = {
   objects: Array<FollowInsertInput>;
   onConflict?: InputMaybe<FollowOnConflict>;
 };
 
+
 export type MutationInsertFollowOneArgs = {
   object: FollowInsertInput;
   onConflict?: InputMaybe<FollowOnConflict>;
 };
+
 
 export type MutationInsertFormArgs = {
   objects: Array<FormInsertInput>;
   onConflict?: InputMaybe<FormOnConflict>;
 };
 
+
 export type MutationInsertFormOneArgs = {
   object: FormInsertInput;
   onConflict?: InputMaybe<FormOnConflict>;
 };
+
 
 export type MutationInsertFormSubmissionArgs = {
   objects: Array<FormSubmissionInsertInput>;
   onConflict?: InputMaybe<FormSubmissionOnConflict>;
 };
 
+
 export type MutationInsertFormSubmissionAttachmentsArgs = {
   objects: Array<FormSubmissionAttachmentsInsertInput>;
   onConflict?: InputMaybe<FormSubmissionAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertFormSubmissionAttachmentsOneArgs = {
   object: FormSubmissionAttachmentsInsertInput;
   onConflict?: InputMaybe<FormSubmissionAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertFormSubmissionOneArgs = {
   object: FormSubmissionInsertInput;
   onConflict?: InputMaybe<FormSubmissionOnConflict>;
 };
+
 
 export type MutationInsertGrantArgs = {
   objects: Array<GrantInsertInput>;
   onConflict?: InputMaybe<GrantOnConflict>;
 };
 
+
 export type MutationInsertGrantAllocateArgs = {
   objects: Array<GrantAllocateInsertInput>;
   onConflict?: InputMaybe<GrantAllocateOnConflict>;
 };
+
 
 export type MutationInsertGrantAllocateAttachmentsArgs = {
   objects: Array<GrantAllocateAttachmentsInsertInput>;
   onConflict?: InputMaybe<GrantAllocateAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertGrantAllocateAttachmentsOneArgs = {
   object: GrantAllocateAttachmentsInsertInput;
   onConflict?: InputMaybe<GrantAllocateAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertGrantAllocateOneArgs = {
   object: GrantAllocateInsertInput;
   onConflict?: InputMaybe<GrantAllocateOnConflict>;
 };
 
+
 export type MutationInsertGrantAttachmentsArgs = {
   objects: Array<GrantAttachmentsInsertInput>;
   onConflict?: InputMaybe<GrantAttachmentsOnConflict>;
 };
+
 
 export type MutationInsertGrantAttachmentsOneArgs = {
   object: GrantAttachmentsInsertInput;
   onConflict?: InputMaybe<GrantAttachmentsOnConflict>;
 };
 
+
 export type MutationInsertGrantOneArgs = {
   object: GrantInsertInput;
   onConflict?: InputMaybe<GrantOnConflict>;
 };
+
 
 export type MutationInsertIndividualArgs = {
   objects: Array<IndividualInsertInput>;
   onConflict?: InputMaybe<IndividualOnConflict>;
 };
 
+
 export type MutationInsertIndividualOneArgs = {
   object: IndividualInsertInput;
   onConflict?: InputMaybe<IndividualOnConflict>;
 };
+
 
 export type MutationInsertIssueArgs = {
   objects: Array<IssueInsertInput>;
   onConflict?: InputMaybe<IssueOnConflict>;
 };
 
+
 export type MutationInsertIssueContributorsArgs = {
   objects: Array<IssueContributorsInsertInput>;
   onConflict?: InputMaybe<IssueContributorsOnConflict>;
 };
+
 
 export type MutationInsertIssueContributorsOneArgs = {
   object: IssueContributorsInsertInput;
   onConflict?: InputMaybe<IssueContributorsOnConflict>;
 };
 
+
 export type MutationInsertIssueOneArgs = {
   object: IssueInsertInput;
   onConflict?: InputMaybe<IssueOnConflict>;
 };
+
 
 export type MutationInsertIssueTagsArgs = {
   objects: Array<IssueTagsInsertInput>;
   onConflict?: InputMaybe<IssueTagsOnConflict>;
 };
 
+
 export type MutationInsertIssueTagsOneArgs = {
   object: IssueTagsInsertInput;
   onConflict?: InputMaybe<IssueTagsOnConflict>;
 };
+
 
 export type MutationInsertLegalUnitArgs = {
   objects: Array<LegalUnitInsertInput>;
   onConflict?: InputMaybe<LegalUnitOnConflict>;
 };
 
+
 export type MutationInsertLegalUnitLocationArgs = {
   objects: Array<LegalUnitLocationInsertInput>;
   onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
 };
+
 
 export type MutationInsertLegalUnitLocationOneArgs = {
   object: LegalUnitLocationInsertInput;
   onConflict?: InputMaybe<LegalUnitLocationOnConflict>;
 };
 
+
 export type MutationInsertLegalUnitOneArgs = {
   object: LegalUnitInsertInput;
   onConflict?: InputMaybe<LegalUnitOnConflict>;
 };
+
 
 export type MutationInsertLocationArgs = {
   objects: Array<LocationInsertInput>;
   onConflict?: InputMaybe<LocationOnConflict>;
 };
 
+
 export type MutationInsertLocationImagesArgs = {
   objects: Array<LocationImagesInsertInput>;
   onConflict?: InputMaybe<LocationImagesOnConflict>;
 };
+
 
 export type MutationInsertLocationImagesOneArgs = {
   object: LocationImagesInsertInput;
   onConflict?: InputMaybe<LocationImagesOnConflict>;
 };
 
+
 export type MutationInsertLocationOneArgs = {
   object: LocationInsertInput;
   onConflict?: InputMaybe<LocationOnConflict>;
 };
+
 
 export type MutationInsertMissionArgs = {
   objects: Array<MissionInsertInput>;
   onConflict?: InputMaybe<MissionOnConflict>;
 };
 
+
 export type MutationInsertMissionJoinArgs = {
   objects: Array<MissionJoinInsertInput>;
   onConflict?: InputMaybe<MissionJoinOnConflict>;
 };
+
 
 export type MutationInsertMissionJoinOneArgs = {
   object: MissionJoinInsertInput;
   onConflict?: InputMaybe<MissionJoinOnConflict>;
 };
 
+
 export type MutationInsertMissionOneArgs = {
   object: MissionInsertInput;
   onConflict?: InputMaybe<MissionOnConflict>;
 };
+
 
 export type MutationInsertPoleArgs = {
   objects: Array<PoleInsertInput>;
   onConflict?: InputMaybe<PoleOnConflict>;
 };
 
+
 export type MutationInsertPoleOneArgs = {
   object: PoleInsertInput;
   onConflict?: InputMaybe<PoleOnConflict>;
 };
+
 
 export type MutationInsertProjectArgs = {
   objects: Array<ProjectInsertInput>;
   onConflict?: InputMaybe<ProjectOnConflict>;
 };
 
+
 export type MutationInsertProjectOneArgs = {
   object: ProjectInsertInput;
   onConflict?: InputMaybe<ProjectOnConflict>;
 };
+
 
 export type MutationInsertProjectSupervisorsArgs = {
   objects: Array<ProjectSupervisorsInsertInput>;
   onConflict?: InputMaybe<ProjectSupervisorsOnConflict>;
 };
 
+
 export type MutationInsertProjectSupervisorsOneArgs = {
   object: ProjectSupervisorsInsertInput;
   onConflict?: InputMaybe<ProjectSupervisorsOnConflict>;
 };
+
 
 export type MutationInsertProjectTagsArgs = {
   objects: Array<ProjectTagsInsertInput>;
   onConflict?: InputMaybe<ProjectTagsOnConflict>;
 };
 
+
 export type MutationInsertProjectTagsOneArgs = {
   object: ProjectTagsInsertInput;
   onConflict?: InputMaybe<ProjectTagsOnConflict>;
 };
+
 
 export type MutationInsertReactionArgs = {
   objects: Array<ReactionInsertInput>;
   onConflict?: InputMaybe<ReactionOnConflict>;
 };
 
+
 export type MutationInsertReactionOneArgs = {
   object: ReactionInsertInput;
   onConflict?: InputMaybe<ReactionOnConflict>;
 };
+
 
 export type MutationInsertReportArgs = {
   objects: Array<ReportInsertInput>;
   onConflict?: InputMaybe<ReportOnConflict>;
 };
 
+
 export type MutationInsertReportOneArgs = {
   object: ReportInsertInput;
   onConflict?: InputMaybe<ReportOnConflict>;
 };
+
 
 export type MutationInsertRoleArgs = {
   objects: Array<RoleInsertInput>;
   onConflict?: InputMaybe<RoleOnConflict>;
 };
 
+
 export type MutationInsertRoleOneArgs = {
   object: RoleInsertInput;
   onConflict?: InputMaybe<RoleOnConflict>;
 };
+
 
 export type MutationInsertSessionArgs = {
   objects: Array<SessionInsertInput>;
   onConflict?: InputMaybe<SessionOnConflict>;
 };
 
+
 export type MutationInsertSessionOneArgs = {
   object: SessionInsertInput;
   onConflict?: InputMaybe<SessionOnConflict>;
 };
+
 
 export type MutationInsertShortcutArgs = {
   objects: Array<ShortcutInsertInput>;
   onConflict?: InputMaybe<ShortcutOnConflict>;
 };
 
+
 export type MutationInsertShortcutOneArgs = {
   object: ShortcutInsertInput;
   onConflict?: InputMaybe<ShortcutOnConflict>;
 };
+
 
 export type MutationInsertSocialArgs = {
   objects: Array<SocialInsertInput>;
   onConflict?: InputMaybe<SocialOnConflict>;
 };
 
+
 export type MutationInsertSocialOneArgs = {
   object: SocialInsertInput;
   onConflict?: InputMaybe<SocialOnConflict>;
 };
+
 
 export type MutationInsertSubjectArgs = {
   objects: Array<SubjectInsertInput>;
   onConflict?: InputMaybe<SubjectOnConflict>;
 };
 
+
 export type MutationInsertSubjectClassGroupsArgs = {
   objects: Array<SubjectClassGroupsInsertInput>;
   onConflict?: InputMaybe<SubjectClassGroupsOnConflict>;
 };
+
 
 export type MutationInsertSubjectClassGroupsOneArgs = {
   object: SubjectClassGroupsInsertInput;
   onConflict?: InputMaybe<SubjectClassGroupsOnConflict>;
 };
 
+
 export type MutationInsertSubjectOneArgs = {
   object: SubjectInsertInput;
   onConflict?: InputMaybe<SubjectOnConflict>;
 };
+
 
 export type MutationInsertTagArgs = {
   objects: Array<TagInsertInput>;
   onConflict?: InputMaybe<TagOnConflict>;
 };
 
+
 export type MutationInsertTagOneArgs = {
   object: TagInsertInput;
   onConflict?: InputMaybe<TagOnConflict>;
 };
+
 
 export type MutationInsertTeamArgs = {
   objects: Array<TeamInsertInput>;
   onConflict?: InputMaybe<TeamOnConflict>;
 };
 
+
 export type MutationInsertTeamHistoryArgs = {
   objects: Array<TeamHistoryInsertInput>;
   onConflict?: InputMaybe<TeamHistoryOnConflict>;
 };
+
 
 export type MutationInsertTeamHistoryOneArgs = {
   object: TeamHistoryInsertInput;
   onConflict?: InputMaybe<TeamHistoryOnConflict>;
 };
 
+
 export type MutationInsertTeamJoinArgs = {
   objects: Array<TeamJoinInsertInput>;
   onConflict?: InputMaybe<TeamJoinOnConflict>;
 };
+
 
 export type MutationInsertTeamJoinOneArgs = {
   object: TeamJoinInsertInput;
   onConflict?: InputMaybe<TeamJoinOnConflict>;
 };
 
+
 export type MutationInsertTeamMemberArgs = {
   objects: Array<TeamMemberInsertInput>;
   onConflict?: InputMaybe<TeamMemberOnConflict>;
 };
+
 
 export type MutationInsertTeamMemberOneArgs = {
   object: TeamMemberInsertInput;
   onConflict?: InputMaybe<TeamMemberOnConflict>;
 };
 
-export type MutationInsertTeamMemberRolesArgs = {
-  objects: Array<TeamMemberRolesInsertInput>;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+
+export type MutationInsertTeamMemberRoleArgs = {
+  objects: Array<TeamMemberRoleInsertInput>;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
-export type MutationInsertTeamMemberRolesOneArgs = {
-  object: TeamMemberRolesInsertInput;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+
+export type MutationInsertTeamMemberRoleOneArgs = {
+  object: TeamMemberRoleInsertInput;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
+
 
 export type MutationInsertTeamMetricArgs = {
   objects: Array<TeamMetricInsertInput>;
   onConflict?: InputMaybe<TeamMetricOnConflict>;
 };
 
+
 export type MutationInsertTeamMetricOneArgs = {
   object: TeamMetricInsertInput;
   onConflict?: InputMaybe<TeamMetricOnConflict>;
 };
+
 
 export type MutationInsertTeamOneArgs = {
   object: TeamInsertInput;
   onConflict?: InputMaybe<TeamOnConflict>;
 };
 
+
 export type MutationInsertTenantArgs = {
   objects: Array<TenantInsertInput>;
   onConflict?: InputMaybe<TenantOnConflict>;
 };
+
 
 export type MutationInsertTenantOneArgs = {
   object: TenantInsertInput;
   onConflict?: InputMaybe<TenantOnConflict>;
 };
 
+
 export type MutationInsertTenantOrganizeArgs = {
   objects: Array<TenantOrganizeInsertInput>;
   onConflict?: InputMaybe<TenantOrganizeOnConflict>;
 };
+
 
 export type MutationInsertTenantOrganizeOneArgs = {
   object: TenantOrganizeInsertInput;
   onConflict?: InputMaybe<TenantOrganizeOnConflict>;
 };
 
+
 export type MutationInsertThreadArgs = {
   objects: Array<ThreadInsertInput>;
   onConflict?: InputMaybe<ThreadOnConflict>;
 };
+
 
 export type MutationInsertThreadContributorsArgs = {
   objects: Array<ThreadContributorsInsertInput>;
   onConflict?: InputMaybe<ThreadContributorsOnConflict>;
 };
 
+
 export type MutationInsertThreadContributorsOneArgs = {
   object: ThreadContributorsInsertInput;
   onConflict?: InputMaybe<ThreadContributorsOnConflict>;
 };
+
 
 export type MutationInsertThreadOneArgs = {
   object: ThreadInsertInput;
   onConflict?: InputMaybe<ThreadOnConflict>;
 };
 
+
 export type MutationInsertThreadTagsArgs = {
   objects: Array<ThreadTagsInsertInput>;
   onConflict?: InputMaybe<ThreadTagsOnConflict>;
 };
+
 
 export type MutationInsertThreadTagsOneArgs = {
   object: ThreadTagsInsertInput;
   onConflict?: InputMaybe<ThreadTagsOnConflict>;
 };
 
+
 export type MutationInsertUserArgs = {
   objects: Array<UserInsertInput>;
   onConflict?: InputMaybe<UserOnConflict>;
 };
+
 
 export type MutationInsertUserOneArgs = {
   object: UserInsertInput;
   onConflict?: InputMaybe<UserOnConflict>;
 };
 
+
 export type MutationInsertValidationArgs = {
   objects: Array<ValidationInsertInput>;
   onConflict?: InputMaybe<ValidationOnConflict>;
 };
+
 
 export type MutationInsertValidationOneArgs = {
   object: ValidationInsertInput;
   onConflict?: InputMaybe<ValidationOnConflict>;
 };
 
+
 export type MutationInsertViewArgs = {
   objects: Array<ViewInsertInput>;
   onConflict?: InputMaybe<ViewOnConflict>;
 };
+
 
 export type MutationInsertViewOneArgs = {
   object: ViewInsertInput;
   onConflict?: InputMaybe<ViewOnConflict>;
 };
 
+
 export type MutationInsertVoteArgs = {
   objects: Array<VoteInsertInput>;
   onConflict?: InputMaybe<VoteOnConflict>;
 };
+
 
 export type MutationInsertVoteOneArgs = {
   object: VoteInsertInput;
   onConflict?: InputMaybe<VoteOnConflict>;
 };
 
+
 export type MutationLoginArgs = {
   dto: LoginInput;
 };
+
 
 export type MutationSingleUploadArgs = {
   bucket?: InputMaybe<Scalars['String']['input']>;
@@ -27780,11 +28548,13 @@ export type MutationSingleUploadArgs = {
   file: Scalars['Upload']['input'];
 };
 
+
 export type MutationUpdateAccountArgs = {
   _inc?: InputMaybe<AccountIncInput>;
   _set?: InputMaybe<AccountSetInput>;
   where: AccountBoolExp;
 };
+
 
 export type MutationUpdateAccountByPkArgs = {
   _inc?: InputMaybe<AccountIncInput>;
@@ -27792,9 +28562,11 @@ export type MutationUpdateAccountByPkArgs = {
   pkColumns: AccountPkColumnsInput;
 };
 
+
 export type MutationUpdateAccountManyArgs = {
   updates: Array<AccountUpdates>;
 };
+
 
 export type MutationUpdateActionArgs = {
   _inc?: InputMaybe<ActionIncInput>;
@@ -27802,15 +28574,18 @@ export type MutationUpdateActionArgs = {
   where: ActionBoolExp;
 };
 
+
 export type MutationUpdateActionByPkArgs = {
   _inc?: InputMaybe<ActionIncInput>;
   _set?: InputMaybe<ActionSetInput>;
   pkColumns: ActionPkColumnsInput;
 };
 
+
 export type MutationUpdateActionManyArgs = {
   updates: Array<ActionUpdates>;
 };
+
 
 export type MutationUpdateActorArgs = {
   _inc?: InputMaybe<ActorIncInput>;
@@ -27818,11 +28593,13 @@ export type MutationUpdateActorArgs = {
   where: ActorBoolExp;
 };
 
+
 export type MutationUpdateActorByPkArgs = {
   _inc?: InputMaybe<ActorIncInput>;
   _set?: InputMaybe<ActorSetInput>;
   pkColumns: ActorPkColumnsInput;
 };
+
 
 export type MutationUpdateActorImageArgs = {
   _inc?: InputMaybe<ActorImageIncInput>;
@@ -27830,19 +28607,23 @@ export type MutationUpdateActorImageArgs = {
   where: ActorImageBoolExp;
 };
 
+
 export type MutationUpdateActorImageByPkArgs = {
   _inc?: InputMaybe<ActorImageIncInput>;
   _set?: InputMaybe<ActorImageSetInput>;
   pkColumns: ActorImagePkColumnsInput;
 };
 
+
 export type MutationUpdateActorImageManyArgs = {
   updates: Array<ActorImageUpdates>;
 };
 
+
 export type MutationUpdateActorManyArgs = {
   updates: Array<ActorUpdates>;
 };
+
 
 export type MutationUpdateActorTagsArgs = {
   _inc?: InputMaybe<ActorTagsIncInput>;
@@ -27850,15 +28631,18 @@ export type MutationUpdateActorTagsArgs = {
   where: ActorTagsBoolExp;
 };
 
+
 export type MutationUpdateActorTagsByPkArgs = {
   _inc?: InputMaybe<ActorTagsIncInput>;
   _set?: InputMaybe<ActorTagsSetInput>;
   pkColumns: ActorTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateActorTagsManyArgs = {
   updates: Array<ActorTagsUpdates>;
 };
+
 
 export type MutationUpdateAddressArgs = {
   _inc?: InputMaybe<AddressIncInput>;
@@ -27866,15 +28650,18 @@ export type MutationUpdateAddressArgs = {
   where: AddressBoolExp;
 };
 
+
 export type MutationUpdateAddressByPkArgs = {
   _inc?: InputMaybe<AddressIncInput>;
   _set?: InputMaybe<AddressSetInput>;
   pkColumns: AddressPkColumnsInput;
 };
 
+
 export type MutationUpdateAddressManyArgs = {
   updates: Array<AddressUpdates>;
 };
+
 
 export type MutationUpdateBankArgs = {
   _inc?: InputMaybe<BankIncInput>;
@@ -27882,15 +28669,18 @@ export type MutationUpdateBankArgs = {
   where: BankBoolExp;
 };
 
+
 export type MutationUpdateBankByPkArgs = {
   _inc?: InputMaybe<BankIncInput>;
   _set?: InputMaybe<BankSetInput>;
   pkColumns: BankPkColumnsInput;
 };
 
+
 export type MutationUpdateBankManyArgs = {
   updates: Array<BankUpdates>;
 };
+
 
 export type MutationUpdateBotArgs = {
   _inc?: InputMaybe<BotIncInput>;
@@ -27898,15 +28688,18 @@ export type MutationUpdateBotArgs = {
   where: BotBoolExp;
 };
 
+
 export type MutationUpdateBotByPkArgs = {
   _inc?: InputMaybe<BotIncInput>;
   _set?: InputMaybe<BotSetInput>;
   pkColumns: BotPkColumnsInput;
 };
 
+
 export type MutationUpdateBotManyArgs = {
   updates: Array<BotUpdates>;
 };
+
 
 export type MutationUpdateCampusArgs = {
   _inc?: InputMaybe<CampusIncInput>;
@@ -27914,11 +28707,13 @@ export type MutationUpdateCampusArgs = {
   where: CampusBoolExp;
 };
 
+
 export type MutationUpdateCampusByPkArgs = {
   _inc?: InputMaybe<CampusIncInput>;
   _set?: InputMaybe<CampusSetInput>;
   pkColumns: CampusPkColumnsInput;
 };
+
 
 export type MutationUpdateCampusClusterArgs = {
   _inc?: InputMaybe<CampusClusterIncInput>;
@@ -27926,19 +28721,23 @@ export type MutationUpdateCampusClusterArgs = {
   where: CampusClusterBoolExp;
 };
 
+
 export type MutationUpdateCampusClusterByPkArgs = {
   _inc?: InputMaybe<CampusClusterIncInput>;
   _set?: InputMaybe<CampusClusterSetInput>;
   pkColumns: CampusClusterPkColumnsInput;
 };
 
+
 export type MutationUpdateCampusClusterManyArgs = {
   updates: Array<CampusClusterUpdates>;
 };
 
+
 export type MutationUpdateCampusManyArgs = {
   updates: Array<CampusUpdates>;
 };
+
 
 export type MutationUpdateCanteenArgs = {
   _inc?: InputMaybe<CanteenIncInput>;
@@ -27946,11 +28745,13 @@ export type MutationUpdateCanteenArgs = {
   where: CanteenBoolExp;
 };
 
+
 export type MutationUpdateCanteenByPkArgs = {
   _inc?: InputMaybe<CanteenIncInput>;
   _set?: InputMaybe<CanteenSetInput>;
   pkColumns: CanteenPkColumnsInput;
 };
+
 
 export type MutationUpdateCanteenFoodArgs = {
   _inc?: InputMaybe<CanteenFoodIncInput>;
@@ -27958,19 +28759,23 @@ export type MutationUpdateCanteenFoodArgs = {
   where: CanteenFoodBoolExp;
 };
 
+
 export type MutationUpdateCanteenFoodByPkArgs = {
   _inc?: InputMaybe<CanteenFoodIncInput>;
   _set?: InputMaybe<CanteenFoodSetInput>;
   pkColumns: CanteenFoodPkColumnsInput;
 };
 
+
 export type MutationUpdateCanteenFoodManyArgs = {
   updates: Array<CanteenFoodUpdates>;
 };
 
+
 export type MutationUpdateCanteenManyArgs = {
   updates: Array<CanteenUpdates>;
 };
+
 
 export type MutationUpdateCanteenMenuArgs = {
   _inc?: InputMaybe<CanteenMenuIncInput>;
@@ -27978,15 +28783,18 @@ export type MutationUpdateCanteenMenuArgs = {
   where: CanteenMenuBoolExp;
 };
 
+
 export type MutationUpdateCanteenMenuByPkArgs = {
   _inc?: InputMaybe<CanteenMenuIncInput>;
   _set?: InputMaybe<CanteenMenuSetInput>;
   pkColumns: CanteenMenuPkColumnsInput;
 };
 
+
 export type MutationUpdateCanteenMenuManyArgs = {
   updates: Array<CanteenMenuUpdates>;
 };
+
 
 export type MutationUpdateClassGroupArgs = {
   _inc?: InputMaybe<ClassGroupIncInput>;
@@ -27994,15 +28802,18 @@ export type MutationUpdateClassGroupArgs = {
   where: ClassGroupBoolExp;
 };
 
+
 export type MutationUpdateClassGroupByPkArgs = {
   _inc?: InputMaybe<ClassGroupIncInput>;
   _set?: InputMaybe<ClassGroupSetInput>;
   pkColumns: ClassGroupPkColumnsInput;
 };
 
+
 export type MutationUpdateClassGroupManyArgs = {
   updates: Array<ClassGroupUpdates>;
 };
+
 
 export type MutationUpdateClassGroupTeacherArgs = {
   _inc?: InputMaybe<ClassGroupTeacherIncInput>;
@@ -28010,15 +28821,18 @@ export type MutationUpdateClassGroupTeacherArgs = {
   where: ClassGroupTeacherBoolExp;
 };
 
+
 export type MutationUpdateClassGroupTeacherByPkArgs = {
   _inc?: InputMaybe<ClassGroupTeacherIncInput>;
   _set?: InputMaybe<ClassGroupTeacherSetInput>;
   pkColumns: ClassGroupTeacherPkColumnsInput;
 };
 
+
 export type MutationUpdateClassGroupTeacherManyArgs = {
   updates: Array<ClassGroupTeacherUpdates>;
 };
+
 
 export type MutationUpdateClassGroupTeacherSubjectsArgs = {
   _inc?: InputMaybe<ClassGroupTeacherSubjectsIncInput>;
@@ -28026,15 +28840,18 @@ export type MutationUpdateClassGroupTeacherSubjectsArgs = {
   where: ClassGroupTeacherSubjectsBoolExp;
 };
 
+
 export type MutationUpdateClassGroupTeacherSubjectsByPkArgs = {
   _inc?: InputMaybe<ClassGroupTeacherSubjectsIncInput>;
   _set?: InputMaybe<ClassGroupTeacherSubjectsSetInput>;
   pkColumns: ClassGroupTeacherSubjectsPkColumnsInput;
 };
 
+
 export type MutationUpdateClassGroupTeacherSubjectsManyArgs = {
   updates: Array<ClassGroupTeacherSubjectsUpdates>;
 };
+
 
 export type MutationUpdateCohortArgs = {
   _inc?: InputMaybe<CohortIncInput>;
@@ -28042,15 +28859,18 @@ export type MutationUpdateCohortArgs = {
   where: CohortBoolExp;
 };
 
+
 export type MutationUpdateCohortByPkArgs = {
   _inc?: InputMaybe<CohortIncInput>;
   _set?: InputMaybe<CohortSetInput>;
   pkColumns: CohortPkColumnsInput;
 };
 
+
 export type MutationUpdateCohortManyArgs = {
   updates: Array<CohortUpdates>;
 };
+
 
 export type MutationUpdateContentArgs = {
   _inc?: InputMaybe<ContentIncInput>;
@@ -28058,11 +28878,13 @@ export type MutationUpdateContentArgs = {
   where: ContentBoolExp;
 };
 
+
 export type MutationUpdateContentAttachmentsArgs = {
   _inc?: InputMaybe<ContentAttachmentsIncInput>;
   _set?: InputMaybe<ContentAttachmentsSetInput>;
   where: ContentAttachmentsBoolExp;
 };
+
 
 export type MutationUpdateContentAttachmentsByPkArgs = {
   _inc?: InputMaybe<ContentAttachmentsIncInput>;
@@ -28070,9 +28892,11 @@ export type MutationUpdateContentAttachmentsByPkArgs = {
   pkColumns: ContentAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateContentAttachmentsManyArgs = {
   updates: Array<ContentAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateContentByPkArgs = {
   _inc?: InputMaybe<ContentIncInput>;
@@ -28080,9 +28904,11 @@ export type MutationUpdateContentByPkArgs = {
   pkColumns: ContentPkColumnsInput;
 };
 
+
 export type MutationUpdateContentManyArgs = {
   updates: Array<ContentUpdates>;
 };
+
 
 export type MutationUpdateDocumentArgs = {
   _inc?: InputMaybe<DocumentIncInput>;
@@ -28090,15 +28916,18 @@ export type MutationUpdateDocumentArgs = {
   where: DocumentBoolExp;
 };
 
+
 export type MutationUpdateDocumentByPkArgs = {
   _inc?: InputMaybe<DocumentIncInput>;
   _set?: InputMaybe<DocumentSetInput>;
   pkColumns: DocumentPkColumnsInput;
 };
 
+
 export type MutationUpdateDocumentManyArgs = {
   updates: Array<DocumentUpdates>;
 };
+
 
 export type MutationUpdateEventArgs = {
   _append?: InputMaybe<EventAppendInput>;
@@ -28111,11 +28940,13 @@ export type MutationUpdateEventArgs = {
   where: EventBoolExp;
 };
 
+
 export type MutationUpdateEventApprovalArgs = {
   _inc?: InputMaybe<EventApprovalIncInput>;
   _set?: InputMaybe<EventApprovalSetInput>;
   where: EventApprovalBoolExp;
 };
+
 
 export type MutationUpdateEventApprovalByPkArgs = {
   _inc?: InputMaybe<EventApprovalIncInput>;
@@ -28123,9 +28954,11 @@ export type MutationUpdateEventApprovalByPkArgs = {
   pkColumns: EventApprovalPkColumnsInput;
 };
 
+
 export type MutationUpdateEventApprovalManyArgs = {
   updates: Array<EventApprovalUpdates>;
 };
+
 
 export type MutationUpdateEventApprovalStepArgs = {
   _inc?: InputMaybe<EventApprovalStepIncInput>;
@@ -28133,15 +28966,18 @@ export type MutationUpdateEventApprovalStepArgs = {
   where: EventApprovalStepBoolExp;
 };
 
+
 export type MutationUpdateEventApprovalStepByPkArgs = {
   _inc?: InputMaybe<EventApprovalStepIncInput>;
   _set?: InputMaybe<EventApprovalStepSetInput>;
   pkColumns: EventApprovalStepPkColumnsInput;
 };
 
+
 export type MutationUpdateEventApprovalStepManyArgs = {
   updates: Array<EventApprovalStepUpdates>;
 };
+
 
 export type MutationUpdateEventApprovalStepNotifieesArgs = {
   _inc?: InputMaybe<EventApprovalStepNotifieesIncInput>;
@@ -28149,15 +28985,18 @@ export type MutationUpdateEventApprovalStepNotifieesArgs = {
   where: EventApprovalStepNotifieesBoolExp;
 };
 
+
 export type MutationUpdateEventApprovalStepNotifieesByPkArgs = {
   _inc?: InputMaybe<EventApprovalStepNotifieesIncInput>;
   _set?: InputMaybe<EventApprovalStepNotifieesSetInput>;
   pkColumns: EventApprovalStepNotifieesPkColumnsInput;
 };
 
+
 export type MutationUpdateEventApprovalStepNotifieesManyArgs = {
   updates: Array<EventApprovalStepNotifieesUpdates>;
 };
+
 
 export type MutationUpdateEventApprovalStepValidatorsArgs = {
   _inc?: InputMaybe<EventApprovalStepValidatorsIncInput>;
@@ -28165,15 +29004,18 @@ export type MutationUpdateEventApprovalStepValidatorsArgs = {
   where: EventApprovalStepValidatorsBoolExp;
 };
 
+
 export type MutationUpdateEventApprovalStepValidatorsByPkArgs = {
   _inc?: InputMaybe<EventApprovalStepValidatorsIncInput>;
   _set?: InputMaybe<EventApprovalStepValidatorsSetInput>;
   pkColumns: EventApprovalStepValidatorsPkColumnsInput;
 };
 
+
 export type MutationUpdateEventApprovalStepValidatorsManyArgs = {
   updates: Array<EventApprovalStepValidatorsUpdates>;
 };
+
 
 export type MutationUpdateEventByPkArgs = {
   _append?: InputMaybe<EventAppendInput>;
@@ -28186,11 +29028,13 @@ export type MutationUpdateEventByPkArgs = {
   pkColumns: EventPkColumnsInput;
 };
 
+
 export type MutationUpdateEventFavoriteArgs = {
   _inc?: InputMaybe<EventFavoriteIncInput>;
   _set?: InputMaybe<EventFavoriteSetInput>;
   where: EventFavoriteBoolExp;
 };
+
 
 export type MutationUpdateEventFavoriteByPkArgs = {
   _inc?: InputMaybe<EventFavoriteIncInput>;
@@ -28198,9 +29042,11 @@ export type MutationUpdateEventFavoriteByPkArgs = {
   pkColumns: EventFavoritePkColumnsInput;
 };
 
+
 export type MutationUpdateEventFavoriteManyArgs = {
   updates: Array<EventFavoriteUpdates>;
 };
+
 
 export type MutationUpdateEventJoinArgs = {
   _inc?: InputMaybe<EventJoinIncInput>;
@@ -28208,19 +29054,23 @@ export type MutationUpdateEventJoinArgs = {
   where: EventJoinBoolExp;
 };
 
+
 export type MutationUpdateEventJoinByPkArgs = {
   _inc?: InputMaybe<EventJoinIncInput>;
   _set?: InputMaybe<EventJoinSetInput>;
   pkColumns: EventJoinPkColumnsInput;
 };
 
+
 export type MutationUpdateEventJoinManyArgs = {
   updates: Array<EventJoinUpdates>;
 };
 
+
 export type MutationUpdateEventManyArgs = {
   updates: Array<EventUpdates>;
 };
+
 
 export type MutationUpdateEventOrganizeArgs = {
   _inc?: InputMaybe<EventOrganizeIncInput>;
@@ -28228,15 +29078,18 @@ export type MutationUpdateEventOrganizeArgs = {
   where: EventOrganizeBoolExp;
 };
 
+
 export type MutationUpdateEventOrganizeByPkArgs = {
   _inc?: InputMaybe<EventOrganizeIncInput>;
   _set?: InputMaybe<EventOrganizeSetInput>;
   pkColumns: EventOrganizePkColumnsInput;
 };
 
+
 export type MutationUpdateEventOrganizeManyArgs = {
   updates: Array<EventOrganizeUpdates>;
 };
+
 
 export type MutationUpdateEventSupervisorArgs = {
   _inc?: InputMaybe<EventSupervisorIncInput>;
@@ -28244,15 +29097,18 @@ export type MutationUpdateEventSupervisorArgs = {
   where: EventSupervisorBoolExp;
 };
 
+
 export type MutationUpdateEventSupervisorByPkArgs = {
   _inc?: InputMaybe<EventSupervisorIncInput>;
   _set?: InputMaybe<EventSupervisorSetInput>;
   pkColumns: EventSupervisorPkColumnsInput;
 };
 
+
 export type MutationUpdateEventSupervisorManyArgs = {
   updates: Array<EventSupervisorUpdates>;
 };
+
 
 export type MutationUpdateEventTagsArgs = {
   _inc?: InputMaybe<EventTagsIncInput>;
@@ -28260,15 +29116,18 @@ export type MutationUpdateEventTagsArgs = {
   where: EventTagsBoolExp;
 };
 
+
 export type MutationUpdateEventTagsByPkArgs = {
   _inc?: InputMaybe<EventTagsIncInput>;
   _set?: InputMaybe<EventTagsSetInput>;
   pkColumns: EventTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateEventTagsManyArgs = {
   updates: Array<EventTagsUpdates>;
 };
+
 
 export type MutationUpdateExpenseArgs = {
   _inc?: InputMaybe<ExpenseIncInput>;
@@ -28276,11 +29135,13 @@ export type MutationUpdateExpenseArgs = {
   where: ExpenseBoolExp;
 };
 
+
 export type MutationUpdateExpenseByPkArgs = {
   _inc?: InputMaybe<ExpenseIncInput>;
   _set?: InputMaybe<ExpenseSetInput>;
   pkColumns: ExpensePkColumnsInput;
 };
+
 
 export type MutationUpdateExpenseItemArgs = {
   _inc?: InputMaybe<ExpenseItemIncInput>;
@@ -28288,11 +29149,13 @@ export type MutationUpdateExpenseItemArgs = {
   where: ExpenseItemBoolExp;
 };
 
+
 export type MutationUpdateExpenseItemAttachmentsArgs = {
   _inc?: InputMaybe<ExpenseItemAttachmentsIncInput>;
   _set?: InputMaybe<ExpenseItemAttachmentsSetInput>;
   where: ExpenseItemAttachmentsBoolExp;
 };
+
 
 export type MutationUpdateExpenseItemAttachmentsByPkArgs = {
   _inc?: InputMaybe<ExpenseItemAttachmentsIncInput>;
@@ -28300,9 +29163,11 @@ export type MutationUpdateExpenseItemAttachmentsByPkArgs = {
   pkColumns: ExpenseItemAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateExpenseItemAttachmentsManyArgs = {
   updates: Array<ExpenseItemAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateExpenseItemByPkArgs = {
   _inc?: InputMaybe<ExpenseItemIncInput>;
@@ -28310,13 +29175,16 @@ export type MutationUpdateExpenseItemByPkArgs = {
   pkColumns: ExpenseItemPkColumnsInput;
 };
 
+
 export type MutationUpdateExpenseItemManyArgs = {
   updates: Array<ExpenseItemUpdates>;
 };
 
+
 export type MutationUpdateExpenseManyArgs = {
   updates: Array<ExpenseUpdates>;
 };
+
 
 export type MutationUpdateFavoriteArgs = {
   _inc?: InputMaybe<FavoriteIncInput>;
@@ -28324,15 +29192,18 @@ export type MutationUpdateFavoriteArgs = {
   where: FavoriteBoolExp;
 };
 
+
 export type MutationUpdateFavoriteByPkArgs = {
   _inc?: InputMaybe<FavoriteIncInput>;
   _set?: InputMaybe<FavoriteSetInput>;
   pkColumns: FavoritePkColumnsInput;
 };
 
+
 export type MutationUpdateFavoriteManyArgs = {
   updates: Array<FavoriteUpdates>;
 };
+
 
 export type MutationUpdateFileUploadArgs = {
   _inc?: InputMaybe<FileUploadIncInput>;
@@ -28340,15 +29211,18 @@ export type MutationUpdateFileUploadArgs = {
   where: FileUploadBoolExp;
 };
 
+
 export type MutationUpdateFileUploadByPkArgs = {
   _inc?: InputMaybe<FileUploadIncInput>;
   _set?: InputMaybe<FileUploadSetInput>;
   pkColumns: FileUploadPkColumnsInput;
 };
 
+
 export type MutationUpdateFileUploadManyArgs = {
   updates: Array<FileUploadUpdates>;
 };
+
 
 export type MutationUpdateFinanceArgs = {
   _inc?: InputMaybe<FinanceIncInput>;
@@ -28356,11 +29230,13 @@ export type MutationUpdateFinanceArgs = {
   where: FinanceBoolExp;
 };
 
+
 export type MutationUpdateFinanceAttachmentsArgs = {
   _inc?: InputMaybe<FinanceAttachmentsIncInput>;
   _set?: InputMaybe<FinanceAttachmentsSetInput>;
   where: FinanceAttachmentsBoolExp;
 };
+
 
 export type MutationUpdateFinanceAttachmentsByPkArgs = {
   _inc?: InputMaybe<FinanceAttachmentsIncInput>;
@@ -28368,9 +29244,11 @@ export type MutationUpdateFinanceAttachmentsByPkArgs = {
   pkColumns: FinanceAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateFinanceAttachmentsManyArgs = {
   updates: Array<FinanceAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateFinanceByPkArgs = {
   _inc?: InputMaybe<FinanceIncInput>;
@@ -28378,9 +29256,11 @@ export type MutationUpdateFinanceByPkArgs = {
   pkColumns: FinancePkColumnsInput;
 };
 
+
 export type MutationUpdateFinanceManyArgs = {
   updates: Array<FinanceUpdates>;
 };
+
 
 export type MutationUpdateFinanceTagsArgs = {
   _inc?: InputMaybe<FinanceTagsIncInput>;
@@ -28388,15 +29268,18 @@ export type MutationUpdateFinanceTagsArgs = {
   where: FinanceTagsBoolExp;
 };
 
+
 export type MutationUpdateFinanceTagsByPkArgs = {
   _inc?: InputMaybe<FinanceTagsIncInput>;
   _set?: InputMaybe<FinanceTagsSetInput>;
   pkColumns: FinanceTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateFinanceTagsManyArgs = {
   updates: Array<FinanceTagsUpdates>;
 };
+
 
 export type MutationUpdateFollowArgs = {
   _inc?: InputMaybe<FollowIncInput>;
@@ -28404,15 +29287,18 @@ export type MutationUpdateFollowArgs = {
   where: FollowBoolExp;
 };
 
+
 export type MutationUpdateFollowByPkArgs = {
   _inc?: InputMaybe<FollowIncInput>;
   _set?: InputMaybe<FollowSetInput>;
   pkColumns: FollowPkColumnsInput;
 };
 
+
 export type MutationUpdateFollowManyArgs = {
   updates: Array<FollowUpdates>;
 };
+
 
 export type MutationUpdateFormArgs = {
   _append?: InputMaybe<FormAppendInput>;
@@ -28425,6 +29311,7 @@ export type MutationUpdateFormArgs = {
   where: FormBoolExp;
 };
 
+
 export type MutationUpdateFormByPkArgs = {
   _append?: InputMaybe<FormAppendInput>;
   _deleteAtPath?: InputMaybe<FormDeleteAtPathInput>;
@@ -28436,9 +29323,11 @@ export type MutationUpdateFormByPkArgs = {
   pkColumns: FormPkColumnsInput;
 };
 
+
 export type MutationUpdateFormManyArgs = {
   updates: Array<FormUpdates>;
 };
+
 
 export type MutationUpdateFormSubmissionArgs = {
   _append?: InputMaybe<FormSubmissionAppendInput>;
@@ -28451,11 +29340,13 @@ export type MutationUpdateFormSubmissionArgs = {
   where: FormSubmissionBoolExp;
 };
 
+
 export type MutationUpdateFormSubmissionAttachmentsArgs = {
   _inc?: InputMaybe<FormSubmissionAttachmentsIncInput>;
   _set?: InputMaybe<FormSubmissionAttachmentsSetInput>;
   where: FormSubmissionAttachmentsBoolExp;
 };
+
 
 export type MutationUpdateFormSubmissionAttachmentsByPkArgs = {
   _inc?: InputMaybe<FormSubmissionAttachmentsIncInput>;
@@ -28463,9 +29354,11 @@ export type MutationUpdateFormSubmissionAttachmentsByPkArgs = {
   pkColumns: FormSubmissionAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateFormSubmissionAttachmentsManyArgs = {
   updates: Array<FormSubmissionAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateFormSubmissionByPkArgs = {
   _append?: InputMaybe<FormSubmissionAppendInput>;
@@ -28478,9 +29371,11 @@ export type MutationUpdateFormSubmissionByPkArgs = {
   pkColumns: FormSubmissionPkColumnsInput;
 };
 
+
 export type MutationUpdateFormSubmissionManyArgs = {
   updates: Array<FormSubmissionUpdates>;
 };
+
 
 export type MutationUpdateGrantArgs = {
   _inc?: InputMaybe<GrantIncInput>;
@@ -28488,11 +29383,13 @@ export type MutationUpdateGrantArgs = {
   where: GrantBoolExp;
 };
 
+
 export type MutationUpdateGrantAllocateArgs = {
   _inc?: InputMaybe<GrantAllocateIncInput>;
   _set?: InputMaybe<GrantAllocateSetInput>;
   where: GrantAllocateBoolExp;
 };
+
 
 export type MutationUpdateGrantAllocateAttachmentsArgs = {
   _inc?: InputMaybe<GrantAllocateAttachmentsIncInput>;
@@ -28500,15 +29397,18 @@ export type MutationUpdateGrantAllocateAttachmentsArgs = {
   where: GrantAllocateAttachmentsBoolExp;
 };
 
+
 export type MutationUpdateGrantAllocateAttachmentsByPkArgs = {
   _inc?: InputMaybe<GrantAllocateAttachmentsIncInput>;
   _set?: InputMaybe<GrantAllocateAttachmentsSetInput>;
   pkColumns: GrantAllocateAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateGrantAllocateAttachmentsManyArgs = {
   updates: Array<GrantAllocateAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateGrantAllocateByPkArgs = {
   _inc?: InputMaybe<GrantAllocateIncInput>;
@@ -28516,9 +29416,11 @@ export type MutationUpdateGrantAllocateByPkArgs = {
   pkColumns: GrantAllocatePkColumnsInput;
 };
 
+
 export type MutationUpdateGrantAllocateManyArgs = {
   updates: Array<GrantAllocateUpdates>;
 };
+
 
 export type MutationUpdateGrantAttachmentsArgs = {
   _inc?: InputMaybe<GrantAttachmentsIncInput>;
@@ -28526,15 +29428,18 @@ export type MutationUpdateGrantAttachmentsArgs = {
   where: GrantAttachmentsBoolExp;
 };
 
+
 export type MutationUpdateGrantAttachmentsByPkArgs = {
   _inc?: InputMaybe<GrantAttachmentsIncInput>;
   _set?: InputMaybe<GrantAttachmentsSetInput>;
   pkColumns: GrantAttachmentsPkColumnsInput;
 };
 
+
 export type MutationUpdateGrantAttachmentsManyArgs = {
   updates: Array<GrantAttachmentsUpdates>;
 };
+
 
 export type MutationUpdateGrantByPkArgs = {
   _inc?: InputMaybe<GrantIncInput>;
@@ -28542,9 +29447,11 @@ export type MutationUpdateGrantByPkArgs = {
   pkColumns: GrantPkColumnsInput;
 };
 
+
 export type MutationUpdateGrantManyArgs = {
   updates: Array<GrantUpdates>;
 };
+
 
 export type MutationUpdateIndividualArgs = {
   _inc?: InputMaybe<IndividualIncInput>;
@@ -28552,15 +29459,18 @@ export type MutationUpdateIndividualArgs = {
   where: IndividualBoolExp;
 };
 
+
 export type MutationUpdateIndividualByPkArgs = {
   _inc?: InputMaybe<IndividualIncInput>;
   _set?: InputMaybe<IndividualSetInput>;
   pkColumns: IndividualPkColumnsInput;
 };
 
+
 export type MutationUpdateIndividualManyArgs = {
   updates: Array<IndividualUpdates>;
 };
+
 
 export type MutationUpdateIssueArgs = {
   _inc?: InputMaybe<IssueIncInput>;
@@ -28568,11 +29478,13 @@ export type MutationUpdateIssueArgs = {
   where: IssueBoolExp;
 };
 
+
 export type MutationUpdateIssueByPkArgs = {
   _inc?: InputMaybe<IssueIncInput>;
   _set?: InputMaybe<IssueSetInput>;
   pkColumns: IssuePkColumnsInput;
 };
+
 
 export type MutationUpdateIssueContributorsArgs = {
   _inc?: InputMaybe<IssueContributorsIncInput>;
@@ -28580,19 +29492,23 @@ export type MutationUpdateIssueContributorsArgs = {
   where: IssueContributorsBoolExp;
 };
 
+
 export type MutationUpdateIssueContributorsByPkArgs = {
   _inc?: InputMaybe<IssueContributorsIncInput>;
   _set?: InputMaybe<IssueContributorsSetInput>;
   pkColumns: IssueContributorsPkColumnsInput;
 };
 
+
 export type MutationUpdateIssueContributorsManyArgs = {
   updates: Array<IssueContributorsUpdates>;
 };
 
+
 export type MutationUpdateIssueManyArgs = {
   updates: Array<IssueUpdates>;
 };
+
 
 export type MutationUpdateIssueTagsArgs = {
   _inc?: InputMaybe<IssueTagsIncInput>;
@@ -28600,15 +29516,18 @@ export type MutationUpdateIssueTagsArgs = {
   where: IssueTagsBoolExp;
 };
 
+
 export type MutationUpdateIssueTagsByPkArgs = {
   _inc?: InputMaybe<IssueTagsIncInput>;
   _set?: InputMaybe<IssueTagsSetInput>;
   pkColumns: IssueTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateIssueTagsManyArgs = {
   updates: Array<IssueTagsUpdates>;
 };
+
 
 export type MutationUpdateLegalUnitArgs = {
   _inc?: InputMaybe<LegalUnitIncInput>;
@@ -28616,11 +29535,13 @@ export type MutationUpdateLegalUnitArgs = {
   where: LegalUnitBoolExp;
 };
 
+
 export type MutationUpdateLegalUnitByPkArgs = {
   _inc?: InputMaybe<LegalUnitIncInput>;
   _set?: InputMaybe<LegalUnitSetInput>;
   pkColumns: LegalUnitPkColumnsInput;
 };
+
 
 export type MutationUpdateLegalUnitLocationArgs = {
   _inc?: InputMaybe<LegalUnitLocationIncInput>;
@@ -28628,19 +29549,23 @@ export type MutationUpdateLegalUnitLocationArgs = {
   where: LegalUnitLocationBoolExp;
 };
 
+
 export type MutationUpdateLegalUnitLocationByPkArgs = {
   _inc?: InputMaybe<LegalUnitLocationIncInput>;
   _set?: InputMaybe<LegalUnitLocationSetInput>;
   pkColumns: LegalUnitLocationPkColumnsInput;
 };
 
+
 export type MutationUpdateLegalUnitLocationManyArgs = {
   updates: Array<LegalUnitLocationUpdates>;
 };
 
+
 export type MutationUpdateLegalUnitManyArgs = {
   updates: Array<LegalUnitUpdates>;
 };
+
 
 export type MutationUpdateLocationArgs = {
   _inc?: InputMaybe<LocationIncInput>;
@@ -28648,11 +29573,13 @@ export type MutationUpdateLocationArgs = {
   where: LocationBoolExp;
 };
 
+
 export type MutationUpdateLocationByPkArgs = {
   _inc?: InputMaybe<LocationIncInput>;
   _set?: InputMaybe<LocationSetInput>;
   pkColumns: LocationPkColumnsInput;
 };
+
 
 export type MutationUpdateLocationImagesArgs = {
   _inc?: InputMaybe<LocationImagesIncInput>;
@@ -28660,19 +29587,23 @@ export type MutationUpdateLocationImagesArgs = {
   where: LocationImagesBoolExp;
 };
 
+
 export type MutationUpdateLocationImagesByPkArgs = {
   _inc?: InputMaybe<LocationImagesIncInput>;
   _set?: InputMaybe<LocationImagesSetInput>;
   pkColumns: LocationImagesPkColumnsInput;
 };
 
+
 export type MutationUpdateLocationImagesManyArgs = {
   updates: Array<LocationImagesUpdates>;
 };
 
+
 export type MutationUpdateLocationManyArgs = {
   updates: Array<LocationUpdates>;
 };
+
 
 export type MutationUpdateMissionArgs = {
   _inc?: InputMaybe<MissionIncInput>;
@@ -28680,11 +29611,13 @@ export type MutationUpdateMissionArgs = {
   where: MissionBoolExp;
 };
 
+
 export type MutationUpdateMissionByPkArgs = {
   _inc?: InputMaybe<MissionIncInput>;
   _set?: InputMaybe<MissionSetInput>;
   pkColumns: MissionPkColumnsInput;
 };
+
 
 export type MutationUpdateMissionJoinArgs = {
   _inc?: InputMaybe<MissionJoinIncInput>;
@@ -28692,19 +29625,23 @@ export type MutationUpdateMissionJoinArgs = {
   where: MissionJoinBoolExp;
 };
 
+
 export type MutationUpdateMissionJoinByPkArgs = {
   _inc?: InputMaybe<MissionJoinIncInput>;
   _set?: InputMaybe<MissionJoinSetInput>;
   pkColumns: MissionJoinPkColumnsInput;
 };
 
+
 export type MutationUpdateMissionJoinManyArgs = {
   updates: Array<MissionJoinUpdates>;
 };
 
+
 export type MutationUpdateMissionManyArgs = {
   updates: Array<MissionUpdates>;
 };
+
 
 export type MutationUpdatePoleArgs = {
   _inc?: InputMaybe<PoleIncInput>;
@@ -28712,15 +29649,18 @@ export type MutationUpdatePoleArgs = {
   where: PoleBoolExp;
 };
 
+
 export type MutationUpdatePoleByPkArgs = {
   _inc?: InputMaybe<PoleIncInput>;
   _set?: InputMaybe<PoleSetInput>;
   pkColumns: PolePkColumnsInput;
 };
 
+
 export type MutationUpdatePoleManyArgs = {
   updates: Array<PoleUpdates>;
 };
+
 
 export type MutationUpdateProjectArgs = {
   _inc?: InputMaybe<ProjectIncInput>;
@@ -28728,15 +29668,18 @@ export type MutationUpdateProjectArgs = {
   where: ProjectBoolExp;
 };
 
+
 export type MutationUpdateProjectByPkArgs = {
   _inc?: InputMaybe<ProjectIncInput>;
   _set?: InputMaybe<ProjectSetInput>;
   pkColumns: ProjectPkColumnsInput;
 };
 
+
 export type MutationUpdateProjectManyArgs = {
   updates: Array<ProjectUpdates>;
 };
+
 
 export type MutationUpdateProjectSupervisorsArgs = {
   _inc?: InputMaybe<ProjectSupervisorsIncInput>;
@@ -28744,15 +29687,18 @@ export type MutationUpdateProjectSupervisorsArgs = {
   where: ProjectSupervisorsBoolExp;
 };
 
+
 export type MutationUpdateProjectSupervisorsByPkArgs = {
   _inc?: InputMaybe<ProjectSupervisorsIncInput>;
   _set?: InputMaybe<ProjectSupervisorsSetInput>;
   pkColumns: ProjectSupervisorsPkColumnsInput;
 };
 
+
 export type MutationUpdateProjectSupervisorsManyArgs = {
   updates: Array<ProjectSupervisorsUpdates>;
 };
+
 
 export type MutationUpdateProjectTagsArgs = {
   _inc?: InputMaybe<ProjectTagsIncInput>;
@@ -28760,15 +29706,18 @@ export type MutationUpdateProjectTagsArgs = {
   where: ProjectTagsBoolExp;
 };
 
+
 export type MutationUpdateProjectTagsByPkArgs = {
   _inc?: InputMaybe<ProjectTagsIncInput>;
   _set?: InputMaybe<ProjectTagsSetInput>;
   pkColumns: ProjectTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateProjectTagsManyArgs = {
   updates: Array<ProjectTagsUpdates>;
 };
+
 
 export type MutationUpdateReactionArgs = {
   _inc?: InputMaybe<ReactionIncInput>;
@@ -28776,15 +29725,18 @@ export type MutationUpdateReactionArgs = {
   where: ReactionBoolExp;
 };
 
+
 export type MutationUpdateReactionByPkArgs = {
   _inc?: InputMaybe<ReactionIncInput>;
   _set?: InputMaybe<ReactionSetInput>;
   pkColumns: ReactionPkColumnsInput;
 };
 
+
 export type MutationUpdateReactionManyArgs = {
   updates: Array<ReactionUpdates>;
 };
+
 
 export type MutationUpdateReportArgs = {
   _inc?: InputMaybe<ReportIncInput>;
@@ -28792,15 +29744,18 @@ export type MutationUpdateReportArgs = {
   where: ReportBoolExp;
 };
 
+
 export type MutationUpdateReportByPkArgs = {
   _inc?: InputMaybe<ReportIncInput>;
   _set?: InputMaybe<ReportSetInput>;
   pkColumns: ReportPkColumnsInput;
 };
 
+
 export type MutationUpdateReportManyArgs = {
   updates: Array<ReportUpdates>;
 };
+
 
 export type MutationUpdateRoleArgs = {
   _inc?: InputMaybe<RoleIncInput>;
@@ -28808,15 +29763,18 @@ export type MutationUpdateRoleArgs = {
   where: RoleBoolExp;
 };
 
+
 export type MutationUpdateRoleByPkArgs = {
   _inc?: InputMaybe<RoleIncInput>;
   _set?: InputMaybe<RoleSetInput>;
   pkColumns: RolePkColumnsInput;
 };
 
+
 export type MutationUpdateRoleManyArgs = {
   updates: Array<RoleUpdates>;
 };
+
 
 export type MutationUpdateSessionArgs = {
   _append?: InputMaybe<SessionAppendInput>;
@@ -28829,6 +29787,7 @@ export type MutationUpdateSessionArgs = {
   where: SessionBoolExp;
 };
 
+
 export type MutationUpdateSessionByPkArgs = {
   _append?: InputMaybe<SessionAppendInput>;
   _deleteAtPath?: InputMaybe<SessionDeleteAtPathInput>;
@@ -28840,9 +29799,11 @@ export type MutationUpdateSessionByPkArgs = {
   pkColumns: SessionPkColumnsInput;
 };
 
+
 export type MutationUpdateSessionManyArgs = {
   updates: Array<SessionUpdates>;
 };
+
 
 export type MutationUpdateShortcutArgs = {
   _inc?: InputMaybe<ShortcutIncInput>;
@@ -28850,15 +29811,18 @@ export type MutationUpdateShortcutArgs = {
   where: ShortcutBoolExp;
 };
 
+
 export type MutationUpdateShortcutByPkArgs = {
   _inc?: InputMaybe<ShortcutIncInput>;
   _set?: InputMaybe<ShortcutSetInput>;
   pkColumns: ShortcutPkColumnsInput;
 };
 
+
 export type MutationUpdateShortcutManyArgs = {
   updates: Array<ShortcutUpdates>;
 };
+
 
 export type MutationUpdateSocialArgs = {
   _inc?: InputMaybe<SocialIncInput>;
@@ -28866,15 +29830,18 @@ export type MutationUpdateSocialArgs = {
   where: SocialBoolExp;
 };
 
+
 export type MutationUpdateSocialByPkArgs = {
   _inc?: InputMaybe<SocialIncInput>;
   _set?: InputMaybe<SocialSetInput>;
   pkColumns: SocialPkColumnsInput;
 };
 
+
 export type MutationUpdateSocialManyArgs = {
   updates: Array<SocialUpdates>;
 };
+
 
 export type MutationUpdateSubjectArgs = {
   _inc?: InputMaybe<SubjectIncInput>;
@@ -28882,11 +29849,13 @@ export type MutationUpdateSubjectArgs = {
   where: SubjectBoolExp;
 };
 
+
 export type MutationUpdateSubjectByPkArgs = {
   _inc?: InputMaybe<SubjectIncInput>;
   _set?: InputMaybe<SubjectSetInput>;
   pkColumns: SubjectPkColumnsInput;
 };
+
 
 export type MutationUpdateSubjectClassGroupsArgs = {
   _inc?: InputMaybe<SubjectClassGroupsIncInput>;
@@ -28894,19 +29863,23 @@ export type MutationUpdateSubjectClassGroupsArgs = {
   where: SubjectClassGroupsBoolExp;
 };
 
+
 export type MutationUpdateSubjectClassGroupsByPkArgs = {
   _inc?: InputMaybe<SubjectClassGroupsIncInput>;
   _set?: InputMaybe<SubjectClassGroupsSetInput>;
   pkColumns: SubjectClassGroupsPkColumnsInput;
 };
 
+
 export type MutationUpdateSubjectClassGroupsManyArgs = {
   updates: Array<SubjectClassGroupsUpdates>;
 };
 
+
 export type MutationUpdateSubjectManyArgs = {
   updates: Array<SubjectUpdates>;
 };
+
 
 export type MutationUpdateTagArgs = {
   _inc?: InputMaybe<TagIncInput>;
@@ -28914,15 +29887,18 @@ export type MutationUpdateTagArgs = {
   where: TagBoolExp;
 };
 
+
 export type MutationUpdateTagByPkArgs = {
   _inc?: InputMaybe<TagIncInput>;
   _set?: InputMaybe<TagSetInput>;
   pkColumns: TagPkColumnsInput;
 };
 
+
 export type MutationUpdateTagManyArgs = {
   updates: Array<TagUpdates>;
 };
+
 
 export type MutationUpdateTeamArgs = {
   _inc?: InputMaybe<TeamIncInput>;
@@ -28930,11 +29906,13 @@ export type MutationUpdateTeamArgs = {
   where: TeamBoolExp;
 };
 
+
 export type MutationUpdateTeamByPkArgs = {
   _inc?: InputMaybe<TeamIncInput>;
   _set?: InputMaybe<TeamSetInput>;
   pkColumns: TeamPkColumnsInput;
 };
+
 
 export type MutationUpdateTeamHistoryArgs = {
   _inc?: InputMaybe<TeamHistoryIncInput>;
@@ -28942,15 +29920,18 @@ export type MutationUpdateTeamHistoryArgs = {
   where: TeamHistoryBoolExp;
 };
 
+
 export type MutationUpdateTeamHistoryByPkArgs = {
   _inc?: InputMaybe<TeamHistoryIncInput>;
   _set?: InputMaybe<TeamHistorySetInput>;
   pkColumns: TeamHistoryPkColumnsInput;
 };
 
+
 export type MutationUpdateTeamHistoryManyArgs = {
   updates: Array<TeamHistoryUpdates>;
 };
+
 
 export type MutationUpdateTeamJoinArgs = {
   _inc?: InputMaybe<TeamJoinIncInput>;
@@ -28958,19 +29939,23 @@ export type MutationUpdateTeamJoinArgs = {
   where: TeamJoinBoolExp;
 };
 
+
 export type MutationUpdateTeamJoinByPkArgs = {
   _inc?: InputMaybe<TeamJoinIncInput>;
   _set?: InputMaybe<TeamJoinSetInput>;
   pkColumns: TeamJoinPkColumnsInput;
 };
 
+
 export type MutationUpdateTeamJoinManyArgs = {
   updates: Array<TeamJoinUpdates>;
 };
 
+
 export type MutationUpdateTeamManyArgs = {
   updates: Array<TeamUpdates>;
 };
+
 
 export type MutationUpdateTeamMemberArgs = {
   _inc?: InputMaybe<TeamMemberIncInput>;
@@ -28978,31 +29963,37 @@ export type MutationUpdateTeamMemberArgs = {
   where: TeamMemberBoolExp;
 };
 
+
 export type MutationUpdateTeamMemberByPkArgs = {
   _inc?: InputMaybe<TeamMemberIncInput>;
   _set?: InputMaybe<TeamMemberSetInput>;
   pkColumns: TeamMemberPkColumnsInput;
 };
 
+
 export type MutationUpdateTeamMemberManyArgs = {
   updates: Array<TeamMemberUpdates>;
 };
 
-export type MutationUpdateTeamMemberRolesArgs = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  where: TeamMemberRolesBoolExp;
+
+export type MutationUpdateTeamMemberRoleArgs = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  where: TeamMemberRoleBoolExp;
 };
 
-export type MutationUpdateTeamMemberRolesByPkArgs = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  pkColumns: TeamMemberRolesPkColumnsInput;
+
+export type MutationUpdateTeamMemberRoleByPkArgs = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  pkColumns: TeamMemberRolePkColumnsInput;
 };
 
-export type MutationUpdateTeamMemberRolesManyArgs = {
-  updates: Array<TeamMemberRolesUpdates>;
+
+export type MutationUpdateTeamMemberRoleManyArgs = {
+  updates: Array<TeamMemberRoleUpdates>;
 };
+
 
 export type MutationUpdateTeamMetricArgs = {
   _inc?: InputMaybe<TeamMetricIncInput>;
@@ -29010,15 +30001,18 @@ export type MutationUpdateTeamMetricArgs = {
   where: TeamMetricBoolExp;
 };
 
+
 export type MutationUpdateTeamMetricByPkArgs = {
   _inc?: InputMaybe<TeamMetricIncInput>;
   _set?: InputMaybe<TeamMetricSetInput>;
   pkColumns: TeamMetricPkColumnsInput;
 };
 
+
 export type MutationUpdateTeamMetricManyArgs = {
   updates: Array<TeamMetricUpdates>;
 };
+
 
 export type MutationUpdateTenantArgs = {
   _inc?: InputMaybe<TenantIncInput>;
@@ -29026,15 +30020,18 @@ export type MutationUpdateTenantArgs = {
   where: TenantBoolExp;
 };
 
+
 export type MutationUpdateTenantByPkArgs = {
   _inc?: InputMaybe<TenantIncInput>;
   _set?: InputMaybe<TenantSetInput>;
   pkColumns: TenantPkColumnsInput;
 };
 
+
 export type MutationUpdateTenantManyArgs = {
   updates: Array<TenantUpdates>;
 };
+
 
 export type MutationUpdateTenantOrganizeArgs = {
   _inc?: InputMaybe<TenantOrganizeIncInput>;
@@ -29042,15 +30039,18 @@ export type MutationUpdateTenantOrganizeArgs = {
   where: TenantOrganizeBoolExp;
 };
 
+
 export type MutationUpdateTenantOrganizeByPkArgs = {
   _inc?: InputMaybe<TenantOrganizeIncInput>;
   _set?: InputMaybe<TenantOrganizeSetInput>;
   pkColumns: TenantOrganizePkColumnsInput;
 };
 
+
 export type MutationUpdateTenantOrganizeManyArgs = {
   updates: Array<TenantOrganizeUpdates>;
 };
+
 
 export type MutationUpdateThreadArgs = {
   _inc?: InputMaybe<ThreadIncInput>;
@@ -29058,11 +30058,13 @@ export type MutationUpdateThreadArgs = {
   where: ThreadBoolExp;
 };
 
+
 export type MutationUpdateThreadByPkArgs = {
   _inc?: InputMaybe<ThreadIncInput>;
   _set?: InputMaybe<ThreadSetInput>;
   pkColumns: ThreadPkColumnsInput;
 };
+
 
 export type MutationUpdateThreadContributorsArgs = {
   _inc?: InputMaybe<ThreadContributorsIncInput>;
@@ -29070,19 +30072,23 @@ export type MutationUpdateThreadContributorsArgs = {
   where: ThreadContributorsBoolExp;
 };
 
+
 export type MutationUpdateThreadContributorsByPkArgs = {
   _inc?: InputMaybe<ThreadContributorsIncInput>;
   _set?: InputMaybe<ThreadContributorsSetInput>;
   pkColumns: ThreadContributorsPkColumnsInput;
 };
 
+
 export type MutationUpdateThreadContributorsManyArgs = {
   updates: Array<ThreadContributorsUpdates>;
 };
 
+
 export type MutationUpdateThreadManyArgs = {
   updates: Array<ThreadUpdates>;
 };
+
 
 export type MutationUpdateThreadTagsArgs = {
   _inc?: InputMaybe<ThreadTagsIncInput>;
@@ -29090,15 +30096,18 @@ export type MutationUpdateThreadTagsArgs = {
   where: ThreadTagsBoolExp;
 };
 
+
 export type MutationUpdateThreadTagsByPkArgs = {
   _inc?: InputMaybe<ThreadTagsIncInput>;
   _set?: InputMaybe<ThreadTagsSetInput>;
   pkColumns: ThreadTagsPkColumnsInput;
 };
 
+
 export type MutationUpdateThreadTagsManyArgs = {
   updates: Array<ThreadTagsUpdates>;
 };
+
 
 export type MutationUpdateUserArgs = {
   _inc?: InputMaybe<UserIncInput>;
@@ -29106,15 +30115,18 @@ export type MutationUpdateUserArgs = {
   where: UserBoolExp;
 };
 
+
 export type MutationUpdateUserByPkArgs = {
   _inc?: InputMaybe<UserIncInput>;
   _set?: InputMaybe<UserSetInput>;
   pkColumns: UserPkColumnsInput;
 };
 
+
 export type MutationUpdateUserManyArgs = {
   updates: Array<UserUpdates>;
 };
+
 
 export type MutationUpdateValidationArgs = {
   _inc?: InputMaybe<ValidationIncInput>;
@@ -29122,15 +30134,18 @@ export type MutationUpdateValidationArgs = {
   where: ValidationBoolExp;
 };
 
+
 export type MutationUpdateValidationByPkArgs = {
   _inc?: InputMaybe<ValidationIncInput>;
   _set?: InputMaybe<ValidationSetInput>;
   pkColumns: ValidationPkColumnsInput;
 };
 
+
 export type MutationUpdateValidationManyArgs = {
   updates: Array<ValidationUpdates>;
 };
+
 
 export type MutationUpdateViewArgs = {
   _inc?: InputMaybe<ViewIncInput>;
@@ -29138,15 +30153,18 @@ export type MutationUpdateViewArgs = {
   where: ViewBoolExp;
 };
 
+
 export type MutationUpdateViewByPkArgs = {
   _inc?: InputMaybe<ViewIncInput>;
   _set?: InputMaybe<ViewSetInput>;
   pkColumns: ViewPkColumnsInput;
 };
 
+
 export type MutationUpdateViewManyArgs = {
   updates: Array<ViewUpdates>;
 };
+
 
 export type MutationUpdateVoteArgs = {
   _inc?: InputMaybe<VoteIncInput>;
@@ -29154,11 +30172,13 @@ export type MutationUpdateVoteArgs = {
   where: VoteBoolExp;
 };
 
+
 export type MutationUpdateVoteByPkArgs = {
   _inc?: InputMaybe<VoteIncInput>;
   _set?: InputMaybe<VoteSetInput>;
   pkColumns: VotePkColumnsInput;
 };
+
 
 export type MutationUpdateVoteManyArgs = {
   updates: Array<VoteUpdates>;
@@ -29170,7 +30190,7 @@ export enum OrderBy {
   AscNullsLast = 'ASC_NULLS_LAST',
   Desc = 'DESC',
   DescNullsFirst = 'DESC_NULLS_FIRST',
-  DescNullsLast = 'DESC_NULLS_LAST',
+  DescNullsLast = 'DESC_NULLS_LAST'
 }
 
 export type Pole = {
@@ -29193,6 +30213,7 @@ export type Pole = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type PoleTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29200,6 +30221,7 @@ export type PoleTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type PoleTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -29235,6 +30257,7 @@ export type PoleAggregateFields = {
   varSamp?: Maybe<PoleVarSampFields>;
   variance?: Maybe<PoleVarianceFields>;
 };
+
 
 export type PoleAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<PoleSelectColumn>>;
@@ -29298,7 +30321,7 @@ export type PoleBoolExp = {
 };
 
 export enum PoleConstraint {
-  PolePkey = 'pole_pkey',
+  PolePkey = 'pole_pkey'
 }
 
 export type PoleIncInput = {
@@ -29430,15 +30453,15 @@ export enum PoleSelectColumn {
   IsLocked = 'isLocked',
   Name = 'name',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum PoleSelectColumnPoleAggregateBoolExpBool_AndArgumentsColumns {
-  IsLocked = 'isLocked',
+  IsLocked = 'isLocked'
 }
 
 export enum PoleSelectColumnPoleAggregateBoolExpBool_OrArgumentsColumns {
-  IsLocked = 'isLocked',
+  IsLocked = 'isLocked'
 }
 
 export type PoleSetInput = {
@@ -29545,7 +30568,7 @@ export enum PoleUpdateColumn {
   IsLocked = 'isLocked',
   Name = 'name',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type PoleUpdates = {
@@ -29653,6 +30676,7 @@ export type Project = {
   type: Scalars['String']['output'];
 };
 
+
 export type ProjectActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29660,6 +30684,7 @@ export type ProjectActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type ProjectActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -29669,6 +30694,7 @@ export type ProjectActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type ProjectEventOrganizesArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29676,6 +30702,7 @@ export type ProjectEventOrganizesArgs = {
   orderBy?: InputMaybe<Array<EventOrganizeOrderBy>>;
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
+
 
 export type ProjectEventOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -29685,6 +30712,7 @@ export type ProjectEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type ProjectFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29692,6 +30720,7 @@ export type ProjectFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type ProjectFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -29701,6 +30730,7 @@ export type ProjectFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type ProjectMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29708,6 +30738,7 @@ export type ProjectMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type ProjectMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -29717,6 +30748,7 @@ export type ProjectMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type ProjectMissionsArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29724,6 +30756,7 @@ export type ProjectMissionsArgs = {
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type ProjectMissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -29733,6 +30766,7 @@ export type ProjectMissionsAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type ProjectProjectSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29740,6 +30774,7 @@ export type ProjectProjectSupervisorsArgs = {
   orderBy?: InputMaybe<Array<ProjectSupervisorsOrderBy>>;
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
+
 
 export type ProjectProjectSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
@@ -29749,6 +30784,7 @@ export type ProjectProjectSupervisorsAggregateArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type ProjectProjectTagsArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29756,6 +30792,7 @@ export type ProjectProjectTagsArgs = {
   orderBy?: InputMaybe<Array<ProjectTagsOrderBy>>;
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
+
 
 export type ProjectProjectTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
@@ -29791,6 +30828,7 @@ export type ProjectAggregateFields = {
   varSamp?: Maybe<ProjectVarSampFields>;
   variance?: Maybe<ProjectVarianceFields>;
 };
+
 
 export type ProjectAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -29883,7 +30921,7 @@ export type ProjectBoolExp = {
 };
 
 export enum ProjectConstraint {
-  ProjectPkey = 'project_pkey',
+  ProjectPkey = 'project_pkey'
 }
 
 export type ProjectIncInput = {
@@ -30093,17 +31131,17 @@ export enum ProjectSelectColumn {
   Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export enum ProjectSelectColumnProjectAggregateBoolExpBool_AndArgumentsColumns {
   IsPrivate = 'isPrivate',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export enum ProjectSelectColumnProjectAggregateBoolExpBool_OrArgumentsColumns {
   IsPrivate = 'isPrivate',
-  IsTemplate = 'isTemplate',
+  IsTemplate = 'isTemplate'
 }
 
 export type ProjectSetInput = {
@@ -30274,6 +31312,7 @@ export type ProjectSupervisorsAggregateFields = {
   variance?: Maybe<ProjectSupervisorsVarianceFields>;
 };
 
+
 export type ProjectSupervisorsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -30320,7 +31359,7 @@ export type ProjectSupervisorsBoolExp = {
 };
 
 export enum ProjectSupervisorsConstraint {
-  ProjectSupervisorsPkey = 'project_supervisors_pkey',
+  ProjectSupervisorsPkey = 'project_supervisors_pkey'
 }
 
 export type ProjectSupervisorsIncInput = {
@@ -30383,7 +31422,7 @@ export type ProjectSupervisorsPkColumnsInput = {
 
 export enum ProjectSupervisorsSelectColumn {
   ProjectId = 'projectId',
-  TeamMemberId = 'teamMemberId',
+  TeamMemberId = 'teamMemberId'
 }
 
 export type ProjectSupervisorsSetInput = {
@@ -30447,7 +31486,7 @@ export type ProjectSupervisorsSumOrderBy = {
 
 export enum ProjectSupervisorsUpdateColumn {
   ProjectId = 'projectId',
-  TeamMemberId = 'teamMemberId',
+  TeamMemberId = 'teamMemberId'
 }
 
 export type ProjectSupervisorsUpdates = {
@@ -30522,6 +31561,7 @@ export type ProjectTagsAggregateFields = {
   variance?: Maybe<ProjectTagsVarianceFields>;
 };
 
+
 export type ProjectTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -30568,7 +31608,7 @@ export type ProjectTagsBoolExp = {
 };
 
 export enum ProjectTagsConstraint {
-  ProjectTagsPkey = 'project_tags_pkey',
+  ProjectTagsPkey = 'project_tags_pkey'
 }
 
 export type ProjectTagsIncInput = {
@@ -30631,7 +31671,7 @@ export type ProjectTagsPkColumnsInput = {
 
 export enum ProjectTagsSelectColumn {
   ProjectId = 'projectId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type ProjectTagsSetInput = {
@@ -30695,7 +31735,7 @@ export type ProjectTagsSumOrderBy = {
 
 export enum ProjectTagsUpdateColumn {
   ProjectId = 'projectId',
-  TagId = 'tagId',
+  TagId = 'tagId'
 }
 
 export type ProjectTagsUpdates = {
@@ -30757,7 +31797,7 @@ export enum ProjectUpdateColumn {
   Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ProjectUpdates = {
@@ -31058,9 +32098,9 @@ export type Query = {
   teamMember: Array<TeamMember>;
   teamMemberAggregate: TeamMemberAggregate;
   teamMemberByPk?: Maybe<TeamMember>;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
-  teamMemberRolesByPk?: Maybe<TeamMemberRoles>;
+  teamMemberRole: Array<TeamMemberRole>;
+  teamMemberRoleAggregate: TeamMemberRoleAggregate;
+  teamMemberRoleByPk?: Maybe<TeamMemberRole>;
   teamMetric: Array<TeamMetric>;
   teamMetricAggregate: TeamMetricAggregate;
   teamMetricByPk?: Maybe<TeamMetric>;
@@ -31094,6 +32134,7 @@ export type Query = {
   voteByPk?: Maybe<Vote>;
 };
 
+
 export type QueryAccountArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31101,6 +32142,7 @@ export type QueryAccountArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type QueryAccountAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -31110,9 +32152,11 @@ export type QueryAccountAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type QueryAccountByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryActionArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -31122,6 +32166,7 @@ export type QueryActionArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type QueryActionAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31130,9 +32175,11 @@ export type QueryActionAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type QueryActionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryActorArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
@@ -31142,6 +32189,7 @@ export type QueryActorArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type QueryActorAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31150,9 +32198,11 @@ export type QueryActorAggregateArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type QueryActorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryActorImageArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -31162,6 +32212,7 @@ export type QueryActorImageArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type QueryActorImageAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31170,9 +32221,11 @@ export type QueryActorImageAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type QueryActorImageByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryActorTagsArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
@@ -31182,6 +32235,7 @@ export type QueryActorTagsArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type QueryActorTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31190,10 +32244,12 @@ export type QueryActorTagsAggregateArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type QueryActorTagsByPkArgs = {
   actorId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type QueryAddressArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
@@ -31203,6 +32259,7 @@ export type QueryAddressArgs = {
   where?: InputMaybe<AddressBoolExp>;
 };
 
+
 export type QueryAddressAggregateArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31211,9 +32268,11 @@ export type QueryAddressAggregateArgs = {
   where?: InputMaybe<AddressBoolExp>;
 };
 
+
 export type QueryAddressByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryBankArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -31223,6 +32282,7 @@ export type QueryBankArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type QueryBankAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31231,9 +32291,11 @@ export type QueryBankAggregateArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type QueryBankByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryBotArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
@@ -31243,6 +32305,7 @@ export type QueryBotArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type QueryBotAggregateArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31251,9 +32314,11 @@ export type QueryBotAggregateArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type QueryBotByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryCampusArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -31263,6 +32328,7 @@ export type QueryCampusArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type QueryCampusAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31271,9 +32337,11 @@ export type QueryCampusAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type QueryCampusByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryCampusClusterArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
@@ -31283,6 +32351,7 @@ export type QueryCampusClusterArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type QueryCampusClusterAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31291,9 +32360,11 @@ export type QueryCampusClusterAggregateArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type QueryCampusClusterByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryCanteenArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
@@ -31303,6 +32374,7 @@ export type QueryCanteenArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type QueryCanteenAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31311,9 +32383,11 @@ export type QueryCanteenAggregateArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type QueryCanteenByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryCanteenFoodArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -31323,6 +32397,7 @@ export type QueryCanteenFoodArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type QueryCanteenFoodAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31331,9 +32406,11 @@ export type QueryCanteenFoodAggregateArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type QueryCanteenFoodByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryCanteenMenuArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
@@ -31343,6 +32420,7 @@ export type QueryCanteenMenuArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type QueryCanteenMenuAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31351,9 +32429,11 @@ export type QueryCanteenMenuAggregateArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type QueryCanteenMenuByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryClassGroupArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
@@ -31363,6 +32443,7 @@ export type QueryClassGroupArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type QueryClassGroupAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31371,9 +32452,11 @@ export type QueryClassGroupAggregateArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type QueryClassGroupByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryClassGroupTeacherArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -31383,6 +32466,7 @@ export type QueryClassGroupTeacherArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type QueryClassGroupTeacherAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31391,9 +32475,11 @@ export type QueryClassGroupTeacherAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type QueryClassGroupTeacherByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryClassGroupTeacherSubjectsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
@@ -31403,6 +32489,7 @@ export type QueryClassGroupTeacherSubjectsArgs = {
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
 
+
 export type QueryClassGroupTeacherSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31411,10 +32498,12 @@ export type QueryClassGroupTeacherSubjectsAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
 
+
 export type QueryClassGroupTeacherSubjectsByPkArgs = {
   classGroupTeacherId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
+
 
 export type QueryCohortArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
@@ -31424,6 +32513,7 @@ export type QueryCohortArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type QueryCohortAggregateArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31432,9 +32522,11 @@ export type QueryCohortAggregateArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type QueryCohortByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryContentArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -31444,6 +32536,7 @@ export type QueryContentArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type QueryContentAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31451,6 +32544,7 @@ export type QueryContentAggregateArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type QueryContentAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
@@ -31460,6 +32554,7 @@ export type QueryContentAttachmentsArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type QueryContentAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31468,14 +32563,17 @@ export type QueryContentAttachmentsAggregateArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type QueryContentAttachmentsByPkArgs = {
   contentId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
 
+
 export type QueryContentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryDocumentArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -31485,6 +32583,7 @@ export type QueryDocumentArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type QueryDocumentAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31493,9 +32592,11 @@ export type QueryDocumentAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type QueryDocumentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -31505,6 +32606,7 @@ export type QueryEventArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type QueryEventAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31512,6 +32614,7 @@ export type QueryEventAggregateArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type QueryEventApprovalArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -31521,6 +32624,7 @@ export type QueryEventApprovalArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type QueryEventApprovalAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31529,9 +32633,11 @@ export type QueryEventApprovalAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type QueryEventApprovalByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventApprovalStepArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -31541,6 +32647,7 @@ export type QueryEventApprovalStepArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type QueryEventApprovalStepAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31549,9 +32656,11 @@ export type QueryEventApprovalStepAggregateArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type QueryEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventApprovalStepNotifieesArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
@@ -31561,6 +32670,7 @@ export type QueryEventApprovalStepNotifieesArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type QueryEventApprovalStepNotifieesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31569,10 +32679,12 @@ export type QueryEventApprovalStepNotifieesAggregateArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type QueryEventApprovalStepNotifieesByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventApprovalStepValidatorsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
@@ -31582,6 +32694,7 @@ export type QueryEventApprovalStepValidatorsArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type QueryEventApprovalStepValidatorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31590,14 +32703,17 @@ export type QueryEventApprovalStepValidatorsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type QueryEventApprovalStepValidatorsByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
 
+
 export type QueryEventByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventFavoriteArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -31607,6 +32723,7 @@ export type QueryEventFavoriteArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type QueryEventFavoriteAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31615,9 +32732,11 @@ export type QueryEventFavoriteAggregateArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type QueryEventFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventJoinArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -31627,6 +32746,7 @@ export type QueryEventJoinArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type QueryEventJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31635,13 +32755,16 @@ export type QueryEventJoinAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type QueryEventJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryEventLogsArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventOrganizeArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -31651,6 +32774,7 @@ export type QueryEventOrganizeArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type QueryEventOrganizeAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31659,9 +32783,11 @@ export type QueryEventOrganizeAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type QueryEventOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventSupervisorArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -31671,6 +32797,7 @@ export type QueryEventSupervisorArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type QueryEventSupervisorAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31679,9 +32806,11 @@ export type QueryEventSupervisorAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type QueryEventSupervisorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryEventTagsArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
@@ -31691,6 +32820,7 @@ export type QueryEventTagsArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type QueryEventTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31699,10 +32829,12 @@ export type QueryEventTagsAggregateArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type QueryEventTagsByPkArgs = {
   eventId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type QueryExpenseArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -31712,6 +32844,7 @@ export type QueryExpenseArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type QueryExpenseAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31720,9 +32853,11 @@ export type QueryExpenseAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type QueryExpenseByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryExpenseItemArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -31732,6 +32867,7 @@ export type QueryExpenseItemArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type QueryExpenseItemAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31739,6 +32875,7 @@ export type QueryExpenseItemAggregateArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type QueryExpenseItemAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
@@ -31748,6 +32885,7 @@ export type QueryExpenseItemAttachmentsArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type QueryExpenseItemAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31756,14 +32894,17 @@ export type QueryExpenseItemAttachmentsAggregateArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type QueryExpenseItemAttachmentsByPkArgs = {
   expenseItemId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
 
+
 export type QueryExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFavoriteArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
@@ -31773,6 +32914,7 @@ export type QueryFavoriteArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type QueryFavoriteAggregateArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31781,9 +32923,11 @@ export type QueryFavoriteAggregateArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type QueryFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFileUploadArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
@@ -31793,6 +32937,7 @@ export type QueryFileUploadArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type QueryFileUploadAggregateArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31801,9 +32946,11 @@ export type QueryFileUploadAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type QueryFileUploadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFinanceArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -31813,6 +32960,7 @@ export type QueryFinanceArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type QueryFinanceAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31820,6 +32968,7 @@ export type QueryFinanceAggregateArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type QueryFinanceAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
@@ -31829,6 +32978,7 @@ export type QueryFinanceAttachmentsArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type QueryFinanceAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31837,18 +32987,22 @@ export type QueryFinanceAttachmentsAggregateArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type QueryFinanceAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   financeId: Scalars['bigint']['input'];
 };
 
+
 export type QueryFinanceByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryFinanceLogsArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFinanceTagsArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
@@ -31858,6 +33012,7 @@ export type QueryFinanceTagsArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type QueryFinanceTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31866,10 +33021,12 @@ export type QueryFinanceTagsAggregateArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type QueryFinanceTagsByPkArgs = {
   financeId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type QueryFollowArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
@@ -31879,6 +33036,7 @@ export type QueryFollowArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type QueryFollowAggregateArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31887,9 +33045,11 @@ export type QueryFollowAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type QueryFollowByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFormArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
@@ -31899,6 +33059,7 @@ export type QueryFormArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type QueryFormAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31907,9 +33068,11 @@ export type QueryFormAggregateArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type QueryFormByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryFormSubmissionArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
@@ -31919,6 +33082,7 @@ export type QueryFormSubmissionArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
+
 export type QueryFormSubmissionAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31926,6 +33090,7 @@ export type QueryFormSubmissionAggregateArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionOrderBy>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type QueryFormSubmissionAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
@@ -31935,6 +33100,7 @@ export type QueryFormSubmissionAttachmentsArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type QueryFormSubmissionAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31943,18 +33109,22 @@ export type QueryFormSubmissionAttachmentsAggregateArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type QueryFormSubmissionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   formSubmissionId: Scalars['bigint']['input'];
 };
 
+
 export type QueryFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryGetFirstResultLinkArgs = {
   query: Scalars['String']['input'];
 };
+
 
 export type QueryGrantArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -31964,6 +33134,7 @@ export type QueryGrantArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type QueryGrantAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31971,6 +33142,7 @@ export type QueryGrantAggregateArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type QueryGrantAllocateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -31980,6 +33152,7 @@ export type QueryGrantAllocateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type QueryGrantAllocateAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -31987,6 +33160,7 @@ export type QueryGrantAllocateAggregateArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type QueryGrantAllocateAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
@@ -31996,6 +33170,7 @@ export type QueryGrantAllocateAttachmentsArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type QueryGrantAllocateAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32004,14 +33179,17 @@ export type QueryGrantAllocateAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type QueryGrantAllocateAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantAllocateId: Scalars['bigint']['input'];
 };
 
+
 export type QueryGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryGrantAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
@@ -32021,6 +33199,7 @@ export type QueryGrantAttachmentsArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type QueryGrantAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32029,14 +33208,17 @@ export type QueryGrantAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type QueryGrantAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantId: Scalars['bigint']['input'];
 };
 
+
 export type QueryGrantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryIndividualArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
@@ -32046,6 +33228,7 @@ export type QueryIndividualArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type QueryIndividualAggregateArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32054,9 +33237,11 @@ export type QueryIndividualAggregateArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type QueryIndividualByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryIssueArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
@@ -32066,6 +33251,7 @@ export type QueryIssueArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type QueryIssueAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32074,9 +33260,11 @@ export type QueryIssueAggregateArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type QueryIssueByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryIssueContributorsArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
@@ -32086,6 +33274,7 @@ export type QueryIssueContributorsArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type QueryIssueContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32094,10 +33283,12 @@ export type QueryIssueContributorsAggregateArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type QueryIssueContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   issueId: Scalars['bigint']['input'];
 };
+
 
 export type QueryIssueTagsArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
@@ -32107,6 +33298,7 @@ export type QueryIssueTagsArgs = {
   where?: InputMaybe<IssueTagsBoolExp>;
 };
 
+
 export type QueryIssueTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32115,10 +33307,12 @@ export type QueryIssueTagsAggregateArgs = {
   where?: InputMaybe<IssueTagsBoolExp>;
 };
 
+
 export type QueryIssueTagsByPkArgs = {
   issueId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type QueryLegalUnitArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
@@ -32128,6 +33322,7 @@ export type QueryLegalUnitArgs = {
   where?: InputMaybe<LegalUnitBoolExp>;
 };
 
+
 export type QueryLegalUnitAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32136,9 +33331,11 @@ export type QueryLegalUnitAggregateArgs = {
   where?: InputMaybe<LegalUnitBoolExp>;
 };
 
+
 export type QueryLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryLegalUnitLocationArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -32148,6 +33345,7 @@ export type QueryLegalUnitLocationArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type QueryLegalUnitLocationAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32156,9 +33354,11 @@ export type QueryLegalUnitLocationAggregateArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type QueryLegalUnitLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryLocationArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -32168,6 +33368,7 @@ export type QueryLocationArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type QueryLocationAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32176,9 +33377,11 @@ export type QueryLocationAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type QueryLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryLocationImagesArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
@@ -32188,6 +33391,7 @@ export type QueryLocationImagesArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type QueryLocationImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32196,10 +33400,12 @@ export type QueryLocationImagesAggregateArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type QueryLocationImagesByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   locationId: Scalars['bigint']['input'];
 };
+
 
 export type QueryMissionArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -32209,6 +33415,7 @@ export type QueryMissionArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type QueryMissionAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32217,9 +33424,11 @@ export type QueryMissionAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type QueryMissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryMissionJoinArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -32229,6 +33438,7 @@ export type QueryMissionJoinArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type QueryMissionJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32237,9 +33447,11 @@ export type QueryMissionJoinAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type QueryMissionJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryPoleArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
@@ -32249,6 +33461,7 @@ export type QueryPoleArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type QueryPoleAggregateArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32257,13 +33470,16 @@ export type QueryPoleAggregateArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type QueryPoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryProcessReceiptArgs = {
   key: Scalars['String']['input'];
 };
+
 
 export type QueryProjectArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -32273,6 +33489,7 @@ export type QueryProjectArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type QueryProjectAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32281,9 +33498,11 @@ export type QueryProjectAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type QueryProjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryProjectSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
@@ -32293,6 +33512,7 @@ export type QueryProjectSupervisorsArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type QueryProjectSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32301,10 +33521,12 @@ export type QueryProjectSupervisorsAggregateArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type QueryProjectSupervisorsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   teamMemberId: Scalars['bigint']['input'];
 };
+
 
 export type QueryProjectTagsArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
@@ -32314,6 +33536,7 @@ export type QueryProjectTagsArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
+
 export type QueryProjectTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32322,10 +33545,12 @@ export type QueryProjectTagsAggregateArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
+
 export type QueryProjectTagsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type QueryReactionArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -32335,6 +33560,7 @@ export type QueryReactionArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type QueryReactionAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32343,9 +33569,11 @@ export type QueryReactionAggregateArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type QueryReactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryReportArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -32355,6 +33583,7 @@ export type QueryReportArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type QueryReportAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32363,9 +33592,11 @@ export type QueryReportAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type QueryReportByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryRoleArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
@@ -32375,6 +33606,7 @@ export type QueryRoleArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type QueryRoleAggregateArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32383,17 +33615,21 @@ export type QueryRoleAggregateArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type QueryRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QuerySearchFrenchCompanyArgs = {
   query: SearchCompanyQuery;
 };
 
+
 export type QuerySearchLocationArgs = {
   query: Scalars['String']['input'];
 };
+
 
 export type QuerySessionArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
@@ -32403,6 +33639,7 @@ export type QuerySessionArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type QuerySessionAggregateArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32411,9 +33648,11 @@ export type QuerySessionAggregateArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type QuerySessionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryShortcutArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -32423,6 +33662,7 @@ export type QueryShortcutArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type QueryShortcutAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32431,9 +33671,11 @@ export type QueryShortcutAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type QueryShortcutByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QuerySocialArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
@@ -32443,6 +33685,7 @@ export type QuerySocialArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type QuerySocialAggregateArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32451,9 +33694,11 @@ export type QuerySocialAggregateArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type QuerySocialByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QuerySubjectArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
@@ -32463,6 +33708,7 @@ export type QuerySubjectArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type QuerySubjectAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32471,9 +33717,11 @@ export type QuerySubjectAggregateArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type QuerySubjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QuerySubjectClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
@@ -32483,6 +33731,7 @@ export type QuerySubjectClassGroupsArgs = {
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
+
 export type QuerySubjectClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32491,10 +33740,12 @@ export type QuerySubjectClassGroupsAggregateArgs = {
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
+
 export type QuerySubjectClassGroupsByPkArgs = {
   classGroupId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
+
 
 export type QueryTagArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
@@ -32504,6 +33755,7 @@ export type QueryTagArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type QueryTagAggregateArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32512,9 +33764,11 @@ export type QueryTagAggregateArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type QueryTagByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTeamArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -32524,6 +33778,7 @@ export type QueryTeamArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type QueryTeamAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32532,9 +33787,11 @@ export type QueryTeamAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type QueryTeamByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTeamHistoryArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -32544,6 +33801,7 @@ export type QueryTeamHistoryArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type QueryTeamHistoryAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32552,9 +33810,11 @@ export type QueryTeamHistoryAggregateArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type QueryTeamHistoryByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTeamJoinArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -32564,6 +33824,7 @@ export type QueryTeamJoinArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type QueryTeamJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32572,13 +33833,16 @@ export type QueryTeamJoinAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type QueryTeamJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryTeamLogsArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTeamMemberArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -32588,6 +33852,7 @@ export type QueryTeamMemberArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type QueryTeamMemberAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32596,30 +33861,34 @@ export type QueryTeamMemberAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type QueryTeamMemberByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+
+export type QueryTeamMemberRoleArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type QueryTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+
+export type QueryTeamMemberRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type QueryTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+
+export type QueryTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTeamMetricArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
@@ -32629,6 +33898,7 @@ export type QueryTeamMetricArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type QueryTeamMetricAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32637,9 +33907,11 @@ export type QueryTeamMetricAggregateArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type QueryTeamMetricByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTenantArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
@@ -32649,6 +33921,7 @@ export type QueryTenantArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
+
 export type QueryTenantAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32657,13 +33930,16 @@ export type QueryTenantAggregateArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
+
 export type QueryTenantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
+
 export type QueryTenantLogsArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryTenantOrganizeArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -32673,6 +33949,7 @@ export type QueryTenantOrganizeArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type QueryTenantOrganizeAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32681,9 +33958,11 @@ export type QueryTenantOrganizeAggregateArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type QueryTenantOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryThreadArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
@@ -32693,6 +33972,7 @@ export type QueryThreadArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type QueryThreadAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32701,9 +33981,11 @@ export type QueryThreadAggregateArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type QueryThreadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryThreadContributorsArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
@@ -32713,6 +33995,7 @@ export type QueryThreadContributorsArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type QueryThreadContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32721,10 +34004,12 @@ export type QueryThreadContributorsAggregateArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type QueryThreadContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
+
 
 export type QueryThreadTagsArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
@@ -32734,6 +34019,7 @@ export type QueryThreadTagsArgs = {
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
 
+
 export type QueryThreadTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32742,10 +34028,12 @@ export type QueryThreadTagsAggregateArgs = {
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
 
+
 export type QueryThreadTagsByPkArgs = {
   tagId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
+
 
 export type QueryUserArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
@@ -32755,6 +34043,7 @@ export type QueryUserArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type QueryUserAggregateArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32763,9 +34052,11 @@ export type QueryUserAggregateArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type QueryUserByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryValidationArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
@@ -32775,6 +34066,7 @@ export type QueryValidationArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type QueryValidationAggregateArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32783,9 +34075,11 @@ export type QueryValidationAggregateArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type QueryValidationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryViewArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
@@ -32795,6 +34089,7 @@ export type QueryViewArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type QueryViewAggregateArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32803,9 +34098,11 @@ export type QueryViewAggregateArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type QueryViewByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type QueryVoteArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
@@ -32815,6 +34112,7 @@ export type QueryVoteArgs = {
   where?: InputMaybe<VoteBoolExp>;
 };
 
+
 export type QueryVoteAggregateArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -32822,6 +34120,7 @@ export type QueryVoteAggregateArgs = {
   orderBy?: InputMaybe<Array<VoteOrderBy>>;
   where?: InputMaybe<VoteBoolExp>;
 };
+
 
 export type QueryVoteByPkArgs = {
   id: Scalars['bigint']['input'];
@@ -32866,6 +34165,7 @@ export type ReactionAggregateFields = {
   varSamp?: Maybe<ReactionVarSampFields>;
   variance?: Maybe<ReactionVarianceFields>;
 };
+
 
 export type ReactionAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -32924,7 +34224,7 @@ export type ReactionBoolExp = {
 };
 
 export enum ReactionConstraint {
-  ReactionPkey = 'reaction_pkey',
+  ReactionPkey = 'reaction_pkey'
 }
 
 export type ReactionIncInput = {
@@ -33032,7 +34332,7 @@ export enum ReactionSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   ReactionType = 'reactionType',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ReactionSetInput = {
@@ -33130,7 +34430,7 @@ export enum ReactionUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   ReactionType = 'reactionType',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ReactionUpdates = {
@@ -33227,6 +34527,7 @@ export type ReportAggregateFields = {
   variance?: Maybe<ReportVarianceFields>;
 };
 
+
 export type ReportAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ReportSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -33289,7 +34590,7 @@ export type ReportBoolExp = {
 };
 
 export enum ReportConstraint {
-  ReportPkey = 'report_pkey',
+  ReportPkey = 'report_pkey'
 }
 
 export type ReportIncInput = {
@@ -33414,7 +34715,7 @@ export enum ReportSelectColumn {
   Id = 'id',
   Reason = 'reason',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ReportSetInput = {
@@ -33526,7 +34827,7 @@ export enum ReportUpdateColumn {
   Id = 'id',
   Reason = 'reason',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ReportUpdates = {
@@ -33590,26 +34891,26 @@ export type Role = {
   __typename?: 'Role';
   askedTeamJoins: Array<TeamJoin>;
   askedTeamJoinsAggregate: TeamJoinAggregate;
-  category: Scalars['String']['output'];
+  color: Scalars['String']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  isLocked: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   permissions: Array<Scalars['String']['output']>;
   team: Team;
   teamId: Scalars['bigint']['output'];
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
+  type?: Maybe<Scalars['String']['output']>;
 };
+
 
 export type RoleAskedTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -33619,6 +34920,7 @@ export type RoleAskedTeamJoinsArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type RoleAskedTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33626,6 +34928,7 @@ export type RoleAskedTeamJoinsAggregateArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type RoleTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -33635,6 +34938,7 @@ export type RoleTeamJoinsArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type RoleTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -33643,20 +34947,22 @@ export type RoleTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type RoleTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
+
 export type RoleTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 export type RoleAggregate = {
@@ -33666,8 +34972,6 @@ export type RoleAggregate = {
 };
 
 export type RoleAggregateBoolExp = {
-  bool_and?: InputMaybe<RoleAggregateBoolExpBool_And>;
-  bool_or?: InputMaybe<RoleAggregateBoolExpBool_Or>;
   count?: InputMaybe<RoleAggregateBoolExpCount>;
 };
 
@@ -33685,6 +34989,7 @@ export type RoleAggregateFields = {
   varSamp?: Maybe<RoleVarSampFields>;
   variance?: Maybe<RoleVarianceFields>;
 };
+
 
 export type RoleAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<RoleSelectColumn>>;
@@ -33731,29 +35036,28 @@ export type RoleBoolExp = {
   _or?: InputMaybe<Array<RoleBoolExp>>;
   askedTeamJoins?: InputMaybe<TeamJoinBoolExp>;
   askedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  category?: InputMaybe<StringComparisonExp>;
+  color?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  isLocked?: InputMaybe<BooleanComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   permissions?: InputMaybe<StringArrayComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesBoolExp>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
 };
 
 export enum RoleConstraint {
-  RolePkey = 'role_pkey',
+  RolePkey = 'role_pkey'
 }
 
 export type RoleIncInput = {
@@ -33765,20 +35069,19 @@ export type RoleIncInput = {
 
 export type RoleInsertInput = {
   askedTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -33786,7 +35089,7 @@ export type RoleInsertInput = {
 
 export type RoleMaxFields = {
   __typename?: 'RoleMaxFields';
-  category?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -33800,7 +35103,7 @@ export type RoleMaxFields = {
 };
 
 export type RoleMaxOrderBy = {
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33815,7 +35118,7 @@ export type RoleMaxOrderBy = {
 
 export type RoleMinFields = {
   __typename?: 'RoleMinFields';
-  category?: Maybe<Scalars['String']['output']>;
+  color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -33829,7 +35132,7 @@ export type RoleMinFields = {
 };
 
 export type RoleMinOrderBy = {
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
@@ -33861,20 +35164,19 @@ export type RoleOnConflict = {
 
 export type RoleOrderBy = {
   askedTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  category?: InputMaybe<OrderBy>;
+  color?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  isLocked?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -33885,36 +35187,26 @@ export type RolePkColumnsInput = {
 };
 
 export enum RoleSelectColumn {
-  Category = 'category',
+  Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  IsLocked = 'isLocked',
   Name = 'name',
   Permissions = 'permissions',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export enum RoleSelectColumnRoleAggregateBoolExpBool_AndArgumentsColumns {
-  IsLocked = 'isLocked',
-}
-
-export enum RoleSelectColumnRoleAggregateBoolExpBool_OrArgumentsColumns {
-  IsLocked = 'isLocked',
+  Type = 'type'
 }
 
 export type RoleSetInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -33973,13 +35265,12 @@ export type RoleStreamCursorInput = {
 };
 
 export type RoleStreamCursorValueInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
+  color?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  isLocked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<Scalars['String']['input']>>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
@@ -34003,18 +35294,17 @@ export type RoleSumOrderBy = {
 };
 
 export enum RoleUpdateColumn {
-  Category = 'category',
+  Color = 'color',
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  IsLocked = 'isLocked',
   Name = 'name',
   Permissions = 'permissions',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type RoleUpdates = {
@@ -34097,6 +35387,7 @@ export type Session = {
   userId: Scalars['bigint']['output'];
 };
 
+
 export type SessionUserAgentArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
 };
@@ -34125,6 +35416,7 @@ export type SessionAggregateFields = {
   varSamp?: Maybe<SessionVarSampFields>;
   variance?: Maybe<SessionVarianceFields>;
 };
+
 
 export type SessionAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<SessionSelectColumn>>;
@@ -34196,7 +35488,7 @@ export type SessionBoolExp = {
 };
 
 export enum SessionConstraint {
-  SessionPkey = 'session_pkey',
+  SessionPkey = 'session_pkey'
 }
 
 export type SessionDeleteAtPathInput = {
@@ -34379,7 +35671,7 @@ export enum SessionSelectColumn {
   TenantId = 'tenantId',
   TokenFamily = 'tokenFamily',
   UserAgent = 'userAgent',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type SessionSetInput = {
@@ -34504,7 +35796,7 @@ export enum SessionUpdateColumn {
   TenantId = 'tenantId',
   TokenFamily = 'tokenFamily',
   UserAgent = 'userAgent',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type SessionUpdates = {
@@ -34605,6 +35897,7 @@ export type ShortcutAggregateFields = {
   variance?: Maybe<ShortcutVarianceFields>;
 };
 
+
 export type ShortcutAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ShortcutSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -34666,7 +35959,7 @@ export type ShortcutBoolExp = {
 };
 
 export enum ShortcutConstraint {
-  ShortcutPkey = 'shortcut_pkey',
+  ShortcutPkey = 'shortcut_pkey'
 }
 
 export type ShortcutIncInput = {
@@ -34784,7 +36077,7 @@ export enum ShortcutSelectColumn {
   TargetActorId = 'targetActorId',
   TenantId = 'tenantId',
   Type = 'type',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ShortcutSetInput = {
@@ -34893,7 +36186,7 @@ export enum ShortcutUpdateColumn {
   TargetActorId = 'targetActorId',
   TenantId = 'tenantId',
   Type = 'type',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type ShortcutUpdates = {
@@ -35008,6 +36301,7 @@ export type SocialAggregateFields = {
   variance?: Maybe<SocialVarianceFields>;
 };
 
+
 export type SocialAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<SocialSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -35070,7 +36364,7 @@ export type SocialBoolExp = {
 };
 
 export enum SocialConstraint {
-  SocialPkey = 'social_pkey',
+  SocialPkey = 'social_pkey'
 }
 
 export type SocialIncInput = {
@@ -35200,7 +36494,7 @@ export enum SocialSelectColumn {
   Pseudo = 'pseudo',
   TenantId = 'tenantId',
   Type = 'type',
-  Url = 'url',
+  Url = 'url'
 }
 
 export type SocialSetInput = {
@@ -35315,7 +36609,7 @@ export enum SocialUpdateColumn {
   Pseudo = 'pseudo',
   TenantId = 'tenantId',
   Type = 'type',
-  Url = 'url',
+  Url = 'url'
 }
 
 export type SocialUpdates = {
@@ -35434,6 +36728,7 @@ export type Subject = {
   type: Scalars['String']['output'];
 };
 
+
 export type SubjectClassGroupTeacherSubjectsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35441,6 +36736,7 @@ export type SubjectClassGroupTeacherSubjectsArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
+
 
 export type SubjectClassGroupTeacherSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
@@ -35450,6 +36746,7 @@ export type SubjectClassGroupTeacherSubjectsAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
 
+
 export type SubjectDocumentsArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35457,6 +36754,7 @@ export type SubjectDocumentsArgs = {
   orderBy?: InputMaybe<Array<DocumentOrderBy>>;
   where?: InputMaybe<DocumentBoolExp>;
 };
+
 
 export type SubjectDocumentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -35466,6 +36764,7 @@ export type SubjectDocumentsAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type SubjectSubjectClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35473,6 +36772,7 @@ export type SubjectSubjectClassGroupsArgs = {
   orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
+
 
 export type SubjectSubjectClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
@@ -35506,6 +36806,7 @@ export type SubjectAggregateFields = {
   varSamp?: Maybe<SubjectVarSampFields>;
   variance?: Maybe<SubjectVarianceFields>;
 };
+
 
 export type SubjectAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<SubjectSelectColumn>>;
@@ -35602,6 +36903,7 @@ export type SubjectClassGroupsAggregateFields = {
   variance?: Maybe<SubjectClassGroupsVarianceFields>;
 };
 
+
 export type SubjectClassGroupsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -35648,7 +36950,7 @@ export type SubjectClassGroupsBoolExp = {
 };
 
 export enum SubjectClassGroupsConstraint {
-  SubjectClassGroupsPkey = 'subject_class_groups_pkey',
+  SubjectClassGroupsPkey = 'subject_class_groups_pkey'
 }
 
 export type SubjectClassGroupsIncInput = {
@@ -35711,7 +37013,7 @@ export type SubjectClassGroupsPkColumnsInput = {
 
 export enum SubjectClassGroupsSelectColumn {
   ClassGroupId = 'classGroupId',
-  SubjectId = 'subjectId',
+  SubjectId = 'subjectId'
 }
 
 export type SubjectClassGroupsSetInput = {
@@ -35775,7 +37077,7 @@ export type SubjectClassGroupsSumOrderBy = {
 
 export enum SubjectClassGroupsUpdateColumn {
   ClassGroupId = 'classGroupId',
-  SubjectId = 'subjectId',
+  SubjectId = 'subjectId'
 }
 
 export type SubjectClassGroupsUpdates = {
@@ -35818,7 +37120,7 @@ export type SubjectClassGroupsVarianceOrderBy = {
 };
 
 export enum SubjectConstraint {
-  SubjectPkey = 'subject_pkey',
+  SubjectPkey = 'subject_pkey'
 }
 
 export type SubjectIncInput = {
@@ -35955,7 +37257,7 @@ export enum SubjectSelectColumn {
   Id = 'id',
   Name = 'name',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type SubjectSetInput = {
@@ -36054,7 +37356,7 @@ export enum SubjectUpdateColumn {
   Id = 'id',
   Name = 'name',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type SubjectUpdates = {
@@ -36394,10 +37696,10 @@ export type Subscription = {
   teamMember: Array<TeamMember>;
   teamMemberAggregate: TeamMemberAggregate;
   teamMemberByPk?: Maybe<TeamMember>;
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
-  teamMemberRolesByPk?: Maybe<TeamMemberRoles>;
-  teamMemberRolesStream: Array<TeamMemberRoles>;
+  teamMemberRole: Array<TeamMemberRole>;
+  teamMemberRoleAggregate: TeamMemberRoleAggregate;
+  teamMemberRoleByPk?: Maybe<TeamMemberRole>;
+  teamMemberRoleStream: Array<TeamMemberRole>;
   teamMemberStream: Array<TeamMember>;
   teamMetric: Array<TeamMetric>;
   teamMetricAggregate: TeamMetricAggregate;
@@ -36442,6 +37744,7 @@ export type Subscription = {
   voteStream: Array<Vote>;
 };
 
+
 export type SubscriptionAccountArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36449,6 +37752,7 @@ export type SubscriptionAccountArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type SubscriptionAccountAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -36458,15 +37762,18 @@ export type SubscriptionAccountAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type SubscriptionAccountByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionAccountStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<AccountStreamCursorInput>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type SubscriptionActionArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -36476,6 +37783,7 @@ export type SubscriptionActionArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type SubscriptionActionAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36484,15 +37792,18 @@ export type SubscriptionActionAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type SubscriptionActionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionActionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ActionStreamCursorInput>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type SubscriptionActorArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
@@ -36502,6 +37813,7 @@ export type SubscriptionActorArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type SubscriptionActorAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36510,9 +37822,11 @@ export type SubscriptionActorAggregateArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type SubscriptionActorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionActorImageArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -36522,6 +37836,7 @@ export type SubscriptionActorImageArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type SubscriptionActorImageAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36530,9 +37845,11 @@ export type SubscriptionActorImageAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type SubscriptionActorImageByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionActorImageStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -36540,11 +37857,13 @@ export type SubscriptionActorImageStreamArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type SubscriptionActorStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ActorStreamCursorInput>>;
   where?: InputMaybe<ActorBoolExp>;
 };
+
 
 export type SubscriptionActorTagsArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
@@ -36554,6 +37873,7 @@ export type SubscriptionActorTagsArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type SubscriptionActorTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36562,16 +37882,19 @@ export type SubscriptionActorTagsAggregateArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type SubscriptionActorTagsByPkArgs = {
   actorId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionActorTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ActorTagsStreamCursorInput>>;
   where?: InputMaybe<ActorTagsBoolExp>;
 };
+
 
 export type SubscriptionAddressArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
@@ -36581,6 +37904,7 @@ export type SubscriptionAddressArgs = {
   where?: InputMaybe<AddressBoolExp>;
 };
 
+
 export type SubscriptionAddressAggregateArgs = {
   distinctOn?: InputMaybe<Array<AddressSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36589,15 +37913,18 @@ export type SubscriptionAddressAggregateArgs = {
   where?: InputMaybe<AddressBoolExp>;
 };
 
+
 export type SubscriptionAddressByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionAddressStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<AddressStreamCursorInput>>;
   where?: InputMaybe<AddressBoolExp>;
 };
+
 
 export type SubscriptionBankArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -36607,6 +37934,7 @@ export type SubscriptionBankArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type SubscriptionBankAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36615,15 +37943,18 @@ export type SubscriptionBankAggregateArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type SubscriptionBankByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionBankStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<BankStreamCursorInput>>;
   where?: InputMaybe<BankBoolExp>;
 };
+
 
 export type SubscriptionBotArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
@@ -36633,6 +37964,7 @@ export type SubscriptionBotArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type SubscriptionBotAggregateArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36641,15 +37973,18 @@ export type SubscriptionBotAggregateArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type SubscriptionBotByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionBotStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<BotStreamCursorInput>>;
   where?: InputMaybe<BotBoolExp>;
 };
+
 
 export type SubscriptionCampusArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -36659,6 +37994,7 @@ export type SubscriptionCampusArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type SubscriptionCampusAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36667,9 +38003,11 @@ export type SubscriptionCampusAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type SubscriptionCampusByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCampusClusterArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
@@ -36679,6 +38017,7 @@ export type SubscriptionCampusClusterArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type SubscriptionCampusClusterAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36687,9 +38026,11 @@ export type SubscriptionCampusClusterAggregateArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type SubscriptionCampusClusterByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCampusClusterStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -36697,11 +38038,13 @@ export type SubscriptionCampusClusterStreamArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type SubscriptionCampusStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<CampusStreamCursorInput>>;
   where?: InputMaybe<CampusBoolExp>;
 };
+
 
 export type SubscriptionCanteenArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
@@ -36711,6 +38054,7 @@ export type SubscriptionCanteenArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type SubscriptionCanteenAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36719,9 +38063,11 @@ export type SubscriptionCanteenAggregateArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type SubscriptionCanteenByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCanteenFoodArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -36731,6 +38077,7 @@ export type SubscriptionCanteenFoodArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type SubscriptionCanteenFoodAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36739,15 +38086,18 @@ export type SubscriptionCanteenFoodAggregateArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type SubscriptionCanteenFoodByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCanteenFoodStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<CanteenFoodStreamCursorInput>>;
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
+
 
 export type SubscriptionCanteenMenuArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
@@ -36757,6 +38107,7 @@ export type SubscriptionCanteenMenuArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type SubscriptionCanteenMenuAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36765,9 +38116,11 @@ export type SubscriptionCanteenMenuAggregateArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type SubscriptionCanteenMenuByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCanteenMenuStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -36775,11 +38128,13 @@ export type SubscriptionCanteenMenuStreamArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type SubscriptionCanteenStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<CanteenStreamCursorInput>>;
   where?: InputMaybe<CanteenBoolExp>;
 };
+
 
 export type SubscriptionClassGroupArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
@@ -36789,6 +38144,7 @@ export type SubscriptionClassGroupArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type SubscriptionClassGroupAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36797,15 +38153,18 @@ export type SubscriptionClassGroupAggregateArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type SubscriptionClassGroupByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionClassGroupStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ClassGroupStreamCursorInput>>;
   where?: InputMaybe<ClassGroupBoolExp>;
 };
+
 
 export type SubscriptionClassGroupTeacherArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -36815,6 +38174,7 @@ export type SubscriptionClassGroupTeacherArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type SubscriptionClassGroupTeacherAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36823,15 +38183,18 @@ export type SubscriptionClassGroupTeacherAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type SubscriptionClassGroupTeacherByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionClassGroupTeacherStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ClassGroupTeacherStreamCursorInput>>;
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
+
 
 export type SubscriptionClassGroupTeacherSubjectsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
@@ -36841,6 +38204,7 @@ export type SubscriptionClassGroupTeacherSubjectsArgs = {
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
 
+
 export type SubscriptionClassGroupTeacherSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36849,16 +38213,19 @@ export type SubscriptionClassGroupTeacherSubjectsAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
 
+
 export type SubscriptionClassGroupTeacherSubjectsByPkArgs = {
   classGroupTeacherId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionClassGroupTeacherSubjectsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ClassGroupTeacherSubjectsStreamCursorInput>>;
   where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
 };
+
 
 export type SubscriptionCohortArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
@@ -36868,6 +38235,7 @@ export type SubscriptionCohortArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type SubscriptionCohortAggregateArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36876,15 +38244,18 @@ export type SubscriptionCohortAggregateArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type SubscriptionCohortByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionCohortStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<CohortStreamCursorInput>>;
   where?: InputMaybe<CohortBoolExp>;
 };
+
 
 export type SubscriptionContentArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -36894,6 +38265,7 @@ export type SubscriptionContentArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type SubscriptionContentAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36901,6 +38273,7 @@ export type SubscriptionContentAggregateArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type SubscriptionContentAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
@@ -36910,6 +38283,7 @@ export type SubscriptionContentAttachmentsArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionContentAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36918,10 +38292,12 @@ export type SubscriptionContentAttachmentsAggregateArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionContentAttachmentsByPkArgs = {
   contentId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionContentAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -36929,15 +38305,18 @@ export type SubscriptionContentAttachmentsStreamArgs = {
   where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionContentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionContentStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ContentStreamCursorInput>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type SubscriptionDocumentArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -36947,6 +38326,7 @@ export type SubscriptionDocumentArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type SubscriptionDocumentAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36955,15 +38335,18 @@ export type SubscriptionDocumentAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type SubscriptionDocumentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionDocumentStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<DocumentStreamCursorInput>>;
   where?: InputMaybe<DocumentBoolExp>;
 };
+
 
 export type SubscriptionEventArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -36973,6 +38356,7 @@ export type SubscriptionEventArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type SubscriptionEventAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36980,6 +38364,7 @@ export type SubscriptionEventAggregateArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type SubscriptionEventApprovalArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -36989,6 +38374,7 @@ export type SubscriptionEventApprovalArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36997,9 +38383,11 @@ export type SubscriptionEventApprovalAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventApprovalStepArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -37009,6 +38397,7 @@ export type SubscriptionEventApprovalStepArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37017,9 +38406,11 @@ export type SubscriptionEventApprovalStepAggregateArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventApprovalStepNotifieesArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
@@ -37029,6 +38420,7 @@ export type SubscriptionEventApprovalStepNotifieesArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepNotifieesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepNotifieesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37037,10 +38429,12 @@ export type SubscriptionEventApprovalStepNotifieesAggregateArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepNotifieesByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventApprovalStepNotifieesStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37048,11 +38442,13 @@ export type SubscriptionEventApprovalStepNotifieesStreamArgs = {
   where?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventApprovalStepStreamCursorInput>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
+
 
 export type SubscriptionEventApprovalStepValidatorsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
@@ -37062,6 +38458,7 @@ export type SubscriptionEventApprovalStepValidatorsArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepValidatorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepValidatorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37070,10 +38467,12 @@ export type SubscriptionEventApprovalStepValidatorsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStepValidatorsByPkArgs = {
   eventApprovalStepId: Scalars['bigint']['input'];
   individualId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventApprovalStepValidatorsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37081,15 +38480,18 @@ export type SubscriptionEventApprovalStepValidatorsStreamArgs = {
   where?: InputMaybe<EventApprovalStepValidatorsBoolExp>;
 };
 
+
 export type SubscriptionEventApprovalStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventApprovalStreamCursorInput>>;
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type SubscriptionEventByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventFavoriteArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -37099,6 +38501,7 @@ export type SubscriptionEventFavoriteArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type SubscriptionEventFavoriteAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37107,15 +38510,18 @@ export type SubscriptionEventFavoriteAggregateArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type SubscriptionEventFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventFavoriteStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventFavoriteStreamCursorInput>>;
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
+
 
 export type SubscriptionEventJoinArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -37125,6 +38531,7 @@ export type SubscriptionEventJoinArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type SubscriptionEventJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37133,15 +38540,18 @@ export type SubscriptionEventJoinAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type SubscriptionEventJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventJoinStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventJoinStreamCursorInput>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type SubscriptionEventOrganizeArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -37151,6 +38561,7 @@ export type SubscriptionEventOrganizeArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type SubscriptionEventOrganizeAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37159,9 +38570,11 @@ export type SubscriptionEventOrganizeAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type SubscriptionEventOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventOrganizeStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37169,11 +38582,13 @@ export type SubscriptionEventOrganizeStreamArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type SubscriptionEventStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventStreamCursorInput>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type SubscriptionEventSupervisorArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -37183,6 +38598,7 @@ export type SubscriptionEventSupervisorArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type SubscriptionEventSupervisorAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37191,15 +38607,18 @@ export type SubscriptionEventSupervisorAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type SubscriptionEventSupervisorByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventSupervisorStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventSupervisorStreamCursorInput>>;
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
+
 
 export type SubscriptionEventTagsArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
@@ -37209,6 +38628,7 @@ export type SubscriptionEventTagsArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type SubscriptionEventTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37217,16 +38637,19 @@ export type SubscriptionEventTagsAggregateArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type SubscriptionEventTagsByPkArgs = {
   eventId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionEventTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventTagsStreamCursorInput>>;
   where?: InputMaybe<EventTagsBoolExp>;
 };
+
 
 export type SubscriptionExpenseArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -37236,6 +38659,7 @@ export type SubscriptionExpenseArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type SubscriptionExpenseAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37244,9 +38668,11 @@ export type SubscriptionExpenseAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type SubscriptionExpenseByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionExpenseItemArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -37256,6 +38682,7 @@ export type SubscriptionExpenseItemArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type SubscriptionExpenseItemAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37263,6 +38690,7 @@ export type SubscriptionExpenseItemAggregateArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type SubscriptionExpenseItemAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
@@ -37272,6 +38700,7 @@ export type SubscriptionExpenseItemAttachmentsArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionExpenseItemAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37280,10 +38709,12 @@ export type SubscriptionExpenseItemAttachmentsAggregateArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionExpenseItemAttachmentsByPkArgs = {
   expenseItemId: Scalars['bigint']['input'];
   fileUploadId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionExpenseItemAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37291,9 +38722,11 @@ export type SubscriptionExpenseItemAttachmentsStreamArgs = {
   where?: InputMaybe<ExpenseItemAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionExpenseItemStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37301,11 +38734,13 @@ export type SubscriptionExpenseItemStreamArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type SubscriptionExpenseStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ExpenseStreamCursorInput>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type SubscriptionFavoriteArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
@@ -37315,6 +38750,7 @@ export type SubscriptionFavoriteArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type SubscriptionFavoriteAggregateArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37323,15 +38759,18 @@ export type SubscriptionFavoriteAggregateArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type SubscriptionFavoriteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFavoriteStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FavoriteStreamCursorInput>>;
   where?: InputMaybe<FavoriteBoolExp>;
 };
+
 
 export type SubscriptionFileUploadArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
@@ -37341,6 +38780,7 @@ export type SubscriptionFileUploadArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type SubscriptionFileUploadAggregateArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37349,15 +38789,18 @@ export type SubscriptionFileUploadAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type SubscriptionFileUploadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFileUploadStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FileUploadStreamCursorInput>>;
   where?: InputMaybe<FileUploadBoolExp>;
 };
+
 
 export type SubscriptionFinanceArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -37367,6 +38810,7 @@ export type SubscriptionFinanceArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type SubscriptionFinanceAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37374,6 +38818,7 @@ export type SubscriptionFinanceAggregateArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type SubscriptionFinanceAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
@@ -37383,6 +38828,7 @@ export type SubscriptionFinanceAttachmentsArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFinanceAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37391,10 +38837,12 @@ export type SubscriptionFinanceAttachmentsAggregateArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFinanceAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   financeId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFinanceAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37402,15 +38850,18 @@ export type SubscriptionFinanceAttachmentsStreamArgs = {
   where?: InputMaybe<FinanceAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFinanceByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFinanceStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FinanceStreamCursorInput>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type SubscriptionFinanceTagsArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
@@ -37420,6 +38871,7 @@ export type SubscriptionFinanceTagsArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type SubscriptionFinanceTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37428,16 +38880,19 @@ export type SubscriptionFinanceTagsAggregateArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type SubscriptionFinanceTagsByPkArgs = {
   financeId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFinanceTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FinanceTagsStreamCursorInput>>;
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
+
 
 export type SubscriptionFollowArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
@@ -37447,6 +38902,7 @@ export type SubscriptionFollowArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type SubscriptionFollowAggregateArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37455,15 +38911,18 @@ export type SubscriptionFollowAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type SubscriptionFollowByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFollowStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FollowStreamCursorInput>>;
   where?: InputMaybe<FollowBoolExp>;
 };
+
 
 export type SubscriptionFormArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
@@ -37473,6 +38932,7 @@ export type SubscriptionFormArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type SubscriptionFormAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37481,15 +38941,18 @@ export type SubscriptionFormAggregateArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type SubscriptionFormByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFormStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FormStreamCursorInput>>;
   where?: InputMaybe<FormBoolExp>;
 };
+
 
 export type SubscriptionFormSubmissionArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
@@ -37499,6 +38962,7 @@ export type SubscriptionFormSubmissionArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
+
 export type SubscriptionFormSubmissionAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37506,6 +38970,7 @@ export type SubscriptionFormSubmissionAggregateArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionOrderBy>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type SubscriptionFormSubmissionAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
@@ -37515,6 +38980,7 @@ export type SubscriptionFormSubmissionAttachmentsArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFormSubmissionAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37523,10 +38989,12 @@ export type SubscriptionFormSubmissionAttachmentsAggregateArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFormSubmissionAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   formSubmissionId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFormSubmissionAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37534,15 +39002,18 @@ export type SubscriptionFormSubmissionAttachmentsStreamArgs = {
   where?: InputMaybe<FormSubmissionAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionFormSubmissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionFormSubmissionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<FormSubmissionStreamCursorInput>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type SubscriptionGrantArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -37552,6 +39023,7 @@ export type SubscriptionGrantArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type SubscriptionGrantAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37559,6 +39031,7 @@ export type SubscriptionGrantAggregateArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type SubscriptionGrantAllocateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -37568,6 +39041,7 @@ export type SubscriptionGrantAllocateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type SubscriptionGrantAllocateAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37575,6 +39049,7 @@ export type SubscriptionGrantAllocateAggregateArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type SubscriptionGrantAllocateAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
@@ -37584,6 +39059,7 @@ export type SubscriptionGrantAllocateAttachmentsArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantAllocateAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37592,10 +39068,12 @@ export type SubscriptionGrantAllocateAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantAllocateAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantAllocateId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionGrantAllocateAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37603,15 +39081,18 @@ export type SubscriptionGrantAllocateAttachmentsStreamArgs = {
   where?: InputMaybe<GrantAllocateAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantAllocateByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionGrantAllocateStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<GrantAllocateStreamCursorInput>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type SubscriptionGrantAttachmentsArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
@@ -37621,6 +39102,7 @@ export type SubscriptionGrantAttachmentsArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantAttachmentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37629,10 +39111,12 @@ export type SubscriptionGrantAttachmentsAggregateArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantAttachmentsByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   grantId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionGrantAttachmentsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37640,15 +39124,18 @@ export type SubscriptionGrantAttachmentsStreamArgs = {
   where?: InputMaybe<GrantAttachmentsBoolExp>;
 };
 
+
 export type SubscriptionGrantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionGrantStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<GrantStreamCursorInput>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type SubscriptionIndividualArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
@@ -37658,6 +39145,7 @@ export type SubscriptionIndividualArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type SubscriptionIndividualAggregateArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37666,15 +39154,18 @@ export type SubscriptionIndividualAggregateArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type SubscriptionIndividualByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionIndividualStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<IndividualStreamCursorInput>>;
   where?: InputMaybe<IndividualBoolExp>;
 };
+
 
 export type SubscriptionIssueArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
@@ -37684,6 +39175,7 @@ export type SubscriptionIssueArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type SubscriptionIssueAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37692,9 +39184,11 @@ export type SubscriptionIssueAggregateArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type SubscriptionIssueByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionIssueContributorsArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
@@ -37704,6 +39198,7 @@ export type SubscriptionIssueContributorsArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type SubscriptionIssueContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37712,10 +39207,12 @@ export type SubscriptionIssueContributorsAggregateArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type SubscriptionIssueContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   issueId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionIssueContributorsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37723,11 +39220,13 @@ export type SubscriptionIssueContributorsStreamArgs = {
   where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
+
 export type SubscriptionIssueStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<IssueStreamCursorInput>>;
   where?: InputMaybe<IssueBoolExp>;
 };
+
 
 export type SubscriptionIssueTagsArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
@@ -37737,6 +39236,7 @@ export type SubscriptionIssueTagsArgs = {
   where?: InputMaybe<IssueTagsBoolExp>;
 };
 
+
 export type SubscriptionIssueTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37745,16 +39245,19 @@ export type SubscriptionIssueTagsAggregateArgs = {
   where?: InputMaybe<IssueTagsBoolExp>;
 };
 
+
 export type SubscriptionIssueTagsByPkArgs = {
   issueId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionIssueTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<IssueTagsStreamCursorInput>>;
   where?: InputMaybe<IssueTagsBoolExp>;
 };
+
 
 export type SubscriptionLegalUnitArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
@@ -37764,6 +39267,7 @@ export type SubscriptionLegalUnitArgs = {
   where?: InputMaybe<LegalUnitBoolExp>;
 };
 
+
 export type SubscriptionLegalUnitAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37772,9 +39276,11 @@ export type SubscriptionLegalUnitAggregateArgs = {
   where?: InputMaybe<LegalUnitBoolExp>;
 };
 
+
 export type SubscriptionLegalUnitByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionLegalUnitLocationArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
@@ -37784,6 +39290,7 @@ export type SubscriptionLegalUnitLocationArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type SubscriptionLegalUnitLocationAggregateArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitLocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37792,9 +39299,11 @@ export type SubscriptionLegalUnitLocationAggregateArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type SubscriptionLegalUnitLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionLegalUnitLocationStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37802,11 +39311,13 @@ export type SubscriptionLegalUnitLocationStreamArgs = {
   where?: InputMaybe<LegalUnitLocationBoolExp>;
 };
 
+
 export type SubscriptionLegalUnitStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<LegalUnitStreamCursorInput>>;
   where?: InputMaybe<LegalUnitBoolExp>;
 };
+
 
 export type SubscriptionLocationArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -37816,6 +39327,7 @@ export type SubscriptionLocationArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type SubscriptionLocationAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37824,9 +39336,11 @@ export type SubscriptionLocationAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type SubscriptionLocationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionLocationImagesArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
@@ -37836,6 +39350,7 @@ export type SubscriptionLocationImagesArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type SubscriptionLocationImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationImagesSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37844,10 +39359,12 @@ export type SubscriptionLocationImagesAggregateArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type SubscriptionLocationImagesByPkArgs = {
   fileUploadId: Scalars['bigint']['input'];
   locationId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionLocationImagesStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37855,11 +39372,13 @@ export type SubscriptionLocationImagesStreamArgs = {
   where?: InputMaybe<LocationImagesBoolExp>;
 };
 
+
 export type SubscriptionLocationStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<LocationStreamCursorInput>>;
   where?: InputMaybe<LocationBoolExp>;
 };
+
 
 export type SubscriptionMissionArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -37869,6 +39388,7 @@ export type SubscriptionMissionArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type SubscriptionMissionAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37877,9 +39397,11 @@ export type SubscriptionMissionAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type SubscriptionMissionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionMissionJoinArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -37889,6 +39411,7 @@ export type SubscriptionMissionJoinArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type SubscriptionMissionJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37897,9 +39420,11 @@ export type SubscriptionMissionJoinAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type SubscriptionMissionJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionMissionJoinStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -37907,11 +39432,13 @@ export type SubscriptionMissionJoinStreamArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type SubscriptionMissionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<MissionStreamCursorInput>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type SubscriptionPoleArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
@@ -37921,6 +39448,7 @@ export type SubscriptionPoleArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type SubscriptionPoleAggregateArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37929,15 +39457,18 @@ export type SubscriptionPoleAggregateArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type SubscriptionPoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionPoleStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PoleStreamCursorInput>>;
   where?: InputMaybe<PoleBoolExp>;
 };
+
 
 export type SubscriptionProjectArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -37947,6 +39478,7 @@ export type SubscriptionProjectArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type SubscriptionProjectAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37955,15 +39487,18 @@ export type SubscriptionProjectAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type SubscriptionProjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionProjectStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ProjectStreamCursorInput>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type SubscriptionProjectSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
@@ -37973,6 +39508,7 @@ export type SubscriptionProjectSupervisorsArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type SubscriptionProjectSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -37981,16 +39517,19 @@ export type SubscriptionProjectSupervisorsAggregateArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type SubscriptionProjectSupervisorsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   teamMemberId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionProjectSupervisorsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ProjectSupervisorsStreamCursorInput>>;
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
+
 
 export type SubscriptionProjectTagsArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
@@ -38000,6 +39539,7 @@ export type SubscriptionProjectTagsArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
+
 export type SubscriptionProjectTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38008,16 +39548,19 @@ export type SubscriptionProjectTagsAggregateArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
+
 export type SubscriptionProjectTagsByPkArgs = {
   projectId: Scalars['bigint']['input'];
   tagId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionProjectTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ProjectTagsStreamCursorInput>>;
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
+
 
 export type SubscriptionReactionArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -38027,6 +39570,7 @@ export type SubscriptionReactionArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type SubscriptionReactionAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38035,15 +39579,18 @@ export type SubscriptionReactionAggregateArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type SubscriptionReactionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionReactionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ReactionStreamCursorInput>>;
   where?: InputMaybe<ReactionBoolExp>;
 };
+
 
 export type SubscriptionReportArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -38053,6 +39600,7 @@ export type SubscriptionReportArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type SubscriptionReportAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38061,15 +39609,18 @@ export type SubscriptionReportAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type SubscriptionReportByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionReportStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ReportStreamCursorInput>>;
   where?: InputMaybe<ReportBoolExp>;
 };
+
 
 export type SubscriptionRoleArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
@@ -38079,6 +39630,7 @@ export type SubscriptionRoleArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type SubscriptionRoleAggregateArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38087,15 +39639,18 @@ export type SubscriptionRoleAggregateArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type SubscriptionRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionRoleStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<RoleStreamCursorInput>>;
   where?: InputMaybe<RoleBoolExp>;
 };
+
 
 export type SubscriptionSessionArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
@@ -38105,6 +39660,7 @@ export type SubscriptionSessionArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type SubscriptionSessionAggregateArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38113,15 +39669,18 @@ export type SubscriptionSessionAggregateArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type SubscriptionSessionByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionSessionStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<SessionStreamCursorInput>>;
   where?: InputMaybe<SessionBoolExp>;
 };
+
 
 export type SubscriptionShortcutArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -38131,6 +39690,7 @@ export type SubscriptionShortcutArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type SubscriptionShortcutAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38139,15 +39699,18 @@ export type SubscriptionShortcutAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type SubscriptionShortcutByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionShortcutStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ShortcutStreamCursorInput>>;
   where?: InputMaybe<ShortcutBoolExp>;
 };
+
 
 export type SubscriptionSocialArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
@@ -38157,6 +39720,7 @@ export type SubscriptionSocialArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type SubscriptionSocialAggregateArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38165,15 +39729,18 @@ export type SubscriptionSocialAggregateArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type SubscriptionSocialByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionSocialStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<SocialStreamCursorInput>>;
   where?: InputMaybe<SocialBoolExp>;
 };
+
 
 export type SubscriptionSubjectArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
@@ -38183,6 +39750,7 @@ export type SubscriptionSubjectArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type SubscriptionSubjectAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38191,9 +39759,11 @@ export type SubscriptionSubjectAggregateArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type SubscriptionSubjectByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionSubjectClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
@@ -38203,6 +39773,7 @@ export type SubscriptionSubjectClassGroupsArgs = {
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
+
 export type SubscriptionSubjectClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38211,10 +39782,12 @@ export type SubscriptionSubjectClassGroupsAggregateArgs = {
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
+
 export type SubscriptionSubjectClassGroupsByPkArgs = {
   classGroupId: Scalars['bigint']['input'];
   subjectId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionSubjectClassGroupsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -38222,11 +39795,13 @@ export type SubscriptionSubjectClassGroupsStreamArgs = {
   where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
+
 export type SubscriptionSubjectStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<SubjectStreamCursorInput>>;
   where?: InputMaybe<SubjectBoolExp>;
 };
+
 
 export type SubscriptionTagArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
@@ -38236,6 +39811,7 @@ export type SubscriptionTagArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type SubscriptionTagAggregateArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38244,15 +39820,18 @@ export type SubscriptionTagAggregateArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type SubscriptionTagByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTagStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TagStreamCursorInput>>;
   where?: InputMaybe<TagBoolExp>;
 };
+
 
 export type SubscriptionTeamArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -38262,6 +39841,7 @@ export type SubscriptionTeamArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type SubscriptionTeamAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38270,9 +39850,11 @@ export type SubscriptionTeamAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type SubscriptionTeamByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTeamHistoryArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -38282,6 +39864,7 @@ export type SubscriptionTeamHistoryArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type SubscriptionTeamHistoryAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38290,15 +39873,18 @@ export type SubscriptionTeamHistoryAggregateArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type SubscriptionTeamHistoryByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTeamHistoryStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TeamHistoryStreamCursorInput>>;
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
+
 
 export type SubscriptionTeamJoinArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -38308,6 +39894,7 @@ export type SubscriptionTeamJoinArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type SubscriptionTeamJoinAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38316,15 +39903,18 @@ export type SubscriptionTeamJoinAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type SubscriptionTeamJoinByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTeamJoinStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TeamJoinStreamCursorInput>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type SubscriptionTeamMemberArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -38334,6 +39924,7 @@ export type SubscriptionTeamMemberArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type SubscriptionTeamMemberAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38342,42 +39933,48 @@ export type SubscriptionTeamMemberAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type SubscriptionTeamMemberByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type SubscriptionTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+
+export type SubscriptionTeamMemberRoleArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type SubscriptionTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+
+export type SubscriptionTeamMemberRoleAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type SubscriptionTeamMemberRolesByPkArgs = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+
+export type SubscriptionTeamMemberRoleByPkArgs = {
+  id: Scalars['bigint']['input'];
 };
 
-export type SubscriptionTeamMemberRolesStreamArgs = {
+
+export type SubscriptionTeamMemberRoleStreamArgs = {
   batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<TeamMemberRolesStreamCursorInput>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  cursor: Array<InputMaybe<TeamMemberRoleStreamCursorInput>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
+
 
 export type SubscriptionTeamMemberStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TeamMemberStreamCursorInput>>;
   where?: InputMaybe<TeamMemberBoolExp>;
 };
+
 
 export type SubscriptionTeamMetricArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
@@ -38387,6 +39984,7 @@ export type SubscriptionTeamMetricArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type SubscriptionTeamMetricAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38395,9 +39993,11 @@ export type SubscriptionTeamMetricAggregateArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type SubscriptionTeamMetricByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTeamMetricStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -38405,11 +40005,13 @@ export type SubscriptionTeamMetricStreamArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type SubscriptionTeamStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TeamStreamCursorInput>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type SubscriptionTenantArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
@@ -38419,6 +40021,7 @@ export type SubscriptionTenantArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
+
 export type SubscriptionTenantAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38427,9 +40030,11 @@ export type SubscriptionTenantAggregateArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
+
 export type SubscriptionTenantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTenantOrganizeArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -38439,6 +40044,7 @@ export type SubscriptionTenantOrganizeArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type SubscriptionTenantOrganizeAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38447,9 +40053,11 @@ export type SubscriptionTenantOrganizeAggregateArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type SubscriptionTenantOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionTenantOrganizeStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -38457,11 +40065,13 @@ export type SubscriptionTenantOrganizeStreamArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type SubscriptionTenantStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TenantStreamCursorInput>>;
   where?: InputMaybe<TenantBoolExp>;
 };
+
 
 export type SubscriptionThreadArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
@@ -38471,6 +40081,7 @@ export type SubscriptionThreadArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type SubscriptionThreadAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38479,9 +40090,11 @@ export type SubscriptionThreadAggregateArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type SubscriptionThreadByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionThreadContributorsArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
@@ -38491,6 +40104,7 @@ export type SubscriptionThreadContributorsArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type SubscriptionThreadContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38499,10 +40113,12 @@ export type SubscriptionThreadContributorsAggregateArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type SubscriptionThreadContributorsByPkArgs = {
   individualId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionThreadContributorsStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -38510,11 +40126,13 @@ export type SubscriptionThreadContributorsStreamArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type SubscriptionThreadStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ThreadStreamCursorInput>>;
   where?: InputMaybe<ThreadBoolExp>;
 };
+
 
 export type SubscriptionThreadTagsArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
@@ -38524,6 +40142,7 @@ export type SubscriptionThreadTagsArgs = {
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
 
+
 export type SubscriptionThreadTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38532,16 +40151,19 @@ export type SubscriptionThreadTagsAggregateArgs = {
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
 
+
 export type SubscriptionThreadTagsByPkArgs = {
   tagId: Scalars['bigint']['input'];
   threadId: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionThreadTagsStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ThreadTagsStreamCursorInput>>;
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
+
 
 export type SubscriptionUserArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
@@ -38551,6 +40173,7 @@ export type SubscriptionUserArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type SubscriptionUserAggregateArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38559,15 +40182,18 @@ export type SubscriptionUserAggregateArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type SubscriptionUserByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionUserStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<UserStreamCursorInput>>;
   where?: InputMaybe<UserBoolExp>;
 };
+
 
 export type SubscriptionValidationArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
@@ -38577,6 +40203,7 @@ export type SubscriptionValidationArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type SubscriptionValidationAggregateArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38585,15 +40212,18 @@ export type SubscriptionValidationAggregateArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type SubscriptionValidationByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionValidationStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ValidationStreamCursorInput>>;
   where?: InputMaybe<ValidationBoolExp>;
 };
+
 
 export type SubscriptionViewArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
@@ -38603,6 +40233,7 @@ export type SubscriptionViewArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type SubscriptionViewAggregateArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38611,15 +40242,18 @@ export type SubscriptionViewAggregateArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type SubscriptionViewByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionViewStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ViewStreamCursorInput>>;
   where?: InputMaybe<ViewBoolExp>;
 };
+
 
 export type SubscriptionVoteArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
@@ -38629,6 +40263,7 @@ export type SubscriptionVoteArgs = {
   where?: InputMaybe<VoteBoolExp>;
 };
 
+
 export type SubscriptionVoteAggregateArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38637,9 +40272,11 @@ export type SubscriptionVoteAggregateArgs = {
   where?: InputMaybe<VoteBoolExp>;
 };
 
+
 export type SubscriptionVoteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
+
 
 export type SubscriptionVoteStreamArgs = {
   batchSize: Scalars['Int']['input'];
@@ -38678,6 +40315,7 @@ export type Tag = {
   type: Scalars['String']['output'];
 };
 
+
 export type TagActorTagsArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38685,6 +40323,7 @@ export type TagActorTagsArgs = {
   orderBy?: InputMaybe<Array<ActorTagsOrderBy>>;
   where?: InputMaybe<ActorTagsBoolExp>;
 };
+
 
 export type TagActorTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorTagsSelectColumn>>;
@@ -38694,6 +40333,7 @@ export type TagActorTagsAggregateArgs = {
   where?: InputMaybe<ActorTagsBoolExp>;
 };
 
+
 export type TagEventTagsArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38701,6 +40341,7 @@ export type TagEventTagsArgs = {
   orderBy?: InputMaybe<Array<EventTagsOrderBy>>;
   where?: InputMaybe<EventTagsBoolExp>;
 };
+
 
 export type TagEventTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventTagsSelectColumn>>;
@@ -38710,6 +40351,7 @@ export type TagEventTagsAggregateArgs = {
   where?: InputMaybe<EventTagsBoolExp>;
 };
 
+
 export type TagFinanceTagsArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38717,6 +40359,7 @@ export type TagFinanceTagsArgs = {
   orderBy?: InputMaybe<Array<FinanceTagsOrderBy>>;
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
+
 
 export type TagFinanceTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceTagsSelectColumn>>;
@@ -38726,6 +40369,7 @@ export type TagFinanceTagsAggregateArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
+
 export type TagIssueTagsArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38733,6 +40377,7 @@ export type TagIssueTagsArgs = {
   orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
   where?: InputMaybe<IssueTagsBoolExp>;
 };
+
 
 export type TagIssueTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
@@ -38742,6 +40387,7 @@ export type TagIssueTagsAggregateArgs = {
   where?: InputMaybe<IssueTagsBoolExp>;
 };
 
+
 export type TagProjectTagsArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38749,6 +40395,7 @@ export type TagProjectTagsArgs = {
   orderBy?: InputMaybe<Array<ProjectTagsOrderBy>>;
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
+
 
 export type TagProjectTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
@@ -38758,6 +40405,7 @@ export type TagProjectTagsAggregateArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
+
 export type TagThreadTagsArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -38765,6 +40413,7 @@ export type TagThreadTagsArgs = {
   orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
+
 
 export type TagThreadTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
@@ -38798,6 +40447,7 @@ export type TagAggregateFields = {
   varSamp?: Maybe<TagVarSampFields>;
   variance?: Maybe<TagVarianceFields>;
 };
+
 
 export type TagAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TagSelectColumn>>;
@@ -38872,7 +40522,7 @@ export type TagBoolExp = {
 };
 
 export enum TagConstraint {
-  TagPkey = 'tag_pkey',
+  TagPkey = 'tag_pkey'
 }
 
 export type TagIncInput = {
@@ -39025,7 +40675,7 @@ export enum TagSelectColumn {
   Name = 'name',
   Slug = 'slug',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type TagSetInput = {
@@ -39135,7 +40785,7 @@ export enum TagUpdateColumn {
   Name = 'name',
   Slug = 'slug',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type TagUpdates = {
@@ -39261,6 +40911,7 @@ export type Team = {
   videoId?: Maybe<Scalars['bigint']['output']>;
 };
 
+
 export type TeamAccountsArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39268,6 +40919,7 @@ export type TeamAccountsArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type TeamAccountsAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -39277,6 +40929,7 @@ export type TeamAccountsAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type TeamActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39284,6 +40937,7 @@ export type TeamActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type TeamActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -39293,6 +40947,7 @@ export type TeamActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type TeamContentsArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39300,6 +40955,7 @@ export type TeamContentsArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type TeamContentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -39309,6 +40965,7 @@ export type TeamContentsAggregateArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type TeamDocumentsArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39316,6 +40973,7 @@ export type TeamDocumentsArgs = {
   orderBy?: InputMaybe<Array<DocumentOrderBy>>;
   where?: InputMaybe<DocumentBoolExp>;
 };
+
 
 export type TeamDocumentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -39325,6 +40983,7 @@ export type TeamDocumentsAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type TeamEventOrganizesArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39332,6 +40991,7 @@ export type TeamEventOrganizesArgs = {
   orderBy?: InputMaybe<Array<EventOrganizeOrderBy>>;
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
+
 
 export type TeamEventOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -39341,6 +41001,7 @@ export type TeamEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type TeamFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39348,6 +41009,7 @@ export type TeamFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type TeamFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -39357,6 +41019,7 @@ export type TeamFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type TeamGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39364,6 +41027,7 @@ export type TeamGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type TeamGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -39373,6 +41037,7 @@ export type TeamGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type TeamMissionsArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39380,6 +41045,7 @@ export type TeamMissionsArgs = {
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type TeamMissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -39389,6 +41055,7 @@ export type TeamMissionsAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type TeamPolesArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39396,6 +41063,7 @@ export type TeamPolesArgs = {
   orderBy?: InputMaybe<Array<PoleOrderBy>>;
   where?: InputMaybe<PoleBoolExp>;
 };
+
 
 export type TeamPolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
@@ -39405,6 +41073,7 @@ export type TeamPolesAggregateArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type TeamProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39412,6 +41081,7 @@ export type TeamProjectsArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type TeamProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -39421,6 +41091,7 @@ export type TeamProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type TeamRolesArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39428,6 +41099,7 @@ export type TeamRolesArgs = {
   orderBy?: InputMaybe<Array<RoleOrderBy>>;
   where?: InputMaybe<RoleBoolExp>;
 };
+
 
 export type TeamRolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
@@ -39437,6 +41109,7 @@ export type TeamRolesAggregateArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type TeamTeamHistoriesArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39444,6 +41117,7 @@ export type TeamTeamHistoriesArgs = {
   orderBy?: InputMaybe<Array<TeamHistoryOrderBy>>;
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
+
 
 export type TeamTeamHistoriesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -39453,6 +41127,7 @@ export type TeamTeamHistoriesAggregateArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type TeamTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39460,6 +41135,7 @@ export type TeamTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type TeamTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -39469,6 +41145,7 @@ export type TeamTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type TeamTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39476,6 +41153,7 @@ export type TeamTeamMembersArgs = {
   orderBy?: InputMaybe<Array<TeamMemberOrderBy>>;
   where?: InputMaybe<TeamMemberBoolExp>;
 };
+
 
 export type TeamTeamMembersAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -39485,6 +41163,7 @@ export type TeamTeamMembersAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type TeamTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39492,6 +41171,7 @@ export type TeamTeamsArgs = {
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type TeamTeamsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -39501,6 +41181,7 @@ export type TeamTeamsAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type TeamTenantOrganizesArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -39508,6 +41189,7 @@ export type TeamTenantOrganizesArgs = {
   orderBy?: InputMaybe<Array<TenantOrganizeOrderBy>>;
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
+
 
 export type TeamTenantOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -39543,6 +41225,7 @@ export type TeamAggregateFields = {
   varSamp?: Maybe<TeamVarSampFields>;
   variance?: Maybe<TeamVarianceFields>;
 };
+
 
 export type TeamAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TeamSelectColumn>>;
@@ -39679,7 +41362,7 @@ export enum TeamConstraint {
   TeamClassGroupIdUnique = 'team_class_group_id_unique',
   TeamCohortIdUnique = 'team_cohort_id_unique',
   TeamJoinFormIdUnique = 'team_join_form_id_unique',
-  TeamPkey = 'team_pkey',
+  TeamPkey = 'team_pkey'
 }
 
 export type TeamHistory = {
@@ -39723,6 +41406,7 @@ export type TeamHistoryAggregateFields = {
   varSamp?: Maybe<TeamHistoryVarSampFields>;
   variance?: Maybe<TeamHistoryVarianceFields>;
 };
+
 
 export type TeamHistoryAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -39783,7 +41467,7 @@ export type TeamHistoryBoolExp = {
 };
 
 export enum TeamHistoryConstraint {
-  TeamHistoryPkey = 'team_history_pkey',
+  TeamHistoryPkey = 'team_history_pkey'
 }
 
 export type TeamHistoryIncInput = {
@@ -39905,7 +41589,7 @@ export enum TeamHistorySelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type TeamHistorySetInput = {
@@ -40009,7 +41693,7 @@ export enum TeamHistoryUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type TeamHistoryUpdates = {
@@ -40186,6 +41870,7 @@ export type TeamJoinAggregateFields = {
   variance?: Maybe<TeamJoinVarianceFields>;
 };
 
+
 export type TeamJoinAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TeamJoinSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -40268,7 +41953,7 @@ export type TeamJoinBoolExp = {
 };
 
 export enum TeamJoinConstraint {
-  TeamJoinPkey = 'team_join_pkey',
+  TeamJoinPkey = 'team_join_pkey'
 }
 
 export type TeamJoinIncInput = {
@@ -40443,7 +42128,7 @@ export enum TeamJoinSelectColumn {
   ReceivedRoleId = 'receivedRoleId',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type TeamJoinSetInput = {
@@ -40610,7 +42295,7 @@ export enum TeamJoinUpdateColumn {
   ReceivedRoleId = 'receivedRoleId',
   State = 'state',
   TeamId = 'teamId',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type TeamJoinUpdates = {
@@ -40759,22 +42444,22 @@ export type TeamMember = {
   createdBy?: Maybe<Individual>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   permissions: Scalars['Int']['output'];
-  startDate: Scalars['timestamptz']['output'];
+  start: Scalars['timestamptz']['output'];
   supervisedProjects: Array<ProjectSupervisors>;
   supervisedProjectsAggregate: ProjectSupervisorsAggregate;
   team: Team;
   teamId: Scalars['bigint']['output'];
-  teamMemberRoles: Array<TeamMemberRoles>;
-  teamMemberRolesAggregate: TeamMemberRolesAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
   user: User;
   userId: Scalars['bigint']['output'];
 };
+
 
 export type TeamMemberSupervisedProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
@@ -40784,6 +42469,7 @@ export type TeamMemberSupervisedProjectsArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type TeamMemberSupervisedProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSupervisorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40792,20 +42478,22 @@ export type TeamMemberSupervisedProjectsAggregateArgs = {
   where?: InputMaybe<ProjectSupervisorsBoolExp>;
 };
 
+
 export type TeamMemberTeamMemberRolesArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
+
 export type TeamMemberTeamMemberRolesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMemberRolesOrderBy>>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
 export type TeamMemberAggregate = {
@@ -40832,6 +42520,7 @@ export type TeamMemberAggregateFields = {
   varSamp?: Maybe<TeamMemberVarSampFields>;
   variance?: Maybe<TeamMemberVarianceFields>;
 };
+
 
 export type TeamMemberAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -40884,17 +42573,16 @@ export type TeamMemberBoolExp = {
   createdBy?: InputMaybe<IndividualBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  endDate?: InputMaybe<TimestamptzComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   permissions?: InputMaybe<IntComparisonExp>;
-  startDate?: InputMaybe<TimestamptzComparisonExp>;
+  start?: InputMaybe<TimestamptzComparisonExp>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsBoolExp>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateBoolExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesBoolExp>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
   user?: InputMaybe<UserBoolExp>;
@@ -40902,7 +42590,7 @@ export type TeamMemberBoolExp = {
 };
 
 export enum TeamMemberConstraint {
-  TeamMemberPkey = 'team_member_pkey',
+  TeamMemberPkey = 'team_member_pkey'
 }
 
 export type TeamMemberIncInput = {
@@ -40919,15 +42607,14 @@ export type TeamMemberInsertInput = {
   createdBy?: InputMaybe<IndividualObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   supervisedProjects?: InputMaybe<ProjectSupervisorsArrRelInsertInput>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
-  teamMemberRoles?: InputMaybe<TeamMemberRolesArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   user?: InputMaybe<UserObjRelInsertInput>;
@@ -40939,11 +42626,10 @@ export type TeamMemberMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -40953,11 +42639,10 @@ export type TeamMemberMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -40968,11 +42653,10 @@ export type TeamMemberMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   permissions?: Maybe<Scalars['Int']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   userId?: Maybe<Scalars['bigint']['output']>;
@@ -40982,11 +42666,10 @@ export type TeamMemberMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   userId?: InputMaybe<OrderBy>;
@@ -41014,15 +42697,14 @@ export type TeamMemberOrderBy = {
   createdBy?: InputMaybe<IndividualOrderBy>;
   createdById?: InputMaybe<OrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   permissions?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
+  start?: InputMaybe<OrderBy>;
   supervisedProjectsAggregate?: InputMaybe<ProjectSupervisorsAggregateOrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
-  teamMemberRolesAggregate?: InputMaybe<TeamMemberRolesAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   user?: InputMaybe<UserOrderBy>;
@@ -41033,277 +42715,406 @@ export type TeamMemberPkColumnsInput = {
   id: Scalars['bigint']['input'];
 };
 
-export type TeamMemberRoles = {
-  __typename?: 'TeamMemberRoles';
+export type TeamMemberRole = {
+  __typename?: 'TeamMemberRole';
+  createdAt: Scalars['timestamptz']['output'];
+  createdBy?: Maybe<Individual>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['bigint']['output'];
   role: Role;
   roleId: Scalars['bigint']['output'];
   teamMember: TeamMember;
   teamMemberId: Scalars['bigint']['output'];
+  tenant: Tenant;
+  tenantId: Scalars['bigint']['output'];
 };
 
-export type TeamMemberRolesAggregate = {
-  __typename?: 'TeamMemberRolesAggregate';
-  aggregate?: Maybe<TeamMemberRolesAggregateFields>;
-  nodes: Array<TeamMemberRoles>;
+export type TeamMemberRoleAggregate = {
+  __typename?: 'TeamMemberRoleAggregate';
+  aggregate?: Maybe<TeamMemberRoleAggregateFields>;
+  nodes: Array<TeamMemberRole>;
 };
 
-export type TeamMemberRolesAggregateBoolExp = {
-  count?: InputMaybe<TeamMemberRolesAggregateBoolExpCount>;
+export type TeamMemberRoleAggregateBoolExp = {
+  count?: InputMaybe<TeamMemberRoleAggregateBoolExpCount>;
 };
 
-export type TeamMemberRolesAggregateFields = {
-  __typename?: 'TeamMemberRolesAggregateFields';
-  avg?: Maybe<TeamMemberRolesAvgFields>;
+export type TeamMemberRoleAggregateFields = {
+  __typename?: 'TeamMemberRoleAggregateFields';
+  avg?: Maybe<TeamMemberRoleAvgFields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<TeamMemberRolesMaxFields>;
-  min?: Maybe<TeamMemberRolesMinFields>;
-  stddev?: Maybe<TeamMemberRolesStddevFields>;
-  stddevPop?: Maybe<TeamMemberRolesStddevPopFields>;
-  stddevSamp?: Maybe<TeamMemberRolesStddevSampFields>;
-  sum?: Maybe<TeamMemberRolesSumFields>;
-  varPop?: Maybe<TeamMemberRolesVarPopFields>;
-  varSamp?: Maybe<TeamMemberRolesVarSampFields>;
-  variance?: Maybe<TeamMemberRolesVarianceFields>;
+  max?: Maybe<TeamMemberRoleMaxFields>;
+  min?: Maybe<TeamMemberRoleMinFields>;
+  stddev?: Maybe<TeamMemberRoleStddevFields>;
+  stddevPop?: Maybe<TeamMemberRoleStddevPopFields>;
+  stddevSamp?: Maybe<TeamMemberRoleStddevSampFields>;
+  sum?: Maybe<TeamMemberRoleSumFields>;
+  varPop?: Maybe<TeamMemberRoleVarPopFields>;
+  varSamp?: Maybe<TeamMemberRoleVarSampFields>;
+  variance?: Maybe<TeamMemberRoleVarianceFields>;
 };
 
-export type TeamMemberRolesAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+
+export type TeamMemberRoleAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type TeamMemberRolesAggregateOrderBy = {
-  avg?: InputMaybe<TeamMemberRolesAvgOrderBy>;
+export type TeamMemberRoleAggregateOrderBy = {
+  avg?: InputMaybe<TeamMemberRoleAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<TeamMemberRolesMaxOrderBy>;
-  min?: InputMaybe<TeamMemberRolesMinOrderBy>;
-  stddev?: InputMaybe<TeamMemberRolesStddevOrderBy>;
-  stddevPop?: InputMaybe<TeamMemberRolesStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<TeamMemberRolesStddevSampOrderBy>;
-  sum?: InputMaybe<TeamMemberRolesSumOrderBy>;
-  varPop?: InputMaybe<TeamMemberRolesVarPopOrderBy>;
-  varSamp?: InputMaybe<TeamMemberRolesVarSampOrderBy>;
-  variance?: InputMaybe<TeamMemberRolesVarianceOrderBy>;
+  max?: InputMaybe<TeamMemberRoleMaxOrderBy>;
+  min?: InputMaybe<TeamMemberRoleMinOrderBy>;
+  stddev?: InputMaybe<TeamMemberRoleStddevOrderBy>;
+  stddevPop?: InputMaybe<TeamMemberRoleStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<TeamMemberRoleStddevSampOrderBy>;
+  sum?: InputMaybe<TeamMemberRoleSumOrderBy>;
+  varPop?: InputMaybe<TeamMemberRoleVarPopOrderBy>;
+  varSamp?: InputMaybe<TeamMemberRoleVarSampOrderBy>;
+  variance?: InputMaybe<TeamMemberRoleVarianceOrderBy>;
 };
 
-export type TeamMemberRolesArrRelInsertInput = {
-  data: Array<TeamMemberRolesInsertInput>;
-  onConflict?: InputMaybe<TeamMemberRolesOnConflict>;
+export type TeamMemberRoleArrRelInsertInput = {
+  data: Array<TeamMemberRoleInsertInput>;
+  onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
-export type TeamMemberRolesAvgFields = {
-  __typename?: 'TeamMemberRolesAvgFields';
+export type TeamMemberRoleAvgFields = {
+  __typename?: 'TeamMemberRoleAvgFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesAvgOrderBy = {
+export type TeamMemberRoleAvgOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesBoolExp = {
-  _and?: InputMaybe<Array<TeamMemberRolesBoolExp>>;
-  _not?: InputMaybe<TeamMemberRolesBoolExp>;
-  _or?: InputMaybe<Array<TeamMemberRolesBoolExp>>;
+export type TeamMemberRoleBoolExp = {
+  _and?: InputMaybe<Array<TeamMemberRoleBoolExp>>;
+  _not?: InputMaybe<TeamMemberRoleBoolExp>;
+  _or?: InputMaybe<Array<TeamMemberRoleBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  createdBy?: InputMaybe<IndividualBoolExp>;
+  createdById?: InputMaybe<BigintComparisonExp>;
+  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
+  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
   role?: InputMaybe<RoleBoolExp>;
   roleId?: InputMaybe<BigintComparisonExp>;
   teamMember?: InputMaybe<TeamMemberBoolExp>;
   teamMemberId?: InputMaybe<BigintComparisonExp>;
+  tenant?: InputMaybe<TenantBoolExp>;
+  tenantId?: InputMaybe<BigintComparisonExp>;
 };
 
-export enum TeamMemberRolesConstraint {
-  TeamMemberRolesPkey = 'team_member_roles_pkey',
+export enum TeamMemberRoleConstraint {
+  TeamMemberRolePkey = 'team_member_role_pkey'
 }
 
-export type TeamMemberRolesIncInput = {
+export type TeamMemberRoleIncInput = {
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesInsertInput = {
+export type TeamMemberRoleInsertInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdBy?: InputMaybe<IndividualObjRelInsertInput>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   role?: InputMaybe<RoleObjRelInsertInput>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMember?: InputMaybe<TeamMemberObjRelInsertInput>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenant?: InputMaybe<TenantObjRelInsertInput>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesMaxFields = {
-  __typename?: 'TeamMemberRolesMaxFields';
+export type TeamMemberRoleMaxFields = {
+  __typename?: 'TeamMemberRoleMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesMaxOrderBy = {
+export type TeamMemberRoleMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesMinFields = {
-  __typename?: 'TeamMemberRolesMinFields';
+export type TeamMemberRoleMinFields = {
+  __typename?: 'TeamMemberRoleMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
+  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesMinOrderBy = {
+export type TeamMemberRoleMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesMutationResponse = {
-  __typename?: 'TeamMemberRolesMutationResponse';
+export type TeamMemberRoleMutationResponse = {
+  __typename?: 'TeamMemberRoleMutationResponse';
   affectedRows: Scalars['Int']['output'];
-  returning: Array<TeamMemberRoles>;
+  returning: Array<TeamMemberRole>;
 };
 
-export type TeamMemberRolesOnConflict = {
-  constraint: TeamMemberRolesConstraint;
-  updateColumns?: Array<TeamMemberRolesUpdateColumn>;
-  where?: InputMaybe<TeamMemberRolesBoolExp>;
+export type TeamMemberRoleOnConflict = {
+  constraint: TeamMemberRoleConstraint;
+  updateColumns?: Array<TeamMemberRoleUpdateColumn>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
 };
 
-export type TeamMemberRolesOrderBy = {
+export type TeamMemberRoleOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<IndividualOrderBy>;
+  createdById?: InputMaybe<OrderBy>;
+  deletedAt?: InputMaybe<OrderBy>;
+  hiddenAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   role?: InputMaybe<RoleOrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMember?: InputMaybe<TeamMemberOrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenant?: InputMaybe<TenantOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesPkColumnsInput = {
-  roleId: Scalars['bigint']['input'];
-  teamMemberId: Scalars['bigint']['input'];
+export type TeamMemberRolePkColumnsInput = {
+  id: Scalars['bigint']['input'];
 };
 
-export enum TeamMemberRolesSelectColumn {
+export enum TeamMemberRoleSelectColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
   RoleId = 'roleId',
   TeamMemberId = 'teamMemberId',
+  TenantId = 'tenantId'
 }
 
-export type TeamMemberRolesSetInput = {
+export type TeamMemberRoleSetInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesStddevFields = {
-  __typename?: 'TeamMemberRolesStddevFields';
+export type TeamMemberRoleStddevFields = {
+  __typename?: 'TeamMemberRoleStddevFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevOrderBy = {
+export type TeamMemberRoleStddevOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStddevPopFields = {
-  __typename?: 'TeamMemberRolesStddevPopFields';
+export type TeamMemberRoleStddevPopFields = {
+  __typename?: 'TeamMemberRoleStddevPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevPopOrderBy = {
+export type TeamMemberRoleStddevPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStddevSampFields = {
-  __typename?: 'TeamMemberRolesStddevSampFields';
+export type TeamMemberRoleStddevSampFields = {
+  __typename?: 'TeamMemberRoleStddevSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesStddevSampOrderBy = {
+export type TeamMemberRoleStddevSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesStreamCursorInput = {
-  initialValue: TeamMemberRolesStreamCursorValueInput;
+export type TeamMemberRoleStreamCursorInput = {
+  initialValue: TeamMemberRoleStreamCursorValueInput;
   ordering?: InputMaybe<CursorOrdering>;
 };
 
-export type TeamMemberRolesStreamCursorValueInput = {
+export type TeamMemberRoleStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  createdById?: InputMaybe<Scalars['bigint']['input']>;
+  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['bigint']['input']>;
   roleId?: InputMaybe<Scalars['bigint']['input']>;
   teamMemberId?: InputMaybe<Scalars['bigint']['input']>;
+  tenantId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
-export type TeamMemberRolesSumFields = {
-  __typename?: 'TeamMemberRolesSumFields';
+export type TeamMemberRoleSumFields = {
+  __typename?: 'TeamMemberRoleSumFields';
+  createdById?: Maybe<Scalars['bigint']['output']>;
+  id?: Maybe<Scalars['bigint']['output']>;
   roleId?: Maybe<Scalars['bigint']['output']>;
   teamMemberId?: Maybe<Scalars['bigint']['output']>;
+  tenantId?: Maybe<Scalars['bigint']['output']>;
 };
 
-export type TeamMemberRolesSumOrderBy = {
+export type TeamMemberRoleSumOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export enum TeamMemberRolesUpdateColumn {
+export enum TeamMemberRoleUpdateColumn {
+  CreatedAt = 'createdAt',
+  CreatedById = 'createdById',
+  DeletedAt = 'deletedAt',
+  HiddenAt = 'hiddenAt',
+  Id = 'id',
   RoleId = 'roleId',
   TeamMemberId = 'teamMemberId',
+  TenantId = 'tenantId'
 }
 
-export type TeamMemberRolesUpdates = {
-  _inc?: InputMaybe<TeamMemberRolesIncInput>;
-  _set?: InputMaybe<TeamMemberRolesSetInput>;
-  where: TeamMemberRolesBoolExp;
+export type TeamMemberRoleUpdates = {
+  _inc?: InputMaybe<TeamMemberRoleIncInput>;
+  _set?: InputMaybe<TeamMemberRoleSetInput>;
+  where: TeamMemberRoleBoolExp;
 };
 
-export type TeamMemberRolesVarPopFields = {
-  __typename?: 'TeamMemberRolesVarPopFields';
+export type TeamMemberRoleVarPopFields = {
+  __typename?: 'TeamMemberRoleVarPopFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarPopOrderBy = {
+export type TeamMemberRoleVarPopOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesVarSampFields = {
-  __typename?: 'TeamMemberRolesVarSampFields';
+export type TeamMemberRoleVarSampFields = {
+  __typename?: 'TeamMemberRoleVarSampFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarSampOrderBy = {
+export type TeamMemberRoleVarSampOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMemberRolesVarianceFields = {
-  __typename?: 'TeamMemberRolesVarianceFields';
+export type TeamMemberRoleVarianceFields = {
+  __typename?: 'TeamMemberRoleVarianceFields';
+  createdById?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
   roleId?: Maybe<Scalars['Float']['output']>;
   teamMemberId?: Maybe<Scalars['Float']['output']>;
+  tenantId?: Maybe<Scalars['Float']['output']>;
 };
 
-export type TeamMemberRolesVarianceOrderBy = {
+export type TeamMemberRoleVarianceOrderBy = {
+  createdById?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
   teamMemberId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
 };
 
 export enum TeamMemberSelectColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  StartDate = 'startDate',
+  Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type TeamMemberSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -41375,11 +43186,10 @@ export type TeamMemberStreamCursorValueInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   permissions?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   userId?: InputMaybe<Scalars['bigint']['input']>;
@@ -41408,14 +43218,13 @@ export enum TeamMemberUpdateColumn {
   CreatedAt = 'createdAt',
   CreatedById = 'createdById',
   DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Permissions = 'permissions',
-  StartDate = 'startDate',
+  Start = 'start',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  UserId = 'userId',
+  UserId = 'userId'
 }
 
 export type TeamMemberUpdates = {
@@ -41520,6 +43329,7 @@ export type TeamMetricAggregateFields = {
   variance?: Maybe<TeamMetricVarianceFields>;
 };
 
+
 export type TeamMetricAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TeamMetricSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -41574,7 +43384,7 @@ export type TeamMetricBoolExp = {
 };
 
 export enum TeamMetricConstraint {
-  TeamMetricPkey = 'team_metric_pkey',
+  TeamMetricPkey = 'team_metric_pkey'
 }
 
 export type TeamMetricIncInput = {
@@ -41679,7 +43489,7 @@ export enum TeamMetricSelectColumn {
   Id = 'id',
   TenantId = 'tenantId',
   Type = 'type',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type TeamMetricSetInput = {
@@ -41769,7 +43579,7 @@ export enum TeamMetricUpdateColumn {
   Id = 'id',
   TenantId = 'tenantId',
   Type = 'type',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type TeamMetricUpdates = {
@@ -41971,17 +43781,17 @@ export enum TeamSelectColumn {
   TenantGrantFundId = 'tenantGrantFundId',
   TenantId = 'tenantId',
   Type = 'type',
-  VideoId = 'videoId',
+  VideoId = 'videoId'
 }
 
 export enum TeamSelectColumnTeamAggregateBoolExpBool_AndArgumentsColumns {
   IsJoinFormActive = 'isJoinFormActive',
-  IsOnboardingComplete = 'isOnboardingComplete',
+  IsOnboardingComplete = 'isOnboardingComplete'
 }
 
 export enum TeamSelectColumnTeamAggregateBoolExpBool_OrArgumentsColumns {
   IsJoinFormActive = 'isJoinFormActive',
-  IsOnboardingComplete = 'isOnboardingComplete',
+  IsOnboardingComplete = 'isOnboardingComplete'
 }
 
 export type TeamSetInput = {
@@ -42194,7 +44004,7 @@ export enum TeamUpdateColumn {
   TenantGrantFundId = 'tenantGrantFundId',
   TenantId = 'tenantId',
   Type = 'type',
-  VideoId = 'videoId',
+  VideoId = 'videoId'
 }
 
 export type TeamUpdates = {
@@ -42416,6 +44226,8 @@ export type Tenant = {
   teamHistoriesAggregate: TeamHistoryAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
+  teamMemberRoles: Array<TeamMemberRole>;
+  teamMemberRolesAggregate: TeamMemberRoleAggregate;
   teamMembers: Array<TeamMember>;
   teamMembersAggregate: TeamMemberAggregate;
   teamMetrics: Array<TeamMetric>;
@@ -42436,6 +44248,7 @@ export type Tenant = {
   votesAggregate: VoteAggregate;
 };
 
+
 export type TenantAccountsArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42443,6 +44256,7 @@ export type TenantAccountsArgs = {
   orderBy?: InputMaybe<Array<AccountOrderBy>>;
   where?: InputMaybe<AccountBoolExp>;
 };
+
 
 export type TenantAccountsAggregateArgs = {
   distinctOn?: InputMaybe<Array<AccountSelectColumn>>;
@@ -42452,6 +44266,7 @@ export type TenantAccountsAggregateArgs = {
   where?: InputMaybe<AccountBoolExp>;
 };
 
+
 export type TenantActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42459,6 +44274,7 @@ export type TenantActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type TenantActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -42468,6 +44284,7 @@ export type TenantActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type TenantActorImagesArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42475,6 +44292,7 @@ export type TenantActorImagesArgs = {
   orderBy?: InputMaybe<Array<ActorImageOrderBy>>;
   where?: InputMaybe<ActorImageBoolExp>;
 };
+
 
 export type TenantActorImagesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorImageSelectColumn>>;
@@ -42484,6 +44302,7 @@ export type TenantActorImagesAggregateArgs = {
   where?: InputMaybe<ActorImageBoolExp>;
 };
 
+
 export type TenantActorsArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42491,6 +44310,7 @@ export type TenantActorsArgs = {
   orderBy?: InputMaybe<Array<ActorOrderBy>>;
   where?: InputMaybe<ActorBoolExp>;
 };
+
 
 export type TenantActorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActorSelectColumn>>;
@@ -42500,6 +44320,7 @@ export type TenantActorsAggregateArgs = {
   where?: InputMaybe<ActorBoolExp>;
 };
 
+
 export type TenantBanksArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42507,6 +44328,7 @@ export type TenantBanksArgs = {
   orderBy?: InputMaybe<Array<BankOrderBy>>;
   where?: InputMaybe<BankBoolExp>;
 };
+
 
 export type TenantBanksAggregateArgs = {
   distinctOn?: InputMaybe<Array<BankSelectColumn>>;
@@ -42516,6 +44338,7 @@ export type TenantBanksAggregateArgs = {
   where?: InputMaybe<BankBoolExp>;
 };
 
+
 export type TenantBotsArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42523,6 +44346,7 @@ export type TenantBotsArgs = {
   orderBy?: InputMaybe<Array<BotOrderBy>>;
   where?: InputMaybe<BotBoolExp>;
 };
+
 
 export type TenantBotsAggregateArgs = {
   distinctOn?: InputMaybe<Array<BotSelectColumn>>;
@@ -42532,6 +44356,7 @@ export type TenantBotsAggregateArgs = {
   where?: InputMaybe<BotBoolExp>;
 };
 
+
 export type TenantCampusClustersArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42539,6 +44364,7 @@ export type TenantCampusClustersArgs = {
   orderBy?: InputMaybe<Array<CampusClusterOrderBy>>;
   where?: InputMaybe<CampusClusterBoolExp>;
 };
+
 
 export type TenantCampusClustersAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusClusterSelectColumn>>;
@@ -42548,6 +44374,7 @@ export type TenantCampusClustersAggregateArgs = {
   where?: InputMaybe<CampusClusterBoolExp>;
 };
 
+
 export type TenantCampusesArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42555,6 +44382,7 @@ export type TenantCampusesArgs = {
   orderBy?: InputMaybe<Array<CampusOrderBy>>;
   where?: InputMaybe<CampusBoolExp>;
 };
+
 
 export type TenantCampusesAggregateArgs = {
   distinctOn?: InputMaybe<Array<CampusSelectColumn>>;
@@ -42564,6 +44392,7 @@ export type TenantCampusesAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
+
 export type TenantCanteenFoodsArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42571,6 +44400,7 @@ export type TenantCanteenFoodsArgs = {
   orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
+
 
 export type TenantCanteenFoodsAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
@@ -42580,6 +44410,7 @@ export type TenantCanteenFoodsAggregateArgs = {
   where?: InputMaybe<CanteenFoodBoolExp>;
 };
 
+
 export type TenantCanteenMenusArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42587,6 +44418,7 @@ export type TenantCanteenMenusArgs = {
   orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
+
 
 export type TenantCanteenMenusAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
@@ -42596,6 +44428,7 @@ export type TenantCanteenMenusAggregateArgs = {
   where?: InputMaybe<CanteenMenuBoolExp>;
 };
 
+
 export type TenantCanteensArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42603,6 +44436,7 @@ export type TenantCanteensArgs = {
   orderBy?: InputMaybe<Array<CanteenOrderBy>>;
   where?: InputMaybe<CanteenBoolExp>;
 };
+
 
 export type TenantCanteensAggregateArgs = {
   distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
@@ -42612,6 +44446,7 @@ export type TenantCanteensAggregateArgs = {
   where?: InputMaybe<CanteenBoolExp>;
 };
 
+
 export type TenantClassGroupTeachersArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42619,6 +44454,7 @@ export type TenantClassGroupTeachersArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
+
 
 export type TenantClassGroupTeachersAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -42628,6 +44464,7 @@ export type TenantClassGroupTeachersAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type TenantClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42635,6 +44472,7 @@ export type TenantClassGroupsArgs = {
   orderBy?: InputMaybe<Array<ClassGroupOrderBy>>;
   where?: InputMaybe<ClassGroupBoolExp>;
 };
+
 
 export type TenantClassGroupsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
@@ -42644,6 +44482,7 @@ export type TenantClassGroupsAggregateArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
+
 export type TenantCohortsArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42651,6 +44490,7 @@ export type TenantCohortsArgs = {
   orderBy?: InputMaybe<Array<CohortOrderBy>>;
   where?: InputMaybe<CohortBoolExp>;
 };
+
 
 export type TenantCohortsAggregateArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
@@ -42660,6 +44500,7 @@ export type TenantCohortsAggregateArgs = {
   where?: InputMaybe<CohortBoolExp>;
 };
 
+
 export type TenantContentsArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42667,6 +44508,7 @@ export type TenantContentsArgs = {
   orderBy?: InputMaybe<Array<ContentOrderBy>>;
   where?: InputMaybe<ContentBoolExp>;
 };
+
 
 export type TenantContentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
@@ -42676,6 +44518,7 @@ export type TenantContentsAggregateArgs = {
   where?: InputMaybe<ContentBoolExp>;
 };
 
+
 export type TenantDocumentsArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42683,6 +44526,7 @@ export type TenantDocumentsArgs = {
   orderBy?: InputMaybe<Array<DocumentOrderBy>>;
   where?: InputMaybe<DocumentBoolExp>;
 };
+
 
 export type TenantDocumentsAggregateArgs = {
   distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
@@ -42692,6 +44536,7 @@ export type TenantDocumentsAggregateArgs = {
   where?: InputMaybe<DocumentBoolExp>;
 };
 
+
 export type TenantEventApprovalStepsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42699,6 +44544,7 @@ export type TenantEventApprovalStepsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalStepOrderBy>>;
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
+
 
 export type TenantEventApprovalStepsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalStepSelectColumn>>;
@@ -42708,6 +44554,7 @@ export type TenantEventApprovalStepsAggregateArgs = {
   where?: InputMaybe<EventApprovalStepBoolExp>;
 };
 
+
 export type TenantEventApprovalsArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42715,6 +44562,7 @@ export type TenantEventApprovalsArgs = {
   orderBy?: InputMaybe<Array<EventApprovalOrderBy>>;
   where?: InputMaybe<EventApprovalBoolExp>;
 };
+
 
 export type TenantEventApprovalsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventApprovalSelectColumn>>;
@@ -42724,6 +44572,7 @@ export type TenantEventApprovalsAggregateArgs = {
   where?: InputMaybe<EventApprovalBoolExp>;
 };
 
+
 export type TenantEventFavoritesArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42731,6 +44580,7 @@ export type TenantEventFavoritesArgs = {
   orderBy?: InputMaybe<Array<EventFavoriteOrderBy>>;
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
+
 
 export type TenantEventFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventFavoriteSelectColumn>>;
@@ -42740,6 +44590,7 @@ export type TenantEventFavoritesAggregateArgs = {
   where?: InputMaybe<EventFavoriteBoolExp>;
 };
 
+
 export type TenantEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42747,6 +44598,7 @@ export type TenantEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type TenantEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -42756,6 +44608,7 @@ export type TenantEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type TenantEventOrganizesArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42763,6 +44616,7 @@ export type TenantEventOrganizesArgs = {
   orderBy?: InputMaybe<Array<EventOrganizeOrderBy>>;
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
+
 
 export type TenantEventOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventOrganizeSelectColumn>>;
@@ -42772,6 +44626,7 @@ export type TenantEventOrganizesAggregateArgs = {
   where?: InputMaybe<EventOrganizeBoolExp>;
 };
 
+
 export type TenantEventSupervisorsArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42779,6 +44634,7 @@ export type TenantEventSupervisorsArgs = {
   orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
+
 
 export type TenantEventSupervisorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -42788,6 +44644,7 @@ export type TenantEventSupervisorsAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type TenantEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42795,6 +44652,7 @@ export type TenantEventsArgs = {
   orderBy?: InputMaybe<Array<EventOrderBy>>;
   where?: InputMaybe<EventBoolExp>;
 };
+
 
 export type TenantEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
@@ -42804,6 +44662,7 @@ export type TenantEventsAggregateArgs = {
   where?: InputMaybe<EventBoolExp>;
 };
 
+
 export type TenantExpenseItemsArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42811,6 +44670,7 @@ export type TenantExpenseItemsArgs = {
   orderBy?: InputMaybe<Array<ExpenseItemOrderBy>>;
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
+
 
 export type TenantExpenseItemsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseItemSelectColumn>>;
@@ -42820,6 +44680,7 @@ export type TenantExpenseItemsAggregateArgs = {
   where?: InputMaybe<ExpenseItemBoolExp>;
 };
 
+
 export type TenantExpensesArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42827,6 +44688,7 @@ export type TenantExpensesArgs = {
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
 };
+
 
 export type TenantExpensesAggregateArgs = {
   distinctOn?: InputMaybe<Array<ExpenseSelectColumn>>;
@@ -42836,6 +44698,7 @@ export type TenantExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
+
 export type TenantFavoritesArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42843,6 +44706,7 @@ export type TenantFavoritesArgs = {
   orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
   where?: InputMaybe<FavoriteBoolExp>;
 };
+
 
 export type TenantFavoritesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
@@ -42852,6 +44716,7 @@ export type TenantFavoritesAggregateArgs = {
   where?: InputMaybe<FavoriteBoolExp>;
 };
 
+
 export type TenantFileUploadsArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42859,6 +44724,7 @@ export type TenantFileUploadsArgs = {
   orderBy?: InputMaybe<Array<FileUploadOrderBy>>;
   where?: InputMaybe<FileUploadBoolExp>;
 };
+
 
 export type TenantFileUploadsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
@@ -42868,6 +44734,7 @@ export type TenantFileUploadsAggregateArgs = {
   where?: InputMaybe<FileUploadBoolExp>;
 };
 
+
 export type TenantFinancesArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42875,6 +44742,7 @@ export type TenantFinancesArgs = {
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
 };
+
 
 export type TenantFinancesAggregateArgs = {
   distinctOn?: InputMaybe<Array<FinanceSelectColumn>>;
@@ -42884,6 +44752,7 @@ export type TenantFinancesAggregateArgs = {
   where?: InputMaybe<FinanceBoolExp>;
 };
 
+
 export type TenantFollowsArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42891,6 +44760,7 @@ export type TenantFollowsArgs = {
   orderBy?: InputMaybe<Array<FollowOrderBy>>;
   where?: InputMaybe<FollowBoolExp>;
 };
+
 
 export type TenantFollowsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FollowSelectColumn>>;
@@ -42900,6 +44770,7 @@ export type TenantFollowsAggregateArgs = {
   where?: InputMaybe<FollowBoolExp>;
 };
 
+
 export type TenantFormSubmissionsArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42907,6 +44778,7 @@ export type TenantFormSubmissionsArgs = {
   orderBy?: InputMaybe<Array<FormSubmissionOrderBy>>;
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
+
 
 export type TenantFormSubmissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSubmissionSelectColumn>>;
@@ -42916,6 +44788,7 @@ export type TenantFormSubmissionsAggregateArgs = {
   where?: InputMaybe<FormSubmissionBoolExp>;
 };
 
+
 export type TenantFormsArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42923,6 +44796,7 @@ export type TenantFormsArgs = {
   orderBy?: InputMaybe<Array<FormOrderBy>>;
   where?: InputMaybe<FormBoolExp>;
 };
+
 
 export type TenantFormsAggregateArgs = {
   distinctOn?: InputMaybe<Array<FormSelectColumn>>;
@@ -42932,6 +44806,7 @@ export type TenantFormsAggregateArgs = {
   where?: InputMaybe<FormBoolExp>;
 };
 
+
 export type TenantGrantAllocatesArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42939,6 +44814,7 @@ export type TenantGrantAllocatesArgs = {
   orderBy?: InputMaybe<Array<GrantAllocateOrderBy>>;
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
+
 
 export type TenantGrantAllocatesAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantAllocateSelectColumn>>;
@@ -42948,6 +44824,7 @@ export type TenantGrantAllocatesAggregateArgs = {
   where?: InputMaybe<GrantAllocateBoolExp>;
 };
 
+
 export type TenantGrantsArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42955,6 +44832,7 @@ export type TenantGrantsArgs = {
   orderBy?: InputMaybe<Array<GrantOrderBy>>;
   where?: InputMaybe<GrantBoolExp>;
 };
+
 
 export type TenantGrantsAggregateArgs = {
   distinctOn?: InputMaybe<Array<GrantSelectColumn>>;
@@ -42964,6 +44842,7 @@ export type TenantGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
+
 export type TenantIndividualsArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42971,6 +44850,7 @@ export type TenantIndividualsArgs = {
   orderBy?: InputMaybe<Array<IndividualOrderBy>>;
   where?: InputMaybe<IndividualBoolExp>;
 };
+
 
 export type TenantIndividualsAggregateArgs = {
   distinctOn?: InputMaybe<Array<IndividualSelectColumn>>;
@@ -42980,6 +44860,7 @@ export type TenantIndividualsAggregateArgs = {
   where?: InputMaybe<IndividualBoolExp>;
 };
 
+
 export type TenantIssuesArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -42987,6 +44868,7 @@ export type TenantIssuesArgs = {
   orderBy?: InputMaybe<Array<IssueOrderBy>>;
   where?: InputMaybe<IssueBoolExp>;
 };
+
 
 export type TenantIssuesAggregateArgs = {
   distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
@@ -42996,6 +44878,7 @@ export type TenantIssuesAggregateArgs = {
   where?: InputMaybe<IssueBoolExp>;
 };
 
+
 export type TenantLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43003,6 +44886,7 @@ export type TenantLocationsArgs = {
   orderBy?: InputMaybe<Array<LocationOrderBy>>;
   where?: InputMaybe<LocationBoolExp>;
 };
+
 
 export type TenantLocationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
@@ -43012,6 +44896,7 @@ export type TenantLocationsAggregateArgs = {
   where?: InputMaybe<LocationBoolExp>;
 };
 
+
 export type TenantMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43019,6 +44904,7 @@ export type TenantMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type TenantMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -43028,6 +44914,7 @@ export type TenantMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type TenantMissionsArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43035,6 +44922,7 @@ export type TenantMissionsArgs = {
   orderBy?: InputMaybe<Array<MissionOrderBy>>;
   where?: InputMaybe<MissionBoolExp>;
 };
+
 
 export type TenantMissionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionSelectColumn>>;
@@ -43044,6 +44932,7 @@ export type TenantMissionsAggregateArgs = {
   where?: InputMaybe<MissionBoolExp>;
 };
 
+
 export type TenantPolesArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43051,6 +44940,7 @@ export type TenantPolesArgs = {
   orderBy?: InputMaybe<Array<PoleOrderBy>>;
   where?: InputMaybe<PoleBoolExp>;
 };
+
 
 export type TenantPolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<PoleSelectColumn>>;
@@ -43060,6 +44950,7 @@ export type TenantPolesAggregateArgs = {
   where?: InputMaybe<PoleBoolExp>;
 };
 
+
 export type TenantProjectsArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43067,6 +44958,7 @@ export type TenantProjectsArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>;
   where?: InputMaybe<ProjectBoolExp>;
 };
+
 
 export type TenantProjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ProjectSelectColumn>>;
@@ -43076,6 +44968,7 @@ export type TenantProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
+
 export type TenantReactionsArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43083,6 +44976,7 @@ export type TenantReactionsArgs = {
   orderBy?: InputMaybe<Array<ReactionOrderBy>>;
   where?: InputMaybe<ReactionBoolExp>;
 };
+
 
 export type TenantReactionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
@@ -43092,6 +44986,7 @@ export type TenantReactionsAggregateArgs = {
   where?: InputMaybe<ReactionBoolExp>;
 };
 
+
 export type TenantReportsArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43099,6 +44994,7 @@ export type TenantReportsArgs = {
   orderBy?: InputMaybe<Array<ReportOrderBy>>;
   where?: InputMaybe<ReportBoolExp>;
 };
+
 
 export type TenantReportsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
@@ -43108,6 +45004,7 @@ export type TenantReportsAggregateArgs = {
   where?: InputMaybe<ReportBoolExp>;
 };
 
+
 export type TenantRolesArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43115,6 +45012,7 @@ export type TenantRolesArgs = {
   orderBy?: InputMaybe<Array<RoleOrderBy>>;
   where?: InputMaybe<RoleBoolExp>;
 };
+
 
 export type TenantRolesAggregateArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
@@ -43124,6 +45022,7 @@ export type TenantRolesAggregateArgs = {
   where?: InputMaybe<RoleBoolExp>;
 };
 
+
 export type TenantSessionsArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43131,6 +45030,7 @@ export type TenantSessionsArgs = {
   orderBy?: InputMaybe<Array<SessionOrderBy>>;
   where?: InputMaybe<SessionBoolExp>;
 };
+
 
 export type TenantSessionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
@@ -43140,6 +45040,7 @@ export type TenantSessionsAggregateArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type TenantShortcutsArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43147,6 +45048,7 @@ export type TenantShortcutsArgs = {
   orderBy?: InputMaybe<Array<ShortcutOrderBy>>;
   where?: InputMaybe<ShortcutBoolExp>;
 };
+
 
 export type TenantShortcutsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -43156,6 +45058,7 @@ export type TenantShortcutsAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type TenantSocialsArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43163,6 +45066,7 @@ export type TenantSocialsArgs = {
   orderBy?: InputMaybe<Array<SocialOrderBy>>;
   where?: InputMaybe<SocialBoolExp>;
 };
+
 
 export type TenantSocialsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SocialSelectColumn>>;
@@ -43172,6 +45076,7 @@ export type TenantSocialsAggregateArgs = {
   where?: InputMaybe<SocialBoolExp>;
 };
 
+
 export type TenantSubjectsArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43179,6 +45084,7 @@ export type TenantSubjectsArgs = {
   orderBy?: InputMaybe<Array<SubjectOrderBy>>;
   where?: InputMaybe<SubjectBoolExp>;
 };
+
 
 export type TenantSubjectsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
@@ -43188,6 +45094,7 @@ export type TenantSubjectsAggregateArgs = {
   where?: InputMaybe<SubjectBoolExp>;
 };
 
+
 export type TenantTagsArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43195,6 +45102,7 @@ export type TenantTagsArgs = {
   orderBy?: InputMaybe<Array<TagOrderBy>>;
   where?: InputMaybe<TagBoolExp>;
 };
+
 
 export type TenantTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TagSelectColumn>>;
@@ -43204,6 +45112,7 @@ export type TenantTagsAggregateArgs = {
   where?: InputMaybe<TagBoolExp>;
 };
 
+
 export type TenantTeamHistoriesArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43211,6 +45120,7 @@ export type TenantTeamHistoriesArgs = {
   orderBy?: InputMaybe<Array<TeamHistoryOrderBy>>;
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
+
 
 export type TenantTeamHistoriesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamHistorySelectColumn>>;
@@ -43220,6 +45130,7 @@ export type TenantTeamHistoriesAggregateArgs = {
   where?: InputMaybe<TeamHistoryBoolExp>;
 };
 
+
 export type TenantTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43227,6 +45138,7 @@ export type TenantTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type TenantTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -43236,6 +45148,25 @@ export type TenantTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
+export type TenantTeamMemberRolesArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
+export type TenantTeamMemberRolesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TeamMemberRoleOrderBy>>;
+  where?: InputMaybe<TeamMemberRoleBoolExp>;
+};
+
+
 export type TenantTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43243,6 +45174,7 @@ export type TenantTeamMembersArgs = {
   orderBy?: InputMaybe<Array<TeamMemberOrderBy>>;
   where?: InputMaybe<TeamMemberBoolExp>;
 };
+
 
 export type TenantTeamMembersAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -43252,6 +45184,7 @@ export type TenantTeamMembersAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
+
 export type TenantTeamMetricsArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43259,6 +45192,7 @@ export type TenantTeamMetricsArgs = {
   orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
   where?: InputMaybe<TeamMetricBoolExp>;
 };
+
 
 export type TenantTeamMetricsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
@@ -43268,6 +45202,7 @@ export type TenantTeamMetricsAggregateArgs = {
   where?: InputMaybe<TeamMetricBoolExp>;
 };
 
+
 export type TenantTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43275,6 +45210,7 @@ export type TenantTeamsArgs = {
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
 };
+
 
 export type TenantTeamsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
@@ -43284,6 +45220,7 @@ export type TenantTeamsAggregateArgs = {
   where?: InputMaybe<TeamBoolExp>;
 };
 
+
 export type TenantTenantOrganizesArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43291,6 +45228,7 @@ export type TenantTenantOrganizesArgs = {
   orderBy?: InputMaybe<Array<TenantOrganizeOrderBy>>;
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
+
 
 export type TenantTenantOrganizesAggregateArgs = {
   distinctOn?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -43300,6 +45238,7 @@ export type TenantTenantOrganizesAggregateArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
+
 export type TenantThreadsArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43307,6 +45246,7 @@ export type TenantThreadsArgs = {
   orderBy?: InputMaybe<Array<ThreadOrderBy>>;
   where?: InputMaybe<ThreadBoolExp>;
 };
+
 
 export type TenantThreadsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
@@ -43316,6 +45256,7 @@ export type TenantThreadsAggregateArgs = {
   where?: InputMaybe<ThreadBoolExp>;
 };
 
+
 export type TenantUsersArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43323,6 +45264,7 @@ export type TenantUsersArgs = {
   orderBy?: InputMaybe<Array<UserOrderBy>>;
   where?: InputMaybe<UserBoolExp>;
 };
+
 
 export type TenantUsersAggregateArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
@@ -43332,6 +45274,7 @@ export type TenantUsersAggregateArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
+
 export type TenantValidationsArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43339,6 +45282,7 @@ export type TenantValidationsArgs = {
   orderBy?: InputMaybe<Array<ValidationOrderBy>>;
   where?: InputMaybe<ValidationBoolExp>;
 };
+
 
 export type TenantValidationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
@@ -43348,6 +45292,7 @@ export type TenantValidationsAggregateArgs = {
   where?: InputMaybe<ValidationBoolExp>;
 };
 
+
 export type TenantViewsArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43355,6 +45300,7 @@ export type TenantViewsArgs = {
   orderBy?: InputMaybe<Array<ViewOrderBy>>;
   where?: InputMaybe<ViewBoolExp>;
 };
+
 
 export type TenantViewsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
@@ -43364,6 +45310,7 @@ export type TenantViewsAggregateArgs = {
   where?: InputMaybe<ViewBoolExp>;
 };
 
+
 export type TenantVotesArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43371,6 +45318,7 @@ export type TenantVotesArgs = {
   orderBy?: InputMaybe<Array<VoteOrderBy>>;
   where?: InputMaybe<VoteBoolExp>;
 };
+
 
 export type TenantVotesAggregateArgs = {
   distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
@@ -43406,6 +45354,7 @@ export type TenantAggregateFields = {
   varSamp?: Maybe<TenantVarSampFields>;
   variance?: Maybe<TenantVarianceFields>;
 };
+
 
 export type TenantAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TenantSelectColumn>>;
@@ -43568,6 +45517,8 @@ export type TenantBoolExp = {
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleBoolExp>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   teamMembers?: InputMaybe<TeamMemberBoolExp>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   teamMetrics?: InputMaybe<TeamMetricBoolExp>;
@@ -43592,7 +45543,8 @@ export enum TenantConstraint {
   TenantAdminTeamIdUnique = 'tenant_admin_team_id_unique',
   TenantDomainUnique = 'tenant_domain_unique',
   TenantEventValidationFormIdUnique = 'tenant_event_validation_form_id_unique',
-  TenantPkey = 'tenant_pkey',
+  TenantOidcNameUnique = 'tenant_oidc_name_unique',
+  TenantPkey = 'tenant_pkey'
 }
 
 export type TenantIncInput = {
@@ -43671,6 +45623,7 @@ export type TenantInsertInput = {
   tags?: InputMaybe<TagArrRelInsertInput>;
   teamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
+  teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   teamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
@@ -43838,6 +45791,7 @@ export type TenantOrderBy = {
   tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
+  teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   teamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
@@ -43890,6 +45844,7 @@ export type TenantOrganizeAggregateFields = {
   varSamp?: Maybe<TenantOrganizeVarSampFields>;
   variance?: Maybe<TenantOrganizeVarianceFields>;
 };
+
 
 export type TenantOrganizeAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<TenantOrganizeSelectColumn>>;
@@ -43952,7 +45907,7 @@ export type TenantOrganizeBoolExp = {
 };
 
 export enum TenantOrganizeConstraint {
-  TenantOrganizePkey = 'tenant_organize_pkey',
+  TenantOrganizePkey = 'tenant_organize_pkey'
 }
 
 export type TenantOrganizeIncInput = {
@@ -44070,7 +46025,7 @@ export enum TenantOrganizeSelectColumn {
   Id = 'id',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type TenantOrganizeSetInput = {
@@ -44179,7 +46134,7 @@ export enum TenantOrganizeUpdateColumn {
   Id = 'id',
   TeamId = 'teamId',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type TenantOrganizeUpdates = {
@@ -44258,15 +46213,15 @@ export enum TenantSelectColumn {
   OidcDiscoveryUrl = 'oidcDiscoveryUrl',
   OidcName = 'oidcName',
   OidcScopes = 'oidcScopes',
-  PointName = 'pointName',
+  PointName = 'pointName'
 }
 
 export enum TenantSelectColumnTenantAggregateBoolExpBool_AndArgumentsColumns {
-  IsOidcEnabled = 'isOidcEnabled',
+  IsOidcEnabled = 'isOidcEnabled'
 }
 
 export enum TenantSelectColumnTenantAggregateBoolExpBool_OrArgumentsColumns {
-  IsOidcEnabled = 'isOidcEnabled',
+  IsOidcEnabled = 'isOidcEnabled'
 }
 
 export type TenantSetInput = {
@@ -44385,7 +46340,7 @@ export enum TenantUpdateColumn {
   OidcDiscoveryUrl = 'oidcDiscoveryUrl',
   OidcName = 'oidcName',
   OidcScopes = 'oidcScopes',
-  PointName = 'pointName',
+  PointName = 'pointName'
 }
 
 export type TenantUpdates = {
@@ -44459,6 +46414,7 @@ export type Thread = {
   threadTagsAggregate: ThreadTagsAggregate;
 };
 
+
 export type ThreadThreadContributorsArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -44466,6 +46422,7 @@ export type ThreadThreadContributorsArgs = {
   orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
+
 
 export type ThreadThreadContributorsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
@@ -44475,6 +46432,7 @@ export type ThreadThreadContributorsAggregateArgs = {
   where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
+
 export type ThreadThreadTagsArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -44482,6 +46440,7 @@ export type ThreadThreadTagsArgs = {
   orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
   where?: InputMaybe<ThreadTagsBoolExp>;
 };
+
 
 export type ThreadThreadTagsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
@@ -44515,6 +46474,7 @@ export type ThreadAggregateFields = {
   varSamp?: Maybe<ThreadVarSampFields>;
   variance?: Maybe<ThreadVarianceFields>;
 };
+
 
 export type ThreadAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ThreadSelectColumn>>;
@@ -44579,7 +46539,7 @@ export type ThreadBoolExp = {
 
 export enum ThreadConstraint {
   ThreadContentIdUnique = 'thread_content_id_unique',
-  ThreadPkey = 'thread_pkey',
+  ThreadPkey = 'thread_pkey'
 }
 
 export type ThreadContributors = {
@@ -44614,6 +46574,7 @@ export type ThreadContributorsAggregateFields = {
   varSamp?: Maybe<ThreadContributorsVarSampFields>;
   variance?: Maybe<ThreadContributorsVarianceFields>;
 };
+
 
 export type ThreadContributorsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
@@ -44661,7 +46622,7 @@ export type ThreadContributorsBoolExp = {
 };
 
 export enum ThreadContributorsConstraint {
-  ThreadContributorsPkey = 'thread_contributors_pkey',
+  ThreadContributorsPkey = 'thread_contributors_pkey'
 }
 
 export type ThreadContributorsIncInput = {
@@ -44724,7 +46685,7 @@ export type ThreadContributorsPkColumnsInput = {
 
 export enum ThreadContributorsSelectColumn {
   IndividualId = 'individualId',
-  ThreadId = 'threadId',
+  ThreadId = 'threadId'
 }
 
 export type ThreadContributorsSetInput = {
@@ -44788,7 +46749,7 @@ export type ThreadContributorsSumOrderBy = {
 
 export enum ThreadContributorsUpdateColumn {
   IndividualId = 'individualId',
-  ThreadId = 'threadId',
+  ThreadId = 'threadId'
 }
 
 export type ThreadContributorsUpdates = {
@@ -44951,7 +46912,7 @@ export enum ThreadSelectColumn {
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ThreadSetInput = {
@@ -45076,6 +47037,7 @@ export type ThreadTagsAggregateFields = {
   variance?: Maybe<ThreadTagsVarianceFields>;
 };
 
+
 export type ThreadTagsAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ThreadTagsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -45122,7 +47084,7 @@ export type ThreadTagsBoolExp = {
 };
 
 export enum ThreadTagsConstraint {
-  ThreadTagsPkey = 'thread_tags_pkey',
+  ThreadTagsPkey = 'thread_tags_pkey'
 }
 
 export type ThreadTagsIncInput = {
@@ -45185,7 +47147,7 @@ export type ThreadTagsPkColumnsInput = {
 
 export enum ThreadTagsSelectColumn {
   TagId = 'tagId',
-  ThreadId = 'threadId',
+  ThreadId = 'threadId'
 }
 
 export type ThreadTagsSetInput = {
@@ -45249,7 +47211,7 @@ export type ThreadTagsSumOrderBy = {
 
 export enum ThreadTagsUpdateColumn {
   TagId = 'tagId',
-  ThreadId = 'threadId',
+  ThreadId = 'threadId'
 }
 
 export type ThreadTagsUpdates = {
@@ -45300,7 +47262,7 @@ export enum ThreadUpdateColumn {
   Id = 'id',
   Name = 'name',
   Slug = 'slug',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ThreadUpdates = {
@@ -45407,6 +47369,7 @@ export type User = {
   tenantId: Scalars['bigint']['output'];
 };
 
+
 export type UserActionsArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45414,6 +47377,7 @@ export type UserActionsArgs = {
   orderBy?: InputMaybe<Array<ActionOrderBy>>;
   where?: InputMaybe<ActionBoolExp>;
 };
+
 
 export type UserActionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ActionSelectColumn>>;
@@ -45423,6 +47387,7 @@ export type UserActionsAggregateArgs = {
   where?: InputMaybe<ActionBoolExp>;
 };
 
+
 export type UserClassGroupTeachersArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45430,6 +47395,7 @@ export type UserClassGroupTeachersArgs = {
   orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
+
 
 export type UserClassGroupTeachersAggregateArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
@@ -45439,6 +47405,7 @@ export type UserClassGroupTeachersAggregateArgs = {
   where?: InputMaybe<ClassGroupTeacherBoolExp>;
 };
 
+
 export type UserEventJoinsArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45446,6 +47413,7 @@ export type UserEventJoinsArgs = {
   orderBy?: InputMaybe<Array<EventJoinOrderBy>>;
   where?: InputMaybe<EventJoinBoolExp>;
 };
+
 
 export type UserEventJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventJoinSelectColumn>>;
@@ -45455,6 +47423,7 @@ export type UserEventJoinsAggregateArgs = {
   where?: InputMaybe<EventJoinBoolExp>;
 };
 
+
 export type UserMissionJoinsArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45462,6 +47431,7 @@ export type UserMissionJoinsArgs = {
   orderBy?: InputMaybe<Array<MissionJoinOrderBy>>;
   where?: InputMaybe<MissionJoinBoolExp>;
 };
+
 
 export type UserMissionJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<MissionJoinSelectColumn>>;
@@ -45471,6 +47441,7 @@ export type UserMissionJoinsAggregateArgs = {
   where?: InputMaybe<MissionJoinBoolExp>;
 };
 
+
 export type UserSessionsArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45478,6 +47449,7 @@ export type UserSessionsArgs = {
   orderBy?: InputMaybe<Array<SessionOrderBy>>;
   where?: InputMaybe<SessionBoolExp>;
 };
+
 
 export type UserSessionsAggregateArgs = {
   distinctOn?: InputMaybe<Array<SessionSelectColumn>>;
@@ -45487,6 +47459,7 @@ export type UserSessionsAggregateArgs = {
   where?: InputMaybe<SessionBoolExp>;
 };
 
+
 export type UserShortcutsArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45494,6 +47467,7 @@ export type UserShortcutsArgs = {
   orderBy?: InputMaybe<Array<ShortcutOrderBy>>;
   where?: InputMaybe<ShortcutBoolExp>;
 };
+
 
 export type UserShortcutsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ShortcutSelectColumn>>;
@@ -45503,6 +47477,7 @@ export type UserShortcutsAggregateArgs = {
   where?: InputMaybe<ShortcutBoolExp>;
 };
 
+
 export type UserSupervisedEventsArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45510,6 +47485,7 @@ export type UserSupervisedEventsArgs = {
   orderBy?: InputMaybe<Array<EventSupervisorOrderBy>>;
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
+
 
 export type UserSupervisedEventsAggregateArgs = {
   distinctOn?: InputMaybe<Array<EventSupervisorSelectColumn>>;
@@ -45519,6 +47495,7 @@ export type UserSupervisedEventsAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
+
 export type UserTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45526,6 +47503,7 @@ export type UserTeamJoinsArgs = {
   orderBy?: InputMaybe<Array<TeamJoinOrderBy>>;
   where?: InputMaybe<TeamJoinBoolExp>;
 };
+
 
 export type UserTeamJoinsAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
@@ -45535,6 +47513,7 @@ export type UserTeamJoinsAggregateArgs = {
   where?: InputMaybe<TeamJoinBoolExp>;
 };
 
+
 export type UserTeamMembersArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -45542,6 +47521,7 @@ export type UserTeamMembersArgs = {
   orderBy?: InputMaybe<Array<TeamMemberOrderBy>>;
   where?: InputMaybe<TeamMemberBoolExp>;
 };
+
 
 export type UserTeamMembersAggregateArgs = {
   distinctOn?: InputMaybe<Array<TeamMemberSelectColumn>>;
@@ -45577,6 +47557,7 @@ export type UserAggregateFields = {
   varSamp?: Maybe<UserVarSampFields>;
   variance?: Maybe<UserVarianceFields>;
 };
+
 
 export type UserAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<UserSelectColumn>>;
@@ -45664,7 +47645,7 @@ export type UserBoolExp = {
 
 export enum UserConstraint {
   UserIndividualIdUnique = 'user_individual_id_unique',
-  UserPkey = 'user_pkey',
+  UserPkey = 'user_pkey'
 }
 
 export type UserIncInput = {
@@ -45839,7 +47820,7 @@ export enum UserSelectColumn {
   LastName = 'lastName',
   MiddleNames = 'middleNames',
   Points = 'points',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export enum UserSelectColumnUserAggregateBoolExpBool_AndArgumentsColumns {
@@ -45847,7 +47828,7 @@ export enum UserSelectColumnUserAggregateBoolExpBool_AndArgumentsColumns {
   IsDataAnonymizedOnDeactivation = 'isDataAnonymizedOnDeactivation',
   IsDataExportedOnDeactivation = 'isDataExportedOnDeactivation',
   IsIntroductionFinished = 'isIntroductionFinished',
-  IsOnboardingFinished = 'isOnboardingFinished',
+  IsOnboardingFinished = 'isOnboardingFinished'
 }
 
 export enum UserSelectColumnUserAggregateBoolExpBool_OrArgumentsColumns {
@@ -45855,7 +47836,7 @@ export enum UserSelectColumnUserAggregateBoolExpBool_OrArgumentsColumns {
   IsDataAnonymizedOnDeactivation = 'isDataAnonymizedOnDeactivation',
   IsDataExportedOnDeactivation = 'isDataExportedOnDeactivation',
   IsIntroductionFinished = 'isIntroductionFinished',
-  IsOnboardingFinished = 'isOnboardingFinished',
+  IsOnboardingFinished = 'isOnboardingFinished'
 }
 
 export type UserSetInput = {
@@ -45985,7 +47966,7 @@ export enum UserUpdateColumn {
   LastName = 'lastName',
   MiddleNames = 'middleNames',
   Points = 'points',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type UserUpdates = {
@@ -46085,6 +48066,7 @@ export type ValidationAggregateFields = {
   variance?: Maybe<ValidationVarianceFields>;
 };
 
+
 export type ValidationAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ValidationSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46142,7 +48124,7 @@ export type ValidationBoolExp = {
 };
 
 export enum ValidationConstraint {
-  ValidationPkey = 'validation_pkey',
+  ValidationPkey = 'validation_pkey'
 }
 
 export type ValidationIncInput = {
@@ -46250,7 +48232,7 @@ export enum ValidationSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ValidationSetInput = {
@@ -46348,7 +48330,7 @@ export enum ValidationUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Type = 'type',
+  Type = 'type'
 }
 
 export type ValidationUpdates = {
@@ -46441,6 +48423,7 @@ export type ViewAggregateFields = {
   variance?: Maybe<ViewVarianceFields>;
 };
 
+
 export type ViewAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<ViewSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46497,7 +48480,7 @@ export type ViewBoolExp = {
 };
 
 export enum ViewConstraint {
-  ViewPkey = 'view_pkey',
+  ViewPkey = 'view_pkey'
 }
 
 export type ViewIncInput = {
@@ -46598,7 +48581,7 @@ export enum ViewSelectColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ViewSetInput = {
@@ -46693,7 +48676,7 @@ export enum ViewUpdateColumn {
   DeletedAt = 'deletedAt',
   HiddenAt = 'hiddenAt',
   Id = 'id',
-  TenantId = 'tenantId',
+  TenantId = 'tenantId'
 }
 
 export type ViewUpdates = {
@@ -46787,6 +48770,7 @@ export type VoteAggregateFields = {
   variance?: Maybe<VoteVarianceFields>;
 };
 
+
 export type VoteAggregateFieldsCountArgs = {
   columns?: InputMaybe<Array<VoteSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46846,7 +48830,7 @@ export type VoteBoolExp = {
 };
 
 export enum VoteConstraint {
-  VotePkey = 'vote_pkey',
+  VotePkey = 'vote_pkey'
 }
 
 export type VoteIncInput = {
@@ -46955,7 +48939,7 @@ export enum VoteSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type VoteSetInput = {
@@ -47061,7 +49045,7 @@ export enum VoteUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   TenantId = 'tenantId',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type VoteUpdates = {
@@ -47681,20 +49665,6 @@ export type ReportAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type RoleAggregateBoolExpBool_And = {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_AndArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<RoleBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type RoleAggregateBoolExpBool_Or = {
-  arguments: RoleSelectColumnRoleAggregateBoolExpBool_OrArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<RoleBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
 export type RoleAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<RoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -47786,10 +49756,10 @@ export type TeamMemberAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type TeamMemberRolesAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<TeamMemberRolesSelectColumn>>;
+export type TeamMemberRoleAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<TeamMemberRoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TeamMemberRolesBoolExp>;
+  filter?: InputMaybe<TeamMemberRoleBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -47891,581 +49861,40 @@ export type VoteAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type GetMeQueryVariables = Exact<{ [key: string]: never }>;
+export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetMeQuery = {
-  __typename?: 'Query';
-  me: {
-    __typename: 'UserLogin';
-    canManageTenant: boolean;
-    onboardingTeams: Array<{
-      __typename: 'Team';
-      id: string;
-      membershipFees: number;
-      membershipDuration: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        bio: string;
-        email: string;
-        name: string;
-        slug: string;
-        status: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-      };
-      joinForm: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string };
-    }>;
-    user: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      individual: {
-        __typename: 'Individual';
-        id: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          bio: string;
-          email: string;
-          name: string;
-          slug: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-        following: Array<{
-          __typename: 'Follow';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            name: string;
-            slug: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-            team?: {
-              __typename: 'Team';
-              id: string;
-              actor: {
-                __typename: 'Actor';
-                id: string;
-                slug: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  type: string;
-                  image: { __typename: 'FileUpload'; id: string; url: string };
-                }>;
-              };
-            } | null;
-          };
-        }>;
-      };
-      teamMembers: Array<{
-        __typename: 'TeamMember';
-        id: string;
-        createdAt: string;
-        startDate: string;
-        endDate?: string | null;
-        teamMemberRoles: Array<{
-          __typename?: 'TeamMemberRoles';
-          role: {
-            __typename: 'Role';
-            id: string;
-            createdAt: string;
-            category: string;
-            type: string;
-            name: string;
-            permissions: Array<string>;
-          };
-        }>;
-        team: {
-          __typename: 'Team';
-          id: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      }>;
-      eventJoins: Array<{
-        __typename: 'EventJoin';
-        id: string;
-        createdAt: string;
-        state: string;
-        isPresent?: boolean | null;
-        event: { __typename: 'Event'; id: string; slug: string };
-      }>;
-      teamJoins: Array<{
-        __typename: 'TeamJoin';
-        id: string;
-        createdAt: string;
-        state: string;
-        team: {
-          __typename: 'Team';
-          id: string;
-          createdAt: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      }>;
-      shortcuts: Array<{
-        __typename: 'Shortcut';
-        id: string;
-        createdAt: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-        };
-      }>;
-      tenant: {
-        __typename: 'Tenant';
-        id: string;
-        createdAt: string;
-        domain: string;
-        pointName: string;
-        eventValidationForm?: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
-        eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
-        adminTeam?: {
-          __typename: 'Team';
-          id: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            bio: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        } | null;
-      };
-    };
-  };
-};
 
-export type InsertFollowMutationVariables = Exact<{
-  object: FollowInsertInput;
-}>;
-
-export type InsertFollowMutation = {
-  __typename?: 'Mutation';
-  insertFollowOne?: {
-    __typename: 'Follow';
-    id: string;
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: { __typename: 'Actor'; id: string; slug: string };
-        };
-      } | null;
-    } | null;
-  } | null;
-};
+export type GetMeQuery = { __typename?: 'Query', me: { __typename: 'UserLogin', canManageTenant: boolean, onboardingTeams: Array<{ __typename: 'Team', id: string, membershipFees: number, membershipDuration: string, type: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, following: Array<{ __typename: 'Follow', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null } }> }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }>, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, event: { __typename: 'Event', id: string, slug: string } }>, teamJoins: Array<{ __typename: 'TeamJoin', id: string, createdAt: string, state: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, shortcuts: Array<{ __typename: 'Shortcut', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }>, tenant: { __typename: 'Tenant', id: string, createdAt: string, domain: string, pointName: string, eventValidationForm: { __typename: 'Form', id: string, name: string, schema: JSONType, type: string } | null, eventApprovalSteps: Array<{ __typename: 'EventApprovalStep', id: string, name: string, order: number }>, adminTeam: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, bio: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null } } } };
 
 export type GetEventJoinQueryVariables = Exact<{
   eventJoinId: Scalars['bigint']['input'];
   userId: Scalars['bigint']['input'];
 }>;
 
-export type GetEventJoinQuery = {
-  __typename?: 'Query';
-  eventJoinByPk?: {
-    __typename: 'EventJoin';
-    id: string;
-    isPresent?: boolean | null;
-    state: string;
-    event: {
-      __typename: 'Event';
-      id: string;
-      slug: string;
-      start: string;
-      end: string;
-      eventOrganizes: Array<{
-        __typename: 'EventOrganize';
-        id: string;
-        eventSupervisors: Array<{
-          __typename?: 'EventSupervisor';
-          user: {
-            __typename: 'User';
-            id: string;
-            individual: {
-              __typename: 'Individual';
-              id: string;
-              actor: { __typename: 'Actor'; id: string; slug: string; name: string };
-            };
-          };
-        }>;
-        team: { __typename: 'Team'; id: string };
-      }>;
-    };
-    joinedBy: {
-      __typename: 'User';
-      id: string;
-      individual: {
-        __typename: 'Individual';
-        id: string;
-        actor: { __typename: 'Actor'; id: string; slug: string; name: string };
-      };
-    };
-  } | null;
-};
+
+export type GetEventJoinQuery = { __typename?: 'Query', eventJoinByPk: { __typename: 'EventJoin', id: string, isPresent: boolean | null, state: string, event: { __typename: 'Event', id: string, slug: string, start: string, end: string, maxParticipants: number | null, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, name: string } } } }>, team: { __typename: 'Team', id: string } }> }, joinedBy: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, name: string } } } } | null };
 
 export type UpdateEventJoinMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: EventJoinSetInput;
 }>;
 
-export type UpdateEventJoinMutation = {
-  __typename?: 'Mutation';
-  updateEventJoinByPk?: {
-    __typename: 'EventJoin';
-    id: string;
-    state: string;
-    processedAt?: string | null;
-    processedBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        bio: string;
-        name: string;
-        email: string;
-        status: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-  } | null;
-};
+
+export type UpdateEventJoinMutation = { __typename?: 'Mutation', updateEventJoinByPk: { __typename: 'EventJoin', id: string, state: string, processedAt: string | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null } | null };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetEventQuery = {
-  __typename?: 'Query';
-  event: Array<{
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    description: string;
-    slug: string;
-    start: string;
-    end: string;
-    name: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          email: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          bio: string;
-          name: string;
-          email: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      } | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            bio: string;
-            name: string;
-            email: string;
-            website: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      };
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-  }>;
-};
+
+export type GetEventQuery = { __typename?: 'Query', event: Array<{ __typename: 'Event', id: string, createdAt: string, description: string, start: string, end: string, slug: string, name: string, state: string, price: number, isPrivate: boolean, maxParticipants: number | null, pointsAwardedForAttendance: number, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null }> };
 
 export type InsertEventJoinMutationVariables = Exact<{
   object: EventJoinInsertInput;
 }>;
 
-export type InsertEventJoinMutation = {
-  __typename?: 'Mutation';
-  insertEventJoinOne?: { __typename: 'EventJoin'; id: string } | null;
-};
+
+export type InsertEventJoinMutation = { __typename?: 'Mutation', insertEventJoinOne: { __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, event: { __typename: 'Event', id: string, slug: string } } | null };
 
 export type GetEventsQueryVariables = Exact<{
   where?: InputMaybe<EventBoolExp>;
@@ -48474,1229 +49903,52 @@ export type GetEventsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetEventsQuery = {
-  __typename?: 'Query';
-  event: Array<{
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start: string;
-    end: string;
-    name: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    description: string;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-      formSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          bio: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-          actorTags: Array<{
-            __typename?: 'ActorTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-  }>;
-};
+
+export type GetEventsQuery = { __typename?: 'Query', event: Array<{ __typename: 'Event', id: string, createdAt: string, slug: string, start: string, end: string, maxParticipants: number | null, name: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, description: string, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null }> };
 
 export type GetEventManageQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetEventManageQuery = {
-  __typename?: 'Query';
-  event: Array<{
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    start: string;
-    end: string;
-    name: string;
-    slug: string;
-    description: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      createdAt: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        createdAt: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        name: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: {
-      __typename: 'FileUpload';
-      id: string;
-      createdAt: string;
-      url: string;
-      size: number;
-      type: string;
-      name: string;
-    } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        directorsCategoryName: string;
-        managersCategoryName: string;
-        membersCategoryName: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          name: string;
-          slug: string;
-          email: string;
-          website: string;
-          bio: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-          actorTags: Array<{
-            __typename?: 'ActorTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-        teamMembersAggregate: {
-          __typename?: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-        };
-        poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-        projects: Array<{
-          __typename: 'Project';
-          id: string;
-          name: string;
-          slug: string;
-          banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
-        }>;
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            bio: string;
-            name: string;
-            email: string;
-            status: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      };
-      formSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          email: string;
-          name: string;
-          bio: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      } | null;
-      participationProcessedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          email: string;
-          name: string;
-          bio: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-        };
-        user?: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-            };
-          };
-        } | null;
-      } | null;
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-    eventApprovals: Array<{
-      __typename: 'EventApproval';
-      id: string;
-      createdAt: string;
-      isApproved: boolean;
-      message: string;
-      eventApprovalStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-        nextSteps: Array<{
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        }>;
-        previousStep?: {
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        } | null;
-      } | null;
-      createdBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-          }>;
-        };
-        user?: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: { __typename: 'Actor'; id: string; slug: string };
-          };
-        } | null;
-      } | null;
-    }>;
-    nextEventApprovalStep?: {
-      __typename: 'EventApprovalStep';
-      id: string;
-      createdAt: string;
-      name: string;
-      description: string;
-      order: number;
-      nextSteps: Array<{
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      }>;
-      previousStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      } | null;
-    } | null;
-    eventApprovalSubmission?: {
-      __typename: 'FormSubmission';
-      id: string;
-      createdAt: string;
-      submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    } | null;
-  }>;
-};
+
+export type GetEventManageQuery = { __typename?: 'Query', event: Array<{ __typename: 'Event', id: string, createdAt: string, start: string, end: string, maxParticipants: number | null, name: string, slug: string, description: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, createdAt: string, name: string, slug: string, email: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, projects: Array<{ __typename: 'Project', id: string, name: string, slug: string, banner: { __typename: 'FileUpload', id: string, url: string } | null }> }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, name: string, bio: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, participationProcessedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, name: string, bio: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null, eventApprovals: Array<{ __typename: 'EventApproval', id: string, createdAt: string, isApproved: boolean, message: string, eventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null }>, nextEventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, eventApprovalSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null }> };
+
+export type InsertAddressMutationVariables = Exact<{
+  object: AddressInsertInput;
+}>;
+
+
+export type InsertAddressMutation = { __typename?: 'Mutation', insertAddressOne: { __typename: 'Address', id: string, name: string, category: string, country: string, state: string, zip: string, city: string, street: string, streetNumber: string, latitude: number | null, longitude: number | null, geoapifyId: string | null } | null };
 
 export type UpdateEventMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: EventSetInput;
 }>;
 
-export type UpdateEventMutation = {
-  __typename?: 'Mutation';
-  updateEventByPk?: {
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    start: string;
-    end: string;
-    name: string;
-    slug: string;
-    description: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      createdAt: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        createdAt: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        name: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: {
-      __typename: 'FileUpload';
-      id: string;
-      createdAt: string;
-      url: string;
-      size: number;
-      type: string;
-      name: string;
-    } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        directorsCategoryName: string;
-        managersCategoryName: string;
-        membersCategoryName: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          name: string;
-          slug: string;
-          email: string;
-          website: string;
-          bio: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-          actorTags: Array<{
-            __typename?: 'ActorTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-        teamMembersAggregate: {
-          __typename?: 'TeamMemberAggregate';
-          aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-        };
-        poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            bio: string;
-            name: string;
-            email: string;
-            status: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      };
-      formSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          email: string;
-          name: string;
-          bio: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      } | null;
-      participationProcessedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          email: string;
-          name: string;
-          bio: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-        };
-        user?: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-            };
-          };
-        } | null;
-      } | null;
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-    eventApprovals: Array<{
-      __typename: 'EventApproval';
-      id: string;
-      createdAt: string;
-      isApproved: boolean;
-      message: string;
-      eventApprovalStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-        nextSteps: Array<{
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        }>;
-        previousStep?: {
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        } | null;
-      } | null;
-      createdBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-          }>;
-        };
-        user?: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-            };
-          };
-        } | null;
-      } | null;
-    }>;
-    nextEventApprovalStep?: {
-      __typename: 'EventApprovalStep';
-      id: string;
-      createdAt: string;
-      name: string;
-      description: string;
-      order: number;
-      nextSteps: Array<{
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      }>;
-      previousStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      } | null;
-    } | null;
-    eventApprovalSubmission?: {
-      __typename: 'FormSubmission';
-      id: string;
-      createdAt: string;
-      submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    } | null;
-  } | null;
-};
+
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEventByPk: { __typename: 'Event', id: string, createdAt: string, start: string, end: string, maxParticipants: number | null, name: string, slug: string, description: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, createdAt: string, name: string, slug: string, email: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }> }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }> } } } }> }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, name: string, bio: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, participationProcessedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, name: string, bio: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null, eventApprovals: Array<{ __typename: 'EventApproval', id: string, createdAt: string, isApproved: boolean, message: string, eventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }>, nextEventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, eventApprovalSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null } | null };
 
 export type UpdateEventOrganizeProjectManyMutationVariables = Exact<{
   updates: Array<EventOrganizeUpdates> | EventOrganizeUpdates;
 }>;
 
-export type UpdateEventOrganizeProjectManyMutation = {
-  __typename?: 'Mutation';
-  updateEventOrganizeMany?: Array<{
-    __typename?: 'EventOrganizeMutationResponse';
-    returning: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      team: { __typename: 'Team'; id: string; type: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-  } | null> | null;
-};
+
+export type UpdateEventOrganizeProjectManyMutation = { __typename?: 'Mutation', updateEventOrganizeMany: Array<{ __typename?: 'EventOrganizeMutationResponse', returning: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }> } | null> | null };
 
 export type UpdateLocationMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: LocationSetInput;
 }>;
 
-export type UpdateLocationMutation = {
-  __typename?: 'Mutation';
-  updateLocationByPk?: {
-    __typename: 'Location';
-    id: string;
-    createdAt: string;
-    type: string;
-    onlineLink: string;
-    locationDetails: string;
-    address?: {
-      __typename: 'Address';
-      id: string;
-      createdAt: string;
-      latitude?: number | null;
-      longitude?: number | null;
-      category: string;
-      name: string;
-      streetNumber: string;
-      street: string;
-      zip: string;
-      city: string;
-      state: string;
-      country: string;
-    } | null;
-  } | null;
-};
+
+export type UpdateLocationMutation = { __typename?: 'Mutation', updateLocationByPk: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null };
 
 export type GetProjectManageQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetProjectManageQuery = {
-  __typename?: 'Query';
-  project: Array<{
-    __typename: 'Project';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start?: string | null;
-    end?: string | null;
-    name: string;
-    isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    team: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    eventOrganizes: Array<{
-      __typename?: 'EventOrganize';
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-  }>;
-};
+
+export type GetProjectManageQuery = { __typename?: 'Query', project: Array<{ __typename: 'Project', id: string, createdAt: string, slug: string, start: string | null, end: string | null, name: string, isPrivate: boolean, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventOrganizes: Array<{ __typename?: 'EventOrganize', eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }> }> };
 
 export type GetTeamJoinsQueryVariables = Exact<{
   where?: InputMaybe<TeamJoinBoolExp>;
@@ -49705,1201 +49957,102 @@ export type GetTeamJoinsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetTeamJoinsQuery = {
-  __typename?: 'Query';
-  teamJoin: Array<{
-    __typename: 'TeamJoin';
-    id: string;
-    state: string;
-    joinedBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      individual: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          bio: string;
-          name: string;
-          email: string;
-          website: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-    };
-    team: {
-      __typename: 'Team';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    formSubmission?: {
-      __typename: 'FormSubmission';
-      id: string;
-      createdAt: string;
-      submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    } | null;
-    receivedRole?: {
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    } | null;
-  }>;
-};
+
+export type GetTeamJoinsQuery = { __typename?: 'Query', teamJoin: Array<{ __typename: 'TeamJoin', id: string, state: string, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, receivedRole: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } | null }> };
 
 export type UpdateTeamJoinMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: TeamJoinSetInput;
 }>;
 
-export type UpdateTeamJoinMutation = {
-  __typename?: 'Mutation';
-  updateTeamJoinByPk?: {
-    __typename: 'TeamJoin';
-    id: string;
-    state: string;
-    joinedBy: {
-      __typename: 'User';
-      id: string;
-      createdAt: string;
-      firstName: string;
-      lastName: string;
-      individual: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          bio: string;
-          name: string;
-          email: string;
-          website: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-    };
-  } | null;
-};
+
+export type UpdateTeamJoinMutation = { __typename?: 'Mutation', updateTeamJoinByPk: { __typename: 'TeamJoin', id: string, state: string, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } } | null };
 
 export type GetUsersWithPointsQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetUsersWithPointsQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    individual: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        bio: string;
-        name: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      processedAt?: string | null;
-      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
-    }>;
-    actions: Array<{ __typename: 'Action'; id: string; points?: number | null; pointsProcessedAt?: string | null }>;
-    missionJoins: Array<{
-      __typename: 'MissionJoin';
-      id: string;
-      points?: number | null;
-      pointsProcessedAt?: string | null;
-    }>;
-  }>;
-};
+
+export type GetUsersWithPointsQuery = { __typename?: 'Query', user: Array<{ __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventJoins: Array<{ __typename: 'EventJoin', id: string, processedAt: string | null, event: { __typename: 'Event', id: string, slug: string, pointsAwardedForAttendance: number } }>, actions: Array<{ __typename: 'Action', id: string, points: number | null, pointsProcessedAt: string | null }>, missionJoins: Array<{ __typename: 'MissionJoin', id: string, points: number | null, pointsProcessedAt: string | null }> }> };
 
 export type DeleteSocialsMutationVariables = Exact<{
   where: SocialBoolExp;
 }>;
 
-export type DeleteSocialsMutation = {
-  __typename?: 'Mutation';
-  deleteSocial?: {
-    __typename?: 'SocialMutationResponse';
-    returning: Array<{
-      __typename: 'Social';
-      id: string;
-      deletedAt?: string | null;
-      type: string;
-      pseudo: string;
-      order: number;
-      url: string;
-    }>;
-  } | null;
-};
+
+export type DeleteSocialsMutation = { __typename?: 'Mutation', deleteSocial: { __typename?: 'SocialMutationResponse', returning: Array<{ __typename: 'Social', id: string, deletedAt: string | null, type: string, pseudo: string, order: number, url: string }> } | null };
 
 export type InsertSocialsMutationVariables = Exact<{
   objects: Array<SocialInsertInput> | SocialInsertInput;
 }>;
 
-export type InsertSocialsMutation = {
-  __typename?: 'Mutation';
-  insertSocial?: {
-    __typename?: 'SocialMutationResponse';
-    returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
-  } | null;
-};
+
+export type InsertSocialsMutation = { __typename?: 'Mutation', insertSocial: { __typename?: 'SocialMutationResponse', returning: Array<{ __typename: 'Social', id: string, type: string, pseudo: string, order: number, url: string }> } | null };
 
 export type UpdateSocialsMutationVariables = Exact<{
   updates: Array<SocialUpdates> | SocialUpdates;
 }>;
 
-export type UpdateSocialsMutation = {
-  __typename?: 'Mutation';
-  updateSocialMany?: Array<{
-    __typename?: 'SocialMutationResponse';
-    returning: Array<{ __typename: 'Social'; id: string; type: string; pseudo: string; order: number; url: string }>;
-  } | null> | null;
-};
+
+export type UpdateSocialsMutation = { __typename?: 'Mutation', updateSocialMany: Array<{ __typename?: 'SocialMutationResponse', returning: Array<{ __typename: 'Social', id: string, type: string, pseudo: string, order: number, url: string }> } | null> | null };
 
 export type DeleteActorImageMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type DeleteActorImageMutation = {
-  __typename?: 'Mutation';
-  deleteActorImageByPk?: {
-    __typename: 'ActorImage';
-    id: string;
-    createdAt: string;
-    type: string;
-    image: { __typename: 'FileUpload'; id: string; url: string };
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
-  } | null;
-};
+
+export type DeleteActorImageMutation = { __typename?: 'Mutation', deleteActorImageByPk: { __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string }, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string } } | null };
+
+export type DeleteTeamMemberRoleMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
+}>;
+
+
+export type DeleteTeamMemberRoleMutation = { __typename?: 'Mutation', deleteTeamMemberRoleByPk: { __typename: 'TeamMemberRole', id: string, deletedAt: string | null } | null };
 
 export type GetTeamManageQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetTeamManageQuery = {
-  __typename?: 'Query';
-  team: Array<{
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    membershipFees: number;
-    membershipDuration: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    isJoinFormActive: boolean;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      createdAt: string;
-      email: string;
-      name: string;
-      slug: string;
-      website: string;
-      bio: string;
-      status: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        createdAt: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-    parent?: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            bio: string;
-            slug: string;
-            status: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-    }>;
-    projects: Array<{
-      __typename: 'Project';
-      id: string;
-      createdAt: string;
-      color: string;
-      description: string;
-      name: string;
-      slug: string;
-      isPrivate: boolean;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-      eventOrganizes: Array<{
-        __typename: 'EventOrganize';
-        id: string;
-        createdAt: string;
-        project?: {
-          __typename: 'Project';
-          id: string;
-          createdAt: string;
-          name: string;
-          slug: string;
-          color: string;
-          isPrivate: boolean;
-        } | null;
-        event: {
-          __typename: 'Event';
-          id: string;
-          createdAt: string;
-          start: string;
-          end: string;
-          name: string;
-          slug: string;
-          description: string;
-          state: string;
-          price: number;
-          pointsAwardedForAttendance: number;
-          isPrivate: boolean;
-          location?: {
-            __typename: 'Location';
-            id: string;
-            type: string;
-            createdAt: string;
-            onlineLink: string;
-            locationDetails: string;
-            address?: {
-              __typename: 'Address';
-              id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
-              category: string;
-              name: string;
-              streetNumber: string;
-              street: string;
-              zip: string;
-              city: string;
-              state: string;
-              country: string;
-            } | null;
-          } | null;
-          banner?: {
-            __typename: 'FileUpload';
-            id: string;
-            createdAt: string;
-            url: string;
-            size: number;
-            type: string;
-            name: string;
-          } | null;
-          eventTags: Array<{
-            __typename?: 'EventTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          eventOrganizes: Array<{
-            __typename: 'EventOrganize';
-            id: string;
-            team: {
-              __typename: 'Team';
-              id: string;
-              createdAt: string;
-              type: string;
-              directorsCategoryName: string;
-              managersCategoryName: string;
-              membersCategoryName: string;
-              actor: {
-                __typename: 'Actor';
-                id: string;
-                createdAt: string;
-                email: string;
-                name: string;
-                slug: string;
-                website: string;
-                bio: string;
-                status: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  createdAt: string;
-                  type: string;
-                  image: {
-                    __typename: 'FileUpload';
-                    id: string;
-                    createdAt: string;
-                    url: string;
-                    size: number;
-                    type: string;
-                  };
-                }>;
-                actorTags: Array<{
-                  __typename?: 'ActorTags';
-                  tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-                }>;
-                socials: Array<{
-                  __typename: 'Social';
-                  id: string;
-                  pseudo: string;
-                  url: string;
-                  type: string;
-                  order: number;
-                }>;
-              };
-              joinForm: {
-                __typename: 'Form';
-                id: string;
-                createdAt: string;
-                schema: JSONType;
-                name: string;
-                type: string;
-              };
-              teamMembersAggregate: {
-                __typename?: 'TeamMemberAggregate';
-                aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-              };
-              poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-            };
-            project?: {
-              __typename: 'Project';
-              id: string;
-              createdAt: string;
-              name: string;
-              slug: string;
-              color: string;
-              isPrivate: boolean;
-            } | null;
-            eventSupervisors: Array<{
-              __typename?: 'EventSupervisor';
-              user: {
-                __typename: 'User';
-                id: string;
-                createdAt: string;
-                firstName: string;
-                lastName: string;
-                individual: {
-                  __typename: 'Individual';
-                  id: string;
-                  createdAt: string;
-                  actor: {
-                    __typename: 'Actor';
-                    id: string;
-                    createdAt: string;
-                    email: string;
-                    name: string;
-                    slug: string;
-                    website: string;
-                    bio: string;
-                    status: string;
-                    actorImages: Array<{
-                      __typename: 'ActorImage';
-                      id: string;
-                      createdAt: string;
-                      type: string;
-                      image: {
-                        __typename: 'FileUpload';
-                        id: string;
-                        createdAt: string;
-                        url: string;
-                        size: number;
-                        type: string;
-                      };
-                    }>;
-                    actorTags: Array<{
-                      __typename?: 'ActorTags';
-                      tag: {
-                        __typename: 'Tag';
-                        id: string;
-                        createdAt: string;
-                        slug: string;
-                        name: string;
-                        color: string;
-                      };
-                    }>;
-                    socials: Array<{
-                      __typename: 'Social';
-                      id: string;
-                      pseudo: string;
-                      url: string;
-                      type: string;
-                      order: number;
-                    }>;
-                  };
-                };
-              };
-            }>;
-          }>;
-          eventJoinsAggregate: {
-            __typename?: 'EventJoinAggregate';
-            aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-          };
-          eventJoins: Array<{
-            __typename: 'EventJoin';
-            id: string;
-            createdAt: string;
-            state: string;
-            isPresent?: boolean | null;
-            joinedBy: {
-              __typename: 'User';
-              id: string;
-              createdAt: string;
-              firstName: string;
-              lastName: string;
-              individual: {
-                __typename: 'Individual';
-                id: string;
-                createdAt: string;
-                actor: {
-                  __typename: 'Actor';
-                  id: string;
-                  createdAt: string;
-                  email: string;
-                  name: string;
-                  slug: string;
-                  website: string;
-                  bio: string;
-                  status: string;
-                  actorImages: Array<{
-                    __typename: 'ActorImage';
-                    id: string;
-                    createdAt: string;
-                    type: string;
-                    image: {
-                      __typename: 'FileUpload';
-                      id: string;
-                      createdAt: string;
-                      url: string;
-                      size: number;
-                      type: string;
-                    };
-                  }>;
-                  actorTags: Array<{
-                    __typename?: 'ActorTags';
-                    tag: {
-                      __typename: 'Tag';
-                      id: string;
-                      createdAt: string;
-                      slug: string;
-                      name: string;
-                      color: string;
-                    };
-                  }>;
-                  socials: Array<{
-                    __typename: 'Social';
-                    id: string;
-                    pseudo: string;
-                    url: string;
-                    type: string;
-                    order: number;
-                  }>;
-                };
-              };
-            };
-          }>;
-        };
-      }>;
-      banner?: {
-        __typename: 'FileUpload';
-        id: string;
-        createdAt: string;
-        url: string;
-        size: number;
-        type: string;
-        name: string;
-      } | null;
-      projectSupervisors: Array<{
-        __typename?: 'ProjectSupervisors';
-        teamMember: {
-          __typename: 'TeamMember';
-          id: string;
-          createdAt: string;
-          startDate: string;
-          endDate?: string | null;
-          teamMemberRoles: Array<{
-            __typename?: 'TeamMemberRoles';
-            role: {
-              __typename: 'Role';
-              id: string;
-              createdAt: string;
-              category: string;
-              type: string;
-              name: string;
-              permissions: Array<string>;
-            };
-          }>;
-          user: {
-            __typename: 'User';
-            id: string;
-            createdAt: string;
-            firstName: string;
-            lastName: string;
-            individual: {
-              __typename: 'Individual';
-              id: string;
-              createdAt: string;
-              actor: {
-                __typename: 'Actor';
-                id: string;
-                createdAt: string;
-                email: string;
-                name: string;
-                slug: string;
-                website: string;
-                bio: string;
-                status: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  createdAt: string;
-                  type: string;
-                  image: {
-                    __typename: 'FileUpload';
-                    id: string;
-                    createdAt: string;
-                    url: string;
-                    size: number;
-                    type: string;
-                  };
-                }>;
-                actorTags: Array<{
-                  __typename?: 'ActorTags';
-                  tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-                }>;
-                socials: Array<{
-                  __typename: 'Social';
-                  id: string;
-                  pseudo: string;
-                  url: string;
-                  type: string;
-                  order: number;
-                }>;
-              };
-            };
-          };
-        };
-      }>;
-      projectTags: Array<{
-        __typename?: 'ProjectTags';
-        tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-      }>;
-    }>;
-    accounts: Array<{
-      __typename: 'Account';
-      id: string;
-      createdAt: string;
-      name: string;
-      type: string;
-      financesAggregate: {
-        __typename?: 'FinanceAggregate';
-        aggregate?: {
-          __typename?: 'FinanceAggregateFields';
-          sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-        } | null;
-      };
-      bank?: {
-        __typename: 'Bank';
-        id: string;
-        createdAt: string;
-        bicSwift: string;
-        iban: string;
-        legalUnitLocation?: {
-          __typename: 'LegalUnitLocation';
-          id: string;
-          createdAt: string;
-          locationType: string;
-          legalName: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            email: string;
-            website: string;
-            name: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-          legalUnit?: {
-            __typename: 'LegalUnit';
-            id: string;
-            createdAt: string;
-            type: string;
-            legalName: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              slug: string;
-              email: string;
-              website: string;
-              name: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-            };
-          } | null;
-          location?: {
-            __typename: 'Location';
-            id: string;
-            createdAt: string;
-            type: string;
-            locationDetails: string;
-            onlineLink: string;
-            address?: {
-              __typename: 'Address';
-              id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
-              category: string;
-              name: string;
-              streetNumber: string;
-              street: string;
-              zip: string;
-              city: string;
-              state: string;
-              country: string;
-            } | null;
-          } | null;
-        } | null;
-      } | null;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-        };
-      };
-      children: Array<{
-        __typename: 'Account';
-        id: string;
-        createdAt: string;
-        name: string;
-        type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
-          aggregate?: {
-            __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-          } | null;
-        };
-        bank?: {
-          __typename: 'Bank';
-          id: string;
-          createdAt: string;
-          bicSwift: string;
-          iban: string;
-          legalUnitLocation?: {
-            __typename: 'LegalUnitLocation';
-            id: string;
-            createdAt: string;
-            locationType: string;
-            legalName: string;
-            actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
-              __typename: 'LegalUnit';
-              id: string;
-              createdAt: string;
-              type: string;
-              legalName: string;
-              actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
-            } | null;
-            location?: {
-              __typename: 'Location';
-              id: string;
-              createdAt: string;
-              type: string;
-              locationDetails: string;
-              onlineLink: string;
-              address?: {
-                __typename: 'Address';
-                id: string;
-                createdAt: string;
-                latitude?: number | null;
-                longitude?: number | null;
-                category: string;
-                name: string;
-                streetNumber: string;
-                street: string;
-                zip: string;
-                city: string;
-                state: string;
-                country: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null;
-        team: {
-          __typename: 'Team';
-          id: string;
-          createdAt: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      }>;
-      parent?: {
-        __typename: 'Account';
-        id: string;
-        createdAt: string;
-        name: string;
-        type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
-          aggregate?: {
-            __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-          } | null;
-        };
-        bank?: {
-          __typename: 'Bank';
-          id: string;
-          createdAt: string;
-          bicSwift: string;
-          iban: string;
-          legalUnitLocation?: {
-            __typename: 'LegalUnitLocation';
-            id: string;
-            createdAt: string;
-            locationType: string;
-            legalName: string;
-            actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
-              __typename: 'LegalUnit';
-              id: string;
-              type: string;
-              legalName: string;
-              actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
-            } | null;
-            location?: {
-              __typename: 'Location';
-              id: string;
-              type: string;
-              createdAt: string;
-              onlineLink: string;
-              locationDetails: string;
-              address?: {
-                __typename: 'Address';
-                id: string;
-                latitude?: number | null;
-                longitude?: number | null;
-                category: string;
-                name: string;
-                streetNumber: string;
-                street: string;
-                zip: string;
-                city: string;
-                state: string;
-                country: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null;
-        team: {
-          __typename: 'Team';
-          id: string;
-          createdAt: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      } | null;
-    }>;
-    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; eventDate: string }>;
-    teams: Array<{
-      __typename: 'Team';
-      id: string;
-      createdAt: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    }>;
-  }>;
-};
+
+export type GetTeamManageQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, isJoinFormActive: boolean, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, projects: Array<{ __typename: 'Project', id: string, createdAt: string, color: string, description: string, name: string, slug: string, isPrivate: boolean, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, createdAt: string, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, event: { __typename: 'Event', id: string, createdAt: string, start: string, end: string, maxParticipants: number | null, name: string, slug: string, description: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }> }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } }>, banner: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string, name: string } | null, projectSupervisors: Array<{ __typename?: 'ProjectSupervisors', teamMember: { __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename?: 'TeamMemberRole', role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } } }>, projectTags: Array<{ __typename?: 'ProjectTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }> }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, details: string, link: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
 
 export type InsertActorImageMutationVariables = Exact<{
   object: ActorImageInsertInput;
 }>;
 
-export type InsertActorImageMutation = {
-  __typename?: 'Mutation';
-  insertActorImageOne?: {
-    __typename: 'ActorImage';
-    id: string;
-    createdAt: string;
-    type: string;
-    image: { __typename: 'FileUpload'; id: string; url: string };
-    actor: { __typename: 'Actor'; id: string; email: string; name: string; slug: string; website: string };
-  } | null;
-};
+
+export type InsertActorImageMutation = { __typename?: 'Mutation', insertActorImageOne: { __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string }, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string } } | null };
 
 export type UpdateActorMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: ActorSetInput;
 }>;
 
-export type UpdateActorMutation = {
-  __typename?: 'Mutation';
-  updateActorByPk?: {
-    __typename: 'Actor';
-    id: string;
-    slug: string;
-    bio: string;
-    name: string;
-    status: string;
-    email: string;
-    website: string;
-    actorImages: Array<{
-      __typename: 'ActorImage';
-      id: string;
-      type: string;
-      image: { __typename: 'FileUpload'; id: string; url: string };
-    }>;
-    socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-  } | null;
-};
+
+export type UpdateActorMutation = { __typename?: 'Mutation', updateActorByPk: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } | null };
 
 export type UpdateTeamMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: TeamSetInput;
 }>;
 
-export type UpdateTeamMutation = {
-  __typename?: 'Mutation';
-  updateTeamByPk?: {
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    membershipFees: number;
-    membershipDuration: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      bio: string;
-      name: string;
-      status: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-    }>;
-  } | null;
-};
+
+export type UpdateTeamMutation = { __typename?: 'Mutation', updateTeamByPk: { __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> } | null };
 
 export type InsertAccountMutationVariables = Exact<{
   object: AccountInsertInput;
 }>;
 
-export type InsertAccountMutation = {
-  __typename?: 'Mutation';
-  insertAccountOne?: { __typename: 'Account'; id: string } | null;
-};
+
+export type InsertAccountMutation = { __typename?: 'Mutation', insertAccountOne: { __typename: 'Account', id: string } | null };
 
 export type InsertBankMutationVariables = Exact<{
   object: BankInsertInput;
 }>;
 
-export type InsertBankMutation = { __typename?: 'Mutation'; insertBankOne?: { __typename: 'Bank'; id: string } | null };
+
+export type InsertBankMutation = { __typename?: 'Mutation', insertBankOne: { __typename: 'Bank', id: string } | null };
 
 export type GetEventOrganizesQueryVariables = Exact<{
   where?: InputMaybe<EventOrganizeBoolExp>;
@@ -50908,372 +50061,8 @@ export type GetEventOrganizesQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetEventOrganizesQuery = {
-  __typename?: 'Query';
-  eventOrganize: Array<{
-    __typename?: 'EventOrganize';
-    event: {
-      __typename: 'Event';
-      id: string;
-      name: string;
-      state: string;
-      start: string;
-      end: string;
-      slug: string;
-      banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
-      eventApprovals: Array<{
-        __typename: 'EventApproval';
-        id: string;
-        createdAt: string;
-        isApproved: boolean;
-        message: string;
-        eventApprovalStep?: {
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-          nextSteps: Array<{
-            __typename: 'EventApprovalStep';
-            id: string;
-            createdAt: string;
-            name: string;
-            description: string;
-            order: number;
-          }>;
-          previousStep?: {
-            __typename: 'EventApprovalStep';
-            id: string;
-            createdAt: string;
-            name: string;
-            description: string;
-            order: number;
-          } | null;
-        } | null;
-        createdBy?: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-            }>;
-          };
-          user?: {
-            __typename: 'User';
-            id: string;
-            createdAt: string;
-            firstName: string;
-            lastName: string;
-            individual: {
-              __typename: 'Individual';
-              id: string;
-              createdAt: string;
-              actor: {
-                __typename: 'Actor';
-                id: string;
-                createdAt: string;
-                email: string;
-                name: string;
-                slug: string;
-                website: string;
-                actorImages: Array<{
-                  __typename: 'ActorImage';
-                  id: string;
-                  createdAt: string;
-                  type: string;
-                  image: {
-                    __typename: 'FileUpload';
-                    id: string;
-                    createdAt: string;
-                    url: string;
-                    size: number;
-                    type: string;
-                  };
-                }>;
-              };
-            };
-          } | null;
-        } | null;
-      }>;
-      eventApprovalSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      nextEventApprovalStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-        nextSteps: Array<{
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        }>;
-        previousStep?: {
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        } | null;
-      } | null;
-    };
-    eventSupervisors: Array<{
-      __typename?: 'EventSupervisor';
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-    }>;
-    team: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-      joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-    };
-    project?: {
-      __typename: 'Project';
-      id: string;
-      createdAt: string;
-      name: string;
-      slug: string;
-      color: string;
-      isPrivate: boolean;
-    } | null;
-  }>;
-  event: Array<{
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start: string;
-    end: string;
-    name: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    description: string;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-      formSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          bio: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-          actorTags: Array<{
-            __typename?: 'ActorTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-  }>;
-};
+
+export type GetEventOrganizesQuery = { __typename?: 'Query', eventOrganize: Array<{ __typename?: 'EventOrganize', event: { __typename: 'Event', id: string, name: string, state: string, start: string, end: string, maxParticipants: number | null, slug: string, banner: { __typename: 'FileUpload', id: string, url: string } | null, eventApprovals: Array<{ __typename: 'EventApproval', id: string, createdAt: string, isApproved: boolean, message: string, eventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }>, eventApprovalSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, nextEventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null }, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }>, event: Array<{ __typename: 'Event', id: string, createdAt: string, slug: string, start: string, end: string, maxParticipants: number | null, name: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, description: string, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null }> };
 
 export type GetFinancesQueryVariables = Exact<{
   where?: InputMaybe<FinanceBoolExp>;
@@ -51282,610 +50071,25 @@ export type GetFinancesQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetFinancesQuery = {
-  __typename?: 'Query';
-  finance: Array<{
-    __typename: 'Finance';
-    id: string;
-    createdAt: string;
-    amount: number;
-    category: string;
-    description: string;
-    method: string;
-    payedAt: string;
-    payedByType: string;
-    payedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        user?: {
-          __typename: 'User';
-          id: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            actor: { __typename: 'Actor'; id: string; slug: string };
-          };
-        } | null;
-      } | null;
-    };
-    receivedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        user?: {
-          __typename: 'User';
-          id: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            actor: { __typename: 'Actor'; id: string; slug: string };
-          };
-        } | null;
-      } | null;
-    };
-    initiatedBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      } | null;
-    } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
-  }>;
-};
+
+export type GetFinancesQuery = { __typename?: 'Query', finance: Array<{ __typename: 'Finance', id: string, createdAt: string, amount: number, category: string, description: string, method: string, payedAt: string, payedByType: string, payedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null }, receivedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null }, initiatedBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, createdBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null, event: { __typename: 'Event', id: string, slug: string, name: string } | null, project: { __typename: 'Project', id: string, slug: string, name: string } | null, financeAttachments: Array<{ __typename?: 'FinanceAttachments', attachment: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } }> }> };
 
 export type GetTenantManageQueryVariables = Exact<{
   domain: Scalars['String']['input'];
 }>;
 
-export type GetTenantManageQuery = {
-  __typename?: 'Query';
-  tenant: Array<{
-    __typename: 'Tenant';
-    id: string;
-    domain: string;
-    pointName: string;
-    eventValidationForm?: { __typename: 'Form'; id: string; name: string; schema: JSONType; type: string } | null;
-    eventApprovalSteps: Array<{ __typename: 'EventApprovalStep'; id: string; name: string; order: number }>;
-    adminTeam?: {
-      __typename: 'Team';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        name: string;
-        bio: string;
-        email: string;
-        website: string;
-        status: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-  }>;
-};
 
-export type GetTeamDashboardQueryVariables = Exact<{ [key: string]: never }>;
+export type GetTenantManageQuery = { __typename?: 'Query', tenant: Array<{ __typename: 'Tenant', id: string, domain: string, pointName: string, eventValidationForm: { __typename: 'Form', id: string, name: string, schema: JSONType, type: string } | null, eventApprovalSteps: Array<{ __typename: 'EventApprovalStep', id: string, name: string, order: number }>, adminTeam: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, bio: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null }> };
 
-export type GetTeamDashboardQuery = {
-  __typename?: 'Query';
-  team: Array<{
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    membershipDuration: string;
-    membershipFees: number;
-    isJoinFormActive: boolean;
-    documents: Array<{
-      __typename: 'Document';
-      id: string;
-      name: string;
-      type: string;
-      file?: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string } | null;
-    }>;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      createdAt: string;
-      email: string;
-      name: string;
-      slug: string;
-      website: string;
-      bio: string;
-      status: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        createdAt: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-    teamMembersAggregate: {
-      __typename?: 'TeamMemberAggregate';
-      aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-    };
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            bio: string;
-            slug: string;
-            status: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      };
-    }>;
-    accounts: Array<{
-      __typename: 'Account';
-      id: string;
-      createdAt: string;
-      name: string;
-      type: string;
-      financesAggregate: {
-        __typename?: 'FinanceAggregate';
-        aggregate?: {
-          __typename?: 'FinanceAggregateFields';
-          sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-        } | null;
-      };
-      bank?: {
-        __typename: 'Bank';
-        id: string;
-        createdAt: string;
-        bicSwift: string;
-        iban: string;
-        legalUnitLocation?: {
-          __typename: 'LegalUnitLocation';
-          id: string;
-          createdAt: string;
-          locationType: string;
-          legalName: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            email: string;
-            website: string;
-            name: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-          legalUnit?: {
-            __typename: 'LegalUnit';
-            id: string;
-            createdAt: string;
-            type: string;
-            legalName: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              slug: string;
-              email: string;
-              website: string;
-              name: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-            };
-          } | null;
-          location?: {
-            __typename: 'Location';
-            id: string;
-            createdAt: string;
-            type: string;
-            locationDetails: string;
-            onlineLink: string;
-            address?: {
-              __typename: 'Address';
-              id: string;
-              createdAt: string;
-              latitude?: number | null;
-              longitude?: number | null;
-              category: string;
-              name: string;
-              streetNumber: string;
-              street: string;
-              zip: string;
-              city: string;
-              state: string;
-              country: string;
-            } | null;
-          } | null;
-        } | null;
-      } | null;
-      team: {
-        __typename: 'Team';
-        id: string;
-        createdAt: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-        };
-      };
-      children: Array<{
-        __typename: 'Account';
-        id: string;
-        createdAt: string;
-        name: string;
-        type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
-          aggregate?: {
-            __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-          } | null;
-        };
-        bank?: {
-          __typename: 'Bank';
-          id: string;
-          createdAt: string;
-          bicSwift: string;
-          iban: string;
-          legalUnitLocation?: {
-            __typename: 'LegalUnitLocation';
-            id: string;
-            createdAt: string;
-            locationType: string;
-            legalName: string;
-            actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
-              __typename: 'LegalUnit';
-              id: string;
-              createdAt: string;
-              type: string;
-              legalName: string;
-              actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
-            } | null;
-            location?: {
-              __typename: 'Location';
-              id: string;
-              createdAt: string;
-              type: string;
-              locationDetails: string;
-              onlineLink: string;
-              address?: {
-                __typename: 'Address';
-                id: string;
-                createdAt: string;
-                latitude?: number | null;
-                longitude?: number | null;
-                category: string;
-                name: string;
-                streetNumber: string;
-                street: string;
-                zip: string;
-                city: string;
-                state: string;
-                country: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null;
-        team: {
-          __typename: 'Team';
-          id: string;
-          createdAt: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      }>;
-      parent?: {
-        __typename: 'Account';
-        id: string;
-        createdAt: string;
-        name: string;
-        type: string;
-        financesAggregate: {
-          __typename?: 'FinanceAggregate';
-          aggregate?: {
-            __typename?: 'FinanceAggregateFields';
-            sum?: { __typename?: 'FinanceSumFields'; amount?: number | null } | null;
-          } | null;
-        };
-        bank?: {
-          __typename: 'Bank';
-          id: string;
-          createdAt: string;
-          bicSwift: string;
-          iban: string;
-          legalUnitLocation?: {
-            __typename: 'LegalUnitLocation';
-            id: string;
-            createdAt: string;
-            locationType: string;
-            legalName: string;
-            actor: { __typename?: 'Actor'; website: string; name: string };
-            legalUnit?: {
-              __typename: 'LegalUnit';
-              id: string;
-              type: string;
-              legalName: string;
-              actor: { __typename: 'Actor'; id: string; createdAt: string; website: string; name: string };
-            } | null;
-            location?: {
-              __typename: 'Location';
-              id: string;
-              type: string;
-              createdAt: string;
-              onlineLink: string;
-              locationDetails: string;
-              address?: {
-                __typename: 'Address';
-                id: string;
-                latitude?: number | null;
-                longitude?: number | null;
-                category: string;
-                name: string;
-                streetNumber: string;
-                street: string;
-                zip: string;
-                city: string;
-                state: string;
-                country: string;
-              } | null;
-            } | null;
-          } | null;
-        } | null;
-        team: {
-          __typename: 'Team';
-          id: string;
-          createdAt: string;
-          type: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      } | null;
-    }>;
-    teamHistories: Array<{ __typename: 'TeamHistory'; id: string; createdAt: string; eventDate: string }>;
-    teams: Array<{
-      __typename: 'Team';
-      id: string;
-      createdAt: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    }>;
-  }>;
-};
+export type GetTeamDashboardQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetTenantUsersWithPointsQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    individual: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        bio: string;
-        name: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    actions: Array<{ __typename: 'Action'; id: string; points?: number | null; pointsProcessedAt?: string | null }>;
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      processedAt?: string | null;
-      event: { __typename: 'Event'; id: string; slug: string; pointsAwardedForAttendance: number };
-    }>;
-    missionJoins: Array<{
-      __typename: 'MissionJoin';
-      id: string;
-      points?: number | null;
-      pointsProcessedAt?: string | null;
-    }>;
-  }>;
-};
+export type GetTeamDashboardQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipDuration: string, membershipFees: number, isJoinFormActive: boolean, documents: Array<{ __typename: 'Document', id: string, name: string, type: string, file: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } | null }>, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, bio: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } }>, accounts: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, email: string, website: string, name: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } }, children: Array<{ __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, createdAt: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } }>, parent: { __typename: 'Account', id: string, createdAt: string, name: string, type: string, financesAggregate: { __typename?: 'FinanceAggregate', aggregate: { __typename?: 'FinanceAggregateFields', sum: { __typename?: 'FinanceSumFields', amount: number | null } | null } | null }, bank: { __typename: 'Bank', id: string, createdAt: string, bicSwift: string, iban: string, legalUnitLocation: { __typename: 'LegalUnitLocation', id: string, createdAt: string, locationType: string, legalName: string, actor: { __typename?: 'Actor', website: string, name: string }, legalUnit: { __typename: 'LegalUnit', id: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, createdAt: string, website: string, name: string } } | null, location: { __typename: 'Location', id: string, type: string, createdAt: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, latitude: number | null, longitude: number | null, category: string, name: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null } | null, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } | null }>, teamHistories: Array<{ __typename: 'TeamHistory', id: string, createdAt: string, eventDate: string }>, teams: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> }> };
+
+export type GetTenantUsersWithPointsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTenantUsersWithPointsQuery = { __typename?: 'Query', user: Array<{ __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, actions: Array<{ __typename: 'Action', id: string, points: number | null, pointsProcessedAt: string | null }>, eventJoins: Array<{ __typename: 'EventJoin', id: string, processedAt: string | null, event: { __typename: 'Event', id: string, slug: string, pointsAwardedForAttendance: number } }>, missionJoins: Array<{ __typename: 'MissionJoin', id: string, points: number | null, pointsProcessedAt: string | null }> }> };
 
 export type GetEventsValidationQueryVariables = Exact<{
   where?: InputMaybe<EventBoolExp>;
@@ -51894,629 +50098,29 @@ export type GetEventsValidationQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetEventsValidationQuery = {
-  __typename?: 'Query';
-  event: Array<{
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start: string;
-    end: string;
-    name: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    description: string;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    nextEventApprovalStep?: {
-      __typename: 'EventApprovalStep';
-      id: string;
-      createdAt: string;
-      name: string;
-      description: string;
-      order: number;
-      nextSteps: Array<{
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      }>;
-      previousStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      } | null;
-    } | null;
-    eventApprovalSubmission?: {
-      __typename: 'FormSubmission';
-      id: string;
-      createdAt: string;
-      submission: JSONType;
-      form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    } | null;
-    eventApprovals: Array<{
-      __typename: 'EventApproval';
-      id: string;
-      createdAt: string;
-      isApproved: boolean;
-      message: string;
-      eventApprovalStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-        nextSteps: Array<{
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        }>;
-        previousStep?: {
-          __typename: 'EventApprovalStep';
-          id: string;
-          createdAt: string;
-          name: string;
-          description: string;
-          order: number;
-        } | null;
-      } | null;
-      createdBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-          }>;
-        };
-        user?: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-            };
-          };
-        } | null;
-      } | null;
-    }>;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          name: string;
-          email: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-      formSubmission?: {
-        __typename: 'FormSubmission';
-        id: string;
-        createdAt: string;
-        submission: JSONType;
-        form: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-      } | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          createdAt: string;
-          email: string;
-          name: string;
-          slug: string;
-          website: string;
-          bio: string;
-          status: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            createdAt: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string; size: number; type: string };
-          }>;
-          actorTags: Array<{
-            __typename?: 'ActorTags';
-            tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-          }>;
-          socials: Array<{
-            __typename: 'Social';
-            id: string;
-            pseudo: string;
-            url: string;
-            type: string;
-            order: number;
-          }>;
-        };
-      } | null;
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-  }>;
-};
+
+export type GetEventsValidationQuery = { __typename?: 'Query', event: Array<{ __typename: 'Event', id: string, createdAt: string, slug: string, start: string, end: string, maxParticipants: number | null, name: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, description: string, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, nextEventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, eventApprovalSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, eventApprovals: Array<{ __typename: 'EventApproval', id: string, createdAt: string, isApproved: boolean, message: string, eventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }>, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } }, formSubmission: { __typename: 'FormSubmission', id: string, createdAt: string, submission: JSONType, form: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } } | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } | null }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null }> };
 
 export type GetProjectQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetProjectQuery = {
-  __typename?: 'Query';
-  project: Array<{
-    __typename: 'Project';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start?: string | null;
-    end?: string | null;
-    name: string;
-    isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    team: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      event: { __typename: 'Event'; id: string; slug: string; name: string };
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                createdAt: string;
-                type: string;
-                image: {
-                  __typename: 'FileUpload';
-                  id: string;
-                  createdAt: string;
-                  url: string;
-                  size: number;
-                  type: string;
-                };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-  }>;
-};
+
+export type GetProjectQuery = { __typename?: 'Query', project: Array<{ __typename: 'Project', id: string, createdAt: string, slug: string, start: string | null, end: string | null, name: string, isPrivate: boolean, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, event: { __typename: 'Event', id: string, slug: string, name: string }, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }> }> };
 
 export type GetTeamQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetTeamQuery = {
-  __typename?: 'Query';
-  team: Array<{
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    membershipFees: number;
-    membershipDuration: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      bio: string;
-      name: string;
-      status: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    parent?: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-    }>;
-  }>;
-};
+
+export type GetTeamQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, membershipFees: number, membershipDuration: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
 
 export type InsertTeamJoinMutationVariables = Exact<{
   object: TeamJoinInsertInput;
 }>;
 
-export type InsertTeamJoinMutation = {
-  __typename?: 'Mutation';
-  insertTeamJoinOne?: { __typename: 'TeamJoin'; id: string } | null;
-};
+
+export type InsertTeamJoinMutation = { __typename?: 'Mutation', insertTeamJoinOne: { __typename: 'TeamJoin', id: string, createdAt: string, state: string, team: { __typename: 'Team', id: string, createdAt: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null };
 
 export type GetTeamsQueryVariables = Exact<{
   where?: InputMaybe<TeamBoolExp>;
@@ -52525,141 +50129,8 @@ export type GetTeamsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetTeamsQuery = {
-  __typename?: 'Query';
-  team: Array<{
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    membershipFees: number;
-    membershipDuration: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      status: string;
-      bio: string;
-      name: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    parent?: {
-      __typename: 'Team';
-      id: string;
-      type: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          createdAt: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembersAggregate: {
-      __typename?: 'TeamMemberAggregate';
-      aggregate?: { __typename?: 'TeamMemberAggregateFields'; count: number } | null;
-    };
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            bio: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-            actorTags: Array<{
-              __typename?: 'ActorTags';
-              tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-            }>;
-            socials: Array<{
-              __typename: 'Social';
-              id: string;
-              pseudo: string;
-              url: string;
-              type: string;
-              order: number;
-            }>;
-          };
-        };
-      };
-    }>;
-  }>;
-};
+
+export type GetTeamsQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, status: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, parent: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, roles: Array<{ __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> }>, teamMembersAggregate: { __typename?: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null }, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }> }> };
 
 export type GetCategoriesQueryVariables = Exact<{
   where?: InputMaybe<TagBoolExp>;
@@ -52668,73 +50139,15 @@ export type GetCategoriesQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetCategoriesQuery = {
-  __typename?: 'Query';
-  tag: Array<{
-    __typename?: 'Tag';
-    id: string;
-    name: string;
-    slug: string;
-    color: string;
-    image?: { __typename?: 'FileUpload'; id: string; url: string } | null;
-  }>;
-};
+
+export type GetCategoriesQuery = { __typename?: 'Query', tag: Array<{ __typename?: 'Tag', id: string, name: string, slug: string, color: string, image: { __typename?: 'FileUpload', id: string, url: string } | null }> };
 
 export type GetUserQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetUserQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    individual: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        status: string;
-        bio: string;
-        name: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-        socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-      };
-    };
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-    }>;
-  }>;
-};
+
+export type GetUserQuery = { __typename?: 'Query', user: Array<{ __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, status: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } }, teamMembers: Array<{ __typename: 'TeamMember', id: string, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }> }> };
 
 export type GetUsersQueryVariables = Exact<{
   where?: InputMaybe<UserBoolExp>;
@@ -52743,947 +50156,110 @@ export type GetUsersQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetUsersQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    individual: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        name: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-    }>;
-  }>;
-};
 
-export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never }>;
+export type GetUsersQuery = { __typename?: 'Query', user: Array<{ __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, teamMembers: Array<{ __typename: 'TeamMember', id: string, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }> }> };
 
-export type GetTenantOidcInfoQuery = {
-  __typename?: 'Query';
-  tenant: Array<{
-    __typename: 'Tenant';
-    id: string;
-    isOidcEnabled: boolean;
-    oidcName: string;
-    domain: string;
-    adminTeam?: {
-      __typename: 'Team';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-  }>;
-};
+export type GetTenantOidcInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTenantOidcInfoQuery = { __typename?: 'Query', tenant: Array<{ __typename: 'Tenant', id: string, isOidcEnabled: boolean, oidcName: string, domain: string, adminTeam: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null }> };
 
 export type UserLoginMutationVariables = Exact<{
   dto: LoginInput;
 }>;
 
-export type UserLoginMutation = {
-  __typename?: 'Mutation';
-  login: {
-    __typename: 'UserLogin';
-    canManageTenant: boolean;
-    user: {
-      __typename: 'User';
-      id: string;
-      individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      tenant: { __typename: 'Tenant'; id: string; domain: string };
-    };
-  };
-};
+
+export type UserLoginMutation = { __typename?: 'Mutation', login: { __typename: 'UserLogin', canManageTenant: boolean, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } }, tenant: { __typename: 'Tenant', id: string, domain: string } } } };
+
+export type InsertEventApprovalMutationVariables = Exact<{
+  object: EventApprovalInsertInput;
+}>;
+
+
+export type InsertEventApprovalMutation = { __typename?: 'Mutation', insertEventApprovalOne: { __typename: 'EventApproval', id: string, createdAt: string, isApproved: boolean, message: string, eventApprovalStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number, nextSteps: Array<{ __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number }>, previousStep: { __typename: 'EventApprovalStep', id: string, createdAt: string, name: string, description: string, order: number } | null } | null, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null } | null };
 
 export type GetProjectsSelectQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-export type GetProjectsSelectQuery = {
-  __typename?: 'Query';
-  project: Array<{
-    __typename: 'Project';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start?: string | null;
-    end?: string | null;
-    name: string;
-    isPrivate: boolean;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      event: {
-        __typename: 'Event';
-        id: string;
-        name: string;
-        slug: string;
-        banner?: { __typename: 'FileUpload'; id: string; url: string } | null;
-      };
-    }>;
-  }>;
-};
+
+export type GetProjectsSelectQuery = { __typename?: 'Query', project: Array<{ __typename: 'Project', id: string, createdAt: string, slug: string, start: string | null, end: string | null, name: string, isPrivate: boolean, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, event: { __typename: 'Event', id: string, name: string, slug: string, banner: { __typename: 'FileUpload', id: string, url: string } | null } }> }> };
 
 export type InsertEventMutationVariables = Exact<{
   object: EventInsertInput;
 }>;
 
-export type InsertEventMutation = {
-  __typename?: 'Mutation';
-  insertEventOne?: {
-    __typename: 'Event';
-    id: string;
-    createdAt: string;
-    slug: string;
-    start: string;
-    end: string;
-    name: string;
-    state: string;
-    price: number;
-    pointsAwardedForAttendance: number;
-    isPrivate: boolean;
-    description: string;
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-    banner?: { __typename: 'FileUpload'; id: string; url: string; type: string } | null;
-    eventTags: Array<{
-      __typename?: 'EventTags';
-      tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-    }>;
-    eventOrganizes: Array<{
-      __typename: 'EventOrganize';
-      id: string;
-      eventSupervisors: Array<{
-        __typename?: 'EventSupervisor';
-        user: {
-          __typename: 'User';
-          id: string;
-          createdAt: string;
-          firstName: string;
-          lastName: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            createdAt: string;
-            actor: {
-              __typename: 'Actor';
-              id: string;
-              createdAt: string;
-              email: string;
-              name: string;
-              slug: string;
-              website: string;
-              bio: string;
-              status: string;
-              actorImages: Array<{
-                __typename: 'ActorImage';
-                id: string;
-                type: string;
-                image: { __typename: 'FileUpload'; id: string; url: string };
-              }>;
-              actorTags: Array<{
-                __typename?: 'ActorTags';
-                tag: { __typename: 'Tag'; id: string; createdAt: string; slug: string; name: string; color: string };
-              }>;
-              socials: Array<{
-                __typename: 'Social';
-                id: string;
-                pseudo: string;
-                url: string;
-                type: string;
-                order: number;
-              }>;
-            };
-          };
-        };
-      }>;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          name: string;
-          slug: string;
-          email: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-        joinForm: { __typename: 'Form'; id: string; schema: JSONType; name: string };
-      };
-      project?: {
-        __typename: 'Project';
-        id: string;
-        createdAt: string;
-        name: string;
-        slug: string;
-        color: string;
-        isPrivate: boolean;
-      } | null;
-    }>;
-    eventJoinsAggregate: {
-      __typename?: 'EventJoinAggregate';
-      aggregate?: { __typename?: 'EventJoinAggregateFields'; count: number } | null;
-    };
-    eventJoins: Array<{
-      __typename: 'EventJoin';
-      id: string;
-      createdAt: string;
-      state: string;
-      isPresent?: boolean | null;
-      processedAt?: string | null;
-      participationProcessedVia?: string | null;
-      participationProcessedAt?: string | null;
-      processedBy?: {
-        __typename: 'Individual';
-        id: string;
-        createdAt: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          bio: string;
-          name: string;
-          email: string;
-          status: string;
-          website: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      } | null;
-      joinedBy: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            slug: string;
-            bio: string;
-            name: string;
-            email: string;
-            website: string;
-            status: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              type: string;
-              image: { __typename: 'FileUpload'; id: string; url: string };
-            }>;
-          };
-        };
-      };
-    }>;
-    joinForm?: {
-      __typename: 'Form';
-      id: string;
-      createdAt: string;
-      schema: JSONType;
-      name: string;
-      type: string;
-    } | null;
-  } | null;
-};
+
+export type InsertEventMutation = { __typename?: 'Mutation', insertEventOne: { __typename: 'Event', id: string, createdAt: string, slug: string, start: string, end: string, maxParticipants: number | null, name: string, state: string, price: number, pointsAwardedForAttendance: number, isPrivate: boolean, description: string, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null }, banner: { __typename: 'FileUpload', id: string, url: string, type: string } | null, eventTags: Array<{ __typename?: 'EventTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, eventOrganizes: Array<{ __typename: 'EventOrganize', id: string, eventSupervisors: Array<{ __typename?: 'EventSupervisor', user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, bio: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, actorTags: Array<{ __typename?: 'ActorTags', tag: { __typename: 'Tag', id: string, createdAt: string, slug: string, name: string, color: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> } } } }>, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, schema: JSONType, name: string }, teamMembersAggregate: { __typename: 'TeamMemberAggregate', aggregate: { __typename?: 'TeamMemberAggregateFields', count: number } | null } }, project: { __typename: 'Project', id: string, createdAt: string, name: string, slug: string, color: string, isPrivate: boolean } | null }>, eventJoinsAggregate: { __typename?: 'EventJoinAggregate', aggregate: { __typename?: 'EventJoinAggregateFields', count: number } | null }, eventJoins: Array<{ __typename: 'EventJoin', id: string, createdAt: string, state: string, isPresent: boolean | null, processedAt: string | null, participationProcessedVia: string | null, participationProcessedAt: string | null, processedBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, joinedBy: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, status: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } } }>, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null } | null };
 
 export type InsertFinanceMutationVariables = Exact<{
   object: FinanceInsertInput;
 }>;
 
-export type InsertFinanceMutation = {
-  __typename?: 'Mutation';
-  insertFinanceOne?: {
-    __typename: 'Finance';
-    id: string;
-    createdAt: string;
-    amount: number;
-    category: string;
-    description: string;
-    method: string;
-    payedAt: string;
-    payedByType: string;
-    payedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        actor: { __typename: 'Actor'; id: string; slug: string };
-      } | null;
-    };
-    receivedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        user?: {
-          __typename: 'User';
-          id: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            actor: { __typename: 'Actor'; id: string; slug: string };
-          };
-        } | null;
-        actor: { __typename: 'Actor'; id: string; slug: string };
-      } | null;
-    };
-    initiatedBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      } | null;
-    } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
-  } | null;
-};
+
+export type InsertFinanceMutation = { __typename?: 'Mutation', insertFinanceOne: { __typename: 'Finance', id: string, createdAt: string, amount: number, category: string, description: string, method: string, payedAt: string, payedByType: string, payedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null }, receivedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null, actor: { __typename: 'Actor', id: string, slug: string } } | null }, initiatedBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, createdBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null, event: { __typename: 'Event', id: string, slug: string, name: string } | null, project: { __typename: 'Project', id: string, slug: string, name: string } | null, financeAttachments: Array<{ __typename?: 'FinanceAttachments', attachment: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } }> } | null };
 
 export type ProcessReceiptQueryVariables = Exact<{
   key: Scalars['String']['input'];
 }>;
 
-export type ProcessReceiptQuery = {
-  __typename?: 'Query';
-  processReceipt?: {
-    __typename: 'ProcessedReceipt';
-    address: string;
-    amount?: number | null;
-    date?: string | null;
-    phone?: string | null;
-    vendorName?: string | null;
-    lineItems: Array<{ __typename: 'LineItem'; name: string; quantity: number; price: number }>;
-  } | null;
-};
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+export type ProcessReceiptQuery = { __typename?: 'Query', processReceipt: { __typename: 'ProcessedReceipt', address: string, amount: number | null, date: string | null, phone: string | null, vendorName: string | null, lineItems: Array<{ __typename: 'LineItem', name: string, quantity: number, price: number }> } | null };
 
-export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type GetFinanceLogsQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetFinanceLogsQuery = {
-  __typename?: 'Query';
-  financeLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      } | null;
-    } | null;
-  }>;
-};
+
+export type GetFinanceLogsQuery = { __typename?: 'Query', financeLogs: Array<{ __typename: 'Log', id: string, createdAt: string, context: string, diff: JSONType, note: string, entityId: string, entityName: string, eventType: string, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }> };
 
 export type UpdateFinanceMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: FinanceSetInput;
 }>;
 
-export type UpdateFinanceMutation = {
-  __typename?: 'Mutation';
-  updateFinanceByPk?: {
-    __typename: 'Finance';
-    id: string;
-    createdAt: string;
-    amount: number;
-    category: string;
-    description: string;
-    method: string;
-    payedAt: string;
-    payedByType: string;
-    payedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        actor: { __typename: 'Actor'; id: string; slug: string };
-      } | null;
-    };
-    receivedBy: {
-      __typename: 'Actor';
-      id: string;
-      name: string;
-      slug: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      team?: { __typename: 'Team'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } } | null;
-      individual?: {
-        __typename: 'Individual';
-        id: string;
-        user?: {
-          __typename: 'User';
-          id: string;
-          individual: {
-            __typename: 'Individual';
-            id: string;
-            actor: { __typename: 'Actor'; id: string; slug: string };
-          };
-        } | null;
-      } | null;
-    };
-    initiatedBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    } | null;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        name: string;
-        slug: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        individual: { __typename: 'Individual'; id: string; actor: { __typename: 'Actor'; id: string; slug: string } };
-      } | null;
-    } | null;
-    event?: { __typename: 'Event'; id: string; slug: string; name: string } | null;
-    project?: { __typename: 'Project'; id: string; slug: string; name: string } | null;
-    financeAttachments: Array<{
-      __typename?: 'FinanceAttachments';
-      attachment: { __typename: 'FileUpload'; id: string; name: string; size: number; type: string; url: string };
-    }>;
-  } | null;
-};
+
+export type UpdateFinanceMutation = { __typename?: 'Mutation', updateFinanceByPk: { __typename: 'Finance', id: string, createdAt: string, amount: number, category: string, description: string, method: string, payedAt: string, payedByType: string, payedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null }, receivedBy: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null, individual: { __typename: 'Individual', id: string, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null }, initiatedBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null, createdBy: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, name: string, slug: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, user: { __typename: 'User', id: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null, event: { __typename: 'Event', id: string, slug: string, name: string } | null, project: { __typename: 'Project', id: string, slug: string, name: string } | null, financeAttachments: Array<{ __typename?: 'FinanceAttachments', attachment: { __typename: 'FileUpload', id: string, name: string, size: number, type: string, url: string } }> } | null };
 
 export type GetEventLogsQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetEventLogsQuery = {
-  __typename?: 'Query';
-  eventLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      } | null;
-    } | null;
-  }>;
-};
+
+export type GetEventLogsQuery = { __typename?: 'Query', eventLogs: Array<{ __typename: 'Log', id: string, createdAt: string, context: string, diff: JSONType, note: string, entityId: string, entityName: string, eventType: string, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }> };
 
 export type GetTeamLogsQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetTeamLogsQuery = {
-  __typename?: 'Query';
-  teamLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      } | null;
-    } | null;
-  }>;
-};
+
+export type GetTeamLogsQuery = { __typename?: 'Query', teamLogs: Array<{ __typename: 'Log', id: string, createdAt: string, context: string, diff: JSONType, note: string, entityId: string, entityName: string, eventType: string, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }> };
 
 export type GetTenantLogsQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetTenantLogsQuery = {
-  __typename?: 'Query';
-  tenantLogs: Array<{
-    __typename: 'Log';
-    id: string;
-    createdAt: string;
-    context: string;
-    diff: JSONType;
-    note: string;
-    entityId: string;
-    entityName: string;
-    eventType: string;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            email: string;
-            name: string;
-            slug: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      } | null;
-    } | null;
-  }>;
-};
 
-export type InsertEventApprovalMutationVariables = Exact<{
-  object: EventApprovalInsertInput;
+export type GetTenantLogsQuery = { __typename?: 'Query', tenantLogs: Array<{ __typename: 'Log', id: string, createdAt: string, context: string, diff: JSONType, note: string, entityId: string, entityName: string, eventType: string, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }> }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } | null } | null }> };
+
+export type DeleteFollowMutationVariables = Exact<{
+  id: Scalars['bigint']['input'];
 }>;
 
-export type InsertEventApprovalMutation = {
-  __typename?: 'Mutation';
-  insertEventApprovalOne?: {
-    __typename: 'EventApproval';
-    id: string;
-    createdAt: string;
-    isApproved: boolean;
-    message: string;
-    eventApprovalStep?: {
-      __typename: 'EventApprovalStep';
-      id: string;
-      createdAt: string;
-      name: string;
-      description: string;
-      order: number;
-      nextSteps: Array<{
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      }>;
-      previousStep?: {
-        __typename: 'EventApprovalStep';
-        id: string;
-        createdAt: string;
-        name: string;
-        description: string;
-        order: number;
-      } | null;
-    } | null;
-    createdBy?: {
-      __typename: 'Individual';
-      id: string;
-      createdAt: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        createdAt: string;
-        email: string;
-        name: string;
-        slug: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; createdAt: string; url: string };
-        }>;
-      };
-      user?: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: { __typename: 'Actor'; id: string; slug: string };
-        };
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type DeleteFollowMutation = { __typename?: 'Mutation', deleteFollowByPk: { __typename: 'Follow', id: string, deletedAt: string | null, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string } } | null };
+
+export type InsertFollowMutationVariables = Exact<{
+  object: FollowInsertInput;
+}>;
+
+
+export type InsertFollowMutation = { __typename?: 'Mutation', insertFollowOne: { __typename: 'Follow', id: string, actor: { __typename: 'Actor', id: string, email: string, name: string, slug: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string } }>, team: { __typename: 'Team', id: string, actor: { __typename: 'Actor', id: string, slug: string } } | null }, createdBy: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, email: string, name: string, slug: string, website: string }, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, slug: string } } } | null } | null } | null };
 
 export type InsertSingleUploadMutationVariables = Exact<{
   file: Scalars['Upload']['input'];
@@ -53692,10 +50268,8 @@ export type InsertSingleUploadMutationVariables = Exact<{
   entityName: Scalars['String']['input'];
 }>;
 
-export type InsertSingleUploadMutation = {
-  __typename?: 'Mutation';
-  singleUpload?: { __typename?: 'FileUpload'; id: string; name: string; url: string; createdAt: string } | null;
-};
+
+export type InsertSingleUploadMutation = { __typename?: 'Mutation', singleUpload: { __typename?: 'FileUpload', id: string, name: string, url: string, createdAt: string } | null };
 
 export type GetLegalUnitLocationsQueryVariables = Exact<{
   where?: InputMaybe<LegalUnitLocationBoolExp>;
@@ -53704,49 +50278,8 @@ export type GetLegalUnitLocationsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetLegalUnitLocationsQuery = {
-  __typename?: 'Query';
-  legalUnitLocation: Array<{
-    __typename: 'LegalUnitLocation';
-    id: string;
-    legalName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      name: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-    };
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-  }>;
-};
+
+export type GetLegalUnitLocationsQuery = { __typename?: 'Query', legalUnitLocation: Array<{ __typename: 'LegalUnitLocation', id: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null }> };
 
 export type GetLegalUnitsQueryVariables = Exact<{
   where?: InputMaybe<LegalUnitBoolExp>;
@@ -53755,306 +50288,55 @@ export type GetLegalUnitsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type GetLegalUnitsQuery = {
-  __typename?: 'Query';
-  legalUnit: Array<{
-    __typename: 'LegalUnit';
-    id: string;
-    createdAt: string;
-    type: string;
-    legalName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      name: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-    };
-  }>;
-};
+
+export type GetLegalUnitsQuery = { __typename?: 'Query', legalUnit: Array<{ __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }> };
 
 export type InsertLegalUnitMutationVariables = Exact<{
   object: LegalUnitInsertInput;
 }>;
 
-export type InsertLegalUnitMutation = {
-  __typename?: 'Mutation';
-  insertLegalUnitOne?: {
-    __typename: 'LegalUnit';
-    id: string;
-    createdAt: string;
-    type: string;
-    legalName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      name: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-    };
-  } | null;
-};
+
+export type InsertLegalUnitMutation = { __typename?: 'Mutation', insertLegalUnitOne: { __typename: 'LegalUnit', id: string, createdAt: string, type: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } | null };
 
 export type InsertLegalUnitLocationMutationVariables = Exact<{
   object: LegalUnitLocationInsertInput;
 }>;
 
-export type InsertLegalUnitLocationMutation = {
-  __typename?: 'Mutation';
-  insertLegalUnitLocationOne?: {
-    __typename: 'LegalUnitLocation';
-    id: string;
-    legalName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      name: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-    };
-    location?: {
-      __typename: 'Location';
-      id: string;
-      type: string;
-      onlineLink: string;
-      locationDetails: string;
-      address?: {
-        __typename: 'Address';
-        id: string;
-        name: string;
-        latitude?: number | null;
-        longitude?: number | null;
-        category: string;
-        streetNumber: string;
-        street: string;
-        zip: string;
-        city: string;
-        state: string;
-        country: string;
-      } | null;
-    } | null;
-  } | null;
-};
+
+export type InsertLegalUnitLocationMutation = { __typename?: 'Mutation', insertLegalUnitLocationOne: { __typename: 'LegalUnitLocation', id: string, legalName: string, actor: { __typename: 'Actor', id: string, slug: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> }, location: { __typename: 'Location', id: string, type: string, link: string, name: string, details: string, address: { __typename: 'Address', id: string, name: string, latitude: number | null, longitude: number | null, category: string, streetNumber: string, street: string, zip: string, city: string, state: string, country: string, geoapifyId: string | null } | null } | null } | null };
 
 export type SearchLocationQueryVariables = Exact<{
   query: Scalars['String']['input'];
 }>;
 
-export type SearchLocationQuery = {
-  __typename?: 'Query';
-  searchLocation: Array<{
-    __typename: 'GeocodeAddress';
-    geoapifyId: string;
-    name: string;
-    category: string;
-    latitude: number;
-    longitude: number;
-    street: string;
-    streetNumber: string;
-    city: string;
-    zip: string;
-    state: string;
-    country: string;
-  }>;
-};
+
+export type SearchLocationQuery = { __typename?: 'Query', searchLocation: Array<{ __typename: 'GeocodeAddress', geoapifyId: string, name: string, category: string, latitude: number, longitude: number, street: string, streetNumber: string, city: string, zip: string, state: string, country: string }> };
 
 export type GetTeamPopoverQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetTeamPopoverQuery = {
-  __typename?: 'Query';
-  team: Array<{
-    __typename: 'Team';
-    id: string;
-    createdAt: string;
-    type: string;
-    membershipFees: number;
-    membershipDuration: string;
-    directorsCategoryName: string;
-    managersCategoryName: string;
-    membersCategoryName: string;
-    actor: {
-      __typename: 'Actor';
-      id: string;
-      slug: string;
-      bio: string;
-      name: string;
-      status: string;
-      email: string;
-      website: string;
-      actorImages: Array<{
-        __typename: 'ActorImage';
-        id: string;
-        type: string;
-        image: { __typename: 'FileUpload'; id: string; url: string };
-      }>;
-      socials: Array<{ __typename: 'Social'; id: string; pseudo: string; url: string; type: string; order: number }>;
-    };
-    joinForm: { __typename: 'Form'; id: string; createdAt: string; schema: JSONType; name: string; type: string };
-    poles: Array<{ __typename: 'Pole'; id: string; createdAt: string; name: string; description: string }>;
-    roles: Array<{
-      __typename: 'Role';
-      id: string;
-      createdAt: string;
-      category: string;
-      type: string;
-      name: string;
-      permissions: Array<string>;
-    }>;
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      createdAt: string;
-      startDate: string;
-      endDate?: string | null;
-      teamMemberRoles: Array<{
-        __typename?: 'TeamMemberRoles';
-        role: {
-          __typename: 'Role';
-          id: string;
-          createdAt: string;
-          category: string;
-          type: string;
-          name: string;
-          permissions: Array<string>;
-        };
-      }>;
-      user: {
-        __typename: 'User';
-        id: string;
-        createdAt: string;
-        firstName: string;
-        lastName: string;
-        individual: {
-          __typename: 'Individual';
-          id: string;
-          createdAt: string;
-          actor: {
-            __typename: 'Actor';
-            id: string;
-            createdAt: string;
-            bio: string;
-            email: string;
-            name: string;
-            slug: string;
-            status: string;
-            website: string;
-            actorImages: Array<{
-              __typename: 'ActorImage';
-              id: string;
-              createdAt: string;
-              type: string;
-              image: {
-                __typename: 'FileUpload';
-                id: string;
-                createdAt: string;
-                url: string;
-                size: number;
-                type: string;
-              };
-            }>;
-          };
-        };
-      };
-    }>;
-  }>;
-};
+
+export type GetTeamPopoverQuery = { __typename?: 'Query', team: Array<{ __typename: 'Team', id: string, createdAt: string, type: string, membershipFees: number, membershipDuration: string, directorsCategoryName: string, managersCategoryName: string, membersCategoryName: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, status: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }>, socials: Array<{ __typename: 'Social', id: string, pseudo: string, url: string, type: string, order: number }> }, joinForm: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string }, poles: Array<{ __typename: 'Pole', id: string, createdAt: string, name: string, description: string }>, teamMembers: Array<{ __typename: 'TeamMember', id: string, createdAt: string, start: string, teamMemberRoles: Array<{ __typename: 'TeamMemberRole', id: string, role: { __typename: 'Role', id: string, createdAt: string, color: string, type: string | null, name: string, permissions: Array<string> } }>, user: { __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, createdAt: string, actor: { __typename: 'Actor', id: string, createdAt: string, bio: string, email: string, name: string, slug: string, status: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, createdAt: string, type: string, image: { __typename: 'FileUpload', id: string, createdAt: string, url: string, size: number, type: string } }> } } } }> }> };
 
 export type GetUserPopoverQueryVariables = Exact<{
   id: Scalars['bigint']['input'];
 }>;
 
-export type GetUserPopoverQuery = {
-  __typename?: 'Query';
-  user: Array<{
-    __typename: 'User';
-    id: string;
-    createdAt: string;
-    firstName: string;
-    lastName: string;
-    individual: {
-      __typename: 'Individual';
-      id: string;
-      actor: {
-        __typename: 'Actor';
-        id: string;
-        slug: string;
-        bio: string;
-        name: string;
-        email: string;
-        website: string;
-        actorImages: Array<{
-          __typename: 'ActorImage';
-          id: string;
-          type: string;
-          image: { __typename: 'FileUpload'; id: string; url: string };
-        }>;
-      };
-    };
-    teamMembers: Array<{
-      __typename: 'TeamMember';
-      id: string;
-      team: {
-        __typename: 'Team';
-        id: string;
-        type: string;
-        actor: {
-          __typename: 'Actor';
-          id: string;
-          slug: string;
-          actorImages: Array<{
-            __typename: 'ActorImage';
-            id: string;
-            type: string;
-            image: { __typename: 'FileUpload'; id: string; url: string };
-          }>;
-        };
-      };
-    }>;
-  }>;
-};
+
+export type GetUserPopoverQuery = { __typename?: 'Query', user: Array<{ __typename: 'User', id: string, createdAt: string, firstName: string, lastName: string, individual: { __typename: 'Individual', id: string, actor: { __typename: 'Actor', id: string, slug: string, bio: string, name: string, email: string, website: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } }, teamMembers: Array<{ __typename: 'TeamMember', id: string, team: { __typename: 'Team', id: string, type: string, actor: { __typename: 'Actor', id: string, slug: string, actorImages: Array<{ __typename: 'ActorImage', id: string, type: string, image: { __typename: 'FileUpload', id: string, url: string } }> } } }> }> };
 
 export type UpdateFormMutationVariables = Exact<{
   id: Scalars['bigint']['input'];
   update: FormSetInput;
 }>;
 
-export type UpdateFormMutation = {
-  __typename?: 'Mutation';
-  updateFormByPk?: {
-    __typename: 'Form';
-    id: string;
-    createdAt: string;
-    schema: JSONType;
-    name: string;
-    type: string;
-  } | null;
-};
+
+export type UpdateFormMutation = { __typename?: 'Mutation', updateFormByPk: { __typename: 'Form', id: string, createdAt: string, schema: JSONType, name: string, type: string } | null };
+
 
 export const GetMeDocument = gql`
-  query GetMe {
+      query GetMe {
     me {
       __typename
       canManageTenant
@@ -54071,7 +50353,6 @@ export const GetMeDocument = gql`
           email
           name
           slug
-          status
           website
           actorImages {
             __typename
@@ -54084,7 +50365,7 @@ export const GetMeDocument = gql`
               url
             }
           }
-          socials(where: { deletedAt: { _isNull: true } }) {
+          socials(where: {deletedAt: {_isNull: true}}) {
             __typename
             id
             pseudo
@@ -54092,13 +50373,6 @@ export const GetMeDocument = gql`
             type
             order
           }
-        }
-        joinForm {
-          __typename
-          id
-          name
-          schema
-          type
         }
       }
       user {
@@ -54130,7 +50404,7 @@ export const GetMeDocument = gql`
                 url
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -54142,7 +50416,6 @@ export const GetMeDocument = gql`
           following {
             __typename
             id
-            createdAt
             actor {
               __typename
               id
@@ -54165,33 +50438,24 @@ export const GetMeDocument = gql`
                   __typename
                   id
                   slug
-                  actorImages {
-                    __typename
-                    id
-                    type
-                    image {
-                      __typename
-                      id
-                      url
-                    }
-                  }
                 }
               }
             }
           }
         }
-        teamMembers(where: { endDate: { _isNull: true } }) {
+        teamMembers(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           createdAt
-          startDate
-          endDate
+          start
           teamMemberRoles {
+            __typename
+            id
             role {
               __typename
               id
               createdAt
-              category
+              color
               type
               name
               permissions
@@ -54335,7 +50599,7 @@ export const GetMeDocument = gql`
                   url
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -54367,107 +50631,18 @@ export const GetMeDocument = gql`
  * });
  */
 export function useGetMeQuery(baseOptions?: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+      }
 export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+        }
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
-export const InsertFollowDocument = gql`
-  mutation InsertFollow($object: FollowInsertInput!) {
-    insertFollowOne(object: $object) {
-      __typename
-      id
-      actor {
-        __typename
-        id
-        email
-        name
-        slug
-        website
-      }
-      createdBy {
-        __typename
-        id
-        createdAt
-        actor {
-          __typename
-          id
-          createdAt
-          email
-          name
-          slug
-          website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
-        }
-        user {
-          __typename
-          id
-          createdAt
-          firstName
-          lastName
-          individual {
-            __typename
-            id
-            createdAt
-            actor {
-              __typename
-              id
-              slug
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-export type InsertFollowMutationFn = Apollo.MutationFunction<InsertFollowMutation, InsertFollowMutationVariables>;
-
-/**
- * __useInsertFollowMutation__
- *
- * To run a mutation, you first call `useInsertFollowMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertFollowMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertFollowMutation, { data, loading, error }] = useInsertFollowMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useInsertFollowMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertFollowMutation, InsertFollowMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertFollowMutation, InsertFollowMutationVariables>(InsertFollowDocument, options);
-}
-export type InsertFollowMutationHookResult = ReturnType<typeof useInsertFollowMutation>;
-export type InsertFollowMutationResult = Apollo.MutationResult<InsertFollowMutation>;
-export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<
-  InsertFollowMutation,
-  InsertFollowMutationVariables
->;
 export const GetEventJoinDocument = gql`
-  query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
+      query GetEventJoin($eventJoinId: bigint!, $userId: bigint!) {
     eventJoinByPk(id: $eventJoinId) {
       __typename
       id
@@ -54479,10 +50654,11 @@ export const GetEventJoinDocument = gql`
         slug
         start
         end
+        maxParticipants
         eventOrganizes {
           __typename
           id
-          eventSupervisors(where: { user: { id: { _eq: $userId } } }) {
+          eventSupervisors(where: {user: {id: {_eq: $userId}}}) {
             user {
               __typename
               id
@@ -54539,24 +50715,20 @@ export const GetEventJoinDocument = gql`
  *   },
  * });
  */
-export function useGetEventJoinQuery(
-  baseOptions: Apollo.QueryHookOptions<GetEventJoinQuery, GetEventJoinQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventJoinQuery, GetEventJoinQueryVariables>(GetEventJoinDocument, options);
-}
-export function useGetEventJoinLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventJoinQuery, GetEventJoinQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventJoinQuery, GetEventJoinQueryVariables>(GetEventJoinDocument, options);
-}
+export function useGetEventJoinQuery(baseOptions: Apollo.QueryHookOptions<GetEventJoinQuery, GetEventJoinQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventJoinQuery, GetEventJoinQueryVariables>(GetEventJoinDocument, options);
+      }
+export function useGetEventJoinLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventJoinQuery, GetEventJoinQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventJoinQuery, GetEventJoinQueryVariables>(GetEventJoinDocument, options);
+        }
 export type GetEventJoinQueryHookResult = ReturnType<typeof useGetEventJoinQuery>;
 export type GetEventJoinLazyQueryHookResult = ReturnType<typeof useGetEventJoinLazyQuery>;
 export type GetEventJoinQueryResult = Apollo.QueryResult<GetEventJoinQuery, GetEventJoinQueryVariables>;
 export const UpdateEventJoinDocument = gql`
-  mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
-    updateEventJoinByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateEventJoin($id: bigint!, $update: EventJoinSetInput!) {
+    updateEventJoinByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       state
@@ -54589,10 +50761,7 @@ export const UpdateEventJoinDocument = gql`
     }
   }
 `;
-export type UpdateEventJoinMutationFn = Apollo.MutationFunction<
-  UpdateEventJoinMutation,
-  UpdateEventJoinMutationVariables
->;
+export type UpdateEventJoinMutationFn = Apollo.MutationFunction<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>;
 
 /**
  * __useUpdateEventJoinMutation__
@@ -54612,42 +50781,36 @@ export type UpdateEventJoinMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdateEventJoinMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>(
-    UpdateEventJoinDocument,
-    options,
-  );
-}
+export function useUpdateEventJoinMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>(UpdateEventJoinDocument, options);
+      }
 export type UpdateEventJoinMutationHookResult = ReturnType<typeof useUpdateEventJoinMutation>;
 export type UpdateEventJoinMutationResult = Apollo.MutationResult<UpdateEventJoinMutation>;
-export type UpdateEventJoinMutationOptions = Apollo.BaseMutationOptions<
-  UpdateEventJoinMutation,
-  UpdateEventJoinMutationVariables
->;
+export type UpdateEventJoinMutationOptions = Apollo.BaseMutationOptions<UpdateEventJoinMutation, UpdateEventJoinMutationVariables>;
 export const GetEventDocument = gql`
-  query GetEvent($slug: String!) {
-    event(where: { slug: { _eq: $slug } }, limit: 1) {
+      query GetEvent($slug: String!) {
+    event(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
       createdAt
       description
-      slug
       start
       end
+      slug
       name
       state
       price
-      pointsAwardedForAttendance
       isPrivate
+      maxParticipants
+      pointsAwardedForAttendance
       location {
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -54661,6 +50824,7 @@ export const GetEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -54723,14 +50887,6 @@ export const GetEventDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
               }
             }
           }
@@ -54756,12 +50912,26 @@ export const GetEventDocument = gql`
                 url
               }
             }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
           }
           joinForm {
             __typename
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -54774,12 +50944,12 @@ export const GetEventDocument = gql`
           isPrivate
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
@@ -54875,28 +51045,33 @@ export const GetEventDocument = gql`
  * });
  */
 export function useGetEventQuery(baseOptions: Apollo.QueryHookOptions<GetEventQuery, GetEventQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventQuery, GetEventQueryVariables>(GetEventDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventQuery, GetEventQueryVariables>(GetEventDocument, options);
+      }
 export function useGetEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventQuery, GetEventQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventQuery, GetEventQueryVariables>(GetEventDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventQuery, GetEventQueryVariables>(GetEventDocument, options);
+        }
 export type GetEventQueryHookResult = ReturnType<typeof useGetEventQuery>;
 export type GetEventLazyQueryHookResult = ReturnType<typeof useGetEventLazyQuery>;
 export type GetEventQueryResult = Apollo.QueryResult<GetEventQuery, GetEventQueryVariables>;
 export const InsertEventJoinDocument = gql`
-  mutation InsertEventJoin($object: EventJoinInsertInput!) {
+      mutation InsertEventJoin($object: EventJoinInsertInput!) {
     insertEventJoinOne(object: $object) {
       __typename
       id
+      createdAt
+      state
+      isPresent
+      event {
+        __typename
+        id
+        slug
+      }
     }
   }
 `;
-export type InsertEventJoinMutationFn = Apollo.MutationFunction<
-  InsertEventJoinMutation,
-  InsertEventJoinMutationVariables
->;
+export type InsertEventJoinMutationFn = Apollo.MutationFunction<InsertEventJoinMutation, InsertEventJoinMutationVariables>;
 
 /**
  * __useInsertEventJoinMutation__
@@ -54915,23 +51090,15 @@ export type InsertEventJoinMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useInsertEventJoinMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertEventJoinMutation, InsertEventJoinMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertEventJoinMutation, InsertEventJoinMutationVariables>(
-    InsertEventJoinDocument,
-    options,
-  );
-}
+export function useInsertEventJoinMutation(baseOptions?: Apollo.MutationHookOptions<InsertEventJoinMutation, InsertEventJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertEventJoinMutation, InsertEventJoinMutationVariables>(InsertEventJoinDocument, options);
+      }
 export type InsertEventJoinMutationHookResult = ReturnType<typeof useInsertEventJoinMutation>;
 export type InsertEventJoinMutationResult = Apollo.MutationResult<InsertEventJoinMutation>;
-export type InsertEventJoinMutationOptions = Apollo.BaseMutationOptions<
-  InsertEventJoinMutation,
-  InsertEventJoinMutationVariables
->;
+export type InsertEventJoinMutationOptions = Apollo.BaseMutationOptions<InsertEventJoinMutation, InsertEventJoinMutationVariables>;
 export const GetEventsDocument = gql`
-  query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+      query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
     event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -54939,6 +51106,7 @@ export const GetEventsDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -54949,8 +51117,9 @@ export const GetEventsDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -54964,6 +51133,7 @@ export const GetEventsDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -55030,7 +51200,7 @@ export const GetEventsDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -55069,6 +51239,12 @@ export const GetEventsDocument = gql`
             schema
             name
           }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
         }
         project {
           __typename
@@ -55080,12 +51256,12 @@ export const GetEventsDocument = gql`
           isPrivate
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
@@ -55135,7 +51311,7 @@ export const GetEventsDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -55198,7 +51374,7 @@ export const GetEventsDocument = gql`
                 color
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -55244,26 +51420,25 @@ export const GetEventsDocument = gql`
  * });
  */
 export function useGetEventsQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
-}
-export function useGetEventsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+      }
+export function useGetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsQuery, GetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, options);
+        }
 export type GetEventsQueryHookResult = ReturnType<typeof useGetEventsQuery>;
 export type GetEventsLazyQueryHookResult = ReturnType<typeof useGetEventsLazyQuery>;
 export type GetEventsQueryResult = Apollo.QueryResult<GetEventsQuery, GetEventsQueryVariables>;
 export const GetEventManageDocument = gql`
-  query GetEventManage($slug: String!) {
-    event(where: { slug: { _eq: $slug } }, limit: 1) {
+      query GetEventManage($slug: String!) {
+    event(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
       createdAt
       start
       end
+      maxParticipants
       name
       slug
       description
@@ -55272,12 +51447,12 @@ export const GetEventManageDocument = gql`
         id
         createdAt
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
-          createdAt
           latitude
           longitude
           category
@@ -55288,6 +51463,7 @@ export const GetEventManageDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       state
@@ -55354,7 +51530,7 @@ export const GetEventManageDocument = gql`
                 color
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -55445,7 +51621,7 @@ export const GetEventManageDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -55458,12 +51634,12 @@ export const GetEventManageDocument = gql`
           }
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
+      eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
         __typename
         id
         createdAt
@@ -55747,29 +51923,71 @@ export const GetEventManageDocument = gql`
  *   },
  * });
  */
-export function useGetEventManageQuery(
-  baseOptions: Apollo.QueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
-}
-export function useGetEventManageLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
-}
+export function useGetEventManageQuery(baseOptions: Apollo.QueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
+      }
+export function useGetEventManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventManageQuery, GetEventManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventManageQuery, GetEventManageQueryVariables>(GetEventManageDocument, options);
+        }
 export type GetEventManageQueryHookResult = ReturnType<typeof useGetEventManageQuery>;
 export type GetEventManageLazyQueryHookResult = ReturnType<typeof useGetEventManageLazyQuery>;
 export type GetEventManageQueryResult = Apollo.QueryResult<GetEventManageQuery, GetEventManageQueryVariables>;
+export const InsertAddressDocument = gql`
+      mutation InsertAddress($object: AddressInsertInput!) {
+    insertAddressOne(object: $object) {
+      __typename
+      id
+      name
+      category
+      country
+      state
+      zip
+      city
+      street
+      streetNumber
+      latitude
+      longitude
+      geoapifyId
+    }
+  }
+`;
+export type InsertAddressMutationFn = Apollo.MutationFunction<InsertAddressMutation, InsertAddressMutationVariables>;
+
+/**
+ * __useInsertAddressMutation__
+ *
+ * To run a mutation, you first call `useInsertAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAddressMutation, { data, loading, error }] = useInsertAddressMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertAddressMutation(baseOptions?: Apollo.MutationHookOptions<InsertAddressMutation, InsertAddressMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertAddressMutation, InsertAddressMutationVariables>(InsertAddressDocument, options);
+      }
+export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddressMutation>;
+export type InsertAddressMutationResult = Apollo.MutationResult<InsertAddressMutation>;
+export type InsertAddressMutationOptions = Apollo.BaseMutationOptions<InsertAddressMutation, InsertAddressMutationVariables>;
 export const UpdateEventDocument = gql`
-  mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
-    updateEventByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
+    updateEventByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       createdAt
       start
       end
+      maxParticipants
       name
       slug
       description
@@ -55778,12 +51996,12 @@ export const UpdateEventDocument = gql`
         id
         createdAt
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
-          createdAt
           latitude
           longitude
           category
@@ -55794,6 +52012,7 @@ export const UpdateEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       state
@@ -55857,7 +52076,7 @@ export const UpdateEventDocument = gql`
                 color
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -55940,25 +52159,17 @@ export const UpdateEventDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
-                  __typename
-                  id
-                  pseudo
-                  url
-                  type
-                  order
-                }
               }
             }
           }
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(orderBy: [{ participationProcessedAt: DESC }]) {
+      eventJoins(orderBy: [{participationProcessedAt: DESC}]) {
         __typename
         id
         createdAt
@@ -56263,17 +52474,15 @@ export type UpdateEventMutationFn = Apollo.MutationFunction<UpdateEventMutation,
  *   },
  * });
  */
-export function useUpdateEventMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateEventMutation, UpdateEventMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateEventMutation, UpdateEventMutationVariables>(UpdateEventDocument, options);
-}
+export function useUpdateEventMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventMutation, UpdateEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEventMutation, UpdateEventMutationVariables>(UpdateEventDocument, options);
+      }
 export type UpdateEventMutationHookResult = ReturnType<typeof useUpdateEventMutation>;
 export type UpdateEventMutationResult = Apollo.MutationResult<UpdateEventMutation>;
 export type UpdateEventMutationOptions = Apollo.BaseMutationOptions<UpdateEventMutation, UpdateEventMutationVariables>;
 export const UpdateEventOrganizeProjectManyDocument = gql`
-  mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
+      mutation UpdateEventOrganizeProjectMany($updates: [EventOrganizeUpdates!]!) {
     updateEventOrganizeMany(updates: $updates) {
       returning {
         __typename
@@ -56301,10 +52510,7 @@ export const UpdateEventOrganizeProjectManyDocument = gql`
     }
   }
 `;
-export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<
-  UpdateEventOrganizeProjectManyMutation,
-  UpdateEventOrganizeProjectManyMutationVariables
->;
+export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
 
 /**
  * __useUpdateEventOrganizeProjectManyMutation__
@@ -56323,40 +52529,25 @@ export type UpdateEventOrganizeProjectManyMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdateEventOrganizeProjectManyMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateEventOrganizeProjectManyMutation,
-    UpdateEventOrganizeProjectManyMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>(
-    UpdateEventOrganizeProjectManyDocument,
-    options,
-  );
-}
-export type UpdateEventOrganizeProjectManyMutationHookResult = ReturnType<
-  typeof useUpdateEventOrganizeProjectManyMutation
->;
-export type UpdateEventOrganizeProjectManyMutationResult =
-  Apollo.MutationResult<UpdateEventOrganizeProjectManyMutation>;
-export type UpdateEventOrganizeProjectManyMutationOptions = Apollo.BaseMutationOptions<
-  UpdateEventOrganizeProjectManyMutation,
-  UpdateEventOrganizeProjectManyMutationVariables
->;
+export function useUpdateEventOrganizeProjectManyMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>(UpdateEventOrganizeProjectManyDocument, options);
+      }
+export type UpdateEventOrganizeProjectManyMutationHookResult = ReturnType<typeof useUpdateEventOrganizeProjectManyMutation>;
+export type UpdateEventOrganizeProjectManyMutationResult = Apollo.MutationResult<UpdateEventOrganizeProjectManyMutation>;
+export type UpdateEventOrganizeProjectManyMutationOptions = Apollo.BaseMutationOptions<UpdateEventOrganizeProjectManyMutation, UpdateEventOrganizeProjectManyMutationVariables>;
 export const UpdateLocationDocument = gql`
-  mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
-    updateLocationByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateLocation($id: bigint!, $update: LocationSetInput!) {
+    updateLocationByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      details
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -56367,6 +52558,7 @@ export const UpdateLocationDocument = gql`
         city
         state
         country
+        geoapifyId
       }
     }
   }
@@ -56391,21 +52583,16 @@ export type UpdateLocationMutationFn = Apollo.MutationFunction<UpdateLocationMut
  *   },
  * });
  */
-export function useUpdateLocationMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
-}
+export function useUpdateLocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLocationMutation, UpdateLocationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateLocationMutation, UpdateLocationMutationVariables>(UpdateLocationDocument, options);
+      }
 export type UpdateLocationMutationHookResult = ReturnType<typeof useUpdateLocationMutation>;
 export type UpdateLocationMutationResult = Apollo.MutationResult<UpdateLocationMutation>;
-export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<
-  UpdateLocationMutation,
-  UpdateLocationMutationVariables
->;
+export type UpdateLocationMutationOptions = Apollo.BaseMutationOptions<UpdateLocationMutation, UpdateLocationMutationVariables>;
 export const GetProjectManageDocument = gql`
-  query GetProjectManage($slug: String!) {
-    project(where: { slug: { _eq: $slug } }, limit: 1) {
+      query GetProjectManage($slug: String!) {
+    project(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
       createdAt
@@ -56486,7 +52673,7 @@ export const GetProjectManageDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -56525,6 +52712,12 @@ export const GetProjectManageDocument = gql`
             schema
             name
           }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
         }
         project {
           __typename
@@ -56556,23 +52749,19 @@ export const GetProjectManageDocument = gql`
  *   },
  * });
  */
-export function useGetProjectManageQuery(
-  baseOptions: Apollo.QueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
-}
-export function useGetProjectManageLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
-}
+export function useGetProjectManageQuery(baseOptions: Apollo.QueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
+      }
+export function useGetProjectManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectManageQuery, GetProjectManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectManageQuery, GetProjectManageQueryVariables>(GetProjectManageDocument, options);
+        }
 export type GetProjectManageQueryHookResult = ReturnType<typeof useGetProjectManageQuery>;
 export type GetProjectManageLazyQueryHookResult = ReturnType<typeof useGetProjectManageLazyQuery>;
 export type GetProjectManageQueryResult = Apollo.QueryResult<GetProjectManageQuery, GetProjectManageQueryVariables>;
 export const GetTeamJoinsDocument = gql`
-  query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit: Int, $offset: Int) {
+      query GetTeamJoins($where: TeamJoinBoolExp, $orderBy: [TeamJoinOrderBy!], $limit: Int, $offset: Int) {
     teamJoin(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -56649,7 +52838,7 @@ export const GetTeamJoinsDocument = gql`
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
@@ -56677,24 +52866,20 @@ export const GetTeamJoinsDocument = gql`
  *   },
  * });
  */
-export function useGetTeamJoinsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
-}
-export function useGetTeamJoinsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
-}
+export function useGetTeamJoinsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
+      }
+export function useGetTeamJoinsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>(GetTeamJoinsDocument, options);
+        }
 export type GetTeamJoinsQueryHookResult = ReturnType<typeof useGetTeamJoinsQuery>;
 export type GetTeamJoinsLazyQueryHookResult = ReturnType<typeof useGetTeamJoinsLazyQuery>;
 export type GetTeamJoinsQueryResult = Apollo.QueryResult<GetTeamJoinsQuery, GetTeamJoinsQueryVariables>;
 export const UpdateTeamJoinDocument = gql`
-  mutation UpdateTeamJoin($id: bigint!, $update: TeamJoinSetInput!) {
-    updateTeamJoinByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateTeamJoin($id: bigint!, $update: TeamJoinSetInput!) {
+    updateTeamJoinByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       state
@@ -56753,38 +52938,17 @@ export type UpdateTeamJoinMutationFn = Apollo.MutationFunction<UpdateTeamJoinMut
  *   },
  * });
  */
-export function useUpdateTeamJoinMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>(UpdateTeamJoinDocument, options);
-}
+export function useUpdateTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>(UpdateTeamJoinDocument, options);
+      }
 export type UpdateTeamJoinMutationHookResult = ReturnType<typeof useUpdateTeamJoinMutation>;
 export type UpdateTeamJoinMutationResult = Apollo.MutationResult<UpdateTeamJoinMutation>;
-export type UpdateTeamJoinMutationOptions = Apollo.BaseMutationOptions<
-  UpdateTeamJoinMutation,
-  UpdateTeamJoinMutationVariables
->;
+export type UpdateTeamJoinMutationOptions = Apollo.BaseMutationOptions<UpdateTeamJoinMutation, UpdateTeamJoinMutationVariables>;
 export const GetUsersWithPointsDocument = gql`
-  query GetUsersWithPoints($slug: String!) {
+      query GetUsersWithPoints($slug: String!) {
     user(
-      where: {
-        _or: [
-          { actions: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } } }
-          {
-            eventJoins: {
-              participationProcessedAt: { _isNull: false }
-              event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
-            }
-          }
-          {
-            missionJoins: {
-              pointsProcessedAt: { _isNull: false }
-              mission: { team: { actor: { slug: { _eq: $slug } } } }
-            }
-          }
-        ]
-      }
+      where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}}, {eventJoins: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}}]}
     ) {
       __typename
       id
@@ -56815,10 +52979,7 @@ export const GetUsersWithPointsDocument = gql`
         }
       }
       eventJoins(
-        where: {
-          participationProcessedAt: { _isNull: false }
-          event: { eventOrganizes: { team: { actor: { slug: { _eq: $slug } } } } }
-        }
+        where: {participationProcessedAt: {_isNull: false}, event: {eventOrganizes: {team: {actor: {slug: {_eq: $slug}}}}}}
       ) {
         __typename
         id
@@ -56830,14 +52991,16 @@ export const GetUsersWithPointsDocument = gql`
           pointsAwardedForAttendance
         }
       }
-      actions(where: { pointsProcessedAt: { _isNull: false }, team: { actor: { slug: { _eq: $slug } } } }) {
+      actions(
+        where: {pointsProcessedAt: {_isNull: false}, team: {actor: {slug: {_eq: $slug}}}}
+      ) {
         __typename
         id
         points
         pointsProcessedAt
       }
       missionJoins(
-        where: { pointsProcessedAt: { _isNull: false }, mission: { team: { actor: { slug: { _eq: $slug } } } } }
+        where: {pointsProcessedAt: {_isNull: false}, mission: {team: {actor: {slug: {_eq: $slug}}}}}
       ) {
         __typename
         id
@@ -56864,32 +53027,19 @@ export const GetUsersWithPointsDocument = gql`
  *   },
  * });
  */
-export function useGetUsersWithPointsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(
-    GetUsersWithPointsDocument,
-    options,
-  );
-}
-export function useGetUsersWithPointsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(
-    GetUsersWithPointsDocument,
-    options,
-  );
-}
+export function useGetUsersWithPointsQuery(baseOptions: Apollo.QueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
+      }
+export function useGetUsersWithPointsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>(GetUsersWithPointsDocument, options);
+        }
 export type GetUsersWithPointsQueryHookResult = ReturnType<typeof useGetUsersWithPointsQuery>;
 export type GetUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetUsersWithPointsLazyQuery>;
-export type GetUsersWithPointsQueryResult = Apollo.QueryResult<
-  GetUsersWithPointsQuery,
-  GetUsersWithPointsQueryVariables
->;
+export type GetUsersWithPointsQueryResult = Apollo.QueryResult<GetUsersWithPointsQuery, GetUsersWithPointsQueryVariables>;
 export const DeleteSocialsDocument = gql`
-  mutation DeleteSocials($where: SocialBoolExp!) {
+      mutation DeleteSocials($where: SocialBoolExp!) {
     deleteSocial(where: $where) {
       returning {
         __typename
@@ -56922,20 +53072,15 @@ export type DeleteSocialsMutationFn = Apollo.MutationFunction<DeleteSocialsMutat
  *   },
  * });
  */
-export function useDeleteSocialsMutation(
-  baseOptions?: Apollo.MutationHookOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<DeleteSocialsMutation, DeleteSocialsMutationVariables>(DeleteSocialsDocument, options);
-}
+export function useDeleteSocialsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSocialsMutation, DeleteSocialsMutationVariables>(DeleteSocialsDocument, options);
+      }
 export type DeleteSocialsMutationHookResult = ReturnType<typeof useDeleteSocialsMutation>;
 export type DeleteSocialsMutationResult = Apollo.MutationResult<DeleteSocialsMutation>;
-export type DeleteSocialsMutationOptions = Apollo.BaseMutationOptions<
-  DeleteSocialsMutation,
-  DeleteSocialsMutationVariables
->;
+export type DeleteSocialsMutationOptions = Apollo.BaseMutationOptions<DeleteSocialsMutation, DeleteSocialsMutationVariables>;
 export const InsertSocialsDocument = gql`
-  mutation InsertSocials($objects: [SocialInsertInput!]!) {
+      mutation InsertSocials($objects: [SocialInsertInput!]!) {
     insertSocial(objects: $objects) {
       returning {
         __typename
@@ -56967,20 +53112,15 @@ export type InsertSocialsMutationFn = Apollo.MutationFunction<InsertSocialsMutat
  *   },
  * });
  */
-export function useInsertSocialsMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertSocialsMutation, InsertSocialsMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertSocialsMutation, InsertSocialsMutationVariables>(InsertSocialsDocument, options);
-}
+export function useInsertSocialsMutation(baseOptions?: Apollo.MutationHookOptions<InsertSocialsMutation, InsertSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertSocialsMutation, InsertSocialsMutationVariables>(InsertSocialsDocument, options);
+      }
 export type InsertSocialsMutationHookResult = ReturnType<typeof useInsertSocialsMutation>;
 export type InsertSocialsMutationResult = Apollo.MutationResult<InsertSocialsMutation>;
-export type InsertSocialsMutationOptions = Apollo.BaseMutationOptions<
-  InsertSocialsMutation,
-  InsertSocialsMutationVariables
->;
+export type InsertSocialsMutationOptions = Apollo.BaseMutationOptions<InsertSocialsMutation, InsertSocialsMutationVariables>;
 export const UpdateSocialsDocument = gql`
-  mutation UpdateSocials($updates: [SocialUpdates!]!) {
+      mutation UpdateSocials($updates: [SocialUpdates!]!) {
     updateSocialMany(updates: $updates) {
       returning {
         __typename
@@ -57012,20 +53152,15 @@ export type UpdateSocialsMutationFn = Apollo.MutationFunction<UpdateSocialsMutat
  *   },
  * });
  */
-export function useUpdateSocialsMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateSocialsMutation, UpdateSocialsMutationVariables>(UpdateSocialsDocument, options);
-}
+export function useUpdateSocialsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSocialsMutation, UpdateSocialsMutationVariables>(UpdateSocialsDocument, options);
+      }
 export type UpdateSocialsMutationHookResult = ReturnType<typeof useUpdateSocialsMutation>;
 export type UpdateSocialsMutationResult = Apollo.MutationResult<UpdateSocialsMutation>;
-export type UpdateSocialsMutationOptions = Apollo.BaseMutationOptions<
-  UpdateSocialsMutation,
-  UpdateSocialsMutationVariables
->;
+export type UpdateSocialsMutationOptions = Apollo.BaseMutationOptions<UpdateSocialsMutation, UpdateSocialsMutationVariables>;
 export const DeleteActorImageDocument = gql`
-  mutation DeleteActorImage($id: bigint!) {
+      mutation DeleteActorImage($id: bigint!) {
     deleteActorImageByPk(id: $id) {
       __typename
       id
@@ -57047,10 +53182,7 @@ export const DeleteActorImageDocument = gql`
     }
   }
 `;
-export type DeleteActorImageMutationFn = Apollo.MutationFunction<
-  DeleteActorImageMutation,
-  DeleteActorImageMutationVariables
->;
+export type DeleteActorImageMutationFn = Apollo.MutationFunction<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
 
 /**
  * __useDeleteActorImageMutation__
@@ -57069,24 +53201,51 @@ export type DeleteActorImageMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useDeleteActorImageMutation(
-  baseOptions?: Apollo.MutationHookOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<DeleteActorImageMutation, DeleteActorImageMutationVariables>(
-    DeleteActorImageDocument,
-    options,
-  );
-}
+export function useDeleteActorImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteActorImageMutation, DeleteActorImageMutationVariables>(DeleteActorImageDocument, options);
+      }
 export type DeleteActorImageMutationHookResult = ReturnType<typeof useDeleteActorImageMutation>;
 export type DeleteActorImageMutationResult = Apollo.MutationResult<DeleteActorImageMutation>;
-export type DeleteActorImageMutationOptions = Apollo.BaseMutationOptions<
-  DeleteActorImageMutation,
-  DeleteActorImageMutationVariables
->;
+export type DeleteActorImageMutationOptions = Apollo.BaseMutationOptions<DeleteActorImageMutation, DeleteActorImageMutationVariables>;
+export const DeleteTeamMemberRoleDocument = gql`
+      mutation DeleteTeamMemberRole($id: bigint!) {
+    deleteTeamMemberRoleByPk(id: $id) {
+      __typename
+      id
+      deletedAt
+    }
+  }
+`;
+export type DeleteTeamMemberRoleMutationFn = Apollo.MutationFunction<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>;
+
+/**
+ * __useDeleteTeamMemberRoleMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamMemberRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamMemberRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamMemberRoleMutation, { data, loading, error }] = useDeleteTeamMemberRoleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTeamMemberRoleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>(DeleteTeamMemberRoleDocument, options);
+      }
+export type DeleteTeamMemberRoleMutationHookResult = ReturnType<typeof useDeleteTeamMemberRoleMutation>;
+export type DeleteTeamMemberRoleMutationResult = Apollo.MutationResult<DeleteTeamMemberRoleMutation>;
+export type DeleteTeamMemberRoleMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMemberRoleMutation, DeleteTeamMemberRoleMutationVariables>;
 export const GetTeamManageDocument = gql`
-  query GetTeamManage($slug: String!) {
-    team(where: { actor: { slug: { _eq: $slug } } }) {
+      query GetTeamManage($slug: String!) {
+    team(where: {actor: {slug: {_eq: $slug}}}) {
       __typename
       id
       createdAt
@@ -57114,7 +53273,7 @@ export const GetTeamManageDocument = gql`
         }
         bio
         status
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -57168,7 +53327,7 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
@@ -57177,14 +53336,15 @@ export const GetTeamManageDocument = gql`
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -57221,7 +53381,7 @@ export const GetTeamManageDocument = gql`
                   url
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -57285,6 +53445,7 @@ export const GetTeamManageDocument = gql`
             createdAt
             start
             end
+            maxParticipants
             name
             slug
             description
@@ -57293,12 +53454,12 @@ export const GetTeamManageDocument = gql`
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              link
+              name
+              details
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -57309,6 +53470,7 @@ export const GetTeamManageDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
             }
             state
@@ -57376,7 +53538,7 @@ export const GetTeamManageDocument = gql`
                       color
                     }
                   }
-                  socials(where: { deletedAt: { _isNull: true } }) {
+                  socials(where: {deletedAt: {_isNull: true}}) {
                     __typename
                     id
                     pseudo
@@ -57463,7 +53625,7 @@ export const GetTeamManageDocument = gql`
                           color
                         }
                       }
-                      socials(where: { deletedAt: { _isNull: true } }) {
+                      socials(where: {deletedAt: {_isNull: true}}) {
                         __typename
                         id
                         pseudo
@@ -57476,12 +53638,12 @@ export const GetTeamManageDocument = gql`
                 }
               }
             }
-            eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+            eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
               aggregate {
                 count
               }
             }
-            eventJoins(where: { state: { _eq: "Approved" } }, limit: 3) {
+            eventJoins(where: {state: {_eq: "Approved"}}, limit: 3) {
               __typename
               id
               createdAt
@@ -57531,7 +53693,7 @@ export const GetTeamManageDocument = gql`
                         color
                       }
                     }
-                    socials(where: { deletedAt: { _isNull: true } }) {
+                    socials(where: {deletedAt: {_isNull: true}}) {
                       __typename
                       id
                       pseudo
@@ -57559,14 +53721,13 @@ export const GetTeamManageDocument = gql`
             __typename
             id
             createdAt
-            startDate
-            endDate
-            teamMemberRoles {
+            start
+            teamMemberRoles(where: {deletedAt: {_isNull: true}}) {
               role {
                 __typename
                 id
                 createdAt
-                category
+                color
                 type
                 name
                 permissions
@@ -57616,7 +53777,7 @@ export const GetTeamManageDocument = gql`
                       color
                     }
                   }
-                  socials(where: { deletedAt: { _isNull: true } }) {
+                  socials(where: {deletedAt: {_isNull: true}}) {
                     __typename
                     id
                     pseudo
@@ -57712,10 +53873,13 @@ export const GetTeamManageDocument = gql`
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -57726,10 +53890,8 @@ export const GetTeamManageDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -57814,7 +53976,6 @@ export const GetTeamManageDocument = gql`
                 address {
                   __typename
                   id
-                  createdAt
                   latitude
                   longitude
                   category
@@ -57825,10 +53986,11 @@ export const GetTeamManageDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
                 type
-                locationDetails
-                onlineLink
+                details
+                link
               }
             }
             bicSwift
@@ -57909,8 +54071,10 @@ export const GetTeamManageDocument = gql`
                 id
                 type
                 createdAt
-                onlineLink
-                locationDetails
+                type
+                link
+                name
+                details
                 address {
                   __typename
                   id
@@ -57924,6 +54088,7 @@ export const GetTeamManageDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
               }
             }
@@ -57958,7 +54123,7 @@ export const GetTeamManageDocument = gql`
         }
       }
       teamHistories(
-        where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
+        where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
       ) {
         __typename
         id
@@ -58010,23 +54175,19 @@ export const GetTeamManageDocument = gql`
  *   },
  * });
  */
-export function useGetTeamManageQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
-}
-export function useGetTeamManageLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
-}
+export function useGetTeamManageQuery(baseOptions: Apollo.QueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
+      }
+export function useGetTeamManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamManageQuery, GetTeamManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamManageQuery, GetTeamManageQueryVariables>(GetTeamManageDocument, options);
+        }
 export type GetTeamManageQueryHookResult = ReturnType<typeof useGetTeamManageQuery>;
 export type GetTeamManageLazyQueryHookResult = ReturnType<typeof useGetTeamManageLazyQuery>;
 export type GetTeamManageQueryResult = Apollo.QueryResult<GetTeamManageQuery, GetTeamManageQueryVariables>;
 export const InsertActorImageDocument = gql`
-  mutation InsertActorImage($object: ActorImageInsertInput!) {
+      mutation InsertActorImage($object: ActorImageInsertInput!) {
     insertActorImageOne(object: $object) {
       __typename
       id
@@ -58048,10 +54209,7 @@ export const InsertActorImageDocument = gql`
     }
   }
 `;
-export type InsertActorImageMutationFn = Apollo.MutationFunction<
-  InsertActorImageMutation,
-  InsertActorImageMutationVariables
->;
+export type InsertActorImageMutationFn = Apollo.MutationFunction<InsertActorImageMutation, InsertActorImageMutationVariables>;
 
 /**
  * __useInsertActorImageMutation__
@@ -58070,24 +54228,16 @@ export type InsertActorImageMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useInsertActorImageMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertActorImageMutation, InsertActorImageMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertActorImageMutation, InsertActorImageMutationVariables>(
-    InsertActorImageDocument,
-    options,
-  );
-}
+export function useInsertActorImageMutation(baseOptions?: Apollo.MutationHookOptions<InsertActorImageMutation, InsertActorImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertActorImageMutation, InsertActorImageMutationVariables>(InsertActorImageDocument, options);
+      }
 export type InsertActorImageMutationHookResult = ReturnType<typeof useInsertActorImageMutation>;
 export type InsertActorImageMutationResult = Apollo.MutationResult<InsertActorImageMutation>;
-export type InsertActorImageMutationOptions = Apollo.BaseMutationOptions<
-  InsertActorImageMutation,
-  InsertActorImageMutationVariables
->;
+export type InsertActorImageMutationOptions = Apollo.BaseMutationOptions<InsertActorImageMutation, InsertActorImageMutationVariables>;
 export const UpdateActorDocument = gql`
-  mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
-    updateActorByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateActor($id: bigint!, $update: ActorSetInput!) {
+    updateActorByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       slug
@@ -58106,7 +54256,7 @@ export const UpdateActorDocument = gql`
           url
         }
       }
-      socials(where: { deletedAt: { _isNull: true } }) {
+      socials(where: {deletedAt: {_isNull: true}}) {
         __typename
         id
         pseudo
@@ -58137,18 +54287,16 @@ export type UpdateActorMutationFn = Apollo.MutationFunction<UpdateActorMutation,
  *   },
  * });
  */
-export function useUpdateActorMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateActorMutation, UpdateActorMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateActorMutation, UpdateActorMutationVariables>(UpdateActorDocument, options);
-}
+export function useUpdateActorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActorMutation, UpdateActorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateActorMutation, UpdateActorMutationVariables>(UpdateActorDocument, options);
+      }
 export type UpdateActorMutationHookResult = ReturnType<typeof useUpdateActorMutation>;
 export type UpdateActorMutationResult = Apollo.MutationResult<UpdateActorMutation>;
 export type UpdateActorMutationOptions = Apollo.BaseMutationOptions<UpdateActorMutation, UpdateActorMutationVariables>;
 export const UpdateTeamDocument = gql`
-  mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
-    updateTeamByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateTeam($id: bigint!, $update: TeamSetInput!) {
+    updateTeamByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       createdAt
@@ -58174,7 +54322,7 @@ export const UpdateTeamDocument = gql`
             url
           }
         }
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -58205,7 +54353,7 @@ export const UpdateTeamDocument = gql`
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
@@ -58214,14 +54362,15 @@ export const UpdateTeamDocument = gql`
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -58271,7 +54420,7 @@ export const UpdateTeamDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -58306,17 +54455,15 @@ export type UpdateTeamMutationFn = Apollo.MutationFunction<UpdateTeamMutation, U
  *   },
  * });
  */
-export function useUpdateTeamMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateTeamMutation, UpdateTeamMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateTeamMutation, UpdateTeamMutationVariables>(UpdateTeamDocument, options);
-}
+export function useUpdateTeamMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamMutation, UpdateTeamMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTeamMutation, UpdateTeamMutationVariables>(UpdateTeamDocument, options);
+      }
 export type UpdateTeamMutationHookResult = ReturnType<typeof useUpdateTeamMutation>;
 export type UpdateTeamMutationResult = Apollo.MutationResult<UpdateTeamMutation>;
 export type UpdateTeamMutationOptions = Apollo.BaseMutationOptions<UpdateTeamMutation, UpdateTeamMutationVariables>;
 export const InsertAccountDocument = gql`
-  mutation InsertAccount($object: AccountInsertInput!) {
+      mutation InsertAccount($object: AccountInsertInput!) {
     insertAccountOne(object: $object) {
       __typename
       id
@@ -58342,20 +54489,15 @@ export type InsertAccountMutationFn = Apollo.MutationFunction<InsertAccountMutat
  *   },
  * });
  */
-export function useInsertAccountMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertAccountMutation, InsertAccountMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertAccountMutation, InsertAccountMutationVariables>(InsertAccountDocument, options);
-}
+export function useInsertAccountMutation(baseOptions?: Apollo.MutationHookOptions<InsertAccountMutation, InsertAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertAccountMutation, InsertAccountMutationVariables>(InsertAccountDocument, options);
+      }
 export type InsertAccountMutationHookResult = ReturnType<typeof useInsertAccountMutation>;
 export type InsertAccountMutationResult = Apollo.MutationResult<InsertAccountMutation>;
-export type InsertAccountMutationOptions = Apollo.BaseMutationOptions<
-  InsertAccountMutation,
-  InsertAccountMutationVariables
->;
+export type InsertAccountMutationOptions = Apollo.BaseMutationOptions<InsertAccountMutation, InsertAccountMutationVariables>;
 export const InsertBankDocument = gql`
-  mutation InsertBank($object: BankInsertInput!) {
+      mutation InsertBank($object: BankInsertInput!) {
     insertBankOne(object: $object) {
       __typename
       id
@@ -58381,17 +54523,15 @@ export type InsertBankMutationFn = Apollo.MutationFunction<InsertBankMutation, I
  *   },
  * });
  */
-export function useInsertBankMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertBankMutation, InsertBankMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertBankMutation, InsertBankMutationVariables>(InsertBankDocument, options);
-}
+export function useInsertBankMutation(baseOptions?: Apollo.MutationHookOptions<InsertBankMutation, InsertBankMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertBankMutation, InsertBankMutationVariables>(InsertBankDocument, options);
+      }
 export type InsertBankMutationHookResult = ReturnType<typeof useInsertBankMutation>;
 export type InsertBankMutationResult = Apollo.MutationResult<InsertBankMutation>;
 export type InsertBankMutationOptions = Apollo.BaseMutationOptions<InsertBankMutation, InsertBankMutationVariables>;
 export const GetEventOrganizesDocument = gql`
-  query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOrderBy!], $limit: Int, $offset: Int) {
+      query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOrderBy!], $limit: Int, $offset: Int) {
     eventOrganize(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       event {
         __typename
@@ -58400,6 +54540,7 @@ export const GetEventOrganizesDocument = gql`
         state
         start
         end
+        maxParticipants
         slug
         banner {
           __typename
@@ -58581,7 +54722,7 @@ export const GetEventOrganizesDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -58638,6 +54779,7 @@ export const GetEventOrganizesDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -58648,8 +54790,9 @@ export const GetEventOrganizesDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -58663,6 +54806,7 @@ export const GetEventOrganizesDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -58681,12 +54825,12 @@ export const GetEventOrganizesDocument = gql`
           color
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
@@ -58736,7 +54880,7 @@ export const GetEventOrganizesDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -58799,7 +54943,7 @@ export const GetEventOrganizesDocument = gql`
                 color
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -58844,26 +54988,19 @@ export const GetEventOrganizesDocument = gql`
  *   },
  * });
  */
-export function useGetEventOrganizesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>(GetEventOrganizesDocument, options);
-}
-export function useGetEventOrganizesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>(
-    GetEventOrganizesDocument,
-    options,
-  );
-}
+export function useGetEventOrganizesQuery(baseOptions?: Apollo.QueryHookOptions<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>(GetEventOrganizesDocument, options);
+      }
+export function useGetEventOrganizesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>(GetEventOrganizesDocument, options);
+        }
 export type GetEventOrganizesQueryHookResult = ReturnType<typeof useGetEventOrganizesQuery>;
 export type GetEventOrganizesLazyQueryHookResult = ReturnType<typeof useGetEventOrganizesLazyQuery>;
 export type GetEventOrganizesQueryResult = Apollo.QueryResult<GetEventOrganizesQuery, GetEventOrganizesQueryVariables>;
 export const GetFinancesDocument = gql`
-  query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
+      query GetFinances($where: FinanceBoolExp, $orderBy: [FinanceOrderBy!], $limit: Int, $offset: Int) {
     finance(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -59064,24 +55201,20 @@ export const GetFinancesDocument = gql`
  *   },
  * });
  */
-export function useGetFinancesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
-}
-export function useGetFinancesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
-}
+export function useGetFinancesQuery(baseOptions?: Apollo.QueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
+      }
+export function useGetFinancesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFinancesQuery, GetFinancesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFinancesQuery, GetFinancesQueryVariables>(GetFinancesDocument, options);
+        }
 export type GetFinancesQueryHookResult = ReturnType<typeof useGetFinancesQuery>;
 export type GetFinancesLazyQueryHookResult = ReturnType<typeof useGetFinancesLazyQuery>;
 export type GetFinancesQueryResult = Apollo.QueryResult<GetFinancesQuery, GetFinancesQueryVariables>;
 export const GetTenantManageDocument = gql`
-  query GetTenantManage($domain: String!) {
-    tenant(where: { domain: { _eq: $domain } }) {
+      query GetTenantManage($domain: String!) {
+    tenant(where: {domain: {_eq: $domain}}) {
       __typename
       id
       domain
@@ -59143,24 +55276,23 @@ export const GetTenantManageDocument = gql`
  *   },
  * });
  */
-export function useGetTenantManageQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTenantManageQuery, GetTenantManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantManageQuery, GetTenantManageQueryVariables>(GetTenantManageDocument, options);
-}
-export function useGetTenantManageLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantManageQuery, GetTenantManageQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantManageQuery, GetTenantManageQueryVariables>(GetTenantManageDocument, options);
-}
+export function useGetTenantManageQuery(baseOptions: Apollo.QueryHookOptions<GetTenantManageQuery, GetTenantManageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantManageQuery, GetTenantManageQueryVariables>(GetTenantManageDocument, options);
+      }
+export function useGetTenantManageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantManageQuery, GetTenantManageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantManageQuery, GetTenantManageQueryVariables>(GetTenantManageDocument, options);
+        }
 export type GetTenantManageQueryHookResult = ReturnType<typeof useGetTenantManageQuery>;
 export type GetTenantManageLazyQueryHookResult = ReturnType<typeof useGetTenantManageLazyQuery>;
 export type GetTenantManageQueryResult = Apollo.QueryResult<GetTenantManageQuery, GetTenantManageQueryVariables>;
 export const GetTeamDashboardDocument = gql`
-  query GetTeamDashboard {
-    team(where: { type: { _in: ["Association", "Club"] } }, orderBy: { actor: { name: ASC } }) {
+      query GetTeamDashboard {
+    team(
+      where: {type: {_in: ["Association", "Club"]}}
+      orderBy: {actor: {name: ASC}}
+    ) {
       __typename
       id
       createdAt
@@ -59203,7 +55335,7 @@ export const GetTeamDashboardDocument = gql`
         }
         bio
         status
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -59230,29 +55362,30 @@ export const GetTeamDashboardDocument = gql`
         name
         description
       }
-      roles {
+      roles(where: {deletedAt: {_isNull: false}}) {
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
       }
       teamMembers(
-        where: { teamMemberRoles: { role: { category: { _eq: "Directors" } } }, endDate: { _isNull: true } }
+        where: {teamMemberRoles: {role: {type: {_in: ["President", "Treasurer", "Secretary"]}}}, deletedAt: {_isNull: true}}
       ) {
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -59364,10 +55497,13 @@ export const GetTeamDashboardDocument = gql`
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -59378,10 +55514,8 @@ export const GetTeamDashboardDocument = gql`
                 city
                 state
                 country
+                geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -59463,10 +55597,13 @@ export const GetTeamDashboardDocument = gql`
                 __typename
                 id
                 createdAt
+                type
+                link
+                name
+                details
                 address {
                   __typename
                   id
-                  createdAt
                   latitude
                   longitude
                   category
@@ -59477,10 +55614,8 @@ export const GetTeamDashboardDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
-                type
-                locationDetails
-                onlineLink
               }
             }
             bicSwift
@@ -59559,8 +55694,9 @@ export const GetTeamDashboardDocument = gql`
                 id
                 type
                 createdAt
-                onlineLink
-                locationDetails
+                link
+                name
+                details
                 address {
                   __typename
                   id
@@ -59574,6 +55710,7 @@ export const GetTeamDashboardDocument = gql`
                   city
                   state
                   country
+                  geoapifyId
                 }
               }
             }
@@ -59610,7 +55747,7 @@ export const GetTeamDashboardDocument = gql`
         }
       }
       teamHistories(
-        where: { eventType: { _in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"] } }
+        where: {eventType: {_in: ["OkampusStart", "ExtraordinaryAssembly", "RegularAssembly", "Restart"]}}
       ) {
         __typename
         id
@@ -59661,31 +55798,21 @@ export const GetTeamDashboardDocument = gql`
  *   },
  * });
  */
-export function useGetTeamDashboardQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>(GetTeamDashboardDocument, options);
-}
-export function useGetTeamDashboardLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>(GetTeamDashboardDocument, options);
-}
+export function useGetTeamDashboardQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>(GetTeamDashboardDocument, options);
+      }
+export function useGetTeamDashboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>(GetTeamDashboardDocument, options);
+        }
 export type GetTeamDashboardQueryHookResult = ReturnType<typeof useGetTeamDashboardQuery>;
 export type GetTeamDashboardLazyQueryHookResult = ReturnType<typeof useGetTeamDashboardLazyQuery>;
 export type GetTeamDashboardQueryResult = Apollo.QueryResult<GetTeamDashboardQuery, GetTeamDashboardQueryVariables>;
 export const GetTenantUsersWithPointsDocument = gql`
-  query GetTenantUsersWithPoints {
+      query GetTenantUsersWithPoints {
     user(
-      where: {
-        _or: [
-          { actions: { pointsProcessedAt: { _isNull: false } } }
-          { eventJoins: { participationProcessedAt: { _isNull: false } } }
-          { missionJoins: { pointsProcessedAt: { _isNull: false } } }
-        ]
-      }
+      where: {_or: [{actions: {pointsProcessedAt: {_isNull: false}}}, {eventJoins: {participationProcessedAt: {_isNull: false}}}, {missionJoins: {pointsProcessedAt: {_isNull: false}}}]}
     ) {
       __typename
       id
@@ -59715,13 +55842,13 @@ export const GetTenantUsersWithPointsDocument = gql`
           }
         }
       }
-      actions(where: { pointsProcessedAt: { _isNull: false } }) {
+      actions(where: {pointsProcessedAt: {_isNull: false}}) {
         __typename
         id
         points
         pointsProcessedAt
       }
-      eventJoins(where: { participationProcessedAt: { _isNull: false } }) {
+      eventJoins(where: {participationProcessedAt: {_isNull: false}}) {
         __typename
         id
         processedAt
@@ -59732,7 +55859,7 @@ export const GetTenantUsersWithPointsDocument = gql`
           pointsAwardedForAttendance
         }
       }
-      missionJoins(where: { pointsProcessedAt: { _isNull: false } }) {
+      missionJoins(where: {pointsProcessedAt: {_isNull: false}}) {
         __typename
         id
         points
@@ -59757,32 +55884,19 @@ export const GetTenantUsersWithPointsDocument = gql`
  *   },
  * });
  */
-export function useGetTenantUsersWithPointsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
-    GetTenantUsersWithPointsDocument,
-    options,
-  );
-}
-export function useGetTenantUsersWithPointsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(
-    GetTenantUsersWithPointsDocument,
-    options,
-  );
-}
+export function useGetTenantUsersWithPointsQuery(baseOptions?: Apollo.QueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(GetTenantUsersWithPointsDocument, options);
+      }
+export function useGetTenantUsersWithPointsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>(GetTenantUsersWithPointsDocument, options);
+        }
 export type GetTenantUsersWithPointsQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsQuery>;
 export type GetTenantUsersWithPointsLazyQueryHookResult = ReturnType<typeof useGetTenantUsersWithPointsLazyQuery>;
-export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<
-  GetTenantUsersWithPointsQuery,
-  GetTenantUsersWithPointsQueryVariables
->;
+export type GetTenantUsersWithPointsQueryResult = Apollo.QueryResult<GetTenantUsersWithPointsQuery, GetTenantUsersWithPointsQueryVariables>;
 export const GetEventsValidationDocument = gql`
-  query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
+      query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $offset: Int) {
     event(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -59790,6 +55904,7 @@ export const GetEventsValidationDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -59800,8 +55915,9 @@ export const GetEventsValidationDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -59815,6 +55931,7 @@ export const GetEventsValidationDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -60010,7 +56127,7 @@ export const GetEventsValidationDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -60050,6 +56167,12 @@ export const GetEventsValidationDocument = gql`
             schema
             name
           }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
         }
         project {
           __typename
@@ -60061,12 +56184,12 @@ export const GetEventsValidationDocument = gql`
           isPrivate
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
@@ -60116,7 +56239,7 @@ export const GetEventsValidationDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -60179,7 +56302,7 @@ export const GetEventsValidationDocument = gql`
                 color
               }
             }
-            socials(where: { deletedAt: { _isNull: true } }) {
+            socials(where: {deletedAt: {_isNull: true}}) {
               __typename
               id
               pseudo
@@ -60224,33 +56347,20 @@ export const GetEventsValidationDocument = gql`
  *   },
  * });
  */
-export function useGetEventsValidationQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
-    GetEventsValidationDocument,
-    options,
-  );
-}
-export function useGetEventsValidationLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(
-    GetEventsValidationDocument,
-    options,
-  );
-}
+export function useGetEventsValidationQuery(baseOptions?: Apollo.QueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
+      }
+export function useGetEventsValidationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventsValidationQuery, GetEventsValidationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventsValidationQuery, GetEventsValidationQueryVariables>(GetEventsValidationDocument, options);
+        }
 export type GetEventsValidationQueryHookResult = ReturnType<typeof useGetEventsValidationQuery>;
 export type GetEventsValidationLazyQueryHookResult = ReturnType<typeof useGetEventsValidationLazyQuery>;
-export type GetEventsValidationQueryResult = Apollo.QueryResult<
-  GetEventsValidationQuery,
-  GetEventsValidationQueryVariables
->;
+export type GetEventsValidationQueryResult = Apollo.QueryResult<GetEventsValidationQuery, GetEventsValidationQueryVariables>;
 export const GetProjectDocument = gql`
-  query GetProject($slug: String!) {
-    project(where: { slug: { _eq: $slug } }, limit: 1) {
+      query GetProject($slug: String!) {
+    project(where: {slug: {_eq: $slug}}, limit: 1) {
       __typename
       id
       createdAt
@@ -60339,7 +56449,7 @@ export const GetProjectDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -60378,6 +56488,12 @@ export const GetProjectDocument = gql`
             schema
             name
           }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
+          }
         }
         project {
           __typename
@@ -60410,21 +56526,19 @@ export const GetProjectDocument = gql`
  * });
  */
 export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-}
-export function useGetProjectLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+      }
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+        }
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const GetTeamDocument = gql`
-  query GetTeam($slug: String!) {
-    team(where: { actor: { slug: { _eq: $slug } } }, limit: 1) {
+      query GetTeam($slug: String!) {
+    team(where: {actor: {slug: {_eq: $slug}}}, limit: 1) {
       __typename
       id
       createdAt
@@ -60453,7 +56567,7 @@ export const GetTeamDocument = gql`
             url
           }
         }
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -60506,7 +56620,7 @@ export const GetTeamDocument = gql`
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
@@ -60515,14 +56629,15 @@ export const GetTeamDocument = gql`
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -60572,7 +56687,7 @@ export const GetTeamDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -60605,21 +56720,52 @@ export const GetTeamDocument = gql`
  * });
  */
 export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+      }
 export function useGetTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+        }
 export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
 export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
 export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
 export const InsertTeamJoinDocument = gql`
-  mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
+      mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
     insertTeamJoinOne(object: $object) {
       __typename
       id
+      createdAt
+      state
+      team {
+        __typename
+        id
+        createdAt
+        type
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            createdAt
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+              size
+              type
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -60642,20 +56788,15 @@ export type InsertTeamJoinMutationFn = Apollo.MutationFunction<InsertTeamJoinMut
  *   },
  * });
  */
-export function useInsertTeamJoinMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>(InsertTeamJoinDocument, options);
-}
+export function useInsertTeamJoinMutation(baseOptions?: Apollo.MutationHookOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>(InsertTeamJoinDocument, options);
+      }
 export type InsertTeamJoinMutationHookResult = ReturnType<typeof useInsertTeamJoinMutation>;
 export type InsertTeamJoinMutationResult = Apollo.MutationResult<InsertTeamJoinMutation>;
-export type InsertTeamJoinMutationOptions = Apollo.BaseMutationOptions<
-  InsertTeamJoinMutation,
-  InsertTeamJoinMutationVariables
->;
+export type InsertTeamJoinMutationOptions = Apollo.BaseMutationOptions<InsertTeamJoinMutation, InsertTeamJoinMutationVariables>;
 export const GetTeamsDocument = gql`
-  query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offset: Int) {
+      query GetTeams($where: TeamBoolExp, $orderBy: [TeamOrderBy!], $limit: Int, $offset: Int) {
     team(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -60682,7 +56823,7 @@ export const GetTeamsDocument = gql`
             url
           }
         }
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -60738,7 +56879,7 @@ export const GetTeamsDocument = gql`
         __typename
         id
         createdAt
-        category
+        color
         type
         name
         permissions
@@ -60752,14 +56893,15 @@ export const GetTeamsDocument = gql`
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -60809,7 +56951,7 @@ export const GetTeamsDocument = gql`
                   color
                 }
               }
-              socials(where: { deletedAt: { _isNull: true } }) {
+              socials(where: {deletedAt: {_isNull: true}}) {
                 __typename
                 id
                 pseudo
@@ -60845,18 +56987,18 @@ export const GetTeamsDocument = gql`
  * });
  */
 export function useGetTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+      }
 export function useGetTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamsQuery, GetTeamsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamsQuery, GetTeamsQueryVariables>(GetTeamsDocument, options);
+        }
 export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
 export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
 export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
 export const GetCategoriesDocument = gql`
-  query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $offset: Int) {
+      query GetCategories($where: TagBoolExp, $orderBy: [TagOrderBy!], $limit: Int, $offset: Int) {
     tag(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       id
       name
@@ -60889,24 +57031,20 @@ export const GetCategoriesDocument = gql`
  *   },
  * });
  */
-export function useGetCategoriesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-}
-export function useGetCategoriesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
-}
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
 export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetUserDocument = gql`
-  query GetUser($slug: String!) {
-    user(where: { individual: { actor: { slug: { _eq: $slug } } } }, limit: 1) {
+      query GetUser($slug: String!) {
+    user(where: {individual: {actor: {slug: {_eq: $slug}}}}, limit: 1) {
       __typename
       id
       createdAt
@@ -60934,7 +57072,7 @@ export const GetUserDocument = gql`
               url
             }
           }
-          socials(where: { deletedAt: { _isNull: true } }) {
+          socials(where: {deletedAt: {_isNull: true}}) {
             __typename
             id
             pseudo
@@ -60944,7 +57082,7 @@ export const GetUserDocument = gql`
           }
         }
       }
-      teamMembers(where: { endDate: { _isNull: true } }) {
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
         __typename
         id
         team {
@@ -60989,18 +57127,18 @@ export const GetUserDocument = gql`
  * });
  */
 export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
 export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
 export const GetUsersDocument = gql`
-  query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offset: Int) {
+      query GetUsers($where: UserBoolExp, $orderBy: [UserOrderBy!], $limit: Int, $offset: Int) {
     user(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -61029,7 +57167,7 @@ export const GetUsersDocument = gql`
           }
         }
       }
-      teamMembers(where: { endDate: { _isNull: true } }) {
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
         __typename
         id
         team {
@@ -61077,18 +57215,18 @@ export const GetUsersDocument = gql`
  * });
  */
 export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
 export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
 export const GetTenantOidcInfoDocument = gql`
-  query GetTenantOidcInfo {
+      query GetTenantOidcInfo {
     tenant {
       __typename
       id
@@ -61135,26 +57273,19 @@ export const GetTenantOidcInfoDocument = gql`
  *   },
  * });
  */
-export function useGetTenantOidcInfoQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
-}
-export function useGetTenantOidcInfoLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(
-    GetTenantOidcInfoDocument,
-    options,
-  );
-}
+export function useGetTenantOidcInfoQuery(baseOptions?: Apollo.QueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+      }
+export function useGetTenantOidcInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>(GetTenantOidcInfoDocument, options);
+        }
 export type GetTenantOidcInfoQueryHookResult = ReturnType<typeof useGetTenantOidcInfoQuery>;
 export type GetTenantOidcInfoLazyQueryHookResult = ReturnType<typeof useGetTenantOidcInfoLazyQuery>;
 export type GetTenantOidcInfoQueryResult = Apollo.QueryResult<GetTenantOidcInfoQuery, GetTenantOidcInfoQueryVariables>;
 export const UserLoginDocument = gql`
-  mutation UserLogin($dto: LoginInput!) {
+      mutation UserLogin($dto: LoginInput!) {
     login(dto: $dto) {
       __typename
       canManageTenant
@@ -61198,18 +57329,119 @@ export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, Use
  *   },
  * });
  */
-export function useUserLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
-}
+export function useUserLoginMutation(baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
+      }
 export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
 export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
 export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
+export const InsertEventApprovalDocument = gql`
+      mutation InsertEventApproval($object: EventApprovalInsertInput!) {
+    insertEventApprovalOne(object: $object) {
+      __typename
+      id
+      createdAt
+      isApproved
+      message
+      eventApprovalStep {
+        __typename
+        id
+        createdAt
+        name
+        description
+        order
+        nextSteps {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+        previousStep {
+          __typename
+          id
+          createdAt
+          name
+          description
+          order
+        }
+      }
+      createdBy {
+        __typename
+        id
+        createdAt
+        actor {
+          __typename
+          id
+          createdAt
+          email
+          name
+          slug
+          website
+          actorImages {
+            __typename
+            id
+            type
+            image {
+              __typename
+              id
+              createdAt
+              url
+            }
+          }
+        }
+        user {
+          __typename
+          id
+          createdAt
+          firstName
+          lastName
+          individual {
+            __typename
+            id
+            createdAt
+            actor {
+              __typename
+              id
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export type InsertEventApprovalMutationFn = Apollo.MutationFunction<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>;
+
+/**
+ * __useInsertEventApprovalMutation__
+ *
+ * To run a mutation, you first call `useInsertEventApprovalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertEventApprovalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertEventApprovalMutation, { data, loading, error }] = useInsertEventApprovalMutation({
+ *   variables: {
+ *      object: // value for 'object'
+ *   },
+ * });
+ */
+export function useInsertEventApprovalMutation(baseOptions?: Apollo.MutationHookOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>(InsertEventApprovalDocument, options);
+      }
+export type InsertEventApprovalMutationHookResult = ReturnType<typeof useInsertEventApprovalMutation>;
+export type InsertEventApprovalMutationResult = Apollo.MutationResult<InsertEventApprovalMutation>;
+export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>;
 export const GetProjectsSelectDocument = gql`
-  query GetProjectsSelect($slug: String!) {
-    project(where: { team: { actor: { slug: { _eq: $slug } } } }) {
+      query GetProjectsSelect($slug: String!) {
+    project(where: {team: {actor: {slug: {_eq: $slug}}}}) {
       __typename
       id
       createdAt
@@ -61259,26 +57491,19 @@ export const GetProjectsSelectDocument = gql`
  *   },
  * });
  */
-export function useGetProjectsSelectQuery(
-  baseOptions: Apollo.QueryHookOptions<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>(GetProjectsSelectDocument, options);
-}
-export function useGetProjectsSelectLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>(
-    GetProjectsSelectDocument,
-    options,
-  );
-}
+export function useGetProjectsSelectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>(GetProjectsSelectDocument, options);
+      }
+export function useGetProjectsSelectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>(GetProjectsSelectDocument, options);
+        }
 export type GetProjectsSelectQueryHookResult = ReturnType<typeof useGetProjectsSelectQuery>;
 export type GetProjectsSelectLazyQueryHookResult = ReturnType<typeof useGetProjectsSelectLazyQuery>;
 export type GetProjectsSelectQueryResult = Apollo.QueryResult<GetProjectsSelectQuery, GetProjectsSelectQueryVariables>;
 export const InsertEventDocument = gql`
-  mutation InsertEvent($object: EventInsertInput!) {
+      mutation InsertEvent($object: EventInsertInput!) {
     insertEventOne(object: $object) {
       __typename
       id
@@ -61286,6 +57511,7 @@ export const InsertEventDocument = gql`
       slug
       start
       end
+      maxParticipants
       name
       state
       price
@@ -61296,8 +57522,9 @@ export const InsertEventDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -61311,6 +57538,7 @@ export const InsertEventDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
       banner {
@@ -61373,7 +57601,7 @@ export const InsertEventDocument = gql`
                     color
                   }
                 }
-                socials(where: { deletedAt: { _isNull: true } }) {
+                socials(where: {deletedAt: {_isNull: true}}) {
                   __typename
                   id
                   pseudo
@@ -61406,12 +57634,26 @@ export const InsertEventDocument = gql`
                 url
               }
             }
+            socials(where: {deletedAt: {_isNull: true}}) {
+              __typename
+              id
+              pseudo
+              url
+              type
+              order
+            }
           }
           joinForm {
             __typename
             id
             schema
             name
+          }
+          teamMembersAggregate {
+            __typename
+            aggregate {
+              count
+            }
           }
         }
         project {
@@ -61424,12 +57666,12 @@ export const InsertEventDocument = gql`
           isPrivate
         }
       }
-      eventJoinsAggregate(where: { state: { _eq: "Approved" } }) {
+      eventJoinsAggregate(where: {state: {_eq: "Approved"}}) {
         aggregate {
           count
         }
       }
-      eventJoins(where: { state: { _eq: "Approved" } }, limit: 12) {
+      eventJoins(where: {state: {_eq: "Approved"}}, limit: 12) {
         __typename
         id
         createdAt
@@ -61526,17 +57768,15 @@ export type InsertEventMutationFn = Apollo.MutationFunction<InsertEventMutation,
  *   },
  * });
  */
-export function useInsertEventMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertEventMutation, InsertEventMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertEventMutation, InsertEventMutationVariables>(InsertEventDocument, options);
-}
+export function useInsertEventMutation(baseOptions?: Apollo.MutationHookOptions<InsertEventMutation, InsertEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertEventMutation, InsertEventMutationVariables>(InsertEventDocument, options);
+      }
 export type InsertEventMutationHookResult = ReturnType<typeof useInsertEventMutation>;
 export type InsertEventMutationResult = Apollo.MutationResult<InsertEventMutation>;
 export type InsertEventMutationOptions = Apollo.BaseMutationOptions<InsertEventMutation, InsertEventMutationVariables>;
 export const InsertFinanceDocument = gql`
-  mutation InsertFinance($object: FinanceInsertInput!) {
+      mutation InsertFinance($object: FinanceInsertInput!) {
     insertFinanceOne(object: $object) {
       __typename
       id
@@ -61733,20 +57973,15 @@ export type InsertFinanceMutationFn = Apollo.MutationFunction<InsertFinanceMutat
  *   },
  * });
  */
-export function useInsertFinanceMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertFinanceMutation, InsertFinanceMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertFinanceMutation, InsertFinanceMutationVariables>(InsertFinanceDocument, options);
-}
+export function useInsertFinanceMutation(baseOptions?: Apollo.MutationHookOptions<InsertFinanceMutation, InsertFinanceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertFinanceMutation, InsertFinanceMutationVariables>(InsertFinanceDocument, options);
+      }
 export type InsertFinanceMutationHookResult = ReturnType<typeof useInsertFinanceMutation>;
 export type InsertFinanceMutationResult = Apollo.MutationResult<InsertFinanceMutation>;
-export type InsertFinanceMutationOptions = Apollo.BaseMutationOptions<
-  InsertFinanceMutation,
-  InsertFinanceMutationVariables
->;
+export type InsertFinanceMutationOptions = Apollo.BaseMutationOptions<InsertFinanceMutation, InsertFinanceMutationVariables>;
 export const ProcessReceiptDocument = gql`
-  query ProcessReceipt($key: String!) {
+      query ProcessReceipt($key: String!) {
     processReceipt(key: $key) {
       __typename
       address
@@ -61780,23 +58015,19 @@ export const ProcessReceiptDocument = gql`
  *   },
  * });
  */
-export function useProcessReceiptQuery(
-  baseOptions: Apollo.QueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
-}
-export function useProcessReceiptLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
-}
+export function useProcessReceiptQuery(baseOptions: Apollo.QueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
+      }
+export function useProcessReceiptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProcessReceiptQuery, ProcessReceiptQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProcessReceiptQuery, ProcessReceiptQueryVariables>(ProcessReceiptDocument, options);
+        }
 export type ProcessReceiptQueryHookResult = ReturnType<typeof useProcessReceiptQuery>;
 export type ProcessReceiptLazyQueryHookResult = ReturnType<typeof useProcessReceiptLazyQuery>;
 export type ProcessReceiptQueryResult = Apollo.QueryResult<ProcessReceiptQuery, ProcessReceiptQueryVariables>;
 export const LogoutDocument = gql`
-  mutation Logout {
+      mutation Logout {
     logout
   }
 `;
@@ -61819,14 +58050,14 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * });
  */
 export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const GetFinanceLogsDocument = gql`
-  query GetFinanceLogs($id: bigint!) {
+      query GetFinanceLogs($id: bigint!) {
     financeLogs(id: $id) {
       __typename
       id
@@ -61917,24 +58148,20 @@ export const GetFinanceLogsDocument = gql`
  *   },
  * });
  */
-export function useGetFinanceLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
-}
-export function useGetFinanceLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
-}
+export function useGetFinanceLogsQuery(baseOptions: Apollo.QueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
+      }
+export function useGetFinanceLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>(GetFinanceLogsDocument, options);
+        }
 export type GetFinanceLogsQueryHookResult = ReturnType<typeof useGetFinanceLogsQuery>;
 export type GetFinanceLogsLazyQueryHookResult = ReturnType<typeof useGetFinanceLogsLazyQuery>;
 export type GetFinanceLogsQueryResult = Apollo.QueryResult<GetFinanceLogsQuery, GetFinanceLogsQueryVariables>;
 export const UpdateFinanceDocument = gql`
-  mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
-    updateFinanceByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateFinance($id: bigint!, $update: FinanceSetInput!) {
+    updateFinanceByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       createdAt
@@ -62126,20 +58353,15 @@ export type UpdateFinanceMutationFn = Apollo.MutationFunction<UpdateFinanceMutat
  *   },
  * });
  */
-export function useUpdateFinanceMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateFinanceMutation, UpdateFinanceMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateFinanceMutation, UpdateFinanceMutationVariables>(UpdateFinanceDocument, options);
-}
+export function useUpdateFinanceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFinanceMutation, UpdateFinanceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFinanceMutation, UpdateFinanceMutationVariables>(UpdateFinanceDocument, options);
+      }
 export type UpdateFinanceMutationHookResult = ReturnType<typeof useUpdateFinanceMutation>;
 export type UpdateFinanceMutationResult = Apollo.MutationResult<UpdateFinanceMutation>;
-export type UpdateFinanceMutationOptions = Apollo.BaseMutationOptions<
-  UpdateFinanceMutation,
-  UpdateFinanceMutationVariables
->;
+export type UpdateFinanceMutationOptions = Apollo.BaseMutationOptions<UpdateFinanceMutation, UpdateFinanceMutationVariables>;
 export const GetEventLogsDocument = gql`
-  query GetEventLogs($id: bigint!) {
+      query GetEventLogs($id: bigint!) {
     eventLogs(id: $id) {
       __typename
       id
@@ -62230,23 +58452,19 @@ export const GetEventLogsDocument = gql`
  *   },
  * });
  */
-export function useGetEventLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
-}
-export function useGetEventLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
-}
+export function useGetEventLogsQuery(baseOptions: Apollo.QueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
+      }
+export function useGetEventLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEventLogsQuery, GetEventLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetEventLogsQuery, GetEventLogsQueryVariables>(GetEventLogsDocument, options);
+        }
 export type GetEventLogsQueryHookResult = ReturnType<typeof useGetEventLogsQuery>;
 export type GetEventLogsLazyQueryHookResult = ReturnType<typeof useGetEventLogsLazyQuery>;
 export type GetEventLogsQueryResult = Apollo.QueryResult<GetEventLogsQuery, GetEventLogsQueryVariables>;
 export const GetTeamLogsDocument = gql`
-  query GetTeamLogs($id: bigint!) {
+      query GetTeamLogs($id: bigint!) {
     teamLogs(id: $id) {
       __typename
       id
@@ -62338,20 +58556,18 @@ export const GetTeamLogsDocument = gql`
  * });
  */
 export function useGetTeamLogsQuery(baseOptions: Apollo.QueryHookOptions<GetTeamLogsQuery, GetTeamLogsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
-}
-export function useGetTeamLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamLogsQuery, GetTeamLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
+      }
+export function useGetTeamLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamLogsQuery, GetTeamLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamLogsQuery, GetTeamLogsQueryVariables>(GetTeamLogsDocument, options);
+        }
 export type GetTeamLogsQueryHookResult = ReturnType<typeof useGetTeamLogsQuery>;
 export type GetTeamLogsLazyQueryHookResult = ReturnType<typeof useGetTeamLogsLazyQuery>;
 export type GetTeamLogsQueryResult = Apollo.QueryResult<GetTeamLogsQuery, GetTeamLogsQueryVariables>;
 export const GetTenantLogsDocument = gql`
-  query GetTenantLogs($id: bigint!) {
+      query GetTenantLogs($id: bigint!) {
     tenantLogs(id: $id) {
       __typename
       id
@@ -62442,51 +58658,91 @@ export const GetTenantLogsDocument = gql`
  *   },
  * });
  */
-export function useGetTenantLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
-}
-export function useGetTenantLogsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
-}
+export function useGetTenantLogsQuery(baseOptions: Apollo.QueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
+      }
+export function useGetTenantLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantLogsQuery, GetTenantLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantLogsQuery, GetTenantLogsQueryVariables>(GetTenantLogsDocument, options);
+        }
 export type GetTenantLogsQueryHookResult = ReturnType<typeof useGetTenantLogsQuery>;
 export type GetTenantLogsLazyQueryHookResult = ReturnType<typeof useGetTenantLogsLazyQuery>;
 export type GetTenantLogsQueryResult = Apollo.QueryResult<GetTenantLogsQuery, GetTenantLogsQueryVariables>;
-export const InsertEventApprovalDocument = gql`
-  mutation InsertEventApproval($object: EventApprovalInsertInput!) {
-    insertEventApprovalOne(object: $object) {
+export const DeleteFollowDocument = gql`
+      mutation DeleteFollow($id: bigint!) {
+    deleteFollowByPk(id: $id) {
       __typename
       id
-      createdAt
-      isApproved
-      message
-      eventApprovalStep {
+      deletedAt
+      actor {
         __typename
         id
-        createdAt
+        email
         name
-        description
-        order
-        nextSteps {
+        slug
+        website
+      }
+    }
+  }
+`;
+export type DeleteFollowMutationFn = Apollo.MutationFunction<DeleteFollowMutation, DeleteFollowMutationVariables>;
+
+/**
+ * __useDeleteFollowMutation__
+ *
+ * To run a mutation, you first call `useDeleteFollowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFollowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFollowMutation, { data, loading, error }] = useDeleteFollowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFollowMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFollowMutation, DeleteFollowMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFollowMutation, DeleteFollowMutationVariables>(DeleteFollowDocument, options);
+      }
+export type DeleteFollowMutationHookResult = ReturnType<typeof useDeleteFollowMutation>;
+export type DeleteFollowMutationResult = Apollo.MutationResult<DeleteFollowMutation>;
+export type DeleteFollowMutationOptions = Apollo.BaseMutationOptions<DeleteFollowMutation, DeleteFollowMutationVariables>;
+export const InsertFollowDocument = gql`
+      mutation InsertFollow($object: FollowInsertInput!) {
+    insertFollowOne(object: $object) {
+      __typename
+      id
+      actor {
+        __typename
+        id
+        email
+        name
+        slug
+        website
+        actorImages {
           __typename
           id
-          createdAt
-          name
-          description
-          order
+          type
+          image {
+            __typename
+            id
+            createdAt
+            url
+          }
         }
-        previousStep {
+        team {
           __typename
           id
-          createdAt
-          name
-          description
-          order
+          actor {
+            __typename
+            id
+            slug
+          }
         }
       }
       createdBy {
@@ -62501,17 +58757,6 @@ export const InsertEventApprovalDocument = gql`
           name
           slug
           website
-          actorImages {
-            __typename
-            id
-            type
-            image {
-              __typename
-              id
-              createdAt
-              url
-            }
-          }
         }
         user {
           __typename
@@ -62534,46 +58779,40 @@ export const InsertEventApprovalDocument = gql`
     }
   }
 `;
-export type InsertEventApprovalMutationFn = Apollo.MutationFunction<
-  InsertEventApprovalMutation,
-  InsertEventApprovalMutationVariables
->;
+export type InsertFollowMutationFn = Apollo.MutationFunction<InsertFollowMutation, InsertFollowMutationVariables>;
 
 /**
- * __useInsertEventApprovalMutation__
+ * __useInsertFollowMutation__
  *
- * To run a mutation, you first call `useInsertEventApprovalMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertEventApprovalMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertFollowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertFollowMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertEventApprovalMutation, { data, loading, error }] = useInsertEventApprovalMutation({
+ * const [insertFollowMutation, { data, loading, error }] = useInsertFollowMutation({
  *   variables: {
  *      object: // value for 'object'
  *   },
  * });
  */
-export function useInsertEventApprovalMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertEventApprovalMutation, InsertEventApprovalMutationVariables>(
-    InsertEventApprovalDocument,
-    options,
-  );
-}
-export type InsertEventApprovalMutationHookResult = ReturnType<typeof useInsertEventApprovalMutation>;
-export type InsertEventApprovalMutationResult = Apollo.MutationResult<InsertEventApprovalMutation>;
-export type InsertEventApprovalMutationOptions = Apollo.BaseMutationOptions<
-  InsertEventApprovalMutation,
-  InsertEventApprovalMutationVariables
->;
+export function useInsertFollowMutation(baseOptions?: Apollo.MutationHookOptions<InsertFollowMutation, InsertFollowMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertFollowMutation, InsertFollowMutationVariables>(InsertFollowDocument, options);
+      }
+export type InsertFollowMutationHookResult = ReturnType<typeof useInsertFollowMutation>;
+export type InsertFollowMutationResult = Apollo.MutationResult<InsertFollowMutation>;
+export type InsertFollowMutationOptions = Apollo.BaseMutationOptions<InsertFollowMutation, InsertFollowMutationVariables>;
 export const InsertSingleUploadDocument = gql`
-  mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
-    singleUpload(file: $file, bucket: $bucket, entityId: $entityId, entityName: $entityName) {
+      mutation InsertSingleUpload($file: Upload!, $bucket: String!, $entityId: String!, $entityName: String!) {
+    singleUpload(
+      file: $file
+      bucket: $bucket
+      entityId: $entityId
+      entityName: $entityName
+    ) {
       id
       name
       url
@@ -62581,10 +58820,7 @@ export const InsertSingleUploadDocument = gql`
     }
   }
 `;
-export type InsertSingleUploadMutationFn = Apollo.MutationFunction<
-  InsertSingleUploadMutation,
-  InsertSingleUploadMutationVariables
->;
+export type InsertSingleUploadMutationFn = Apollo.MutationFunction<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>;
 
 /**
  * __useInsertSingleUploadMutation__
@@ -62606,29 +58842,21 @@ export type InsertSingleUploadMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useInsertSingleUploadMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>(
-    InsertSingleUploadDocument,
-    options,
-  );
-}
+export function useInsertSingleUploadMutation(baseOptions?: Apollo.MutationHookOptions<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>(InsertSingleUploadDocument, options);
+      }
 export type InsertSingleUploadMutationHookResult = ReturnType<typeof useInsertSingleUploadMutation>;
 export type InsertSingleUploadMutationResult = Apollo.MutationResult<InsertSingleUploadMutation>;
-export type InsertSingleUploadMutationOptions = Apollo.BaseMutationOptions<
-  InsertSingleUploadMutation,
-  InsertSingleUploadMutationVariables
->;
+export type InsertSingleUploadMutationOptions = Apollo.BaseMutationOptions<InsertSingleUploadMutation, InsertSingleUploadMutationVariables>;
 export const GetLegalUnitLocationsDocument = gql`
-  query GetLegalUnitLocations(
-    $where: LegalUnitLocationBoolExp
-    $orderBy: [LegalUnitLocationOrderBy!]
-    $limit: Int
-    $offset: Int
-  ) {
-    legalUnitLocation(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
+      query GetLegalUnitLocations($where: LegalUnitLocationBoolExp, $orderBy: [LegalUnitLocationOrderBy!], $limit: Int, $offset: Int) {
+    legalUnitLocation(
+      where: $where
+      orderBy: $orderBy
+      limit: $limit
+      offset: $offset
+    ) {
       __typename
       id
       legalName
@@ -62654,8 +58882,9 @@ export const GetLegalUnitLocationsDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -62669,6 +58898,7 @@ export const GetLegalUnitLocationsDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
     }
@@ -62694,32 +58924,19 @@ export const GetLegalUnitLocationsDocument = gql`
  *   },
  * });
  */
-export function useGetLegalUnitLocationsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(
-    GetLegalUnitLocationsDocument,
-    options,
-  );
-}
-export function useGetLegalUnitLocationsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(
-    GetLegalUnitLocationsDocument,
-    options,
-  );
-}
+export function useGetLegalUnitLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(GetLegalUnitLocationsDocument, options);
+      }
+export function useGetLegalUnitLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>(GetLegalUnitLocationsDocument, options);
+        }
 export type GetLegalUnitLocationsQueryHookResult = ReturnType<typeof useGetLegalUnitLocationsQuery>;
 export type GetLegalUnitLocationsLazyQueryHookResult = ReturnType<typeof useGetLegalUnitLocationsLazyQuery>;
-export type GetLegalUnitLocationsQueryResult = Apollo.QueryResult<
-  GetLegalUnitLocationsQuery,
-  GetLegalUnitLocationsQueryVariables
->;
+export type GetLegalUnitLocationsQueryResult = Apollo.QueryResult<GetLegalUnitLocationsQuery, GetLegalUnitLocationsQueryVariables>;
 export const GetLegalUnitsDocument = gql`
-  query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $limit: Int, $offset: Int) {
+      query GetLegalUnits($where: LegalUnitBoolExp, $orderBy: [LegalUnitOrderBy!], $limit: Int, $offset: Int) {
     legalUnit(where: $where, orderBy: $orderBy, limit: $limit, offset: $offset) {
       __typename
       id
@@ -62767,23 +58984,19 @@ export const GetLegalUnitsDocument = gql`
  *   },
  * });
  */
-export function useGetLegalUnitsQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>(GetLegalUnitsDocument, options);
-}
-export function useGetLegalUnitsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>(GetLegalUnitsDocument, options);
-}
+export function useGetLegalUnitsQuery(baseOptions?: Apollo.QueryHookOptions<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>(GetLegalUnitsDocument, options);
+      }
+export function useGetLegalUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>(GetLegalUnitsDocument, options);
+        }
 export type GetLegalUnitsQueryHookResult = ReturnType<typeof useGetLegalUnitsQuery>;
 export type GetLegalUnitsLazyQueryHookResult = ReturnType<typeof useGetLegalUnitsLazyQuery>;
 export type GetLegalUnitsQueryResult = Apollo.QueryResult<GetLegalUnitsQuery, GetLegalUnitsQueryVariables>;
 export const InsertLegalUnitDocument = gql`
-  mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
+      mutation InsertLegalUnit($object: LegalUnitInsertInput!) {
     insertLegalUnitOne(object: $object) {
       __typename
       id
@@ -62811,10 +59024,7 @@ export const InsertLegalUnitDocument = gql`
     }
   }
 `;
-export type InsertLegalUnitMutationFn = Apollo.MutationFunction<
-  InsertLegalUnitMutation,
-  InsertLegalUnitMutationVariables
->;
+export type InsertLegalUnitMutationFn = Apollo.MutationFunction<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>;
 
 /**
  * __useInsertLegalUnitMutation__
@@ -62833,23 +59043,15 @@ export type InsertLegalUnitMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useInsertLegalUnitMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>(
-    InsertLegalUnitDocument,
-    options,
-  );
-}
+export function useInsertLegalUnitMutation(baseOptions?: Apollo.MutationHookOptions<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>(InsertLegalUnitDocument, options);
+      }
 export type InsertLegalUnitMutationHookResult = ReturnType<typeof useInsertLegalUnitMutation>;
 export type InsertLegalUnitMutationResult = Apollo.MutationResult<InsertLegalUnitMutation>;
-export type InsertLegalUnitMutationOptions = Apollo.BaseMutationOptions<
-  InsertLegalUnitMutation,
-  InsertLegalUnitMutationVariables
->;
+export type InsertLegalUnitMutationOptions = Apollo.BaseMutationOptions<InsertLegalUnitMutation, InsertLegalUnitMutationVariables>;
 export const InsertLegalUnitLocationDocument = gql`
-  mutation InsertLegalUnitLocation($object: LegalUnitLocationInsertInput!) {
+      mutation InsertLegalUnitLocation($object: LegalUnitLocationInsertInput!) {
     insertLegalUnitLocationOne(object: $object) {
       __typename
       id
@@ -62876,8 +59078,9 @@ export const InsertLegalUnitLocationDocument = gql`
         __typename
         id
         type
-        onlineLink
-        locationDetails
+        link
+        name
+        details
         address {
           __typename
           id
@@ -62891,15 +59094,13 @@ export const InsertLegalUnitLocationDocument = gql`
           city
           state
           country
+          geoapifyId
         }
       }
     }
   }
 `;
-export type InsertLegalUnitLocationMutationFn = Apollo.MutationFunction<
-  InsertLegalUnitLocationMutation,
-  InsertLegalUnitLocationMutationVariables
->;
+export type InsertLegalUnitLocationMutationFn = Apollo.MutationFunction<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>;
 
 /**
  * __useInsertLegalUnitLocationMutation__
@@ -62918,23 +59119,15 @@ export type InsertLegalUnitLocationMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useInsertLegalUnitLocationMutation(
-  baseOptions?: Apollo.MutationHookOptions<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>(
-    InsertLegalUnitLocationDocument,
-    options,
-  );
-}
+export function useInsertLegalUnitLocationMutation(baseOptions?: Apollo.MutationHookOptions<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>(InsertLegalUnitLocationDocument, options);
+      }
 export type InsertLegalUnitLocationMutationHookResult = ReturnType<typeof useInsertLegalUnitLocationMutation>;
 export type InsertLegalUnitLocationMutationResult = Apollo.MutationResult<InsertLegalUnitLocationMutation>;
-export type InsertLegalUnitLocationMutationOptions = Apollo.BaseMutationOptions<
-  InsertLegalUnitLocationMutation,
-  InsertLegalUnitLocationMutationVariables
->;
+export type InsertLegalUnitLocationMutationOptions = Apollo.BaseMutationOptions<InsertLegalUnitLocationMutation, InsertLegalUnitLocationMutationVariables>;
 export const SearchLocationDocument = gql`
-  query SearchLocation($query: String!) {
+      query SearchLocation($query: String!) {
     searchLocation(query: $query) {
       __typename
       geoapifyId
@@ -62968,24 +59161,20 @@ export const SearchLocationDocument = gql`
  *   },
  * });
  */
-export function useSearchLocationQuery(
-  baseOptions: Apollo.QueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
-}
-export function useSearchLocationLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
-}
+export function useSearchLocationQuery(baseOptions: Apollo.QueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
+      }
+export function useSearchLocationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchLocationQuery, SearchLocationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchLocationQuery, SearchLocationQueryVariables>(SearchLocationDocument, options);
+        }
 export type SearchLocationQueryHookResult = ReturnType<typeof useSearchLocationQuery>;
 export type SearchLocationLazyQueryHookResult = ReturnType<typeof useSearchLocationLazyQuery>;
 export type SearchLocationQueryResult = Apollo.QueryResult<SearchLocationQuery, SearchLocationQueryVariables>;
 export const GetTeamPopoverDocument = gql`
-  query GetTeamPopover($id: bigint!) {
-    team(where: { id: { _eq: $id } }, limit: 1) {
+      query GetTeamPopover($id: bigint!) {
+    team(where: {id: {_eq: $id}}, limit: 1) {
       __typename
       id
       createdAt
@@ -63011,7 +59200,7 @@ export const GetTeamPopoverDocument = gql`
             url
           }
         }
-        socials(where: { deletedAt: { _isNull: true } }) {
+        socials(where: {deletedAt: {_isNull: true}}) {
           __typename
           id
           pseudo
@@ -63038,27 +59227,19 @@ export const GetTeamPopoverDocument = gql`
         name
         description
       }
-      roles {
-        __typename
-        id
-        createdAt
-        category
-        type
-        name
-        permissions
-      }
       teamMembers {
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions
@@ -63122,24 +59303,20 @@ export const GetTeamPopoverDocument = gql`
  *   },
  * });
  */
-export function useGetTeamPopoverQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>(GetTeamPopoverDocument, options);
-}
-export function useGetTeamPopoverLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>(GetTeamPopoverDocument, options);
-}
+export function useGetTeamPopoverQuery(baseOptions: Apollo.QueryHookOptions<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>(GetTeamPopoverDocument, options);
+      }
+export function useGetTeamPopoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>(GetTeamPopoverDocument, options);
+        }
 export type GetTeamPopoverQueryHookResult = ReturnType<typeof useGetTeamPopoverQuery>;
 export type GetTeamPopoverLazyQueryHookResult = ReturnType<typeof useGetTeamPopoverLazyQuery>;
 export type GetTeamPopoverQueryResult = Apollo.QueryResult<GetTeamPopoverQuery, GetTeamPopoverQueryVariables>;
 export const GetUserPopoverDocument = gql`
-  query GetUserPopover($id: bigint!) {
-    user(where: { id: { _eq: $id } }, limit: 1) {
+      query GetUserPopover($id: bigint!) {
+    user(where: {id: {_eq: $id}}, limit: 1) {
       __typename
       id
       createdAt
@@ -63168,7 +59345,7 @@ export const GetUserPopoverDocument = gql`
           }
         }
       }
-      teamMembers(where: { endDate: { _isNull: true } }) {
+      teamMembers(where: {deletedAt: {_isNull: true}}) {
         __typename
         id
         team {
@@ -63212,24 +59389,20 @@ export const GetUserPopoverDocument = gql`
  *   },
  * });
  */
-export function useGetUserPopoverQuery(
-  baseOptions: Apollo.QueryHookOptions<GetUserPopoverQuery, GetUserPopoverQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetUserPopoverQuery, GetUserPopoverQueryVariables>(GetUserPopoverDocument, options);
-}
-export function useGetUserPopoverLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetUserPopoverQuery, GetUserPopoverQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetUserPopoverQuery, GetUserPopoverQueryVariables>(GetUserPopoverDocument, options);
-}
+export function useGetUserPopoverQuery(baseOptions: Apollo.QueryHookOptions<GetUserPopoverQuery, GetUserPopoverQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserPopoverQuery, GetUserPopoverQueryVariables>(GetUserPopoverDocument, options);
+      }
+export function useGetUserPopoverLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserPopoverQuery, GetUserPopoverQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserPopoverQuery, GetUserPopoverQueryVariables>(GetUserPopoverDocument, options);
+        }
 export type GetUserPopoverQueryHookResult = ReturnType<typeof useGetUserPopoverQuery>;
 export type GetUserPopoverLazyQueryHookResult = ReturnType<typeof useGetUserPopoverLazyQuery>;
 export type GetUserPopoverQueryResult = Apollo.QueryResult<GetUserPopoverQuery, GetUserPopoverQueryVariables>;
 export const UpdateFormDocument = gql`
-  mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
-    updateFormByPk(pkColumns: { id: $id }, _set: $update) {
+      mutation UpdateForm($id: bigint!, $update: FormSetInput!) {
+    updateFormByPk(pkColumns: {id: $id}, _set: $update) {
       __typename
       id
       createdAt
@@ -63259,12 +59432,10 @@ export type UpdateFormMutationFn = Apollo.MutationFunction<UpdateFormMutation, U
  *   },
  * });
  */
-export function useUpdateFormMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateFormMutation, UpdateFormMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateFormMutation, UpdateFormMutationVariables>(UpdateFormDocument, options);
-}
+export function useUpdateFormMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFormMutation, UpdateFormMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFormMutation, UpdateFormMutationVariables>(UpdateFormDocument, options);
+      }
 export type UpdateFormMutationHookResult = ReturnType<typeof useUpdateFormMutation>;
 export type UpdateFormMutationResult = Apollo.MutationResult<UpdateFormMutation>;
 export type UpdateFormMutationOptions = Apollo.BaseMutationOptions<UpdateFormMutation, UpdateFormMutationVariables>;

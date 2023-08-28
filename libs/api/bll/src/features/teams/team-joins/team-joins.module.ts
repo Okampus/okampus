@@ -1,8 +1,8 @@
 import { TeamJoinsService } from './team-joins.service';
-import {
+import { 
   TeamJoinsMutationResolver,
-  TeamJoinsQueryAggregateResolver,
-  TeamJoinsQueryResolver,
+  TeamJoinsQueryAggregateResolver, 
+  TeamJoinsQueryResolver
 } from './team-joins.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
 import { LogsModule } from '../../logs/logs.module';
@@ -12,7 +12,12 @@ import { TeamJoin } from '@okampus/api/dal';
 
 @Module({
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([TeamJoin])],
-  providers: [TeamJoinsMutationResolver, TeamJoinsQueryResolver, TeamJoinsQueryAggregateResolver, TeamJoinsService],
+  providers: [
+    TeamJoinsMutationResolver,
+    TeamJoinsQueryResolver, 
+    TeamJoinsQueryAggregateResolver,
+    TeamJoinsService
+  ],
   exports: [TeamJoinsService],
 })
 export class TeamJoinsModule {}

@@ -1,13 +1,16 @@
 'use client';
 
 import AutoCompleteInput from './AutoCompleteInput';
+import { IHighlight } from '../../../../components/atoms/Inline/IHighlight';
 import { getGraphQLErrors } from '../../../../utils/apollo/get-graphql-errors';
 
 import { useSearchLocationLazyQuery } from '@okampus/shared/graphql';
-import { useEffect, useState } from 'react';
+import { debounce, isKey, isNonNullObject } from '@okampus/shared/utils';
 
-import { useThrottle } from 'react-use';
-import type { ControlledInput, GeocodeAddress, SelectItem } from '@okampus/shared/types';
+import { IconMapPin, IconMapPinFilled } from '@tabler/icons-react';
+import { useCallback, useEffect, useState } from 'react';
+
+import type { ControlledInput, GeocodeAddress } from '@okampus/shared/types';
 
 export type AddressSearchInputProps = {
   name: string;
@@ -22,43 +25,65 @@ const formatAddress = (address: GeocodeAddress) => {
   return `${streetNumber} ${street}, ${zip} ${city}`;
 };
 
-// const debounced
+function isAddress(address: unknown): address is GeocodeAddress {
+  return (
+    isNonNullObject(address) &&
+    isKey('latitude', address) &&
+    isKey('longitude', address) &&
+    typeof address.latitude === 'number' &&
+    typeof address.longitude === 'number'
+  );
+}
+
+function AddressSearchLabel({ highlight, address }: { highlight: string; address: GeocodeAddress }) {
+  return (
+    <span className="flex items-center gap-2">
+      <IconMapPinFilled />
+      <IHighlight className="line-clamp-1 leading-4 h-4" text={address.name} highlight={highlight} />
+      <span className="text-2 !font-medium text-sm line-clamp-1">{formatAddress(address)}</span>
+    </span>
+  );
+}
 
 export default function AddressSearchInput({
   addressQuery,
   onQueryChange,
+  placeholder = 'Rechercher une adresse',
   ...props
 }: AddressSearchInputProps & ControlledInput<GeocodeAddress | null>) {
   const { name, value, onChange, error, className, label, disabled, required, description } = props;
 
-  const [searchText, setSearchText] = useState(value ? formatAddress(value) : '');
+  const [searchText, setSearchText] = useState(addressQuery ?? '');
 
   useEffect(() => {
     if (addressQuery) setSearchText(addressQuery);
   }, [addressQuery]);
 
-  const throttledSearch = useThrottle(searchText, 1500);
-
-  const [search, { data, loading, error: queryError }] = useSearchLocationLazyQuery({
-    variables: { query: throttledSearch },
-    context: { useApi: true },
-  });
+  const [search, { data, loading, error: queryError }] = useSearchLocationLazyQuery({ context: { useApi: true } });
+  const debouncedSearch = useCallback(debounce(search, 200), [search]);
 
   const [addresses, setAddresses] = useState<GeocodeAddress[]>([]);
+
   useEffect(() => {
     if (!loading) setAddresses(data?.searchLocation ?? []);
   }, [data, loading]);
 
   useEffect(() => {
-    if (throttledSearch) search();
-  }, [throttledSearch, search]);
+    if (searchText) debouncedSearch({ variables: { query: searchText } });
+  }, [debouncedSearch, searchText]);
 
-  const selectItems = addresses.map((geocodeAddress) => {
-    const label = formatAddress(geocodeAddress);
-    return { value: geocodeAddress, label, searchValue: label };
-  });
+  const selected = isAddress(value)
+    ? { label: <AddressSearchLabel highlight={value.name} address={value} />, searchValue: formatAddress(value), value }
+    : null;
 
-  const selected = value ? { value, label: formatAddress(value), searchValue: formatAddress(value) } : null;
+  const selectItems = [
+    ...addresses.map((value) => ({
+      label: <AddressSearchLabel highlight={searchText} address={value} />,
+      searchValue: formatAddress(value),
+      value,
+    })),
+    ...(selected ? [selected] : []),
+  ];
 
   return (
     <AutoCompleteInput
@@ -66,15 +91,17 @@ export default function AddressSearchInput({
       className={className}
       label={label}
       disabled={disabled}
+      placeholder={placeholder}
       required={required}
       description={description}
       error={queryError ? getGraphQLErrors(queryError)[0].message : error}
       loading={loading}
       value={selected?.value ? [selected.value] : []}
-      onChange={(selectValue) => onChange(selectValue[0])}
+      onChange={(selectValue) => onChange(selectValue[0] ?? null)}
       search={searchText}
       onChangeSearch={(query) => (onQueryChange ? onQueryChange(query) : setSearchText(query))}
-      options={selectItems as SelectItem<GeocodeAddress, true>[]}
+      options={selectItems}
+      suffix={<IconMapPin />}
     />
   );
 }

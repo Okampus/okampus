@@ -11,9 +11,8 @@ import { getApolloQuery } from '../../../../../../ssr/getApolloQuery';
 
 import { getSubscriptionFromQuery } from '../../../../../../utils/apollo/get-from-query';
 import { GetEventManageDocument } from '@okampus/shared/graphql';
-import { unique } from '@okampus/shared/utils';
 
-import { IconInfoHexagon, IconUsersPlus, IconUsers, IconCheckbox, IconArrowLeft } from '@tabler/icons-react';
+import { IconInfoHexagon, IconUsers, IconCheckbox, IconArrowLeft, IconTicket } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 
 import type { GetEventManageQuery, GetEventManageQueryVariables } from '@okampus/shared/graphql';
@@ -28,13 +27,10 @@ export default async function ManageEventLayout({ children, params }: ManageEven
     variables,
   }).catch();
 
-  if (!data) notFound();
-
   const eventManage = data.event[0];
+  if (!eventManage) notFound();
 
-  const managingTeams = eventManage?.eventOrganizes.map((eventManage) => eventManage.team);
-  const teams = unique(managingTeams, (item) => item.id);
-
+  const managingTeams = eventManage?.eventOrganizes.map((eventOrganize) => eventOrganize.team);
   const manageEventRoute = (route: string) => `/manage/event/${eventManage?.slug}/${route}`;
 
   return (
@@ -45,15 +41,17 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         <EventManageButton slug={params.slug} manage={false} />
         <GroupItem heading="Paramètres" headingClassName="ml-3">
           <LinkList
+            mode="sidebar"
             items={[
               { label: 'Informations', href: `/manage/event/${eventManage?.slug}`, icon: <IconInfoHexagon /> },
-              { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconUsersPlus /> },
+              { label: "Paramètres d'inscription", href: manageEventRoute('parameters'), icon: <IconTicket /> },
             ]}
           />
         </GroupItem>
         <hr className="m-2 border-[var(--border-2)]" />
         <GroupItem heading="Présence" headingClassName="ml-3">
           <LinkList
+            mode="sidebar"
             items={[
               { label: 'Inscriptions', href: manageEventRoute('joins'), icon: <IconUsers /> },
               { label: 'Liste de présence', href: manageEventRoute('attendance'), icon: <IconCheckbox /> },
@@ -62,8 +60,9 @@ export default async function ManageEventLayout({ children, params }: ManageEven
         </GroupItem>
         <hr className="m-2 border-[var(--border-2)]" />
         <LinkList
+          mode="sidebar"
           items={
-            teams.map((team) => ({
+            managingTeams.map((team) => ({
               label: team.actor.name,
               href: `/manage/team/${team.actor.slug}/events`,
               icon: <IconArrowLeft />,

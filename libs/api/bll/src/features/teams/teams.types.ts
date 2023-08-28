@@ -27,6 +27,10 @@ export type DeleteTeamArgsType = {
   where: TeamBoolExp;
 };
 
+export type DeleteByPkTeamArgsType = {
+  id: string;
+};
+
 export type UpdateByPkTeamArgsType = {
   pkColumns: TeamPkColumnsInput;
   _set: TeamSetInput;

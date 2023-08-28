@@ -4,11 +4,11 @@
   --success: #0bb870;
   --warning: #fa0;
   --danger: #d12c1a;
-  --info: #348adb;
-  --bg-navbar: #fff;
+  --info: #0070f0;
   --bg-label: #f3f3f3cc;
   --bg-input: #e1e1e2;
   --bg-main: #fff;
+  --bg-sidebar: #f7f8f9;
   --bg-0: #f6f6f6;
   --bg-1: #efefef;
   --bg-2: #e7e7e7;
@@ -19,7 +19,7 @@
   --text-2: #767575;
   --text-3: #999;
   --border-0: #000;
-  --border-1: #9997;
+  --border-1: #9993;
   --border-2: #aaa;
   --border-3: #ccc;
   --border-4: #ddd;
@@ -28,10 +28,10 @@
   --border-opposite: #000000de;
 
   &.dark {
-    --bg-navbar: #161616;
     --bg-label: #000a;
-    --bg-input: #000;
+    --bg-input: #222;
     --bg-main: #161616;
+    --bg-sidebar: #111;
     --bg-0: #000;
     --bg-1: #111;
     --bg-2: #363636;
@@ -42,7 +42,7 @@
     --text-2: #bbb;
     --text-3: #999;
     --border-0: #fff;
-    --border-1: #aaa7;
+    --border-1: #ccc3;
     --border-2: #666;
     --border-3: #333;
     --border-4: #111;
@@ -107,6 +107,11 @@
 .text-2,
 .text-2-hover:hover {
   @apply text-[var(--text-2)];
+}
+
+.text-3,
+.text-3-hover:hover {
+  @apply text-[var(--text-3)];
 }
 
 .text-primary {

@@ -69,7 +69,7 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
     });
   };
 
-  const { openModal, isModalOpen } = useModal();
+  const { closeModal, openModal, isModalOpen } = useModal();
 
   const avatar = getAvatar(actor.actorImages)?.image.url;
   const rounded =
@@ -96,6 +96,8 @@ export default function AvatarEditor({ showEditor, setShowEditor, actor, size, t
         ),
         onClose: () => setShowEditor(false),
       });
+    } else if (!showEditor && isModalOpen) {
+      closeModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showEditor, actor]);

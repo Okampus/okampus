@@ -16,11 +16,17 @@ export type EventMinimalInfo = {
   eventJoinsAggregate: { aggregate?: { count: number } | null };
 };
 
-export type EventDetailsInfo = EventMinimalInfo & {
+export type EventWithTeamInfo = EventMinimalInfo & {
+  eventOrganizes: {
+    team: TeamMinimalInfo;
+  }[];
+};
+
+export type EventDetailsInfo = EventWithTeamInfo & {
   description: string;
-  location?: LocationMinimalInfo | null;
   eventOrganizes: {
     team: TeamMinimalInfo;
     eventSupervisors: { user: UserMinimalInfo }[];
   }[];
+  location?: LocationMinimalInfo | null;
 };

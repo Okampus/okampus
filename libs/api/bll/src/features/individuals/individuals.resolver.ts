@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteIndividualArgsType,
+  DeleteByPkIndividualArgsType,
   InsertOneIndividualArgsType,
   InsertIndividualArgsType,
   UpdateByPkIndividualArgsType,
   UpdateIndividualArgsType,
   FindIndividualArgsType,
   FindByPkIndividualArgsType,
-  AggregateIndividualArgsType,
+  AggregateIndividualArgsType
 } from './individuals.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class IndividualsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.individualsService.findIndividual(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.individualsService.findIndividual(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertIndividualOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class IndividualsQueryResolver {
 
   @Query()
   async individualByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkIndividualArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.individualsService.findIndividualByPk(getSelectionSet(info), id);
+    return await this.individualsService.findIndividualByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class IndividualsQueryResolver {
 
   @Mutation()
   async deleteIndividualByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkIndividualArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkIndividualArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), pkColumns);
+    return await this.individualsService.deleteIndividualByPk(getSelectionSet(info), id);
   }
 }
 

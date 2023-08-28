@@ -108,7 +108,7 @@ export class HasuraService extends RequestContext {
   constructor(
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
-    private readonly teamMemberRepository: TeamMemberRepository
+    private readonly teamMemberRepository: TeamMemberRepository,
   ) {
     super();
 
@@ -166,7 +166,7 @@ export class HasuraService extends RequestContext {
     orderBy?: Array<Obj>,
     distinctOn?: Array<string>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     const args = { where, orderBy, distinctOn, limit, offset };
     const query = buildOperation('query', queryName, selectionSet, args);
@@ -187,7 +187,7 @@ export class HasuraService extends RequestContext {
     orderBy?: Array<Obj>,
     distinctOn?: Array<string>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     const args = { where, orderBy, distinctOn, limit, offset };
     const query = buildOperation('query', queryName, selectionSet, args);
@@ -201,15 +201,15 @@ export class HasuraService extends RequestContext {
 
     const teamMember = await this.teamMemberRepository.findOne(
       { team: { id: teamId }, user: individual.user },
-      { populate: ['roles'] }
+      { populate: ['teamMemberRoles', 'teamMemberRoles.role'] },
     );
 
     if (!teamMember)
       throw new ForbiddenException(`You are not a member of the required team (${teamId}) to perform this query.`);
 
-    if (!teamMember.roles.getItems().some((role) => role.permissions.includes(permission)))
+    if (!teamMember.teamMemberRoles.getItems().some(({ role }) => role.permissions.includes(permission)))
       throw new ForbiddenException(
-        `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`
+        `You do not have the required permissions (${permission}) in the required team (${teamId}) to perform this query.`,
       );
   }
 
@@ -219,7 +219,7 @@ export class HasuraService extends RequestContext {
   }
 
   checkUpdates(
-    updates: Array<{ where: { id?: { _eq?: string | null } | null }; _set?: Record<string, unknown> | null }>
+    updates: Array<{ where: { id?: { _eq?: string | null } | null }; _set?: Record<string, unknown> | null }>,
   ): updates is Array<{ where: { id: { _eq: string } }; _set: Record<string, unknown> }> {
     return updates.every(
       (update) =>
@@ -230,7 +230,7 @@ export class HasuraService extends RequestContext {
         typeof update.where.id._eq === 'string' &&
         update._set &&
         Object.keys(update).length === 2 &&
-        Object.keys(update._set).length > 0
+        Object.keys(update._set).length > 0,
     );
   }
 

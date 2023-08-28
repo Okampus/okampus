@@ -26,7 +26,7 @@ import {
 // import { SVGUniqueID } from 'react-svg-unique-id';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const iconLargeMap: Record<SocialType, any> = {
+const iconLargeMap: Record<string, any> = {
   [SocialType.GitHub]: GitHubIcon,
   [SocialType.Facebook]: FacebookIcon,
   [SocialType.Discord]: DiscordIcon,
@@ -42,7 +42,7 @@ const iconLargeMap: Record<SocialType, any> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const iconSmallMap: Record<SocialType, any> = {
+const iconSmallMap: Record<string, any> = {
   [SocialType.GitHub]: IconBrandGithub,
   [SocialType.Facebook]: IconBrandFacebook,
   [SocialType.Discord]: IconBrandDiscord,
@@ -57,9 +57,9 @@ const iconSmallMap: Record<SocialType, any> = {
   // [SocialType.WhatsApp]: WhatsAppIcon,
 };
 
-export type SocialIconProps = { social: SocialType; small?: boolean; className?: string; onClick?: () => void };
+export type SocialIconProps = { social: string; small?: boolean; className?: string; onClick?: () => void };
 export default function SocialIcon({ social, small = false, className, onClick }: SocialIconProps) {
-  const Icon = small ? iconSmallMap[social] : iconLargeMap[social];
+  const Icon = (small ? iconSmallMap[social] : iconLargeMap[social]) ?? null;
   const baseClass = small ? 'h-8' : 'h-12 p-2 bg-2 rounded-2xl';
   return (
     <div className={clsx('shrink-0', baseClass, className, onClick && 'cursor-pointer')} onClick={onClick}>

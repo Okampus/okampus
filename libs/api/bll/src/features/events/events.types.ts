@@ -27,6 +27,10 @@ export type DeleteEventArgsType = {
   where: EventBoolExp;
 };
 
+export type DeleteByPkEventArgsType = {
+  id: string;
+};
+
 export type UpdateByPkEventArgsType = {
   pkColumns: EventPkColumnsInput;
   _set: EventSetInput;

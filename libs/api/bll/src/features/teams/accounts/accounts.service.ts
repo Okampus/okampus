@@ -26,7 +26,7 @@ export class AccountsService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly accountRepository: AccountRepository
+    private readonly accountRepository: AccountRepository,
   ) {
     super();
   }
@@ -40,14 +40,7 @@ export class AccountsService extends RequestContext {
 
   checkPermsDelete(account: Account) {
     if (account.deletedAt) throw new NotFoundException(`Account was deleted on ${account.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === account.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === account.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class AccountsService extends RequestContext {
     if (account.deletedAt) throw new NotFoundException(`Account was deleted on ${account.deletedAt}.`);
     if (account.hiddenAt) throw new NotFoundException('Account must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === account.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === account.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class AccountsService extends RequestContext {
 
   checkPropsConstraints(props: AccountSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class AccountsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertAccountOne(selectionSet: string[], object: AccountInsertInput, onConflict?: AccountOnConflict) {
+  async insertAccountOne(
+    selectionSet: string[],
+    object: AccountInsertInput,
+    onConflict?: AccountOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Account.');
 
@@ -101,10 +95,10 @@ export class AccountsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertAccountOne', selectionSet, object, onConflict);
-
+  
     const account = await this.accountRepository.findOneOrFail(data.insertAccountOne.id);
     await this.logsService.createLog(EntityName.Account, account);
-
+    
     // Custom logic
     return data.insertAccountOne;
   }
@@ -115,20 +109,27 @@ export class AccountsService extends RequestContext {
     orderBy?: Array<AccountOrderBy>,
     distinctOn?: Array<AccountSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('account', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.account;
   }
 
-  async findAccountByPk(selectionSet: string[], id: string) {
+  async findAccountByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('accountByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('accountByPk', selectionSet, {  id,  });
     return data.accountByPk;
   }
 
-  async insertAccount(selectionSet: string[], objects: Array<AccountInsertInput>, onConflict?: AccountOnConflict) {
+  async insertAccount(
+    selectionSet: string[],
+    objects: Array<AccountInsertInput>,
+    onConflict?: AccountOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Account.');
@@ -152,7 +153,10 @@ export class AccountsService extends RequestContext {
     return data.insertAccount;
   }
 
-  async updateAccountMany(selectionSet: string[], updates: Array<AccountUpdates>) {
+  async updateAccountMany(
+    selectionSet: string[],
+    updates: Array<AccountUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class AccountsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateAccountMany', selectionSet, updates);
 
-    await Promise.all(
-      accounts.map(async (account) => {
-        const update = updates.find((update) => update.where.id._eq === account.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Account, account, update._set);
-      })
-    );
+    await Promise.all(accounts.map(async (account) => {
+      const update = updates.find((update) => update.where.id._eq === account.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Account, account, update._set);
+    }));
 
     // Custom logic
     return data.updateAccountMany;
   }
 
-  async updateAccountByPk(selectionSet: string[], pkColumns: AccountPkColumnsInput, _set: AccountSetInput) {
+  async updateAccountByPk(
+    selectionSet: string[],
+    pkColumns: AccountPkColumnsInput,
+    _set: AccountSetInput,
+  ) {
     const account = await this.accountRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, account);
@@ -199,10 +205,12 @@ export class AccountsService extends RequestContext {
     return data.updateAccountByPk;
   }
 
-  async deleteAccount(selectionSet: string[], where: AccountBoolExp) {
+  async deleteAccount(
+    selectionSet: string[],
+    where: AccountBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const accounts = await this.accountRepository.findByIds(where.id._in);
     for (const account of accounts) {
@@ -210,31 +218,30 @@ export class AccountsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Account (${account.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateAccount', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateAccount', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      accounts.map(async (account) => {
-        await this.logsService.deleteLog(EntityName.Account, account.id);
-      })
-    );
+    await Promise.all(accounts.map(async (account) => {
+      await this.logsService.deleteLog(EntityName.Account, account.id);
+    }));
 
     // Custom logic
     return data.updateAccount;
   }
 
-  async deleteAccountByPk(selectionSet: string[], pkColumns: AccountPkColumnsInput) {
-    const account = await this.accountRepository.findOneOrFail(pkColumns.id);
+  async deleteAccountByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
+    const account = await this.accountRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(account);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Account (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Account (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateAccountByPk', selectionSet, pkColumns, {
+    const data = await this.hasuraService.updateByPk('updateAccountByPk', selectionSet, { id }, {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(EntityName.Account, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Account, id);
     // Custom logic
     return data.updateAccountByPk;
   }
@@ -248,15 +255,7 @@ export class AccountsService extends RequestContext {
     offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'accountAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    const data = await this.hasuraService.aggregate('accountAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.accountAggregate;
   }
 }

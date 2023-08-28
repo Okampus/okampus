@@ -6,7 +6,7 @@ import type { ActionType } from '@okampus/shared/types';
 export type ActionCTA = (() => void) | string | undefined;
 
 export type CTAButtonProps = {
-  className: string;
+  className?: string;
   type?: ActionType;
   children: React.ReactNode;
   action?: (() => void) | string;
@@ -16,7 +16,7 @@ export default function CTAButton({ className, type, children, action }: CTAButt
   const ctaClassName = clsx(
     className,
     getActionClass(type),
-    'button md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full md-max:!h-[var(--h-topbar)] md-max:!rounded-none',
+    'button md:!text-lg md-max:fixed md-max:bottom-[var(--h-bottombar)] md-max:inset-x-0 md-max:uppercase md-max:w-full md-max:!rounded-none',
   );
 
   return typeof action === 'function' || action === undefined ? (

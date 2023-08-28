@@ -27,6 +27,10 @@ export type DeleteUserArgsType = {
   where: UserBoolExp;
 };
 
+export type DeleteByPkUserArgsType = {
+  id: string;
+};
+
 export type UpdateByPkUserArgsType = {
   pkColumns: UserPkColumnsInput;
   _set: UserSetInput;

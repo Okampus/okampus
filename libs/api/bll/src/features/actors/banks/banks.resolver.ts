@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteBankArgsType,
+  DeleteByPkBankArgsType,
   InsertOneBankArgsType,
   InsertBankArgsType,
   UpdateByPkBankArgsType,
   UpdateBankArgsType,
   FindBankArgsType,
   FindByPkBankArgsType,
-  AggregateBankArgsType,
+  AggregateBankArgsType
 } from './banks.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class BanksQueryResolver {
     return await this.banksService.findBank(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertBankOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneBankArgsType>(
@@ -75,12 +77,12 @@ export class BanksQueryResolver {
 
   @Query()
   async bankByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkBankArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.banksService.findBankByPk(getSelectionSet(info), id);
+    return await this.banksService.findBankByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class BanksQueryResolver {
 
   @Mutation()
   async deleteBankByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkBankArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkBankArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.banksService.deleteBankByPk(getSelectionSet(info), pkColumns);
+    return await this.banksService.deleteBankByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class BanksQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.banksService.aggregateBank(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.banksService.aggregateBank(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

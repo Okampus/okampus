@@ -5,7 +5,7 @@ import IMoney from '../../../../../../../components/atoms/Inline/IMoney';
 import TextBadge from '../../../../../../../components/atoms/Badge/TextBadge';
 import FileGroup from '../../../../../../../components/molecules/Group/FileGroup';
 import AvatarImage from '../../../../../../../components/atoms/Image/AvatarImage';
-import FinanceForm from '../../../../../../../components/forms/FinanceForm/FinanceForm';
+import FinanceForm from '../../../../../../../components/forms/MultiStepForm/FinanceForm/FinanceForm';
 import FinanceSidePanel from '../../../../../../../components/layouts/SidePanel/FinanceSidePanel/FinanceSidePanel';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import TextInput from '../../../../../../../components/molecules/Input/TextInput';
@@ -35,7 +35,7 @@ import type { GetFinancesQuery, GetFinancesQueryVariables } from '@okampus/share
 import type { FinanceMinimalInfo } from '../../../../../../../types/features/finance.info';
 
 export default function TeamManageTransactionsPage({ params }: { params: { slug: string } }) {
-  const [isSidePanelOpen, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
+  const [, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
 
   const { teamManage } = useTeamManage(params.slug);
   const { openModal } = useModal();

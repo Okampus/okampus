@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTeamJoinArgsType,
+  DeleteByPkTeamJoinArgsType,
   InsertOneTeamJoinArgsType,
   InsertTeamJoinArgsType,
   UpdateByPkTeamJoinArgsType,
   UpdateTeamJoinArgsType,
   FindTeamJoinArgsType,
   FindByPkTeamJoinArgsType,
-  AggregateTeamJoinArgsType,
+  AggregateTeamJoinArgsType
 } from './team-joins.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class TeamJoinsQueryResolver {
     return await this.teamJoinsService.findTeamJoin(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertTeamJoinOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTeamJoinArgsType>(
@@ -75,12 +77,12 @@ export class TeamJoinsQueryResolver {
 
   @Query()
   async teamJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTeamJoinArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.teamJoinsService.findTeamJoinByPk(getSelectionSet(info), id);
+    return await this.teamJoinsService.findTeamJoinByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class TeamJoinsQueryResolver {
 
   @Mutation()
   async deleteTeamJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTeamJoinArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTeamJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.teamJoinsService.deleteTeamJoinByPk(getSelectionSet(info), pkColumns);
+    return await this.teamJoinsService.deleteTeamJoinByPk(getSelectionSet(info), id);
   }
 }
 

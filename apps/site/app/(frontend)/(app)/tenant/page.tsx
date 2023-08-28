@@ -1,14 +1,13 @@
 'use client';
 
+import FollowButton from '../../../../components/molecules/Button/FollowButton';
 import SocialIcon from '../../../../components/atoms/Icon/SocialIcon';
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
 import ViewLayout from '../../../../components/atoms/Layout/ViewLayout';
-import ActionButton from '../../../../components/molecules/Button/ActionButton';
 
 import { useTenant } from '../../../../context/navigation';
 
 import { useInsertFollowMutation } from '@okampus/shared/graphql';
-import type { SocialType } from '@okampus/shared/enums';
 
 export default function TenantPage() {
   const [insertFollow] = useInsertFollowMutation();
@@ -25,15 +24,7 @@ export default function TenantPage() {
             <AvatarImage size={32} actor={adminTeam.actor} type="team" />
             <div className="flex flex-col gap-2">
               {adminTeam.actor.name}
-              <ActionButton
-                small={true}
-                className="!w-48"
-                action={{
-                  label: 'Suivre',
-                  linkOrActionOrMenu: () =>
-                    insertFollow({ variables: { object: { followedActorId: adminTeam.actor.id } } }),
-                }}
-              />
+              <FollowButton actorId={adminTeam.actor.id} />
             </div>
           </div>
           {adminTeam.actor.socials.length > 0 && (
@@ -48,12 +39,7 @@ export default function TenantPage() {
                       rel="noopener noreferrer"
                       className="font-medium"
                     >
-                      <SocialIcon
-                        className="!h-8 !w-8"
-                        small={true}
-                        key={social.id}
-                        social={social.type as SocialType}
-                      />
+                      <SocialIcon className="!h-8 !w-8" small={true} key={social.id} social={social.type} />
                     </a>
                   ),
               )}

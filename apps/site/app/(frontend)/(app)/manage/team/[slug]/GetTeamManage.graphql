@@ -81,7 +81,7 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
@@ -90,14 +90,15 @@ query GetTeamManage($slug: String!) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
+        __typename
+        id
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions
@@ -198,6 +199,7 @@ query GetTeamManage($slug: String!) {
           createdAt
           start
           end
+          maxParticipants
           name
           slug
           description
@@ -206,12 +208,12 @@ query GetTeamManage($slug: String!) {
             id
             type
             createdAt
-            onlineLink
-            locationDetails
+            link
+            name
+            details
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -222,6 +224,7 @@ query GetTeamManage($slug: String!) {
               city
               state
               country
+              geoapifyId
             }
           }
           state
@@ -472,14 +475,13 @@ query GetTeamManage($slug: String!) {
           __typename
           id
           createdAt
-          startDate
-          endDate
-          teamMemberRoles {
+          start
+          teamMemberRoles(where: { deletedAt: { _isNull: true } }) {
             role {
               __typename
               id
               createdAt
-              category
+              color
               type
               name
               permissions
@@ -625,10 +627,13 @@ query GetTeamManage($slug: String!) {
             __typename
             id
             createdAt
+            type
+            link
+            name
+            details
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -639,10 +644,8 @@ query GetTeamManage($slug: String!) {
               city
               state
               country
+              geoapifyId
             }
-            type
-            locationDetails
-            onlineLink
           }
         }
         bicSwift
@@ -727,7 +730,6 @@ query GetTeamManage($slug: String!) {
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -738,10 +740,11 @@ query GetTeamManage($slug: String!) {
                 city
                 state
                 country
+                geoapifyId
               }
               type
-              locationDetails
-              onlineLink
+              details
+              link
             }
           }
           bicSwift
@@ -822,8 +825,10 @@ query GetTeamManage($slug: String!) {
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -837,6 +842,7 @@ query GetTeamManage($slug: String!) {
                 city
                 state
                 country
+                geoapifyId
               }
             }
           }

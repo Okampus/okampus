@@ -84,8 +84,12 @@ export class AuthService extends RequestContext {
     this.refreshSignOptions = { issuer, secret: this.tokens.secrets[TokenType.Refresh], algorithm };
   }
 
-  public async findTenant(domain: string) {
+  public async findTenantByDomain(domain: string) {
     return await this.em.findOneOrFail(Tenant, { domain });
+  }
+
+  public async findTenantByOidcName(oidcName: string) {
+    return await this.em.findOneOrFail(Tenant, { oidcName });
   }
 
   public async findUser(id: string) {

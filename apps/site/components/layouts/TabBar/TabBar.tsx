@@ -31,7 +31,7 @@ export default function TabBar() {
   const shortcuts = arrayNotEmptyOrNull(me.user.shortcuts.map((shortcut) => shortcut.actor).filter(isNotNull));
 
   return (
-    <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between bg-0">
+    <nav className="h-full shrink-0 w-[var(--w-tabbar)] flex flex-col justify-between border-r border-color-1">
       <div className="flex flex-col scrollbar-on-hover">
         <TabBarItem pathname={pathname} label="Accueil" linkOrAction="/">
           <OkampusLogo className="p-1.5" />
@@ -67,7 +67,7 @@ export default function TabBar() {
         <TabBarItem
           pathname={pathname}
           icon={
-            <div className="flex items-center justify-center font-semibold text-xl text-1">
+            <div className="flex items-center justify-center font-semibold text-xl text-2">
               {locale === 'fr-FR' ? 'FR' : 'EN'}
             </div>
           }

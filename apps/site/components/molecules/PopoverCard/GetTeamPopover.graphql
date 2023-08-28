@@ -52,27 +52,19 @@ query GetTeamPopover($id: bigint!) {
       name
       description
     }
-    roles {
-      __typename
-      id
-      createdAt
-      category
-      type
-      name
-      permissions
-    }
     teamMembers {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
+        __typename
+        id
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions

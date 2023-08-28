@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTeamArgsType,
+  DeleteByPkTeamArgsType,
   InsertOneTeamArgsType,
   InsertTeamArgsType,
   UpdateByPkTeamArgsType,
   UpdateTeamArgsType,
   FindTeamArgsType,
   FindByPkTeamArgsType,
-  AggregateTeamArgsType,
+  AggregateTeamArgsType
 } from './teams.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class TeamsQueryResolver {
     return await this.teamsService.findTeam(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertTeamOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTeamArgsType>(
@@ -75,12 +77,12 @@ export class TeamsQueryResolver {
 
   @Query()
   async teamByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTeamArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTeamArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.teamsService.findTeamByPk(getSelectionSet(info), id);
+    return await this.teamsService.findTeamByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class TeamsQueryResolver {
 
   @Mutation()
   async deleteTeamByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTeamArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTeamArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.teamsService.deleteTeamByPk(getSelectionSet(info), pkColumns);
+    return await this.teamsService.deleteTeamByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class TeamsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.teamsService.aggregateTeam(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.teamsService.aggregateTeam(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

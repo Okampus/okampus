@@ -1,9 +1,10 @@
 'use client';
 
 import AvatarImage from '../../../../components/atoms/Image/AvatarImage';
-import TextInput from '../../../../components/molecules/Input/TextInput';
 import ActionButton from '../../../../components/molecules/Button/ActionButton';
 import SubmitButton from '../../../../components/molecules/Button/SubmitButton';
+import SelectInput from '../../../../components/molecules/Input/Select/SelectInput';
+import TextInput from '../../../../components/molecules/Input/TextInput';
 import FormErrors from '../../../../components/organisms/Form/FormErrors';
 
 import { API_URL } from '../../../../context/consts';
@@ -20,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import Cookies from 'universal-cookie';
 import * as z from 'zod';
@@ -28,6 +29,7 @@ import * as z from 'zod';
 const signinFormSchema = z.object({
   username: z.string().min(1, { message: "Nom d'utilisateur requis" }),
   password: z.string().min(1, { message: 'Mot de passe requis' }),
+  tenant: z.string(),
 });
 
 export default function SigninPage() {
@@ -48,12 +50,15 @@ export default function SigninPage() {
   });
 
   const [showLogin, setShowLogin] = useState(false);
-  const { register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
+  const { control, register, handleSubmit, formState, setError } = useForm<z.infer<typeof signinFormSchema>>({
     resolver: zodResolver(signinFormSchema),
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    await login({ variables: { dto: { username: values.username, password: values.password } } })
+    await login({
+      variables: { dto: { username: values.username, password: values.password } },
+      context: { tenant: values.tenant },
+    })
       .then(({ data }) => {
         if (data?.login) {
           setMeSlug(data.login.user.individual.actor.slug);
@@ -90,7 +95,7 @@ export default function SigninPage() {
                       className="!h-[4.5rem] !text-xl gap-4"
                       action={{
                         type: ActionType.Action,
-                        label: `Continuer avec ${tenant.oidcName}`,
+                        label: `Continuer avec ${tenant.adminTeam?.actor.name}`,
                         iconOrSwitch: <AvatarImage actor={tenant.adminTeam?.actor} />,
                         linkOrActionOrMenu: `${API_URL}/auth/${tenant.oidcName}`,
                       }}
@@ -106,16 +111,32 @@ export default function SigninPage() {
                 <div className="flex flex-col gap-4 mb-6">
                   <TextInput
                     error={formState.errors.username?.message}
-                    label="Nom d'utilisateur"
-                    placeholder="Votre nom d'utilisateur"
+                    placeholder="Nom d'utilisateur"
                     {...register('username', { required: true })}
                   />
                   <TextInput
                     error={formState.errors.password?.message}
-                    label="Mot de passe"
                     type="password"
-                    placeholder="Votre mot de passe"
+                    placeholder="Mot de passe"
                     {...register('password', { required: true })}
+                  />
+                  <Controller
+                    control={control}
+                    name="tenant"
+                    render={({ field }) => (
+                      <SelectInput
+                        placeholder="Établissement"
+                        name={field.name}
+                        onChange={field.onChange}
+                        value={field.value}
+                        options={
+                          data?.tenant.map((tenant) => ({
+                            label: tenant.adminTeam?.actor.name,
+                            value: tenant.domain,
+                          })) || []
+                        }
+                      />
+                    )}
                   />
                 </div>
                 <SubmitButton label="Se connecter" loading={formState.isSubmitting} />

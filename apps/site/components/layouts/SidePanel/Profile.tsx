@@ -4,12 +4,11 @@ import AvatarImage from '../../atoms/Image/AvatarImage';
 import { IconMail, IconWorldWww } from '@tabler/icons-react';
 import Link from 'next/link';
 
-import type { ActorMinimalInfo } from '../../../types/features/actor.info';
-import type { SocialType } from '@okampus/shared/enums';
+import type { ActorBaseInfo } from '../../../types/features/actor.info';
 
 export type ProfileProps = {
   type?: 'user' | 'team' | 'tenant';
-  actor?: ActorMinimalInfo;
+  actor?: ActorBaseInfo;
   socials: { type: string; url: string; pseudo: string; order: number }[];
 };
 export default function Profile({ type, actor, socials }: ProfileProps) {
@@ -20,27 +19,28 @@ export default function Profile({ type, actor, socials }: ProfileProps) {
         <div className="text-xl font-bold text-0 text-center">{actor?.name}</div>
       </div>
       {(socials.length > 0 || actor?.email) && (
-        <div className="w-full flex gap-2.5 justify-center items-center bg-[var(--primary)] py-2 px-4">
+        <div className="w-full flex gap-2.5 justify-center items-center pb-4 px-4 border-color-1">
           {[...socials]
             ?.sort((a, b) => a.order - b.order)
-            .map((social, idx) => (
-              <a key={idx} href={social.url} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
-                <SocialIcon social={social.type as SocialType} small={true} className="text-white" />
+            .map((social) => (
+              <a key={social.type} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
+                <SocialIcon social={social.type} small={true} className="text-0" />
               </a>
             ))}
           {actor?.email && (
             <>
-              {socials.length > 0 && <div className="w-[2px] h-6 bg-gray-100 rounded-md" />}
+              {socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />}
               <Link href={`mailto:${actor.email}`} className="w-8 h-8">
-                <IconMail className="text-white w-full h-full" />
+                <IconMail className="text-0 w-full h-full" />
               </Link>
             </>
           )}
           {actor?.website && (
             <>
-              {actor?.email || (socials.length > 0 && <div className="w-[2px] h-6 bg-gray-100 rounded-md" />)}
+              {actor?.email ||
+                (socials.length > 0 && <div className="w-[2px] h-6 bg-[var(--border-color-1)] rounded-md" />)}
               <a href={actor.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
-                <IconWorldWww className="text-white w-full h-full" />
+                <IconWorldWww className="text-0 w-full h-full" />
               </a>
             </>
           )}

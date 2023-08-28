@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTagArgsType,
+  DeleteByPkTagArgsType,
   InsertOneTagArgsType,
   InsertTagArgsType,
   UpdateByPkTagArgsType,
   UpdateTagArgsType,
   FindTagArgsType,
   FindByPkTagArgsType,
-  AggregateTagArgsType,
+  AggregateTagArgsType
 } from './tags.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class TagsQueryResolver {
     return await this.tagsService.findTag(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertTagOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTagArgsType>(
@@ -75,12 +77,12 @@ export class TagsQueryResolver {
 
   @Query()
   async tagByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTagArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tagsService.findTagByPk(getSelectionSet(info), id);
+    return await this.tagsService.findTagByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class TagsQueryResolver {
 
   @Mutation()
   async deleteTagByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTagArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTagArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tagsService.deleteTagByPk(getSelectionSet(info), pkColumns);
+    return await this.tagsService.deleteTagByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class TagsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tagsService.aggregateTag(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.tagsService.aggregateTag(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

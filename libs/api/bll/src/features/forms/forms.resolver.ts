@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteFormArgsType,
+  DeleteByPkFormArgsType,
   InsertOneFormArgsType,
   InsertFormArgsType,
   UpdateByPkFormArgsType,
   UpdateFormArgsType,
   FindFormArgsType,
   FindByPkFormArgsType,
-  AggregateFormArgsType,
+  AggregateFormArgsType
 } from './forms.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class FormsQueryResolver {
     return await this.formsService.findForm(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertFormOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneFormArgsType>(
@@ -75,12 +77,12 @@ export class FormsQueryResolver {
 
   @Query()
   async formByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkFormArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.formsService.findFormByPk(getSelectionSet(info), id);
+    return await this.formsService.findFormByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class FormsQueryResolver {
 
   @Mutation()
   async deleteFormByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkFormArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkFormArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.formsService.deleteFormByPk(getSelectionSet(info), pkColumns);
+    return await this.formsService.deleteFormByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class FormsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.formsService.aggregateForm(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.formsService.aggregateForm(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

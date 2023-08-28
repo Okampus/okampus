@@ -113,7 +113,7 @@ export default function SocialsForm({ formMethods, className }: SocialsFormProps
                         }}
                       >
                         <div className="flex gap-4">
-                          <SocialIcon social={field.type as SocialType} />
+                          <SocialIcon social={field.type} />
                           <div className="!text-lg label-title mt-2">
                             {field.type} {field.pseudo ? `• ${field.pseudo}` : ''}
                           </div>

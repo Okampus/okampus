@@ -54,8 +54,8 @@ export class EventSeeder extends Factory<Event> {
     const location = isOnline
       ? new Location({
           type: LocationType.Online,
-          onlineLink: faker.internet.url(),
-          locationDetails: faker.lorem.paragraphs(1),
+          link: faker.internet.url(),
+          details: faker.lorem.paragraphs(1),
           actor: this.team.actor,
           createdBy: null,
           address: null,
@@ -72,6 +72,7 @@ export class EventSeeder extends Factory<Event> {
             latitude: faker.location.latitude(),
             longitude: faker.location.longitude(),
             state: faker.location.state(),
+            name: faker.company.name(),
             streetNumber,
             street: rest.join(' '),
             zip: faker.location.zipCode(),

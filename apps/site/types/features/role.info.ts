@@ -1,6 +1,7 @@
 export type RoleMinimalInfo = {
+  id: string;
   name: string;
   permissions: string[];
-  category: string;
-  type: string;
+  color: string;
+  type: string | null;
 };

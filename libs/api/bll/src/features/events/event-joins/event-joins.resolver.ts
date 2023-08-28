@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteEventJoinArgsType,
+  DeleteByPkEventJoinArgsType,
   InsertOneEventJoinArgsType,
   InsertEventJoinArgsType,
   UpdateByPkEventJoinArgsType,
   UpdateEventJoinArgsType,
   FindEventJoinArgsType,
   FindByPkEventJoinArgsType,
-  AggregateEventJoinArgsType,
+  AggregateEventJoinArgsType
 } from './event-joins.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class EventJoinsQueryResolver {
     return await this.eventJoinsService.findEventJoin(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertEventJoinOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneEventJoinArgsType>(
@@ -75,12 +77,12 @@ export class EventJoinsQueryResolver {
 
   @Query()
   async eventJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventJoinArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventJoinsService.findEventJoinByPk(getSelectionSet(info), id);
+    return await this.eventJoinsService.findEventJoinByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class EventJoinsQueryResolver {
 
   @Mutation()
   async deleteEventJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkEventJoinArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkEventJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventJoinsService.deleteEventJoinByPk(getSelectionSet(info), pkColumns);
+    return await this.eventJoinsService.deleteEventJoinByPk(getSelectionSet(info), id);
   }
 }
 

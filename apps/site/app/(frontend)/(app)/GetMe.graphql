@@ -15,7 +15,6 @@ query GetMe {
         email
         name
         slug
-        status
         website
         actorImages {
           __typename
@@ -36,13 +35,6 @@ query GetMe {
           type
           order
         }
-      }
-      joinForm {
-        __typename
-        id
-        name
-        schema
-        type
       }
     }
     user {
@@ -86,7 +78,6 @@ query GetMe {
         following {
           __typename
           id
-          createdAt
           actor {
             __typename
             id
@@ -109,33 +100,24 @@ query GetMe {
                 __typename
                 id
                 slug
-                actorImages {
-                  __typename
-                  id
-                  type
-                  image {
-                    __typename
-                    id
-                    url
-                  }
-                }
               }
             }
           }
         }
       }
-      teamMembers(where: { endDate: { _isNull: true } }) {
+      teamMembers(where: { deletedAt: { _isNull: true } }) {
         __typename
         id
         createdAt
-        startDate
-        endDate
+        start
         teamMemberRoles {
+          __typename
+          id
           role {
             __typename
             id
             createdAt
-            category
+            color
             type
             name
             permissions

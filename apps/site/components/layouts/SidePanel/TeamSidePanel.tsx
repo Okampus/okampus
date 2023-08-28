@@ -6,10 +6,14 @@ import UserLabeled from '../../molecules/Labeled/UserLabeled';
 import GroupItem from '../../atoms/Item/GroupItem';
 import { useTeam } from '../../../context/navigation';
 
-import { RoleCategory } from '@okampus/shared/enums';
+import { TeamRoleType } from '@okampus/shared/enums';
 import { usePathname } from 'next/navigation';
 
+import clsx from 'clsx';
 import type { TeamMemberMinimalInfo } from '../../../types/features/team-member.info';
+
+const isDirector = (type: string | null) =>
+  type === TeamRoleType.Director || type === TeamRoleType.Secretary || type === TeamRoleType.Treasurer;
 
 const renderCategories = (categories: [string, TeamMemberMinimalInfo[]][]) => (
   <>
@@ -43,19 +47,19 @@ export default function TeamSidePanel({ slug }: TeamSidePanelProps) {
   const members: typeof team.teamMembers = [];
 
   for (const member of team.teamMembers) {
-    if (member.teamMemberRoles.some(({ role }) => role.category === RoleCategory.Directors)) directors.push(member);
-    else if (member.teamMemberRoles.some(({ role }) => role.category === RoleCategory.Managers)) managers.push(member);
+    if (member.teamMemberRoles.some(({ role }) => isDirector(role.type))) directors.push(member);
+    else if (member.teamMemberRoles.some(({ role }) => role.type === TeamRoleType.Manager)) managers.push(member);
     else members.push(member);
   }
 
-  if (!team.actor || !team.actor.socials) return null;
+  if (!team.actor?.socials) return null;
+
+  const showProfile = pathname !== `/team/${team.actor.slug}`;
 
   return (
     <SidePanel>
-      {pathname !== `/team/${team.actor.slug}` && (
-        <Profile type="team" actor={team.actor} socials={team.actor.socials} />
-      )}
-      <section className="pt-[var(--py-content)] px-3">
+      {showProfile && <Profile type="team" actor={team.actor} socials={team.actor.socials} />}
+      <section className={clsx('pt-[var(--py-content)] px-3', showProfile && 'border-t border-color-1')}>
         {renderCategories([
           [team.directorsCategoryName || 'Directeurs', directors],
           [team.managersCategoryName || 'Gestionnaires', managers],

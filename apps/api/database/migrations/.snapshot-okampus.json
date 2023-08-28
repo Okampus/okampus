@@ -171,6 +171,15 @@
         },
         {
           "columnNames": [
+            "oidc_name"
+          ],
+          "composite": false,
+          "keyName": "tenant_oidc_name_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "event_validation_form_id"
           ],
           "composite": false,
@@ -3467,17 +3476,44 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "category": {
-          "name": "category",
+        "color": {
+          "name": "color",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "Directors",
-            "Managers",
-            "Members"
+            "Blue",
+            "DeepBlue",
+            "DarkBlue",
+            "LightBlue",
+            "Green",
+            "DeepGreen",
+            "DarkGreen",
+            "LightGreen",
+            "Orange",
+            "DeepOrange",
+            "DarkOrange",
+            "LightOrange",
+            "Red",
+            "DeepRed",
+            "DarkRed",
+            "LightRed",
+            "Purple",
+            "DeepPurple",
+            "DarkPurple",
+            "LightPurple",
+            "Gray",
+            "DeepGray",
+            "DarkGray",
+            "Turquoise",
+            "Pink",
+            "Cyan",
+            "Brown",
+            "Indigo",
+            "Lime",
+            "Teal"
           ],
           "mappedType": "enum"
         },
@@ -3487,25 +3523,14 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "default": "'Member'",
+          "nullable": true,
+          "default": "null",
           "enumItems": [
             "Director",
             "Treasurer",
-            "Secretary",
-            "Member"
+            "Secretary"
           ],
           "mappedType": "enum"
-        },
-        "is_locked": {
-          "name": "is_locked",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
         }
       },
       "name": "role",
@@ -6681,8 +6706,8 @@
           ],
           "mappedType": "enum"
         },
-        "online_link": {
-          "name": "online_link",
+        "link": {
+          "name": "link",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -6691,8 +6716,18 @@
           "default": "''",
           "mappedType": "text"
         },
-        "location_details": {
-          "name": "location_details",
+        "details": {
+          "name": "details",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -7539,6 +7574,7 @@
             "MissionJoin",
             "Pole",
             "Role",
+            "TeamMemberRole",
             "Account",
             "AccountAllocate",
             "Expense",
@@ -11766,8 +11802,8 @@
           "default": "0",
           "mappedType": "integer"
         },
-        "start_date": {
-          "name": "start_date",
+        "start": {
+          "name": "start",
           "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
@@ -11775,17 +11811,6 @@
           "nullable": false,
           "length": 6,
           "default": "CURRENT_TIMESTAMP",
-          "mappedType": "datetime"
-        },
-        "end_date": {
-          "name": "end_date",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
           "mappedType": "datetime"
         }
       },
@@ -11857,6 +11882,68 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
         "team_member_id": {
           "name": "team_member_id",
           "type": "bigint",
@@ -11876,46 +11963,68 @@
           "mappedType": "bigint"
         }
       },
-      "name": "team_member_roles",
+      "name": "team_member_role",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "team_member_roles_pkey",
+          "keyName": "team_member_role_pkey",
           "columnNames": [
-            "team_member_id",
-            "role_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "team_member_roles_team_member_id_foreign": {
-          "constraintName": "team_member_roles_team_member_id_foreign",
+        "team_member_role_created_by_id_foreign": {
+          "constraintName": "team_member_role_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.team_member_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.individual",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "team_member_role_tenant_id_foreign": {
+          "constraintName": "team_member_role_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.team_member_role",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "team_member_role_team_member_id_foreign": {
+          "constraintName": "team_member_role_team_member_id_foreign",
           "columnNames": [
             "team_member_id"
           ],
-          "localTableName": "public.team_member_roles",
+          "localTableName": "public.team_member_role",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.team_member",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "team_member_roles_role_id_foreign": {
-          "constraintName": "team_member_roles_role_id_foreign",
+        "team_member_role_role_id_foreign": {
+          "constraintName": "team_member_role_role_id_foreign",
           "columnNames": [
             "role_id"
           ],
-          "localTableName": "public.team_member_roles",
+          "localTableName": "public.team_member_role",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.role",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

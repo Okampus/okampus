@@ -19,6 +19,8 @@ export type AvatarLabeledProps = {
   skeletonLabelClassName?: string;
   skeletonContentClassName?: string;
   className?: string;
+  labelClassName?: string;
+  contentClassName?: string;
 };
 
 export default function AvatarLabeled({
@@ -35,21 +37,22 @@ export default function AvatarLabeled({
   skeletonLabelClassName,
   skeletonContentClassName,
   className,
+  labelClassName,
+  contentClassName,
 }: AvatarLabeledProps) {
   const align = content ? 'items-start' : 'items-center';
-  const wrapperClass = clsx(
-    'flex',
-    className,
-    content ? 'gap-4' : small ? 'gap-2 text-sm' : 'gap-2.5 text-base',
-    align,
-  );
-  const labelClass = clsx('font-medium', small ? 'text-sm' : 'text-base');
+  const avatarClass = clsx('flex', className, small ? 'gap-2' : 'gap-2.5', align);
+  const labelClass = clsx('font-medium leading-5', small ? 'text-sm' : 'text-base', labelClassName);
+  const contentClass = clsx('text-sm', contentClassName);
+
+  const wrapperClass = 'text-0 flex flex-col items-start';
+
   const avatarElement = (
     <AvatarImage
       src={avatar}
       name={name}
-      size={avatarSize ?? (content ? 16 : small ? 8 : 12)}
-      className={clsx(content && 'my-0.5')}
+      size={avatarSize ?? (small ? 8 : 14)}
+      className={clsx(content && 'my-0.5 shrink-0')}
       type={type}
       website={website}
     />
@@ -57,9 +60,9 @@ export default function AvatarLabeled({
 
   if (!name && !avatar)
     return (
-      <span className={wrapperClass}>
+      <span className={avatarClass}>
         {avatarElement}
-        <div className="flex flex-col gap-1">
+        <div className={clsx(wrapperClass, 'gap-1')}>
           <Skeleton className={skeletonLabelClassName || 'w-44 h-6'} />
           {content && <Skeleton className={skeletonContentClassName || 'w-32 h-6'} />}
         </div>
@@ -72,31 +75,31 @@ export default function AvatarLabeled({
         {wrapper({
           className: 'w-full',
           children: (
-            <span className={wrapperClass}>
+            <span className={avatarClass}>
               {avatarElement}
-              <div className="flex flex-col">
+              <div className={wrapperClass}>
                 <div className={labelClass}>{label ?? name}</div>
-                {content && <div>{content}</div>}
+                {content && <div className={contentClass}>{content}</div>}
               </div>
             </span>
           ),
         })}
       </>
     ) : (
-      <span className={wrapperClass}>
+      <span className={avatarClass}>
         {wrapper({ children: avatarElement })}
-        <div className="flex flex-col">
+        <div className={wrapperClass}>
           <div className={labelClass}>{wrapper({ children: label ?? name })}</div>
-          {content && <div>{content}</div>}
+          {content && <div className={contentClass}>{content}</div>}
         </div>
       </span>
     )
   ) : (
-    <span className={wrapperClass}>
+    <span className={avatarClass}>
       {avatarElement}
-      <div className="flex flex-col">
+      <div className={wrapperClass}>
         <div className={labelClass}>{label ?? name}</div>
-        {content && <div>{content}</div>}
+        {content && <div className={contentClass}>{content}</div>}
       </div>
     </span>
   );

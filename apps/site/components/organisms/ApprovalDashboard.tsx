@@ -79,9 +79,8 @@ export default function ApprovalDashboard<T, U>({
                   selectedStates.length === 1 && selectedStates[0] === state.value ? 'bg-1 opacity-100' : 'opacity-50',
                 )}
               >
-                <span>
-                  {state.label} — {counts[state.value]}
-                </span>
+                <span>{state.label}</span>
+                <span className="h-6 px-1.5 bg-3 rounded-md">{counts[state.value]}</span>
               </li>
             ))}
             <li
@@ -91,7 +90,8 @@ export default function ApprovalDashboard<T, U>({
                 selectedStates.length === 0 ? 'bg-1 opacity-100' : 'opacity-50',
               )}
             >
-              <span>Tout — {items.length}</span>
+              <span>Tout</span>
+              <span className="h-6 px-1.5 bg-3 rounded-md">{items.length}</span>
             </li>
           </ul>
           {searchFilter && (

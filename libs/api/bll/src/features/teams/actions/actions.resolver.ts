@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteActionArgsType,
+  DeleteByPkActionArgsType,
   InsertOneActionArgsType,
   InsertActionArgsType,
   UpdateByPkActionArgsType,
   UpdateActionArgsType,
   FindActionArgsType,
   FindByPkActionArgsType,
-  AggregateActionArgsType,
+  AggregateActionArgsType
 } from './actions.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class ActionsQueryResolver {
     return await this.actionsService.findAction(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertActionOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneActionArgsType>(
@@ -75,12 +77,12 @@ export class ActionsQueryResolver {
 
   @Query()
   async actionByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkActionArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actionsService.findActionByPk(getSelectionSet(info), id);
+    return await this.actionsService.findActionByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class ActionsQueryResolver {
 
   @Mutation()
   async deleteActionByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkActionArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkActionArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actionsService.deleteActionByPk(getSelectionSet(info), pkColumns);
+    return await this.actionsService.deleteActionByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class ActionsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.actionsService.aggregateAction(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.actionsService.aggregateAction(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

@@ -17,6 +17,7 @@ export type ViewLayoutTopbarProps = {
   actions?: React.ReactNode[];
   actionsSmall?: React.ReactNode[];
   sidePanelIcon?: React.ReactNode;
+  hasSidebar?: boolean;
 };
 
 export default function ViewLayoutTopbar({
@@ -26,6 +27,7 @@ export default function ViewLayoutTopbar({
   actions,
   actionsSmall,
   sidePanelIcon = <IconUsers />,
+  hasSidebar = true,
 }: ViewLayoutTopbarProps) {
   const [isSidebarOpen, setIsSideBarOpen] = useAtom(isSidebarOpenAtom);
   const [isSidePanelOpen, setIsSidePanelOpen] = useAtom(isSidePanelOpenAtom);
@@ -43,7 +45,7 @@ export default function ViewLayoutTopbar({
   ) : null;
 
   const className = clsx(
-    'flex justify-between gap-8 w-full px-[var(--px-content)] min-h-[var(--h-topbar)] z-20 border-color-2',
+    'flex justify-between gap-8 w-full px-[var(--px-content)] min-h-[var(--h-topbar)] z-20 border-color-1',
     'md-max:border-b md-max:sticky md-max:items-center md-max:top-0 md-max:bg-[var(--bg-main)]',
     'md:items-start md:mb-10 md:pt-[var(--py-content)]',
   );
@@ -51,9 +53,11 @@ export default function ViewLayoutTopbar({
   return (
     <nav className={className}>
       <div className="flex items-center gap-6">
-        <button className="md:hidden" onClick={() => setIsSideBarOpen(!isSidebarOpen)}>
-          <IconMenu2 />
-        </button>
+        {hasSidebar && (
+          <button className="md:hidden" onClick={() => setIsSideBarOpen(!isSidebarOpen)}>
+            <IconMenu2 />
+          </button>
+        )}
         <div className="flex items-center gap-4">
           {headerPrefix && (isMobile ? headerPrefixSmall ?? headerPrefix : headerPrefix)}
           {title}

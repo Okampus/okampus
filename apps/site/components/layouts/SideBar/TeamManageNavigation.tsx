@@ -26,26 +26,23 @@ import {
 } from '@tabler/icons-react';
 
 import type { LinkListAccordeonProps } from '../../molecules/Accordeon/LinkListAccordeon';
-import type { TeamManageInfo, TenantInfo } from '../../../context/navigation';
+import type { TeamManageInfo, TenantInfo } from '../../../utils/apollo/fragments';
 
 function getAccordeons(team: TeamManageInfo, tenant?: TenantInfo): LinkListAccordeonProps['accordeons'] {
-  const currentYear = new Date().getFullYear();
-
   const manageTeamRoute = (route: string) => `/manage/team/${team?.actor.slug}/${route}`;
 
-  const mandateLabel = `Mandat ${currentYear}-${(currentYear % 100) + 1}`;
   return [
     {
       heading: { label: 'Informations de la page' },
       items: [
-        { label: 'Personalisation', href: `/manage/team/${team?.actor.slug}`, icon: <IconBrush /> },
+        { label: 'Personnalisation', href: `/manage/team/${team?.actor.slug}`, icon: <IconBrush /> },
         { label: 'Réseaux & contacts', href: manageTeamRoute('socials'), icon: <IconNetwork /> },
       ],
     },
     {
       heading: { label: 'Membres' },
       items: [
-        { label: mandateLabel, href: manageTeamRoute('office'), icon: <IconSitemap /> },
+        { label: 'Équipe actuelle', href: manageTeamRoute('office'), icon: <IconSitemap /> },
         { label: 'Adhésions', href: manageTeamRoute('joins'), icon: <IconUsersPlus /> },
         // { label: 'Roles', href: manageTeamRoute('roles'), icon: <IconUsers /> },
       ],
@@ -116,5 +113,5 @@ export default function TeamManageNavigation({ slug }: { slug: string }) {
 
   if (!teamManage || !tenant) return null;
 
-  return <LinkListAccordeon accordeons={getAccordeons(teamManage, tenant)} />;
+  return <LinkListAccordeon mode="sidebar" accordeons={getAccordeons(teamManage, tenant)} />;
 }

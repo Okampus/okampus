@@ -7,6 +7,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       state
       start
       end
+      maxParticipants
       slug
       banner {
         __typename
@@ -245,6 +246,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
     slug
     start
     end
+    maxParticipants
     name
     state
     price
@@ -255,8 +257,9 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
@@ -270,6 +273,7 @@ query GetEventOrganizes($where: EventOrganizeBoolExp, $orderBy: [EventOrganizeOr
         city
         state
         country
+        geoapifyId
       }
     }
     banner {

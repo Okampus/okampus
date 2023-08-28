@@ -5,7 +5,11 @@ generates:
     documents: "apps/site/**/*.graphql"
     plugins:
       - "typescript"
-      - "typescript-operations"
+      - "typescript-operations":
+          avoidOptionals:
+            field: true
+            inputValue: false
+            object: false
       - "typescript-react-apollo"
       - "add":
           content: "import type { JSONType } from '@okampus/shared/types';"

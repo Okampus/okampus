@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteTenantArgsType,
+  DeleteByPkTenantArgsType,
   InsertOneTenantArgsType,
   InsertTenantArgsType,
   UpdateByPkTenantArgsType,
   UpdateTenantArgsType,
   FindTenantArgsType,
   FindByPkTenantArgsType,
-  AggregateTenantArgsType,
+  AggregateTenantArgsType
 } from './tenants.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class TenantsQueryResolver {
     return await this.tenantsService.findTenant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertTenantOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneTenantArgsType>(
@@ -75,12 +77,12 @@ export class TenantsQueryResolver {
 
   @Query()
   async tenantByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkTenantArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tenantsService.findTenantByPk(getSelectionSet(info), id);
+    return await this.tenantsService.findTenantByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class TenantsQueryResolver {
 
   @Mutation()
   async deleteTenantByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkTenantArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkTenantArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tenantsService.deleteTenantByPk(getSelectionSet(info), pkColumns);
+    return await this.tenantsService.deleteTenantByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class TenantsQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.tenantsService.aggregateTenant(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.tenantsService.aggregateTenant(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

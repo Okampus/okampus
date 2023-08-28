@@ -8,6 +8,8 @@ nx g hasura-feature actor --folder $1
 nx g hasura-feature follow --subfolder actors --folder $1
 nx g hasura-feature social --subfolder actors --folder $1
 nx g hasura-feature bank --subfolder actors --folder $1
+nx g hasura-feature address --subfolder actors --folder $1 --tenant-scoped false
+nx g hasura-feature location --subfolder actors --folder $1
 nx g hasura-feature legal-unit --subfolder actors --folder $1 --tenant-scoped false --expect-rels actor:name
 nx g hasura-feature legal-unit-location --subfolder actors --folder $1 --tenant-scoped false --expect-rels actor:name
 nx g hasura-feature actor-image --subfolder actors --folder $1
@@ -22,6 +24,9 @@ nx g hasura-feature team --folder $1
 nx g hasura-feature account --subfolder teams --folder $1
 nx g hasura-feature action --subfolder teams --folder $1
 nx g hasura-feature finance --subfolder teams --folder $1
+nx g hasura-feature role --subfolder teams --folder $1
+nx g hasura-feature team-member --subfolder teams --folder $1
+nx g hasura-feature team-member-role --subfolder teams --folder $1
 nx g hasura-feature team-join --subfolder teams --folder $1 --expect-rels submission --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Rejected || (props.state === enum!ApprovalState.Approved && props.receivedRoleId)'
 nx g hasura-feature mission-join --subfolder teams --folder $1 --settles='by:processedById_at:processedAt_if:props.state === enum!ApprovalState.Approved || props.state === enum!ApprovalState.Rejected;by:pointsProcessedById_at:pointsProcessedAt_if:props.points !== null'
 nx g hasura-feature tenant --folder $1 --tenant-scoped false

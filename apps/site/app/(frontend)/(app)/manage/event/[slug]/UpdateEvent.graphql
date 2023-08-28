@@ -5,6 +5,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
     createdAt
     start
     end
+    maxParticipants
     name
     slug
     description
@@ -13,12 +14,12 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
       id
       createdAt
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
-        createdAt
         latitude
         longitude
         category
@@ -29,6 +30,7 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
         city
         state
         country
+        geoapifyId
       }
     }
     state
@@ -174,14 +176,6 @@ mutation UpdateEvent($id: bigint!, $update: EventSetInput!) {
                   name
                   color
                 }
-              }
-              socials(where: { deletedAt: { _isNull: true } }) {
-                __typename
-                id
-                pseudo
-                url
-                type
-                order
               }
             }
           }

@@ -1,4 +1,6 @@
 import FieldSet from '../FieldSet';
+import { triggerOnChange } from '../../../../utils/dom/trigger-on-change';
+
 import clsx from 'clsx';
 
 import { forwardRef, memo, useEffect, useRef, useState } from 'react';
@@ -10,6 +12,7 @@ export type RadioFreeInputInputProps = UncontrolledSelect & {
   textAlign?: 'left' | 'right';
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
+  value?: string;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'value'>;
 
 export default memo(
@@ -28,6 +31,7 @@ export default memo(
       placeholder,
       startContent,
       endContent,
+      value,
       ...inputProps
     } = props;
 
@@ -45,28 +49,20 @@ export default memo(
       }
     }, [props.defaultValue, choices]);
 
-    const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
-
-    function setNativeValue(element: HTMLInputElement, value: string) {
-      const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {};
-      const prototype = Object.getPrototypeOf(element);
-      const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {};
-
-      if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
-        prototypeValueSetter.call(element, value);
-      } else if (valueSetter) {
-        valueSetter.call(element, value);
-      } else {
-        throw new Error('The given element does not have a value setter');
+    useEffect(() => {
+      if (selected !== -1 || localRef.current?.value !== value) {
+        const choice = choices.findIndex((choice) => choice.value === value);
+        setSelected(choice);
       }
-    }
+    }, [value]);
+
+    const otherClass = clsx('input', selected === -1 && '!hidden', 'absolute top-0 left-0 w-full h-full');
 
     const onClickOther = () => {
       setSelected(-1);
       if (localRef.current) {
         localRef.current.focus();
-        setNativeValue(localRef.current, lastInputValue);
-        localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+        triggerOnChange(localRef.current, lastInputValue);
       }
     };
 
@@ -74,7 +70,7 @@ export default memo(
       <div className={clsx('relative', selected !== -1 && 'opacity-50 hover:opacity-100')}>
         <input
           ref={mergeRefs([ref, localRef])}
-          className="input"
+          className={clsx('input', startContent && '!rounded-l-none !pl-0', endContent && '!rounded-r-none !pr-0')}
           disabled={disabled}
           placeholder={placeholder}
           name={name}
@@ -98,15 +94,12 @@ export default memo(
       <FieldSet {...fieldSetProps}>
         {choices.map(({ value, label }, idx) => {
           const onClick = () => {
-            if (localRef.current) {
-              setNativeValue(localRef.current, value);
-              localRef.current.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            if (localRef.current) triggerOnChange(localRef.current, value);
             setSelected(idx);
           };
 
           const buttonClass = clsx(
-            'button !px-3',
+            'font-medium rounded-lg px-3 py-2 border border-[var(--border-1)]',
             selected === idx ? 'bg-2' : 'bg-[var(--bg-input)] opacity-50 hover:opacity-100',
           );
           return (
@@ -117,15 +110,15 @@ export default memo(
         })}
 
         {startContent || endContent ? (
-          <div className="flex items-stretch">
+          <div className="flex">
             {startContent && (
-              <div className="flex items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
+              <div className="flex h-[var(--h-input)] items-center px-3 bg-opposite text-opposite rounded-l-md shrink-0 font-semibold text-lg">
                 {startContent}
               </div>
             )}
             {input}
             {endContent && (
-              <div className="flex items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
+              <div className="flex h-[var(--h-input)] items-center px-3 bg-opposite text-opposite rounded-r-md shrink-0 font-semibold text-lg">
                 {endContent}
               </div>
             )}

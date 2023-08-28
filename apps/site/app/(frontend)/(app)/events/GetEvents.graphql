@@ -6,6 +6,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
     slug
     start
     end
+    maxParticipants
     name
     state
     price
@@ -16,8 +17,9 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
@@ -31,6 +33,7 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
         city
         state
         country
+        geoapifyId
       }
     }
     banner {
@@ -135,6 +138,12 @@ query GetEvents($where: EventBoolExp, $orderBy: [EventOrderBy!], $limit: Int, $o
           id
           schema
           name
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
         }
       }
       project {

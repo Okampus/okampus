@@ -25,9 +25,8 @@ export default async function ManageTeamLayout({ children, params }: ManageTeamL
     variables,
   }).catch();
 
-  if (!data) return notFound();
-
   const teamManage = data.team[0];
+  if (!teamManage) return notFound();
 
   return (
     <>

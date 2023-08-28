@@ -11,7 +11,6 @@ import MenuList from '../molecules/Button/MenuList';
 import { isSidebarOpenAtom } from '../../context/global';
 import { useMe } from '../../context/navigation';
 
-import { useTheme } from '../../hooks/context/useTheme';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 import { getAvatar } from '../../utils/actor-image/get-avatar';
 import { useLogoutMutation } from '@okampus/shared/graphql';
@@ -33,8 +32,6 @@ export default function SideBar({ children, header }: SideBarProps) {
   const avatar = getAvatar(me.user.individual?.actor?.actorImages);
   const name = me.user.individual?.actor?.name;
 
-  const [theme, setTheme] = useTheme();
-
   const router = useRouter();
   const [logout] = useLogoutMutation({ onCompleted: () => router.push('/signin') });
 
@@ -45,8 +42,12 @@ export default function SideBar({ children, header }: SideBarProps) {
     if (!isMobile && !isSidebarOpen) setIsSideBarOpen(true);
   }, [isMobile, isSidebarOpen, setIsSideBarOpen]);
 
+  useEffect(() => {
+    if (isMobile) setIsSideBarOpen(false);
+  }, [isMobile, setIsSideBarOpen]);
+
   const sidebarClass = clsx(
-    'h-full flex shrink-0 bg-1 overflow-hidden',
+    'h-full flex shrink-0 bg-[var(--bg-sidebar)] overflow-hidden',
     isMobile ? 'absolute top-0 left-0 mr-4' : 'relative',
   );
 
@@ -67,15 +68,15 @@ export default function SideBar({ children, header }: SideBarProps) {
     <>
       <TabBar />
       {children && (
-        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between">
+        <div className="h-full w-[var(--w-sidebar)] flex flex-col justify-between border-r border-color-1">
           <nav className="md-max:h-full md:h-[calc(100%-4rem)] flex flex-col">
             {header}
-            <div className="h-full overflow-y-scroll min-h-0">{children}</div>
+            <div className="h-full overflow-y-scroll min-h-0 scrollbar">{children}</div>
           </nav>
           {!isMobile && (
             <Popover forcePlacement={true} placement="bottom" placementOffset={10} placementCrossOffset={10}>
               <PopoverTrigger>
-                <div className="flex gap-3 items-center px-4 border-color-2 border-t h-[var(--h-bottombar)] bg-1">
+                <div className="flex gap-3 items-center px-4 border-color-1 border-t h-[var(--h-bottombar)]">
                   <AvatarImage size={14} src={avatar?.image?.url} name={name} type="user" />
                   <div className="flex flex-col items-start leading-5">
                     <div className="text-1 font-semibold">{name}</div>

@@ -81,7 +81,7 @@ query GetTeam($slug: String!) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
@@ -90,14 +90,15 @@ query GetTeam($slug: String!) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
+        __typename
+        id
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions

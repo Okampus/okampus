@@ -10,12 +10,11 @@ import { getBanner } from '../../../utils/actor-image/get-banner';
 import { BANNER_ASPECT_RATIO } from '@okampus/shared/consts';
 import { ToastType } from '@okampus/shared/types';
 
-import { IconArrowUpRight, IconShare2 } from '@tabler/icons-react';
+import { IconArrowUpRight, IconLink } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 
-import type { SocialType } from '@okampus/shared/enums';
 import type { TeamCardInfo } from '../../../types/features/team.info';
 
 type TeamCardProps = { team: TeamCardInfo };
@@ -35,7 +34,7 @@ export default function TeamCard({ team }: TeamCardProps) {
         </motion.i>
         <div className="relative mb-4">
           <BannerImage
-            className="rounded-2xl"
+            className="rounded-xl"
             aspectRatio={BANNER_ASPECT_RATIO}
             src={getBanner(team.actor?.actorImages)?.image.url}
             name={team.actor?.name}
@@ -45,8 +44,8 @@ export default function TeamCard({ team }: TeamCardProps) {
           <div className="flex items-center gap-3">
             <AvatarImage actor={team.actor} size={16} type="team" />
             <div className="flex flex-wrap items-center gap-x-3">
-              <span className="leading-5 text-lg font-semibold text-0">{team.actor?.name}</span>
-              <span className="leading-5 text-primary font-semibold">
+              <span className="leading-5 text-lg font-medium text-0">{team.actor?.name}</span>
+              <span className="leading-5 text-primary font-medium">
                 {team.teamMembersAggregate.aggregate?.count} membres
               </span>
             </div>
@@ -63,13 +62,13 @@ export default function TeamCard({ team }: TeamCardProps) {
       </motion.div>
       <div className="mb-4 px-4 mt-1 flex justify-between">
         <div className="flex items-center gap-2">
-          {team.actor?.socials.map((social, idx) => (
-            <a key={idx} href={social.url} target="_blank" rel="noopener noreferrer" className="text-1">
-              <SocialIcon social={social.type as SocialType} small={true} />
+          {team.actor?.socials.map((social) => (
+            <a key={social.id} href={social.url} target="_blank" rel="noopener noreferrer" className="text-1">
+              <SocialIcon social={social.type} small={true} />
             </a>
           ))}
         </div>
-        <IconShare2
+        <IconLink
           className="text-2 cursor-pointer h-7 w-7"
           onClick={() => {
             navigator.clipboard.writeText(`${window.location.origin}/team/${team.actor?.slug}`);

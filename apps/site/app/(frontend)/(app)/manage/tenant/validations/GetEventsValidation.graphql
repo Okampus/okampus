@@ -6,6 +6,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
     slug
     start
     end
+    maxParticipants
     name
     state
     price
@@ -16,8 +17,9 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
@@ -31,6 +33,7 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
         city
         state
         country
+        geoapifyId
       }
     }
     banner {
@@ -265,6 +268,12 @@ query GetEventsValidation($where: EventBoolExp, $orderBy: [EventOrderBy!], $limi
           id
           schema
           name
+        }
+        teamMembersAggregate {
+          __typename
+          aggregate {
+            count
+          }
         }
       }
       project {

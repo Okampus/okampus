@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteEventApprovalArgsType,
+  DeleteByPkEventApprovalArgsType,
   InsertOneEventApprovalArgsType,
   InsertEventApprovalArgsType,
   UpdateByPkEventApprovalArgsType,
   UpdateEventApprovalArgsType,
   FindEventApprovalArgsType,
   FindByPkEventApprovalArgsType,
-  AggregateEventApprovalArgsType,
+  AggregateEventApprovalArgsType
 } from './event-approvals.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class EventApprovalsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalsService.findEventApproval(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.eventApprovalsService.findEventApproval(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertEventApprovalOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class EventApprovalsQueryResolver {
 
   @Query()
   async eventApprovalByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkEventApprovalArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkEventApprovalArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalsService.findEventApprovalByPk(getSelectionSet(info), id);
+    return await this.eventApprovalsService.findEventApprovalByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class EventApprovalsQueryResolver {
 
   @Mutation()
   async deleteEventApprovalByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkEventApprovalArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkEventApprovalArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.eventApprovalsService.deleteEventApprovalByPk(getSelectionSet(info), pkColumns);
+    return await this.eventApprovalsService.deleteEventApprovalByPk(getSelectionSet(info), id);
   }
 }
 

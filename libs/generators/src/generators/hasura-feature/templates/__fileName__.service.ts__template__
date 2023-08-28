@@ -237,18 +237,18 @@ export class <%= pluralClassName %>Service extends RequestContext {
 
   async delete<%= className %>ByPk(
     selectionSet: string[],
-    pkColumns: <%= className %>PkColumnsInput,
+    id: string,
   ) {
-    const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(pkColumns.id);
+    const <%= propertyName %> = await this.<%= propertyName %>Repository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(<%= propertyName %>);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete <%= className %> (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('update<%= className %>ByPk', selectionSet, pkColumns, {
+    const data = await this.hasuraService.updateByPk('update<%= className %>ByPk', selectionSet, { id }, {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(EntityName.<%= className %>, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.<%= className %>, id);
     // Custom logic
     return data.update<%= className %>ByPk;
   }

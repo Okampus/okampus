@@ -51,6 +51,7 @@ export default function ActionButton({
   children,
   iconPosition,
   inheritLabel = true,
+  linkInNewTab = false,
   small,
 }: ActionButtonProps) {
   const active = !!action.active;
@@ -87,22 +88,39 @@ export default function ActionButton({
     : ['button', small && '!h-10', hasIcon && (iconPosition === 'left' ? '!pl-6' : '!pr-6')];
   const buttonClassName = clsx(className, actionClassName, iconClassName, disabled && 'disabled pointer-events-none');
 
-  const linkOrActionOrMenu = action.linkOrActionOrMenu;
-  return typeof linkOrActionOrMenu === 'string' ? (
-    <Link href={linkOrActionOrMenu} className={clsx(buttonClassName, disabled && 'pointer-events-none')}>
-      {trigger}
-    </Link>
-  ) : typeof linkOrActionOrMenu === 'function' ? (
-    <motion.button type="button" {...buttonMotion(disabled)} className={buttonClassName} onClick={linkOrActionOrMenu}>
-      {trigger}
-    </motion.button>
-  ) : (
-    <Popover triggerOn="hover" forcePlacement={true} placement="right-start" placementOffset={-4}>
-      <PopoverTrigger className="w-full">{trigger}</PopoverTrigger>
+  if (typeof action.linkOrActionOrMenu === 'string')
+    return (
+      <Link
+        className={clsx(buttonClassName, disabled && 'pointer-events-none')}
+        href={action.linkOrActionOrMenu}
+        target={linkInNewTab ? '_blank' : undefined}
+      >
+        {trigger}
+      </Link>
+    );
 
-      <PopoverContent>
-        <MenuList {...linkOrActionOrMenu} />
-      </PopoverContent>
-    </Popover>
-  );
+  if (typeof action.linkOrActionOrMenu === 'function')
+    return (
+      <motion.button
+        className={buttonClassName}
+        onClick={action.linkOrActionOrMenu}
+        type="button"
+        {...buttonMotion(disabled)}
+      >
+        {trigger}
+      </motion.button>
+    );
+
+  if (typeof action.linkOrActionOrMenu === 'object')
+    return (
+      <Popover triggerOn="hover" forcePlacement={true} placement="right-start" placementOffset={-4}>
+        <PopoverTrigger className="w-full">{trigger}</PopoverTrigger>
+
+        <PopoverContent>
+          <MenuList {...action.linkOrActionOrMenu} />
+        </PopoverContent>
+      </Popover>
+    );
+
+  return trigger;
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import ViewLayout from '../../../../../../../components/atoms/Layout/ViewLayout';
 import ActionButton from '../../../../../../../components/molecules/Button/ActionButton';
 import UserLabeled from '../../../../../../../components/molecules/Labeled/UserLabeled';
 import Dashboard from '../../../../../../../components/organisms/Dashboard';
@@ -11,7 +12,7 @@ import { Align, ProcessedVia } from '@okampus/shared/enums';
 import { useUpdateEventJoinMutation } from '@okampus/shared/graphql';
 import { ActionType } from '@okampus/shared/types';
 
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconHistory, IconX } from '@tabler/icons-react';
 
 import clsx from 'clsx';
 
@@ -26,7 +27,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
   if (!eventManage) return null;
 
   return (
-    <div className="flex flex-col h-full">
+    <ViewLayout header={`Gérer : ${eventManage.name}`} sidePanelIcon={<IconHistory />}>
       <Dashboard
         columns={[
           {
@@ -160,7 +161,7 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
           {
             label: 'Confirmation de présence / absence',
             classes: 'gap-4',
-            align: Align.Right,
+            align: Align.Left,
             render: (eventJoin) => {
               const isPresentButton = (
                 <ActionButton
@@ -252,6 +253,6 @@ export default function ManageEventAttendancePage({ params }: { params: { slug: 
         ]}
         data={eventManage.eventJoins}
       />
-    </div>
+    </ViewLayout>
   );
 }

@@ -26,7 +26,7 @@ export class FinancesService extends RequestContext {
     private readonly em: EntityManager,
     private readonly hasuraService: HasuraService,
     private readonly logsService: LogsService,
-    private readonly financeRepository: FinanceRepository
+    private readonly financeRepository: FinanceRepository,
   ) {
     super();
   }
@@ -40,14 +40,7 @@ export class FinancesService extends RequestContext {
 
   checkPermsDelete(finance: Finance) {
     if (finance.deletedAt) throw new NotFoundException(`Finance was deleted on ${finance.deletedAt}.`);
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === finance.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -60,14 +53,7 @@ export class FinancesService extends RequestContext {
     if (finance.deletedAt) throw new NotFoundException(`Finance was deleted on ${finance.deletedAt}.`);
     if (finance.hiddenAt) throw new NotFoundException('Finance must be unhidden before it can be updated.');
 
-    if (
-      this.requester()
-        .adminRoles.getItems()
-        .some(
-          (role) =>
-            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id
-        )
-    )
+    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === finance.tenant?.id)) 
       return true;
 
     // Custom logic
@@ -76,6 +62,7 @@ export class FinancesService extends RequestContext {
 
   checkPropsConstraints(props: FinanceSetInput) {
     this.hasuraService.checkForbiddenFields(props);
+    
 
     // Custom logic
     return true;
@@ -86,10 +73,17 @@ export class FinancesService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
+    
+    
+
     return true;
   }
 
-  async insertFinanceOne(selectionSet: string[], object: FinanceInsertInput, onConflict?: FinanceOnConflict) {
+  async insertFinanceOne(
+    selectionSet: string[],
+    object: FinanceInsertInput,
+    onConflict?: FinanceOnConflict,
+  ) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Finance.');
 
@@ -101,10 +95,10 @@ export class FinancesService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertFinanceOne', selectionSet, object, onConflict);
-
+  
     const finance = await this.financeRepository.findOneOrFail(data.insertFinanceOne.id);
     await this.logsService.createLog(EntityName.Finance, finance);
-
+    
     // Custom logic
     return data.insertFinanceOne;
   }
@@ -115,20 +109,27 @@ export class FinancesService extends RequestContext {
     orderBy?: Array<FinanceOrderBy>,
     distinctOn?: Array<FinanceSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
     const data = await this.hasuraService.find('finance', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.finance;
   }
 
-  async findFinanceByPk(selectionSet: string[], id: string) {
+  async findFinanceByPk(
+    selectionSet: string[],
+     id: string, 
+  ) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('financeByPk', selectionSet, { id });
+    const data = await this.hasuraService.findByPk('financeByPk', selectionSet, {  id,  });
     return data.financeByPk;
   }
 
-  async insertFinance(selectionSet: string[], objects: Array<FinanceInsertInput>, onConflict?: FinanceOnConflict) {
+  async insertFinance(
+    selectionSet: string[],
+    objects: Array<FinanceInsertInput>,
+    onConflict?: FinanceOnConflict,
+  ) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Finance.');
@@ -152,7 +153,10 @@ export class FinancesService extends RequestContext {
     return data.insertFinance;
   }
 
-  async updateFinanceMany(selectionSet: string[], updates: Array<FinanceUpdates>) {
+  async updateFinanceMany(
+    selectionSet: string[],
+    updates: Array<FinanceUpdates>,
+  ) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -170,19 +174,21 @@ export class FinancesService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateFinanceMany', selectionSet, updates);
 
-    await Promise.all(
-      finances.map(async (finance) => {
-        const update = updates.find((update) => update.where.id._eq === finance.id);
-        if (!update) return;
-        await this.logsService.updateLog(EntityName.Finance, finance, update._set);
-      })
-    );
+    await Promise.all(finances.map(async (finance) => {
+      const update = updates.find((update) => update.where.id._eq === finance.id)
+      if (!update) return;
+      await this.logsService.updateLog(EntityName.Finance, finance, update._set);
+    }));
 
     // Custom logic
     return data.updateFinanceMany;
   }
 
-  async updateFinanceByPk(selectionSet: string[], pkColumns: FinancePkColumnsInput, _set: FinanceSetInput) {
+  async updateFinanceByPk(
+    selectionSet: string[],
+    pkColumns: FinancePkColumnsInput,
+    _set: FinanceSetInput,
+  ) {
     const finance = await this.financeRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, finance);
@@ -199,10 +205,12 @@ export class FinancesService extends RequestContext {
     return data.updateFinanceByPk;
   }
 
-  async deleteFinance(selectionSet: string[], where: FinanceBoolExp) {
+  async deleteFinance(
+    selectionSet: string[],
+    where: FinanceBoolExp,
+  ) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect)
-      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const finances = await this.financeRepository.findByIds(where.id._in);
     for (const finance of finances) {
@@ -210,31 +218,30 @@ export class FinancesService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Finance (${finance.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateFinance', selectionSet, where, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.update('updateFinance', selectionSet, where, { deletedAt: new Date().toISOString() });
 
-    await Promise.all(
-      finances.map(async (finance) => {
-        await this.logsService.deleteLog(EntityName.Finance, finance.id);
-      })
-    );
+    await Promise.all(finances.map(async (finance) => {
+      await this.logsService.deleteLog(EntityName.Finance, finance.id);
+    }));
 
     // Custom logic
     return data.updateFinance;
   }
 
-  async deleteFinanceByPk(selectionSet: string[], pkColumns: FinancePkColumnsInput) {
-    const finance = await this.financeRepository.findOneOrFail(pkColumns.id);
+  async deleteFinanceByPk(
+    selectionSet: string[],
+    id: string,
+  ) {
+    const finance = await this.financeRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(finance);
-    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Finance (${pkColumns.id}).`);
+    if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Finance (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFinanceByPk', selectionSet, pkColumns, {
+    const data = await this.hasuraService.updateByPk('updateFinanceByPk', selectionSet, { id }, {
       deletedAt: new Date().toISOString(),
     });
 
-    await this.logsService.deleteLog(EntityName.Finance, pkColumns.id);
+    await this.logsService.deleteLog(EntityName.Finance, id);
     // Custom logic
     return data.updateFinanceByPk;
   }
@@ -248,15 +255,7 @@ export class FinancesService extends RequestContext {
     offset?: number
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate(
-      'financeAggregate',
-      selectionSet,
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    const data = await this.hasuraService.aggregate('financeAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
     return data.financeAggregate;
   }
 }

@@ -21,7 +21,7 @@ import {
 import { IconCheck, IconCircle } from '@tabler/icons-react';
 
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { ControlledMultiSelect, SelectItem } from '@okampus/shared/types';
 
@@ -36,7 +36,7 @@ export type MultiSelectInputProps<T> = ControlledMultiSelect<T> & {
 export default function MultiSelectInput<T>({
   placeholder = 'Votre choix',
   maxHeight: maxHeightProp = '12rem',
-  contentClassName: contentClass = 'flex flex-col gap-2 bg-2',
+  contentClassName = 'flex flex-col gap-2 bg-2',
   itemClassName = 'flex items-center gap-2 p-2 bg-3-hover cursor-pointer min-h-[var(--h-input)]',
   triggerClassName = 'w-full',
   showIcon = true,
@@ -47,12 +47,14 @@ export default function MultiSelectInput<T>({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const selected: SelectItem<T>[] = [];
-
-  for (const val of value) {
-    const item = options.find((choice) => choice.value === val);
-    if (item) selected.push(item);
-  }
+  const selected = useMemo(() => {
+    const selected: SelectItem<T>[] = [];
+    for (const val of value) {
+      const item = options.find((choice) => choice.value === val);
+      if (item) selected.push(item);
+    }
+    return selected;
+  }, [options, value]);
 
   useEffect(() => {
     for (const val of value) {
@@ -118,7 +120,7 @@ export default function MultiSelectInput<T>({
   const triggerProps = { name, tabIndex: 0, className: triggerClass, ...getReferenceProps() };
 
   const contentStyle = { ...floatingStyles, zIndex: 103, overflowY: 'auto' } as React.CSSProperties;
-  const contentProps = { className: contentClass, style: contentStyle, ...getFloatingProps() };
+  const contentProps = { className: clsx(contentClassName, 'scrollbar'), style: contentStyle, ...getFloatingProps() };
 
   const buttonInner: React.ReactNode =
     selectedItems.length > 0 ? (

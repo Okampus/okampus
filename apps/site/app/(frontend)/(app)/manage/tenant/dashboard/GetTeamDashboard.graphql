@@ -69,27 +69,33 @@ query GetTeamDashboard {
       name
       description
     }
-    roles {
+    roles(where: { deletedAt: { _isNull: false } }) {
       __typename
       id
       createdAt
-      category
+      color
       type
       name
       permissions
     }
-    teamMembers(where: { teamMemberRoles: { role: { category: { _eq: "Directors" } } }, endDate: { _isNull: true } }) {
+    teamMembers(
+      where: {
+        teamMemberRoles: { role: { type: { _in: ["President", "Treasurer", "Secretary"] } } }
+        deletedAt: { _isNull: true }
+      }
+    ) {
       __typename
       id
       createdAt
-      startDate
-      endDate
+      start
       teamMemberRoles {
+        __typename
+        id
         role {
           __typename
           id
           createdAt
-          category
+          color
           type
           name
           permissions
@@ -201,10 +207,13 @@ query GetTeamDashboard {
             __typename
             id
             createdAt
+            type
+            link
+            name
+            details
             address {
               __typename
               id
-              createdAt
               latitude
               longitude
               category
@@ -215,10 +224,8 @@ query GetTeamDashboard {
               city
               state
               country
+              geoapifyId
             }
-            type
-            locationDetails
-            onlineLink
           }
         }
         bicSwift
@@ -300,10 +307,13 @@ query GetTeamDashboard {
               __typename
               id
               createdAt
+              type
+              link
+              name
+              details
               address {
                 __typename
                 id
-                createdAt
                 latitude
                 longitude
                 category
@@ -314,10 +324,8 @@ query GetTeamDashboard {
                 city
                 state
                 country
+                geoapifyId
               }
-              type
-              locationDetails
-              onlineLink
             }
           }
           bicSwift
@@ -396,8 +404,9 @@ query GetTeamDashboard {
               id
               type
               createdAt
-              onlineLink
-              locationDetails
+              link
+              name
+              details
               address {
                 __typename
                 id
@@ -411,6 +420,7 @@ query GetTeamDashboard {
                 city
                 state
                 country
+                geoapifyId
               }
             }
           }

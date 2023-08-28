@@ -63,10 +63,10 @@ export async function bootstrap(logger: Logger): Promise<INestApplication> {
   const preValidationContext = { authService, oidcCache, fastifyInstance, fastifyPassport };
 
   const tenantStrategyPreValidation = tenantStrategyValidation(preValidationContext);
-  fastifyInstance.get('/auth/:domain', { preValidation: tenantStrategyPreValidation }, () => ({}));
+  fastifyInstance.get('/auth/:oidcName', { preValidation: tenantStrategyPreValidation }, () => ({}));
 
   const tenantCallbackPreValidation = tenantCallbackValidation({ ...preValidationContext, authenticateOptions });
-  fastifyInstance.get('/auth/:tenant/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
+  fastifyInstance.get('/auth/:oidcName/callback', { preValidation: tenantCallbackPreValidation }, () => ({}));
 
   app.enableShutdownHooks();
   app.use(helmet(config.env.isProd() ? {} : defaultCsp));

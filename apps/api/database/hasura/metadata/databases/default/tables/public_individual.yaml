@@ -397,6 +397,13 @@ array_relationships:
         table:
           name: team_join
           schema: public
+  - name: createdTeamMemberRoles
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: team_member_role
+          schema: public
   - name: createdTeamMembers
     using:
       foreign_key_constraint_on:

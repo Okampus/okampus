@@ -10,6 +10,7 @@ import { useTeamManage, useTenant } from '../../../../../../../../context/naviga
 
 import { TeamType } from '@okampus/shared/enums';
 import { IconHelpCircle } from '@tabler/icons-react';
+import { IconHistory } from '@tabler/icons-react';
 
 export default function TeamManageLegalPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
@@ -33,7 +34,7 @@ export default function TeamManageLegalPage({ params }: { params: { slug: string
     );
 
   return (
-    <ViewLayout header="Situation légale">
+    <ViewLayout header="Situation légale" sidePanelIcon={<IconHistory />}>
       <GroupItem heading="Situation générale">
         <span className="flex gap-4 items-center">
           <SelectInput

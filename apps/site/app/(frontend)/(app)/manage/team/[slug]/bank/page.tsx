@@ -49,7 +49,7 @@ export default function TeamManageBankPage({ params }: { params: { slug: string 
             action={{
               type: ActionType.Primary,
               label: 'Créer votre compte bancaire',
-              linkOrActionOrMenu: `/manage/team/${teamManage.actor.slug}/bank/create`,
+              linkOrActionOrMenu: `/manage/team/${teamManage.actor.slug}/bank/onboard`,
             }}
           />
         )

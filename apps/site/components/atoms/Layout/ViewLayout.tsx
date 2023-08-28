@@ -27,7 +27,7 @@ export default function ViewLayout({
       className={clsx(
         'w-full min-w-0 flex flex-col md-max:[&>:nth-child(2)]:pt-4 md-max:[&>:nth-child(2)]:mb-[var(--h-bottombar)]',
         scrollable &&
-          'overflow-y-scroll overflow-x-hidden md-max:!overflow-hidden md-max:[&>:nth-child(2)]:overflow-y-auto',
+          'overflow-y-scroll scrollbar overflow-x-hidden md-max:!overflow-hidden md-max:[&>:nth-child(2)]:overflow-y-auto',
         hasCta ? 'md-max:h-[calc(100%-var(--h-bottombar))]' : 'h-full',
       )}
     >

@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteMissionJoinArgsType,
+  DeleteByPkMissionJoinArgsType,
   InsertOneMissionJoinArgsType,
   InsertMissionJoinArgsType,
   UpdateByPkMissionJoinArgsType,
   UpdateMissionJoinArgsType,
   FindMissionJoinArgsType,
   FindByPkMissionJoinArgsType,
-  AggregateMissionJoinArgsType,
+  AggregateMissionJoinArgsType
 } from './mission-joins.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -60,15 +61,9 @@ export class MissionJoinsQueryResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.missionJoinsService.findMissionJoin(
-      getSelectionSet(info),
-      where,
-      orderBy,
-      distinctOn,
-      limit,
-      offset
-    );
+    return await this.missionJoinsService.findMissionJoin(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
+
 
   @Mutation()
   async insertMissionJoinOne(@Info() info: GraphQLResolveInfo) {
@@ -82,12 +77,12 @@ export class MissionJoinsQueryResolver {
 
   @Query()
   async missionJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkMissionJoinArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkMissionJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.missionJoinsService.findMissionJoinByPk(getSelectionSet(info), id);
+    return await this.missionJoinsService.findMissionJoinByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -102,12 +97,12 @@ export class MissionJoinsQueryResolver {
 
   @Mutation()
   async deleteMissionJoinByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkMissionJoinArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkMissionJoinArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.missionJoinsService.deleteMissionJoinByPk(getSelectionSet(info), pkColumns);
+    return await this.missionJoinsService.deleteMissionJoinByPk(getSelectionSet(info), id);
   }
 }
 

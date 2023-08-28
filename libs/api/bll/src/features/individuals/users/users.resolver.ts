@@ -4,13 +4,14 @@ import { getSelectionSet, getGraphQLArgs } from '@okampus/shared/utils';
 
 import type {
   DeleteUserArgsType,
+  DeleteByPkUserArgsType,
   InsertOneUserArgsType,
   InsertUserArgsType,
   UpdateByPkUserArgsType,
   UpdateUserArgsType,
   FindUserArgsType,
   FindByPkUserArgsType,
-  AggregateUserArgsType,
+  AggregateUserArgsType
 } from './users.types';
 import type { GraphQLResolveInfo } from 'graphql';
 
@@ -63,6 +64,7 @@ export class UsersQueryResolver {
     return await this.usersService.findUser(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
   }
 
+
   @Mutation()
   async insertUserOne(@Info() info: GraphQLResolveInfo) {
     const { object, onConflict } = getGraphQLArgs<InsertOneUserArgsType>(
@@ -75,12 +77,12 @@ export class UsersQueryResolver {
 
   @Query()
   async userByPk(@Info() info: GraphQLResolveInfo) {
-    const { id } = getGraphQLArgs<FindByPkUserArgsType>(
+    const {  id,  } = getGraphQLArgs<FindByPkUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.usersService.findUserByPk(getSelectionSet(info), id);
+    return await this.usersService.findUserByPk(getSelectionSet(info),  id, );
   }
 
   @Mutation()
@@ -95,12 +97,12 @@ export class UsersQueryResolver {
 
   @Mutation()
   async deleteUserByPk(@Info() info: GraphQLResolveInfo) {
-    const { pkColumns } = getGraphQLArgs<UpdateByPkUserArgsType>(
+    const { id } = getGraphQLArgs<DeleteByPkUserArgsType>(
       info.parentType.getFields()[info.fieldName],
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.usersService.deleteUserByPk(getSelectionSet(info), pkColumns);
+    return await this.usersService.deleteUserByPk(getSelectionSet(info), id);
   }
 }
 
@@ -115,6 +117,13 @@ export class UsersQueryAggregateResolver {
       info.fieldNodes[0],
       info.variableValues
     );
-    return await this.usersService.aggregateUser(getSelectionSet(info), where, orderBy, distinctOn, limit, offset);
+    return await this.usersService.aggregateUser(
+      getSelectionSet(info),
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset
+    );
   }
 }

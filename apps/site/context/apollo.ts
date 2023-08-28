@@ -63,10 +63,13 @@ export const customFetch = (uri: URL | RequestInfo, options: CustomFetchOptions)
   return fetch(uri, options);
 };
 
-const tenantContext = setContext((_, context) => {
+const tenantContext = setContext((operation, context) => {
   return {
     ...context,
-    headers: { ...context.headers, [HEADER_TENANT_NAME]: getTenantFromHost(window.location.hostname) }, // TODO: improve tenant detection
+    headers: {
+      ...context.headers,
+      [HEADER_TENANT_NAME]: context.tenant ?? getTenantFromHost(window.location.hostname),
+    },
   };
 });
 

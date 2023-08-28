@@ -1,0 +1,37 @@
+mutation InsertTeamJoin($object: TeamJoinInsertInput!) {
+  insertTeamJoinOne(object: $object) {
+    __typename
+    id
+    createdAt
+    state
+    team {
+      __typename
+      id
+      createdAt
+      type
+      actor {
+        __typename
+        id
+        createdAt
+        email
+        name
+        slug
+        website
+        actorImages {
+          __typename
+          id
+          createdAt
+          type
+          image {
+            __typename
+            id
+            createdAt
+            url
+            size
+            type
+          }
+        }
+      }
+    }
+  }
+}

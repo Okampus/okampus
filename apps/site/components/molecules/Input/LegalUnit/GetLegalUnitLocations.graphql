@@ -30,8 +30,9 @@ query GetLegalUnitLocations(
       __typename
       id
       type
-      onlineLink
-      locationDetails
+      link
+      name
+      details
       address {
         __typename
         id
@@ -45,6 +46,7 @@ query GetLegalUnitLocations(
         city
         state
         country
+        geoapifyId
       }
     }
   }

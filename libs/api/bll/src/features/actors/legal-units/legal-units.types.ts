@@ -27,6 +27,10 @@ export type DeleteLegalUnitArgsType = {
   where: LegalUnitBoolExp;
 };
 
+export type DeleteByPkLegalUnitArgsType = {
+  id: string;
+};
+
 export type UpdateByPkLegalUnitArgsType = {
   pkColumns: LegalUnitPkColumnsInput;
   _set: LegalUnitSetInput;

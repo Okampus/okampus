@@ -38,6 +38,7 @@ import {
   Location,
   Mission,
   EventSupervisor,
+  TeamMemberRole,
 } from '@okampus/api/dal';
 import { Countries } from '@okampus/shared/consts';
 import {
@@ -558,7 +559,9 @@ export class DatabaseSeeder extends Seeder {
           if (account) {
             const treasurer = parentTeam.team.teamMembers
               .getItems()
-              .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user;
+              .find(({ teamMemberRoles }) =>
+                teamMemberRoles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
+              )?.user;
 
             const childAccount = new Account({
               name: 'Compte principal',
@@ -602,8 +605,9 @@ export class DatabaseSeeder extends Seeder {
                 receivedBy: team.actor,
                 createdBy: parentTeam.team.teamMembers
                   .getItems()
-                  .find(({ roles }) => roles.getItems().some(({ type }) => type === TeamRoleType.Treasurer))?.user
-                  .individual,
+                  .find(({ teamMemberRoles }) =>
+                    teamMemberRoles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
+                  )?.user.individual,
                 state: FinanceState.Completed,
                 tenant,
               }),
@@ -643,16 +647,18 @@ export class DatabaseSeeder extends Seeder {
       const [members, others] = randomFromArrayWithRemainder(rest, N_MEMBERS);
 
       const membersMap: { [x: string]: TeamMember } = {};
-      const newMember = (user: User, i: number) =>
-        new TeamMember({
+      const newMember = (user: User, i: number) => {
+        const teamMember = new TeamMember({
           user,
-          startDate: new Date(),
+          start: new Date(),
           team: team,
-          roles: [roles[i]],
-          permissions: 0,
           createdBy: user.individual,
           tenant: team.tenant,
         });
+
+        teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, role: roles[i], ...scopedOptions }));
+        return teamMember;
+      };
 
       for (const [i, member] of managers.entries()) if (member.user) membersMap[member.id] = newMember(member.user, i);
       for (const member of members) if (member.user) membersMap[member.id] = newMember(member.user, roles.length - 1);
