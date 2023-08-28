@@ -26,13 +26,21 @@ import { ConfigService } from '@nestjs/config';
 
 import { JwtService } from '@nestjs/jwt';
 
-import { Individual, Session, Tenant, User } from '@okampus/api/dal';
+import { Individual, Session, Shortcut, TeamMember, TeamMemberRole, Tenant, User, Team } from '@okampus/api/dal';
 import { COOKIE_NAMES } from '@okampus/shared/consts';
-import { AdminPermissions, RequestType, SessionClientType, TokenExpiration, TokenType } from '@okampus/shared/enums';
+import {
+  AdminPermissions,
+  RequestType,
+  SessionClientType,
+  ShortcutType,
+  TeamRoleType,
+  TokenExpiration,
+  TokenType,
+} from '@okampus/shared/enums';
 import { objectContains, randomId } from '@okampus/shared/utils';
 
 import type { LoginDto } from './auth.types';
-import type { IndividualOptions, SessionProps, Team } from '@okampus/api/dal';
+import type { IndividualOptions, SessionProps } from '@okampus/api/dal';
 import type { Cookie, AuthClaims, ApiConfig } from '@okampus/shared/types';
 
 import type { JwtSignOptions } from '@nestjs/jwt';
@@ -272,6 +280,27 @@ export class AuthService extends RequestContext {
     return session;
   }
 
+  public async createTeamMember(
+    user: User,
+    team: Team,
+    tenant: Tenant,
+    type?: TeamRoleType.Director | TeamRoleType.Secretary | TeamRoleType.Treasurer,
+  ) {
+    const teamMember = new TeamMember({ user, team, tenant, start: new Date() });
+    const role = team.roles.getItems().find((role) => role.type === type);
+    user.shortcuts.add(
+      new Shortcut({
+        targetActor: team.actor,
+        type: ShortcutType.Team,
+        user,
+        tenant,
+      }),
+    );
+
+    if (role) teamMember.teamMemberRoles.add(new TeamMemberRole({ teamMember, role, tenant }));
+    await this.em.flush();
+  }
+
   public async validateUserToken(
     token: string,
     type: TokenType,
@@ -291,8 +320,8 @@ export class AuthService extends RequestContext {
 
     // Refresh token case (access token is absent) - validate refresh token and auto-refresh tokens
     if (type === TokenType.Refresh) {
-      if (!(session.tokenFamily === fam)) throw new UnauthorizedException('Invalid token family'); // TODO: signalize compromised & auto-revoke(?)
-      if (!verify(session.refreshTokenHash, token, { secret: this.pepper })) {
+      if (session.tokenFamily !== fam) throw new UnauthorizedException('Invalid token family'); // TODO: signalize compromised & auto-revoke(?)
+      if (!(await verify(session.refreshTokenHash, token, { secret: this.pepper }))) {
         session.revokedAt = new Date(); // Auto-revoke same family tokens
         throw new UnauthorizedException('Session has been compromised');
       }
@@ -337,6 +366,33 @@ export class AuthService extends RequestContext {
           { id: individual.user.id },
         )
       : undefined;
+
+    // eslint-disable-next-line unicorn/no-array-method-this-argument
+    const teams = await this.em.find(Team, {
+      $or: [
+        { expectingPresidentEmail: { $eq: individual.actor.email } },
+        { expectingTreasurerEmail: { $eq: individual.actor.email } },
+        { expectingSecretaryEmail: { $eq: individual.actor.email } },
+      ],
+    });
+
+    const user = individual.user;
+    await Promise.all(
+      teams.map(async (team) => {
+        if (team.expectingPresidentEmail === individual.actor.email) {
+          team.expectingPresidentEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+        }
+        if (team.expectingSecretaryEmail === individual.actor.email) {
+          team.expectingSecretaryEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+        }
+        if (team.expectingTreasurerEmail === individual.actor.email) {
+          team.expectingTreasurerEmail = '';
+          await this.createTeamMember(user, team, this.tenant(), TeamRoleType.Director);
+        }
+      }),
+    );
 
     // eslint-disable-next-line unicorn/no-array-method-this-argument
     const teamsData = selectionSet.some((field) => field.startsWith('onboardingTeams'))
