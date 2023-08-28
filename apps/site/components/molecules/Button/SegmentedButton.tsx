@@ -17,15 +17,7 @@ export default function SegmentedButton({ initialIndex, options, className }: Se
         const inner = (
           <>
             {currentIndex === idx && <div className="absolute inset-y-1 inset-x-1.5 z-0 bg-[var(--bg-0)] rounded-lg" />}
-            {typeof action === 'string' ? (
-              <Link className="z-10" href={action}>
-                {label}
-              </Link>
-            ) : (
-              <div className="z-10" onClick={action}>
-                {label}
-              </div>
-            )}
+            {<div className="z-10">{label}</div>}
           </>
         );
         const className =
