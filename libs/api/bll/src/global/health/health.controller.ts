@@ -1,5 +1,5 @@
 import { RedisService } from '../cache/redis.service';
-import { UploadsService } from '../../features/uploads/uploads.service';
+import { UploadsService } from '../../global/uploads/uploads.service';
 import { MeiliSearchService } from '../search/meilisearch.service';
 import { loadConfig } from '../../shards/utils/load-config';
 import { ListBucketsCommand } from '@aws-sdk/client-s3';
@@ -35,7 +35,7 @@ export class HealthController {
     private readonly disk: DiskHealthIndicator,
     private readonly meilisearchService: MeiliSearchService,
     private readonly database: MikroOrmHealthIndicator,
-    private readonly memory: MemoryHealthIndicator
+    private readonly memory: MemoryHealthIndicator,
   ) {
     if (this.configService.get('redis.isEnabled')) this.healthChecks.push(() => this.redisService.checkHealth('cache'));
 
@@ -73,7 +73,7 @@ export class HealthController {
 
     this.healthChecks.push(
       () => this.database.pingCheck('database'),
-      () => this.memory.checkHeap('memory', 500 * 1024 * 1024) // 500MB max heap size
+      () => this.memory.checkHeap('memory', 500 * 1024 * 1024), // 500MB max heap size
     );
   }
 

@@ -6452,7 +6452,7 @@
             "TeamJoin",
             "TeamMember",
             "Grant",
-            "GrantUnlock",
+            "GrantAllocate",
             "ClassGroup",
             "Cohort",
             "Project",

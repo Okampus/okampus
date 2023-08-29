@@ -91,15 +91,18 @@ import type { ApiConfig } from '@okampus/shared/types';
 import type { MercuriusDriverConfig } from '@nestjs/mercurius';
 import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/common';
 
+const redisFactory = async () => ({
+  store: await redisStore({
+    socket: { host: config.redis.host, port: config.redis.port },
+    password: config.redis.password,
+  }),
+});
+
 @Module({
   imports: [
     // Configs
     ConfigModule.forRoot({ ignoreEnvFile: true, load: [() => config] }),
     GraphQLModule.forRoot<MercuriusDriverConfig>(graphqlConfig),
-    // GraphQLModule.forRoot({
-    //   typePaths: ["./schema.graphql","./schema2.graphql"],
-    //   include: [OtherModule,HelloModule],
-    // }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     ScheduleModule.forRoot(),
 
@@ -111,95 +114,49 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     ...(config.redis.isEnabled
       ? [
           PubSubModule.forRoot({ host: config.redis.host, port: config.redis.port, password: config.redis.password }),
-          // CacheModule.register({
-          //   store: redisStore,
-          //   host: config.redis.host,
-          //   port: config.redis.port,
-          //   pas
-          // })
-          CacheModule.registerAsync({
-            useFactory: async () => ({
-              store: await redisStore({
-                // Store-specific configuration:
-                socket: {
-                  host: config.redis.host,
-                  port: config.redis.port,
-                },
-                password: config.redis.password,
-              }),
-            }),
-            isGlobal: true,
-          }),
+          CacheModule.registerAsync({ isGlobal: true, useFactory: redisFactory }),
         ]
-      : [
-          // TODO: add fallback pubsub if redis is disabled
-          CacheModule.register(),
-        ]),
+      : [CacheModule.register()]),
 
     OIDCCacheModule,
+
     NotificationsModule,
     GeocodeModule,
     GoogleModule,
     NationalIdentificationModule,
     TextractModule,
+
     AuthModule,
-    BankInfosModule,
     UploadsModule,
 
-    // // Subscribers module
-    // SubscribersModule,
-
-    // // Custom modules
-    // AnnouncementsModule,
-    UsersModule,
-    // BadgesModule,
-    // BlogsModule,
-    // CafeteriaModule,
-    // ClassesModule,
-    // ClassMembershipsModule,
-    // ContentsModule,
-    // FavoritesModule,
-    HealthModule,
+    ActionsModule,
+    ActorImagesModule,
+    ActorsModule,
+    AddressesModule,
+    BankAccountsModule,
+    BankInfosModule,
+    EventsModule,
     EventsModule,
     EventApprovalsModule,
     EventApprovalStepsModule,
-    TenantsModule,
-    ActorsModule,
-    ActorImagesModule,
-    BankAccountsModule,
-    LegalUnitsModule,
-    LegalUnitLocationsModule,
     EventJoinsModule,
-    EventsModule,
-    FormsModule,
-    ProjectsModule,
-    TagsModule,
     FinancesModule,
-    TeamJoinsModule,
-    TeamsModule,
-    ActionsModule,
-    AddressesModule,
-    LocationsModule,
     FollowsModule,
-    SocialsModule,
+    FormsModule,
+    HealthModule,
+    LegalUnitLocationsModule,
+    LegalUnitsModule,
+    LocationsModule,
+    ProjectsModule,
     RolesModule,
-    TeamMembersModule,
+    SocialsModule,
+    TagsModule,
+    TeamJoinsModule,
     TeamMemberRolesModule,
-    // InterestsModule,
-    // MetricsModule,
-    // ReactionsModule,
-    // ReportsModule,
-    // SchoolYearsModule,
-    // SettingsModule,
-    // SocialsModule,
-    // StatisticsModule,
-    // SubjectsModule,
-    // TagsModule,
-    // TeamsModule,
-    // TenantsCoreModule,
-    // ValidationsModule,
-    // VotesModule,
-    // WikisModule,
+    TeamMembersModule,
+    TeamsModule,
+    TenantsModule,
+    UsersModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },

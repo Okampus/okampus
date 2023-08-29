@@ -18,7 +18,7 @@ import type { EventJoinOptions } from './event-join.options';
 import type { Event } from '../event.entity';
 import type { MissionJoin } from '../../team/mission-join/mission-join.entity';
 import type { User } from '../../user/user.entity';
-import type { FormSubmission } from '../../form-submission/form-submission.entity';
+import type { FormSubmission } from '../../form/form-submission/form-submission.entity';
 import type { Action } from '../../team/action/action.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 

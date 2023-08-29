@@ -7,7 +7,7 @@ import type { EventOrganizeOptions } from './event-organize.options';
 import type { Event } from '../event.entity';
 import type { EventSupervisor } from '../event-supervisor/event-supervisor.entity';
 import type { Mission } from '../../team/mission/mission.entity';
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 import type { Team } from '../../team/team.entity';
 
 @Entity({ customRepository: () => EventOrganizeRepository })

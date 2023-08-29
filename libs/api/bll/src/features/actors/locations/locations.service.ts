@@ -1,6 +1,6 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { LocationRepository, Location } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -40,7 +40,14 @@ export class LocationsService extends RequestContext {
 
   checkPermsDelete(location: Location) {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === location.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === location.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -53,7 +60,14 @@ export class LocationsService extends RequestContext {
     if (location.deletedAt) throw new NotFoundException(`Location was deleted on ${location.deletedAt}.`);
     if (location.hiddenAt) throw new NotFoundException('Location must be unhidden before it can be updated.');
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === location.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === location.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +76,6 @@ export class LocationsService extends RequestContext {
 
   checkPropsConstraints(props: LocationSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -73,17 +86,10 @@ export class LocationsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertLocationOne(
-    selectionSet: string[],
-    object: LocationInsertInput,
-    onConflict?: LocationOnConflict,
-  ) {
+  async insertLocationOne(selectionSet: string[], object: LocationInsertInput, onConflict?: LocationOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Location.');
 
@@ -95,10 +101,10 @@ export class LocationsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertLocationOne', selectionSet, object, onConflict);
-  
+
     const location = await this.locationRepository.findOneOrFail(data.insertLocationOne.id);
     await this.logsService.createLog(EntityName.Location, location);
-    
+
     // Custom logic
     return data.insertLocationOne;
   }
@@ -116,20 +122,13 @@ export class LocationsService extends RequestContext {
     return data.location;
   }
 
-  async findLocationByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findLocationByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('locationByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('locationByPk', selectionSet, { id });
     return data.locationByPk;
   }
 
-  async insertLocation(
-    selectionSet: string[],
-    objects: Array<LocationInsertInput>,
-    onConflict?: LocationOnConflict,
-  ) {
+  async insertLocation(selectionSet: string[], objects: Array<LocationInsertInput>, onConflict?: LocationOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Location.');
@@ -153,10 +152,7 @@ export class LocationsService extends RequestContext {
     return data.insertLocation;
   }
 
-  async updateLocationMany(
-    selectionSet: string[],
-    updates: Array<LocationUpdates>,
-  ) {
+  async updateLocationMany(selectionSet: string[], updates: Array<LocationUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -174,21 +170,19 @@ export class LocationsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateLocationMany', selectionSet, updates);
 
-    await Promise.all(locations.map(async (location) => {
-      const update = updates.find((update) => update.where.id._eq === location.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Location, location, update._set);
-    }));
+    await Promise.all(
+      locations.map(async (location) => {
+        const update = updates.find((update) => update.where.id._eq === location.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Location, location, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateLocationMany;
   }
 
-  async updateLocationByPk(
-    selectionSet: string[],
-    pkColumns: LocationPkColumnsInput,
-    _set: LocationSetInput,
-  ) {
+  async updateLocationByPk(selectionSet: string[], pkColumns: LocationPkColumnsInput, _set: LocationSetInput) {
     const location = await this.locationRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, location);
@@ -205,12 +199,10 @@ export class LocationsService extends RequestContext {
     return data.updateLocationByPk;
   }
 
-  async deleteLocation(
-    selectionSet: string[],
-    where: LocationBoolExp,
-  ) {
+  async deleteLocation(selectionSet: string[], where: LocationBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const locations = await this.locationRepository.findByIds(where.id._in);
     for (const location of locations) {
@@ -218,28 +210,34 @@ export class LocationsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${location.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateLocation', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateLocation', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(locations.map(async (location) => {
-      await this.logsService.deleteLog(EntityName.Location, location.id);
-    }));
+    await Promise.all(
+      locations.map(async (location) => {
+        await this.logsService.deleteLog(EntityName.Location, location.id);
+      }),
+    );
 
     // Custom logic
     return data.updateLocation;
   }
 
-  async deleteLocationByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteLocationByPk(selectionSet: string[], id: string) {
     const location = await this.locationRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(location);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Location (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateLocationByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateLocationByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Location, id);
     // Custom logic
@@ -252,10 +250,18 @@ export class LocationsService extends RequestContext {
     orderBy?: Array<LocationOrderBy>,
     distinctOn?: Array<LocationSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('locationAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'locationAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.locationAggregate;
   }
 }

@@ -1,6 +1,6 @@
 import { RequestContext } from '../../shards/abstract/request-context';
 import { HasuraService } from '../../global/graphql/hasura.service';
-import { LogsService } from '../logs/logs.service';
+import { LogsService } from '../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { FormRepository, Form } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -40,7 +40,14 @@ export class FormsService extends RequestContext {
 
   checkPermsDelete(form: Form) {
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === form.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === form.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -53,7 +60,14 @@ export class FormsService extends RequestContext {
     if (form.deletedAt) throw new NotFoundException(`Form was deleted on ${form.deletedAt}.`);
     if (form.hiddenAt) throw new NotFoundException('Form must be unhidden before it can be updated.');
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === form.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === form.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +76,6 @@ export class FormsService extends RequestContext {
 
   checkPropsConstraints(props: FormSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -73,17 +86,10 @@ export class FormsService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertFormOne(
-    selectionSet: string[],
-    object: FormInsertInput,
-    onConflict?: FormOnConflict,
-  ) {
+  async insertFormOne(selectionSet: string[], object: FormInsertInput, onConflict?: FormOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
 
@@ -95,10 +101,10 @@ export class FormsService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertFormOne', selectionSet, object, onConflict);
-  
+
     const form = await this.formRepository.findOneOrFail(data.insertFormOne.id);
     await this.logsService.createLog(EntityName.Form, form);
-    
+
     // Custom logic
     return data.insertFormOne;
   }
@@ -116,20 +122,13 @@ export class FormsService extends RequestContext {
     return data.form;
   }
 
-  async findFormByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findFormByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('formByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('formByPk', selectionSet, { id });
     return data.formByPk;
   }
 
-  async insertForm(
-    selectionSet: string[],
-    objects: Array<FormInsertInput>,
-    onConflict?: FormOnConflict,
-  ) {
+  async insertForm(selectionSet: string[], objects: Array<FormInsertInput>, onConflict?: FormOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Form.');
@@ -153,10 +152,7 @@ export class FormsService extends RequestContext {
     return data.insertForm;
   }
 
-  async updateFormMany(
-    selectionSet: string[],
-    updates: Array<FormUpdates>,
-  ) {
+  async updateFormMany(selectionSet: string[], updates: Array<FormUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -174,21 +170,19 @@ export class FormsService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateFormMany', selectionSet, updates);
 
-    await Promise.all(forms.map(async (form) => {
-      const update = updates.find((update) => update.where.id._eq === form.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Form, form, update._set);
-    }));
+    await Promise.all(
+      forms.map(async (form) => {
+        const update = updates.find((update) => update.where.id._eq === form.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Form, form, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateFormMany;
   }
 
-  async updateFormByPk(
-    selectionSet: string[],
-    pkColumns: FormPkColumnsInput,
-    _set: FormSetInput,
-  ) {
+  async updateFormByPk(selectionSet: string[], pkColumns: FormPkColumnsInput, _set: FormSetInput) {
     const form = await this.formRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, form);
@@ -205,12 +199,10 @@ export class FormsService extends RequestContext {
     return data.updateFormByPk;
   }
 
-  async deleteForm(
-    selectionSet: string[],
-    where: FormBoolExp,
-  ) {
+  async deleteForm(selectionSet: string[], where: FormBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const forms = await this.formRepository.findByIds(where.id._in);
     for (const form of forms) {
@@ -218,28 +210,34 @@ export class FormsService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${form.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateForm', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateForm', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(forms.map(async (form) => {
-      await this.logsService.deleteLog(EntityName.Form, form.id);
-    }));
+    await Promise.all(
+      forms.map(async (form) => {
+        await this.logsService.deleteLog(EntityName.Form, form.id);
+      }),
+    );
 
     // Custom logic
     return data.updateForm;
   }
 
-  async deleteFormByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteFormByPk(selectionSet: string[], id: string) {
     const form = await this.formRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(form);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Form (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateFormByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateFormByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Form, id);
     // Custom logic
@@ -252,10 +250,18 @@ export class FormsService extends RequestContext {
     orderBy?: Array<FormOrderBy>,
     distinctOn?: Array<FormSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('formAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'formAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.formAggregate;
   }
 }

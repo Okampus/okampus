@@ -1,4 +1,4 @@
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { Team } from '../team.entity';
 import type { MissionProps } from './mission.props';

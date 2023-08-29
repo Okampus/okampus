@@ -18,7 +18,7 @@ import type { MissionOptions } from './mission.options';
 import type { Team } from '../team.entity';
 import type { MissionJoin } from '../mission-join/mission-join.entity';
 import type { EventOrganize } from '../../event/event-organize/event-organize.entity';
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 
 @Entity({ customRepository: () => MissionRepository })
 export class Mission extends TenantScopedEntity {

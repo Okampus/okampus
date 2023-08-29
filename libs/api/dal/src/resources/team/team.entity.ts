@@ -25,7 +25,7 @@ import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.e
 import type { Action } from './action/action.entity';
 import type { ClassGroup } from '../class-group/class-group.entity';
 import type { Cohort } from '../cohort/cohort.entity';
-import type { Document } from '../document/document.entity';
+import type { Document } from '../team/document/document.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Pole } from './pole/pole.entity';
 import type { Searchable } from '../../types/search-entity.type';

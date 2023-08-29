@@ -17,7 +17,7 @@ import { FinanceState } from '@okampus/shared/enums';
 
 import type { Team } from '../team.entity';
 import type { GrantOptions } from './grant.options';
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 import type { User } from '../../user/user.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
 

@@ -1,6 +1,6 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { AddressRepository, Address } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -40,7 +40,13 @@ export class AddressesService extends RequestContext {
 
   checkPermsDelete(address: Address) {
     if (address.deletedAt) throw new NotFoundException(`Address was deleted on ${address.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === address.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === address.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -51,9 +57,14 @@ export class AddressesService extends RequestContext {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
     if (address.deletedAt) throw new NotFoundException(`Address was deleted on ${address.deletedAt}.`);
-    
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === address.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === address.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +73,6 @@ export class AddressesService extends RequestContext {
 
   checkPropsConstraints(props: AddressSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -70,20 +80,13 @@ export class AddressesService extends RequestContext {
 
   checkCreateRelationships(props: AddressInsertInput) {
     // Custom logic
-    
-    props.createdById = this.requester().id;
 
-    
-    
+    props.createdById = this.requester().id;
 
     return true;
   }
 
-  async insertAddressOne(
-    selectionSet: string[],
-    object: AddressInsertInput,
-    onConflict?: AddressOnConflict,
-  ) {
+  async insertAddressOne(selectionSet: string[], object: AddressInsertInput, onConflict?: AddressOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Address.');
 
@@ -95,10 +98,10 @@ export class AddressesService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertAddressOne', selectionSet, object, onConflict);
-  
+
     const address = await this.addressRepository.findOneOrFail(data.insertAddressOne.id);
     await this.logsService.createLog(EntityName.Address, address);
-    
+
     // Custom logic
     return data.insertAddressOne;
   }
@@ -116,20 +119,13 @@ export class AddressesService extends RequestContext {
     return data.address;
   }
 
-  async findAddressByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findAddressByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('addressByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('addressByPk', selectionSet, { id });
     return data.addressByPk;
   }
 
-  async insertAddress(
-    selectionSet: string[],
-    objects: Array<AddressInsertInput>,
-    onConflict?: AddressOnConflict,
-  ) {
+  async insertAddress(selectionSet: string[], objects: Array<AddressInsertInput>, onConflict?: AddressOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Address.');
@@ -153,10 +149,7 @@ export class AddressesService extends RequestContext {
     return data.insertAddress;
   }
 
-  async updateAddressMany(
-    selectionSet: string[],
-    updates: Array<AddressUpdates>,
-  ) {
+  async updateAddressMany(selectionSet: string[], updates: Array<AddressUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -174,21 +167,19 @@ export class AddressesService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateAddressMany', selectionSet, updates);
 
-    await Promise.all(addresses.map(async (address) => {
-      const update = updates.find((update) => update.where.id._eq === address.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Address, address, update._set);
-    }));
+    await Promise.all(
+      addresses.map(async (address) => {
+        const update = updates.find((update) => update.where.id._eq === address.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Address, address, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateAddressMany;
   }
 
-  async updateAddressByPk(
-    selectionSet: string[],
-    pkColumns: AddressPkColumnsInput,
-    _set: AddressSetInput,
-  ) {
+  async updateAddressByPk(selectionSet: string[], pkColumns: AddressPkColumnsInput, _set: AddressSetInput) {
     const address = await this.addressRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, address);
@@ -205,12 +196,10 @@ export class AddressesService extends RequestContext {
     return data.updateAddressByPk;
   }
 
-  async deleteAddress(
-    selectionSet: string[],
-    where: AddressBoolExp,
-  ) {
+  async deleteAddress(selectionSet: string[], where: AddressBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const addresses = await this.addressRepository.findByIds(where.id._in);
     for (const address of addresses) {
@@ -218,28 +207,34 @@ export class AddressesService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Address (${address.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateAddress', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateAddress', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(addresses.map(async (address) => {
-      await this.logsService.deleteLog(EntityName.Address, address.id);
-    }));
+    await Promise.all(
+      addresses.map(async (address) => {
+        await this.logsService.deleteLog(EntityName.Address, address.id);
+      }),
+    );
 
     // Custom logic
     return data.updateAddress;
   }
 
-  async deleteAddressByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteAddressByPk(selectionSet: string[], id: string) {
     const address = await this.addressRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(address);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Address (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateAddressByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateAddressByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Address, id);
     // Custom logic
@@ -252,10 +247,18 @@ export class AddressesService extends RequestContext {
     orderBy?: Array<AddressOrderBy>,
     distinctOn?: Array<AddressSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('addressAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'addressAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.addressAggregate;
   }
 }

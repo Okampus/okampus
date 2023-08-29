@@ -1,6 +1,6 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { TeamMemberRoleRepository, TeamMemberRole } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -39,8 +39,17 @@ export class TeamMemberRolesService extends RequestContext {
   }
 
   checkPermsDelete(teamMemberRole: TeamMemberRole) {
-    if (teamMemberRole.deletedAt) throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === teamMemberRole.tenant?.id)) 
+    if (teamMemberRole.deletedAt)
+      throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) &&
+            role.tenant?.id === teamMemberRole.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -50,10 +59,20 @@ export class TeamMemberRolesService extends RequestContext {
   checkPermsUpdate(props: TeamMemberRoleSetInput, teamMemberRole: TeamMemberRole) {
     if (Object.keys(props).length === 0) throw new BadRequestException('Update props cannot be empty.');
 
-    if (teamMemberRole.deletedAt) throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
-    if (teamMemberRole.hiddenAt) throw new NotFoundException('TeamMemberRole must be unhidden before it can be updated.');
+    if (teamMemberRole.deletedAt)
+      throw new NotFoundException(`TeamMemberRole was deleted on ${teamMemberRole.deletedAt}.`);
+    if (teamMemberRole.hiddenAt)
+      throw new NotFoundException('TeamMemberRole must be unhidden before it can be updated.');
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === teamMemberRole.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) &&
+            role.tenant?.id === teamMemberRole.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +81,6 @@ export class TeamMemberRolesService extends RequestContext {
 
   checkPropsConstraints(props: TeamMemberRoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -72,9 +90,6 @@ export class TeamMemberRolesService extends RequestContext {
     // Custom logic
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
-
-    
-    
 
     return true;
   }
@@ -95,10 +110,10 @@ export class TeamMemberRolesService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertTeamMemberRoleOne', selectionSet, object, onConflict);
-  
+
     const teamMemberRole = await this.teamMemberRoleRepository.findOneOrFail(data.insertTeamMemberRoleOne.id);
     await this.logsService.createLog(EntityName.TeamMemberRole, teamMemberRole);
-    
+
     // Custom logic
     return data.insertTeamMemberRoleOne;
   }
@@ -112,16 +127,21 @@ export class TeamMemberRolesService extends RequestContext {
     offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.find('teamMemberRole', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.find(
+      'teamMemberRole',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.teamMemberRole;
   }
 
-  async findTeamMemberRoleByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findTeamMemberRoleByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('teamMemberRoleByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('teamMemberRoleByPk', selectionSet, { id });
     return data.teamMemberRoleByPk;
   }
 
@@ -153,10 +173,7 @@ export class TeamMemberRolesService extends RequestContext {
     return data.insertTeamMemberRole;
   }
 
-  async updateTeamMemberRoleMany(
-    selectionSet: string[],
-    updates: Array<TeamMemberRoleUpdates>,
-  ) {
+  async updateTeamMemberRoleMany(selectionSet: string[], updates: Array<TeamMemberRoleUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -166,7 +183,8 @@ export class TeamMemberRolesService extends RequestContext {
       if (!teamMemberRole) throw new NotFoundException(`TeamMemberRole (${update.where.id._eq}) was not found.`);
 
       const canUpdate = this.checkPermsUpdate(update._set, teamMemberRole);
-      if (!canUpdate) throw new ForbiddenException(`You are not allowed to update TeamMemberRole (${update.where.id._eq}).`);
+      if (!canUpdate)
+        throw new ForbiddenException(`You are not allowed to update TeamMemberRole (${update.where.id._eq}).`);
 
       const arePropsValid = this.checkPropsConstraints(update._set);
       if (!arePropsValid) throw new BadRequestException(`Props are not valid in ${JSON.stringify(update._set)}.`);
@@ -174,11 +192,13 @@ export class TeamMemberRolesService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateTeamMemberRoleMany', selectionSet, updates);
 
-    await Promise.all(teamMemberRoles.map(async (teamMemberRole) => {
-      const update = updates.find((update) => update.where.id._eq === teamMemberRole.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.TeamMemberRole, teamMemberRole, update._set);
-    }));
+    await Promise.all(
+      teamMemberRoles.map(async (teamMemberRole) => {
+        const update = updates.find((update) => update.where.id._eq === teamMemberRole.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.TeamMemberRole, teamMemberRole, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateTeamMemberRoleMany;
@@ -205,41 +225,46 @@ export class TeamMemberRolesService extends RequestContext {
     return data.updateTeamMemberRoleByPk;
   }
 
-  async deleteTeamMemberRole(
-    selectionSet: string[],
-    where: TeamMemberRoleBoolExp,
-  ) {
+  async deleteTeamMemberRole(selectionSet: string[], where: TeamMemberRoleBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const teamMemberRoles = await this.teamMemberRoleRepository.findByIds(where.id._in);
     for (const teamMemberRole of teamMemberRoles) {
       const canDelete = this.checkPermsDelete(teamMemberRole);
-      if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamMemberRole (${teamMemberRole.id}).`);
+      if (!canDelete)
+        throw new ForbiddenException(`You are not allowed to delete TeamMemberRole (${teamMemberRole.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateTeamMemberRole', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateTeamMemberRole', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(teamMemberRoles.map(async (teamMemberRole) => {
-      await this.logsService.deleteLog(EntityName.TeamMemberRole, teamMemberRole.id);
-    }));
+    await Promise.all(
+      teamMemberRoles.map(async (teamMemberRole) => {
+        await this.logsService.deleteLog(EntityName.TeamMemberRole, teamMemberRole.id);
+      }),
+    );
 
     // Custom logic
     return data.updateTeamMemberRole;
   }
 
-  async deleteTeamMemberRoleByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteTeamMemberRoleByPk(selectionSet: string[], id: string) {
     const teamMemberRole = await this.teamMemberRoleRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(teamMemberRole);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete TeamMemberRole (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateTeamMemberRoleByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateTeamMemberRoleByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.TeamMemberRole, id);
     // Custom logic
@@ -252,10 +277,18 @@ export class TeamMemberRolesService extends RequestContext {
     orderBy?: Array<TeamMemberRoleOrderBy>,
     distinctOn?: Array<TeamMemberRoleSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('teamMemberRoleAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'teamMemberRoleAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.teamMemberRoleAggregate;
   }
 }

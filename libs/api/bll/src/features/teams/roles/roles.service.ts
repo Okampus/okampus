@@ -1,6 +1,6 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { RoleRepository, Role } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -40,7 +40,14 @@ export class RolesService extends RequestContext {
 
   checkPermsDelete(role: Role) {
     if (role.deletedAt) throw new NotFoundException(`Role was deleted on ${role.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === role.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === role.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -53,7 +60,14 @@ export class RolesService extends RequestContext {
     if (role.deletedAt) throw new NotFoundException(`Role was deleted on ${role.deletedAt}.`);
     if (role.hiddenAt) throw new NotFoundException('Role must be unhidden before it can be updated.');
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === role.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === role.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +76,6 @@ export class RolesService extends RequestContext {
 
   checkPropsConstraints(props: RoleSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -73,17 +86,10 @@ export class RolesService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertRoleOne(
-    selectionSet: string[],
-    object: RoleInsertInput,
-    onConflict?: RoleOnConflict,
-  ) {
+  async insertRoleOne(selectionSet: string[], object: RoleInsertInput, onConflict?: RoleOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert Role.');
 
@@ -95,10 +101,10 @@ export class RolesService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertRoleOne', selectionSet, object, onConflict);
-  
+
     const role = await this.roleRepository.findOneOrFail(data.insertRoleOne.id);
     await this.logsService.createLog(EntityName.Role, role);
-    
+
     // Custom logic
     return data.insertRoleOne;
   }
@@ -116,20 +122,13 @@ export class RolesService extends RequestContext {
     return data.role;
   }
 
-  async findRoleByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findRoleByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('roleByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('roleByPk', selectionSet, { id });
     return data.roleByPk;
   }
 
-  async insertRole(
-    selectionSet: string[],
-    objects: Array<RoleInsertInput>,
-    onConflict?: RoleOnConflict,
-  ) {
+  async insertRole(selectionSet: string[], objects: Array<RoleInsertInput>, onConflict?: RoleOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert Role.');
@@ -153,10 +152,7 @@ export class RolesService extends RequestContext {
     return data.insertRole;
   }
 
-  async updateRoleMany(
-    selectionSet: string[],
-    updates: Array<RoleUpdates>,
-  ) {
+  async updateRoleMany(selectionSet: string[], updates: Array<RoleUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -174,21 +170,19 @@ export class RolesService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateRoleMany', selectionSet, updates);
 
-    await Promise.all(roles.map(async (role) => {
-      const update = updates.find((update) => update.where.id._eq === role.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.Role, role, update._set);
-    }));
+    await Promise.all(
+      roles.map(async (role) => {
+        const update = updates.find((update) => update.where.id._eq === role.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.Role, role, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateRoleMany;
   }
 
-  async updateRoleByPk(
-    selectionSet: string[],
-    pkColumns: RolePkColumnsInput,
-    _set: RoleSetInput,
-  ) {
+  async updateRoleByPk(selectionSet: string[], pkColumns: RolePkColumnsInput, _set: RoleSetInput) {
     const role = await this.roleRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, role);
@@ -205,12 +199,10 @@ export class RolesService extends RequestContext {
     return data.updateRoleByPk;
   }
 
-  async deleteRole(
-    selectionSet: string[],
-    where: RoleBoolExp,
-  ) {
+  async deleteRole(selectionSet: string[], where: RoleBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const roles = await this.roleRepository.findByIds(where.id._in);
     for (const role of roles) {
@@ -218,28 +210,34 @@ export class RolesService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Role (${role.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateRole', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateRole', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(roles.map(async (role) => {
-      await this.logsService.deleteLog(EntityName.Role, role.id);
-    }));
+    await Promise.all(
+      roles.map(async (role) => {
+        await this.logsService.deleteLog(EntityName.Role, role.id);
+      }),
+    );
 
     // Custom logic
     return data.updateRole;
   }
 
-  async deleteRoleByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteRoleByPk(selectionSet: string[], id: string) {
     const role = await this.roleRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(role);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete Role (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateRoleByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateRoleByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.Role, id);
     // Custom logic
@@ -252,10 +250,18 @@ export class RolesService extends RequestContext {
     orderBy?: Array<RoleOrderBy>,
     distinctOn?: Array<RoleSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('roleAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'roleAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.roleAggregate;
   }
 }

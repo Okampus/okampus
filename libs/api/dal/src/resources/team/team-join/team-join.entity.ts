@@ -3,7 +3,7 @@ import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, Property } from '@mikro-orm/core';
 import { ApprovalState } from '@okampus/shared/enums';
 
-import type { FormSubmission } from '../../form-submission/form-submission.entity';
+import type { FormSubmission } from '../../form/form-submission/form-submission.entity';
 import type { Pole } from '../pole/pole.entity';
 import type { Role } from '../role/role.entity';
 import type { Team } from '../team.entity';

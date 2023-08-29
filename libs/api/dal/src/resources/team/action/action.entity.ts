@@ -6,7 +6,7 @@ import { ApprovalState } from '@okampus/shared/enums';
 import type { ActionOptions } from './action.options';
 import type { User } from '../../user/user.entity';
 import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 import type { Team } from '../team.entity';
 
 @Entity({ customRepository: () => ActionRepository })

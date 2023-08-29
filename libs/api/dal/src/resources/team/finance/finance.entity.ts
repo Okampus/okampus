@@ -19,7 +19,7 @@ import type { Team } from '../team.entity';
 import type { FinanceOptions } from './finance.options';
 import type { Expense } from '../expense/expense.entity';
 import type { Event } from '../../event/event.entity';
-import type { Project } from '../../project/project.entity';
+import type { Project } from '../../team/project/project.entity';
 import type { Actor } from '../../actor/actor.entity';
 import type { BankAccount } from '../bank-account/bank-account.entity';
 import type { Tag } from '../../actor/tag/tag.entity';

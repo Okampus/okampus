@@ -1,11 +1,11 @@
 import { LegalUnitLocationsService } from './legal-unit-locations.service';
-import { 
+import {
   LegalUnitLocationsMutationResolver,
-  LegalUnitLocationsQueryAggregateResolver, 
-  LegalUnitLocationsQueryResolver
+  LegalUnitLocationsQueryAggregateResolver,
+  LegalUnitLocationsQueryResolver,
 } from './legal-unit-locations.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { LegalUnitLocation } from '@okampus/api/dal';
@@ -14,9 +14,9 @@ import { LegalUnitLocation } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([LegalUnitLocation])],
   providers: [
     LegalUnitLocationsMutationResolver,
-    LegalUnitLocationsQueryResolver, 
+    LegalUnitLocationsQueryResolver,
     LegalUnitLocationsQueryAggregateResolver,
-    LegalUnitLocationsService
+    LegalUnitLocationsService,
   ],
   exports: [LegalUnitLocationsService],
 })

@@ -1,6 +1,6 @@
 import { RequestContext } from '../../../shards/abstract/request-context';
 import { HasuraService } from '../../../global/graphql/hasura.service';
-import { LogsService } from '../../logs/logs.service';
+import { LogsService } from '../../../global/logs/logs.service';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { BankInfoRepository, BankInfo } from '@okampus/api/dal';
 import { EntityName, AdminPermissions } from '@okampus/shared/enums';
@@ -40,7 +40,14 @@ export class BankInfosService extends RequestContext {
 
   checkPermsDelete(bankInfo: BankInfo) {
     if (bankInfo.deletedAt) throw new NotFoundException(`BankInfo was deleted on ${bankInfo.deletedAt}.`);
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bankInfo.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.DeleteTenantEntities) && role.tenant?.id === bankInfo.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -53,7 +60,14 @@ export class BankInfosService extends RequestContext {
     if (bankInfo.deletedAt) throw new NotFoundException(`BankInfo was deleted on ${bankInfo.deletedAt}.`);
     if (bankInfo.hiddenAt) throw new NotFoundException('BankInfo must be unhidden before it can be updated.');
 
-    if (this.requester().adminRoles.getItems().some((role) => role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bankInfo.tenant?.id)) 
+    if (
+      this.requester()
+        .adminRoles.getItems()
+        .some(
+          (role) =>
+            role.permissions.includes(AdminPermissions.ManageTenantEntities) && role.tenant?.id === bankInfo.tenant?.id,
+        )
+    )
       return true;
 
     // Custom logic
@@ -62,7 +76,6 @@ export class BankInfosService extends RequestContext {
 
   checkPropsConstraints(props: BankInfoSetInput) {
     this.hasuraService.checkForbiddenFields(props);
-    
 
     // Custom logic
     return true;
@@ -73,17 +86,10 @@ export class BankInfosService extends RequestContext {
     props.tenantId = this.tenant().id;
     props.createdById = this.requester().id;
 
-    
-    
-
     return true;
   }
 
-  async insertBankInfoOne(
-    selectionSet: string[],
-    object: BankInfoInsertInput,
-    onConflict?: BankInfoOnConflict,
-  ) {
+  async insertBankInfoOne(selectionSet: string[], object: BankInfoInsertInput, onConflict?: BankInfoOnConflict) {
     const canCreate = this.checkPermsCreate(object);
     if (!canCreate) throw new ForbiddenException('You are not allowed to insert BankInfo.');
 
@@ -95,10 +101,10 @@ export class BankInfosService extends RequestContext {
 
     selectionSet = [...selectionSet.filter((field) => field !== 'id'), 'id'];
     const data = await this.hasuraService.insertOne('insertBankInfoOne', selectionSet, object, onConflict);
-  
+
     const bankInfo = await this.bankInfoRepository.findOneOrFail(data.insertBankInfoOne.id);
     await this.logsService.createLog(EntityName.BankInfo, bankInfo);
-    
+
     // Custom logic
     return data.insertBankInfoOne;
   }
@@ -116,20 +122,13 @@ export class BankInfosService extends RequestContext {
     return data.bankInfo;
   }
 
-  async findBankInfoByPk(
-    selectionSet: string[],
-     id: string, 
-  ) {
+  async findBankInfoByPk(selectionSet: string[], id: string) {
     // Custom logic
-    const data = await this.hasuraService.findByPk('bankInfoByPk', selectionSet, {  id,  });
+    const data = await this.hasuraService.findByPk('bankInfoByPk', selectionSet, { id });
     return data.bankInfoByPk;
   }
 
-  async insertBankInfo(
-    selectionSet: string[],
-    objects: Array<BankInfoInsertInput>,
-    onConflict?: BankInfoOnConflict,
-  ) {
+  async insertBankInfo(selectionSet: string[], objects: Array<BankInfoInsertInput>, onConflict?: BankInfoOnConflict) {
     for (const object of objects) {
       const canCreate = await this.checkPermsCreate(object);
       if (!canCreate) throw new ForbiddenException('You are not allowed to insert BankInfo.');
@@ -153,10 +152,7 @@ export class BankInfosService extends RequestContext {
     return data.insertBankInfo;
   }
 
-  async updateBankInfoMany(
-    selectionSet: string[],
-    updates: Array<BankInfoUpdates>,
-  ) {
+  async updateBankInfoMany(selectionSet: string[], updates: Array<BankInfoUpdates>) {
     const areWheresCorrect = this.hasuraService.checkUpdates(updates);
     if (!areWheresCorrect) throw new BadRequestException('Where must only contain { id: { _eq: <id> } } in updates.');
 
@@ -174,21 +170,19 @@ export class BankInfosService extends RequestContext {
 
     const data = await this.hasuraService.updateMany('updateBankInfoMany', selectionSet, updates);
 
-    await Promise.all(bankInfos.map(async (bankInfo) => {
-      const update = updates.find((update) => update.where.id._eq === bankInfo.id)
-      if (!update) return;
-      await this.logsService.updateLog(EntityName.BankInfo, bankInfo, update._set);
-    }));
+    await Promise.all(
+      bankInfos.map(async (bankInfo) => {
+        const update = updates.find((update) => update.where.id._eq === bankInfo.id);
+        if (!update) return;
+        await this.logsService.updateLog(EntityName.BankInfo, bankInfo, update._set);
+      }),
+    );
 
     // Custom logic
     return data.updateBankInfoMany;
   }
 
-  async updateBankInfoByPk(
-    selectionSet: string[],
-    pkColumns: BankInfoPkColumnsInput,
-    _set: BankInfoSetInput,
-  ) {
+  async updateBankInfoByPk(selectionSet: string[], pkColumns: BankInfoPkColumnsInput, _set: BankInfoSetInput) {
     const bankInfo = await this.bankInfoRepository.findOneOrFail(pkColumns.id);
 
     const canUpdate = this.checkPermsUpdate(_set, bankInfo);
@@ -205,12 +199,10 @@ export class BankInfosService extends RequestContext {
     return data.updateBankInfoByPk;
   }
 
-  async deleteBankInfo(
-    selectionSet: string[],
-    where: BankInfoBoolExp,
-  ) {
+  async deleteBankInfo(selectionSet: string[], where: BankInfoBoolExp) {
     const isWhereCorrect = this.hasuraService.checkDeleteWhere(where);
-    if (!isWhereCorrect) throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
+    if (!isWhereCorrect)
+      throw new BadRequestException('Where must only contain { id: { _in: <Array<id>> } } in delete.');
 
     const bankInfos = await this.bankInfoRepository.findByIds(where.id._in);
     for (const bankInfo of bankInfos) {
@@ -218,28 +210,34 @@ export class BankInfosService extends RequestContext {
       if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BankInfo (${bankInfo.id}).`);
     }
 
-    const data = await this.hasuraService.update('updateBankInfo', selectionSet, where, { deletedAt: new Date().toISOString() });
+    const data = await this.hasuraService.update('updateBankInfo', selectionSet, where, {
+      deletedAt: new Date().toISOString(),
+    });
 
-    await Promise.all(bankInfos.map(async (bankInfo) => {
-      await this.logsService.deleteLog(EntityName.BankInfo, bankInfo.id);
-    }));
+    await Promise.all(
+      bankInfos.map(async (bankInfo) => {
+        await this.logsService.deleteLog(EntityName.BankInfo, bankInfo.id);
+      }),
+    );
 
     // Custom logic
     return data.updateBankInfo;
   }
 
-  async deleteBankInfoByPk(
-    selectionSet: string[],
-    id: string,
-  ) {
+  async deleteBankInfoByPk(selectionSet: string[], id: string) {
     const bankInfo = await this.bankInfoRepository.findOneOrFail(id);
 
     const canDelete = this.checkPermsDelete(bankInfo);
     if (!canDelete) throw new ForbiddenException(`You are not allowed to delete BankInfo (${id}).`);
 
-    const data = await this.hasuraService.updateByPk('updateBankInfoByPk', selectionSet, { id }, {
-      deletedAt: new Date().toISOString(),
-    });
+    const data = await this.hasuraService.updateByPk(
+      'updateBankInfoByPk',
+      selectionSet,
+      { id },
+      {
+        deletedAt: new Date().toISOString(),
+      },
+    );
 
     await this.logsService.deleteLog(EntityName.BankInfo, id);
     // Custom logic
@@ -252,10 +250,18 @@ export class BankInfosService extends RequestContext {
     orderBy?: Array<BankInfoOrderBy>,
     distinctOn?: Array<BankInfoSelectColumn>,
     limit?: number,
-    offset?: number
+    offset?: number,
   ) {
     // Custom logic
-    const data = await this.hasuraService.aggregate('bankInfoAggregate', selectionSet, where, orderBy, distinctOn, limit, offset);
+    const data = await this.hasuraService.aggregate(
+      'bankInfoAggregate',
+      selectionSet,
+      where,
+      orderBy,
+      distinctOn,
+      limit,
+      offset,
+    );
     return data.bankInfoAggregate;
   }
 }

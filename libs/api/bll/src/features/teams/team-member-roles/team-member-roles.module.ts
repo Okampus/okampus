@@ -1,11 +1,11 @@
 import { TeamMemberRolesService } from './team-member-roles.service';
-import { 
+import {
   TeamMemberRolesMutationResolver,
-  TeamMemberRolesQueryAggregateResolver, 
-  TeamMemberRolesQueryResolver
+  TeamMemberRolesQueryAggregateResolver,
+  TeamMemberRolesQueryResolver,
 } from './team-member-roles.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { TeamMemberRole } from '@okampus/api/dal';
@@ -14,9 +14,9 @@ import { TeamMemberRole } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([TeamMemberRole])],
   providers: [
     TeamMemberRolesMutationResolver,
-    TeamMemberRolesQueryResolver, 
+    TeamMemberRolesQueryResolver,
     TeamMemberRolesQueryAggregateResolver,
-    TeamMemberRolesService
+    TeamMemberRolesService,
   ],
   exports: [TeamMemberRolesService],
 })

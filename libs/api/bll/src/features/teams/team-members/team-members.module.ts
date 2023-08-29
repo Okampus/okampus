@@ -1,11 +1,11 @@
 import { TeamMembersService } from './team-members.service';
-import { 
+import {
   TeamMembersMutationResolver,
-  TeamMembersQueryAggregateResolver, 
-  TeamMembersQueryResolver
+  TeamMembersQueryAggregateResolver,
+  TeamMembersQueryResolver,
 } from './team-members.resolver';
 import { HasuraModule } from '../../../global/graphql/hasura.module';
-import { LogsModule } from '../../logs/logs.module';
+import { LogsModule } from '../../../global/logs/logs.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { TeamMember } from '@okampus/api/dal';
@@ -14,9 +14,9 @@ import { TeamMember } from '@okampus/api/dal';
   imports: [HasuraModule, LogsModule, MikroOrmModule.forFeature([TeamMember])],
   providers: [
     TeamMembersMutationResolver,
-    TeamMembersQueryResolver, 
+    TeamMembersQueryResolver,
     TeamMembersQueryAggregateResolver,
-    TeamMembersService
+    TeamMembersService,
   ],
   exports: [TeamMembersService],
 })

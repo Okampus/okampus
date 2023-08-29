@@ -28,7 +28,7 @@ import type { Tag } from '../actor/tag/tag.entity';
 import type { Form } from '../form/form.entity';
 import type { Location } from '../actor/location/location.entity';
 import type { EventJoin } from './event-join/event-join.entity';
-import type { FormSubmission } from '../form-submission/form-submission.entity';
+import type { FormSubmission } from '../form/form-submission/form-submission.entity';
 import type { EventApprovalStep } from '../tenant/event-approval-step/event-approval-step.entity';
 import type { EventApproval } from '../tenant/event-approval/event-approval.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';

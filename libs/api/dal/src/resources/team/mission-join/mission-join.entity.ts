@@ -4,10 +4,10 @@ import { Entity, Property, Enum, ManyToOne, EnumType, EntityRepositoryType, OneT
 import { ApprovalState } from '@okampus/shared/enums';
 
 import type { MissionJoinOptions } from './mission-join.options';
-import type { User } from '../../user/user.entity';
-import type { EventJoin } from '../../event/event-join/event-join.entity';
-import type { Project } from '../../project/project.entity';
 import type { Mission } from '../mission/mission.entity';
+import type { EventJoin } from '../../event/event-join/event-join.entity';
+import type { Project } from '../../team/project/project.entity';
+import type { User } from '../../user/user.entity';
 
 @Entity({ customRepository: () => MissionJoinRepository })
 export class MissionJoin extends TenantScopedEntity {

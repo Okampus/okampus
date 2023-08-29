@@ -1,5 +1,5 @@
 import { HasuraService } from './hasura.service';
-import { LogsModule } from '../../features/logs/logs.module';
+import { LogsModule } from '../logs/logs.module';
 
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
