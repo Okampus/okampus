@@ -9828,8 +9828,6 @@ type Finance {
   expenseId: bigint
   financeAttachments(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): [FinanceAttachments!]!
   financeAttachmentsAggregate(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): FinanceAttachmentsAggregate!
-  financeTags(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): [FinanceTags!]!
-  financeTagsAggregate(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): FinanceTagsAggregate!
   grantAllocates(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): [GrantAllocate!]!
   grantAllocatesAggregate(distinctOn: [GrantAllocateSelectColumn!], limit: Int, offset: Int, orderBy: [GrantAllocateOrderBy!], where: GrantAllocateBoolExp): GrantAllocateAggregate!
   hiddenAt: timestamptz
@@ -10207,8 +10205,6 @@ input FinanceBoolExp {
   expenseId: BigintComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
-  financeTags: FinanceTagsBoolExp
-  financeTagsAggregate: FinanceTagsAggregateBoolExp
   grantAllocates: GrantAllocateBoolExp
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -10270,7 +10266,6 @@ input FinanceInsertInput {
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
   financeAttachments: FinanceAttachmentsArrRelInsertInput
-  financeTags: FinanceTagsArrRelInsertInput
   grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -10426,7 +10421,6 @@ input FinanceOrderBy {
   expense: ExpenseOrderBy
   expenseId: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
-  financeTagsAggregate: FinanceTagsAggregateOrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -10672,242 +10666,6 @@ input FinanceSumOrderBy {
   receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-}
-
-type FinanceTags {
-  finance: Finance!
-  financeId: bigint!
-  tag: Tag!
-  tagId: bigint!
-}
-
-type FinanceTagsAggregate {
-  aggregate: FinanceTagsAggregateFields
-  nodes: [FinanceTags!]!
-}
-
-input FinanceTagsAggregateBoolExp {
-  count: financeTagsAggregateBoolExpCount
-}
-
-input financeTagsAggregateBoolExpCount {
-  arguments: [FinanceTagsSelectColumn!]
-  distinct: Boolean
-  filter: FinanceTagsBoolExp
-  predicate: IntComparisonExp!
-}
-
-type FinanceTagsAggregateFields {
-  avg: FinanceTagsAvgFields
-  count(columns: [FinanceTagsSelectColumn!], distinct: Boolean): Int!
-  max: FinanceTagsMaxFields
-  min: FinanceTagsMinFields
-  stddev: FinanceTagsStddevFields
-  stddevPop: FinanceTagsStddevPopFields
-  stddevSamp: FinanceTagsStddevSampFields
-  sum: FinanceTagsSumFields
-  varPop: FinanceTagsVarPopFields
-  varSamp: FinanceTagsVarSampFields
-  variance: FinanceTagsVarianceFields
-}
-
-input FinanceTagsAggregateOrderBy {
-  avg: FinanceTagsAvgOrderBy
-  count: OrderBy
-  max: FinanceTagsMaxOrderBy
-  min: FinanceTagsMinOrderBy
-  stddev: FinanceTagsStddevOrderBy
-  stddevPop: FinanceTagsStddevPopOrderBy
-  stddevSamp: FinanceTagsStddevSampOrderBy
-  sum: FinanceTagsSumOrderBy
-  varPop: FinanceTagsVarPopOrderBy
-  varSamp: FinanceTagsVarSampOrderBy
-  variance: FinanceTagsVarianceOrderBy
-}
-
-input FinanceTagsArrRelInsertInput {
-  data: [FinanceTagsInsertInput!]!
-  onConflict: FinanceTagsOnConflict
-}
-
-type FinanceTagsAvgFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsAvgOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-input FinanceTagsBoolExp {
-  _and: [FinanceTagsBoolExp!]
-  _not: FinanceTagsBoolExp
-  _or: [FinanceTagsBoolExp!]
-  finance: FinanceBoolExp
-  financeId: BigintComparisonExp
-  tag: TagBoolExp
-  tagId: BigintComparisonExp
-}
-
-enum FinanceTagsConstraint {
-  finance_tags_pkey
-}
-
-input FinanceTagsIncInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-input FinanceTagsInsertInput {
-  finance: FinanceObjRelInsertInput
-  financeId: bigint
-  tag: TagObjRelInsertInput
-  tagId: bigint
-}
-
-type FinanceTagsMaxFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-input FinanceTagsMaxOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsMinFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-input FinanceTagsMinOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsMutationResponse {
-  affectedRows: Int!
-  returning: [FinanceTags!]!
-}
-
-input FinanceTagsOnConflict {
-  constraint: FinanceTagsConstraint!
-  updateColumns: [FinanceTagsUpdateColumn!]! = []
-  where: FinanceTagsBoolExp
-}
-
-input FinanceTagsOrderBy {
-  finance: FinanceOrderBy
-  financeId: OrderBy
-  tag: TagOrderBy
-  tagId: OrderBy
-}
-
-input FinanceTagsPkColumnsInput {
-  financeId: bigint!
-  tagId: bigint!
-}
-
-enum FinanceTagsSelectColumn {
-  financeId
-  tagId
-}
-
-input FinanceTagsSetInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-type FinanceTagsStddevFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsStddevOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsStddevPopFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsStddevPopOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsStddevSampFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsStddevSampOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-input FinanceTagsStreamCursorInput {
-  initialValue: FinanceTagsStreamCursorValueInput!
-  ordering: CursorOrdering
-}
-
-input FinanceTagsStreamCursorValueInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-type FinanceTagsSumFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-input FinanceTagsSumOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-enum FinanceTagsUpdateColumn {
-  financeId
-  tagId
-}
-
-input FinanceTagsUpdates {
-  _inc: FinanceTagsIncInput
-  _set: FinanceTagsSetInput
-  where: FinanceTagsBoolExp!
-}
-
-type FinanceTagsVarianceFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsVarianceOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsVarPopFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsVarPopOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-type FinanceTagsVarSampFields {
-  financeId: Float
-  tagId: Float
-}
-
-input FinanceTagsVarSampOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
 }
 
 enum FinanceUpdateColumn {
@@ -16842,8 +16600,6 @@ type Mutation {
   deleteFinanceAttachments(where: FinanceAttachmentsBoolExp!): FinanceAttachmentsMutationResponse
   deleteFinanceAttachmentsByPk(fileUploadId: bigint!, financeId: bigint!): FinanceAttachments
   deleteFinanceByPk(id: bigint!): Finance
-  deleteFinanceTags(where: FinanceTagsBoolExp!): FinanceTagsMutationResponse
-  deleteFinanceTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
   deleteFollow(where: FollowBoolExp!): FollowMutationResponse
   deleteFollowByPk(id: bigint!): Follow
   deleteForm(where: FormBoolExp!): FormMutationResponse
@@ -16958,8 +16714,6 @@ type Mutation {
   insertFinanceAttachments(objects: [FinanceAttachmentsInsertInput!]!, onConflict: FinanceAttachmentsOnConflict): FinanceAttachmentsMutationResponse
   insertFinanceAttachmentsOne(object: FinanceAttachmentsInsertInput!, onConflict: FinanceAttachmentsOnConflict): FinanceAttachments
   insertFinanceOne(object: FinanceInsertInput!, onConflict: FinanceOnConflict): Finance
-  insertFinanceTags(objects: [FinanceTagsInsertInput!]!, onConflict: FinanceTagsOnConflict): FinanceTagsMutationResponse
-  insertFinanceTagsOne(object: FinanceTagsInsertInput!, onConflict: FinanceTagsOnConflict): FinanceTags
   insertFollow(objects: [FollowInsertInput!]!, onConflict: FollowOnConflict): FollowMutationResponse
   insertFollowOne(object: FollowInsertInput!, onConflict: FollowOnConflict): Follow
   insertForm(objects: [FormInsertInput!]!, onConflict: FormOnConflict): FormMutationResponse
@@ -17100,9 +16854,6 @@ type Mutation {
   updateFinanceAttachmentsMany(updates: [FinanceAttachmentsUpdates!]!): [FinanceAttachmentsMutationResponse]
   updateFinanceByPk(_inc: FinanceIncInput, _set: FinanceSetInput, pkColumns: FinancePkColumnsInput!): Finance
   updateFinanceMany(updates: [FinanceUpdates!]!): [FinanceMutationResponse]
-  updateFinanceTags(_inc: FinanceTagsIncInput, _set: FinanceTagsSetInput, where: FinanceTagsBoolExp!): FinanceTagsMutationResponse
-  updateFinanceTagsByPk(_inc: FinanceTagsIncInput, _set: FinanceTagsSetInput, pkColumns: FinanceTagsPkColumnsInput!): FinanceTags
-  updateFinanceTagsMany(updates: [FinanceTagsUpdates!]!): [FinanceTagsMutationResponse]
   updateFollow(_inc: FollowIncInput, _set: FollowSetInput, where: FollowBoolExp!): FollowMutationResponse
   updateFollowByPk(_inc: FollowIncInput, _set: FollowSetInput, pkColumns: FollowPkColumnsInput!): Follow
   updateFollowMany(updates: [FollowUpdates!]!): [FollowMutationResponse]
@@ -18786,9 +18537,6 @@ type Query {
   financeAttachmentsAggregate(distinctOn: [FinanceAttachmentsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceAttachmentsOrderBy!], where: FinanceAttachmentsBoolExp): FinanceAttachmentsAggregate!
   financeAttachmentsByPk(fileUploadId: bigint!, financeId: bigint!): FinanceAttachments
   financeByPk(id: bigint!): Finance
-  financeTags(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): [FinanceTags!]!
-  financeTagsAggregate(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): FinanceTagsAggregate!
-  financeTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
   follow(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): [Follow!]!
   followAggregate(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): FollowAggregate!
   followByPk(id: bigint!): Follow
@@ -20702,10 +20450,6 @@ type Subscription {
   financeAttachmentsStream(batchSize: Int!, cursor: [FinanceAttachmentsStreamCursorInput]!, where: FinanceAttachmentsBoolExp): [FinanceAttachments!]!
   financeByPk(id: bigint!): Finance
   financeStream(batchSize: Int!, cursor: [FinanceStreamCursorInput]!, where: FinanceBoolExp): [Finance!]!
-  financeTags(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): [FinanceTags!]!
-  financeTagsAggregate(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): FinanceTagsAggregate!
-  financeTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
-  financeTagsStream(batchSize: Int!, cursor: [FinanceTagsStreamCursorInput]!, where: FinanceTagsBoolExp): [FinanceTags!]!
   follow(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): [Follow!]!
   followAggregate(distinctOn: [FollowSelectColumn!], limit: Int, offset: Int, orderBy: [FollowOrderBy!], where: FollowBoolExp): FollowAggregate!
   followByPk(id: bigint!): Follow
@@ -20843,8 +20587,6 @@ type Tag {
   description: String!
   eventTags(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): [EventTags!]!
   eventTagsAggregate(distinctOn: [EventTagsSelectColumn!], limit: Int, offset: Int, orderBy: [EventTagsOrderBy!], where: EventTagsBoolExp): EventTagsAggregate!
-  financeTags(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): [FinanceTags!]!
-  financeTagsAggregate(distinctOn: [FinanceTagsSelectColumn!], limit: Int, offset: Int, orderBy: [FinanceTagsOrderBy!], where: FinanceTagsBoolExp): FinanceTagsAggregate!
   hiddenAt: timestamptz
   id: bigint!
   image: FileUpload
@@ -20935,8 +20677,6 @@ input TagBoolExp {
   description: StringComparisonExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
-  financeTags: FinanceTagsBoolExp
-  financeTagsAggregate: FinanceTagsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   image: FileUploadBoolExp
@@ -20970,7 +20710,6 @@ input TagInsertInput {
   deletedAt: timestamptz
   description: String
   eventTags: EventTagsArrRelInsertInput
-  financeTags: FinanceTagsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   image: FileUploadObjRelInsertInput
@@ -21068,7 +20807,6 @@ input TagOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
-  financeTagsAggregate: FinanceTagsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   image: FileUploadOrderBy
@@ -21260,8 +20998,10 @@ type Team {
   actor: Actor!
   actorId: bigint!
   administeredTenant: Tenant
+  avatar: String!
   bankAccounts(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): [BankAccount!]!
   bankAccountsAggregate(distinctOn: [BankAccountSelectColumn!], limit: Int, offset: Int, orderBy: [BankAccountOrderBy!], where: BankAccountBoolExp): BankAccountAggregate!
+  banner: String!
   childrenTeams(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): [Team!]!
   childrenTeamsAggregate(distinctOn: [TeamSelectColumn!], limit: Int, offset: Int, orderBy: [TeamOrderBy!], where: TeamBoolExp): TeamAggregate!
   createdAt: timestamptz!
@@ -21415,8 +21155,10 @@ input TeamBoolExp {
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   administeredTenant: TenantBoolExp
+  avatar: StringComparisonExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
+  banner: StringComparisonExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -21864,7 +21606,9 @@ input TeamInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
   administeredTenant: TenantObjRelInsertInput
+  avatar: String
   bankAccounts: BankAccountArrRelInsertInput
+  banner: String
   childrenTeams: TeamArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -22464,6 +22208,8 @@ input TeamJoinVarSampOrderBy {
 
 type TeamMaxFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -22487,6 +22233,8 @@ type TeamMaxFields {
 
 input TeamMaxOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -23300,6 +23048,8 @@ input TeamMemberVarSampOrderBy {
 
 type TeamMinFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23323,6 +23073,8 @@ type TeamMinFields {
 
 input TeamMinOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -23365,7 +23117,9 @@ input TeamOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
   administeredTenant: TenantOrderBy
+  avatar: OrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
+  banner: OrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -23414,6 +23168,8 @@ input TeamPkColumnsInput {
 
 enum TeamSelectColumn {
   actorId
+  avatar
+  banner
   createdAt
   createdById
   deletedAt
@@ -23449,6 +23205,8 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 
 input TeamSetInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23551,6 +23309,8 @@ input TeamStreamCursorInput {
 
 input TeamStreamCursorValueInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -23600,6 +23360,8 @@ input TeamSumOrderBy {
 
 enum TeamUpdateColumn {
   actorId
+  avatar
+  banner
   createdAt
   createdById
   deletedAt
@@ -24802,6 +24564,8 @@ type User {
   actionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   actor: Actor!
   actorId: bigint!
+  avatar: String!
+  banner: String!
   createdActions(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): [Action!]!
   createdActionsAggregate(distinctOn: [ActionSelectColumn!], limit: Int, offset: Int, orderBy: [ActionOrderBy!], where: ActionBoolExp): ActionAggregate!
   createdActorImages(distinctOn: [ActorImageSelectColumn!], limit: Int, offset: Int, orderBy: [ActorImageOrderBy!], where: ActorImageBoolExp): [ActorImage!]!
@@ -25040,6 +24804,8 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
+  avatar: StringComparisonExp
+  banner: StringComparisonExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -25206,6 +24972,8 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
+  avatar: String
+  banner: String
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -25293,6 +25061,8 @@ input UserInsertInput {
 
 type UserMaxFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25308,6 +25078,8 @@ type UserMaxFields {
 
 input UserMaxOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25323,6 +25095,8 @@ input UserMaxOrderBy {
 
 type UserMinFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25338,6 +25112,8 @@ type UserMinFields {
 
 input UserMinOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -25371,6 +25147,8 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -25462,6 +25240,8 @@ input UserPkColumnsInput {
 
 enum UserSelectColumn {
   actorId
+  avatar
+  banner
   createdAt
   createdById
   deletedAt
@@ -25501,6 +25281,8 @@ enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
 
 input UserSetInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25575,6 +25357,8 @@ input UserStreamCursorInput {
 
 input UserStreamCursorValueInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -25612,6 +25396,8 @@ input UserSumOrderBy {
 
 enum UserUpdateColumn {
   actorId
+  avatar
+  banner
   createdAt
   createdById
   deletedAt

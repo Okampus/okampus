@@ -24,7 +24,6 @@
 - "!include public_file_upload.yaml"
 - "!include public_finance.yaml"
 - "!include public_finance_attachments.yaml"
-- "!include public_finance_tags.yaml"
 - "!include public_follow.yaml"
 - "!include public_form.yaml"
 - "!include public_form_submission.yaml"

@@ -43,13 +43,6 @@ array_relationships:
         table:
           name: finance_attachments
           schema: public
-  - name: financeTags
-    using:
-      foreign_key_constraint_on:
-        column: finance_id
-        table:
-          name: finance_tags
-          schema: public
   - name: grantAllocates
     using:
       foreign_key_constraint_on:

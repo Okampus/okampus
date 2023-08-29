@@ -13949,42 +13949,6 @@ type Finance {
   ): FinanceAttachmentsAggregate!
 
   # An array relationship
-  financeTags(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): [FinanceTags!]!
-
-  # An aggregate relationship
-  financeTagsAggregate(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): FinanceTagsAggregate!
-
-  # An array relationship
   grantAllocates(
     # distinct select on columns
     distinctOn: [GrantAllocateSelectColumn!]
@@ -14478,8 +14442,6 @@ input FinanceBoolExp {
   expenseId: BigintComparisonExp
   financeAttachments: FinanceAttachmentsBoolExp
   financeAttachmentsAggregate: FinanceAttachmentsAggregateBoolExp
-  financeTags: FinanceTagsBoolExp
-  financeTagsAggregate: FinanceTagsAggregateBoolExp
   grantAllocates: GrantAllocateBoolExp
   grantAllocatesAggregate: GrantAllocateAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
@@ -14547,7 +14509,6 @@ input FinanceInsertInput {
   expense: ExpenseObjRelInsertInput
   expenseId: bigint
   financeAttachments: FinanceAttachmentsArrRelInsertInput
-  financeTags: FinanceTagsArrRelInsertInput
   grantAllocates: GrantAllocateArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
@@ -14716,7 +14677,6 @@ input FinanceOrderBy {
   expense: ExpenseOrderBy
   expenseId: OrderBy
   financeAttachmentsAggregate: FinanceAttachmentsAggregateOrderBy
-  financeTagsAggregate: FinanceTagsAggregateOrderBy
   grantAllocatesAggregate: GrantAllocateAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
@@ -15027,303 +14987,6 @@ input FinanceSumOrderBy {
   receivedById: OrderBy
   teamId: OrderBy
   tenantId: OrderBy
-}
-
-# columns and relationships of "finance_tags"
-type FinanceTags {
-  # An object relationship
-  finance: Finance!
-  financeId: bigint!
-
-  # An object relationship
-  tag: Tag!
-  tagId: bigint!
-}
-
-# aggregated selection of "finance_tags"
-type FinanceTagsAggregate {
-  aggregate: FinanceTagsAggregateFields
-  nodes: [FinanceTags!]!
-}
-
-input FinanceTagsAggregateBoolExp {
-  count: financeTagsAggregateBoolExpCount
-}
-
-input financeTagsAggregateBoolExpCount {
-  arguments: [FinanceTagsSelectColumn!]
-  distinct: Boolean
-  filter: FinanceTagsBoolExp
-  predicate: IntComparisonExp!
-}
-
-# aggregate fields of "finance_tags"
-type FinanceTagsAggregateFields {
-  avg: FinanceTagsAvgFields
-  count(columns: [FinanceTagsSelectColumn!], distinct: Boolean): Int!
-  max: FinanceTagsMaxFields
-  min: FinanceTagsMinFields
-  stddev: FinanceTagsStddevFields
-  stddevPop: FinanceTagsStddevPopFields
-  stddevSamp: FinanceTagsStddevSampFields
-  sum: FinanceTagsSumFields
-  varPop: FinanceTagsVarPopFields
-  varSamp: FinanceTagsVarSampFields
-  variance: FinanceTagsVarianceFields
-}
-
-# order by aggregate values of table "finance_tags"
-input FinanceTagsAggregateOrderBy {
-  avg: FinanceTagsAvgOrderBy
-  count: OrderBy
-  max: FinanceTagsMaxOrderBy
-  min: FinanceTagsMinOrderBy
-  stddev: FinanceTagsStddevOrderBy
-  stddevPop: FinanceTagsStddevPopOrderBy
-  stddevSamp: FinanceTagsStddevSampOrderBy
-  sum: FinanceTagsSumOrderBy
-  varPop: FinanceTagsVarPopOrderBy
-  varSamp: FinanceTagsVarSampOrderBy
-  variance: FinanceTagsVarianceOrderBy
-}
-
-# input type for inserting array relation for remote table "finance_tags"
-input FinanceTagsArrRelInsertInput {
-  data: [FinanceTagsInsertInput!]!
-
-  # upsert condition
-  onConflict: FinanceTagsOnConflict
-}
-
-# aggregate avg on columns
-type FinanceTagsAvgFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by avg() on columns of table "finance_tags"
-input FinanceTagsAvgOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# Boolean expression to filter rows from the table "finance_tags". All fields are combined with a logical 'AND'.
-input FinanceTagsBoolExp {
-  _and: [FinanceTagsBoolExp!]
-  _not: FinanceTagsBoolExp
-  _or: [FinanceTagsBoolExp!]
-  finance: FinanceBoolExp
-  financeId: BigintComparisonExp
-  tag: TagBoolExp
-  tagId: BigintComparisonExp
-}
-
-# unique or primary key constraints on table "finance_tags"
-enum FinanceTagsConstraint {
-  # unique or primary key constraint on columns "finance_id", "tag_id"
-  finance_tags_pkey
-}
-
-# input type for incrementing numeric columns in table "finance_tags"
-input FinanceTagsIncInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-# input type for inserting data into table "finance_tags"
-input FinanceTagsInsertInput {
-  finance: FinanceObjRelInsertInput
-  financeId: bigint
-  tag: TagObjRelInsertInput
-  tagId: bigint
-}
-
-# aggregate max on columns
-type FinanceTagsMaxFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-# order by max() on columns of table "finance_tags"
-input FinanceTagsMaxOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# aggregate min on columns
-type FinanceTagsMinFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-# order by min() on columns of table "finance_tags"
-input FinanceTagsMinOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# response of any mutation on the table "finance_tags"
-type FinanceTagsMutationResponse {
-  # number of rows affected by the mutation
-  affectedRows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [FinanceTags!]!
-}
-
-# on_conflict condition type for table "finance_tags"
-input FinanceTagsOnConflict {
-  constraint: FinanceTagsConstraint!
-  updateColumns: [FinanceTagsUpdateColumn!]! = []
-  where: FinanceTagsBoolExp
-}
-
-# Ordering options when selecting data from "finance_tags".
-input FinanceTagsOrderBy {
-  finance: FinanceOrderBy
-  financeId: OrderBy
-  tag: TagOrderBy
-  tagId: OrderBy
-}
-
-# primary key columns input for table: finance_tags
-input FinanceTagsPkColumnsInput {
-  financeId: bigint!
-  tagId: bigint!
-}
-
-# select columns of table "finance_tags"
-enum FinanceTagsSelectColumn {
-  # column name
-  financeId
-
-  # column name
-  tagId
-}
-
-# input type for updating data in table "finance_tags"
-input FinanceTagsSetInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-# aggregate stddev on columns
-type FinanceTagsStddevFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by stddev() on columns of table "finance_tags"
-input FinanceTagsStddevOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# aggregate stddevPop on columns
-type FinanceTagsStddevPopFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by stddevPop() on columns of table "finance_tags"
-input FinanceTagsStddevPopOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# aggregate stddevSamp on columns
-type FinanceTagsStddevSampFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by stddevSamp() on columns of table "finance_tags"
-input FinanceTagsStddevSampOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# Streaming cursor of the table "finance_tags"
-input FinanceTagsStreamCursorInput {
-  # Stream column input with initial value
-  initialValue: FinanceTagsStreamCursorValueInput!
-
-  # cursor ordering
-  ordering: CursorOrdering
-}
-
-# Initial value of the column from where the streaming should start
-input FinanceTagsStreamCursorValueInput {
-  financeId: bigint
-  tagId: bigint
-}
-
-# aggregate sum on columns
-type FinanceTagsSumFields {
-  financeId: bigint
-  tagId: bigint
-}
-
-# order by sum() on columns of table "finance_tags"
-input FinanceTagsSumOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# update columns of table "finance_tags"
-enum FinanceTagsUpdateColumn {
-  # column name
-  financeId
-
-  # column name
-  tagId
-}
-
-input FinanceTagsUpdates {
-  # increments the numeric columns with given value of the filtered values
-  _inc: FinanceTagsIncInput
-
-  # sets the columns of the filtered rows to the given values
-  _set: FinanceTagsSetInput
-
-  # filter the rows which have to be updated
-  where: FinanceTagsBoolExp!
-}
-
-# aggregate variance on columns
-type FinanceTagsVarianceFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by variance() on columns of table "finance_tags"
-input FinanceTagsVarianceOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# aggregate varPop on columns
-type FinanceTagsVarPopFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by varPop() on columns of table "finance_tags"
-input FinanceTagsVarPopOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
-}
-
-# aggregate varSamp on columns
-type FinanceTagsVarSampFields {
-  financeId: Float
-  tagId: Float
-}
-
-# order by varSamp() on columns of table "finance_tags"
-input FinanceTagsVarSampOrderBy {
-  financeId: OrderBy
-  tagId: OrderBy
 }
 
 # update columns of table "finance"
@@ -23668,15 +23331,6 @@ type Mutation {
   # delete single row from the table: "finance"
   deleteFinanceByPk(id: bigint!): Finance
 
-  # delete data from the table: "finance_tags"
-  deleteFinanceTags(
-    # filter the rows which have to be deleted
-    where: FinanceTagsBoolExp!
-  ): FinanceTagsMutationResponse
-
-  # delete single row from the table: "finance_tags"
-  deleteFinanceTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
-
   # delete data from the table: "follow"
   deleteFollow(
     # filter the rows which have to be deleted
@@ -24423,24 +24077,6 @@ type Mutation {
     # upsert condition
     onConflict: FinanceOnConflict
   ): Finance
-
-  # insert data into the table: "finance_tags"
-  insertFinanceTags(
-    # the rows to be inserted
-    objects: [FinanceTagsInsertInput!]!
-
-    # upsert condition
-    onConflict: FinanceTagsOnConflict
-  ): FinanceTagsMutationResponse
-
-  # insert a single row into the table: "finance_tags"
-  insertFinanceTagsOne(
-    # the row to be inserted
-    object: FinanceTagsInsertInput!
-
-    # upsert condition
-    onConflict: FinanceTagsOnConflict
-  ): FinanceTags
 
   # insert data into the table: "follow"
   insertFollow(
@@ -25759,34 +25395,6 @@ type Mutation {
     # updates to execute, in order
     updates: [FinanceUpdates!]!
   ): [FinanceMutationResponse]
-
-  # update data of the table: "finance_tags"
-  updateFinanceTags(
-    # increments the numeric columns with given value of the filtered values
-    _inc: FinanceTagsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: FinanceTagsSetInput
-
-    # filter the rows which have to be updated
-    where: FinanceTagsBoolExp!
-  ): FinanceTagsMutationResponse
-
-  # update single row of the table: "finance_tags"
-  updateFinanceTagsByPk(
-    # increments the numeric columns with given value of the filtered values
-    _inc: FinanceTagsIncInput
-
-    # sets the columns of the filtered rows to the given values
-    _set: FinanceTagsSetInput
-    pkColumns: FinanceTagsPkColumnsInput!
-  ): FinanceTags
-
-  # update multiples rows of table: "finance_tags"
-  updateFinanceTagsMany(
-    # updates to execute, in order
-    updates: [FinanceTagsUpdates!]!
-  ): [FinanceTagsMutationResponse]
 
   # update data of the table: "follow"
   updateFollow(
@@ -29936,45 +29544,6 @@ type Query {
 
   # fetch data from the table: "finance" using primary key columns
   financeByPk(id: bigint!): Finance
-
-  # An array relationship
-  financeTags(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): [FinanceTags!]!
-
-  # An aggregate relationship
-  financeTagsAggregate(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): FinanceTagsAggregate!
-
-  # fetch data from the table: "finance_tags" using primary key columns
-  financeTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
 
   # fetch data from the table: "follow"
   follow(
@@ -34783,57 +34352,6 @@ type Subscription {
     where: FinanceBoolExp
   ): [Finance!]!
 
-  # An array relationship
-  financeTags(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): [FinanceTags!]!
-
-  # An aggregate relationship
-  financeTagsAggregate(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): FinanceTagsAggregate!
-
-  # fetch data from the table: "finance_tags" using primary key columns
-  financeTagsByPk(financeId: bigint!, tagId: bigint!): FinanceTags
-
-  # fetch data from the table in a streaming manner: "finance_tags"
-  financeTagsStream(
-    # maximum number of rows returned in a single batch
-    batchSize: Int!
-
-    # cursor to stream the results returned by the query
-    cursor: [FinanceTagsStreamCursorInput]!
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): [FinanceTags!]!
-
   # fetch data from the table: "follow"
   follow(
     # distinct select on columns
@@ -36497,42 +36015,6 @@ type Tag {
     # filter the rows returned
     where: EventTagsBoolExp
   ): EventTagsAggregate!
-
-  # An array relationship
-  financeTags(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): [FinanceTags!]!
-
-  # An aggregate relationship
-  financeTagsAggregate(
-    # distinct select on columns
-    distinctOn: [FinanceTagsSelectColumn!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    orderBy: [FinanceTagsOrderBy!]
-
-    # filter the rows returned
-    where: FinanceTagsBoolExp
-  ): FinanceTagsAggregate!
   hiddenAt: timestamptz
   id: bigint!
 
@@ -36670,8 +36152,6 @@ input TagBoolExp {
   description: StringComparisonExp
   eventTags: EventTagsBoolExp
   eventTagsAggregate: EventTagsAggregateBoolExp
-  financeTags: FinanceTagsBoolExp
-  financeTagsAggregate: FinanceTagsAggregateBoolExp
   hiddenAt: TimestamptzComparisonExp
   id: BigintComparisonExp
   image: FileUploadBoolExp
@@ -36709,7 +36189,6 @@ input TagInsertInput {
   deletedAt: timestamptz
   description: String
   eventTags: EventTagsArrRelInsertInput
-  financeTags: FinanceTagsArrRelInsertInput
   hiddenAt: timestamptz
   id: bigint
   image: FileUploadObjRelInsertInput
@@ -36820,7 +36299,6 @@ input TagOrderBy {
   deletedAt: OrderBy
   description: OrderBy
   eventTagsAggregate: EventTagsAggregateOrderBy
-  financeTagsAggregate: FinanceTagsAggregateOrderBy
   hiddenAt: OrderBy
   id: OrderBy
   image: FileUploadOrderBy
@@ -37124,6 +36602,7 @@ type Team {
 
   # An object relationship
   administeredTenant: Tenant
+  avatar: String!
 
   # An array relationship
   bankAccounts(
@@ -37160,6 +36639,7 @@ type Team {
     # filter the rows returned
     where: BankAccountBoolExp
   ): BankAccountAggregate!
+  banner: String!
 
   # An array relationship
   childrenTeams(
@@ -37776,8 +37256,10 @@ input TeamBoolExp {
   actor: ActorBoolExp
   actorId: BigintComparisonExp
   administeredTenant: TenantBoolExp
+  avatar: StringComparisonExp
   bankAccounts: BankAccountBoolExp
   bankAccountsAggregate: BankAccountAggregateBoolExp
+  banner: StringComparisonExp
   childrenTeams: TeamBoolExp
   childrenTeamsAggregate: TeamAggregateBoolExp
   createdAt: TimestamptzComparisonExp
@@ -38329,7 +37811,9 @@ input TeamInsertInput {
   actor: ActorObjRelInsertInput
   actorId: bigint
   administeredTenant: TenantObjRelInsertInput
+  avatar: String
   bankAccounts: BankAccountArrRelInsertInput
+  banner: String
   childrenTeams: TeamArrRelInsertInput
   createdAt: timestamptz
   createdBy: UserObjRelInsertInput
@@ -39057,6 +38541,8 @@ input TeamJoinVarSampOrderBy {
 # aggregate max on columns
 type TeamMaxFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -39081,6 +38567,8 @@ type TeamMaxFields {
 # order by max() on columns of table "team"
 input TeamMaxOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -40154,6 +39642,8 @@ input TeamMemberVarSampOrderBy {
 # aggregate min on columns
 type TeamMinFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -40178,6 +39668,8 @@ type TeamMinFields {
 # order by min() on columns of table "team"
 input TeamMinOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -40229,7 +39721,9 @@ input TeamOrderBy {
   actor: ActorOrderBy
   actorId: OrderBy
   administeredTenant: TenantOrderBy
+  avatar: OrderBy
   bankAccountsAggregate: BankAccountAggregateOrderBy
+  banner: OrderBy
   childrenTeamsAggregate: TeamAggregateOrderBy
   createdAt: OrderBy
   createdBy: UserOrderBy
@@ -40281,6 +39775,12 @@ input TeamPkColumnsInput {
 enum TeamSelectColumn {
   # column name
   actorId
+
+  # column name
+  avatar
+
+  # column name
+  banner
 
   # column name
   createdAt
@@ -40367,6 +39867,8 @@ enum TeamSelectColumnTeamAggregateBoolExpBool_orArgumentsColumns {
 # input type for updating data in table "team"
 input TeamSetInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -40480,6 +39982,8 @@ input TeamStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input TeamStreamCursorValueInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -40533,6 +40037,12 @@ input TeamSumOrderBy {
 enum TeamUpdateColumn {
   # column name
   actorId
+
+  # column name
+  avatar
+
+  # column name
+  banner
 
   # column name
   createdAt
@@ -43442,6 +42952,8 @@ type User {
   # An object relationship
   actor: Actor!
   actorId: bigint!
+  avatar: String!
+  banner: String!
 
   # An array relationship
   createdActions(
@@ -45869,6 +45381,8 @@ input UserBoolExp {
   actionsAggregate: ActionAggregateBoolExp
   actor: ActorBoolExp
   actorId: BigintComparisonExp
+  avatar: StringComparisonExp
+  banner: StringComparisonExp
   createdActions: ActionBoolExp
   createdActionsAggregate: ActionAggregateBoolExp
   createdActorImages: ActorImageBoolExp
@@ -46041,6 +45555,8 @@ input UserInsertInput {
   actions: ActionArrRelInsertInput
   actor: ActorObjRelInsertInput
   actorId: bigint
+  avatar: String
+  banner: String
   createdActions: ActionArrRelInsertInput
   createdActorImages: ActorImageArrRelInsertInput
   createdActors: ActorArrRelInsertInput
@@ -46129,6 +45645,8 @@ input UserInsertInput {
 # aggregate max on columns
 type UserMaxFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46145,6 +45663,8 @@ type UserMaxFields {
 # order by max() on columns of table "user"
 input UserMaxOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -46161,6 +45681,8 @@ input UserMaxOrderBy {
 # aggregate min on columns
 type UserMinFields {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46177,6 +45699,8 @@ type UserMinFields {
 # order by min() on columns of table "user"
 input UserMinOrderBy {
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdAt: OrderBy
   createdById: OrderBy
   deletedAt: OrderBy
@@ -46219,6 +45743,8 @@ input UserOrderBy {
   actionsAggregate: ActionAggregateOrderBy
   actor: ActorOrderBy
   actorId: OrderBy
+  avatar: OrderBy
+  banner: OrderBy
   createdActionsAggregate: ActionAggregateOrderBy
   createdActorImagesAggregate: ActorImageAggregateOrderBy
   createdActorsAggregate: ActorAggregateOrderBy
@@ -46313,6 +45839,12 @@ input UserPkColumnsInput {
 enum UserSelectColumn {
   # column name
   actorId
+
+  # column name
+  avatar
+
+  # column name
+  banner
 
   # column name
   createdAt
@@ -46411,6 +45943,8 @@ enum UserSelectColumnUserAggregateBoolExpBool_orArgumentsColumns {
 # input type for updating data in table "user"
 input UserSetInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46496,6 +46030,8 @@ input UserStreamCursorInput {
 # Initial value of the column from where the streaming should start
 input UserStreamCursorValueInput {
   actorId: bigint
+  avatar: String
+  banner: String
   createdAt: timestamptz
   createdById: bigint
   deletedAt: timestamptz
@@ -46537,6 +46073,12 @@ input UserSumOrderBy {
 enum UserUpdateColumn {
   # column name
   actorId
+
+  # column name
+  avatar
+
+  # column name
+  banner
 
   # column name
   createdAt
