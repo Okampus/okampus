@@ -3,10 +3,9 @@ import { TenantScopedEntity } from '../tenant-scoped.entity';
 import { Cascade, Entity, EntityRepositoryType, Enum, EnumType, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { DocumentType } from '@okampus/shared/enums';
 
-import type { Team } from '../team/team.entity';
-import type { Subject } from '../class-group/subject/subject.entity';
-import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { DocumentOptions } from './document.options';
+import type { Team } from '../team/team.entity';
+import type { FileUpload } from '../file-upload/file-upload.entity';
 
 @Entity({ customRepository: () => DocumentRepository })
 export class Document extends TenantScopedEntity {
@@ -28,9 +27,6 @@ export class Document extends TenantScopedEntity {
 
   @OneToOne({ type: 'FileUpload', cascade: [Cascade.ALL] })
   file!: FileUpload;
-
-  @ManyToOne({ type: 'Subject', nullable: true, default: null })
-  subject: Subject | null = null;
 
   @ManyToOne({ type: 'Team', nullable: true, default: null })
   team: Team | null = null;

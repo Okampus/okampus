@@ -12,9 +12,6 @@ object_relationships:
         table:
           name: tenant
           schema: public
-  - name: canteen
-    using:
-      foreign_key_constraint_on: canteen_id
   - name: classGroup
     using:
       foreign_key_constraint_on: class_group_id
@@ -60,13 +57,6 @@ array_relationships:
         column: parent_id
         table:
           name: team
-          schema: public
-  - name: contents
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: content
           schema: public
   - name: documents
     using:

@@ -39,17 +39,11 @@ export enum EntityName {
   Finance = 'Finance',
   TeamJoin = 'TeamJoin',
   TeamMember = 'TeamMember',
-  TeamMetric = 'TeamMetric',
 
   Grant = 'Grant',
   GrantUnlock = 'GrantUnlock',
 
-  Canteen = 'Canteen',
-  CanteenFood = 'CanteenFood',
-  CanteenMenu = 'CanteenMenu',
-
   ClassGroup = 'ClassGroup',
-  ClassGroupTeacher = 'ClassGroupTeacher',
   Cohort = 'Cohort',
 
   Project = 'Project',
@@ -67,19 +61,7 @@ export enum EntityName {
   Form = 'Form',
   FormSubmission = 'FormSubmission',
 
-  Content = 'Content',
-  Thread = 'Thread',
-  Issue = 'Issue',
-
-  Favorite = 'Favorite',
-  Reaction = 'Reaction',
-  Report = 'Report',
-  Validation = 'Validation',
-  View = 'View',
-  Vote = 'Vote',
-
   Document = 'Document',
-  Subject = 'Subject',
 }
 
 // TODO: add test to match all *.entity.ts files with this list (all entities except Log)

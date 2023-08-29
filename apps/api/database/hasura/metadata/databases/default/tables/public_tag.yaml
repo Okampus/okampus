@@ -33,24 +33,10 @@ array_relationships:
         table:
           name: finance_tags
           schema: public
-  - name: issueTags
-    using:
-      foreign_key_constraint_on:
-        column: tag_id
-        table:
-          name: issue_tags
-          schema: public
   - name: projectTags
     using:
       foreign_key_constraint_on:
         column: tag_id
         table:
           name: project_tags
-          schema: public
-  - name: threadTags
-    using:
-      foreign_key_constraint_on:
-        column: tag_id
-        table:
-          name: thread_tags
           schema: public

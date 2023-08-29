@@ -15,18 +15,3 @@ object_relationships:
   - name: tenant
     using:
       foreign_key_constraint_on: tenant_id
-array_relationships:
-  - name: classGroupTeachers
-    using:
-      foreign_key_constraint_on:
-        column: class_group_id
-        table:
-          name: class_group_teacher
-          schema: public
-  - name: subjectClassGroups
-    using:
-      foreign_key_constraint_on:
-        column: class_group_id
-        table:
-          name: subject_class_groups
-          schema: public

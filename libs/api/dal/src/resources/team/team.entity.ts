@@ -17,14 +17,14 @@ import {
   Property,
 } from '@mikro-orm/core';
 
+import type { TeamOptions } from './team.options';
 import type { BankAccount } from './bank-account/bank-account.entity';
+import type { Role } from './role/role.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
-import type { TeamOptions } from './team.options';
 import type { Action } from './action/action.entity';
 import type { ClassGroup } from '../class-group/class-group.entity';
 import type { Cohort } from '../cohort/cohort.entity';
-import type { Canteen } from '../canteen/canteen.entity';
 import type { Document } from '../document/document.entity';
 import type { FileUpload } from '../file-upload/file-upload.entity';
 import type { Pole } from './pole/pole.entity';
@@ -32,7 +32,6 @@ import type { Searchable } from '../../types/search-entity.type';
 import type { Finance } from './finance/finance.entity';
 import type { TeamJoin } from './team-join/team-join.entity';
 import type { TeamMember } from './team-member/team-member.entity';
-import type { Role } from './role/role.entity';
 import type { LegalUnit } from '../actor/legal-unit/legal-unit.entity';
 import type { EventOrganize } from '../event/event-organize/event-organize.entity';
 import type { Tenant } from '../tenant/tenant.entity';
@@ -81,9 +80,6 @@ export class Team extends TenantScopedEntity implements Searchable {
 
   @OneToOne({ type: 'Actor', inversedBy: 'team' })
   actor: Actor;
-
-  @OneToOne({ type: 'Canteen', inversedBy: 'team', nullable: true, default: null })
-  canteen: Canteen | null = null;
 
   @OneToOne({ type: 'Cohort', inversedBy: 'team', nullable: true, default: null })
   cohort: Cohort | null = null;

@@ -22,7 +22,6 @@ import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
 import type { LegalUnitLocation } from './legal-unit-location/legal-unit-location.entity';
-import type { Report } from '../content/report/report.entity';
 import type { User } from '../user/user.entity';
 import type { Team } from '../team/team.entity';
 
@@ -80,10 +79,6 @@ export class Actor extends TenantScopedEntity {
   @OneToMany({ type: 'Social', mappedBy: 'actor' })
   @TransformCollection()
   socials = new Collection<Social>(this);
-
-  @OneToMany({ type: 'Report', mappedBy: 'actor' })
-  @TransformCollection()
-  reports = new Collection<Report>(this);
 
   constructor(options: ActorOptions) {
     super(options);

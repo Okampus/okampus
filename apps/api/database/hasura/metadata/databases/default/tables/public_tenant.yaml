@@ -61,34 +61,6 @@ array_relationships:
         table:
           name: campus
           schema: public
-  - name: canteenFoods
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: canteen_food
-          schema: public
-  - name: canteenMenus
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: canteen_menu
-          schema: public
-  - name: canteens
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: canteen
-          schema: public
-  - name: classGroupTeachers
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: class_group_teacher
-          schema: public
   - name: classGroups
     using:
       foreign_key_constraint_on:
@@ -102,13 +74,6 @@ array_relationships:
         column: tenant_id
         table:
           name: cohort
-          schema: public
-  - name: contents
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: content
           schema: public
   - name: documents
     using:
@@ -180,13 +145,6 @@ array_relationships:
         table:
           name: expense
           schema: public
-  - name: favorites
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: favorite
-          schema: public
   - name: fileUploads
     using:
       foreign_key_constraint_on:
@@ -236,13 +194,6 @@ array_relationships:
         table:
           name: grant
           schema: public
-  - name: issues
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: issue
-          schema: public
   - name: locations
     using:
       foreign_key_constraint_on:
@@ -278,20 +229,6 @@ array_relationships:
         table:
           name: project
           schema: public
-  - name: reactions
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: reaction
-          schema: public
-  - name: reports
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: report
-          schema: public
   - name: roles
     using:
       foreign_key_constraint_on:
@@ -319,13 +256,6 @@ array_relationships:
         column: tenant_id
         table:
           name: social
-          schema: public
-  - name: subjects
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: subject
           schema: public
   - name: tags
     using:
@@ -362,13 +292,6 @@ array_relationships:
         table:
           name: team_member
           schema: public
-  - name: teamMetrics
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: team_metric
-          schema: public
   - name: teams
     using:
       foreign_key_constraint_on:
@@ -383,40 +306,12 @@ array_relationships:
         table:
           name: tenant_organize
           schema: public
-  - name: threads
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: thread
-          schema: public
   - name: users
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
           name: user
-          schema: public
-  - name: validations
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: validation
-          schema: public
-  - name: views
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: view
-          schema: public
-  - name: votes
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: vote
           schema: public
 select_permissions:
   - role: anonymous

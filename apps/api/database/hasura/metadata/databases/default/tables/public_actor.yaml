@@ -86,13 +86,6 @@ array_relationships:
         table:
           name: finance
           schema: public
-  - name: reports
-    using:
-      foreign_key_constraint_on:
-        column: actor_id
-        table:
-          name: report
-          schema: public
   - name: shortcuts
     using:
       foreign_key_constraint_on:

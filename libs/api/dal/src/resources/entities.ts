@@ -2,21 +2,9 @@ import { ActorImage } from './actor/actor-image/actor-image.entity';
 import { Actor } from './actor/actor.entity';
 import { Social } from './actor/social/social.entity';
 import { Tag } from './actor/tag/tag.entity';
-import { CanteenFood } from './canteen/canteen-food/canteen-food.entity';
-import { CanteenMenu } from './canteen/canteen-menu/canteen-menu.entity';
-import { Canteen } from './canteen/canteen.entity';
-import { ClassGroupTeacher } from './class-group/class-group-teacher/class-group-teacher.entity';
 import { ClassGroup } from './class-group/class-group.entity';
 import { Cohort } from './cohort/cohort.entity';
-import { Thread } from './thread/thread.entity';
-import { Content } from './content/content.entity';
-import { Favorite } from './content/favorite/favorite.entity';
-import { Reaction } from './content/reaction/reaction.entity';
-import { Report } from './content/report/report.entity';
-import { Validation } from './content/validation/validation.entity';
-import { Vote } from './content/vote/vote.entity';
 import { Document } from './document/document.entity';
-import { Subject } from './class-group/subject/subject.entity';
 import { EventJoin } from './event/event-join/event-join.entity';
 import { Event } from './event/event.entity';
 import { FormSubmission } from './form-submission/form-submission.entity';
@@ -29,7 +17,6 @@ import { Action } from './team/action/action.entity';
 import { Finance } from './team/finance/finance.entity';
 import { TeamJoin } from './team/team-join/team-join.entity';
 import { TeamMember } from './team/team-member/team-member.entity';
-import { TeamMetric } from './team/team-metric/team-metric.entity';
 import { Role } from './team/role/role.entity';
 import { TeamMemberRole } from './team/team-member-role/team-member-role.entity';
 import { Team } from './team/team.entity';
@@ -48,7 +35,6 @@ import { Log } from './log/log.entity';
 import { Mission } from './team/mission/mission.entity';
 import { MissionJoin } from './team/mission-join/mission-join.entity';
 import { EventOrganize } from './event/event-organize/event-organize.entity';
-import { Issue } from './issue/issue.entity';
 import { LegalUnit } from './actor/legal-unit/legal-unit.entity';
 import { Grant } from './team/grant/grant.entity';
 import { GrantAllocate } from './team/grant-allocate/grant-allocate.entity';
@@ -59,7 +45,6 @@ import { BankAccount } from './team/bank-account/bank-account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
 import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
-import { View } from './content/view/view.entity';
 import { EventSupervisor } from './event/event-supervisor/event-supervisor.entity';
 import { EventFavorite } from './event/event-favorite/event-favorite.entity';
 
@@ -106,17 +91,11 @@ export const allEntities = [
   Finance,
   TeamJoin,
   TeamMember,
-  TeamMetric,
 
   Grant,
   GrantAllocate,
 
-  Canteen,
-  CanteenFood,
-  CanteenMenu,
-
   ClassGroup,
-  ClassGroupTeacher,
   Cohort,
 
   Project,
@@ -134,19 +113,7 @@ export const allEntities = [
   Form,
   FormSubmission,
 
-  Content,
-  Thread,
-  Issue,
-
-  Favorite,
-  Reaction,
-  Report,
-  Validation,
-  View,
-  Vote,
-
   Document,
-  Subject,
 ];
 
 // TODO: add test to match all *.entity.ts files with this list

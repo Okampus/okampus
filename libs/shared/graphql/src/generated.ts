@@ -605,8 +605,6 @@ export type Actor = {
   payedFinancesAggregate: FinanceAggregate;
   receivedFinances: Array<Finance>;
   receivedFinancesAggregate: FinanceAggregate;
-  reports: Array<Report>;
-  reportsAggregate: ReportAggregate;
   shortcuts: Array<Shortcut>;
   shortcutsAggregate: ShortcutAggregate;
   slug: Scalars['String']['output'];
@@ -730,22 +728,6 @@ export type ActorReceivedFinancesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
-};
-
-export type ActorReportsArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type ActorReportsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
 };
 
 export type ActorShortcutsArgs = {
@@ -872,8 +854,6 @@ export type ActorBoolExp = {
   payedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
   receivedFinances?: InputMaybe<FinanceBoolExp>;
   receivedFinancesAggregate?: InputMaybe<FinanceAggregateBoolExp>;
-  reports?: InputMaybe<ReportBoolExp>;
-  reportsAggregate?: InputMaybe<ReportAggregateBoolExp>;
   shortcuts?: InputMaybe<ShortcutBoolExp>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
   slug?: InputMaybe<StringComparisonExp>;
@@ -1315,7 +1295,6 @@ export type ActorInsertInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   payedFinances?: InputMaybe<FinanceArrRelInsertInput>;
   receivedFinances?: InputMaybe<FinanceArrRelInsertInput>;
-  reports?: InputMaybe<ReportArrRelInsertInput>;
   shortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
@@ -1430,7 +1409,6 @@ export type ActorOrderBy = {
   name?: InputMaybe<OrderBy>;
   payedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   receivedFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
-  reportsAggregate?: InputMaybe<ReportAggregateOrderBy>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
   slug?: InputMaybe<OrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
@@ -4071,1077 +4049,8 @@ export type CampusVarianceOrderBy = {
   tenantId?: InputMaybe<OrderBy>;
 };
 
-export type Canteen = {
-  __typename?: 'Canteen';
-  canteenFoods: Array<CanteenFood>;
-  canteenFoodsAggregate: CanteenFoodAggregate;
-  canteenMenus: Array<CanteenMenu>;
-  canteenMenusAggregate: CanteenMenuAggregate;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  team?: Maybe<Team>;
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type CanteenCanteenFoodsArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type CanteenCanteenFoodsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type CanteenCanteenMenusArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type CanteenCanteenMenusAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type CanteenAggregate = {
-  __typename?: 'CanteenAggregate';
-  aggregate?: Maybe<CanteenAggregateFields>;
-  nodes: Array<Canteen>;
-};
-
-export type CanteenAggregateBoolExp = {
-  count?: InputMaybe<CanteenAggregateBoolExpCount>;
-};
-
-export type CanteenAggregateFields = {
-  __typename?: 'CanteenAggregateFields';
-  avg?: Maybe<CanteenAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<CanteenMaxFields>;
-  min?: Maybe<CanteenMinFields>;
-  stddev?: Maybe<CanteenStddevFields>;
-  stddevPop?: Maybe<CanteenStddevPopFields>;
-  stddevSamp?: Maybe<CanteenStddevSampFields>;
-  sum?: Maybe<CanteenSumFields>;
-  varPop?: Maybe<CanteenVarPopFields>;
-  varSamp?: Maybe<CanteenVarSampFields>;
-  variance?: Maybe<CanteenVarianceFields>;
-};
-
-export type CanteenAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<CanteenSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type CanteenAggregateOrderBy = {
-  avg?: InputMaybe<CanteenAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<CanteenMaxOrderBy>;
-  min?: InputMaybe<CanteenMinOrderBy>;
-  stddev?: InputMaybe<CanteenStddevOrderBy>;
-  stddevPop?: InputMaybe<CanteenStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<CanteenStddevSampOrderBy>;
-  sum?: InputMaybe<CanteenSumOrderBy>;
-  varPop?: InputMaybe<CanteenVarPopOrderBy>;
-  varSamp?: InputMaybe<CanteenVarSampOrderBy>;
-  variance?: InputMaybe<CanteenVarianceOrderBy>;
-};
-
-export type CanteenArrRelInsertInput = {
-  data: Array<CanteenInsertInput>;
-  onConflict?: InputMaybe<CanteenOnConflict>;
-};
-
-export type CanteenAvgFields = {
-  __typename?: 'CanteenAvgFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenAvgOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenBoolExp = {
-  _and?: InputMaybe<Array<CanteenBoolExp>>;
-  _not?: InputMaybe<CanteenBoolExp>;
-  _or?: InputMaybe<Array<CanteenBoolExp>>;
-  canteenFoods?: InputMaybe<CanteenFoodBoolExp>;
-  canteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateBoolExp>;
-  canteenMenus?: InputMaybe<CanteenMenuBoolExp>;
-  canteenMenusAggregate?: InputMaybe<CanteenMenuAggregateBoolExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  description?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  team?: InputMaybe<TeamBoolExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum CanteenConstraint {
-  CanteenPkey = 'canteen_pkey',
-}
-
-export type CanteenFood = {
-  __typename?: 'CanteenFood';
-  canteen: Canteen;
-  canteenId: Scalars['bigint']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type CanteenFoodAggregate = {
-  __typename?: 'CanteenFoodAggregate';
-  aggregate?: Maybe<CanteenFoodAggregateFields>;
-  nodes: Array<CanteenFood>;
-};
-
-export type CanteenFoodAggregateBoolExp = {
-  count?: InputMaybe<CanteenFoodAggregateBoolExpCount>;
-};
-
-export type CanteenFoodAggregateFields = {
-  __typename?: 'CanteenFoodAggregateFields';
-  avg?: Maybe<CanteenFoodAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<CanteenFoodMaxFields>;
-  min?: Maybe<CanteenFoodMinFields>;
-  stddev?: Maybe<CanteenFoodStddevFields>;
-  stddevPop?: Maybe<CanteenFoodStddevPopFields>;
-  stddevSamp?: Maybe<CanteenFoodStddevSampFields>;
-  sum?: Maybe<CanteenFoodSumFields>;
-  varPop?: Maybe<CanteenFoodVarPopFields>;
-  varSamp?: Maybe<CanteenFoodVarSampFields>;
-  variance?: Maybe<CanteenFoodVarianceFields>;
-};
-
-export type CanteenFoodAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type CanteenFoodAggregateOrderBy = {
-  avg?: InputMaybe<CanteenFoodAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<CanteenFoodMaxOrderBy>;
-  min?: InputMaybe<CanteenFoodMinOrderBy>;
-  stddev?: InputMaybe<CanteenFoodStddevOrderBy>;
-  stddevPop?: InputMaybe<CanteenFoodStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<CanteenFoodStddevSampOrderBy>;
-  sum?: InputMaybe<CanteenFoodSumOrderBy>;
-  varPop?: InputMaybe<CanteenFoodVarPopOrderBy>;
-  varSamp?: InputMaybe<CanteenFoodVarSampOrderBy>;
-  variance?: InputMaybe<CanteenFoodVarianceOrderBy>;
-};
-
-export type CanteenFoodArrRelInsertInput = {
-  data: Array<CanteenFoodInsertInput>;
-  onConflict?: InputMaybe<CanteenFoodOnConflict>;
-};
-
-export type CanteenFoodAvgFields = {
-  __typename?: 'CanteenFoodAvgFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodAvgOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodBoolExp = {
-  _and?: InputMaybe<Array<CanteenFoodBoolExp>>;
-  _not?: InputMaybe<CanteenFoodBoolExp>;
-  _or?: InputMaybe<Array<CanteenFoodBoolExp>>;
-  canteen?: InputMaybe<CanteenBoolExp>;
-  canteenId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum CanteenFoodConstraint {
-  CanteenFoodPkey = 'canteen_food_pkey',
-}
-
-export type CanteenFoodIncInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenFoodInsertInput = {
-  canteen?: InputMaybe<CanteenObjRelInsertInput>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenFoodMaxFields = {
-  __typename?: 'CanteenFoodMaxFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenFoodMaxOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodMinFields = {
-  __typename?: 'CanteenFoodMinFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenFoodMinOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodMutationResponse = {
-  __typename?: 'CanteenFoodMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<CanteenFood>;
-};
-
-export type CanteenFoodOnConflict = {
-  constraint: CanteenFoodConstraint;
-  updateColumns?: Array<CanteenFoodUpdateColumn>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type CanteenFoodOrderBy = {
-  canteen?: InputMaybe<CanteenOrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum CanteenFoodSelectColumn {
-  CanteenId = 'canteenId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenFoodSetInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenFoodStddevFields = {
-  __typename?: 'CanteenFoodStddevFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodStddevOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodStddevPopFields = {
-  __typename?: 'CanteenFoodStddevPopFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodStddevPopOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodStddevSampFields = {
-  __typename?: 'CanteenFoodStddevSampFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodStddevSampOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodStreamCursorInput = {
-  initialValue: CanteenFoodStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type CanteenFoodStreamCursorValueInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenFoodSumFields = {
-  __typename?: 'CanteenFoodSumFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenFoodSumOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum CanteenFoodUpdateColumn {
-  CanteenId = 'canteenId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenFoodUpdates = {
-  _inc?: InputMaybe<CanteenFoodIncInput>;
-  _set?: InputMaybe<CanteenFoodSetInput>;
-  where: CanteenFoodBoolExp;
-};
-
-export type CanteenFoodVarPopFields = {
-  __typename?: 'CanteenFoodVarPopFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodVarPopOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodVarSampFields = {
-  __typename?: 'CanteenFoodVarSampFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodVarSampOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenFoodVarianceFields = {
-  __typename?: 'CanteenFoodVarianceFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenFoodVarianceOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenIncInput = {
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenInsertInput = {
-  canteenFoods?: InputMaybe<CanteenFoodArrRelInsertInput>;
-  canteenMenus?: InputMaybe<CanteenMenuArrRelInsertInput>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  team?: InputMaybe<TeamObjRelInsertInput>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenMaxFields = {
-  __typename?: 'CanteenMaxFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenMaxOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenu = {
-  __typename?: 'CanteenMenu';
-  canteen: Canteen;
-  canteenId: Scalars['bigint']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type CanteenMenuAggregate = {
-  __typename?: 'CanteenMenuAggregate';
-  aggregate?: Maybe<CanteenMenuAggregateFields>;
-  nodes: Array<CanteenMenu>;
-};
-
-export type CanteenMenuAggregateBoolExp = {
-  count?: InputMaybe<CanteenMenuAggregateBoolExpCount>;
-};
-
-export type CanteenMenuAggregateFields = {
-  __typename?: 'CanteenMenuAggregateFields';
-  avg?: Maybe<CanteenMenuAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<CanteenMenuMaxFields>;
-  min?: Maybe<CanteenMenuMinFields>;
-  stddev?: Maybe<CanteenMenuStddevFields>;
-  stddevPop?: Maybe<CanteenMenuStddevPopFields>;
-  stddevSamp?: Maybe<CanteenMenuStddevSampFields>;
-  sum?: Maybe<CanteenMenuSumFields>;
-  varPop?: Maybe<CanteenMenuVarPopFields>;
-  varSamp?: Maybe<CanteenMenuVarSampFields>;
-  variance?: Maybe<CanteenMenuVarianceFields>;
-};
-
-export type CanteenMenuAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type CanteenMenuAggregateOrderBy = {
-  avg?: InputMaybe<CanteenMenuAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<CanteenMenuMaxOrderBy>;
-  min?: InputMaybe<CanteenMenuMinOrderBy>;
-  stddev?: InputMaybe<CanteenMenuStddevOrderBy>;
-  stddevPop?: InputMaybe<CanteenMenuStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<CanteenMenuStddevSampOrderBy>;
-  sum?: InputMaybe<CanteenMenuSumOrderBy>;
-  varPop?: InputMaybe<CanteenMenuVarPopOrderBy>;
-  varSamp?: InputMaybe<CanteenMenuVarSampOrderBy>;
-  variance?: InputMaybe<CanteenMenuVarianceOrderBy>;
-};
-
-export type CanteenMenuArrRelInsertInput = {
-  data: Array<CanteenMenuInsertInput>;
-  onConflict?: InputMaybe<CanteenMenuOnConflict>;
-};
-
-export type CanteenMenuAvgFields = {
-  __typename?: 'CanteenMenuAvgFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuAvgOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuBoolExp = {
-  _and?: InputMaybe<Array<CanteenMenuBoolExp>>;
-  _not?: InputMaybe<CanteenMenuBoolExp>;
-  _or?: InputMaybe<Array<CanteenMenuBoolExp>>;
-  canteen?: InputMaybe<CanteenBoolExp>;
-  canteenId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum CanteenMenuConstraint {
-  CanteenMenuPkey = 'canteen_menu_pkey',
-}
-
-export type CanteenMenuIncInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenMenuInsertInput = {
-  canteen?: InputMaybe<CanteenObjRelInsertInput>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenMenuMaxFields = {
-  __typename?: 'CanteenMenuMaxFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenMenuMaxOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuMinFields = {
-  __typename?: 'CanteenMenuMinFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenMenuMinOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuMutationResponse = {
-  __typename?: 'CanteenMenuMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<CanteenMenu>;
-};
-
-export type CanteenMenuOnConflict = {
-  constraint: CanteenMenuConstraint;
-  updateColumns?: Array<CanteenMenuUpdateColumn>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type CanteenMenuOrderBy = {
-  canteen?: InputMaybe<CanteenOrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum CanteenMenuSelectColumn {
-  CanteenId = 'canteenId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenMenuSetInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenMenuStddevFields = {
-  __typename?: 'CanteenMenuStddevFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuStddevOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuStddevPopFields = {
-  __typename?: 'CanteenMenuStddevPopFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuStddevPopOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuStddevSampFields = {
-  __typename?: 'CanteenMenuStddevSampFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuStddevSampOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuStreamCursorInput = {
-  initialValue: CanteenMenuStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type CanteenMenuStreamCursorValueInput = {
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenMenuSumFields = {
-  __typename?: 'CanteenMenuSumFields';
-  canteenId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenMenuSumOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum CanteenMenuUpdateColumn {
-  CanteenId = 'canteenId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenMenuUpdates = {
-  _inc?: InputMaybe<CanteenMenuIncInput>;
-  _set?: InputMaybe<CanteenMenuSetInput>;
-  where: CanteenMenuBoolExp;
-};
-
-export type CanteenMenuVarPopFields = {
-  __typename?: 'CanteenMenuVarPopFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuVarPopOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuVarSampFields = {
-  __typename?: 'CanteenMenuVarSampFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuVarSampOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMenuVarianceFields = {
-  __typename?: 'CanteenMenuVarianceFields';
-  canteenId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenMenuVarianceOrderBy = {
-  canteenId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMinFields = {
-  __typename?: 'CanteenMinFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenMinOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenMutationResponse = {
-  __typename?: 'CanteenMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Canteen>;
-};
-
-export type CanteenObjRelInsertInput = {
-  data: CanteenInsertInput;
-  onConflict?: InputMaybe<CanteenOnConflict>;
-};
-
-export type CanteenOnConflict = {
-  constraint: CanteenConstraint;
-  updateColumns?: Array<CanteenUpdateColumn>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type CanteenOrderBy = {
-  canteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateOrderBy>;
-  canteenMenusAggregate?: InputMaybe<CanteenMenuAggregateOrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  team?: InputMaybe<TeamOrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum CanteenSelectColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  Description = 'description',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenSetInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenStddevFields = {
-  __typename?: 'CanteenStddevFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenStddevOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenStddevPopFields = {
-  __typename?: 'CanteenStddevPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenStddevPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenStddevSampFields = {
-  __typename?: 'CanteenStddevSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenStddevSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenStreamCursorInput = {
-  initialValue: CanteenStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type CanteenStreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type CanteenSumFields = {
-  __typename?: 'CanteenSumFields';
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type CanteenSumOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum CanteenUpdateColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  Description = 'description',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type CanteenUpdates = {
-  _inc?: InputMaybe<CanteenIncInput>;
-  _set?: InputMaybe<CanteenSetInput>;
-  where: CanteenBoolExp;
-};
-
-export type CanteenVarPopFields = {
-  __typename?: 'CanteenVarPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenVarPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenVarSampFields = {
-  __typename?: 'CanteenVarSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenVarSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type CanteenVarianceFields = {
-  __typename?: 'CanteenVarianceFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CanteenVarianceOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type ClassGroup = {
   __typename?: 'ClassGroup';
-  classGroupTeachers: Array<ClassGroupTeacher>;
-  classGroupTeachersAggregate: ClassGroupTeacherAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -5149,44 +4058,10 @@ export type ClassGroup = {
   description: Scalars['String']['output'];
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
-  subjectClassGroups: Array<SubjectClassGroups>;
-  subjectClassGroupsAggregate: SubjectClassGroupsAggregate;
   team?: Maybe<Team>;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
   type: Scalars['String']['output'];
-};
-
-export type ClassGroupClassGroupTeachersArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type ClassGroupClassGroupTeachersAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type ClassGroupSubjectClassGroupsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type ClassGroupSubjectClassGroupsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
 };
 
 export type ClassGroupAggregate = {
@@ -5255,8 +4130,6 @@ export type ClassGroupBoolExp = {
   _and?: InputMaybe<Array<ClassGroupBoolExp>>;
   _not?: InputMaybe<ClassGroupBoolExp>;
   _or?: InputMaybe<Array<ClassGroupBoolExp>>;
-  classGroupTeachers?: InputMaybe<ClassGroupTeacherBoolExp>;
-  classGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -5264,8 +4137,6 @@ export type ClassGroupBoolExp = {
   description?: InputMaybe<StringComparisonExp>;
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
-  subjectClassGroups?: InputMaybe<SubjectClassGroupsBoolExp>;
-  subjectClassGroupsAggregate?: InputMaybe<SubjectClassGroupsAggregateBoolExp>;
   team?: InputMaybe<TeamBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
@@ -5283,7 +4154,6 @@ export type ClassGroupIncInput = {
 };
 
 export type ClassGroupInsertInput = {
-  classGroupTeachers?: InputMaybe<ClassGroupTeacherArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -5291,7 +4161,6 @@ export type ClassGroupInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  subjectClassGroups?: InputMaybe<SubjectClassGroupsArrRelInsertInput>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
@@ -5362,7 +4231,6 @@ export type ClassGroupOnConflict = {
 };
 
 export type ClassGroupOrderBy = {
-  classGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -5370,7 +4238,6 @@ export type ClassGroupOrderBy = {
   description?: InputMaybe<OrderBy>;
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectClassGroupsAggregate?: InputMaybe<SubjectClassGroupsAggregateOrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
@@ -5469,683 +4336,6 @@ export type ClassGroupSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacher = {
-  __typename?: 'ClassGroupTeacher';
-  classGroup: ClassGroup;
-  classGroupId: Scalars['bigint']['output'];
-  classGroupTeacherSubjects: Array<ClassGroupTeacherSubjects>;
-  classGroupTeacherSubjectsAggregate: ClassGroupTeacherSubjectsAggregate;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  startDate: Scalars['timestamptz']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  user: User;
-  userId: Scalars['bigint']['output'];
-};
-
-export type ClassGroupTeacherClassGroupTeacherSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type ClassGroupTeacherClassGroupTeacherSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type ClassGroupTeacherAggregate = {
-  __typename?: 'ClassGroupTeacherAggregate';
-  aggregate?: Maybe<ClassGroupTeacherAggregateFields>;
-  nodes: Array<ClassGroupTeacher>;
-};
-
-export type ClassGroupTeacherAggregateBoolExp = {
-  count?: InputMaybe<ClassGroupTeacherAggregateBoolExpCount>;
-};
-
-export type ClassGroupTeacherAggregateFields = {
-  __typename?: 'ClassGroupTeacherAggregateFields';
-  avg?: Maybe<ClassGroupTeacherAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ClassGroupTeacherMaxFields>;
-  min?: Maybe<ClassGroupTeacherMinFields>;
-  stddev?: Maybe<ClassGroupTeacherStddevFields>;
-  stddevPop?: Maybe<ClassGroupTeacherStddevPopFields>;
-  stddevSamp?: Maybe<ClassGroupTeacherStddevSampFields>;
-  sum?: Maybe<ClassGroupTeacherSumFields>;
-  varPop?: Maybe<ClassGroupTeacherVarPopFields>;
-  varSamp?: Maybe<ClassGroupTeacherVarSampFields>;
-  variance?: Maybe<ClassGroupTeacherVarianceFields>;
-};
-
-export type ClassGroupTeacherAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ClassGroupTeacherAggregateOrderBy = {
-  avg?: InputMaybe<ClassGroupTeacherAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ClassGroupTeacherMaxOrderBy>;
-  min?: InputMaybe<ClassGroupTeacherMinOrderBy>;
-  stddev?: InputMaybe<ClassGroupTeacherStddevOrderBy>;
-  stddevPop?: InputMaybe<ClassGroupTeacherStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ClassGroupTeacherStddevSampOrderBy>;
-  sum?: InputMaybe<ClassGroupTeacherSumOrderBy>;
-  varPop?: InputMaybe<ClassGroupTeacherVarPopOrderBy>;
-  varSamp?: InputMaybe<ClassGroupTeacherVarSampOrderBy>;
-  variance?: InputMaybe<ClassGroupTeacherVarianceOrderBy>;
-};
-
-export type ClassGroupTeacherArrRelInsertInput = {
-  data: Array<ClassGroupTeacherInsertInput>;
-  onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
-};
-
-export type ClassGroupTeacherAvgFields = {
-  __typename?: 'ClassGroupTeacherAvgFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherAvgOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherBoolExp = {
-  _and?: InputMaybe<Array<ClassGroupTeacherBoolExp>>;
-  _not?: InputMaybe<ClassGroupTeacherBoolExp>;
-  _or?: InputMaybe<Array<ClassGroupTeacherBoolExp>>;
-  classGroup?: InputMaybe<ClassGroupBoolExp>;
-  classGroupId?: InputMaybe<BigintComparisonExp>;
-  classGroupTeacherSubjects?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-  classGroupTeacherSubjectsAggregate?: InputMaybe<ClassGroupTeacherSubjectsAggregateBoolExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  endDate?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  startDate?: InputMaybe<TimestamptzComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ClassGroupTeacherConstraint {
-  ClassGroupTeacherPkey = 'class_group_teacher_pkey',
-}
-
-export type ClassGroupTeacherIncInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherInsertInput = {
-  classGroup?: InputMaybe<ClassGroupObjRelInsertInput>;
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  classGroupTeacherSubjects?: InputMaybe<ClassGroupTeacherSubjectsArrRelInsertInput>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherMaxFields = {
-  __typename?: 'ClassGroupTeacherMaxFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherMaxOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherMinFields = {
-  __typename?: 'ClassGroupTeacherMinFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  endDate?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  startDate?: Maybe<Scalars['timestamptz']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherMinOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherMutationResponse = {
-  __typename?: 'ClassGroupTeacherMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ClassGroupTeacher>;
-};
-
-export type ClassGroupTeacherObjRelInsertInput = {
-  data: ClassGroupTeacherInsertInput;
-  onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
-};
-
-export type ClassGroupTeacherOnConflict = {
-  constraint: ClassGroupTeacherConstraint;
-  updateColumns?: Array<ClassGroupTeacherUpdateColumn>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type ClassGroupTeacherOrderBy = {
-  classGroup?: InputMaybe<ClassGroupOrderBy>;
-  classGroupId?: InputMaybe<OrderBy>;
-  classGroupTeacherSubjectsAggregate?: InputMaybe<ClassGroupTeacherSubjectsAggregateOrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  endDate?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  startDate?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ClassGroupTeacherSelectColumn {
-  ClassGroupId = 'classGroupId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  StartDate = 'startDate',
-  TenantId = 'tenantId',
-  UserId = 'userId',
-}
-
-export type ClassGroupTeacherSetInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherStddevFields = {
-  __typename?: 'ClassGroupTeacherStddevFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherStddevOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherStddevPopFields = {
-  __typename?: 'ClassGroupTeacherStddevPopFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherStddevPopOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherStddevSampFields = {
-  __typename?: 'ClassGroupTeacherStddevSampFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherStddevSampOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherStreamCursorInput = {
-  initialValue: ClassGroupTeacherStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ClassGroupTeacherStreamCursorValueInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  endDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  startDate?: InputMaybe<Scalars['timestamptz']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherSubjects = {
-  __typename?: 'ClassGroupTeacherSubjects';
-  classGroupTeacher: ClassGroupTeacher;
-  classGroupTeacherId: Scalars['bigint']['output'];
-  subject: Subject;
-  subjectId: Scalars['bigint']['output'];
-};
-
-export type ClassGroupTeacherSubjectsAggregate = {
-  __typename?: 'ClassGroupTeacherSubjectsAggregate';
-  aggregate?: Maybe<ClassGroupTeacherSubjectsAggregateFields>;
-  nodes: Array<ClassGroupTeacherSubjects>;
-};
-
-export type ClassGroupTeacherSubjectsAggregateBoolExp = {
-  count?: InputMaybe<ClassGroupTeacherSubjectsAggregateBoolExpCount>;
-};
-
-export type ClassGroupTeacherSubjectsAggregateFields = {
-  __typename?: 'ClassGroupTeacherSubjectsAggregateFields';
-  avg?: Maybe<ClassGroupTeacherSubjectsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ClassGroupTeacherSubjectsMaxFields>;
-  min?: Maybe<ClassGroupTeacherSubjectsMinFields>;
-  stddev?: Maybe<ClassGroupTeacherSubjectsStddevFields>;
-  stddevPop?: Maybe<ClassGroupTeacherSubjectsStddevPopFields>;
-  stddevSamp?: Maybe<ClassGroupTeacherSubjectsStddevSampFields>;
-  sum?: Maybe<ClassGroupTeacherSubjectsSumFields>;
-  varPop?: Maybe<ClassGroupTeacherSubjectsVarPopFields>;
-  varSamp?: Maybe<ClassGroupTeacherSubjectsVarSampFields>;
-  variance?: Maybe<ClassGroupTeacherSubjectsVarianceFields>;
-};
-
-export type ClassGroupTeacherSubjectsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ClassGroupTeacherSubjectsAggregateOrderBy = {
-  avg?: InputMaybe<ClassGroupTeacherSubjectsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ClassGroupTeacherSubjectsMaxOrderBy>;
-  min?: InputMaybe<ClassGroupTeacherSubjectsMinOrderBy>;
-  stddev?: InputMaybe<ClassGroupTeacherSubjectsStddevOrderBy>;
-  stddevPop?: InputMaybe<ClassGroupTeacherSubjectsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ClassGroupTeacherSubjectsStddevSampOrderBy>;
-  sum?: InputMaybe<ClassGroupTeacherSubjectsSumOrderBy>;
-  varPop?: InputMaybe<ClassGroupTeacherSubjectsVarPopOrderBy>;
-  varSamp?: InputMaybe<ClassGroupTeacherSubjectsVarSampOrderBy>;
-  variance?: InputMaybe<ClassGroupTeacherSubjectsVarianceOrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsArrRelInsertInput = {
-  data: Array<ClassGroupTeacherSubjectsInsertInput>;
-  onConflict?: InputMaybe<ClassGroupTeacherSubjectsOnConflict>;
-};
-
-export type ClassGroupTeacherSubjectsAvgFields = {
-  __typename?: 'ClassGroupTeacherSubjectsAvgFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsAvgOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsBoolExp = {
-  _and?: InputMaybe<Array<ClassGroupTeacherSubjectsBoolExp>>;
-  _not?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-  _or?: InputMaybe<Array<ClassGroupTeacherSubjectsBoolExp>>;
-  classGroupTeacher?: InputMaybe<ClassGroupTeacherBoolExp>;
-  classGroupTeacherId?: InputMaybe<BigintComparisonExp>;
-  subject?: InputMaybe<SubjectBoolExp>;
-  subjectId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ClassGroupTeacherSubjectsConstraint {
-  ClassGroupTeacherSubjectsPkey = 'class_group_teacher_subjects_pkey',
-}
-
-export type ClassGroupTeacherSubjectsIncInput = {
-  classGroupTeacherId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherSubjectsInsertInput = {
-  classGroupTeacher?: InputMaybe<ClassGroupTeacherObjRelInsertInput>;
-  classGroupTeacherId?: InputMaybe<Scalars['bigint']['input']>;
-  subject?: InputMaybe<SubjectObjRelInsertInput>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherSubjectsMaxFields = {
-  __typename?: 'ClassGroupTeacherSubjectsMaxFields';
-  classGroupTeacherId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsMaxOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsMinFields = {
-  __typename?: 'ClassGroupTeacherSubjectsMinFields';
-  classGroupTeacherId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsMinOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsMutationResponse = {
-  __typename?: 'ClassGroupTeacherSubjectsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ClassGroupTeacherSubjects>;
-};
-
-export type ClassGroupTeacherSubjectsOnConflict = {
-  constraint: ClassGroupTeacherSubjectsConstraint;
-  updateColumns?: Array<ClassGroupTeacherSubjectsUpdateColumn>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type ClassGroupTeacherSubjectsOrderBy = {
-  classGroupTeacher?: InputMaybe<ClassGroupTeacherOrderBy>;
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subject?: InputMaybe<SubjectOrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsPkColumnsInput = {
-  classGroupTeacherId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
-export enum ClassGroupTeacherSubjectsSelectColumn {
-  ClassGroupTeacherId = 'classGroupTeacherId',
-  SubjectId = 'subjectId',
-}
-
-export type ClassGroupTeacherSubjectsSetInput = {
-  classGroupTeacherId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherSubjectsStddevFields = {
-  __typename?: 'ClassGroupTeacherSubjectsStddevFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsStddevOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsStddevPopFields = {
-  __typename?: 'ClassGroupTeacherSubjectsStddevPopFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsStddevPopOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsStddevSampFields = {
-  __typename?: 'ClassGroupTeacherSubjectsStddevSampFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsStddevSampOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsStreamCursorInput = {
-  initialValue: ClassGroupTeacherSubjectsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ClassGroupTeacherSubjectsStreamCursorValueInput = {
-  classGroupTeacherId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ClassGroupTeacherSubjectsSumFields = {
-  __typename?: 'ClassGroupTeacherSubjectsSumFields';
-  classGroupTeacherId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsSumOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export enum ClassGroupTeacherSubjectsUpdateColumn {
-  ClassGroupTeacherId = 'classGroupTeacherId',
-  SubjectId = 'subjectId',
-}
-
-export type ClassGroupTeacherSubjectsUpdates = {
-  _inc?: InputMaybe<ClassGroupTeacherSubjectsIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSubjectsSetInput>;
-  where: ClassGroupTeacherSubjectsBoolExp;
-};
-
-export type ClassGroupTeacherSubjectsVarPopFields = {
-  __typename?: 'ClassGroupTeacherSubjectsVarPopFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsVarPopOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsVarSampFields = {
-  __typename?: 'ClassGroupTeacherSubjectsVarSampFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsVarSampOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSubjectsVarianceFields = {
-  __typename?: 'ClassGroupTeacherSubjectsVarianceFields';
-  classGroupTeacherId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherSubjectsVarianceOrderBy = {
-  classGroupTeacherId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherSumFields = {
-  __typename?: 'ClassGroupTeacherSumFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ClassGroupTeacherSumOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export enum ClassGroupTeacherUpdateColumn {
-  ClassGroupId = 'classGroupId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  EndDate = 'endDate',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  StartDate = 'startDate',
-  TenantId = 'tenantId',
-  UserId = 'userId',
-}
-
-export type ClassGroupTeacherUpdates = {
-  _inc?: InputMaybe<ClassGroupTeacherIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSetInput>;
-  where: ClassGroupTeacherBoolExp;
-};
-
-export type ClassGroupTeacherVarPopFields = {
-  __typename?: 'ClassGroupTeacherVarPopFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherVarPopOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherVarSampFields = {
-  __typename?: 'ClassGroupTeacherVarSampFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherVarSampOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ClassGroupTeacherVarianceFields = {
-  __typename?: 'ClassGroupTeacherVarianceFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ClassGroupTeacherVarianceOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
 };
 
 export enum ClassGroupUpdateColumn {
@@ -6563,906 +4753,6 @@ export type CompanyInfo = {
   type?: Maybe<Scalars['String']['output']>;
 };
 
-export type Content = {
-  __typename?: 'Content';
-  children: Array<Content>;
-  childrenAggregate: ContentAggregate;
-  contentAttachments: Array<ContentAttachments>;
-  contentAttachmentsAggregate: ContentAttachmentsAggregate;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  favorites: Array<Favorite>;
-  favoritesAggregate: FavoriteAggregate;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  isAnonymous: Scalars['Boolean']['output'];
-  issue?: Maybe<Issue>;
-  parent?: Maybe<Content>;
-  parentId?: Maybe<Scalars['bigint']['output']>;
-  reactions: Array<Reaction>;
-  reactionsAggregate: ReactionAggregate;
-  replies: Array<Content>;
-  repliesAggregate: ContentAggregate;
-  replyingTo?: Maybe<Content>;
-  replyingToId?: Maybe<Scalars['bigint']['output']>;
-  reports: Array<Report>;
-  reportsAggregate: ReportAggregate;
-  team?: Maybe<Team>;
-  teamId?: Maybe<Scalars['bigint']['output']>;
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  text: Scalars['String']['output'];
-  thread?: Maybe<Thread>;
-  validations: Array<Validation>;
-  validationsAggregate: ValidationAggregate;
-  views: Array<View>;
-  viewsAggregate: ViewAggregate;
-  votes: Array<Vote>;
-  votesAggregate: VoteAggregate;
-};
-
-export type ContentChildrenArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type ContentChildrenAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type ContentContentAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type ContentContentAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type ContentFavoritesArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type ContentFavoritesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type ContentReactionsArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type ContentReactionsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type ContentRepliesArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type ContentRepliesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type ContentReportsArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type ContentReportsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type ContentValidationsArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type ContentValidationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type ContentViewsArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type ContentViewsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type ContentVotesArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type ContentVotesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type ContentAggregate = {
-  __typename?: 'ContentAggregate';
-  aggregate?: Maybe<ContentAggregateFields>;
-  nodes: Array<Content>;
-};
-
-export type ContentAggregateBoolExp = {
-  bool_and?: InputMaybe<ContentAggregateBoolExpBool_And>;
-  bool_or?: InputMaybe<ContentAggregateBoolExpBool_Or>;
-  count?: InputMaybe<ContentAggregateBoolExpCount>;
-};
-
-export type ContentAggregateFields = {
-  __typename?: 'ContentAggregateFields';
-  avg?: Maybe<ContentAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ContentMaxFields>;
-  min?: Maybe<ContentMinFields>;
-  stddev?: Maybe<ContentStddevFields>;
-  stddevPop?: Maybe<ContentStddevPopFields>;
-  stddevSamp?: Maybe<ContentStddevSampFields>;
-  sum?: Maybe<ContentSumFields>;
-  varPop?: Maybe<ContentVarPopFields>;
-  varSamp?: Maybe<ContentVarSampFields>;
-  variance?: Maybe<ContentVarianceFields>;
-};
-
-export type ContentAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ContentSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ContentAggregateOrderBy = {
-  avg?: InputMaybe<ContentAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ContentMaxOrderBy>;
-  min?: InputMaybe<ContentMinOrderBy>;
-  stddev?: InputMaybe<ContentStddevOrderBy>;
-  stddevPop?: InputMaybe<ContentStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ContentStddevSampOrderBy>;
-  sum?: InputMaybe<ContentSumOrderBy>;
-  varPop?: InputMaybe<ContentVarPopOrderBy>;
-  varSamp?: InputMaybe<ContentVarSampOrderBy>;
-  variance?: InputMaybe<ContentVarianceOrderBy>;
-};
-
-export type ContentArrRelInsertInput = {
-  data: Array<ContentInsertInput>;
-  onConflict?: InputMaybe<ContentOnConflict>;
-};
-
-export type ContentAttachments = {
-  __typename?: 'ContentAttachments';
-  content: Content;
-  contentId: Scalars['bigint']['output'];
-  fileUpload: FileUpload;
-  fileUploadId: Scalars['bigint']['output'];
-};
-
-export type ContentAttachmentsAggregate = {
-  __typename?: 'ContentAttachmentsAggregate';
-  aggregate?: Maybe<ContentAttachmentsAggregateFields>;
-  nodes: Array<ContentAttachments>;
-};
-
-export type ContentAttachmentsAggregateBoolExp = {
-  count?: InputMaybe<ContentAttachmentsAggregateBoolExpCount>;
-};
-
-export type ContentAttachmentsAggregateFields = {
-  __typename?: 'ContentAttachmentsAggregateFields';
-  avg?: Maybe<ContentAttachmentsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ContentAttachmentsMaxFields>;
-  min?: Maybe<ContentAttachmentsMinFields>;
-  stddev?: Maybe<ContentAttachmentsStddevFields>;
-  stddevPop?: Maybe<ContentAttachmentsStddevPopFields>;
-  stddevSamp?: Maybe<ContentAttachmentsStddevSampFields>;
-  sum?: Maybe<ContentAttachmentsSumFields>;
-  varPop?: Maybe<ContentAttachmentsVarPopFields>;
-  varSamp?: Maybe<ContentAttachmentsVarSampFields>;
-  variance?: Maybe<ContentAttachmentsVarianceFields>;
-};
-
-export type ContentAttachmentsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ContentAttachmentsAggregateOrderBy = {
-  avg?: InputMaybe<ContentAttachmentsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ContentAttachmentsMaxOrderBy>;
-  min?: InputMaybe<ContentAttachmentsMinOrderBy>;
-  stddev?: InputMaybe<ContentAttachmentsStddevOrderBy>;
-  stddevPop?: InputMaybe<ContentAttachmentsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ContentAttachmentsStddevSampOrderBy>;
-  sum?: InputMaybe<ContentAttachmentsSumOrderBy>;
-  varPop?: InputMaybe<ContentAttachmentsVarPopOrderBy>;
-  varSamp?: InputMaybe<ContentAttachmentsVarSampOrderBy>;
-  variance?: InputMaybe<ContentAttachmentsVarianceOrderBy>;
-};
-
-export type ContentAttachmentsArrRelInsertInput = {
-  data: Array<ContentAttachmentsInsertInput>;
-  onConflict?: InputMaybe<ContentAttachmentsOnConflict>;
-};
-
-export type ContentAttachmentsAvgFields = {
-  __typename?: 'ContentAttachmentsAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsBoolExp = {
-  _and?: InputMaybe<Array<ContentAttachmentsBoolExp>>;
-  _not?: InputMaybe<ContentAttachmentsBoolExp>;
-  _or?: InputMaybe<Array<ContentAttachmentsBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  fileUpload?: InputMaybe<FileUploadBoolExp>;
-  fileUploadId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ContentAttachmentsConstraint {
-  ContentAttachmentsPkey = 'content_attachments_pkey',
-}
-
-export type ContentAttachmentsIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ContentAttachmentsInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUpload?: InputMaybe<FileUploadObjRelInsertInput>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ContentAttachmentsMaxFields = {
-  __typename?: 'ContentAttachmentsMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ContentAttachmentsMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsMinFields = {
-  __typename?: 'ContentAttachmentsMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ContentAttachmentsMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsMutationResponse = {
-  __typename?: 'ContentAttachmentsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ContentAttachments>;
-};
-
-export type ContentAttachmentsOnConflict = {
-  constraint: ContentAttachmentsConstraint;
-  updateColumns?: Array<ContentAttachmentsUpdateColumn>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type ContentAttachmentsOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  fileUpload?: InputMaybe<FileUploadOrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsPkColumnsInput = {
-  contentId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export enum ContentAttachmentsSelectColumn {
-  ContentId = 'contentId',
-  FileUploadId = 'fileUploadId',
-}
-
-export type ContentAttachmentsSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ContentAttachmentsStddevFields = {
-  __typename?: 'ContentAttachmentsStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsStddevPopFields = {
-  __typename?: 'ContentAttachmentsStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsStddevSampFields = {
-  __typename?: 'ContentAttachmentsStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsStreamCursorInput = {
-  initialValue: ContentAttachmentsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ContentAttachmentsStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  fileUploadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ContentAttachmentsSumFields = {
-  __typename?: 'ContentAttachmentsSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  fileUploadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ContentAttachmentsSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export enum ContentAttachmentsUpdateColumn {
-  ContentId = 'contentId',
-  FileUploadId = 'fileUploadId',
-}
-
-export type ContentAttachmentsUpdates = {
-  _inc?: InputMaybe<ContentAttachmentsIncInput>;
-  _set?: InputMaybe<ContentAttachmentsSetInput>;
-  where: ContentAttachmentsBoolExp;
-};
-
-export type ContentAttachmentsVarPopFields = {
-  __typename?: 'ContentAttachmentsVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsVarSampFields = {
-  __typename?: 'ContentAttachmentsVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAttachmentsVarianceFields = {
-  __typename?: 'ContentAttachmentsVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  fileUploadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAttachmentsVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  fileUploadId?: InputMaybe<OrderBy>;
-};
-
-export type ContentAvgFields = {
-  __typename?: 'ContentAvgFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentAvgOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentBoolExp = {
-  _and?: InputMaybe<Array<ContentBoolExp>>;
-  _not?: InputMaybe<ContentBoolExp>;
-  _or?: InputMaybe<Array<ContentBoolExp>>;
-  children?: InputMaybe<ContentBoolExp>;
-  childrenAggregate?: InputMaybe<ContentAggregateBoolExp>;
-  contentAttachments?: InputMaybe<ContentAttachmentsBoolExp>;
-  contentAttachmentsAggregate?: InputMaybe<ContentAttachmentsAggregateBoolExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  favorites?: InputMaybe<FavoriteBoolExp>;
-  favoritesAggregate?: InputMaybe<FavoriteAggregateBoolExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  isAnonymous?: InputMaybe<BooleanComparisonExp>;
-  issue?: InputMaybe<IssueBoolExp>;
-  parent?: InputMaybe<ContentBoolExp>;
-  parentId?: InputMaybe<BigintComparisonExp>;
-  reactions?: InputMaybe<ReactionBoolExp>;
-  reactionsAggregate?: InputMaybe<ReactionAggregateBoolExp>;
-  replies?: InputMaybe<ContentBoolExp>;
-  repliesAggregate?: InputMaybe<ContentAggregateBoolExp>;
-  replyingTo?: InputMaybe<ContentBoolExp>;
-  replyingToId?: InputMaybe<BigintComparisonExp>;
-  reports?: InputMaybe<ReportBoolExp>;
-  reportsAggregate?: InputMaybe<ReportAggregateBoolExp>;
-  team?: InputMaybe<TeamBoolExp>;
-  teamId?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  text?: InputMaybe<StringComparisonExp>;
-  thread?: InputMaybe<ThreadBoolExp>;
-  validations?: InputMaybe<ValidationBoolExp>;
-  validationsAggregate?: InputMaybe<ValidationAggregateBoolExp>;
-  views?: InputMaybe<ViewBoolExp>;
-  viewsAggregate?: InputMaybe<ViewAggregateBoolExp>;
-  votes?: InputMaybe<VoteBoolExp>;
-  votesAggregate?: InputMaybe<VoteAggregateBoolExp>;
-};
-
-export enum ContentConstraint {
-  ContentPkey = 'content_pkey',
-}
-
-export type ContentIncInput = {
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  parentId?: InputMaybe<Scalars['bigint']['input']>;
-  replyingToId?: InputMaybe<Scalars['bigint']['input']>;
-  teamId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ContentInsertInput = {
-  children?: InputMaybe<ContentArrRelInsertInput>;
-  contentAttachments?: InputMaybe<ContentAttachmentsArrRelInsertInput>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  favorites?: InputMaybe<FavoriteArrRelInsertInput>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  isAnonymous?: InputMaybe<Scalars['Boolean']['input']>;
-  issue?: InputMaybe<IssueObjRelInsertInput>;
-  parent?: InputMaybe<ContentObjRelInsertInput>;
-  parentId?: InputMaybe<Scalars['bigint']['input']>;
-  reactions?: InputMaybe<ReactionArrRelInsertInput>;
-  replies?: InputMaybe<ContentArrRelInsertInput>;
-  replyingTo?: InputMaybe<ContentObjRelInsertInput>;
-  replyingToId?: InputMaybe<Scalars['bigint']['input']>;
-  reports?: InputMaybe<ReportArrRelInsertInput>;
-  team?: InputMaybe<TeamObjRelInsertInput>;
-  teamId?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  text?: InputMaybe<Scalars['String']['input']>;
-  thread?: InputMaybe<ThreadObjRelInsertInput>;
-  validations?: InputMaybe<ValidationArrRelInsertInput>;
-  views?: InputMaybe<ViewArrRelInsertInput>;
-  votes?: InputMaybe<VoteArrRelInsertInput>;
-};
-
-export type ContentMaxFields = {
-  __typename?: 'ContentMaxFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  parentId?: Maybe<Scalars['bigint']['output']>;
-  replyingToId?: Maybe<Scalars['bigint']['output']>;
-  teamId?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  text?: Maybe<Scalars['String']['output']>;
-};
-
-export type ContentMaxOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  text?: InputMaybe<OrderBy>;
-};
-
-export type ContentMinFields = {
-  __typename?: 'ContentMinFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  parentId?: Maybe<Scalars['bigint']['output']>;
-  replyingToId?: Maybe<Scalars['bigint']['output']>;
-  teamId?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  text?: Maybe<Scalars['String']['output']>;
-};
-
-export type ContentMinOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  text?: InputMaybe<OrderBy>;
-};
-
-export type ContentMutationResponse = {
-  __typename?: 'ContentMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Content>;
-};
-
-export type ContentObjRelInsertInput = {
-  data: ContentInsertInput;
-  onConflict?: InputMaybe<ContentOnConflict>;
-};
-
-export type ContentOnConflict = {
-  constraint: ContentConstraint;
-  updateColumns?: Array<ContentUpdateColumn>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type ContentOrderBy = {
-  childrenAggregate?: InputMaybe<ContentAggregateOrderBy>;
-  contentAttachmentsAggregate?: InputMaybe<ContentAttachmentsAggregateOrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  favoritesAggregate?: InputMaybe<FavoriteAggregateOrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  isAnonymous?: InputMaybe<OrderBy>;
-  issue?: InputMaybe<IssueOrderBy>;
-  parent?: InputMaybe<ContentOrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  reactionsAggregate?: InputMaybe<ReactionAggregateOrderBy>;
-  repliesAggregate?: InputMaybe<ContentAggregateOrderBy>;
-  replyingTo?: InputMaybe<ContentOrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  reportsAggregate?: InputMaybe<ReportAggregateOrderBy>;
-  team?: InputMaybe<TeamOrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  text?: InputMaybe<OrderBy>;
-  thread?: InputMaybe<ThreadOrderBy>;
-  validationsAggregate?: InputMaybe<ValidationAggregateOrderBy>;
-  viewsAggregate?: InputMaybe<ViewAggregateOrderBy>;
-  votesAggregate?: InputMaybe<VoteAggregateOrderBy>;
-};
-
-export type ContentPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ContentSelectColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  IsAnonymous = 'isAnonymous',
-  ParentId = 'parentId',
-  ReplyingToId = 'replyingToId',
-  TeamId = 'teamId',
-  TenantId = 'tenantId',
-  Text = 'text',
-}
-
-export enum ContentSelectColumnContentAggregateBoolExpBool_AndArgumentsColumns {
-  IsAnonymous = 'isAnonymous',
-}
-
-export enum ContentSelectColumnContentAggregateBoolExpBool_OrArgumentsColumns {
-  IsAnonymous = 'isAnonymous',
-}
-
-export type ContentSetInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  isAnonymous?: InputMaybe<Scalars['Boolean']['input']>;
-  parentId?: InputMaybe<Scalars['bigint']['input']>;
-  replyingToId?: InputMaybe<Scalars['bigint']['input']>;
-  teamId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  text?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ContentStddevFields = {
-  __typename?: 'ContentStddevFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentStddevOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentStddevPopFields = {
-  __typename?: 'ContentStddevPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentStddevPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentStddevSampFields = {
-  __typename?: 'ContentStddevSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentStddevSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentStreamCursorInput = {
-  initialValue: ContentStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ContentStreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  isAnonymous?: InputMaybe<Scalars['Boolean']['input']>;
-  parentId?: InputMaybe<Scalars['bigint']['input']>;
-  replyingToId?: InputMaybe<Scalars['bigint']['input']>;
-  teamId?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  text?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ContentSumFields = {
-  __typename?: 'ContentSumFields';
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  parentId?: Maybe<Scalars['bigint']['output']>;
-  replyingToId?: Maybe<Scalars['bigint']['output']>;
-  teamId?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ContentSumOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum ContentUpdateColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  IsAnonymous = 'isAnonymous',
-  ParentId = 'parentId',
-  ReplyingToId = 'replyingToId',
-  TeamId = 'teamId',
-  TenantId = 'tenantId',
-  Text = 'text',
-}
-
-export type ContentUpdates = {
-  _inc?: InputMaybe<ContentIncInput>;
-  _set?: InputMaybe<ContentSetInput>;
-  where: ContentBoolExp;
-};
-
-export type ContentVarPopFields = {
-  __typename?: 'ContentVarPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentVarPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentVarSampFields = {
-  __typename?: 'ContentVarSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentVarSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ContentVarianceFields = {
-  __typename?: 'ContentVarianceFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  parentId?: Maybe<Scalars['Float']['output']>;
-  replyingToId?: Maybe<Scalars['Float']['output']>;
-  teamId?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ContentVarianceOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  replyingToId?: InputMaybe<OrderBy>;
-  teamId?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export enum CursorOrdering {
   Asc = 'ASC',
   Desc = 'DESC',
@@ -7480,8 +4770,6 @@ export type Document = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['bigint']['output'];
   name: Scalars['String']['output'];
-  subject?: Maybe<Subject>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
   team?: Maybe<Team>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenant: Tenant;
@@ -7544,7 +4832,6 @@ export type DocumentAvgFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7554,7 +4841,6 @@ export type DocumentAvgOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7574,8 +4860,6 @@ export type DocumentBoolExp = {
   hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
   id?: InputMaybe<BigintComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
-  subject?: InputMaybe<SubjectBoolExp>;
-  subjectId?: InputMaybe<BigintComparisonExp>;
   team?: InputMaybe<TeamBoolExp>;
   teamId?: InputMaybe<BigintComparisonExp>;
   tenant?: InputMaybe<TenantBoolExp>;
@@ -7593,7 +4877,6 @@ export type DocumentIncInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   fileId?: InputMaybe<Scalars['bigint']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   yearVersion?: InputMaybe<Scalars['smallint']['input']>;
@@ -7610,8 +4893,6 @@ export type DocumentInsertInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  subject?: InputMaybe<SubjectObjRelInsertInput>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
   team?: InputMaybe<TeamObjRelInsertInput>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
@@ -7630,7 +4911,6 @@ export type DocumentMaxFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -7646,7 +4926,6 @@ export type DocumentMaxOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -7663,7 +4942,6 @@ export type DocumentMinFields = {
   hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -7679,7 +4957,6 @@ export type DocumentMinOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
@@ -7714,8 +4991,6 @@ export type DocumentOrderBy = {
   hiddenAt?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
-  subject?: InputMaybe<SubjectOrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   team?: InputMaybe<TeamOrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
@@ -7737,7 +5012,6 @@ export enum DocumentSelectColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  SubjectId = 'subjectId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
   Type = 'type',
@@ -7753,7 +5027,6 @@ export type DocumentSetInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -7765,7 +5038,6 @@ export type DocumentStddevFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7775,7 +5047,6 @@ export type DocumentStddevOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7786,7 +5057,6 @@ export type DocumentStddevPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7796,7 +5066,6 @@ export type DocumentStddevPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7807,7 +5076,6 @@ export type DocumentStddevSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7817,7 +5085,6 @@ export type DocumentStddevSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7837,7 +5104,6 @@ export type DocumentStreamCursorValueInput = {
   hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
   teamId?: InputMaybe<Scalars['bigint']['input']>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
@@ -7849,7 +5115,6 @@ export type DocumentSumFields = {
   createdById?: Maybe<Scalars['bigint']['output']>;
   fileId?: Maybe<Scalars['bigint']['output']>;
   id?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
   teamId?: Maybe<Scalars['bigint']['output']>;
   tenantId?: Maybe<Scalars['bigint']['output']>;
   yearVersion?: Maybe<Scalars['smallint']['output']>;
@@ -7859,7 +5124,6 @@ export type DocumentSumOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7874,7 +5138,6 @@ export enum DocumentUpdateColumn {
   HiddenAt = 'hiddenAt',
   Id = 'id',
   Name = 'name',
-  SubjectId = 'subjectId',
   TeamId = 'teamId',
   TenantId = 'tenantId',
   Type = 'type',
@@ -7892,7 +5155,6 @@ export type DocumentVarPopFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7902,7 +5164,6 @@ export type DocumentVarPopOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7913,7 +5174,6 @@ export type DocumentVarSampFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7923,7 +5183,6 @@ export type DocumentVarSampOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -7934,7 +5193,6 @@ export type DocumentVarianceFields = {
   createdById?: Maybe<Scalars['Float']['output']>;
   fileId?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
   teamId?: Maybe<Scalars['Float']['output']>;
   tenantId?: Maybe<Scalars['Float']['output']>;
   yearVersion?: Maybe<Scalars['Float']['output']>;
@@ -7944,7 +5202,6 @@ export type DocumentVarianceOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   fileId?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
   teamId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
   yearVersion?: InputMaybe<OrderBy>;
@@ -13561,356 +10818,9 @@ export type ExpenseVarianceOrderBy = {
   tenantId?: InputMaybe<OrderBy>;
 };
 
-export type Favorite = {
-  __typename?: 'Favorite';
-  content: Content;
-  contentId: Scalars['bigint']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type FavoriteAggregate = {
-  __typename?: 'FavoriteAggregate';
-  aggregate?: Maybe<FavoriteAggregateFields>;
-  nodes: Array<Favorite>;
-};
-
-export type FavoriteAggregateBoolExp = {
-  count?: InputMaybe<FavoriteAggregateBoolExpCount>;
-};
-
-export type FavoriteAggregateFields = {
-  __typename?: 'FavoriteAggregateFields';
-  avg?: Maybe<FavoriteAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<FavoriteMaxFields>;
-  min?: Maybe<FavoriteMinFields>;
-  stddev?: Maybe<FavoriteStddevFields>;
-  stddevPop?: Maybe<FavoriteStddevPopFields>;
-  stddevSamp?: Maybe<FavoriteStddevSampFields>;
-  sum?: Maybe<FavoriteSumFields>;
-  varPop?: Maybe<FavoriteVarPopFields>;
-  varSamp?: Maybe<FavoriteVarSampFields>;
-  variance?: Maybe<FavoriteVarianceFields>;
-};
-
-export type FavoriteAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<FavoriteSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type FavoriteAggregateOrderBy = {
-  avg?: InputMaybe<FavoriteAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<FavoriteMaxOrderBy>;
-  min?: InputMaybe<FavoriteMinOrderBy>;
-  stddev?: InputMaybe<FavoriteStddevOrderBy>;
-  stddevPop?: InputMaybe<FavoriteStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<FavoriteStddevSampOrderBy>;
-  sum?: InputMaybe<FavoriteSumOrderBy>;
-  varPop?: InputMaybe<FavoriteVarPopOrderBy>;
-  varSamp?: InputMaybe<FavoriteVarSampOrderBy>;
-  variance?: InputMaybe<FavoriteVarianceOrderBy>;
-};
-
-export type FavoriteArrRelInsertInput = {
-  data: Array<FavoriteInsertInput>;
-  onConflict?: InputMaybe<FavoriteOnConflict>;
-};
-
-export type FavoriteAvgFields = {
-  __typename?: 'FavoriteAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteBoolExp = {
-  _and?: InputMaybe<Array<FavoriteBoolExp>>;
-  _not?: InputMaybe<FavoriteBoolExp>;
-  _or?: InputMaybe<Array<FavoriteBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum FavoriteConstraint {
-  FavoritePkey = 'favorite_pkey',
-}
-
-export type FavoriteIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FavoriteInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FavoriteMaxFields = {
-  __typename?: 'FavoriteMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FavoriteMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteMinFields = {
-  __typename?: 'FavoriteMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FavoriteMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteMutationResponse = {
-  __typename?: 'FavoriteMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Favorite>;
-};
-
-export type FavoriteOnConflict = {
-  constraint: FavoriteConstraint;
-  updateColumns?: Array<FavoriteUpdateColumn>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type FavoriteOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoritePkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum FavoriteSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type FavoriteSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FavoriteStddevFields = {
-  __typename?: 'FavoriteStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteStddevPopFields = {
-  __typename?: 'FavoriteStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteStddevSampFields = {
-  __typename?: 'FavoriteStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteStreamCursorInput = {
-  initialValue: FavoriteStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type FavoriteStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type FavoriteSumFields = {
-  __typename?: 'FavoriteSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type FavoriteSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum FavoriteUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type FavoriteUpdates = {
-  _inc?: InputMaybe<FavoriteIncInput>;
-  _set?: InputMaybe<FavoriteSetInput>;
-  where: FavoriteBoolExp;
-};
-
-export type FavoriteVarPopFields = {
-  __typename?: 'FavoriteVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteVarSampFields = {
-  __typename?: 'FavoriteVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type FavoriteVarianceFields = {
-  __typename?: 'FavoriteVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type FavoriteVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type FileUpload = {
   __typename?: 'FileUpload';
   actorImage?: Maybe<ActorImage>;
-  contentAttachments: Array<ContentAttachments>;
-  contentAttachmentsAggregate: ContentAttachmentsAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -13957,22 +10867,6 @@ export type FileUpload = {
   tenantId: Scalars['bigint']['output'];
   type: Scalars['String']['output'];
   url: Scalars['String']['output'];
-};
-
-export type FileUploadContentAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type FileUploadContentAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
 };
 
 export type FileUploadEventJoinsArgs = {
@@ -14300,8 +11194,6 @@ export type FileUploadBoolExp = {
   _not?: InputMaybe<FileUploadBoolExp>;
   _or?: InputMaybe<Array<FileUploadBoolExp>>;
   actorImage?: InputMaybe<ActorImageBoolExp>;
-  contentAttachments?: InputMaybe<ContentAttachmentsBoolExp>;
-  contentAttachmentsAggregate?: InputMaybe<ContentAttachmentsAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -14363,7 +11255,6 @@ export type FileUploadIncInput = {
 
 export type FileUploadInsertInput = {
   actorImage?: InputMaybe<ActorImageObjRelInsertInput>;
-  contentAttachments?: InputMaybe<ContentAttachmentsArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -14473,7 +11364,6 @@ export type FileUploadOnConflict = {
 
 export type FileUploadOrderBy = {
   actorImage?: InputMaybe<ActorImageOrderBy>;
-  contentAttachmentsAggregate?: InputMaybe<ContentAttachmentsAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -19224,921 +16114,6 @@ export type IntComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
-export type Issue = {
-  __typename?: 'Issue';
-  content: Content;
-  contentId: Scalars['bigint']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  issueContributors: Array<IssueContributors>;
-  issueContributorsAggregate: IssueContributorsAggregate;
-  issueTags: Array<IssueTags>;
-  issueTagsAggregate: IssueTagsAggregate;
-  name: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type IssueIssueContributorsArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type IssueIssueContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type IssueIssueTagsArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type IssueIssueTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type IssueAggregate = {
-  __typename?: 'IssueAggregate';
-  aggregate?: Maybe<IssueAggregateFields>;
-  nodes: Array<Issue>;
-};
-
-export type IssueAggregateBoolExp = {
-  count?: InputMaybe<IssueAggregateBoolExpCount>;
-};
-
-export type IssueAggregateFields = {
-  __typename?: 'IssueAggregateFields';
-  avg?: Maybe<IssueAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<IssueMaxFields>;
-  min?: Maybe<IssueMinFields>;
-  stddev?: Maybe<IssueStddevFields>;
-  stddevPop?: Maybe<IssueStddevPopFields>;
-  stddevSamp?: Maybe<IssueStddevSampFields>;
-  sum?: Maybe<IssueSumFields>;
-  varPop?: Maybe<IssueVarPopFields>;
-  varSamp?: Maybe<IssueVarSampFields>;
-  variance?: Maybe<IssueVarianceFields>;
-};
-
-export type IssueAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<IssueSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type IssueAggregateOrderBy = {
-  avg?: InputMaybe<IssueAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<IssueMaxOrderBy>;
-  min?: InputMaybe<IssueMinOrderBy>;
-  stddev?: InputMaybe<IssueStddevOrderBy>;
-  stddevPop?: InputMaybe<IssueStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<IssueStddevSampOrderBy>;
-  sum?: InputMaybe<IssueSumOrderBy>;
-  varPop?: InputMaybe<IssueVarPopOrderBy>;
-  varSamp?: InputMaybe<IssueVarSampOrderBy>;
-  variance?: InputMaybe<IssueVarianceOrderBy>;
-};
-
-export type IssueArrRelInsertInput = {
-  data: Array<IssueInsertInput>;
-  onConflict?: InputMaybe<IssueOnConflict>;
-};
-
-export type IssueAvgFields = {
-  __typename?: 'IssueAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueBoolExp = {
-  _and?: InputMaybe<Array<IssueBoolExp>>;
-  _not?: InputMaybe<IssueBoolExp>;
-  _or?: InputMaybe<Array<IssueBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  issueContributors?: InputMaybe<IssueContributorsBoolExp>;
-  issueContributorsAggregate?: InputMaybe<IssueContributorsAggregateBoolExp>;
-  issueTags?: InputMaybe<IssueTagsBoolExp>;
-  issueTagsAggregate?: InputMaybe<IssueTagsAggregateBoolExp>;
-  name?: InputMaybe<StringComparisonExp>;
-  slug?: InputMaybe<StringComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum IssueConstraint {
-  IssueContentIdUnique = 'issue_content_id_unique',
-  IssuePkey = 'issue_pkey',
-}
-
-export type IssueContributors = {
-  __typename?: 'IssueContributors';
-  issue: Issue;
-  issueId: Scalars['bigint']['output'];
-  user: User;
-  userId: Scalars['bigint']['output'];
-};
-
-export type IssueContributorsAggregate = {
-  __typename?: 'IssueContributorsAggregate';
-  aggregate?: Maybe<IssueContributorsAggregateFields>;
-  nodes: Array<IssueContributors>;
-};
-
-export type IssueContributorsAggregateBoolExp = {
-  count?: InputMaybe<IssueContributorsAggregateBoolExpCount>;
-};
-
-export type IssueContributorsAggregateFields = {
-  __typename?: 'IssueContributorsAggregateFields';
-  avg?: Maybe<IssueContributorsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<IssueContributorsMaxFields>;
-  min?: Maybe<IssueContributorsMinFields>;
-  stddev?: Maybe<IssueContributorsStddevFields>;
-  stddevPop?: Maybe<IssueContributorsStddevPopFields>;
-  stddevSamp?: Maybe<IssueContributorsStddevSampFields>;
-  sum?: Maybe<IssueContributorsSumFields>;
-  varPop?: Maybe<IssueContributorsVarPopFields>;
-  varSamp?: Maybe<IssueContributorsVarSampFields>;
-  variance?: Maybe<IssueContributorsVarianceFields>;
-};
-
-export type IssueContributorsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type IssueContributorsAggregateOrderBy = {
-  avg?: InputMaybe<IssueContributorsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<IssueContributorsMaxOrderBy>;
-  min?: InputMaybe<IssueContributorsMinOrderBy>;
-  stddev?: InputMaybe<IssueContributorsStddevOrderBy>;
-  stddevPop?: InputMaybe<IssueContributorsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<IssueContributorsStddevSampOrderBy>;
-  sum?: InputMaybe<IssueContributorsSumOrderBy>;
-  varPop?: InputMaybe<IssueContributorsVarPopOrderBy>;
-  varSamp?: InputMaybe<IssueContributorsVarSampOrderBy>;
-  variance?: InputMaybe<IssueContributorsVarianceOrderBy>;
-};
-
-export type IssueContributorsArrRelInsertInput = {
-  data: Array<IssueContributorsInsertInput>;
-  onConflict?: InputMaybe<IssueContributorsOnConflict>;
-};
-
-export type IssueContributorsAvgFields = {
-  __typename?: 'IssueContributorsAvgFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsAvgOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsBoolExp = {
-  _and?: InputMaybe<Array<IssueContributorsBoolExp>>;
-  _not?: InputMaybe<IssueContributorsBoolExp>;
-  _or?: InputMaybe<Array<IssueContributorsBoolExp>>;
-  issue?: InputMaybe<IssueBoolExp>;
-  issueId?: InputMaybe<BigintComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum IssueContributorsConstraint {
-  IssueContributorsPkey = 'issue_contributors_pkey',
-}
-
-export type IssueContributorsIncInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueContributorsInsertInput = {
-  issue?: InputMaybe<IssueObjRelInsertInput>;
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueContributorsMaxFields = {
-  __typename?: 'IssueContributorsMaxFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueContributorsMaxOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsMinFields = {
-  __typename?: 'IssueContributorsMinFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueContributorsMinOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsMutationResponse = {
-  __typename?: 'IssueContributorsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<IssueContributors>;
-};
-
-export type IssueContributorsOnConflict = {
-  constraint: IssueContributorsConstraint;
-  updateColumns?: Array<IssueContributorsUpdateColumn>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type IssueContributorsOrderBy = {
-  issue?: InputMaybe<IssueOrderBy>;
-  issueId?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsPkColumnsInput = {
-  issueId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export enum IssueContributorsSelectColumn {
-  IssueId = 'issueId',
-  UserId = 'userId',
-}
-
-export type IssueContributorsSetInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueContributorsStddevFields = {
-  __typename?: 'IssueContributorsStddevFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsStddevOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsStddevPopFields = {
-  __typename?: 'IssueContributorsStddevPopFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsStddevPopOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsStddevSampFields = {
-  __typename?: 'IssueContributorsStddevSampFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsStddevSampOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsStreamCursorInput = {
-  initialValue: IssueContributorsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type IssueContributorsStreamCursorValueInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueContributorsSumFields = {
-  __typename?: 'IssueContributorsSumFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueContributorsSumOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export enum IssueContributorsUpdateColumn {
-  IssueId = 'issueId',
-  UserId = 'userId',
-}
-
-export type IssueContributorsUpdates = {
-  _inc?: InputMaybe<IssueContributorsIncInput>;
-  _set?: InputMaybe<IssueContributorsSetInput>;
-  where: IssueContributorsBoolExp;
-};
-
-export type IssueContributorsVarPopFields = {
-  __typename?: 'IssueContributorsVarPopFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsVarPopOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsVarSampFields = {
-  __typename?: 'IssueContributorsVarSampFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsVarSampOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueContributorsVarianceFields = {
-  __typename?: 'IssueContributorsVarianceFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueContributorsVarianceOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type IssueIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  issueContributors?: InputMaybe<IssueContributorsArrRelInsertInput>;
-  issueTags?: InputMaybe<IssueTagsArrRelInsertInput>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueMaxFields = {
-  __typename?: 'IssueMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueMinFields = {
-  __typename?: 'IssueMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueMutationResponse = {
-  __typename?: 'IssueMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Issue>;
-};
-
-export type IssueObjRelInsertInput = {
-  data: IssueInsertInput;
-  onConflict?: InputMaybe<IssueOnConflict>;
-};
-
-export type IssueOnConflict = {
-  constraint: IssueConstraint;
-  updateColumns?: Array<IssueUpdateColumn>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type IssueOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  issueContributorsAggregate?: InputMaybe<IssueContributorsAggregateOrderBy>;
-  issueTagsAggregate?: InputMaybe<IssueTagsAggregateOrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssuePkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum IssueSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  Slug = 'slug',
-  TenantId = 'tenantId',
-}
-
-export type IssueSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueStddevFields = {
-  __typename?: 'IssueStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueStddevPopFields = {
-  __typename?: 'IssueStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueStddevSampFields = {
-  __typename?: 'IssueStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueStreamCursorInput = {
-  initialValue: IssueStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type IssueStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueSumFields = {
-  __typename?: 'IssueSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTags = {
-  __typename?: 'IssueTags';
-  issue: Issue;
-  issueId: Scalars['bigint']['output'];
-  tag: Tag;
-  tagId: Scalars['bigint']['output'];
-};
-
-export type IssueTagsAggregate = {
-  __typename?: 'IssueTagsAggregate';
-  aggregate?: Maybe<IssueTagsAggregateFields>;
-  nodes: Array<IssueTags>;
-};
-
-export type IssueTagsAggregateBoolExp = {
-  count?: InputMaybe<IssueTagsAggregateBoolExpCount>;
-};
-
-export type IssueTagsAggregateFields = {
-  __typename?: 'IssueTagsAggregateFields';
-  avg?: Maybe<IssueTagsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<IssueTagsMaxFields>;
-  min?: Maybe<IssueTagsMinFields>;
-  stddev?: Maybe<IssueTagsStddevFields>;
-  stddevPop?: Maybe<IssueTagsStddevPopFields>;
-  stddevSamp?: Maybe<IssueTagsStddevSampFields>;
-  sum?: Maybe<IssueTagsSumFields>;
-  varPop?: Maybe<IssueTagsVarPopFields>;
-  varSamp?: Maybe<IssueTagsVarSampFields>;
-  variance?: Maybe<IssueTagsVarianceFields>;
-};
-
-export type IssueTagsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type IssueTagsAggregateOrderBy = {
-  avg?: InputMaybe<IssueTagsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<IssueTagsMaxOrderBy>;
-  min?: InputMaybe<IssueTagsMinOrderBy>;
-  stddev?: InputMaybe<IssueTagsStddevOrderBy>;
-  stddevPop?: InputMaybe<IssueTagsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<IssueTagsStddevSampOrderBy>;
-  sum?: InputMaybe<IssueTagsSumOrderBy>;
-  varPop?: InputMaybe<IssueTagsVarPopOrderBy>;
-  varSamp?: InputMaybe<IssueTagsVarSampOrderBy>;
-  variance?: InputMaybe<IssueTagsVarianceOrderBy>;
-};
-
-export type IssueTagsArrRelInsertInput = {
-  data: Array<IssueTagsInsertInput>;
-  onConflict?: InputMaybe<IssueTagsOnConflict>;
-};
-
-export type IssueTagsAvgFields = {
-  __typename?: 'IssueTagsAvgFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsAvgOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsBoolExp = {
-  _and?: InputMaybe<Array<IssueTagsBoolExp>>;
-  _not?: InputMaybe<IssueTagsBoolExp>;
-  _or?: InputMaybe<Array<IssueTagsBoolExp>>;
-  issue?: InputMaybe<IssueBoolExp>;
-  issueId?: InputMaybe<BigintComparisonExp>;
-  tag?: InputMaybe<TagBoolExp>;
-  tagId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum IssueTagsConstraint {
-  IssueTagsPkey = 'issue_tags_pkey',
-}
-
-export type IssueTagsIncInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueTagsInsertInput = {
-  issue?: InputMaybe<IssueObjRelInsertInput>;
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  tag?: InputMaybe<TagObjRelInsertInput>;
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueTagsMaxFields = {
-  __typename?: 'IssueTagsMaxFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  tagId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueTagsMaxOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsMinFields = {
-  __typename?: 'IssueTagsMinFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  tagId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueTagsMinOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsMutationResponse = {
-  __typename?: 'IssueTagsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<IssueTags>;
-};
-
-export type IssueTagsOnConflict = {
-  constraint: IssueTagsConstraint;
-  updateColumns?: Array<IssueTagsUpdateColumn>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type IssueTagsOrderBy = {
-  issue?: InputMaybe<IssueOrderBy>;
-  issueId?: InputMaybe<OrderBy>;
-  tag?: InputMaybe<TagOrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsPkColumnsInput = {
-  issueId: Scalars['bigint']['input'];
-  tagId: Scalars['bigint']['input'];
-};
-
-export enum IssueTagsSelectColumn {
-  IssueId = 'issueId',
-  TagId = 'tagId',
-}
-
-export type IssueTagsSetInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueTagsStddevFields = {
-  __typename?: 'IssueTagsStddevFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsStddevOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsStddevPopFields = {
-  __typename?: 'IssueTagsStddevPopFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsStddevPopOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsStddevSampFields = {
-  __typename?: 'IssueTagsStddevSampFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsStddevSampOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsStreamCursorInput = {
-  initialValue: IssueTagsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type IssueTagsStreamCursorValueInput = {
-  issueId?: InputMaybe<Scalars['bigint']['input']>;
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type IssueTagsSumFields = {
-  __typename?: 'IssueTagsSumFields';
-  issueId?: Maybe<Scalars['bigint']['output']>;
-  tagId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type IssueTagsSumOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export enum IssueTagsUpdateColumn {
-  IssueId = 'issueId',
-  TagId = 'tagId',
-}
-
-export type IssueTagsUpdates = {
-  _inc?: InputMaybe<IssueTagsIncInput>;
-  _set?: InputMaybe<IssueTagsSetInput>;
-  where: IssueTagsBoolExp;
-};
-
-export type IssueTagsVarPopFields = {
-  __typename?: 'IssueTagsVarPopFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsVarPopOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsVarSampFields = {
-  __typename?: 'IssueTagsVarSampFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsVarSampOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export type IssueTagsVarianceFields = {
-  __typename?: 'IssueTagsVarianceFields';
-  issueId?: Maybe<Scalars['Float']['output']>;
-  tagId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueTagsVarianceOrderBy = {
-  issueId?: InputMaybe<OrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-};
-
-export enum IssueUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  Slug = 'slug',
-  TenantId = 'tenantId',
-}
-
-export type IssueUpdates = {
-  _inc?: InputMaybe<IssueIncInput>;
-  _set?: InputMaybe<IssueSetInput>;
-  where: IssueBoolExp;
-};
-
-export type IssueVarPopFields = {
-  __typename?: 'IssueVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueVarSampFields = {
-  __typename?: 'IssueVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type IssueVarianceFields = {
-  __typename?: 'IssueVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type IssueVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type JsonbCastExp = {
   String?: InputMaybe<StringComparisonExp>;
 };
@@ -23190,24 +19165,10 @@ export type Mutation = {
   deleteCampusByPk?: Maybe<Campus>;
   deleteCampusCluster?: Maybe<CampusClusterMutationResponse>;
   deleteCampusClusterByPk?: Maybe<CampusCluster>;
-  deleteCanteen?: Maybe<CanteenMutationResponse>;
-  deleteCanteenByPk?: Maybe<Canteen>;
-  deleteCanteenFood?: Maybe<CanteenFoodMutationResponse>;
-  deleteCanteenFoodByPk?: Maybe<CanteenFood>;
-  deleteCanteenMenu?: Maybe<CanteenMenuMutationResponse>;
-  deleteCanteenMenuByPk?: Maybe<CanteenMenu>;
   deleteClassGroup?: Maybe<ClassGroupMutationResponse>;
   deleteClassGroupByPk?: Maybe<ClassGroup>;
-  deleteClassGroupTeacher?: Maybe<ClassGroupTeacherMutationResponse>;
-  deleteClassGroupTeacherByPk?: Maybe<ClassGroupTeacher>;
-  deleteClassGroupTeacherSubjects?: Maybe<ClassGroupTeacherSubjectsMutationResponse>;
-  deleteClassGroupTeacherSubjectsByPk?: Maybe<ClassGroupTeacherSubjects>;
   deleteCohort?: Maybe<CohortMutationResponse>;
   deleteCohortByPk?: Maybe<Cohort>;
-  deleteContent?: Maybe<ContentMutationResponse>;
-  deleteContentAttachments?: Maybe<ContentAttachmentsMutationResponse>;
-  deleteContentAttachmentsByPk?: Maybe<ContentAttachments>;
-  deleteContentByPk?: Maybe<Content>;
   deleteDocument?: Maybe<DocumentMutationResponse>;
   deleteDocumentByPk?: Maybe<Document>;
   deleteEvent?: Maybe<EventMutationResponse>;
@@ -23236,8 +19197,6 @@ export type Mutation = {
   deleteExpenseItemAttachments?: Maybe<ExpenseItemAttachmentsMutationResponse>;
   deleteExpenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
   deleteExpenseItemByPk?: Maybe<ExpenseItem>;
-  deleteFavorite?: Maybe<FavoriteMutationResponse>;
-  deleteFavoriteByPk?: Maybe<Favorite>;
   deleteFileUpload?: Maybe<FileUploadMutationResponse>;
   deleteFileUploadByPk?: Maybe<FileUpload>;
   deleteFinance?: Maybe<FinanceMutationResponse>;
@@ -23262,12 +19221,6 @@ export type Mutation = {
   deleteGrantAttachments?: Maybe<GrantAttachmentsMutationResponse>;
   deleteGrantAttachmentsByPk?: Maybe<GrantAttachments>;
   deleteGrantByPk?: Maybe<Grant>;
-  deleteIssue?: Maybe<IssueMutationResponse>;
-  deleteIssueByPk?: Maybe<Issue>;
-  deleteIssueContributors?: Maybe<IssueContributorsMutationResponse>;
-  deleteIssueContributorsByPk?: Maybe<IssueContributors>;
-  deleteIssueTags?: Maybe<IssueTagsMutationResponse>;
-  deleteIssueTagsByPk?: Maybe<IssueTags>;
   deleteLegalUnit?: Maybe<LegalUnitMutationResponse>;
   deleteLegalUnitByPk?: Maybe<LegalUnit>;
   deleteLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
@@ -23288,10 +19241,6 @@ export type Mutation = {
   deleteProjectSupervisorsByPk?: Maybe<ProjectSupervisors>;
   deleteProjectTags?: Maybe<ProjectTagsMutationResponse>;
   deleteProjectTagsByPk?: Maybe<ProjectTags>;
-  deleteReaction?: Maybe<ReactionMutationResponse>;
-  deleteReactionByPk?: Maybe<Reaction>;
-  deleteReport?: Maybe<ReportMutationResponse>;
-  deleteReportByPk?: Maybe<Report>;
   deleteRole?: Maybe<RoleMutationResponse>;
   deleteRoleByPk?: Maybe<Role>;
   deleteSession?: Maybe<SessionMutationResponse>;
@@ -23300,10 +19249,6 @@ export type Mutation = {
   deleteShortcutByPk?: Maybe<Shortcut>;
   deleteSocial?: Maybe<SocialMutationResponse>;
   deleteSocialByPk?: Maybe<Social>;
-  deleteSubject?: Maybe<SubjectMutationResponse>;
-  deleteSubjectByPk?: Maybe<Subject>;
-  deleteSubjectClassGroups?: Maybe<SubjectClassGroupsMutationResponse>;
-  deleteSubjectClassGroupsByPk?: Maybe<SubjectClassGroups>;
   deleteTag?: Maybe<TagMutationResponse>;
   deleteTagByPk?: Maybe<Tag>;
   deleteTeam?: Maybe<TeamMutationResponse>;
@@ -23316,26 +19261,12 @@ export type Mutation = {
   deleteTeamMemberByPk?: Maybe<TeamMember>;
   deleteTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
   deleteTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
-  deleteTeamMetric?: Maybe<TeamMetricMutationResponse>;
-  deleteTeamMetricByPk?: Maybe<TeamMetric>;
   deleteTenant?: Maybe<TenantMutationResponse>;
   deleteTenantByPk?: Maybe<Tenant>;
   deleteTenantOrganize?: Maybe<TenantOrganizeMutationResponse>;
   deleteTenantOrganizeByPk?: Maybe<TenantOrganize>;
-  deleteThread?: Maybe<ThreadMutationResponse>;
-  deleteThreadByPk?: Maybe<Thread>;
-  deleteThreadContributors?: Maybe<ThreadContributorsMutationResponse>;
-  deleteThreadContributorsByPk?: Maybe<ThreadContributors>;
-  deleteThreadTags?: Maybe<ThreadTagsMutationResponse>;
-  deleteThreadTagsByPk?: Maybe<ThreadTags>;
   deleteUser?: Maybe<UserMutationResponse>;
   deleteUserByPk?: Maybe<User>;
-  deleteValidation?: Maybe<ValidationMutationResponse>;
-  deleteValidationByPk?: Maybe<Validation>;
-  deleteView?: Maybe<ViewMutationResponse>;
-  deleteViewByPk?: Maybe<View>;
-  deleteVote?: Maybe<VoteMutationResponse>;
-  deleteVoteByPk?: Maybe<Vote>;
   insertAction?: Maybe<ActionMutationResponse>;
   insertActionOne?: Maybe<Action>;
   insertActor?: Maybe<ActorMutationResponse>;
@@ -23354,24 +19285,10 @@ export type Mutation = {
   insertCampusCluster?: Maybe<CampusClusterMutationResponse>;
   insertCampusClusterOne?: Maybe<CampusCluster>;
   insertCampusOne?: Maybe<Campus>;
-  insertCanteen?: Maybe<CanteenMutationResponse>;
-  insertCanteenFood?: Maybe<CanteenFoodMutationResponse>;
-  insertCanteenFoodOne?: Maybe<CanteenFood>;
-  insertCanteenMenu?: Maybe<CanteenMenuMutationResponse>;
-  insertCanteenMenuOne?: Maybe<CanteenMenu>;
-  insertCanteenOne?: Maybe<Canteen>;
   insertClassGroup?: Maybe<ClassGroupMutationResponse>;
   insertClassGroupOne?: Maybe<ClassGroup>;
-  insertClassGroupTeacher?: Maybe<ClassGroupTeacherMutationResponse>;
-  insertClassGroupTeacherOne?: Maybe<ClassGroupTeacher>;
-  insertClassGroupTeacherSubjects?: Maybe<ClassGroupTeacherSubjectsMutationResponse>;
-  insertClassGroupTeacherSubjectsOne?: Maybe<ClassGroupTeacherSubjects>;
   insertCohort?: Maybe<CohortMutationResponse>;
   insertCohortOne?: Maybe<Cohort>;
-  insertContent?: Maybe<ContentMutationResponse>;
-  insertContentAttachments?: Maybe<ContentAttachmentsMutationResponse>;
-  insertContentAttachmentsOne?: Maybe<ContentAttachments>;
-  insertContentOne?: Maybe<Content>;
   insertDocument?: Maybe<DocumentMutationResponse>;
   insertDocumentOne?: Maybe<Document>;
   insertEvent?: Maybe<EventMutationResponse>;
@@ -23400,8 +19317,6 @@ export type Mutation = {
   insertExpenseItemAttachmentsOne?: Maybe<ExpenseItemAttachments>;
   insertExpenseItemOne?: Maybe<ExpenseItem>;
   insertExpenseOne?: Maybe<Expense>;
-  insertFavorite?: Maybe<FavoriteMutationResponse>;
-  insertFavoriteOne?: Maybe<Favorite>;
   insertFileUpload?: Maybe<FileUploadMutationResponse>;
   insertFileUploadOne?: Maybe<FileUpload>;
   insertFinance?: Maybe<FinanceMutationResponse>;
@@ -23426,12 +19341,6 @@ export type Mutation = {
   insertGrantAttachments?: Maybe<GrantAttachmentsMutationResponse>;
   insertGrantAttachmentsOne?: Maybe<GrantAttachments>;
   insertGrantOne?: Maybe<Grant>;
-  insertIssue?: Maybe<IssueMutationResponse>;
-  insertIssueContributors?: Maybe<IssueContributorsMutationResponse>;
-  insertIssueContributorsOne?: Maybe<IssueContributors>;
-  insertIssueOne?: Maybe<Issue>;
-  insertIssueTags?: Maybe<IssueTagsMutationResponse>;
-  insertIssueTagsOne?: Maybe<IssueTags>;
   insertLegalUnit?: Maybe<LegalUnitMutationResponse>;
   insertLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
   insertLegalUnitLocationOne?: Maybe<LegalUnitLocation>;
@@ -23452,10 +19361,6 @@ export type Mutation = {
   insertProjectSupervisorsOne?: Maybe<ProjectSupervisors>;
   insertProjectTags?: Maybe<ProjectTagsMutationResponse>;
   insertProjectTagsOne?: Maybe<ProjectTags>;
-  insertReaction?: Maybe<ReactionMutationResponse>;
-  insertReactionOne?: Maybe<Reaction>;
-  insertReport?: Maybe<ReportMutationResponse>;
-  insertReportOne?: Maybe<Report>;
   insertRole?: Maybe<RoleMutationResponse>;
   insertRoleOne?: Maybe<Role>;
   insertSession?: Maybe<SessionMutationResponse>;
@@ -23464,10 +19369,6 @@ export type Mutation = {
   insertShortcutOne?: Maybe<Shortcut>;
   insertSocial?: Maybe<SocialMutationResponse>;
   insertSocialOne?: Maybe<Social>;
-  insertSubject?: Maybe<SubjectMutationResponse>;
-  insertSubjectClassGroups?: Maybe<SubjectClassGroupsMutationResponse>;
-  insertSubjectClassGroupsOne?: Maybe<SubjectClassGroups>;
-  insertSubjectOne?: Maybe<Subject>;
   insertTag?: Maybe<TagMutationResponse>;
   insertTagOne?: Maybe<Tag>;
   insertTeam?: Maybe<TeamMutationResponse>;
@@ -23479,27 +19380,13 @@ export type Mutation = {
   insertTeamMemberOne?: Maybe<TeamMember>;
   insertTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
   insertTeamMemberRoleOne?: Maybe<TeamMemberRole>;
-  insertTeamMetric?: Maybe<TeamMetricMutationResponse>;
-  insertTeamMetricOne?: Maybe<TeamMetric>;
   insertTeamOne?: Maybe<Team>;
   insertTenant?: Maybe<TenantMutationResponse>;
   insertTenantOne?: Maybe<Tenant>;
   insertTenantOrganize?: Maybe<TenantOrganizeMutationResponse>;
   insertTenantOrganizeOne?: Maybe<TenantOrganize>;
-  insertThread?: Maybe<ThreadMutationResponse>;
-  insertThreadContributors?: Maybe<ThreadContributorsMutationResponse>;
-  insertThreadContributorsOne?: Maybe<ThreadContributors>;
-  insertThreadOne?: Maybe<Thread>;
-  insertThreadTags?: Maybe<ThreadTagsMutationResponse>;
-  insertThreadTagsOne?: Maybe<ThreadTags>;
   insertUser?: Maybe<UserMutationResponse>;
   insertUserOne?: Maybe<User>;
-  insertValidation?: Maybe<ValidationMutationResponse>;
-  insertValidationOne?: Maybe<Validation>;
-  insertView?: Maybe<ViewMutationResponse>;
-  insertViewOne?: Maybe<View>;
-  insertVote?: Maybe<VoteMutationResponse>;
-  insertVoteOne?: Maybe<Vote>;
   login: UserLogin;
   logout: Scalars['Boolean']['output'];
   singleUpload?: Maybe<FileUpload>;
@@ -23530,33 +19417,12 @@ export type Mutation = {
   updateCampusClusterByPk?: Maybe<CampusCluster>;
   updateCampusClusterMany?: Maybe<Array<Maybe<CampusClusterMutationResponse>>>;
   updateCampusMany?: Maybe<Array<Maybe<CampusMutationResponse>>>;
-  updateCanteen?: Maybe<CanteenMutationResponse>;
-  updateCanteenByPk?: Maybe<Canteen>;
-  updateCanteenFood?: Maybe<CanteenFoodMutationResponse>;
-  updateCanteenFoodByPk?: Maybe<CanteenFood>;
-  updateCanteenFoodMany?: Maybe<Array<Maybe<CanteenFoodMutationResponse>>>;
-  updateCanteenMany?: Maybe<Array<Maybe<CanteenMutationResponse>>>;
-  updateCanteenMenu?: Maybe<CanteenMenuMutationResponse>;
-  updateCanteenMenuByPk?: Maybe<CanteenMenu>;
-  updateCanteenMenuMany?: Maybe<Array<Maybe<CanteenMenuMutationResponse>>>;
   updateClassGroup?: Maybe<ClassGroupMutationResponse>;
   updateClassGroupByPk?: Maybe<ClassGroup>;
   updateClassGroupMany?: Maybe<Array<Maybe<ClassGroupMutationResponse>>>;
-  updateClassGroupTeacher?: Maybe<ClassGroupTeacherMutationResponse>;
-  updateClassGroupTeacherByPk?: Maybe<ClassGroupTeacher>;
-  updateClassGroupTeacherMany?: Maybe<Array<Maybe<ClassGroupTeacherMutationResponse>>>;
-  updateClassGroupTeacherSubjects?: Maybe<ClassGroupTeacherSubjectsMutationResponse>;
-  updateClassGroupTeacherSubjectsByPk?: Maybe<ClassGroupTeacherSubjects>;
-  updateClassGroupTeacherSubjectsMany?: Maybe<Array<Maybe<ClassGroupTeacherSubjectsMutationResponse>>>;
   updateCohort?: Maybe<CohortMutationResponse>;
   updateCohortByPk?: Maybe<Cohort>;
   updateCohortMany?: Maybe<Array<Maybe<CohortMutationResponse>>>;
-  updateContent?: Maybe<ContentMutationResponse>;
-  updateContentAttachments?: Maybe<ContentAttachmentsMutationResponse>;
-  updateContentAttachmentsByPk?: Maybe<ContentAttachments>;
-  updateContentAttachmentsMany?: Maybe<Array<Maybe<ContentAttachmentsMutationResponse>>>;
-  updateContentByPk?: Maybe<Content>;
-  updateContentMany?: Maybe<Array<Maybe<ContentMutationResponse>>>;
   updateDocument?: Maybe<DocumentMutationResponse>;
   updateDocumentByPk?: Maybe<Document>;
   updateDocumentMany?: Maybe<Array<Maybe<DocumentMutationResponse>>>;
@@ -23599,9 +19465,6 @@ export type Mutation = {
   updateExpenseItemByPk?: Maybe<ExpenseItem>;
   updateExpenseItemMany?: Maybe<Array<Maybe<ExpenseItemMutationResponse>>>;
   updateExpenseMany?: Maybe<Array<Maybe<ExpenseMutationResponse>>>;
-  updateFavorite?: Maybe<FavoriteMutationResponse>;
-  updateFavoriteByPk?: Maybe<Favorite>;
-  updateFavoriteMany?: Maybe<Array<Maybe<FavoriteMutationResponse>>>;
   updateFileUpload?: Maybe<FileUploadMutationResponse>;
   updateFileUploadByPk?: Maybe<FileUpload>;
   updateFileUploadMany?: Maybe<Array<Maybe<FileUploadMutationResponse>>>;
@@ -23638,15 +19501,6 @@ export type Mutation = {
   updateGrantAttachmentsMany?: Maybe<Array<Maybe<GrantAttachmentsMutationResponse>>>;
   updateGrantByPk?: Maybe<Grant>;
   updateGrantMany?: Maybe<Array<Maybe<GrantMutationResponse>>>;
-  updateIssue?: Maybe<IssueMutationResponse>;
-  updateIssueByPk?: Maybe<Issue>;
-  updateIssueContributors?: Maybe<IssueContributorsMutationResponse>;
-  updateIssueContributorsByPk?: Maybe<IssueContributors>;
-  updateIssueContributorsMany?: Maybe<Array<Maybe<IssueContributorsMutationResponse>>>;
-  updateIssueMany?: Maybe<Array<Maybe<IssueMutationResponse>>>;
-  updateIssueTags?: Maybe<IssueTagsMutationResponse>;
-  updateIssueTagsByPk?: Maybe<IssueTags>;
-  updateIssueTagsMany?: Maybe<Array<Maybe<IssueTagsMutationResponse>>>;
   updateLegalUnit?: Maybe<LegalUnitMutationResponse>;
   updateLegalUnitByPk?: Maybe<LegalUnit>;
   updateLegalUnitLocation?: Maybe<LegalUnitLocationMutationResponse>;
@@ -23677,12 +19531,6 @@ export type Mutation = {
   updateProjectTags?: Maybe<ProjectTagsMutationResponse>;
   updateProjectTagsByPk?: Maybe<ProjectTags>;
   updateProjectTagsMany?: Maybe<Array<Maybe<ProjectTagsMutationResponse>>>;
-  updateReaction?: Maybe<ReactionMutationResponse>;
-  updateReactionByPk?: Maybe<Reaction>;
-  updateReactionMany?: Maybe<Array<Maybe<ReactionMutationResponse>>>;
-  updateReport?: Maybe<ReportMutationResponse>;
-  updateReportByPk?: Maybe<Report>;
-  updateReportMany?: Maybe<Array<Maybe<ReportMutationResponse>>>;
   updateRole?: Maybe<RoleMutationResponse>;
   updateRoleByPk?: Maybe<Role>;
   updateRoleMany?: Maybe<Array<Maybe<RoleMutationResponse>>>;
@@ -23695,12 +19543,6 @@ export type Mutation = {
   updateSocial?: Maybe<SocialMutationResponse>;
   updateSocialByPk?: Maybe<Social>;
   updateSocialMany?: Maybe<Array<Maybe<SocialMutationResponse>>>;
-  updateSubject?: Maybe<SubjectMutationResponse>;
-  updateSubjectByPk?: Maybe<Subject>;
-  updateSubjectClassGroups?: Maybe<SubjectClassGroupsMutationResponse>;
-  updateSubjectClassGroupsByPk?: Maybe<SubjectClassGroups>;
-  updateSubjectClassGroupsMany?: Maybe<Array<Maybe<SubjectClassGroupsMutationResponse>>>;
-  updateSubjectMany?: Maybe<Array<Maybe<SubjectMutationResponse>>>;
   updateTag?: Maybe<TagMutationResponse>;
   updateTagByPk?: Maybe<Tag>;
   updateTagMany?: Maybe<Array<Maybe<TagMutationResponse>>>;
@@ -23719,36 +19561,15 @@ export type Mutation = {
   updateTeamMemberRole?: Maybe<TeamMemberRoleMutationResponse>;
   updateTeamMemberRoleByPk?: Maybe<TeamMemberRole>;
   updateTeamMemberRoleMany?: Maybe<Array<Maybe<TeamMemberRoleMutationResponse>>>;
-  updateTeamMetric?: Maybe<TeamMetricMutationResponse>;
-  updateTeamMetricByPk?: Maybe<TeamMetric>;
-  updateTeamMetricMany?: Maybe<Array<Maybe<TeamMetricMutationResponse>>>;
   updateTenant?: Maybe<TenantMutationResponse>;
   updateTenantByPk?: Maybe<Tenant>;
   updateTenantMany?: Maybe<Array<Maybe<TenantMutationResponse>>>;
   updateTenantOrganize?: Maybe<TenantOrganizeMutationResponse>;
   updateTenantOrganizeByPk?: Maybe<TenantOrganize>;
   updateTenantOrganizeMany?: Maybe<Array<Maybe<TenantOrganizeMutationResponse>>>;
-  updateThread?: Maybe<ThreadMutationResponse>;
-  updateThreadByPk?: Maybe<Thread>;
-  updateThreadContributors?: Maybe<ThreadContributorsMutationResponse>;
-  updateThreadContributorsByPk?: Maybe<ThreadContributors>;
-  updateThreadContributorsMany?: Maybe<Array<Maybe<ThreadContributorsMutationResponse>>>;
-  updateThreadMany?: Maybe<Array<Maybe<ThreadMutationResponse>>>;
-  updateThreadTags?: Maybe<ThreadTagsMutationResponse>;
-  updateThreadTagsByPk?: Maybe<ThreadTags>;
-  updateThreadTagsMany?: Maybe<Array<Maybe<ThreadTagsMutationResponse>>>;
   updateUser?: Maybe<UserMutationResponse>;
   updateUserByPk?: Maybe<User>;
   updateUserMany?: Maybe<Array<Maybe<UserMutationResponse>>>;
-  updateValidation?: Maybe<ValidationMutationResponse>;
-  updateValidationByPk?: Maybe<Validation>;
-  updateValidationMany?: Maybe<Array<Maybe<ValidationMutationResponse>>>;
-  updateView?: Maybe<ViewMutationResponse>;
-  updateViewByPk?: Maybe<View>;
-  updateViewMany?: Maybe<Array<Maybe<ViewMutationResponse>>>;
-  updateVote?: Maybe<VoteMutationResponse>;
-  updateVoteByPk?: Maybe<Vote>;
-  updateVoteMany?: Maybe<Array<Maybe<VoteMutationResponse>>>;
 };
 
 export type MutationDeleteActionArgs = {
@@ -23824,30 +19645,6 @@ export type MutationDeleteCampusClusterByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteCanteenArgs = {
-  where: CanteenBoolExp;
-};
-
-export type MutationDeleteCanteenByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteCanteenFoodArgs = {
-  where: CanteenFoodBoolExp;
-};
-
-export type MutationDeleteCanteenFoodByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteCanteenMenuArgs = {
-  where: CanteenMenuBoolExp;
-};
-
-export type MutationDeleteCanteenMenuByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteClassGroupArgs = {
   where: ClassGroupBoolExp;
 };
@@ -23856,45 +19653,11 @@ export type MutationDeleteClassGroupByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteClassGroupTeacherArgs = {
-  where: ClassGroupTeacherBoolExp;
-};
-
-export type MutationDeleteClassGroupTeacherByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteClassGroupTeacherSubjectsArgs = {
-  where: ClassGroupTeacherSubjectsBoolExp;
-};
-
-export type MutationDeleteClassGroupTeacherSubjectsByPkArgs = {
-  classGroupTeacherId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteCohortArgs = {
   where: CohortBoolExp;
 };
 
 export type MutationDeleteCohortByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteContentArgs = {
-  where: ContentBoolExp;
-};
-
-export type MutationDeleteContentAttachmentsArgs = {
-  where: ContentAttachmentsBoolExp;
-};
-
-export type MutationDeleteContentAttachmentsByPkArgs = {
-  contentId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteContentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -24014,14 +19777,6 @@ export type MutationDeleteExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteFavoriteArgs = {
-  where: FavoriteBoolExp;
-};
-
-export type MutationDeleteFavoriteByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteFileUploadArgs = {
   where: FileUploadBoolExp;
 };
@@ -24123,32 +19878,6 @@ export type MutationDeleteGrantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteIssueArgs = {
-  where: IssueBoolExp;
-};
-
-export type MutationDeleteIssueByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteIssueContributorsArgs = {
-  where: IssueContributorsBoolExp;
-};
-
-export type MutationDeleteIssueContributorsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteIssueTagsArgs = {
-  where: IssueTagsBoolExp;
-};
-
-export type MutationDeleteIssueTagsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  tagId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteLegalUnitArgs = {
   where: LegalUnitBoolExp;
 };
@@ -24232,22 +19961,6 @@ export type MutationDeleteProjectTagsByPkArgs = {
   tagId: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteReactionArgs = {
-  where: ReactionBoolExp;
-};
-
-export type MutationDeleteReactionByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteReportArgs = {
-  where: ReportBoolExp;
-};
-
-export type MutationDeleteReportByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteRoleArgs = {
   where: RoleBoolExp;
 };
@@ -24278,23 +19991,6 @@ export type MutationDeleteSocialArgs = {
 
 export type MutationDeleteSocialByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteSubjectArgs = {
-  where: SubjectBoolExp;
-};
-
-export type MutationDeleteSubjectByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteSubjectClassGroupsArgs = {
-  where: SubjectClassGroupsBoolExp;
-};
-
-export type MutationDeleteSubjectClassGroupsByPkArgs = {
-  classGroupId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
 };
 
 export type MutationDeleteTagArgs = {
@@ -24345,14 +20041,6 @@ export type MutationDeleteTeamMemberRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteTeamMetricArgs = {
-  where: TeamMetricBoolExp;
-};
-
-export type MutationDeleteTeamMetricByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteTenantArgs = {
   where: TenantBoolExp;
 };
@@ -24369,61 +20057,11 @@ export type MutationDeleteTenantOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type MutationDeleteThreadArgs = {
-  where: ThreadBoolExp;
-};
-
-export type MutationDeleteThreadByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteThreadContributorsArgs = {
-  where: ThreadContributorsBoolExp;
-};
-
-export type MutationDeleteThreadContributorsByPkArgs = {
-  threadId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteThreadTagsArgs = {
-  where: ThreadTagsBoolExp;
-};
-
-export type MutationDeleteThreadTagsByPkArgs = {
-  tagId: Scalars['bigint']['input'];
-  threadId: Scalars['bigint']['input'];
-};
-
 export type MutationDeleteUserArgs = {
   where: UserBoolExp;
 };
 
 export type MutationDeleteUserByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteValidationArgs = {
-  where: ValidationBoolExp;
-};
-
-export type MutationDeleteValidationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteViewArgs = {
-  where: ViewBoolExp;
-};
-
-export type MutationDeleteViewByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type MutationDeleteVoteArgs = {
-  where: VoteBoolExp;
-};
-
-export type MutationDeleteVoteByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -24517,36 +20155,6 @@ export type MutationInsertCampusOneArgs = {
   onConflict?: InputMaybe<CampusOnConflict>;
 };
 
-export type MutationInsertCanteenArgs = {
-  objects: Array<CanteenInsertInput>;
-  onConflict?: InputMaybe<CanteenOnConflict>;
-};
-
-export type MutationInsertCanteenFoodArgs = {
-  objects: Array<CanteenFoodInsertInput>;
-  onConflict?: InputMaybe<CanteenFoodOnConflict>;
-};
-
-export type MutationInsertCanteenFoodOneArgs = {
-  object: CanteenFoodInsertInput;
-  onConflict?: InputMaybe<CanteenFoodOnConflict>;
-};
-
-export type MutationInsertCanteenMenuArgs = {
-  objects: Array<CanteenMenuInsertInput>;
-  onConflict?: InputMaybe<CanteenMenuOnConflict>;
-};
-
-export type MutationInsertCanteenMenuOneArgs = {
-  object: CanteenMenuInsertInput;
-  onConflict?: InputMaybe<CanteenMenuOnConflict>;
-};
-
-export type MutationInsertCanteenOneArgs = {
-  object: CanteenInsertInput;
-  onConflict?: InputMaybe<CanteenOnConflict>;
-};
-
 export type MutationInsertClassGroupArgs = {
   objects: Array<ClassGroupInsertInput>;
   onConflict?: InputMaybe<ClassGroupOnConflict>;
@@ -24557,26 +20165,6 @@ export type MutationInsertClassGroupOneArgs = {
   onConflict?: InputMaybe<ClassGroupOnConflict>;
 };
 
-export type MutationInsertClassGroupTeacherArgs = {
-  objects: Array<ClassGroupTeacherInsertInput>;
-  onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
-};
-
-export type MutationInsertClassGroupTeacherOneArgs = {
-  object: ClassGroupTeacherInsertInput;
-  onConflict?: InputMaybe<ClassGroupTeacherOnConflict>;
-};
-
-export type MutationInsertClassGroupTeacherSubjectsArgs = {
-  objects: Array<ClassGroupTeacherSubjectsInsertInput>;
-  onConflict?: InputMaybe<ClassGroupTeacherSubjectsOnConflict>;
-};
-
-export type MutationInsertClassGroupTeacherSubjectsOneArgs = {
-  object: ClassGroupTeacherSubjectsInsertInput;
-  onConflict?: InputMaybe<ClassGroupTeacherSubjectsOnConflict>;
-};
-
 export type MutationInsertCohortArgs = {
   objects: Array<CohortInsertInput>;
   onConflict?: InputMaybe<CohortOnConflict>;
@@ -24585,26 +20173,6 @@ export type MutationInsertCohortArgs = {
 export type MutationInsertCohortOneArgs = {
   object: CohortInsertInput;
   onConflict?: InputMaybe<CohortOnConflict>;
-};
-
-export type MutationInsertContentArgs = {
-  objects: Array<ContentInsertInput>;
-  onConflict?: InputMaybe<ContentOnConflict>;
-};
-
-export type MutationInsertContentAttachmentsArgs = {
-  objects: Array<ContentAttachmentsInsertInput>;
-  onConflict?: InputMaybe<ContentAttachmentsOnConflict>;
-};
-
-export type MutationInsertContentAttachmentsOneArgs = {
-  object: ContentAttachmentsInsertInput;
-  onConflict?: InputMaybe<ContentAttachmentsOnConflict>;
-};
-
-export type MutationInsertContentOneArgs = {
-  object: ContentInsertInput;
-  onConflict?: InputMaybe<ContentOnConflict>;
 };
 
 export type MutationInsertDocumentArgs = {
@@ -24747,16 +20315,6 @@ export type MutationInsertExpenseOneArgs = {
   onConflict?: InputMaybe<ExpenseOnConflict>;
 };
 
-export type MutationInsertFavoriteArgs = {
-  objects: Array<FavoriteInsertInput>;
-  onConflict?: InputMaybe<FavoriteOnConflict>;
-};
-
-export type MutationInsertFavoriteOneArgs = {
-  object: FavoriteInsertInput;
-  onConflict?: InputMaybe<FavoriteOnConflict>;
-};
-
 export type MutationInsertFileUploadArgs = {
   objects: Array<FileUploadInsertInput>;
   onConflict?: InputMaybe<FileUploadOnConflict>;
@@ -24877,36 +20435,6 @@ export type MutationInsertGrantOneArgs = {
   onConflict?: InputMaybe<GrantOnConflict>;
 };
 
-export type MutationInsertIssueArgs = {
-  objects: Array<IssueInsertInput>;
-  onConflict?: InputMaybe<IssueOnConflict>;
-};
-
-export type MutationInsertIssueContributorsArgs = {
-  objects: Array<IssueContributorsInsertInput>;
-  onConflict?: InputMaybe<IssueContributorsOnConflict>;
-};
-
-export type MutationInsertIssueContributorsOneArgs = {
-  object: IssueContributorsInsertInput;
-  onConflict?: InputMaybe<IssueContributorsOnConflict>;
-};
-
-export type MutationInsertIssueOneArgs = {
-  object: IssueInsertInput;
-  onConflict?: InputMaybe<IssueOnConflict>;
-};
-
-export type MutationInsertIssueTagsArgs = {
-  objects: Array<IssueTagsInsertInput>;
-  onConflict?: InputMaybe<IssueTagsOnConflict>;
-};
-
-export type MutationInsertIssueTagsOneArgs = {
-  object: IssueTagsInsertInput;
-  onConflict?: InputMaybe<IssueTagsOnConflict>;
-};
-
 export type MutationInsertLegalUnitArgs = {
   objects: Array<LegalUnitInsertInput>;
   onConflict?: InputMaybe<LegalUnitOnConflict>;
@@ -25007,26 +20535,6 @@ export type MutationInsertProjectTagsOneArgs = {
   onConflict?: InputMaybe<ProjectTagsOnConflict>;
 };
 
-export type MutationInsertReactionArgs = {
-  objects: Array<ReactionInsertInput>;
-  onConflict?: InputMaybe<ReactionOnConflict>;
-};
-
-export type MutationInsertReactionOneArgs = {
-  object: ReactionInsertInput;
-  onConflict?: InputMaybe<ReactionOnConflict>;
-};
-
-export type MutationInsertReportArgs = {
-  objects: Array<ReportInsertInput>;
-  onConflict?: InputMaybe<ReportOnConflict>;
-};
-
-export type MutationInsertReportOneArgs = {
-  object: ReportInsertInput;
-  onConflict?: InputMaybe<ReportOnConflict>;
-};
-
 export type MutationInsertRoleArgs = {
   objects: Array<RoleInsertInput>;
   onConflict?: InputMaybe<RoleOnConflict>;
@@ -25065,26 +20573,6 @@ export type MutationInsertSocialArgs = {
 export type MutationInsertSocialOneArgs = {
   object: SocialInsertInput;
   onConflict?: InputMaybe<SocialOnConflict>;
-};
-
-export type MutationInsertSubjectArgs = {
-  objects: Array<SubjectInsertInput>;
-  onConflict?: InputMaybe<SubjectOnConflict>;
-};
-
-export type MutationInsertSubjectClassGroupsArgs = {
-  objects: Array<SubjectClassGroupsInsertInput>;
-  onConflict?: InputMaybe<SubjectClassGroupsOnConflict>;
-};
-
-export type MutationInsertSubjectClassGroupsOneArgs = {
-  object: SubjectClassGroupsInsertInput;
-  onConflict?: InputMaybe<SubjectClassGroupsOnConflict>;
-};
-
-export type MutationInsertSubjectOneArgs = {
-  object: SubjectInsertInput;
-  onConflict?: InputMaybe<SubjectOnConflict>;
 };
 
 export type MutationInsertTagArgs = {
@@ -25142,16 +20630,6 @@ export type MutationInsertTeamMemberRoleOneArgs = {
   onConflict?: InputMaybe<TeamMemberRoleOnConflict>;
 };
 
-export type MutationInsertTeamMetricArgs = {
-  objects: Array<TeamMetricInsertInput>;
-  onConflict?: InputMaybe<TeamMetricOnConflict>;
-};
-
-export type MutationInsertTeamMetricOneArgs = {
-  object: TeamMetricInsertInput;
-  onConflict?: InputMaybe<TeamMetricOnConflict>;
-};
-
 export type MutationInsertTeamOneArgs = {
   object: TeamInsertInput;
   onConflict?: InputMaybe<TeamOnConflict>;
@@ -25177,36 +20655,6 @@ export type MutationInsertTenantOrganizeOneArgs = {
   onConflict?: InputMaybe<TenantOrganizeOnConflict>;
 };
 
-export type MutationInsertThreadArgs = {
-  objects: Array<ThreadInsertInput>;
-  onConflict?: InputMaybe<ThreadOnConflict>;
-};
-
-export type MutationInsertThreadContributorsArgs = {
-  objects: Array<ThreadContributorsInsertInput>;
-  onConflict?: InputMaybe<ThreadContributorsOnConflict>;
-};
-
-export type MutationInsertThreadContributorsOneArgs = {
-  object: ThreadContributorsInsertInput;
-  onConflict?: InputMaybe<ThreadContributorsOnConflict>;
-};
-
-export type MutationInsertThreadOneArgs = {
-  object: ThreadInsertInput;
-  onConflict?: InputMaybe<ThreadOnConflict>;
-};
-
-export type MutationInsertThreadTagsArgs = {
-  objects: Array<ThreadTagsInsertInput>;
-  onConflict?: InputMaybe<ThreadTagsOnConflict>;
-};
-
-export type MutationInsertThreadTagsOneArgs = {
-  object: ThreadTagsInsertInput;
-  onConflict?: InputMaybe<ThreadTagsOnConflict>;
-};
-
 export type MutationInsertUserArgs = {
   objects: Array<UserInsertInput>;
   onConflict?: InputMaybe<UserOnConflict>;
@@ -25215,36 +20663,6 @@ export type MutationInsertUserArgs = {
 export type MutationInsertUserOneArgs = {
   object: UserInsertInput;
   onConflict?: InputMaybe<UserOnConflict>;
-};
-
-export type MutationInsertValidationArgs = {
-  objects: Array<ValidationInsertInput>;
-  onConflict?: InputMaybe<ValidationOnConflict>;
-};
-
-export type MutationInsertValidationOneArgs = {
-  object: ValidationInsertInput;
-  onConflict?: InputMaybe<ValidationOnConflict>;
-};
-
-export type MutationInsertViewArgs = {
-  objects: Array<ViewInsertInput>;
-  onConflict?: InputMaybe<ViewOnConflict>;
-};
-
-export type MutationInsertViewOneArgs = {
-  object: ViewInsertInput;
-  onConflict?: InputMaybe<ViewOnConflict>;
-};
-
-export type MutationInsertVoteArgs = {
-  objects: Array<VoteInsertInput>;
-  onConflict?: InputMaybe<VoteOnConflict>;
-};
-
-export type MutationInsertVoteOneArgs = {
-  object: VoteInsertInput;
-  onConflict?: InputMaybe<VoteOnConflict>;
 };
 
 export type MutationLoginArgs = {
@@ -25402,54 +20820,6 @@ export type MutationUpdateCampusManyArgs = {
   updates: Array<CampusUpdates>;
 };
 
-export type MutationUpdateCanteenArgs = {
-  _inc?: InputMaybe<CanteenIncInput>;
-  _set?: InputMaybe<CanteenSetInput>;
-  where: CanteenBoolExp;
-};
-
-export type MutationUpdateCanteenByPkArgs = {
-  _inc?: InputMaybe<CanteenIncInput>;
-  _set?: InputMaybe<CanteenSetInput>;
-  pkColumns: CanteenPkColumnsInput;
-};
-
-export type MutationUpdateCanteenFoodArgs = {
-  _inc?: InputMaybe<CanteenFoodIncInput>;
-  _set?: InputMaybe<CanteenFoodSetInput>;
-  where: CanteenFoodBoolExp;
-};
-
-export type MutationUpdateCanteenFoodByPkArgs = {
-  _inc?: InputMaybe<CanteenFoodIncInput>;
-  _set?: InputMaybe<CanteenFoodSetInput>;
-  pkColumns: CanteenFoodPkColumnsInput;
-};
-
-export type MutationUpdateCanteenFoodManyArgs = {
-  updates: Array<CanteenFoodUpdates>;
-};
-
-export type MutationUpdateCanteenManyArgs = {
-  updates: Array<CanteenUpdates>;
-};
-
-export type MutationUpdateCanteenMenuArgs = {
-  _inc?: InputMaybe<CanteenMenuIncInput>;
-  _set?: InputMaybe<CanteenMenuSetInput>;
-  where: CanteenMenuBoolExp;
-};
-
-export type MutationUpdateCanteenMenuByPkArgs = {
-  _inc?: InputMaybe<CanteenMenuIncInput>;
-  _set?: InputMaybe<CanteenMenuSetInput>;
-  pkColumns: CanteenMenuPkColumnsInput;
-};
-
-export type MutationUpdateCanteenMenuManyArgs = {
-  updates: Array<CanteenMenuUpdates>;
-};
-
 export type MutationUpdateClassGroupArgs = {
   _inc?: InputMaybe<ClassGroupIncInput>;
   _set?: InputMaybe<ClassGroupSetInput>;
@@ -25466,38 +20836,6 @@ export type MutationUpdateClassGroupManyArgs = {
   updates: Array<ClassGroupUpdates>;
 };
 
-export type MutationUpdateClassGroupTeacherArgs = {
-  _inc?: InputMaybe<ClassGroupTeacherIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSetInput>;
-  where: ClassGroupTeacherBoolExp;
-};
-
-export type MutationUpdateClassGroupTeacherByPkArgs = {
-  _inc?: InputMaybe<ClassGroupTeacherIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSetInput>;
-  pkColumns: ClassGroupTeacherPkColumnsInput;
-};
-
-export type MutationUpdateClassGroupTeacherManyArgs = {
-  updates: Array<ClassGroupTeacherUpdates>;
-};
-
-export type MutationUpdateClassGroupTeacherSubjectsArgs = {
-  _inc?: InputMaybe<ClassGroupTeacherSubjectsIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSubjectsSetInput>;
-  where: ClassGroupTeacherSubjectsBoolExp;
-};
-
-export type MutationUpdateClassGroupTeacherSubjectsByPkArgs = {
-  _inc?: InputMaybe<ClassGroupTeacherSubjectsIncInput>;
-  _set?: InputMaybe<ClassGroupTeacherSubjectsSetInput>;
-  pkColumns: ClassGroupTeacherSubjectsPkColumnsInput;
-};
-
-export type MutationUpdateClassGroupTeacherSubjectsManyArgs = {
-  updates: Array<ClassGroupTeacherSubjectsUpdates>;
-};
-
 export type MutationUpdateCohortArgs = {
   _inc?: InputMaybe<CohortIncInput>;
   _set?: InputMaybe<CohortSetInput>;
@@ -25512,38 +20850,6 @@ export type MutationUpdateCohortByPkArgs = {
 
 export type MutationUpdateCohortManyArgs = {
   updates: Array<CohortUpdates>;
-};
-
-export type MutationUpdateContentArgs = {
-  _inc?: InputMaybe<ContentIncInput>;
-  _set?: InputMaybe<ContentSetInput>;
-  where: ContentBoolExp;
-};
-
-export type MutationUpdateContentAttachmentsArgs = {
-  _inc?: InputMaybe<ContentAttachmentsIncInput>;
-  _set?: InputMaybe<ContentAttachmentsSetInput>;
-  where: ContentAttachmentsBoolExp;
-};
-
-export type MutationUpdateContentAttachmentsByPkArgs = {
-  _inc?: InputMaybe<ContentAttachmentsIncInput>;
-  _set?: InputMaybe<ContentAttachmentsSetInput>;
-  pkColumns: ContentAttachmentsPkColumnsInput;
-};
-
-export type MutationUpdateContentAttachmentsManyArgs = {
-  updates: Array<ContentAttachmentsUpdates>;
-};
-
-export type MutationUpdateContentByPkArgs = {
-  _inc?: InputMaybe<ContentIncInput>;
-  _set?: InputMaybe<ContentSetInput>;
-  pkColumns: ContentPkColumnsInput;
-};
-
-export type MutationUpdateContentManyArgs = {
-  updates: Array<ContentUpdates>;
 };
 
 export type MutationUpdateDocumentArgs = {
@@ -25780,22 +21086,6 @@ export type MutationUpdateExpenseManyArgs = {
   updates: Array<ExpenseUpdates>;
 };
 
-export type MutationUpdateFavoriteArgs = {
-  _inc?: InputMaybe<FavoriteIncInput>;
-  _set?: InputMaybe<FavoriteSetInput>;
-  where: FavoriteBoolExp;
-};
-
-export type MutationUpdateFavoriteByPkArgs = {
-  _inc?: InputMaybe<FavoriteIncInput>;
-  _set?: InputMaybe<FavoriteSetInput>;
-  pkColumns: FavoritePkColumnsInput;
-};
-
-export type MutationUpdateFavoriteManyArgs = {
-  updates: Array<FavoriteUpdates>;
-};
-
 export type MutationUpdateFileUploadArgs = {
   _inc?: InputMaybe<FileUploadIncInput>;
   _set?: InputMaybe<FileUploadSetInput>;
@@ -26008,54 +21298,6 @@ export type MutationUpdateGrantManyArgs = {
   updates: Array<GrantUpdates>;
 };
 
-export type MutationUpdateIssueArgs = {
-  _inc?: InputMaybe<IssueIncInput>;
-  _set?: InputMaybe<IssueSetInput>;
-  where: IssueBoolExp;
-};
-
-export type MutationUpdateIssueByPkArgs = {
-  _inc?: InputMaybe<IssueIncInput>;
-  _set?: InputMaybe<IssueSetInput>;
-  pkColumns: IssuePkColumnsInput;
-};
-
-export type MutationUpdateIssueContributorsArgs = {
-  _inc?: InputMaybe<IssueContributorsIncInput>;
-  _set?: InputMaybe<IssueContributorsSetInput>;
-  where: IssueContributorsBoolExp;
-};
-
-export type MutationUpdateIssueContributorsByPkArgs = {
-  _inc?: InputMaybe<IssueContributorsIncInput>;
-  _set?: InputMaybe<IssueContributorsSetInput>;
-  pkColumns: IssueContributorsPkColumnsInput;
-};
-
-export type MutationUpdateIssueContributorsManyArgs = {
-  updates: Array<IssueContributorsUpdates>;
-};
-
-export type MutationUpdateIssueManyArgs = {
-  updates: Array<IssueUpdates>;
-};
-
-export type MutationUpdateIssueTagsArgs = {
-  _inc?: InputMaybe<IssueTagsIncInput>;
-  _set?: InputMaybe<IssueTagsSetInput>;
-  where: IssueTagsBoolExp;
-};
-
-export type MutationUpdateIssueTagsByPkArgs = {
-  _inc?: InputMaybe<IssueTagsIncInput>;
-  _set?: InputMaybe<IssueTagsSetInput>;
-  pkColumns: IssueTagsPkColumnsInput;
-};
-
-export type MutationUpdateIssueTagsManyArgs = {
-  updates: Array<IssueTagsUpdates>;
-};
-
 export type MutationUpdateLegalUnitArgs = {
   _inc?: InputMaybe<LegalUnitIncInput>;
   _set?: InputMaybe<LegalUnitSetInput>;
@@ -26216,38 +21458,6 @@ export type MutationUpdateProjectTagsManyArgs = {
   updates: Array<ProjectTagsUpdates>;
 };
 
-export type MutationUpdateReactionArgs = {
-  _inc?: InputMaybe<ReactionIncInput>;
-  _set?: InputMaybe<ReactionSetInput>;
-  where: ReactionBoolExp;
-};
-
-export type MutationUpdateReactionByPkArgs = {
-  _inc?: InputMaybe<ReactionIncInput>;
-  _set?: InputMaybe<ReactionSetInput>;
-  pkColumns: ReactionPkColumnsInput;
-};
-
-export type MutationUpdateReactionManyArgs = {
-  updates: Array<ReactionUpdates>;
-};
-
-export type MutationUpdateReportArgs = {
-  _inc?: InputMaybe<ReportIncInput>;
-  _set?: InputMaybe<ReportSetInput>;
-  where: ReportBoolExp;
-};
-
-export type MutationUpdateReportByPkArgs = {
-  _inc?: InputMaybe<ReportIncInput>;
-  _set?: InputMaybe<ReportSetInput>;
-  pkColumns: ReportPkColumnsInput;
-};
-
-export type MutationUpdateReportManyArgs = {
-  updates: Array<ReportUpdates>;
-};
-
 export type MutationUpdateRoleArgs = {
   _inc?: InputMaybe<RoleIncInput>;
   _set?: InputMaybe<RoleSetInput>;
@@ -26320,38 +21530,6 @@ export type MutationUpdateSocialByPkArgs = {
 
 export type MutationUpdateSocialManyArgs = {
   updates: Array<SocialUpdates>;
-};
-
-export type MutationUpdateSubjectArgs = {
-  _inc?: InputMaybe<SubjectIncInput>;
-  _set?: InputMaybe<SubjectSetInput>;
-  where: SubjectBoolExp;
-};
-
-export type MutationUpdateSubjectByPkArgs = {
-  _inc?: InputMaybe<SubjectIncInput>;
-  _set?: InputMaybe<SubjectSetInput>;
-  pkColumns: SubjectPkColumnsInput;
-};
-
-export type MutationUpdateSubjectClassGroupsArgs = {
-  _inc?: InputMaybe<SubjectClassGroupsIncInput>;
-  _set?: InputMaybe<SubjectClassGroupsSetInput>;
-  where: SubjectClassGroupsBoolExp;
-};
-
-export type MutationUpdateSubjectClassGroupsByPkArgs = {
-  _inc?: InputMaybe<SubjectClassGroupsIncInput>;
-  _set?: InputMaybe<SubjectClassGroupsSetInput>;
-  pkColumns: SubjectClassGroupsPkColumnsInput;
-};
-
-export type MutationUpdateSubjectClassGroupsManyArgs = {
-  updates: Array<SubjectClassGroupsUpdates>;
-};
-
-export type MutationUpdateSubjectManyArgs = {
-  updates: Array<SubjectUpdates>;
 };
 
 export type MutationUpdateTagArgs = {
@@ -26450,22 +21628,6 @@ export type MutationUpdateTeamMemberRoleManyArgs = {
   updates: Array<TeamMemberRoleUpdates>;
 };
 
-export type MutationUpdateTeamMetricArgs = {
-  _inc?: InputMaybe<TeamMetricIncInput>;
-  _set?: InputMaybe<TeamMetricSetInput>;
-  where: TeamMetricBoolExp;
-};
-
-export type MutationUpdateTeamMetricByPkArgs = {
-  _inc?: InputMaybe<TeamMetricIncInput>;
-  _set?: InputMaybe<TeamMetricSetInput>;
-  pkColumns: TeamMetricPkColumnsInput;
-};
-
-export type MutationUpdateTeamMetricManyArgs = {
-  updates: Array<TeamMetricUpdates>;
-};
-
 export type MutationUpdateTenantArgs = {
   _inc?: InputMaybe<TenantIncInput>;
   _set?: InputMaybe<TenantSetInput>;
@@ -26498,54 +21660,6 @@ export type MutationUpdateTenantOrganizeManyArgs = {
   updates: Array<TenantOrganizeUpdates>;
 };
 
-export type MutationUpdateThreadArgs = {
-  _inc?: InputMaybe<ThreadIncInput>;
-  _set?: InputMaybe<ThreadSetInput>;
-  where: ThreadBoolExp;
-};
-
-export type MutationUpdateThreadByPkArgs = {
-  _inc?: InputMaybe<ThreadIncInput>;
-  _set?: InputMaybe<ThreadSetInput>;
-  pkColumns: ThreadPkColumnsInput;
-};
-
-export type MutationUpdateThreadContributorsArgs = {
-  _inc?: InputMaybe<ThreadContributorsIncInput>;
-  _set?: InputMaybe<ThreadContributorsSetInput>;
-  where: ThreadContributorsBoolExp;
-};
-
-export type MutationUpdateThreadContributorsByPkArgs = {
-  _inc?: InputMaybe<ThreadContributorsIncInput>;
-  _set?: InputMaybe<ThreadContributorsSetInput>;
-  pkColumns: ThreadContributorsPkColumnsInput;
-};
-
-export type MutationUpdateThreadContributorsManyArgs = {
-  updates: Array<ThreadContributorsUpdates>;
-};
-
-export type MutationUpdateThreadManyArgs = {
-  updates: Array<ThreadUpdates>;
-};
-
-export type MutationUpdateThreadTagsArgs = {
-  _inc?: InputMaybe<ThreadTagsIncInput>;
-  _set?: InputMaybe<ThreadTagsSetInput>;
-  where: ThreadTagsBoolExp;
-};
-
-export type MutationUpdateThreadTagsByPkArgs = {
-  _inc?: InputMaybe<ThreadTagsIncInput>;
-  _set?: InputMaybe<ThreadTagsSetInput>;
-  pkColumns: ThreadTagsPkColumnsInput;
-};
-
-export type MutationUpdateThreadTagsManyArgs = {
-  updates: Array<ThreadTagsUpdates>;
-};
-
 export type MutationUpdateUserArgs = {
   _inc?: InputMaybe<UserIncInput>;
   _set?: InputMaybe<UserSetInput>;
@@ -26560,54 +21674,6 @@ export type MutationUpdateUserByPkArgs = {
 
 export type MutationUpdateUserManyArgs = {
   updates: Array<UserUpdates>;
-};
-
-export type MutationUpdateValidationArgs = {
-  _inc?: InputMaybe<ValidationIncInput>;
-  _set?: InputMaybe<ValidationSetInput>;
-  where: ValidationBoolExp;
-};
-
-export type MutationUpdateValidationByPkArgs = {
-  _inc?: InputMaybe<ValidationIncInput>;
-  _set?: InputMaybe<ValidationSetInput>;
-  pkColumns: ValidationPkColumnsInput;
-};
-
-export type MutationUpdateValidationManyArgs = {
-  updates: Array<ValidationUpdates>;
-};
-
-export type MutationUpdateViewArgs = {
-  _inc?: InputMaybe<ViewIncInput>;
-  _set?: InputMaybe<ViewSetInput>;
-  where: ViewBoolExp;
-};
-
-export type MutationUpdateViewByPkArgs = {
-  _inc?: InputMaybe<ViewIncInput>;
-  _set?: InputMaybe<ViewSetInput>;
-  pkColumns: ViewPkColumnsInput;
-};
-
-export type MutationUpdateViewManyArgs = {
-  updates: Array<ViewUpdates>;
-};
-
-export type MutationUpdateVoteArgs = {
-  _inc?: InputMaybe<VoteIncInput>;
-  _set?: InputMaybe<VoteSetInput>;
-  where: VoteBoolExp;
-};
-
-export type MutationUpdateVoteByPkArgs = {
-  _inc?: InputMaybe<VoteIncInput>;
-  _set?: InputMaybe<VoteSetInput>;
-  pkColumns: VotePkColumnsInput;
-};
-
-export type MutationUpdateVoteManyArgs = {
-  updates: Array<VoteUpdates>;
 };
 
 export enum OrderBy {
@@ -28304,33 +23370,12 @@ export type Query = {
   campusCluster: Array<CampusCluster>;
   campusClusterAggregate: CampusClusterAggregate;
   campusClusterByPk?: Maybe<CampusCluster>;
-  canteen: Array<Canteen>;
-  canteenAggregate: CanteenAggregate;
-  canteenByPk?: Maybe<Canteen>;
-  canteenFood: Array<CanteenFood>;
-  canteenFoodAggregate: CanteenFoodAggregate;
-  canteenFoodByPk?: Maybe<CanteenFood>;
-  canteenMenu: Array<CanteenMenu>;
-  canteenMenuAggregate: CanteenMenuAggregate;
-  canteenMenuByPk?: Maybe<CanteenMenu>;
   classGroup: Array<ClassGroup>;
   classGroupAggregate: ClassGroupAggregate;
   classGroupByPk?: Maybe<ClassGroup>;
-  classGroupTeacher: Array<ClassGroupTeacher>;
-  classGroupTeacherAggregate: ClassGroupTeacherAggregate;
-  classGroupTeacherByPk?: Maybe<ClassGroupTeacher>;
-  classGroupTeacherSubjects: Array<ClassGroupTeacherSubjects>;
-  classGroupTeacherSubjectsAggregate: ClassGroupTeacherSubjectsAggregate;
-  classGroupTeacherSubjectsByPk?: Maybe<ClassGroupTeacherSubjects>;
   cohort: Array<Cohort>;
   cohortAggregate: CohortAggregate;
   cohortByPk?: Maybe<Cohort>;
-  content: Array<Content>;
-  contentAggregate: ContentAggregate;
-  contentAttachments: Array<ContentAttachments>;
-  contentAttachmentsAggregate: ContentAttachmentsAggregate;
-  contentAttachmentsByPk?: Maybe<ContentAttachments>;
-  contentByPk?: Maybe<Content>;
   document: Array<Document>;
   documentAggregate: DocumentAggregate;
   documentByPk?: Maybe<Document>;
@@ -28374,9 +23419,6 @@ export type Query = {
   expenseItemAttachmentsAggregate: ExpenseItemAttachmentsAggregate;
   expenseItemAttachmentsByPk?: Maybe<ExpenseItemAttachments>;
   expenseItemByPk?: Maybe<ExpenseItem>;
-  favorite: Array<Favorite>;
-  favoriteAggregate: FavoriteAggregate;
-  favoriteByPk?: Maybe<Favorite>;
   fileUpload: Array<FileUpload>;
   fileUploadAggregate: FileUploadAggregate;
   fileUploadByPk?: Maybe<FileUpload>;
@@ -28415,15 +23457,6 @@ export type Query = {
   grantAttachmentsAggregate: GrantAttachmentsAggregate;
   grantAttachmentsByPk?: Maybe<GrantAttachments>;
   grantByPk?: Maybe<Grant>;
-  issue: Array<Issue>;
-  issueAggregate: IssueAggregate;
-  issueByPk?: Maybe<Issue>;
-  issueContributors: Array<IssueContributors>;
-  issueContributorsAggregate: IssueContributorsAggregate;
-  issueContributorsByPk?: Maybe<IssueContributors>;
-  issueTags: Array<IssueTags>;
-  issueTagsAggregate: IssueTagsAggregate;
-  issueTagsByPk?: Maybe<IssueTags>;
   legalUnit: Array<LegalUnit>;
   legalUnitAggregate: LegalUnitAggregate;
   legalUnitByPk?: Maybe<LegalUnit>;
@@ -28456,12 +23489,6 @@ export type Query = {
   projectTags: Array<ProjectTags>;
   projectTagsAggregate: ProjectTagsAggregate;
   projectTagsByPk?: Maybe<ProjectTags>;
-  reaction: Array<Reaction>;
-  reactionAggregate: ReactionAggregate;
-  reactionByPk?: Maybe<Reaction>;
-  report: Array<Report>;
-  reportAggregate: ReportAggregate;
-  reportByPk?: Maybe<Report>;
   role: Array<Role>;
   roleAggregate: RoleAggregate;
   roleByPk?: Maybe<Role>;
@@ -28476,12 +23503,6 @@ export type Query = {
   social: Array<Social>;
   socialAggregate: SocialAggregate;
   socialByPk?: Maybe<Social>;
-  subject: Array<Subject>;
-  subjectAggregate: SubjectAggregate;
-  subjectByPk?: Maybe<Subject>;
-  subjectClassGroups: Array<SubjectClassGroups>;
-  subjectClassGroupsAggregate: SubjectClassGroupsAggregate;
-  subjectClassGroupsByPk?: Maybe<SubjectClassGroups>;
   tag: Array<Tag>;
   tagAggregate: TagAggregate;
   tagByPk?: Maybe<Tag>;
@@ -28501,9 +23522,6 @@ export type Query = {
   teamMemberRole: Array<TeamMemberRole>;
   teamMemberRoleAggregate: TeamMemberRoleAggregate;
   teamMemberRoleByPk?: Maybe<TeamMemberRole>;
-  teamMetric: Array<TeamMetric>;
-  teamMetricAggregate: TeamMetricAggregate;
-  teamMetricByPk?: Maybe<TeamMetric>;
   tenant: Array<Tenant>;
   tenantAggregate: TenantAggregate;
   tenantByPk?: Maybe<Tenant>;
@@ -28511,27 +23529,9 @@ export type Query = {
   tenantOrganize: Array<TenantOrganize>;
   tenantOrganizeAggregate: TenantOrganizeAggregate;
   tenantOrganizeByPk?: Maybe<TenantOrganize>;
-  thread: Array<Thread>;
-  threadAggregate: ThreadAggregate;
-  threadByPk?: Maybe<Thread>;
-  threadContributors: Array<ThreadContributors>;
-  threadContributorsAggregate: ThreadContributorsAggregate;
-  threadContributorsByPk?: Maybe<ThreadContributors>;
-  threadTags: Array<ThreadTags>;
-  threadTagsAggregate: ThreadTagsAggregate;
-  threadTagsByPk?: Maybe<ThreadTags>;
   user: Array<User>;
   userAggregate: UserAggregate;
   userByPk?: Maybe<User>;
-  validation: Array<Validation>;
-  validationAggregate: ValidationAggregate;
-  validationByPk?: Maybe<Validation>;
-  view: Array<View>;
-  viewAggregate: ViewAggregate;
-  viewByPk?: Maybe<View>;
-  vote: Array<Vote>;
-  voteAggregate: VoteAggregate;
-  voteByPk?: Maybe<Vote>;
 };
 
 export type QueryActionArgs = {
@@ -28715,66 +23715,6 @@ export type QueryCampusClusterByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryCanteenArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type QueryCanteenAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type QueryCanteenByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryCanteenFoodArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type QueryCanteenFoodAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type QueryCanteenFoodByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryCanteenMenuArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type QueryCanteenMenuAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type QueryCanteenMenuByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryClassGroupArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -28795,47 +23735,6 @@ export type QueryClassGroupByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryClassGroupTeacherArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type QueryClassGroupTeacherAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type QueryClassGroupTeacherByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryClassGroupTeacherSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type QueryClassGroupTeacherSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type QueryClassGroupTeacherSubjectsByPkArgs = {
-  classGroupTeacherId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
 export type QueryCohortArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -28853,47 +23752,6 @@ export type QueryCohortAggregateArgs = {
 };
 
 export type QueryCohortByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryContentArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type QueryContentAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type QueryContentAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type QueryContentAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type QueryContentAttachmentsByPkArgs = {
-  contentId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export type QueryContentByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
@@ -29185,26 +24043,6 @@ export type QueryExpenseItemByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryFavoriteArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type QueryFavoriteAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type QueryFavoriteByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryFileUploadArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29458,68 +24296,6 @@ export type QueryGrantByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryIssueArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type QueryIssueAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type QueryIssueByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryIssueContributorsArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type QueryIssueContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type QueryIssueContributorsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type QueryIssueTagsArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type QueryIssueTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type QueryIssueTagsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  tagId: Scalars['bigint']['input'];
-};
-
 export type QueryLegalUnitArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29727,46 +24503,6 @@ export type QueryProjectTagsByPkArgs = {
   tagId: Scalars['bigint']['input'];
 };
 
-export type QueryReactionArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type QueryReactionAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type QueryReactionByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryReportArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type QueryReportAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type QueryReportByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryRoleArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -29853,47 +24589,6 @@ export type QuerySocialAggregateArgs = {
 
 export type QuerySocialByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type QuerySubjectArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type QuerySubjectAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type QuerySubjectByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QuerySubjectClassGroupsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type QuerySubjectClassGroupsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type QuerySubjectClassGroupsByPkArgs = {
-  classGroupId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
 };
 
 export type QueryTagArgs = {
@@ -30020,26 +24715,6 @@ export type QueryTeamMemberRoleByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryTeamMetricArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type QueryTeamMetricAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type QueryTeamMetricByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
 export type QueryTenantArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -30084,68 +24759,6 @@ export type QueryTenantOrganizeByPkArgs = {
   id: Scalars['bigint']['input'];
 };
 
-export type QueryThreadArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type QueryThreadAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type QueryThreadByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryThreadContributorsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type QueryThreadContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type QueryThreadContributorsByPkArgs = {
-  threadId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type QueryThreadTagsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type QueryThreadTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type QueryThreadTagsByPkArgs = {
-  tagId: Scalars['bigint']['input'];
-  threadId: Scalars['bigint']['input'];
-};
-
 export type QueryUserArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -30164,825 +24777,6 @@ export type QueryUserAggregateArgs = {
 
 export type QueryUserByPkArgs = {
   id: Scalars['bigint']['input'];
-};
-
-export type QueryValidationArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type QueryValidationAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type QueryValidationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryViewArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type QueryViewAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type QueryViewByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type QueryVoteArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type QueryVoteAggregateArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type QueryVoteByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type Reaction = {
-  __typename?: 'Reaction';
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  reactionType: Scalars['String']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type ReactionAggregate = {
-  __typename?: 'ReactionAggregate';
-  aggregate?: Maybe<ReactionAggregateFields>;
-  nodes: Array<Reaction>;
-};
-
-export type ReactionAggregateBoolExp = {
-  count?: InputMaybe<ReactionAggregateBoolExpCount>;
-};
-
-export type ReactionAggregateFields = {
-  __typename?: 'ReactionAggregateFields';
-  avg?: Maybe<ReactionAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ReactionMaxFields>;
-  min?: Maybe<ReactionMinFields>;
-  stddev?: Maybe<ReactionStddevFields>;
-  stddevPop?: Maybe<ReactionStddevPopFields>;
-  stddevSamp?: Maybe<ReactionStddevSampFields>;
-  sum?: Maybe<ReactionSumFields>;
-  varPop?: Maybe<ReactionVarPopFields>;
-  varSamp?: Maybe<ReactionVarSampFields>;
-  variance?: Maybe<ReactionVarianceFields>;
-};
-
-export type ReactionAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ReactionSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ReactionAggregateOrderBy = {
-  avg?: InputMaybe<ReactionAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ReactionMaxOrderBy>;
-  min?: InputMaybe<ReactionMinOrderBy>;
-  stddev?: InputMaybe<ReactionStddevOrderBy>;
-  stddevPop?: InputMaybe<ReactionStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ReactionStddevSampOrderBy>;
-  sum?: InputMaybe<ReactionSumOrderBy>;
-  varPop?: InputMaybe<ReactionVarPopOrderBy>;
-  varSamp?: InputMaybe<ReactionVarSampOrderBy>;
-  variance?: InputMaybe<ReactionVarianceOrderBy>;
-};
-
-export type ReactionArrRelInsertInput = {
-  data: Array<ReactionInsertInput>;
-  onConflict?: InputMaybe<ReactionOnConflict>;
-};
-
-export type ReactionAvgFields = {
-  __typename?: 'ReactionAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionBoolExp = {
-  _and?: InputMaybe<Array<ReactionBoolExp>>;
-  _not?: InputMaybe<ReactionBoolExp>;
-  _or?: InputMaybe<Array<ReactionBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  reactionType?: InputMaybe<StringComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ReactionConstraint {
-  ReactionPkey = 'reaction_pkey',
-}
-
-export type ReactionIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ReactionInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reactionType?: InputMaybe<Scalars['String']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ReactionMaxFields = {
-  __typename?: 'ReactionMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  reactionType?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ReactionMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reactionType?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionMinFields = {
-  __typename?: 'ReactionMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  reactionType?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ReactionMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reactionType?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionMutationResponse = {
-  __typename?: 'ReactionMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Reaction>;
-};
-
-export type ReactionOnConflict = {
-  constraint: ReactionConstraint;
-  updateColumns?: Array<ReactionUpdateColumn>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type ReactionOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reactionType?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ReactionSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  ReactionType = 'reactionType',
-  TenantId = 'tenantId',
-}
-
-export type ReactionSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reactionType?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ReactionStddevFields = {
-  __typename?: 'ReactionStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionStddevPopFields = {
-  __typename?: 'ReactionStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionStddevSampFields = {
-  __typename?: 'ReactionStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionStreamCursorInput = {
-  initialValue: ReactionStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ReactionStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reactionType?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ReactionSumFields = {
-  __typename?: 'ReactionSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ReactionSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum ReactionUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  ReactionType = 'reactionType',
-  TenantId = 'tenantId',
-}
-
-export type ReactionUpdates = {
-  _inc?: InputMaybe<ReactionIncInput>;
-  _set?: InputMaybe<ReactionSetInput>;
-  where: ReactionBoolExp;
-};
-
-export type ReactionVarPopFields = {
-  __typename?: 'ReactionVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionVarSampFields = {
-  __typename?: 'ReactionVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReactionVarianceFields = {
-  __typename?: 'ReactionVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReactionVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type Report = {
-  __typename?: 'Report';
-  actor?: Maybe<Actor>;
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  reason: Scalars['String']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
-};
-
-export type ReportAggregate = {
-  __typename?: 'ReportAggregate';
-  aggregate?: Maybe<ReportAggregateFields>;
-  nodes: Array<Report>;
-};
-
-export type ReportAggregateBoolExp = {
-  count?: InputMaybe<ReportAggregateBoolExpCount>;
-};
-
-export type ReportAggregateFields = {
-  __typename?: 'ReportAggregateFields';
-  avg?: Maybe<ReportAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ReportMaxFields>;
-  min?: Maybe<ReportMinFields>;
-  stddev?: Maybe<ReportStddevFields>;
-  stddevPop?: Maybe<ReportStddevPopFields>;
-  stddevSamp?: Maybe<ReportStddevSampFields>;
-  sum?: Maybe<ReportSumFields>;
-  varPop?: Maybe<ReportVarPopFields>;
-  varSamp?: Maybe<ReportVarSampFields>;
-  variance?: Maybe<ReportVarianceFields>;
-};
-
-export type ReportAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ReportSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ReportAggregateOrderBy = {
-  avg?: InputMaybe<ReportAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ReportMaxOrderBy>;
-  min?: InputMaybe<ReportMinOrderBy>;
-  stddev?: InputMaybe<ReportStddevOrderBy>;
-  stddevPop?: InputMaybe<ReportStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ReportStddevSampOrderBy>;
-  sum?: InputMaybe<ReportSumOrderBy>;
-  varPop?: InputMaybe<ReportVarPopOrderBy>;
-  varSamp?: InputMaybe<ReportVarSampOrderBy>;
-  variance?: InputMaybe<ReportVarianceOrderBy>;
-};
-
-export type ReportArrRelInsertInput = {
-  data: Array<ReportInsertInput>;
-  onConflict?: InputMaybe<ReportOnConflict>;
-};
-
-export type ReportAvgFields = {
-  __typename?: 'ReportAvgFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportAvgOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportBoolExp = {
-  _and?: InputMaybe<Array<ReportBoolExp>>;
-  _not?: InputMaybe<ReportBoolExp>;
-  _or?: InputMaybe<Array<ReportBoolExp>>;
-  actor?: InputMaybe<ActorBoolExp>;
-  actorId?: InputMaybe<BigintComparisonExp>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  reason?: InputMaybe<StringComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
-};
-
-export enum ReportConstraint {
-  ReportPkey = 'report_pkey',
-}
-
-export type ReportIncInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ReportInsertInput = {
-  actor?: InputMaybe<ActorObjRelInsertInput>;
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reason?: InputMaybe<Scalars['String']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ReportMaxFields = {
-  __typename?: 'ReportMaxFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  reason?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type ReportMaxOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reason?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ReportMinFields = {
-  __typename?: 'ReportMinFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  reason?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type ReportMinOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reason?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ReportMutationResponse = {
-  __typename?: 'ReportMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Report>;
-};
-
-export type ReportOnConflict = {
-  constraint: ReportConstraint;
-  updateColumns?: Array<ReportUpdateColumn>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type ReportOrderBy = {
-  actor?: InputMaybe<ActorOrderBy>;
-  actorId?: InputMaybe<OrderBy>;
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  reason?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ReportPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ReportSelectColumn {
-  ActorId = 'actorId',
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Reason = 'reason',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type ReportSetInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reason?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ReportStddevFields = {
-  __typename?: 'ReportStddevFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportStddevOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportStddevPopFields = {
-  __typename?: 'ReportStddevPopFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportStddevPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportStddevSampFields = {
-  __typename?: 'ReportStddevSampFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportStddevSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportStreamCursorInput = {
-  initialValue: ReportStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ReportStreamCursorValueInput = {
-  actorId?: InputMaybe<Scalars['bigint']['input']>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  reason?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ReportSumFields = {
-  __typename?: 'ReportSumFields';
-  actorId?: Maybe<Scalars['bigint']['output']>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ReportSumOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum ReportUpdateColumn {
-  ActorId = 'actorId',
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Reason = 'reason',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type ReportUpdates = {
-  _inc?: InputMaybe<ReportIncInput>;
-  _set?: InputMaybe<ReportSetInput>;
-  where: ReportBoolExp;
-};
-
-export type ReportVarPopFields = {
-  __typename?: 'ReportVarPopFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportVarPopOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportVarSampFields = {
-  __typename?: 'ReportVarSampFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportVarSampOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ReportVarianceFields = {
-  __typename?: 'ReportVarianceFields';
-  actorId?: Maybe<Scalars['Float']['output']>;
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ReportVarianceOrderBy = {
-  actorId?: InputMaybe<OrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
 };
 
 export type Role = {
@@ -32792,697 +26586,6 @@ export type StringComparisonExp = {
   _similar?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type Subject = {
-  __typename?: 'Subject';
-  classGroupTeacherSubjects: Array<ClassGroupTeacherSubjects>;
-  classGroupTeacherSubjectsAggregate: ClassGroupTeacherSubjectsAggregate;
-  code: Scalars['String']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description: Scalars['String']['output'];
-  documents: Array<Document>;
-  documentsAggregate: DocumentAggregate;
-  englishName: Scalars['String']['output'];
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  name: Scalars['String']['output'];
-  subjectClassGroups: Array<SubjectClassGroups>;
-  subjectClassGroupsAggregate: SubjectClassGroupsAggregate;
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
-};
-
-export type SubjectClassGroupTeacherSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type SubjectClassGroupTeacherSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type SubjectDocumentsArgs = {
-  distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<DocumentOrderBy>>;
-  where?: InputMaybe<DocumentBoolExp>;
-};
-
-export type SubjectDocumentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<DocumentOrderBy>>;
-  where?: InputMaybe<DocumentBoolExp>;
-};
-
-export type SubjectSubjectClassGroupsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubjectSubjectClassGroupsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubjectAggregate = {
-  __typename?: 'SubjectAggregate';
-  aggregate?: Maybe<SubjectAggregateFields>;
-  nodes: Array<Subject>;
-};
-
-export type SubjectAggregateBoolExp = {
-  count?: InputMaybe<SubjectAggregateBoolExpCount>;
-};
-
-export type SubjectAggregateFields = {
-  __typename?: 'SubjectAggregateFields';
-  avg?: Maybe<SubjectAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<SubjectMaxFields>;
-  min?: Maybe<SubjectMinFields>;
-  stddev?: Maybe<SubjectStddevFields>;
-  stddevPop?: Maybe<SubjectStddevPopFields>;
-  stddevSamp?: Maybe<SubjectStddevSampFields>;
-  sum?: Maybe<SubjectSumFields>;
-  varPop?: Maybe<SubjectVarPopFields>;
-  varSamp?: Maybe<SubjectVarSampFields>;
-  variance?: Maybe<SubjectVarianceFields>;
-};
-
-export type SubjectAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<SubjectSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type SubjectAggregateOrderBy = {
-  avg?: InputMaybe<SubjectAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<SubjectMaxOrderBy>;
-  min?: InputMaybe<SubjectMinOrderBy>;
-  stddev?: InputMaybe<SubjectStddevOrderBy>;
-  stddevPop?: InputMaybe<SubjectStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<SubjectStddevSampOrderBy>;
-  sum?: InputMaybe<SubjectSumOrderBy>;
-  varPop?: InputMaybe<SubjectVarPopOrderBy>;
-  varSamp?: InputMaybe<SubjectVarSampOrderBy>;
-  variance?: InputMaybe<SubjectVarianceOrderBy>;
-};
-
-export type SubjectArrRelInsertInput = {
-  data: Array<SubjectInsertInput>;
-  onConflict?: InputMaybe<SubjectOnConflict>;
-};
-
-export type SubjectAvgFields = {
-  __typename?: 'SubjectAvgFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectAvgOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectBoolExp = {
-  _and?: InputMaybe<Array<SubjectBoolExp>>;
-  _not?: InputMaybe<SubjectBoolExp>;
-  _or?: InputMaybe<Array<SubjectBoolExp>>;
-  classGroupTeacherSubjects?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-  classGroupTeacherSubjectsAggregate?: InputMaybe<ClassGroupTeacherSubjectsAggregateBoolExp>;
-  code?: InputMaybe<StringComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  description?: InputMaybe<StringComparisonExp>;
-  documents?: InputMaybe<DocumentBoolExp>;
-  documentsAggregate?: InputMaybe<DocumentAggregateBoolExp>;
-  englishName?: InputMaybe<StringComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  name?: InputMaybe<StringComparisonExp>;
-  subjectClassGroups?: InputMaybe<SubjectClassGroupsBoolExp>;
-  subjectClassGroupsAggregate?: InputMaybe<SubjectClassGroupsAggregateBoolExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
-};
-
-export type SubjectClassGroups = {
-  __typename?: 'SubjectClassGroups';
-  classGroup: ClassGroup;
-  classGroupId: Scalars['bigint']['output'];
-  subject: Subject;
-  subjectId: Scalars['bigint']['output'];
-};
-
-export type SubjectClassGroupsAggregate = {
-  __typename?: 'SubjectClassGroupsAggregate';
-  aggregate?: Maybe<SubjectClassGroupsAggregateFields>;
-  nodes: Array<SubjectClassGroups>;
-};
-
-export type SubjectClassGroupsAggregateBoolExp = {
-  count?: InputMaybe<SubjectClassGroupsAggregateBoolExpCount>;
-};
-
-export type SubjectClassGroupsAggregateFields = {
-  __typename?: 'SubjectClassGroupsAggregateFields';
-  avg?: Maybe<SubjectClassGroupsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<SubjectClassGroupsMaxFields>;
-  min?: Maybe<SubjectClassGroupsMinFields>;
-  stddev?: Maybe<SubjectClassGroupsStddevFields>;
-  stddevPop?: Maybe<SubjectClassGroupsStddevPopFields>;
-  stddevSamp?: Maybe<SubjectClassGroupsStddevSampFields>;
-  sum?: Maybe<SubjectClassGroupsSumFields>;
-  varPop?: Maybe<SubjectClassGroupsVarPopFields>;
-  varSamp?: Maybe<SubjectClassGroupsVarSampFields>;
-  variance?: Maybe<SubjectClassGroupsVarianceFields>;
-};
-
-export type SubjectClassGroupsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type SubjectClassGroupsAggregateOrderBy = {
-  avg?: InputMaybe<SubjectClassGroupsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<SubjectClassGroupsMaxOrderBy>;
-  min?: InputMaybe<SubjectClassGroupsMinOrderBy>;
-  stddev?: InputMaybe<SubjectClassGroupsStddevOrderBy>;
-  stddevPop?: InputMaybe<SubjectClassGroupsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<SubjectClassGroupsStddevSampOrderBy>;
-  sum?: InputMaybe<SubjectClassGroupsSumOrderBy>;
-  varPop?: InputMaybe<SubjectClassGroupsVarPopOrderBy>;
-  varSamp?: InputMaybe<SubjectClassGroupsVarSampOrderBy>;
-  variance?: InputMaybe<SubjectClassGroupsVarianceOrderBy>;
-};
-
-export type SubjectClassGroupsArrRelInsertInput = {
-  data: Array<SubjectClassGroupsInsertInput>;
-  onConflict?: InputMaybe<SubjectClassGroupsOnConflict>;
-};
-
-export type SubjectClassGroupsAvgFields = {
-  __typename?: 'SubjectClassGroupsAvgFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsAvgOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsBoolExp = {
-  _and?: InputMaybe<Array<SubjectClassGroupsBoolExp>>;
-  _not?: InputMaybe<SubjectClassGroupsBoolExp>;
-  _or?: InputMaybe<Array<SubjectClassGroupsBoolExp>>;
-  classGroup?: InputMaybe<ClassGroupBoolExp>;
-  classGroupId?: InputMaybe<BigintComparisonExp>;
-  subject?: InputMaybe<SubjectBoolExp>;
-  subjectId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum SubjectClassGroupsConstraint {
-  SubjectClassGroupsPkey = 'subject_class_groups_pkey',
-}
-
-export type SubjectClassGroupsIncInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type SubjectClassGroupsInsertInput = {
-  classGroup?: InputMaybe<ClassGroupObjRelInsertInput>;
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  subject?: InputMaybe<SubjectObjRelInsertInput>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type SubjectClassGroupsMaxFields = {
-  __typename?: 'SubjectClassGroupsMaxFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type SubjectClassGroupsMaxOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsMinFields = {
-  __typename?: 'SubjectClassGroupsMinFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type SubjectClassGroupsMinOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsMutationResponse = {
-  __typename?: 'SubjectClassGroupsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<SubjectClassGroups>;
-};
-
-export type SubjectClassGroupsOnConflict = {
-  constraint: SubjectClassGroupsConstraint;
-  updateColumns?: Array<SubjectClassGroupsUpdateColumn>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubjectClassGroupsOrderBy = {
-  classGroup?: InputMaybe<ClassGroupOrderBy>;
-  classGroupId?: InputMaybe<OrderBy>;
-  subject?: InputMaybe<SubjectOrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsPkColumnsInput = {
-  classGroupId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
-export enum SubjectClassGroupsSelectColumn {
-  ClassGroupId = 'classGroupId',
-  SubjectId = 'subjectId',
-}
-
-export type SubjectClassGroupsSetInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type SubjectClassGroupsStddevFields = {
-  __typename?: 'SubjectClassGroupsStddevFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsStddevOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsStddevPopFields = {
-  __typename?: 'SubjectClassGroupsStddevPopFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsStddevPopOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsStddevSampFields = {
-  __typename?: 'SubjectClassGroupsStddevSampFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsStddevSampOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsStreamCursorInput = {
-  initialValue: SubjectClassGroupsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type SubjectClassGroupsStreamCursorValueInput = {
-  classGroupId?: InputMaybe<Scalars['bigint']['input']>;
-  subjectId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type SubjectClassGroupsSumFields = {
-  __typename?: 'SubjectClassGroupsSumFields';
-  classGroupId?: Maybe<Scalars['bigint']['output']>;
-  subjectId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type SubjectClassGroupsSumOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export enum SubjectClassGroupsUpdateColumn {
-  ClassGroupId = 'classGroupId',
-  SubjectId = 'subjectId',
-}
-
-export type SubjectClassGroupsUpdates = {
-  _inc?: InputMaybe<SubjectClassGroupsIncInput>;
-  _set?: InputMaybe<SubjectClassGroupsSetInput>;
-  where: SubjectClassGroupsBoolExp;
-};
-
-export type SubjectClassGroupsVarPopFields = {
-  __typename?: 'SubjectClassGroupsVarPopFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsVarPopOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsVarSampFields = {
-  __typename?: 'SubjectClassGroupsVarSampFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsVarSampOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectClassGroupsVarianceFields = {
-  __typename?: 'SubjectClassGroupsVarianceFields';
-  classGroupId?: Maybe<Scalars['Float']['output']>;
-  subjectId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectClassGroupsVarianceOrderBy = {
-  classGroupId?: InputMaybe<OrderBy>;
-  subjectId?: InputMaybe<OrderBy>;
-};
-
-export enum SubjectConstraint {
-  SubjectPkey = 'subject_pkey',
-}
-
-export type SubjectIncInput = {
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type SubjectInsertInput = {
-  classGroupTeacherSubjects?: InputMaybe<ClassGroupTeacherSubjectsArrRelInsertInput>;
-  code?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  documents?: InputMaybe<DocumentArrRelInsertInput>;
-  englishName?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  subjectClassGroups?: InputMaybe<SubjectClassGroupsArrRelInsertInput>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SubjectMaxFields = {
-  __typename?: 'SubjectMaxFields';
-  code?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  englishName?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type SubjectMaxOrderBy = {
-  code?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  englishName?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type SubjectMinFields = {
-  __typename?: 'SubjectMinFields';
-  code?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  englishName?: Maybe<Scalars['String']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type SubjectMinOrderBy = {
-  code?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  englishName?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type SubjectMutationResponse = {
-  __typename?: 'SubjectMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Subject>;
-};
-
-export type SubjectObjRelInsertInput = {
-  data: SubjectInsertInput;
-  onConflict?: InputMaybe<SubjectOnConflict>;
-};
-
-export type SubjectOnConflict = {
-  constraint: SubjectConstraint;
-  updateColumns?: Array<SubjectUpdateColumn>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type SubjectOrderBy = {
-  classGroupTeacherSubjectsAggregate?: InputMaybe<ClassGroupTeacherSubjectsAggregateOrderBy>;
-  code?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  documentsAggregate?: InputMaybe<DocumentAggregateOrderBy>;
-  englishName?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  subjectClassGroupsAggregate?: InputMaybe<SubjectClassGroupsAggregateOrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type SubjectPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum SubjectSelectColumn {
-  Code = 'code',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  Description = 'description',
-  EnglishName = 'englishName',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type SubjectSetInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  englishName?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SubjectStddevFields = {
-  __typename?: 'SubjectStddevFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectStddevOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectStddevPopFields = {
-  __typename?: 'SubjectStddevPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectStddevPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectStddevSampFields = {
-  __typename?: 'SubjectStddevSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectStddevSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectStreamCursorInput = {
-  initialValue: SubjectStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type SubjectStreamCursorValueInput = {
-  code?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  englishName?: InputMaybe<Scalars['String']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SubjectSumFields = {
-  __typename?: 'SubjectSumFields';
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type SubjectSumOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum SubjectUpdateColumn {
-  Code = 'code',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  Description = 'description',
-  EnglishName = 'englishName',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type SubjectUpdates = {
-  _inc?: InputMaybe<SubjectIncInput>;
-  _set?: InputMaybe<SubjectSetInput>;
-  where: SubjectBoolExp;
-};
-
-export type SubjectVarPopFields = {
-  __typename?: 'SubjectVarPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectVarPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectVarSampFields = {
-  __typename?: 'SubjectVarSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectVarSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type SubjectVarianceFields = {
-  __typename?: 'SubjectVarianceFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type SubjectVarianceOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type Subscription = {
   __typename?: 'Subscription';
   action: Array<Action>;
@@ -33521,42 +26624,14 @@ export type Subscription = {
   campusClusterByPk?: Maybe<CampusCluster>;
   campusClusterStream: Array<CampusCluster>;
   campusStream: Array<Campus>;
-  canteen: Array<Canteen>;
-  canteenAggregate: CanteenAggregate;
-  canteenByPk?: Maybe<Canteen>;
-  canteenFood: Array<CanteenFood>;
-  canteenFoodAggregate: CanteenFoodAggregate;
-  canteenFoodByPk?: Maybe<CanteenFood>;
-  canteenFoodStream: Array<CanteenFood>;
-  canteenMenu: Array<CanteenMenu>;
-  canteenMenuAggregate: CanteenMenuAggregate;
-  canteenMenuByPk?: Maybe<CanteenMenu>;
-  canteenMenuStream: Array<CanteenMenu>;
-  canteenStream: Array<Canteen>;
   classGroup: Array<ClassGroup>;
   classGroupAggregate: ClassGroupAggregate;
   classGroupByPk?: Maybe<ClassGroup>;
   classGroupStream: Array<ClassGroup>;
-  classGroupTeacher: Array<ClassGroupTeacher>;
-  classGroupTeacherAggregate: ClassGroupTeacherAggregate;
-  classGroupTeacherByPk?: Maybe<ClassGroupTeacher>;
-  classGroupTeacherStream: Array<ClassGroupTeacher>;
-  classGroupTeacherSubjects: Array<ClassGroupTeacherSubjects>;
-  classGroupTeacherSubjectsAggregate: ClassGroupTeacherSubjectsAggregate;
-  classGroupTeacherSubjectsByPk?: Maybe<ClassGroupTeacherSubjects>;
-  classGroupTeacherSubjectsStream: Array<ClassGroupTeacherSubjects>;
   cohort: Array<Cohort>;
   cohortAggregate: CohortAggregate;
   cohortByPk?: Maybe<Cohort>;
   cohortStream: Array<Cohort>;
-  content: Array<Content>;
-  contentAggregate: ContentAggregate;
-  contentAttachments: Array<ContentAttachments>;
-  contentAttachmentsAggregate: ContentAttachmentsAggregate;
-  contentAttachmentsByPk?: Maybe<ContentAttachments>;
-  contentAttachmentsStream: Array<ContentAttachments>;
-  contentByPk?: Maybe<Content>;
-  contentStream: Array<Content>;
   document: Array<Document>;
   documentAggregate: DocumentAggregate;
   documentByPk?: Maybe<Document>;
@@ -33613,10 +26688,6 @@ export type Subscription = {
   expenseItemByPk?: Maybe<ExpenseItem>;
   expenseItemStream: Array<ExpenseItem>;
   expenseStream: Array<Expense>;
-  favorite: Array<Favorite>;
-  favoriteAggregate: FavoriteAggregate;
-  favoriteByPk?: Maybe<Favorite>;
-  favoriteStream: Array<Favorite>;
   fileUpload: Array<FileUpload>;
   fileUploadAggregate: FileUploadAggregate;
   fileUploadByPk?: Maybe<FileUpload>;
@@ -33665,18 +26736,6 @@ export type Subscription = {
   grantAttachmentsStream: Array<GrantAttachments>;
   grantByPk?: Maybe<Grant>;
   grantStream: Array<Grant>;
-  issue: Array<Issue>;
-  issueAggregate: IssueAggregate;
-  issueByPk?: Maybe<Issue>;
-  issueContributors: Array<IssueContributors>;
-  issueContributorsAggregate: IssueContributorsAggregate;
-  issueContributorsByPk?: Maybe<IssueContributors>;
-  issueContributorsStream: Array<IssueContributors>;
-  issueStream: Array<Issue>;
-  issueTags: Array<IssueTags>;
-  issueTagsAggregate: IssueTagsAggregate;
-  issueTagsByPk?: Maybe<IssueTags>;
-  issueTagsStream: Array<IssueTags>;
   legalUnit: Array<LegalUnit>;
   legalUnitAggregate: LegalUnitAggregate;
   legalUnitByPk?: Maybe<LegalUnit>;
@@ -33717,14 +26776,6 @@ export type Subscription = {
   projectTagsAggregate: ProjectTagsAggregate;
   projectTagsByPk?: Maybe<ProjectTags>;
   projectTagsStream: Array<ProjectTags>;
-  reaction: Array<Reaction>;
-  reactionAggregate: ReactionAggregate;
-  reactionByPk?: Maybe<Reaction>;
-  reactionStream: Array<Reaction>;
-  report: Array<Report>;
-  reportAggregate: ReportAggregate;
-  reportByPk?: Maybe<Report>;
-  reportStream: Array<Report>;
   role: Array<Role>;
   roleAggregate: RoleAggregate;
   roleByPk?: Maybe<Role>;
@@ -33741,14 +26792,6 @@ export type Subscription = {
   socialAggregate: SocialAggregate;
   socialByPk?: Maybe<Social>;
   socialStream: Array<Social>;
-  subject: Array<Subject>;
-  subjectAggregate: SubjectAggregate;
-  subjectByPk?: Maybe<Subject>;
-  subjectClassGroups: Array<SubjectClassGroups>;
-  subjectClassGroupsAggregate: SubjectClassGroupsAggregate;
-  subjectClassGroupsByPk?: Maybe<SubjectClassGroups>;
-  subjectClassGroupsStream: Array<SubjectClassGroups>;
-  subjectStream: Array<Subject>;
   tag: Array<Tag>;
   tagAggregate: TagAggregate;
   tagByPk?: Maybe<Tag>;
@@ -33772,10 +26815,6 @@ export type Subscription = {
   teamMemberRoleByPk?: Maybe<TeamMemberRole>;
   teamMemberRoleStream: Array<TeamMemberRole>;
   teamMemberStream: Array<TeamMember>;
-  teamMetric: Array<TeamMetric>;
-  teamMetricAggregate: TeamMetricAggregate;
-  teamMetricByPk?: Maybe<TeamMetric>;
-  teamMetricStream: Array<TeamMetric>;
   teamStream: Array<Team>;
   tenant: Array<Tenant>;
   tenantAggregate: TenantAggregate;
@@ -33785,34 +26824,10 @@ export type Subscription = {
   tenantOrganizeByPk?: Maybe<TenantOrganize>;
   tenantOrganizeStream: Array<TenantOrganize>;
   tenantStream: Array<Tenant>;
-  thread: Array<Thread>;
-  threadAggregate: ThreadAggregate;
-  threadByPk?: Maybe<Thread>;
-  threadContributors: Array<ThreadContributors>;
-  threadContributorsAggregate: ThreadContributorsAggregate;
-  threadContributorsByPk?: Maybe<ThreadContributors>;
-  threadContributorsStream: Array<ThreadContributors>;
-  threadStream: Array<Thread>;
-  threadTags: Array<ThreadTags>;
-  threadTagsAggregate: ThreadTagsAggregate;
-  threadTagsByPk?: Maybe<ThreadTags>;
-  threadTagsStream: Array<ThreadTags>;
   user: Array<User>;
   userAggregate: UserAggregate;
   userByPk?: Maybe<User>;
   userStream: Array<User>;
-  validation: Array<Validation>;
-  validationAggregate: ValidationAggregate;
-  validationByPk?: Maybe<Validation>;
-  validationStream: Array<Validation>;
-  view: Array<View>;
-  viewAggregate: ViewAggregate;
-  viewByPk?: Maybe<View>;
-  viewStream: Array<View>;
-  vote: Array<Vote>;
-  voteAggregate: VoteAggregate;
-  voteByPk?: Maybe<Vote>;
-  voteStream: Array<Vote>;
 };
 
 export type SubscriptionActionArgs = {
@@ -34050,84 +27065,6 @@ export type SubscriptionCampusStreamArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
-export type SubscriptionCanteenArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type SubscriptionCanteenAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type SubscriptionCanteenByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionCanteenFoodArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type SubscriptionCanteenFoodAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type SubscriptionCanteenFoodByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionCanteenFoodStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<CanteenFoodStreamCursorInput>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type SubscriptionCanteenMenuArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type SubscriptionCanteenMenuAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type SubscriptionCanteenMenuByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionCanteenMenuStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<CanteenMenuStreamCursorInput>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type SubscriptionCanteenStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<CanteenStreamCursorInput>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
 export type SubscriptionClassGroupArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -34154,59 +27091,6 @@ export type SubscriptionClassGroupStreamArgs = {
   where?: InputMaybe<ClassGroupBoolExp>;
 };
 
-export type SubscriptionClassGroupTeacherArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type SubscriptionClassGroupTeacherAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type SubscriptionClassGroupTeacherByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionClassGroupTeacherStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ClassGroupTeacherStreamCursorInput>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type SubscriptionClassGroupTeacherSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type SubscriptionClassGroupTeacherSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherSubjectsOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
-export type SubscriptionClassGroupTeacherSubjectsByPkArgs = {
-  classGroupTeacherId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionClassGroupTeacherSubjectsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ClassGroupTeacherSubjectsStreamCursorInput>>;
-  where?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-};
-
 export type SubscriptionCohortArgs = {
   distinctOn?: InputMaybe<Array<CohortSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -34231,59 +27115,6 @@ export type SubscriptionCohortStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<CohortStreamCursorInput>>;
   where?: InputMaybe<CohortBoolExp>;
-};
-
-export type SubscriptionContentArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type SubscriptionContentAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type SubscriptionContentAttachmentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type SubscriptionContentAttachmentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentAttachmentsOrderBy>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type SubscriptionContentAttachmentsByPkArgs = {
-  contentId: Scalars['bigint']['input'];
-  fileUploadId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionContentAttachmentsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ContentAttachmentsStreamCursorInput>>;
-  where?: InputMaybe<ContentAttachmentsBoolExp>;
-};
-
-export type SubscriptionContentByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionContentStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ContentStreamCursorInput>>;
-  where?: InputMaybe<ContentBoolExp>;
 };
 
 export type SubscriptionDocumentArgs = {
@@ -34654,32 +27485,6 @@ export type SubscriptionExpenseStreamArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
-export type SubscriptionFavoriteArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type SubscriptionFavoriteAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type SubscriptionFavoriteByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionFavoriteStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<FavoriteStreamCursorInput>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
 export type SubscriptionFileUploadArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -34997,86 +27802,6 @@ export type SubscriptionGrantStreamArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
-export type SubscriptionIssueArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type SubscriptionIssueAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type SubscriptionIssueByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionIssueContributorsArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type SubscriptionIssueContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type SubscriptionIssueContributorsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionIssueContributorsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<IssueContributorsStreamCursorInput>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type SubscriptionIssueStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<IssueStreamCursorInput>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type SubscriptionIssueTagsArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type SubscriptionIssueTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type SubscriptionIssueTagsByPkArgs = {
-  issueId: Scalars['bigint']['input'];
-  tagId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionIssueTagsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<IssueTagsStreamCursorInput>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
 export type SubscriptionLegalUnitArgs = {
   distinctOn?: InputMaybe<Array<LegalUnitSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35340,58 +28065,6 @@ export type SubscriptionProjectTagsStreamArgs = {
   where?: InputMaybe<ProjectTagsBoolExp>;
 };
 
-export type SubscriptionReactionArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type SubscriptionReactionAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type SubscriptionReactionByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionReactionStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ReactionStreamCursorInput>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type SubscriptionReportArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type SubscriptionReportAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type SubscriptionReportByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionReportStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ReportStreamCursorInput>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
 export type SubscriptionRoleArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35494,59 +28167,6 @@ export type SubscriptionSocialStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<SocialStreamCursorInput>>;
   where?: InputMaybe<SocialBoolExp>;
-};
-
-export type SubscriptionSubjectArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type SubscriptionSubjectAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type SubscriptionSubjectByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionSubjectClassGroupsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubscriptionSubjectClassGroupsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectClassGroupsOrderBy>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubscriptionSubjectClassGroupsByPkArgs = {
-  classGroupId: Scalars['bigint']['input'];
-  subjectId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionSubjectClassGroupsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<SubjectClassGroupsStreamCursorInput>>;
-  where?: InputMaybe<SubjectClassGroupsBoolExp>;
-};
-
-export type SubscriptionSubjectStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<SubjectStreamCursorInput>>;
-  where?: InputMaybe<SubjectBoolExp>;
 };
 
 export type SubscriptionTagArgs = {
@@ -35699,32 +28319,6 @@ export type SubscriptionTeamMemberStreamArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
-export type SubscriptionTeamMetricArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type SubscriptionTeamMetricAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type SubscriptionTeamMetricByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionTeamMetricStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<TeamMetricStreamCursorInput>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
 export type SubscriptionTeamStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TeamStreamCursorInput>>;
@@ -35783,86 +28377,6 @@ export type SubscriptionTenantStreamArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
-export type SubscriptionThreadArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type SubscriptionThreadAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type SubscriptionThreadByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionThreadContributorsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type SubscriptionThreadContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type SubscriptionThreadContributorsByPkArgs = {
-  threadId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionThreadContributorsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ThreadContributorsStreamCursorInput>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type SubscriptionThreadStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ThreadStreamCursorInput>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type SubscriptionThreadTagsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type SubscriptionThreadTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type SubscriptionThreadTagsByPkArgs = {
-  tagId: Scalars['bigint']['input'];
-  threadId: Scalars['bigint']['input'];
-};
-
-export type SubscriptionThreadTagsStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ThreadTagsStreamCursorInput>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
 export type SubscriptionUserArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -35889,84 +28403,6 @@ export type SubscriptionUserStreamArgs = {
   where?: InputMaybe<UserBoolExp>;
 };
 
-export type SubscriptionValidationArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type SubscriptionValidationAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type SubscriptionValidationByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionValidationStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ValidationStreamCursorInput>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type SubscriptionViewArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type SubscriptionViewAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type SubscriptionViewByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionViewStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<ViewStreamCursorInput>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type SubscriptionVoteArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type SubscriptionVoteAggregateArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type SubscriptionVoteByPkArgs = {
-  id: Scalars['bigint']['input'];
-};
-
-export type SubscriptionVoteStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<VoteStreamCursorInput>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
 export type Tag = {
   __typename?: 'Tag';
   actorTags: Array<ActorTags>;
@@ -35985,16 +28421,12 @@ export type Tag = {
   id: Scalars['bigint']['output'];
   image?: Maybe<FileUpload>;
   imageId?: Maybe<Scalars['bigint']['output']>;
-  issueTags: Array<IssueTags>;
-  issueTagsAggregate: IssueTagsAggregate;
   name: Scalars['String']['output'];
   projectTags: Array<ProjectTags>;
   projectTagsAggregate: ProjectTagsAggregate;
   slug: Scalars['String']['output'];
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
-  threadTags: Array<ThreadTags>;
-  threadTagsAggregate: ThreadTagsAggregate;
   type: Scalars['String']['output'];
 };
 
@@ -36046,22 +28478,6 @@ export type TagFinanceTagsAggregateArgs = {
   where?: InputMaybe<FinanceTagsBoolExp>;
 };
 
-export type TagIssueTagsArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
-export type TagIssueTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueTagsOrderBy>>;
-  where?: InputMaybe<IssueTagsBoolExp>;
-};
-
 export type TagProjectTagsArgs = {
   distinctOn?: InputMaybe<Array<ProjectTagsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -36076,22 +28492,6 @@ export type TagProjectTagsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ProjectTagsOrderBy>>;
   where?: InputMaybe<ProjectTagsBoolExp>;
-};
-
-export type TagThreadTagsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type TagThreadTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
 };
 
 export type TagAggregate = {
@@ -36178,16 +28578,12 @@ export type TagBoolExp = {
   id?: InputMaybe<BigintComparisonExp>;
   image?: InputMaybe<FileUploadBoolExp>;
   imageId?: InputMaybe<BigintComparisonExp>;
-  issueTags?: InputMaybe<IssueTagsBoolExp>;
-  issueTagsAggregate?: InputMaybe<IssueTagsAggregateBoolExp>;
   name?: InputMaybe<StringComparisonExp>;
   projectTags?: InputMaybe<ProjectTagsBoolExp>;
   projectTagsAggregate?: InputMaybe<ProjectTagsAggregateBoolExp>;
   slug?: InputMaybe<StringComparisonExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
-  threadTags?: InputMaybe<ThreadTagsBoolExp>;
-  threadTagsAggregate?: InputMaybe<ThreadTagsAggregateBoolExp>;
   type?: InputMaybe<StringComparisonExp>;
 };
 
@@ -36216,13 +28612,11 @@ export type TagInsertInput = {
   id?: InputMaybe<Scalars['bigint']['input']>;
   image?: InputMaybe<FileUploadObjRelInsertInput>;
   imageId?: InputMaybe<Scalars['bigint']['input']>;
-  issueTags?: InputMaybe<IssueTagsArrRelInsertInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   projectTags?: InputMaybe<ProjectTagsArrRelInsertInput>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  threadTags?: InputMaybe<ThreadTagsArrRelInsertInput>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -36319,13 +28713,11 @@ export type TagOrderBy = {
   id?: InputMaybe<OrderBy>;
   image?: InputMaybe<FileUploadOrderBy>;
   imageId?: InputMaybe<OrderBy>;
-  issueTagsAggregate?: InputMaybe<IssueTagsAggregateOrderBy>;
   name?: InputMaybe<OrderBy>;
   projectTagsAggregate?: InputMaybe<ProjectTagsAggregateOrderBy>;
   slug?: InputMaybe<OrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
-  threadTagsAggregate?: InputMaybe<ThreadTagsAggregateOrderBy>;
   type?: InputMaybe<OrderBy>;
 };
 
@@ -36518,16 +28910,12 @@ export type Team = {
   administeredTenant?: Maybe<Tenant>;
   bankAccounts: Array<BankAccount>;
   bankAccountsAggregate: BankAccountAggregate;
-  canteen?: Maybe<Canteen>;
-  canteenId?: Maybe<Scalars['bigint']['output']>;
   childrenTeams: Array<Team>;
   childrenTeamsAggregate: TeamAggregate;
   classGroup?: Maybe<ClassGroup>;
   classGroupId?: Maybe<Scalars['bigint']['output']>;
   cohort?: Maybe<Cohort>;
   cohortId?: Maybe<Scalars['bigint']['output']>;
-  contents: Array<Content>;
-  contentsAggregate: ContentAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -36627,22 +29015,6 @@ export type TeamChildrenTeamsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamOrderBy>>;
   where?: InputMaybe<TeamBoolExp>;
-};
-
-export type TeamContentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type TeamContentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
 };
 
 export type TeamDocumentsArgs = {
@@ -36891,7 +29263,6 @@ export type TeamArrRelInsertInput = {
 export type TeamAvgFields = {
   __typename?: 'TeamAvgFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -36906,7 +29277,6 @@ export type TeamAvgFields = {
 
 export type TeamAvgOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -36930,16 +29300,12 @@ export type TeamBoolExp = {
   administeredTenant?: InputMaybe<TenantBoolExp>;
   bankAccounts?: InputMaybe<BankAccountBoolExp>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateBoolExp>;
-  canteen?: InputMaybe<CanteenBoolExp>;
-  canteenId?: InputMaybe<BigintComparisonExp>;
   childrenTeams?: InputMaybe<TeamBoolExp>;
   childrenTeamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   classGroup?: InputMaybe<ClassGroupBoolExp>;
   classGroupId?: InputMaybe<BigintComparisonExp>;
   cohort?: InputMaybe<CohortBoolExp>;
   cohortId?: InputMaybe<BigintComparisonExp>;
-  contents?: InputMaybe<ContentBoolExp>;
-  contentsAggregate?: InputMaybe<ContentAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -36995,7 +29361,6 @@ export type TeamBoolExp = {
 
 export enum TeamConstraint {
   TeamActorIdUnique = 'team_actor_id_unique',
-  TeamCanteenIdUnique = 'team_canteen_id_unique',
   TeamClassGroupIdUnique = 'team_class_group_id_unique',
   TeamCohortIdUnique = 'team_cohort_id_unique',
   TeamJoinFormIdUnique = 'team_join_form_id_unique',
@@ -37385,7 +29750,6 @@ export type TeamHistoryVarianceOrderBy = {
 
 export type TeamIncInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
   classGroupId?: InputMaybe<Scalars['bigint']['input']>;
   cohortId?: InputMaybe<Scalars['bigint']['input']>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -37404,14 +29768,11 @@ export type TeamInsertInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
   administeredTenant?: InputMaybe<TenantObjRelInsertInput>;
   bankAccounts?: InputMaybe<BankAccountArrRelInsertInput>;
-  canteen?: InputMaybe<CanteenObjRelInsertInput>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
   childrenTeams?: InputMaybe<TeamArrRelInsertInput>;
   classGroup?: InputMaybe<ClassGroupObjRelInsertInput>;
   classGroupId?: InputMaybe<Scalars['bigint']['input']>;
   cohort?: InputMaybe<CohortObjRelInsertInput>;
   cohortId?: InputMaybe<Scalars['bigint']['input']>;
-  contents?: InputMaybe<ContentArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -38023,7 +30384,6 @@ export type TeamJoinVarianceOrderBy = {
 export type TeamMaxFields = {
   __typename?: 'TeamMaxFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  canteenId?: Maybe<Scalars['bigint']['output']>;
   classGroupId?: Maybe<Scalars['bigint']['output']>;
   cohortId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -38049,7 +30409,6 @@ export type TeamMaxFields = {
 
 export type TeamMaxOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -38919,346 +31278,9 @@ export type TeamMemberVarianceOrderBy = {
   userId?: InputMaybe<OrderBy>;
 };
 
-export type TeamMetric = {
-  __typename?: 'TeamMetric';
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
-  value: Scalars['String']['output'];
-};
-
-export type TeamMetricAggregate = {
-  __typename?: 'TeamMetricAggregate';
-  aggregate?: Maybe<TeamMetricAggregateFields>;
-  nodes: Array<TeamMetric>;
-};
-
-export type TeamMetricAggregateBoolExp = {
-  count?: InputMaybe<TeamMetricAggregateBoolExpCount>;
-};
-
-export type TeamMetricAggregateFields = {
-  __typename?: 'TeamMetricAggregateFields';
-  avg?: Maybe<TeamMetricAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<TeamMetricMaxFields>;
-  min?: Maybe<TeamMetricMinFields>;
-  stddev?: Maybe<TeamMetricStddevFields>;
-  stddevPop?: Maybe<TeamMetricStddevPopFields>;
-  stddevSamp?: Maybe<TeamMetricStddevSampFields>;
-  sum?: Maybe<TeamMetricSumFields>;
-  varPop?: Maybe<TeamMetricVarPopFields>;
-  varSamp?: Maybe<TeamMetricVarSampFields>;
-  variance?: Maybe<TeamMetricVarianceFields>;
-};
-
-export type TeamMetricAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type TeamMetricAggregateOrderBy = {
-  avg?: InputMaybe<TeamMetricAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<TeamMetricMaxOrderBy>;
-  min?: InputMaybe<TeamMetricMinOrderBy>;
-  stddev?: InputMaybe<TeamMetricStddevOrderBy>;
-  stddevPop?: InputMaybe<TeamMetricStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<TeamMetricStddevSampOrderBy>;
-  sum?: InputMaybe<TeamMetricSumOrderBy>;
-  varPop?: InputMaybe<TeamMetricVarPopOrderBy>;
-  varSamp?: InputMaybe<TeamMetricVarSampOrderBy>;
-  variance?: InputMaybe<TeamMetricVarianceOrderBy>;
-};
-
-export type TeamMetricArrRelInsertInput = {
-  data: Array<TeamMetricInsertInput>;
-  onConflict?: InputMaybe<TeamMetricOnConflict>;
-};
-
-export type TeamMetricAvgFields = {
-  __typename?: 'TeamMetricAvgFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricAvgOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricBoolExp = {
-  _and?: InputMaybe<Array<TeamMetricBoolExp>>;
-  _not?: InputMaybe<TeamMetricBoolExp>;
-  _or?: InputMaybe<Array<TeamMetricBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
-  value?: InputMaybe<StringComparisonExp>;
-};
-
-export enum TeamMetricConstraint {
-  TeamMetricPkey = 'team_metric_pkey',
-}
-
-export type TeamMetricIncInput = {
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type TeamMetricInsertInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type TeamMetricMaxFields = {
-  __typename?: 'TeamMetricMaxFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-export type TeamMetricMaxOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricMinFields = {
-  __typename?: 'TeamMetricMinFields';
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-export type TeamMetricMinOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricMutationResponse = {
-  __typename?: 'TeamMetricMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<TeamMetric>;
-};
-
-export type TeamMetricOnConflict = {
-  constraint: TeamMetricConstraint;
-  updateColumns?: Array<TeamMetricUpdateColumn>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type TeamMetricOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum TeamMetricSelectColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Type = 'type',
-  Value = 'value',
-}
-
-export type TeamMetricSetInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type TeamMetricStddevFields = {
-  __typename?: 'TeamMetricStddevFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricStddevOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricStddevPopFields = {
-  __typename?: 'TeamMetricStddevPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricStddevPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricStddevSampFields = {
-  __typename?: 'TeamMetricStddevSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricStddevSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricStreamCursorInput = {
-  initialValue: TeamMetricStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type TeamMetricStreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type TeamMetricSumFields = {
-  __typename?: 'TeamMetricSumFields';
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type TeamMetricSumOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum TeamMetricUpdateColumn {
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Type = 'type',
-  Value = 'value',
-}
-
-export type TeamMetricUpdates = {
-  _inc?: InputMaybe<TeamMetricIncInput>;
-  _set?: InputMaybe<TeamMetricSetInput>;
-  where: TeamMetricBoolExp;
-};
-
-export type TeamMetricVarPopFields = {
-  __typename?: 'TeamMetricVarPopFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricVarPopOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricVarSampFields = {
-  __typename?: 'TeamMetricVarSampFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricVarSampOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type TeamMetricVarianceFields = {
-  __typename?: 'TeamMetricVarianceFields';
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type TeamMetricVarianceOrderBy = {
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type TeamMinFields = {
   __typename?: 'TeamMinFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  canteenId?: Maybe<Scalars['bigint']['output']>;
   classGroupId?: Maybe<Scalars['bigint']['output']>;
   cohortId?: Maybe<Scalars['bigint']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
@@ -39284,7 +31306,6 @@ export type TeamMinFields = {
 
 export type TeamMinOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -39331,14 +31352,11 @@ export type TeamOrderBy = {
   actorId?: InputMaybe<OrderBy>;
   administeredTenant?: InputMaybe<TenantOrderBy>;
   bankAccountsAggregate?: InputMaybe<BankAccountAggregateOrderBy>;
-  canteen?: InputMaybe<CanteenOrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   childrenTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   classGroup?: InputMaybe<ClassGroupOrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohort?: InputMaybe<CohortOrderBy>;
   cohortId?: InputMaybe<OrderBy>;
-  contentsAggregate?: InputMaybe<ContentAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39386,7 +31404,6 @@ export type TeamPkColumnsInput = {
 
 export enum TeamSelectColumn {
   ActorId = 'actorId',
-  CanteenId = 'canteenId',
   ClassGroupId = 'classGroupId',
   CohortId = 'cohortId',
   CreatedAt = 'createdAt',
@@ -39424,7 +31441,6 @@ export enum TeamSelectColumnTeamAggregateBoolExpBool_OrArgumentsColumns {
 
 export type TeamSetInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
   classGroupId?: InputMaybe<Scalars['bigint']['input']>;
   cohortId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -39453,7 +31469,6 @@ export type TeamSetInput = {
 export type TeamStddevFields = {
   __typename?: 'TeamStddevFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39468,7 +31483,6 @@ export type TeamStddevFields = {
 
 export type TeamStddevOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39484,7 +31498,6 @@ export type TeamStddevOrderBy = {
 export type TeamStddevPopFields = {
   __typename?: 'TeamStddevPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39499,7 +31512,6 @@ export type TeamStddevPopFields = {
 
 export type TeamStddevPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39515,7 +31527,6 @@ export type TeamStddevPopOrderBy = {
 export type TeamStddevSampFields = {
   __typename?: 'TeamStddevSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39530,7 +31541,6 @@ export type TeamStddevSampFields = {
 
 export type TeamStddevSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39550,7 +31560,6 @@ export type TeamStreamCursorInput = {
 
 export type TeamStreamCursorValueInput = {
   actorId?: InputMaybe<Scalars['bigint']['input']>;
-  canteenId?: InputMaybe<Scalars['bigint']['input']>;
   classGroupId?: InputMaybe<Scalars['bigint']['input']>;
   cohortId?: InputMaybe<Scalars['bigint']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -39579,7 +31588,6 @@ export type TeamStreamCursorValueInput = {
 export type TeamSumFields = {
   __typename?: 'TeamSumFields';
   actorId?: Maybe<Scalars['bigint']['output']>;
-  canteenId?: Maybe<Scalars['bigint']['output']>;
   classGroupId?: Maybe<Scalars['bigint']['output']>;
   cohortId?: Maybe<Scalars['bigint']['output']>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -39594,7 +31602,6 @@ export type TeamSumFields = {
 
 export type TeamSumOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39609,7 +31616,6 @@ export type TeamSumOrderBy = {
 
 export enum TeamUpdateColumn {
   ActorId = 'actorId',
-  CanteenId = 'canteenId',
   ClassGroupId = 'classGroupId',
   CohortId = 'cohortId',
   CreatedAt = 'createdAt',
@@ -39644,7 +31650,6 @@ export type TeamUpdates = {
 export type TeamVarPopFields = {
   __typename?: 'TeamVarPopFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39659,7 +31664,6 @@ export type TeamVarPopFields = {
 
 export type TeamVarPopOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39675,7 +31679,6 @@ export type TeamVarPopOrderBy = {
 export type TeamVarSampFields = {
   __typename?: 'TeamVarSampFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39690,7 +31693,6 @@ export type TeamVarSampFields = {
 
 export type TeamVarSampOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39706,7 +31708,6 @@ export type TeamVarSampOrderBy = {
 export type TeamVarianceFields = {
   __typename?: 'TeamVarianceFields';
   actorId?: Maybe<Scalars['Float']['output']>;
-  canteenId?: Maybe<Scalars['Float']['output']>;
   classGroupId?: Maybe<Scalars['Float']['output']>;
   cohortId?: Maybe<Scalars['Float']['output']>;
   createdById?: Maybe<Scalars['Float']['output']>;
@@ -39721,7 +31722,6 @@ export type TeamVarianceFields = {
 
 export type TeamVarianceOrderBy = {
   actorId?: InputMaybe<OrderBy>;
-  canteenId?: InputMaybe<OrderBy>;
   classGroupId?: InputMaybe<OrderBy>;
   cohortId?: InputMaybe<OrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -39752,20 +31752,10 @@ export type Tenant = {
   campusClustersAggregate: CampusClusterAggregate;
   campuses: Array<Campus>;
   campusesAggregate: CampusAggregate;
-  canteenFoods: Array<CanteenFood>;
-  canteenFoodsAggregate: CanteenFoodAggregate;
-  canteenMenus: Array<CanteenMenu>;
-  canteenMenusAggregate: CanteenMenuAggregate;
-  canteens: Array<Canteen>;
-  canteensAggregate: CanteenAggregate;
-  classGroupTeachers: Array<ClassGroupTeacher>;
-  classGroupTeachersAggregate: ClassGroupTeacherAggregate;
   classGroups: Array<ClassGroup>;
   classGroupsAggregate: ClassGroupAggregate;
   cohorts: Array<Cohort>;
   cohortsAggregate: CohortAggregate;
-  contents: Array<Content>;
-  contentsAggregate: ContentAggregate;
   createdAt: Scalars['timestamptz']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['bigint']['output']>;
@@ -39793,8 +31783,6 @@ export type Tenant = {
   expenseItemsAggregate: ExpenseItemAggregate;
   expenses: Array<Expense>;
   expensesAggregate: ExpenseAggregate;
-  favorites: Array<Favorite>;
-  favoritesAggregate: FavoriteAggregate;
   fileUploads: Array<FileUpload>;
   fileUploadsAggregate: FileUploadAggregate;
   finances: Array<Finance>;
@@ -39811,8 +31799,6 @@ export type Tenant = {
   grantsAggregate: GrantAggregate;
   id: Scalars['bigint']['output'];
   isOidcEnabled: Scalars['Boolean']['output'];
-  issues: Array<Issue>;
-  issuesAggregate: IssueAggregate;
   locations: Array<Location>;
   locationsAggregate: LocationAggregate;
   missionJoins: Array<MissionJoin>;
@@ -39830,10 +31816,6 @@ export type Tenant = {
   polesAggregate: PoleAggregate;
   projects: Array<Project>;
   projectsAggregate: ProjectAggregate;
-  reactions: Array<Reaction>;
-  reactionsAggregate: ReactionAggregate;
-  reports: Array<Report>;
-  reportsAggregate: ReportAggregate;
   roles: Array<Role>;
   rolesAggregate: RoleAggregate;
   sessions: Array<Session>;
@@ -39842,8 +31824,6 @@ export type Tenant = {
   shortcutsAggregate: ShortcutAggregate;
   socials: Array<Social>;
   socialsAggregate: SocialAggregate;
-  subjects: Array<Subject>;
-  subjectsAggregate: SubjectAggregate;
   tags: Array<Tag>;
   tagsAggregate: TagAggregate;
   teamHistories: Array<TeamHistory>;
@@ -39854,22 +31834,12 @@ export type Tenant = {
   teamMemberRolesAggregate: TeamMemberRoleAggregate;
   teamMembers: Array<TeamMember>;
   teamMembersAggregate: TeamMemberAggregate;
-  teamMetrics: Array<TeamMetric>;
-  teamMetricsAggregate: TeamMetricAggregate;
   teams: Array<Team>;
   teamsAggregate: TeamAggregate;
   tenantOrganizes: Array<TenantOrganize>;
   tenantOrganizesAggregate: TenantOrganizeAggregate;
-  threads: Array<Thread>;
-  threadsAggregate: ThreadAggregate;
   users: Array<User>;
   usersAggregate: UserAggregate;
-  validations: Array<Validation>;
-  validationsAggregate: ValidationAggregate;
-  views: Array<View>;
-  viewsAggregate: ViewAggregate;
-  votes: Array<Vote>;
-  votesAggregate: VoteAggregate;
 };
 
 export type TenantActionsArgs = {
@@ -39984,70 +31954,6 @@ export type TenantCampusesAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
-export type TenantCanteenFoodsArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type TenantCanteenFoodsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type TenantCanteenMenusArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type TenantCanteenMenusAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type TenantCanteensArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type TenantCanteensAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type TenantClassGroupTeachersArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type TenantClassGroupTeachersAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
 export type TenantClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40078,22 +31984,6 @@ export type TenantCohortsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<CohortOrderBy>>;
   where?: InputMaybe<CohortBoolExp>;
-};
-
-export type TenantContentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type TenantContentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
 };
 
 export type TenantDocumentsArgs = {
@@ -40256,22 +32146,6 @@ export type TenantExpensesAggregateArgs = {
   where?: InputMaybe<ExpenseBoolExp>;
 };
 
-export type TenantFavoritesArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type TenantFavoritesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
 export type TenantFileUploadsArgs = {
   distinctOn?: InputMaybe<Array<FileUploadSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40384,22 +32258,6 @@ export type TenantGrantsAggregateArgs = {
   where?: InputMaybe<GrantBoolExp>;
 };
 
-export type TenantIssuesArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type TenantIssuesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
 export type TenantLocationsArgs = {
   distinctOn?: InputMaybe<Array<LocationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40480,38 +32338,6 @@ export type TenantProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
-export type TenantReactionsArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type TenantReactionsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type TenantReportsArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type TenantReportsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
 export type TenantRolesArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40574,22 +32400,6 @@ export type TenantSocialsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<SocialOrderBy>>;
   where?: InputMaybe<SocialBoolExp>;
-};
-
-export type TenantSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type TenantSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
 };
 
 export type TenantTagsArgs = {
@@ -40672,22 +32482,6 @@ export type TenantTeamMembersAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
-export type TenantTeamMetricsArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type TenantTeamMetricsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
 export type TenantTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40720,22 +32514,6 @@ export type TenantTenantOrganizesAggregateArgs = {
   where?: InputMaybe<TenantOrganizeBoolExp>;
 };
 
-export type TenantThreadsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type TenantThreadsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
 export type TenantUsersArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -40750,54 +32528,6 @@ export type TenantUsersAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<UserOrderBy>>;
   where?: InputMaybe<UserBoolExp>;
-};
-
-export type TenantValidationsArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type TenantValidationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type TenantViewsArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type TenantViewsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type TenantVotesArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type TenantVotesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
 };
 
 export type TenantAggregate = {
@@ -40886,20 +32616,10 @@ export type TenantBoolExp = {
   campusClustersAggregate?: InputMaybe<CampusClusterAggregateBoolExp>;
   campuses?: InputMaybe<CampusBoolExp>;
   campusesAggregate?: InputMaybe<CampusAggregateBoolExp>;
-  canteenFoods?: InputMaybe<CanteenFoodBoolExp>;
-  canteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateBoolExp>;
-  canteenMenus?: InputMaybe<CanteenMenuBoolExp>;
-  canteenMenusAggregate?: InputMaybe<CanteenMenuAggregateBoolExp>;
-  canteens?: InputMaybe<CanteenBoolExp>;
-  canteensAggregate?: InputMaybe<CanteenAggregateBoolExp>;
-  classGroupTeachers?: InputMaybe<ClassGroupTeacherBoolExp>;
-  classGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateBoolExp>;
   classGroups?: InputMaybe<ClassGroupBoolExp>;
   classGroupsAggregate?: InputMaybe<ClassGroupAggregateBoolExp>;
   cohorts?: InputMaybe<CohortBoolExp>;
   cohortsAggregate?: InputMaybe<CohortAggregateBoolExp>;
-  contents?: InputMaybe<ContentBoolExp>;
-  contentsAggregate?: InputMaybe<ContentAggregateBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   createdBy?: InputMaybe<UserBoolExp>;
   createdById?: InputMaybe<BigintComparisonExp>;
@@ -40927,8 +32647,6 @@ export type TenantBoolExp = {
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateBoolExp>;
   expenses?: InputMaybe<ExpenseBoolExp>;
   expensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
-  favorites?: InputMaybe<FavoriteBoolExp>;
-  favoritesAggregate?: InputMaybe<FavoriteAggregateBoolExp>;
   fileUploads?: InputMaybe<FileUploadBoolExp>;
   fileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   finances?: InputMaybe<FinanceBoolExp>;
@@ -40945,8 +32663,6 @@ export type TenantBoolExp = {
   grantsAggregate?: InputMaybe<GrantAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
   isOidcEnabled?: InputMaybe<BooleanComparisonExp>;
-  issues?: InputMaybe<IssueBoolExp>;
-  issuesAggregate?: InputMaybe<IssueAggregateBoolExp>;
   locations?: InputMaybe<LocationBoolExp>;
   locationsAggregate?: InputMaybe<LocationAggregateBoolExp>;
   missionJoins?: InputMaybe<MissionJoinBoolExp>;
@@ -40964,10 +32680,6 @@ export type TenantBoolExp = {
   polesAggregate?: InputMaybe<PoleAggregateBoolExp>;
   projects?: InputMaybe<ProjectBoolExp>;
   projectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
-  reactions?: InputMaybe<ReactionBoolExp>;
-  reactionsAggregate?: InputMaybe<ReactionAggregateBoolExp>;
-  reports?: InputMaybe<ReportBoolExp>;
-  reportsAggregate?: InputMaybe<ReportAggregateBoolExp>;
   roles?: InputMaybe<RoleBoolExp>;
   rolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
   sessions?: InputMaybe<SessionBoolExp>;
@@ -40976,8 +32688,6 @@ export type TenantBoolExp = {
   shortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
   socials?: InputMaybe<SocialBoolExp>;
   socialsAggregate?: InputMaybe<SocialAggregateBoolExp>;
-  subjects?: InputMaybe<SubjectBoolExp>;
-  subjectsAggregate?: InputMaybe<SubjectAggregateBoolExp>;
   tags?: InputMaybe<TagBoolExp>;
   tagsAggregate?: InputMaybe<TagAggregateBoolExp>;
   teamHistories?: InputMaybe<TeamHistoryBoolExp>;
@@ -40988,22 +32698,12 @@ export type TenantBoolExp = {
   teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   teamMembers?: InputMaybe<TeamMemberBoolExp>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
-  teamMetrics?: InputMaybe<TeamMetricBoolExp>;
-  teamMetricsAggregate?: InputMaybe<TeamMetricAggregateBoolExp>;
   teams?: InputMaybe<TeamBoolExp>;
   teamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   tenantOrganizes?: InputMaybe<TenantOrganizeBoolExp>;
   tenantOrganizesAggregate?: InputMaybe<TenantOrganizeAggregateBoolExp>;
-  threads?: InputMaybe<ThreadBoolExp>;
-  threadsAggregate?: InputMaybe<ThreadAggregateBoolExp>;
   users?: InputMaybe<UserBoolExp>;
   usersAggregate?: InputMaybe<UserAggregateBoolExp>;
-  validations?: InputMaybe<ValidationBoolExp>;
-  validationsAggregate?: InputMaybe<ValidationAggregateBoolExp>;
-  views?: InputMaybe<ViewBoolExp>;
-  viewsAggregate?: InputMaybe<ViewAggregateBoolExp>;
-  votes?: InputMaybe<VoteBoolExp>;
-  votesAggregate?: InputMaybe<VoteAggregateBoolExp>;
 };
 
 export enum TenantConstraint {
@@ -41031,13 +32731,8 @@ export type TenantInsertInput = {
   bankInfos?: InputMaybe<BankInfoArrRelInsertInput>;
   campusClusters?: InputMaybe<CampusClusterArrRelInsertInput>;
   campuses?: InputMaybe<CampusArrRelInsertInput>;
-  canteenFoods?: InputMaybe<CanteenFoodArrRelInsertInput>;
-  canteenMenus?: InputMaybe<CanteenMenuArrRelInsertInput>;
-  canteens?: InputMaybe<CanteenArrRelInsertInput>;
-  classGroupTeachers?: InputMaybe<ClassGroupTeacherArrRelInsertInput>;
   classGroups?: InputMaybe<ClassGroupArrRelInsertInput>;
   cohorts?: InputMaybe<CohortArrRelInsertInput>;
-  contents?: InputMaybe<ContentArrRelInsertInput>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<UserObjRelInsertInput>;
   createdById?: InputMaybe<Scalars['bigint']['input']>;
@@ -41055,7 +32750,6 @@ export type TenantInsertInput = {
   events?: InputMaybe<EventArrRelInsertInput>;
   expenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   expenses?: InputMaybe<ExpenseArrRelInsertInput>;
-  favorites?: InputMaybe<FavoriteArrRelInsertInput>;
   fileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   finances?: InputMaybe<FinanceArrRelInsertInput>;
   follows?: InputMaybe<FollowArrRelInsertInput>;
@@ -41065,7 +32759,6 @@ export type TenantInsertInput = {
   grants?: InputMaybe<GrantArrRelInsertInput>;
   id?: InputMaybe<Scalars['bigint']['input']>;
   isOidcEnabled?: InputMaybe<Scalars['Boolean']['input']>;
-  issues?: InputMaybe<IssueArrRelInsertInput>;
   locations?: InputMaybe<LocationArrRelInsertInput>;
   missionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
   missions?: InputMaybe<MissionArrRelInsertInput>;
@@ -41078,26 +32771,18 @@ export type TenantInsertInput = {
   pointName?: InputMaybe<Scalars['String']['input']>;
   poles?: InputMaybe<PoleArrRelInsertInput>;
   projects?: InputMaybe<ProjectArrRelInsertInput>;
-  reactions?: InputMaybe<ReactionArrRelInsertInput>;
-  reports?: InputMaybe<ReportArrRelInsertInput>;
   roles?: InputMaybe<RoleArrRelInsertInput>;
   sessions?: InputMaybe<SessionArrRelInsertInput>;
   shortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
   socials?: InputMaybe<SocialArrRelInsertInput>;
-  subjects?: InputMaybe<SubjectArrRelInsertInput>;
   tags?: InputMaybe<TagArrRelInsertInput>;
   teamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
-  teamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   teams?: InputMaybe<TeamArrRelInsertInput>;
   tenantOrganizes?: InputMaybe<TenantOrganizeArrRelInsertInput>;
-  threads?: InputMaybe<ThreadArrRelInsertInput>;
   users?: InputMaybe<UserArrRelInsertInput>;
-  validations?: InputMaybe<ValidationArrRelInsertInput>;
-  views?: InputMaybe<ViewArrRelInsertInput>;
-  votes?: InputMaybe<VoteArrRelInsertInput>;
 };
 
 export type TenantMaxFields = {
@@ -41197,13 +32882,8 @@ export type TenantOrderBy = {
   bankInfosAggregate?: InputMaybe<BankInfoAggregateOrderBy>;
   campusClustersAggregate?: InputMaybe<CampusClusterAggregateOrderBy>;
   campusesAggregate?: InputMaybe<CampusAggregateOrderBy>;
-  canteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateOrderBy>;
-  canteenMenusAggregate?: InputMaybe<CanteenMenuAggregateOrderBy>;
-  canteensAggregate?: InputMaybe<CanteenAggregateOrderBy>;
-  classGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateOrderBy>;
   classGroupsAggregate?: InputMaybe<ClassGroupAggregateOrderBy>;
   cohortsAggregate?: InputMaybe<CohortAggregateOrderBy>;
-  contentsAggregate?: InputMaybe<ContentAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<UserOrderBy>;
   createdById?: InputMaybe<OrderBy>;
@@ -41221,7 +32901,6 @@ export type TenantOrderBy = {
   eventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   expenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   expensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
-  favoritesAggregate?: InputMaybe<FavoriteAggregateOrderBy>;
   fileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   financesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   followsAggregate?: InputMaybe<FollowAggregateOrderBy>;
@@ -41231,7 +32910,6 @@ export type TenantOrderBy = {
   grantsAggregate?: InputMaybe<GrantAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   isOidcEnabled?: InputMaybe<OrderBy>;
-  issuesAggregate?: InputMaybe<IssueAggregateOrderBy>;
   locationsAggregate?: InputMaybe<LocationAggregateOrderBy>;
   missionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
   missionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
@@ -41244,26 +32922,18 @@ export type TenantOrderBy = {
   pointName?: InputMaybe<OrderBy>;
   polesAggregate?: InputMaybe<PoleAggregateOrderBy>;
   projectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
-  reactionsAggregate?: InputMaybe<ReactionAggregateOrderBy>;
-  reportsAggregate?: InputMaybe<ReportAggregateOrderBy>;
   rolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
   sessionsAggregate?: InputMaybe<SessionAggregateOrderBy>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
   socialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
-  subjectsAggregate?: InputMaybe<SubjectAggregateOrderBy>;
   tagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   teamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
-  teamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   teamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   tenantOrganizesAggregate?: InputMaybe<TenantOrganizeAggregateOrderBy>;
-  threadsAggregate?: InputMaybe<ThreadAggregateOrderBy>;
   usersAggregate?: InputMaybe<UserAggregateOrderBy>;
-  validationsAggregate?: InputMaybe<ValidationAggregateOrderBy>;
-  viewsAggregate?: InputMaybe<ViewAggregateOrderBy>;
-  votesAggregate?: InputMaybe<VoteAggregateOrderBy>;
 };
 
 export type TenantOrganize = {
@@ -41856,921 +33526,6 @@ export type TenantVarianceOrderBy = {
   id?: InputMaybe<OrderBy>;
 };
 
-export type Thread = {
-  __typename?: 'Thread';
-  content: Content;
-  contentId: Scalars['bigint']['output'];
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  name: Scalars['String']['output'];
-  slug: Scalars['String']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  threadContributors: Array<ThreadContributors>;
-  threadContributorsAggregate: ThreadContributorsAggregate;
-  threadTags: Array<ThreadTags>;
-  threadTagsAggregate: ThreadTagsAggregate;
-};
-
-export type ThreadThreadContributorsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type ThreadThreadContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type ThreadThreadTagsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type ThreadThreadTagsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadTagsOrderBy>>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type ThreadAggregate = {
-  __typename?: 'ThreadAggregate';
-  aggregate?: Maybe<ThreadAggregateFields>;
-  nodes: Array<Thread>;
-};
-
-export type ThreadAggregateBoolExp = {
-  count?: InputMaybe<ThreadAggregateBoolExpCount>;
-};
-
-export type ThreadAggregateFields = {
-  __typename?: 'ThreadAggregateFields';
-  avg?: Maybe<ThreadAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ThreadMaxFields>;
-  min?: Maybe<ThreadMinFields>;
-  stddev?: Maybe<ThreadStddevFields>;
-  stddevPop?: Maybe<ThreadStddevPopFields>;
-  stddevSamp?: Maybe<ThreadStddevSampFields>;
-  sum?: Maybe<ThreadSumFields>;
-  varPop?: Maybe<ThreadVarPopFields>;
-  varSamp?: Maybe<ThreadVarSampFields>;
-  variance?: Maybe<ThreadVarianceFields>;
-};
-
-export type ThreadAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ThreadSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ThreadAggregateOrderBy = {
-  avg?: InputMaybe<ThreadAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ThreadMaxOrderBy>;
-  min?: InputMaybe<ThreadMinOrderBy>;
-  stddev?: InputMaybe<ThreadStddevOrderBy>;
-  stddevPop?: InputMaybe<ThreadStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ThreadStddevSampOrderBy>;
-  sum?: InputMaybe<ThreadSumOrderBy>;
-  varPop?: InputMaybe<ThreadVarPopOrderBy>;
-  varSamp?: InputMaybe<ThreadVarSampOrderBy>;
-  variance?: InputMaybe<ThreadVarianceOrderBy>;
-};
-
-export type ThreadArrRelInsertInput = {
-  data: Array<ThreadInsertInput>;
-  onConflict?: InputMaybe<ThreadOnConflict>;
-};
-
-export type ThreadAvgFields = {
-  __typename?: 'ThreadAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadBoolExp = {
-  _and?: InputMaybe<Array<ThreadBoolExp>>;
-  _not?: InputMaybe<ThreadBoolExp>;
-  _or?: InputMaybe<Array<ThreadBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  name?: InputMaybe<StringComparisonExp>;
-  slug?: InputMaybe<StringComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  threadContributors?: InputMaybe<ThreadContributorsBoolExp>;
-  threadContributorsAggregate?: InputMaybe<ThreadContributorsAggregateBoolExp>;
-  threadTags?: InputMaybe<ThreadTagsBoolExp>;
-  threadTagsAggregate?: InputMaybe<ThreadTagsAggregateBoolExp>;
-};
-
-export enum ThreadConstraint {
-  ThreadContentIdUnique = 'thread_content_id_unique',
-  ThreadPkey = 'thread_pkey',
-}
-
-export type ThreadContributors = {
-  __typename?: 'ThreadContributors';
-  thread: Thread;
-  threadId: Scalars['bigint']['output'];
-  user: User;
-  userId: Scalars['bigint']['output'];
-};
-
-export type ThreadContributorsAggregate = {
-  __typename?: 'ThreadContributorsAggregate';
-  aggregate?: Maybe<ThreadContributorsAggregateFields>;
-  nodes: Array<ThreadContributors>;
-};
-
-export type ThreadContributorsAggregateBoolExp = {
-  count?: InputMaybe<ThreadContributorsAggregateBoolExpCount>;
-};
-
-export type ThreadContributorsAggregateFields = {
-  __typename?: 'ThreadContributorsAggregateFields';
-  avg?: Maybe<ThreadContributorsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ThreadContributorsMaxFields>;
-  min?: Maybe<ThreadContributorsMinFields>;
-  stddev?: Maybe<ThreadContributorsStddevFields>;
-  stddevPop?: Maybe<ThreadContributorsStddevPopFields>;
-  stddevSamp?: Maybe<ThreadContributorsStddevSampFields>;
-  sum?: Maybe<ThreadContributorsSumFields>;
-  varPop?: Maybe<ThreadContributorsVarPopFields>;
-  varSamp?: Maybe<ThreadContributorsVarSampFields>;
-  variance?: Maybe<ThreadContributorsVarianceFields>;
-};
-
-export type ThreadContributorsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ThreadContributorsAggregateOrderBy = {
-  avg?: InputMaybe<ThreadContributorsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ThreadContributorsMaxOrderBy>;
-  min?: InputMaybe<ThreadContributorsMinOrderBy>;
-  stddev?: InputMaybe<ThreadContributorsStddevOrderBy>;
-  stddevPop?: InputMaybe<ThreadContributorsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ThreadContributorsStddevSampOrderBy>;
-  sum?: InputMaybe<ThreadContributorsSumOrderBy>;
-  varPop?: InputMaybe<ThreadContributorsVarPopOrderBy>;
-  varSamp?: InputMaybe<ThreadContributorsVarSampOrderBy>;
-  variance?: InputMaybe<ThreadContributorsVarianceOrderBy>;
-};
-
-export type ThreadContributorsArrRelInsertInput = {
-  data: Array<ThreadContributorsInsertInput>;
-  onConflict?: InputMaybe<ThreadContributorsOnConflict>;
-};
-
-export type ThreadContributorsAvgFields = {
-  __typename?: 'ThreadContributorsAvgFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsAvgOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsBoolExp = {
-  _and?: InputMaybe<Array<ThreadContributorsBoolExp>>;
-  _not?: InputMaybe<ThreadContributorsBoolExp>;
-  _or?: InputMaybe<Array<ThreadContributorsBoolExp>>;
-  thread?: InputMaybe<ThreadBoolExp>;
-  threadId?: InputMaybe<BigintComparisonExp>;
-  user?: InputMaybe<UserBoolExp>;
-  userId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ThreadContributorsConstraint {
-  ThreadContributorsPkey = 'thread_contributors_pkey',
-}
-
-export type ThreadContributorsIncInput = {
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadContributorsInsertInput = {
-  thread?: InputMaybe<ThreadObjRelInsertInput>;
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-  user?: InputMaybe<UserObjRelInsertInput>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadContributorsMaxFields = {
-  __typename?: 'ThreadContributorsMaxFields';
-  threadId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadContributorsMaxOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsMinFields = {
-  __typename?: 'ThreadContributorsMinFields';
-  threadId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadContributorsMinOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsMutationResponse = {
-  __typename?: 'ThreadContributorsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ThreadContributors>;
-};
-
-export type ThreadContributorsOnConflict = {
-  constraint: ThreadContributorsConstraint;
-  updateColumns?: Array<ThreadContributorsUpdateColumn>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type ThreadContributorsOrderBy = {
-  thread?: InputMaybe<ThreadOrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-  user?: InputMaybe<UserOrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsPkColumnsInput = {
-  threadId: Scalars['bigint']['input'];
-  userId: Scalars['bigint']['input'];
-};
-
-export enum ThreadContributorsSelectColumn {
-  ThreadId = 'threadId',
-  UserId = 'userId',
-}
-
-export type ThreadContributorsSetInput = {
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadContributorsStddevFields = {
-  __typename?: 'ThreadContributorsStddevFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsStddevOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsStddevPopFields = {
-  __typename?: 'ThreadContributorsStddevPopFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsStddevPopOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsStddevSampFields = {
-  __typename?: 'ThreadContributorsStddevSampFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsStddevSampOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsStreamCursorInput = {
-  initialValue: ThreadContributorsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ThreadContributorsStreamCursorValueInput = {
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-  userId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadContributorsSumFields = {
-  __typename?: 'ThreadContributorsSumFields';
-  threadId?: Maybe<Scalars['bigint']['output']>;
-  userId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadContributorsSumOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export enum ThreadContributorsUpdateColumn {
-  ThreadId = 'threadId',
-  UserId = 'userId',
-}
-
-export type ThreadContributorsUpdates = {
-  _inc?: InputMaybe<ThreadContributorsIncInput>;
-  _set?: InputMaybe<ThreadContributorsSetInput>;
-  where: ThreadContributorsBoolExp;
-};
-
-export type ThreadContributorsVarPopFields = {
-  __typename?: 'ThreadContributorsVarPopFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsVarPopOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsVarSampFields = {
-  __typename?: 'ThreadContributorsVarSampFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsVarSampOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadContributorsVarianceFields = {
-  __typename?: 'ThreadContributorsVarianceFields';
-  threadId?: Maybe<Scalars['Float']['output']>;
-  userId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadContributorsVarianceOrderBy = {
-  threadId?: InputMaybe<OrderBy>;
-  userId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  threadContributors?: InputMaybe<ThreadContributorsArrRelInsertInput>;
-  threadTags?: InputMaybe<ThreadTagsArrRelInsertInput>;
-};
-
-export type ThreadMaxFields = {
-  __typename?: 'ThreadMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadMinFields = {
-  __typename?: 'ThreadMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  slug?: Maybe<Scalars['String']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadMutationResponse = {
-  __typename?: 'ThreadMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Thread>;
-};
-
-export type ThreadObjRelInsertInput = {
-  data: ThreadInsertInput;
-  onConflict?: InputMaybe<ThreadOnConflict>;
-};
-
-export type ThreadOnConflict = {
-  constraint: ThreadConstraint;
-  updateColumns?: Array<ThreadUpdateColumn>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type ThreadOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  slug?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  threadContributorsAggregate?: InputMaybe<ThreadContributorsAggregateOrderBy>;
-  threadTagsAggregate?: InputMaybe<ThreadTagsAggregateOrderBy>;
-};
-
-export type ThreadPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ThreadSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  Slug = 'slug',
-  TenantId = 'tenantId',
-}
-
-export type ThreadSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadStddevFields = {
-  __typename?: 'ThreadStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadStddevPopFields = {
-  __typename?: 'ThreadStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadStddevSampFields = {
-  __typename?: 'ThreadStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadStreamCursorInput = {
-  initialValue: ThreadStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ThreadStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadSumFields = {
-  __typename?: 'ThreadSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTags = {
-  __typename?: 'ThreadTags';
-  tag: Tag;
-  tagId: Scalars['bigint']['output'];
-  thread: Thread;
-  threadId: Scalars['bigint']['output'];
-};
-
-export type ThreadTagsAggregate = {
-  __typename?: 'ThreadTagsAggregate';
-  aggregate?: Maybe<ThreadTagsAggregateFields>;
-  nodes: Array<ThreadTags>;
-};
-
-export type ThreadTagsAggregateBoolExp = {
-  count?: InputMaybe<ThreadTagsAggregateBoolExpCount>;
-};
-
-export type ThreadTagsAggregateFields = {
-  __typename?: 'ThreadTagsAggregateFields';
-  avg?: Maybe<ThreadTagsAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ThreadTagsMaxFields>;
-  min?: Maybe<ThreadTagsMinFields>;
-  stddev?: Maybe<ThreadTagsStddevFields>;
-  stddevPop?: Maybe<ThreadTagsStddevPopFields>;
-  stddevSamp?: Maybe<ThreadTagsStddevSampFields>;
-  sum?: Maybe<ThreadTagsSumFields>;
-  varPop?: Maybe<ThreadTagsVarPopFields>;
-  varSamp?: Maybe<ThreadTagsVarSampFields>;
-  variance?: Maybe<ThreadTagsVarianceFields>;
-};
-
-export type ThreadTagsAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ThreadTagsAggregateOrderBy = {
-  avg?: InputMaybe<ThreadTagsAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ThreadTagsMaxOrderBy>;
-  min?: InputMaybe<ThreadTagsMinOrderBy>;
-  stddev?: InputMaybe<ThreadTagsStddevOrderBy>;
-  stddevPop?: InputMaybe<ThreadTagsStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ThreadTagsStddevSampOrderBy>;
-  sum?: InputMaybe<ThreadTagsSumOrderBy>;
-  varPop?: InputMaybe<ThreadTagsVarPopOrderBy>;
-  varSamp?: InputMaybe<ThreadTagsVarSampOrderBy>;
-  variance?: InputMaybe<ThreadTagsVarianceOrderBy>;
-};
-
-export type ThreadTagsArrRelInsertInput = {
-  data: Array<ThreadTagsInsertInput>;
-  onConflict?: InputMaybe<ThreadTagsOnConflict>;
-};
-
-export type ThreadTagsAvgFields = {
-  __typename?: 'ThreadTagsAvgFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsAvgOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsBoolExp = {
-  _and?: InputMaybe<Array<ThreadTagsBoolExp>>;
-  _not?: InputMaybe<ThreadTagsBoolExp>;
-  _or?: InputMaybe<Array<ThreadTagsBoolExp>>;
-  tag?: InputMaybe<TagBoolExp>;
-  tagId?: InputMaybe<BigintComparisonExp>;
-  thread?: InputMaybe<ThreadBoolExp>;
-  threadId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ThreadTagsConstraint {
-  ThreadTagsPkey = 'thread_tags_pkey',
-}
-
-export type ThreadTagsIncInput = {
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadTagsInsertInput = {
-  tag?: InputMaybe<TagObjRelInsertInput>;
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-  thread?: InputMaybe<ThreadObjRelInsertInput>;
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadTagsMaxFields = {
-  __typename?: 'ThreadTagsMaxFields';
-  tagId?: Maybe<Scalars['bigint']['output']>;
-  threadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadTagsMaxOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsMinFields = {
-  __typename?: 'ThreadTagsMinFields';
-  tagId?: Maybe<Scalars['bigint']['output']>;
-  threadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadTagsMinOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsMutationResponse = {
-  __typename?: 'ThreadTagsMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<ThreadTags>;
-};
-
-export type ThreadTagsOnConflict = {
-  constraint: ThreadTagsConstraint;
-  updateColumns?: Array<ThreadTagsUpdateColumn>;
-  where?: InputMaybe<ThreadTagsBoolExp>;
-};
-
-export type ThreadTagsOrderBy = {
-  tag?: InputMaybe<TagOrderBy>;
-  tagId?: InputMaybe<OrderBy>;
-  thread?: InputMaybe<ThreadOrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsPkColumnsInput = {
-  tagId: Scalars['bigint']['input'];
-  threadId: Scalars['bigint']['input'];
-};
-
-export enum ThreadTagsSelectColumn {
-  TagId = 'tagId',
-  ThreadId = 'threadId',
-}
-
-export type ThreadTagsSetInput = {
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadTagsStddevFields = {
-  __typename?: 'ThreadTagsStddevFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsStddevOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsStddevPopFields = {
-  __typename?: 'ThreadTagsStddevPopFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsStddevPopOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsStddevSampFields = {
-  __typename?: 'ThreadTagsStddevSampFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsStddevSampOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsStreamCursorInput = {
-  initialValue: ThreadTagsStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ThreadTagsStreamCursorValueInput = {
-  tagId?: InputMaybe<Scalars['bigint']['input']>;
-  threadId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ThreadTagsSumFields = {
-  __typename?: 'ThreadTagsSumFields';
-  tagId?: Maybe<Scalars['bigint']['output']>;
-  threadId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ThreadTagsSumOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export enum ThreadTagsUpdateColumn {
-  TagId = 'tagId',
-  ThreadId = 'threadId',
-}
-
-export type ThreadTagsUpdates = {
-  _inc?: InputMaybe<ThreadTagsIncInput>;
-  _set?: InputMaybe<ThreadTagsSetInput>;
-  where: ThreadTagsBoolExp;
-};
-
-export type ThreadTagsVarPopFields = {
-  __typename?: 'ThreadTagsVarPopFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsVarPopOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsVarSampFields = {
-  __typename?: 'ThreadTagsVarSampFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsVarSampOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadTagsVarianceFields = {
-  __typename?: 'ThreadTagsVarianceFields';
-  tagId?: Maybe<Scalars['Float']['output']>;
-  threadId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadTagsVarianceOrderBy = {
-  tagId?: InputMaybe<OrderBy>;
-  threadId?: InputMaybe<OrderBy>;
-};
-
-export enum ThreadUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  Name = 'name',
-  Slug = 'slug',
-  TenantId = 'tenantId',
-}
-
-export type ThreadUpdates = {
-  _inc?: InputMaybe<ThreadIncInput>;
-  _set?: InputMaybe<ThreadSetInput>;
-  where: ThreadBoolExp;
-};
-
-export type ThreadVarPopFields = {
-  __typename?: 'ThreadVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadVarSampFields = {
-  __typename?: 'ThreadVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ThreadVarianceFields = {
-  __typename?: 'ThreadVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ThreadVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
 export type TimestamptzComparisonExp = {
   _eq?: InputMaybe<Scalars['timestamptz']['input']>;
   _gt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -42808,20 +33563,10 @@ export type User = {
   createdCampusClustersAggregate: CampusClusterAggregate;
   createdCampuses: Array<Campus>;
   createdCampusesAggregate: CampusAggregate;
-  createdCanteenFoods: Array<CanteenFood>;
-  createdCanteenFoodsAggregate: CanteenFoodAggregate;
-  createdCanteenMenus: Array<CanteenMenu>;
-  createdCanteenMenusAggregate: CanteenMenuAggregate;
-  createdCanteens: Array<Canteen>;
-  createdCanteensAggregate: CanteenAggregate;
-  createdClassGroupTeachers: Array<ClassGroupTeacher>;
-  createdClassGroupTeachersAggregate: ClassGroupTeacherAggregate;
   createdClassGroups: Array<ClassGroup>;
   createdClassGroupsAggregate: ClassGroupAggregate;
   createdCohorts: Array<Cohort>;
   createdCohortsAggregate: CohortAggregate;
-  createdContents: Array<Content>;
-  createdContentsAggregate: ContentAggregate;
   createdDocuments: Array<Document>;
   createdDocumentsAggregate: DocumentAggregate;
   createdEventApprovalSteps: Array<EventApprovalStep>;
@@ -42842,8 +33587,6 @@ export type User = {
   createdExpenseItemsAggregate: ExpenseItemAggregate;
   createdExpenses: Array<Expense>;
   createdExpensesAggregate: ExpenseAggregate;
-  createdFavorites: Array<Favorite>;
-  createdFavoritesAggregate: FavoriteAggregate;
   createdFileUploads: Array<FileUpload>;
   createdFileUploadsAggregate: FileUploadAggregate;
   createdFinances: Array<Finance>;
@@ -42870,10 +33613,6 @@ export type User = {
   createdPolesAggregate: PoleAggregate;
   createdProjects: Array<Project>;
   createdProjectsAggregate: ProjectAggregate;
-  createdReactions: Array<Reaction>;
-  createdReactionsAggregate: ReactionAggregate;
-  createdReports: Array<Report>;
-  createdReportsAggregate: ReportAggregate;
   createdRoles: Array<Role>;
   createdRolesAggregate: RoleAggregate;
   createdSessions: Array<Session>;
@@ -42882,8 +33621,6 @@ export type User = {
   createdShortcutsAggregate: ShortcutAggregate;
   createdSocials: Array<Social>;
   createdSocialsAggregate: SocialAggregate;
-  createdSubjects: Array<Subject>;
-  createdSubjectsAggregate: SubjectAggregate;
   createdTags: Array<Tag>;
   createdTagsAggregate: TagAggregate;
   createdTeamHistories: Array<TeamHistory>;
@@ -42894,26 +33631,14 @@ export type User = {
   createdTeamMemberRolesAggregate: TeamMemberRoleAggregate;
   createdTeamMembers: Array<TeamMember>;
   createdTeamMembersAggregate: TeamMemberAggregate;
-  createdTeamMetrics: Array<TeamMetric>;
-  createdTeamMetricsAggregate: TeamMetricAggregate;
   createdTeams: Array<Team>;
   createdTeamsAggregate: TeamAggregate;
   createdTenantOrganizes: Array<TenantOrganize>;
   createdTenantOrganizesAggregate: TenantOrganizeAggregate;
   createdTenants: Array<Tenant>;
   createdTenantsAggregate: TenantAggregate;
-  createdThreads: Array<Thread>;
-  createdThreadsAggregate: ThreadAggregate;
   createdUsers: Array<User>;
   createdUsersAggregate: UserAggregate;
-  createdValidations: Array<Validation>;
-  createdValidationsAggregate: ValidationAggregate;
-  createdViews: Array<View>;
-  createdViewsAggregate: ViewAggregate;
-  createdVotes: Array<Vote>;
-  createdVotesAggregate: VoteAggregate;
-  createdissues: Array<Issue>;
-  createdissuesAggregate: IssueAggregate;
   deletedAt?: Maybe<Scalars['timestamptz']['output']>;
   eventApprovalStepNotifiees: Array<EventApprovalStepNotifiees>;
   eventApprovalStepNotifieesAggregate: EventApprovalStepNotifieesAggregate;
@@ -42934,8 +33659,6 @@ export type User = {
   isDataExportedOnDeactivation: Scalars['Boolean']['output'];
   isIntroductionFinished: Scalars['Boolean']['output'];
   isOnboardingFinished: Scalars['Boolean']['output'];
-  issueContributors: Array<IssueContributors>;
-  issueContributorsAggregate: IssueContributorsAggregate;
   lastName: Scalars['String']['output'];
   middleNames: Array<Scalars['String']['output']>;
   missionJoins: Array<MissionJoin>;
@@ -42966,16 +33689,12 @@ export type User = {
   shortcutsAggregate: ShortcutAggregate;
   supervisedEvents: Array<EventSupervisor>;
   supervisedEventsAggregate: EventSupervisorAggregate;
-  teachesClassGroups: Array<ClassGroupTeacher>;
-  teachesClassGroupsAggregate: ClassGroupTeacherAggregate;
   teamJoins: Array<TeamJoin>;
   teamJoinsAggregate: TeamJoinAggregate;
   teamMembers: Array<TeamMember>;
   teamMembersAggregate: TeamMemberAggregate;
   tenant: Tenant;
   tenantId: Scalars['bigint']['output'];
-  threadContributors: Array<ThreadContributors>;
-  threadContributorsAggregate: ThreadContributorsAggregate;
 };
 
 export type UserActionsArgs = {
@@ -43122,70 +33841,6 @@ export type UserCreatedCampusesAggregateArgs = {
   where?: InputMaybe<CampusBoolExp>;
 };
 
-export type UserCreatedCanteenFoodsArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type UserCreatedCanteenFoodsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenFoodOrderBy>>;
-  where?: InputMaybe<CanteenFoodBoolExp>;
-};
-
-export type UserCreatedCanteenMenusArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type UserCreatedCanteenMenusAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenMenuOrderBy>>;
-  where?: InputMaybe<CanteenMenuBoolExp>;
-};
-
-export type UserCreatedCanteensArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type UserCreatedCanteensAggregateArgs = {
-  distinctOn?: InputMaybe<Array<CanteenSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<CanteenOrderBy>>;
-  where?: InputMaybe<CanteenBoolExp>;
-};
-
-export type UserCreatedClassGroupTeachersArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type UserCreatedClassGroupTeachersAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
 export type UserCreatedClassGroupsArgs = {
   distinctOn?: InputMaybe<Array<ClassGroupSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43216,22 +33871,6 @@ export type UserCreatedCohortsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<CohortOrderBy>>;
   where?: InputMaybe<CohortBoolExp>;
-};
-
-export type UserCreatedContentsArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
-};
-
-export type UserCreatedContentsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ContentSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ContentOrderBy>>;
-  where?: InputMaybe<ContentBoolExp>;
 };
 
 export type UserCreatedDocumentsArgs = {
@@ -43392,22 +34031,6 @@ export type UserCreatedExpensesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ExpenseOrderBy>>;
   where?: InputMaybe<ExpenseBoolExp>;
-};
-
-export type UserCreatedFavoritesArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
-};
-
-export type UserCreatedFavoritesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<FavoriteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<FavoriteOrderBy>>;
-  where?: InputMaybe<FavoriteBoolExp>;
 };
 
 export type UserCreatedFileUploadsArgs = {
@@ -43618,38 +34241,6 @@ export type UserCreatedProjectsAggregateArgs = {
   where?: InputMaybe<ProjectBoolExp>;
 };
 
-export type UserCreatedReactionsArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type UserCreatedReactionsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReactionSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReactionOrderBy>>;
-  where?: InputMaybe<ReactionBoolExp>;
-};
-
-export type UserCreatedReportsArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
-export type UserCreatedReportsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ReportSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ReportOrderBy>>;
-  where?: InputMaybe<ReportBoolExp>;
-};
-
 export type UserCreatedRolesArgs = {
   distinctOn?: InputMaybe<Array<RoleSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43712,22 +34303,6 @@ export type UserCreatedSocialsAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<SocialOrderBy>>;
   where?: InputMaybe<SocialBoolExp>;
-};
-
-export type UserCreatedSubjectsArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
-};
-
-export type UserCreatedSubjectsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<SubjectSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SubjectOrderBy>>;
-  where?: InputMaybe<SubjectBoolExp>;
 };
 
 export type UserCreatedTagsArgs = {
@@ -43810,22 +34385,6 @@ export type UserCreatedTeamMembersAggregateArgs = {
   where?: InputMaybe<TeamMemberBoolExp>;
 };
 
-export type UserCreatedTeamMetricsArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
-export type UserCreatedTeamMetricsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<TeamMetricOrderBy>>;
-  where?: InputMaybe<TeamMetricBoolExp>;
-};
-
 export type UserCreatedTeamsArgs = {
   distinctOn?: InputMaybe<Array<TeamSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43874,22 +34433,6 @@ export type UserCreatedTenantsAggregateArgs = {
   where?: InputMaybe<TenantBoolExp>;
 };
 
-export type UserCreatedThreadsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
-export type UserCreatedThreadsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadOrderBy>>;
-  where?: InputMaybe<ThreadBoolExp>;
-};
-
 export type UserCreatedUsersArgs = {
   distinctOn?: InputMaybe<Array<UserSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -43904,70 +34447,6 @@ export type UserCreatedUsersAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<UserOrderBy>>;
   where?: InputMaybe<UserBoolExp>;
-};
-
-export type UserCreatedValidationsArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type UserCreatedValidationsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ValidationSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ValidationOrderBy>>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type UserCreatedViewsArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type UserCreatedViewsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ViewSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ViewOrderBy>>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type UserCreatedVotesArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type UserCreatedVotesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<VoteSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<VoteOrderBy>>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type UserCreatedissuesArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
-};
-
-export type UserCreatedissuesAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueOrderBy>>;
-  where?: InputMaybe<IssueBoolExp>;
 };
 
 export type UserEventApprovalStepNotifieesArgs = {
@@ -44048,22 +34527,6 @@ export type UserInitiatedFinancesAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<FinanceOrderBy>>;
   where?: InputMaybe<FinanceBoolExp>;
-};
-
-export type UserIssueContributorsArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
-};
-
-export type UserIssueContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<IssueContributorsOrderBy>>;
-  where?: InputMaybe<IssueContributorsBoolExp>;
 };
 
 export type UserMissionJoinsArgs = {
@@ -44274,22 +34737,6 @@ export type UserSupervisedEventsAggregateArgs = {
   where?: InputMaybe<EventSupervisorBoolExp>;
 };
 
-export type UserTeachesClassGroupsArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
-export type UserTeachesClassGroupsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ClassGroupTeacherOrderBy>>;
-  where?: InputMaybe<ClassGroupTeacherBoolExp>;
-};
-
 export type UserTeamJoinsArgs = {
   distinctOn?: InputMaybe<Array<TeamJoinSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -44320,22 +34767,6 @@ export type UserTeamMembersAggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TeamMemberOrderBy>>;
   where?: InputMaybe<TeamMemberBoolExp>;
-};
-
-export type UserThreadContributorsArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
-};
-
-export type UserThreadContributorsAggregateArgs = {
-  distinctOn?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ThreadContributorsOrderBy>>;
-  where?: InputMaybe<ThreadContributorsBoolExp>;
 };
 
 export type UserAggregate = {
@@ -44433,20 +34864,10 @@ export type UserBoolExp = {
   createdCampusClustersAggregate?: InputMaybe<CampusClusterAggregateBoolExp>;
   createdCampuses?: InputMaybe<CampusBoolExp>;
   createdCampusesAggregate?: InputMaybe<CampusAggregateBoolExp>;
-  createdCanteenFoods?: InputMaybe<CanteenFoodBoolExp>;
-  createdCanteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateBoolExp>;
-  createdCanteenMenus?: InputMaybe<CanteenMenuBoolExp>;
-  createdCanteenMenusAggregate?: InputMaybe<CanteenMenuAggregateBoolExp>;
-  createdCanteens?: InputMaybe<CanteenBoolExp>;
-  createdCanteensAggregate?: InputMaybe<CanteenAggregateBoolExp>;
-  createdClassGroupTeachers?: InputMaybe<ClassGroupTeacherBoolExp>;
-  createdClassGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateBoolExp>;
   createdClassGroups?: InputMaybe<ClassGroupBoolExp>;
   createdClassGroupsAggregate?: InputMaybe<ClassGroupAggregateBoolExp>;
   createdCohorts?: InputMaybe<CohortBoolExp>;
   createdCohortsAggregate?: InputMaybe<CohortAggregateBoolExp>;
-  createdContents?: InputMaybe<ContentBoolExp>;
-  createdContentsAggregate?: InputMaybe<ContentAggregateBoolExp>;
   createdDocuments?: InputMaybe<DocumentBoolExp>;
   createdDocumentsAggregate?: InputMaybe<DocumentAggregateBoolExp>;
   createdEventApprovalSteps?: InputMaybe<EventApprovalStepBoolExp>;
@@ -44467,8 +34888,6 @@ export type UserBoolExp = {
   createdExpenseItemsAggregate?: InputMaybe<ExpenseItemAggregateBoolExp>;
   createdExpenses?: InputMaybe<ExpenseBoolExp>;
   createdExpensesAggregate?: InputMaybe<ExpenseAggregateBoolExp>;
-  createdFavorites?: InputMaybe<FavoriteBoolExp>;
-  createdFavoritesAggregate?: InputMaybe<FavoriteAggregateBoolExp>;
   createdFileUploads?: InputMaybe<FileUploadBoolExp>;
   createdFileUploadsAggregate?: InputMaybe<FileUploadAggregateBoolExp>;
   createdFinances?: InputMaybe<FinanceBoolExp>;
@@ -44495,10 +34914,6 @@ export type UserBoolExp = {
   createdPolesAggregate?: InputMaybe<PoleAggregateBoolExp>;
   createdProjects?: InputMaybe<ProjectBoolExp>;
   createdProjectsAggregate?: InputMaybe<ProjectAggregateBoolExp>;
-  createdReactions?: InputMaybe<ReactionBoolExp>;
-  createdReactionsAggregate?: InputMaybe<ReactionAggregateBoolExp>;
-  createdReports?: InputMaybe<ReportBoolExp>;
-  createdReportsAggregate?: InputMaybe<ReportAggregateBoolExp>;
   createdRoles?: InputMaybe<RoleBoolExp>;
   createdRolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
   createdSessions?: InputMaybe<SessionBoolExp>;
@@ -44507,8 +34922,6 @@ export type UserBoolExp = {
   createdShortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
   createdSocials?: InputMaybe<SocialBoolExp>;
   createdSocialsAggregate?: InputMaybe<SocialAggregateBoolExp>;
-  createdSubjects?: InputMaybe<SubjectBoolExp>;
-  createdSubjectsAggregate?: InputMaybe<SubjectAggregateBoolExp>;
   createdTags?: InputMaybe<TagBoolExp>;
   createdTagsAggregate?: InputMaybe<TagAggregateBoolExp>;
   createdTeamHistories?: InputMaybe<TeamHistoryBoolExp>;
@@ -44519,26 +34932,14 @@ export type UserBoolExp = {
   createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateBoolExp>;
   createdTeamMembers?: InputMaybe<TeamMemberBoolExp>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
-  createdTeamMetrics?: InputMaybe<TeamMetricBoolExp>;
-  createdTeamMetricsAggregate?: InputMaybe<TeamMetricAggregateBoolExp>;
   createdTeams?: InputMaybe<TeamBoolExp>;
   createdTeamsAggregate?: InputMaybe<TeamAggregateBoolExp>;
   createdTenantOrganizes?: InputMaybe<TenantOrganizeBoolExp>;
   createdTenantOrganizesAggregate?: InputMaybe<TenantOrganizeAggregateBoolExp>;
   createdTenants?: InputMaybe<TenantBoolExp>;
   createdTenantsAggregate?: InputMaybe<TenantAggregateBoolExp>;
-  createdThreads?: InputMaybe<ThreadBoolExp>;
-  createdThreadsAggregate?: InputMaybe<ThreadAggregateBoolExp>;
   createdUsers?: InputMaybe<UserBoolExp>;
   createdUsersAggregate?: InputMaybe<UserAggregateBoolExp>;
-  createdValidations?: InputMaybe<ValidationBoolExp>;
-  createdValidationsAggregate?: InputMaybe<ValidationAggregateBoolExp>;
-  createdViews?: InputMaybe<ViewBoolExp>;
-  createdViewsAggregate?: InputMaybe<ViewAggregateBoolExp>;
-  createdVotes?: InputMaybe<VoteBoolExp>;
-  createdVotesAggregate?: InputMaybe<VoteAggregateBoolExp>;
-  createdissues?: InputMaybe<IssueBoolExp>;
-  createdissuesAggregate?: InputMaybe<IssueAggregateBoolExp>;
   deletedAt?: InputMaybe<TimestamptzComparisonExp>;
   eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesBoolExp>;
   eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateBoolExp>;
@@ -44559,8 +34960,6 @@ export type UserBoolExp = {
   isDataExportedOnDeactivation?: InputMaybe<BooleanComparisonExp>;
   isIntroductionFinished?: InputMaybe<BooleanComparisonExp>;
   isOnboardingFinished?: InputMaybe<BooleanComparisonExp>;
-  issueContributors?: InputMaybe<IssueContributorsBoolExp>;
-  issueContributorsAggregate?: InputMaybe<IssueContributorsAggregateBoolExp>;
   lastName?: InputMaybe<StringComparisonExp>;
   middleNames?: InputMaybe<StringArrayComparisonExp>;
   missionJoins?: InputMaybe<MissionJoinBoolExp>;
@@ -44591,16 +34990,12 @@ export type UserBoolExp = {
   shortcutsAggregate?: InputMaybe<ShortcutAggregateBoolExp>;
   supervisedEvents?: InputMaybe<EventSupervisorBoolExp>;
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateBoolExp>;
-  teachesClassGroups?: InputMaybe<ClassGroupTeacherBoolExp>;
-  teachesClassGroupsAggregate?: InputMaybe<ClassGroupTeacherAggregateBoolExp>;
   teamJoins?: InputMaybe<TeamJoinBoolExp>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateBoolExp>;
   teamMembers?: InputMaybe<TeamMemberBoolExp>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateBoolExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<BigintComparisonExp>;
-  threadContributors?: InputMaybe<ThreadContributorsBoolExp>;
-  threadContributorsAggregate?: InputMaybe<ThreadContributorsAggregateBoolExp>;
 };
 
 export enum UserConstraint {
@@ -44631,13 +35026,8 @@ export type UserInsertInput = {
   createdById?: InputMaybe<Scalars['bigint']['input']>;
   createdCampusClusters?: InputMaybe<CampusClusterArrRelInsertInput>;
   createdCampuses?: InputMaybe<CampusArrRelInsertInput>;
-  createdCanteenFoods?: InputMaybe<CanteenFoodArrRelInsertInput>;
-  createdCanteenMenus?: InputMaybe<CanteenMenuArrRelInsertInput>;
-  createdCanteens?: InputMaybe<CanteenArrRelInsertInput>;
-  createdClassGroupTeachers?: InputMaybe<ClassGroupTeacherArrRelInsertInput>;
   createdClassGroups?: InputMaybe<ClassGroupArrRelInsertInput>;
   createdCohorts?: InputMaybe<CohortArrRelInsertInput>;
-  createdContents?: InputMaybe<ContentArrRelInsertInput>;
   createdDocuments?: InputMaybe<DocumentArrRelInsertInput>;
   createdEventApprovalSteps?: InputMaybe<EventApprovalStepArrRelInsertInput>;
   createdEventApprovals?: InputMaybe<EventApprovalArrRelInsertInput>;
@@ -44648,7 +35038,6 @@ export type UserInsertInput = {
   createdEvents?: InputMaybe<EventArrRelInsertInput>;
   createdExpenseItems?: InputMaybe<ExpenseItemArrRelInsertInput>;
   createdExpenses?: InputMaybe<ExpenseArrRelInsertInput>;
-  createdFavorites?: InputMaybe<FavoriteArrRelInsertInput>;
   createdFileUploads?: InputMaybe<FileUploadArrRelInsertInput>;
   createdFinances?: InputMaybe<FinanceArrRelInsertInput>;
   createdFormSubmissions?: InputMaybe<FormSubmissionArrRelInsertInput>;
@@ -44662,28 +35051,19 @@ export type UserInsertInput = {
   createdMissions?: InputMaybe<MissionArrRelInsertInput>;
   createdPoles?: InputMaybe<PoleArrRelInsertInput>;
   createdProjects?: InputMaybe<ProjectArrRelInsertInput>;
-  createdReactions?: InputMaybe<ReactionArrRelInsertInput>;
-  createdReports?: InputMaybe<ReportArrRelInsertInput>;
   createdRoles?: InputMaybe<RoleArrRelInsertInput>;
   createdSessions?: InputMaybe<SessionArrRelInsertInput>;
   createdShortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
   createdSocials?: InputMaybe<SocialArrRelInsertInput>;
-  createdSubjects?: InputMaybe<SubjectArrRelInsertInput>;
   createdTags?: InputMaybe<TagArrRelInsertInput>;
   createdTeamHistories?: InputMaybe<TeamHistoryArrRelInsertInput>;
   createdTeamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   createdTeamMemberRoles?: InputMaybe<TeamMemberRoleArrRelInsertInput>;
   createdTeamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
-  createdTeamMetrics?: InputMaybe<TeamMetricArrRelInsertInput>;
   createdTeams?: InputMaybe<TeamArrRelInsertInput>;
   createdTenantOrganizes?: InputMaybe<TenantOrganizeArrRelInsertInput>;
   createdTenants?: InputMaybe<TenantArrRelInsertInput>;
-  createdThreads?: InputMaybe<ThreadArrRelInsertInput>;
   createdUsers?: InputMaybe<UserArrRelInsertInput>;
-  createdValidations?: InputMaybe<ValidationArrRelInsertInput>;
-  createdViews?: InputMaybe<ViewArrRelInsertInput>;
-  createdVotes?: InputMaybe<VoteArrRelInsertInput>;
-  createdissues?: InputMaybe<IssueArrRelInsertInput>;
   deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   eventApprovalStepNotifiees?: InputMaybe<EventApprovalStepNotifieesArrRelInsertInput>;
   eventApprovalStepValidators?: InputMaybe<EventApprovalStepValidatorsArrRelInsertInput>;
@@ -44699,7 +35079,6 @@ export type UserInsertInput = {
   isDataExportedOnDeactivation?: InputMaybe<Scalars['Boolean']['input']>;
   isIntroductionFinished?: InputMaybe<Scalars['Boolean']['input']>;
   isOnboardingFinished?: InputMaybe<Scalars['Boolean']['input']>;
-  issueContributors?: InputMaybe<IssueContributorsArrRelInsertInput>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   middleNames?: InputMaybe<Array<Scalars['String']['input']>>;
   missionJoins?: InputMaybe<MissionJoinArrRelInsertInput>;
@@ -44717,12 +35096,10 @@ export type UserInsertInput = {
   sessions?: InputMaybe<SessionArrRelInsertInput>;
   shortcuts?: InputMaybe<ShortcutArrRelInsertInput>;
   supervisedEvents?: InputMaybe<EventSupervisorArrRelInsertInput>;
-  teachesClassGroups?: InputMaybe<ClassGroupTeacherArrRelInsertInput>;
   teamJoins?: InputMaybe<TeamJoinArrRelInsertInput>;
   teamMembers?: InputMaybe<TeamMemberArrRelInsertInput>;
   tenant?: InputMaybe<TenantObjRelInsertInput>;
   tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  threadContributors?: InputMaybe<ThreadContributorsArrRelInsertInput>;
 };
 
 export type UserLogin = {
@@ -44826,13 +35203,8 @@ export type UserOrderBy = {
   createdById?: InputMaybe<OrderBy>;
   createdCampusClustersAggregate?: InputMaybe<CampusClusterAggregateOrderBy>;
   createdCampusesAggregate?: InputMaybe<CampusAggregateOrderBy>;
-  createdCanteenFoodsAggregate?: InputMaybe<CanteenFoodAggregateOrderBy>;
-  createdCanteenMenusAggregate?: InputMaybe<CanteenMenuAggregateOrderBy>;
-  createdCanteensAggregate?: InputMaybe<CanteenAggregateOrderBy>;
-  createdClassGroupTeachersAggregate?: InputMaybe<ClassGroupTeacherAggregateOrderBy>;
   createdClassGroupsAggregate?: InputMaybe<ClassGroupAggregateOrderBy>;
   createdCohortsAggregate?: InputMaybe<CohortAggregateOrderBy>;
-  createdContentsAggregate?: InputMaybe<ContentAggregateOrderBy>;
   createdDocumentsAggregate?: InputMaybe<DocumentAggregateOrderBy>;
   createdEventApprovalStepsAggregate?: InputMaybe<EventApprovalStepAggregateOrderBy>;
   createdEventApprovalsAggregate?: InputMaybe<EventApprovalAggregateOrderBy>;
@@ -44843,7 +35215,6 @@ export type UserOrderBy = {
   createdEventsAggregate?: InputMaybe<EventAggregateOrderBy>;
   createdExpenseItemsAggregate?: InputMaybe<ExpenseItemAggregateOrderBy>;
   createdExpensesAggregate?: InputMaybe<ExpenseAggregateOrderBy>;
-  createdFavoritesAggregate?: InputMaybe<FavoriteAggregateOrderBy>;
   createdFileUploadsAggregate?: InputMaybe<FileUploadAggregateOrderBy>;
   createdFinancesAggregate?: InputMaybe<FinanceAggregateOrderBy>;
   createdFormSubmissionsAggregate?: InputMaybe<FormSubmissionAggregateOrderBy>;
@@ -44857,28 +35228,19 @@ export type UserOrderBy = {
   createdMissionsAggregate?: InputMaybe<MissionAggregateOrderBy>;
   createdPolesAggregate?: InputMaybe<PoleAggregateOrderBy>;
   createdProjectsAggregate?: InputMaybe<ProjectAggregateOrderBy>;
-  createdReactionsAggregate?: InputMaybe<ReactionAggregateOrderBy>;
-  createdReportsAggregate?: InputMaybe<ReportAggregateOrderBy>;
   createdRolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
   createdSessionsAggregate?: InputMaybe<SessionAggregateOrderBy>;
   createdShortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
   createdSocialsAggregate?: InputMaybe<SocialAggregateOrderBy>;
-  createdSubjectsAggregate?: InputMaybe<SubjectAggregateOrderBy>;
   createdTagsAggregate?: InputMaybe<TagAggregateOrderBy>;
   createdTeamHistoriesAggregate?: InputMaybe<TeamHistoryAggregateOrderBy>;
   createdTeamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   createdTeamMemberRolesAggregate?: InputMaybe<TeamMemberRoleAggregateOrderBy>;
   createdTeamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
-  createdTeamMetricsAggregate?: InputMaybe<TeamMetricAggregateOrderBy>;
   createdTeamsAggregate?: InputMaybe<TeamAggregateOrderBy>;
   createdTenantOrganizesAggregate?: InputMaybe<TenantOrganizeAggregateOrderBy>;
   createdTenantsAggregate?: InputMaybe<TenantAggregateOrderBy>;
-  createdThreadsAggregate?: InputMaybe<ThreadAggregateOrderBy>;
   createdUsersAggregate?: InputMaybe<UserAggregateOrderBy>;
-  createdValidationsAggregate?: InputMaybe<ValidationAggregateOrderBy>;
-  createdViewsAggregate?: InputMaybe<ViewAggregateOrderBy>;
-  createdVotesAggregate?: InputMaybe<VoteAggregateOrderBy>;
-  createdissuesAggregate?: InputMaybe<IssueAggregateOrderBy>;
   deletedAt?: InputMaybe<OrderBy>;
   eventApprovalStepNotifieesAggregate?: InputMaybe<EventApprovalStepNotifieesAggregateOrderBy>;
   eventApprovalStepValidatorsAggregate?: InputMaybe<EventApprovalStepValidatorsAggregateOrderBy>;
@@ -44894,7 +35256,6 @@ export type UserOrderBy = {
   isDataExportedOnDeactivation?: InputMaybe<OrderBy>;
   isIntroductionFinished?: InputMaybe<OrderBy>;
   isOnboardingFinished?: InputMaybe<OrderBy>;
-  issueContributorsAggregate?: InputMaybe<IssueContributorsAggregateOrderBy>;
   lastName?: InputMaybe<OrderBy>;
   middleNames?: InputMaybe<OrderBy>;
   missionJoinsAggregate?: InputMaybe<MissionJoinAggregateOrderBy>;
@@ -44912,12 +35273,10 @@ export type UserOrderBy = {
   sessionsAggregate?: InputMaybe<SessionAggregateOrderBy>;
   shortcutsAggregate?: InputMaybe<ShortcutAggregateOrderBy>;
   supervisedEventsAggregate?: InputMaybe<EventSupervisorAggregateOrderBy>;
-  teachesClassGroupsAggregate?: InputMaybe<ClassGroupTeacherAggregateOrderBy>;
   teamJoinsAggregate?: InputMaybe<TeamJoinAggregateOrderBy>;
   teamMembersAggregate?: InputMaybe<TeamMemberAggregateOrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
-  threadContributorsAggregate?: InputMaybe<ThreadContributorsAggregateOrderBy>;
 };
 
 export type UserPkColumnsInput = {
@@ -45156,1082 +35515,6 @@ export type UserVarianceOrderBy = {
   tenantId?: InputMaybe<OrderBy>;
 };
 
-export type Validation = {
-  __typename?: 'Validation';
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  type: Scalars['String']['output'];
-};
-
-export type ValidationAggregate = {
-  __typename?: 'ValidationAggregate';
-  aggregate?: Maybe<ValidationAggregateFields>;
-  nodes: Array<Validation>;
-};
-
-export type ValidationAggregateBoolExp = {
-  count?: InputMaybe<ValidationAggregateBoolExpCount>;
-};
-
-export type ValidationAggregateFields = {
-  __typename?: 'ValidationAggregateFields';
-  avg?: Maybe<ValidationAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ValidationMaxFields>;
-  min?: Maybe<ValidationMinFields>;
-  stddev?: Maybe<ValidationStddevFields>;
-  stddevPop?: Maybe<ValidationStddevPopFields>;
-  stddevSamp?: Maybe<ValidationStddevSampFields>;
-  sum?: Maybe<ValidationSumFields>;
-  varPop?: Maybe<ValidationVarPopFields>;
-  varSamp?: Maybe<ValidationVarSampFields>;
-  variance?: Maybe<ValidationVarianceFields>;
-};
-
-export type ValidationAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ValidationSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ValidationAggregateOrderBy = {
-  avg?: InputMaybe<ValidationAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ValidationMaxOrderBy>;
-  min?: InputMaybe<ValidationMinOrderBy>;
-  stddev?: InputMaybe<ValidationStddevOrderBy>;
-  stddevPop?: InputMaybe<ValidationStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ValidationStddevSampOrderBy>;
-  sum?: InputMaybe<ValidationSumOrderBy>;
-  varPop?: InputMaybe<ValidationVarPopOrderBy>;
-  varSamp?: InputMaybe<ValidationVarSampOrderBy>;
-  variance?: InputMaybe<ValidationVarianceOrderBy>;
-};
-
-export type ValidationArrRelInsertInput = {
-  data: Array<ValidationInsertInput>;
-  onConflict?: InputMaybe<ValidationOnConflict>;
-};
-
-export type ValidationAvgFields = {
-  __typename?: 'ValidationAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationBoolExp = {
-  _and?: InputMaybe<Array<ValidationBoolExp>>;
-  _not?: InputMaybe<ValidationBoolExp>;
-  _or?: InputMaybe<Array<ValidationBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  type?: InputMaybe<StringComparisonExp>;
-};
-
-export enum ValidationConstraint {
-  ValidationPkey = 'validation_pkey',
-}
-
-export type ValidationIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ValidationInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ValidationMaxFields = {
-  __typename?: 'ValidationMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type ValidationMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ValidationMinFields = {
-  __typename?: 'ValidationMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-export type ValidationMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ValidationMutationResponse = {
-  __typename?: 'ValidationMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Validation>;
-};
-
-export type ValidationOnConflict = {
-  constraint: ValidationConstraint;
-  updateColumns?: Array<ValidationUpdateColumn>;
-  where?: InputMaybe<ValidationBoolExp>;
-};
-
-export type ValidationOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  type?: InputMaybe<OrderBy>;
-};
-
-export type ValidationPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ValidationSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type ValidationSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ValidationStddevFields = {
-  __typename?: 'ValidationStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationStddevPopFields = {
-  __typename?: 'ValidationStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationStddevSampFields = {
-  __typename?: 'ValidationStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationStreamCursorInput = {
-  initialValue: ValidationStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ValidationStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ValidationSumFields = {
-  __typename?: 'ValidationSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ValidationSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum ValidationUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Type = 'type',
-}
-
-export type ValidationUpdates = {
-  _inc?: InputMaybe<ValidationIncInput>;
-  _set?: InputMaybe<ValidationSetInput>;
-  where: ValidationBoolExp;
-};
-
-export type ValidationVarPopFields = {
-  __typename?: 'ValidationVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationVarSampFields = {
-  __typename?: 'ValidationVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ValidationVarianceFields = {
-  __typename?: 'ValidationVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ValidationVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type View = {
-  __typename?: 'View';
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-};
-
-export type ViewAggregate = {
-  __typename?: 'ViewAggregate';
-  aggregate?: Maybe<ViewAggregateFields>;
-  nodes: Array<View>;
-};
-
-export type ViewAggregateBoolExp = {
-  count?: InputMaybe<ViewAggregateBoolExpCount>;
-};
-
-export type ViewAggregateFields = {
-  __typename?: 'ViewAggregateFields';
-  avg?: Maybe<ViewAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<ViewMaxFields>;
-  min?: Maybe<ViewMinFields>;
-  stddev?: Maybe<ViewStddevFields>;
-  stddevPop?: Maybe<ViewStddevPopFields>;
-  stddevSamp?: Maybe<ViewStddevSampFields>;
-  sum?: Maybe<ViewSumFields>;
-  varPop?: Maybe<ViewVarPopFields>;
-  varSamp?: Maybe<ViewVarSampFields>;
-  variance?: Maybe<ViewVarianceFields>;
-};
-
-export type ViewAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<ViewSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type ViewAggregateOrderBy = {
-  avg?: InputMaybe<ViewAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<ViewMaxOrderBy>;
-  min?: InputMaybe<ViewMinOrderBy>;
-  stddev?: InputMaybe<ViewStddevOrderBy>;
-  stddevPop?: InputMaybe<ViewStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<ViewStddevSampOrderBy>;
-  sum?: InputMaybe<ViewSumOrderBy>;
-  varPop?: InputMaybe<ViewVarPopOrderBy>;
-  varSamp?: InputMaybe<ViewVarSampOrderBy>;
-  variance?: InputMaybe<ViewVarianceOrderBy>;
-};
-
-export type ViewArrRelInsertInput = {
-  data: Array<ViewInsertInput>;
-  onConflict?: InputMaybe<ViewOnConflict>;
-};
-
-export type ViewAvgFields = {
-  __typename?: 'ViewAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewBoolExp = {
-  _and?: InputMaybe<Array<ViewBoolExp>>;
-  _not?: InputMaybe<ViewBoolExp>;
-  _or?: InputMaybe<Array<ViewBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-};
-
-export enum ViewConstraint {
-  ViewPkey = 'view_pkey',
-}
-
-export type ViewIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ViewInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ViewMaxFields = {
-  __typename?: 'ViewMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ViewMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewMinFields = {
-  __typename?: 'ViewMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ViewMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewMutationResponse = {
-  __typename?: 'ViewMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<View>;
-};
-
-export type ViewOnConflict = {
-  constraint: ViewConstraint;
-  updateColumns?: Array<ViewUpdateColumn>;
-  where?: InputMaybe<ViewBoolExp>;
-};
-
-export type ViewOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewPkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum ViewSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type ViewSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ViewStddevFields = {
-  __typename?: 'ViewStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewStddevPopFields = {
-  __typename?: 'ViewStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewStddevSampFields = {
-  __typename?: 'ViewStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewStreamCursorInput = {
-  initialValue: ViewStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type ViewStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-};
-
-export type ViewSumFields = {
-  __typename?: 'ViewSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-};
-
-export type ViewSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export enum ViewUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-}
-
-export type ViewUpdates = {
-  _inc?: InputMaybe<ViewIncInput>;
-  _set?: InputMaybe<ViewSetInput>;
-  where: ViewBoolExp;
-};
-
-export type ViewVarPopFields = {
-  __typename?: 'ViewVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewVarSampFields = {
-  __typename?: 'ViewVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type ViewVarianceFields = {
-  __typename?: 'ViewVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-};
-
-export type ViewVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-};
-
-export type Vote = {
-  __typename?: 'Vote';
-  content?: Maybe<Content>;
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt: Scalars['timestamptz']['output'];
-  createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id: Scalars['bigint']['output'];
-  tenant: Tenant;
-  tenantId: Scalars['bigint']['output'];
-  value: Scalars['smallint']['output'];
-};
-
-export type VoteAggregate = {
-  __typename?: 'VoteAggregate';
-  aggregate?: Maybe<VoteAggregateFields>;
-  nodes: Array<Vote>;
-};
-
-export type VoteAggregateBoolExp = {
-  count?: InputMaybe<VoteAggregateBoolExpCount>;
-};
-
-export type VoteAggregateFields = {
-  __typename?: 'VoteAggregateFields';
-  avg?: Maybe<VoteAvgFields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<VoteMaxFields>;
-  min?: Maybe<VoteMinFields>;
-  stddev?: Maybe<VoteStddevFields>;
-  stddevPop?: Maybe<VoteStddevPopFields>;
-  stddevSamp?: Maybe<VoteStddevSampFields>;
-  sum?: Maybe<VoteSumFields>;
-  varPop?: Maybe<VoteVarPopFields>;
-  varSamp?: Maybe<VoteVarSampFields>;
-  variance?: Maybe<VoteVarianceFields>;
-};
-
-export type VoteAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<VoteSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type VoteAggregateOrderBy = {
-  avg?: InputMaybe<VoteAvgOrderBy>;
-  count?: InputMaybe<OrderBy>;
-  max?: InputMaybe<VoteMaxOrderBy>;
-  min?: InputMaybe<VoteMinOrderBy>;
-  stddev?: InputMaybe<VoteStddevOrderBy>;
-  stddevPop?: InputMaybe<VoteStddevPopOrderBy>;
-  stddevSamp?: InputMaybe<VoteStddevSampOrderBy>;
-  sum?: InputMaybe<VoteSumOrderBy>;
-  varPop?: InputMaybe<VoteVarPopOrderBy>;
-  varSamp?: InputMaybe<VoteVarSampOrderBy>;
-  variance?: InputMaybe<VoteVarianceOrderBy>;
-};
-
-export type VoteArrRelInsertInput = {
-  data: Array<VoteInsertInput>;
-  onConflict?: InputMaybe<VoteOnConflict>;
-};
-
-export type VoteAvgFields = {
-  __typename?: 'VoteAvgFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteAvgOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteBoolExp = {
-  _and?: InputMaybe<Array<VoteBoolExp>>;
-  _not?: InputMaybe<VoteBoolExp>;
-  _or?: InputMaybe<Array<VoteBoolExp>>;
-  content?: InputMaybe<ContentBoolExp>;
-  contentId?: InputMaybe<BigintComparisonExp>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  createdBy?: InputMaybe<UserBoolExp>;
-  createdById?: InputMaybe<BigintComparisonExp>;
-  deletedAt?: InputMaybe<TimestamptzComparisonExp>;
-  hiddenAt?: InputMaybe<TimestamptzComparisonExp>;
-  id?: InputMaybe<BigintComparisonExp>;
-  tenant?: InputMaybe<TenantBoolExp>;
-  tenantId?: InputMaybe<BigintComparisonExp>;
-  value?: InputMaybe<SmallintComparisonExp>;
-};
-
-export enum VoteConstraint {
-  VotePkey = 'vote_pkey',
-}
-
-export type VoteIncInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  value?: InputMaybe<Scalars['smallint']['input']>;
-};
-
-export type VoteInsertInput = {
-  content?: InputMaybe<ContentObjRelInsertInput>;
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdBy?: InputMaybe<UserObjRelInsertInput>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenant?: InputMaybe<TenantObjRelInsertInput>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  value?: InputMaybe<Scalars['smallint']['input']>;
-};
-
-export type VoteMaxFields = {
-  __typename?: 'VoteMaxFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  value?: Maybe<Scalars['smallint']['output']>;
-};
-
-export type VoteMaxOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteMinFields = {
-  __typename?: 'VoteMinFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  deletedAt?: Maybe<Scalars['timestamptz']['output']>;
-  hiddenAt?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  value?: Maybe<Scalars['smallint']['output']>;
-};
-
-export type VoteMinOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteMutationResponse = {
-  __typename?: 'VoteMutationResponse';
-  affectedRows: Scalars['Int']['output'];
-  returning: Array<Vote>;
-};
-
-export type VoteOnConflict = {
-  constraint: VoteConstraint;
-  updateColumns?: Array<VoteUpdateColumn>;
-  where?: InputMaybe<VoteBoolExp>;
-};
-
-export type VoteOrderBy = {
-  content?: InputMaybe<ContentOrderBy>;
-  contentId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<UserOrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  deletedAt?: InputMaybe<OrderBy>;
-  hiddenAt?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenant?: InputMaybe<TenantOrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VotePkColumnsInput = {
-  id: Scalars['bigint']['input'];
-};
-
-export enum VoteSelectColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Value = 'value',
-}
-
-export type VoteSetInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  value?: InputMaybe<Scalars['smallint']['input']>;
-};
-
-export type VoteStddevFields = {
-  __typename?: 'VoteStddevFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteStddevOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteStddevPopFields = {
-  __typename?: 'VoteStddevPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteStddevPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteStddevSampFields = {
-  __typename?: 'VoteStddevSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteStddevSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteStreamCursorInput = {
-  initialValue: VoteStreamCursorValueInput;
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-export type VoteStreamCursorValueInput = {
-  contentId?: InputMaybe<Scalars['bigint']['input']>;
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  createdById?: InputMaybe<Scalars['bigint']['input']>;
-  deletedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  hiddenAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['bigint']['input']>;
-  tenantId?: InputMaybe<Scalars['bigint']['input']>;
-  value?: InputMaybe<Scalars['smallint']['input']>;
-};
-
-export type VoteSumFields = {
-  __typename?: 'VoteSumFields';
-  contentId?: Maybe<Scalars['bigint']['output']>;
-  createdById?: Maybe<Scalars['bigint']['output']>;
-  id?: Maybe<Scalars['bigint']['output']>;
-  tenantId?: Maybe<Scalars['bigint']['output']>;
-  value?: Maybe<Scalars['smallint']['output']>;
-};
-
-export type VoteSumOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export enum VoteUpdateColumn {
-  ContentId = 'contentId',
-  CreatedAt = 'createdAt',
-  CreatedById = 'createdById',
-  DeletedAt = 'deletedAt',
-  HiddenAt = 'hiddenAt',
-  Id = 'id',
-  TenantId = 'tenantId',
-  Value = 'value',
-}
-
-export type VoteUpdates = {
-  _inc?: InputMaybe<VoteIncInput>;
-  _set?: InputMaybe<VoteSetInput>;
-  where: VoteBoolExp;
-};
-
-export type VoteVarPopFields = {
-  __typename?: 'VoteVarPopFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteVarPopOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteVarSampFields = {
-  __typename?: 'VoteVarSampFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteVarSampOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-export type VoteVarianceFields = {
-  __typename?: 'VoteVarianceFields';
-  contentId?: Maybe<Scalars['Float']['output']>;
-  createdById?: Maybe<Scalars['Float']['output']>;
-  id?: Maybe<Scalars['Float']['output']>;
-  tenantId?: Maybe<Scalars['Float']['output']>;
-  value?: Maybe<Scalars['Float']['output']>;
-};
-
-export type VoteVarianceOrderBy = {
-  contentId?: InputMaybe<OrderBy>;
-  createdById?: InputMaybe<OrderBy>;
-  id?: InputMaybe<OrderBy>;
-  tenantId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
 export type ActionAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<ActionSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46295,27 +35578,6 @@ export type CampusClusterAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type CanteenAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<CanteenSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<CanteenBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type CanteenFoodAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<CanteenFoodSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<CanteenFoodBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type CanteenMenuAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<CanteenMenuSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<CanteenMenuBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type ClassGroupAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<ClassGroupSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46323,52 +35585,10 @@ export type ClassGroupAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type ClassGroupTeacherAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ClassGroupTeacherSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ClassGroupTeacherBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ClassGroupTeacherSubjectsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ClassGroupTeacherSubjectsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ClassGroupTeacherSubjectsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type CohortAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<CohortSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<CohortBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ContentAggregateBoolExpBool_And = {
-  arguments: ContentSelectColumnContentAggregateBoolExpBool_AndArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ContentBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type ContentAggregateBoolExpBool_Or = {
-  arguments: ContentSelectColumnContentAggregateBoolExpBool_OrArgumentsColumns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ContentBoolExp>;
-  predicate: BooleanComparisonExp;
-};
-
-export type ContentAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ContentSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ContentBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ContentAttachmentsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ContentAttachmentsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ContentAttachmentsBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -46512,13 +35732,6 @@ export type ExpenseItemAttachmentsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type FavoriteAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<FavoriteSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<FavoriteBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type FileUploadAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<FileUploadSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46628,27 +35841,6 @@ export type GrantAttachmentsAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<GrantAttachmentsSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<GrantAttachmentsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type IssueAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<IssueSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<IssueBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type IssueContributorsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<IssueContributorsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<IssueContributorsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type IssueTagsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<IssueTagsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<IssueTagsBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -46764,20 +35956,6 @@ export type ProjectTagsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type ReactionAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ReactionSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ReactionBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ReportAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ReportSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ReportBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type RoleAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<RoleSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46803,20 +35981,6 @@ export type SocialAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<SocialSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<SocialBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type SubjectAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<SubjectSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<SubjectBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type SubjectClassGroupsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<SubjectClassGroupsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<SubjectClassGroupsBoolExp>;
   predicate: IntComparisonExp;
 };
 
@@ -46876,13 +36040,6 @@ export type TeamMemberRoleAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type TeamMetricAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<TeamMetricSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<TeamMetricBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type TenantAggregateBoolExpBool_And = {
   arguments: TenantSelectColumnTenantAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46911,27 +36068,6 @@ export type TenantOrganizeAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-export type ThreadAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ThreadSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ThreadBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ThreadContributorsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ThreadContributorsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ThreadContributorsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ThreadTagsAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ThreadTagsSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ThreadTagsBoolExp>;
-  predicate: IntComparisonExp;
-};
-
 export type UserAggregateBoolExpBool_And = {
   arguments: UserSelectColumnUserAggregateBoolExpBool_AndArgumentsColumns;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
@@ -46950,27 +36086,6 @@ export type UserAggregateBoolExpCount = {
   arguments?: InputMaybe<Array<UserSelectColumn>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<UserBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ValidationAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ValidationSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ValidationBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type ViewAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<ViewSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<ViewBoolExp>;
-  predicate: IntComparisonExp;
-};
-
-export type VoteAggregateBoolExpCount = {
-  arguments?: InputMaybe<Array<VoteSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<VoteBoolExp>;
   predicate: IntComparisonExp;
 };
 
