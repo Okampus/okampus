@@ -1,6 +1,6 @@
 import type { LegalUnitLocationMinimalInfo } from './legal-unit-location.info';
 
-export type BankMinimalInfo = {
+export type BankInfoMinimalInfo = {
   id: string;
   legalUnitLocation?: LegalUnitLocationMinimalInfo | null;
   bicSwift: string;

@@ -7,7 +7,7 @@ export enum EntityName {
   CampusCluster = 'CampusCluster',
 
   Actor = 'Actor',
-  Bank = 'Bank',
+  BankInfo = 'BankInfo',
   Address = 'Address',
   Location = 'Location',
   ActorImage = 'ActorImage',
@@ -31,8 +31,8 @@ export enum EntityName {
   Role = 'Role',
   TeamMemberRole = 'TeamMemberRole',
 
-  Account = 'Account',
-  AccountAllocate = 'AccountAllocate',
+  BankAccount = 'BankAccount',
+  BankAccountAllocate = 'BankAccountAllocate',
   Expense = 'Expense',
   ExpenseItem = 'ExpenseItem',
 

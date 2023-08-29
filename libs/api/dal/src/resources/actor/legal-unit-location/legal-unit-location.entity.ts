@@ -24,7 +24,7 @@ export class LegalUnitLocation extends BaseEntity {
   legalName!: string;
 
   @Property({ type: 'int', nullable: true, default: null })
-  bankLocationCode: number | null = null;
+  bankInfoLocationCode: number | null = null;
 
   @OneToOne({ type: 'Actor', inversedBy: 'legalUnitLocation' })
   actor: Actor;

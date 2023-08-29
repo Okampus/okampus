@@ -6,13 +6,13 @@ import type { TenantScopedOptions } from '../../tenant-scoped.options';
 import type { FinanceProps } from './finance.props';
 import type { Actor } from '../../actor/actor.entity';
 import type { FileUpload } from '../../file-upload/file-upload.entity';
-import type { Account } from '../account/account.entity';
+import type { BankAccount } from '../bank-account/bank-account.entity';
 import type { User } from '../../user/user.entity';
 
 export type FinanceOptions = FinanceProps &
   TenantScopedOptions & {
     team: Team;
-    account: Account;
+    bankAccount: BankAccount;
     payedBy: Actor;
     initiatedBy?: User | null;
     receivedBy: Actor;

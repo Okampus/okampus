@@ -249,7 +249,7 @@
           "primary": false,
           "nullable": false,
           "enumItems": [
-            "Bank",
+            "BankInfo",
             "Company",
             "Association",
             "TenantGrantFund"
@@ -315,8 +315,8 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "bank_code": {
-          "name": "bank_code",
+        "bank_info_code": {
+          "name": "bank_info_code",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -7434,7 +7434,7 @@
             "Campus",
             "CampusCluster",
             "Actor",
-            "Bank",
+            "BankInfo",
             "Address",
             "Location",
             "ActorImage",
@@ -7453,8 +7453,8 @@
             "Pole",
             "Role",
             "TeamMemberRole",
-            "Account",
-            "AccountAllocate",
+            "BankAccount",
+            "BankAccountAllocate",
             "Expense",
             "ExpenseItem",
             "Finance",
@@ -11249,8 +11249,8 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "bank_location_code": {
-          "name": "bank_location_code",
+        "bank_info_location_code": {
+          "name": "bank_info_location_code",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -11606,11 +11606,11 @@
           "mappedType": "text"
         }
       },
-      "name": "bank",
+      "name": "bank_info",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "bank_pkey",
+          "keyName": "bank_info_pkey",
           "columnNames": [
             "id"
           ],
@@ -11621,12 +11621,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "bank_created_by_id_foreign": {
-          "constraintName": "bank_created_by_id_foreign",
+        "bank_info_created_by_id_foreign": {
+          "constraintName": "bank_info_created_by_id_foreign",
           "columnNames": [
             "created_by_id"
           ],
-          "localTableName": "public.bank",
+          "localTableName": "public.bank_info",
           "referencedColumnNames": [
             "id"
           ],
@@ -11634,36 +11634,36 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "bank_tenant_id_foreign": {
-          "constraintName": "bank_tenant_id_foreign",
+        "bank_info_tenant_id_foreign": {
+          "constraintName": "bank_info_tenant_id_foreign",
           "columnNames": [
             "tenant_id"
           ],
-          "localTableName": "public.bank",
+          "localTableName": "public.bank_info",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.tenant",
           "updateRule": "cascade"
         },
-        "bank_actor_id_foreign": {
-          "constraintName": "bank_actor_id_foreign",
+        "bank_info_actor_id_foreign": {
+          "constraintName": "bank_info_actor_id_foreign",
           "columnNames": [
             "actor_id"
           ],
-          "localTableName": "public.bank",
+          "localTableName": "public.bank_info",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.actor",
           "updateRule": "cascade"
         },
-        "bank_legal_unit_location_id_foreign": {
-          "constraintName": "bank_legal_unit_location_id_foreign",
+        "bank_info_legal_unit_location_id_foreign": {
+          "constraintName": "bank_info_legal_unit_location_id_foreign",
           "columnNames": [
             "legal_unit_location_id"
           ],
-          "localTableName": "public.bank",
+          "localTableName": "public.bank_info",
           "referencedColumnNames": [
             "id"
           ],
@@ -11803,8 +11803,8 @@
           "nullable": false,
           "mappedType": "bigint"
         },
-        "bank_id": {
-          "name": "bank_id",
+        "bank_info_id": {
+          "name": "bank_info_id",
           "type": "bigint",
           "unsigned": false,
           "autoincrement": false,
@@ -11878,16 +11878,16 @@
           "referencedTableName": "public.file_upload",
           "updateRule": "cascade"
         },
-        "expense_bank_id_foreign": {
-          "constraintName": "expense_bank_id_foreign",
+        "expense_bank_info_id_foreign": {
+          "constraintName": "expense_bank_info_id_foreign",
           "columnNames": [
-            "bank_id"
+            "bank_info_id"
           ],
           "localTableName": "public.expense",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.bank",
+          "referencedTableName": "public.bank_info",
           "updateRule": "cascade"
         }
       }
@@ -12171,6 +12171,1087 @@
             "file_upload_id"
           ],
           "localTableName": "public.expense_item_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Primary'",
+          "enumItems": [
+            "Cash",
+            "Primary",
+            "Secondary"
+          ],
+          "mappedType": "enum"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "bank_info_id": {
+          "name": "bank_info_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "bigint"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "bank_account",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "bank_account_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "bank_account_created_by_id_foreign": {
+          "constraintName": "bank_account_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.bank_account",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "bank_account_tenant_id_foreign": {
+          "constraintName": "bank_account_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.bank_account",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "bank_account_parent_id_foreign": {
+          "constraintName": "bank_account_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.bank_account",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.bank_account",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "bank_account_bank_info_id_foreign": {
+          "constraintName": "bank_account_bank_info_id_foreign",
+          "columnNames": [
+            "bank_info_id"
+          ],
+          "localTableName": "public.bank_account",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.bank_info",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "bank_account_team_id_foreign": {
+          "constraintName": "bank_account_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.bank_account",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "mappedType": "text"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "is_online": {
+          "name": "is_online",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "method": {
+          "name": "method",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Cash",
+            "Check",
+            "DirectDebit",
+            "Transfer",
+            "CreditCard",
+            "MobilePayment",
+            "Other"
+          ],
+          "mappedType": "enum"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Completed'",
+          "enumItems": [
+            "Canceled",
+            "Ongoing",
+            "Completed"
+          ],
+          "mappedType": "enum"
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "Entertainment",
+            "Equipment",
+            "Errands",
+            "MemberReimbursement",
+            "MembershipFees",
+            "Subvention",
+            "Marketing",
+            "Subscriptions",
+            "Transportation",
+            "Other"
+          ],
+          "mappedType": "enum"
+        },
+        "payed_by_type": {
+          "name": "payed_by_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Manual'",
+          "enumItems": [
+            "Automatic",
+            "Unknown",
+            "Outsider",
+            "Manual"
+          ],
+          "mappedType": "enum"
+        },
+        "payed_by_id": {
+          "name": "payed_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "initiated_by_id": {
+          "name": "initiated_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "payed_at": {
+          "name": "payed_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "received_by_id": {
+          "name": "received_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "team_id": {
+          "name": "team_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "bank_account_id": {
+          "name": "bank_account_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "expense_id": {
+          "name": "expense_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "location_id": {
+          "name": "location_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "finance",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "expense_id"
+          ],
+          "composite": false,
+          "keyName": "finance_expense_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "finance_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "finance_created_by_id_foreign": {
+          "constraintName": "finance_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_tenant_id_foreign": {
+          "constraintName": "finance_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "finance_payed_by_id_foreign": {
+          "constraintName": "finance_payed_by_id_foreign",
+          "columnNames": [
+            "payed_by_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.actor",
+          "updateRule": "cascade"
+        },
+        "finance_initiated_by_id_foreign": {
+          "constraintName": "finance_initiated_by_id_foreign",
+          "columnNames": [
+            "initiated_by_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_received_by_id_foreign": {
+          "constraintName": "finance_received_by_id_foreign",
+          "columnNames": [
+            "received_by_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.actor",
+          "updateRule": "cascade"
+        },
+        "finance_team_id_foreign": {
+          "constraintName": "finance_team_id_foreign",
+          "columnNames": [
+            "team_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.team",
+          "updateRule": "cascade"
+        },
+        "finance_bank_account_id_foreign": {
+          "constraintName": "finance_bank_account_id_foreign",
+          "columnNames": [
+            "bank_account_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.bank_account",
+          "updateRule": "cascade"
+        },
+        "finance_expense_id_foreign": {
+          "constraintName": "finance_expense_id_foreign",
+          "columnNames": [
+            "expense_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.expense",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_event_id_foreign": {
+          "constraintName": "finance_event_id_foreign",
+          "columnNames": [
+            "event_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.event",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_location_id_foreign": {
+          "constraintName": "finance_location_id_foreign",
+          "columnNames": [
+            "location_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.location",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "finance_project_id_foreign": {
+          "constraintName": "finance_project_id_foreign",
+          "columnNames": [
+            "project_id"
+          ],
+          "localTableName": "public.finance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.project",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "default": "\"public\".\"snowflake\"()",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "current_timestamp",
+          "mappedType": "datetime"
+        },
+        "created_by_id": {
+          "name": "created_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "asked_amount": {
+          "name": "asked_amount",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "float"
+        },
+        "received_amount": {
+          "name": "received_amount",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "float"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'Completed'",
+          "enumItems": [
+            "Canceled",
+            "Ongoing",
+            "Completed"
+          ],
+          "mappedType": "enum"
+        },
+        "received_amount_processed_by_id": {
+          "name": "received_amount_processed_by_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "received_amount_processed_at": {
+          "name": "received_amount_processed_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "default": "null",
+          "mappedType": "datetime"
+        },
+        "grant_id": {
+          "name": "grant_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "finance_id": {
+          "name": "finance_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "signature_id": {
+          "name": "signature_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        },
+        "generated_document_id": {
+          "name": "generated_document_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant_allocate",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_allocate_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_allocate_created_by_id_foreign": {
+          "constraintName": "grant_allocate_created_by_id_foreign",
+          "columnNames": [
+            "created_by_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_tenant_id_foreign": {
+          "constraintName": "grant_allocate_tenant_id_foreign",
+          "columnNames": [
+            "tenant_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tenant",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_received_amount_processed_by_id_foreign": {
+          "constraintName": "grant_allocate_received_amount_processed_by_id_foreign",
+          "columnNames": [
+            "received_amount_processed_by_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_grant_id_foreign": {
+          "constraintName": "grant_allocate_grant_id_foreign",
+          "columnNames": [
+            "grant_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_finance_id_foreign": {
+          "constraintName": "grant_allocate_finance_id_foreign",
+          "columnNames": [
+            "finance_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.finance",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_signature_id_foreign": {
+          "constraintName": "grant_allocate_signature_id_foreign",
+          "columnNames": [
+            "signature_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_generated_document_id_foreign": {
+          "constraintName": "grant_allocate_generated_document_id_foreign",
+          "columnNames": [
+            "generated_document_id"
+          ],
+          "localTableName": "public.grant_allocate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "grant_allocate_id": {
+          "name": "grant_allocate_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "grant_allocate_attachments",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "grant_allocate_attachments_pkey",
+          "columnNames": [
+            "grant_allocate_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "grant_allocate_attachments_grant_allocate_id_foreign": {
+          "constraintName": "grant_allocate_attachments_grant_allocate_id_foreign",
+          "columnNames": [
+            "grant_allocate_id"
+          ],
+          "localTableName": "public.grant_allocate_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.grant_allocate",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "grant_allocate_attachments_file_upload_id_foreign": {
+          "constraintName": "grant_allocate_attachments_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.grant_allocate_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.file_upload",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "finance_id": {
+          "name": "finance_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "finance_tags",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "finance_tags_pkey",
+          "columnNames": [
+            "finance_id",
+            "tag_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "finance_tags_finance_id_foreign": {
+          "constraintName": "finance_tags_finance_id_foreign",
+          "columnNames": [
+            "finance_id"
+          ],
+          "localTableName": "public.finance_tags",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.finance",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "finance_tags_tag_id_foreign": {
+          "constraintName": "finance_tags_tag_id_foreign",
+          "columnNames": [
+            "tag_id"
+          ],
+          "localTableName": "public.finance_tags",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tag",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "finance_id": {
+          "name": "finance_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        },
+        "file_upload_id": {
+          "name": "file_upload_id",
+          "type": "bigint",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "finance_attachments",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "finance_attachments_pkey",
+          "columnNames": [
+            "finance_id",
+            "file_upload_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "finance_attachments_finance_id_foreign": {
+          "constraintName": "finance_attachments_finance_id_foreign",
+          "columnNames": [
+            "finance_id"
+          ],
+          "localTableName": "public.finance_attachments",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.finance",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "finance_attachments_file_upload_id_foreign": {
+          "constraintName": "finance_attachments_file_upload_id_foreign",
+          "columnNames": [
+            "file_upload_id"
+          ],
+          "localTableName": "public.finance_attachments",
           "referencedColumnNames": [
             "id"
           ],
@@ -12689,1087 +13770,6 @@
           ],
           "referencedTableName": "public.project",
           "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Primary'",
-          "enumItems": [
-            "Cash",
-            "Primary",
-            "Secondary"
-          ],
-          "mappedType": "enum"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "parent_id": {
-          "name": "parent_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "bank_id": {
-          "name": "bank_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "bigint"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "account",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "account_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "account_created_by_id_foreign": {
-          "constraintName": "account_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.account",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "account_tenant_id_foreign": {
-          "constraintName": "account_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.account",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "account_parent_id_foreign": {
-          "constraintName": "account_parent_id_foreign",
-          "columnNames": [
-            "parent_id"
-          ],
-          "localTableName": "public.account",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.account",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "account_bank_id_foreign": {
-          "constraintName": "account_bank_id_foreign",
-          "columnNames": [
-            "bank_id"
-          ],
-          "localTableName": "public.account",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.bank",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "account_team_id_foreign": {
-          "constraintName": "account_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.account",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "''",
-          "mappedType": "text"
-        },
-        "amount": {
-          "name": "amount",
-          "type": "real",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "float"
-        },
-        "is_online": {
-          "name": "is_online",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
-        "method": {
-          "name": "method",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Cash",
-            "Check",
-            "DirectDebit",
-            "Transfer",
-            "CreditCard",
-            "MobilePayment",
-            "Other"
-          ],
-          "mappedType": "enum"
-        },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Completed'",
-          "enumItems": [
-            "Canceled",
-            "Ongoing",
-            "Completed"
-          ],
-          "mappedType": "enum"
-        },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "Entertainment",
-            "Equipment",
-            "Errands",
-            "MemberReimbursement",
-            "MembershipFees",
-            "Subvention",
-            "Marketing",
-            "Subscriptions",
-            "Transportation",
-            "Other"
-          ],
-          "mappedType": "enum"
-        },
-        "payed_by_type": {
-          "name": "payed_by_type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Manual'",
-          "enumItems": [
-            "Automatic",
-            "Unknown",
-            "Outsider",
-            "Manual"
-          ],
-          "mappedType": "enum"
-        },
-        "payed_by_id": {
-          "name": "payed_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "initiated_by_id": {
-          "name": "initiated_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "payed_at": {
-          "name": "payed_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "received_by_id": {
-          "name": "received_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "account_id": {
-          "name": "account_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "expense_id": {
-          "name": "expense_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "location_id": {
-          "name": "location_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "project_id": {
-          "name": "project_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "finance",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "expense_id"
-          ],
-          "composite": false,
-          "keyName": "finance_expense_id_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "finance_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "finance_created_by_id_foreign": {
-          "constraintName": "finance_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "finance_tenant_id_foreign": {
-          "constraintName": "finance_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "finance_payed_by_id_foreign": {
-          "constraintName": "finance_payed_by_id_foreign",
-          "columnNames": [
-            "payed_by_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        },
-        "finance_initiated_by_id_foreign": {
-          "constraintName": "finance_initiated_by_id_foreign",
-          "columnNames": [
-            "initiated_by_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "finance_received_by_id_foreign": {
-          "constraintName": "finance_received_by_id_foreign",
-          "columnNames": [
-            "received_by_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.actor",
-          "updateRule": "cascade"
-        },
-        "finance_team_id_foreign": {
-          "constraintName": "finance_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.team",
-          "updateRule": "cascade"
-        },
-        "finance_account_id_foreign": {
-          "constraintName": "finance_account_id_foreign",
-          "columnNames": [
-            "account_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.account",
-          "updateRule": "cascade"
-        },
-        "finance_expense_id_foreign": {
-          "constraintName": "finance_expense_id_foreign",
-          "columnNames": [
-            "expense_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.expense",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "finance_event_id_foreign": {
-          "constraintName": "finance_event_id_foreign",
-          "columnNames": [
-            "event_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.event",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "finance_location_id_foreign": {
-          "constraintName": "finance_location_id_foreign",
-          "columnNames": [
-            "location_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.location",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "finance_project_id_foreign": {
-          "constraintName": "finance_project_id_foreign",
-          "columnNames": [
-            "project_id"
-          ],
-          "localTableName": "public.finance",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.project",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": true,
-          "nullable": false,
-          "default": "\"public\".\"snowflake\"()",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "current_timestamp",
-          "mappedType": "datetime"
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "tenant_id": {
-          "name": "tenant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "hidden_at": {
-          "name": "hidden_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "asked_amount": {
-          "name": "asked_amount",
-          "type": "real",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "float"
-        },
-        "received_amount": {
-          "name": "received_amount",
-          "type": "real",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "float"
-        },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'Completed'",
-          "enumItems": [
-            "Canceled",
-            "Ongoing",
-            "Completed"
-          ],
-          "mappedType": "enum"
-        },
-        "received_amount_processed_by_id": {
-          "name": "received_amount_processed_by_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "received_amount_processed_at": {
-          "name": "received_amount_processed_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "default": "null",
-          "mappedType": "datetime"
-        },
-        "grant_id": {
-          "name": "grant_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "finance_id": {
-          "name": "finance_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "signature_id": {
-          "name": "signature_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        },
-        "generated_document_id": {
-          "name": "generated_document_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "null",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "grant_allocate",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "grant_allocate_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "grant_allocate_created_by_id_foreign": {
-          "constraintName": "grant_allocate_created_by_id_foreign",
-          "columnNames": [
-            "created_by_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_tenant_id_foreign": {
-          "constraintName": "grant_allocate_tenant_id_foreign",
-          "columnNames": [
-            "tenant_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tenant",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_received_amount_processed_by_id_foreign": {
-          "constraintName": "grant_allocate_received_amount_processed_by_id_foreign",
-          "columnNames": [
-            "received_amount_processed_by_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.user",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_grant_id_foreign": {
-          "constraintName": "grant_allocate_grant_id_foreign",
-          "columnNames": [
-            "grant_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.grant",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_finance_id_foreign": {
-          "constraintName": "grant_allocate_finance_id_foreign",
-          "columnNames": [
-            "finance_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.finance",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_signature_id_foreign": {
-          "constraintName": "grant_allocate_signature_id_foreign",
-          "columnNames": [
-            "signature_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_generated_document_id_foreign": {
-          "constraintName": "grant_allocate_generated_document_id_foreign",
-          "columnNames": [
-            "generated_document_id"
-          ],
-          "localTableName": "public.grant_allocate",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "grant_allocate_id": {
-          "name": "grant_allocate_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "file_upload_id": {
-          "name": "file_upload_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "grant_allocate_attachments",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "grant_allocate_attachments_pkey",
-          "columnNames": [
-            "grant_allocate_id",
-            "file_upload_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "grant_allocate_attachments_grant_allocate_id_foreign": {
-          "constraintName": "grant_allocate_attachments_grant_allocate_id_foreign",
-          "columnNames": [
-            "grant_allocate_id"
-          ],
-          "localTableName": "public.grant_allocate_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.grant_allocate",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "grant_allocate_attachments_file_upload_id_foreign": {
-          "constraintName": "grant_allocate_attachments_file_upload_id_foreign",
-          "columnNames": [
-            "file_upload_id"
-          ],
-          "localTableName": "public.grant_allocate_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "finance_id": {
-          "name": "finance_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "finance_tags",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "finance_tags_pkey",
-          "columnNames": [
-            "finance_id",
-            "tag_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "finance_tags_finance_id_foreign": {
-          "constraintName": "finance_tags_finance_id_foreign",
-          "columnNames": [
-            "finance_id"
-          ],
-          "localTableName": "public.finance_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.finance",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "finance_tags_tag_id_foreign": {
-          "constraintName": "finance_tags_tag_id_foreign",
-          "columnNames": [
-            "tag_id"
-          ],
-          "localTableName": "public.finance_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tag",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "finance_id": {
-          "name": "finance_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        },
-        "file_upload_id": {
-          "name": "file_upload_id",
-          "type": "bigint",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "bigint"
-        }
-      },
-      "name": "finance_attachments",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "finance_attachments_pkey",
-          "columnNames": [
-            "finance_id",
-            "file_upload_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "finance_attachments_finance_id_foreign": {
-          "constraintName": "finance_attachments_finance_id_foreign",
-          "columnNames": [
-            "finance_id"
-          ],
-          "localTableName": "public.finance_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.finance",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "finance_attachments_file_upload_id_foreign": {
-          "constraintName": "finance_attachments_file_upload_id_foreign",
-          "columnNames": [
-            "file_upload_id"
-          ],
-          "localTableName": "public.finance_attachments",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.file_upload",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

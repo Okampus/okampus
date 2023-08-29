@@ -538,7 +538,7 @@ query GetTeamManage($slug: String!) {
     membershipDuration
     membershipFees
     isJoinFormActive
-    accounts {
+    bankAccounts {
       __typename
       id
       createdAt
@@ -549,7 +549,7 @@ query GetTeamManage($slug: String!) {
           }
         }
       }
-      bank {
+      bankInfo {
         __typename
         id
         createdAt
@@ -661,7 +661,7 @@ query GetTeamManage($slug: String!) {
         }
       }
       type
-      children {
+      childrenAccounts {
         __typename
         id
         createdAt
@@ -674,7 +674,7 @@ query GetTeamManage($slug: String!) {
         }
         name
         type
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
@@ -772,7 +772,7 @@ query GetTeamManage($slug: String!) {
             }
           }
         }
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
@@ -863,7 +863,7 @@ query GetTeamManage($slug: String!) {
       createdAt
       eventDate
     }
-    teams {
+    childrenTeams {
       __typename
       id
       createdAt

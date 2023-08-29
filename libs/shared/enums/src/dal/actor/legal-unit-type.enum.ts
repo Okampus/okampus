@@ -1,5 +1,5 @@
 export enum LegalUnitType {
-  Bank = 'Bank',
+  BankInfo = 'BankInfo',
   Company = 'Company',
   Association = 'Association',
   TenantGrantFrund = 'TenantGrantFund',

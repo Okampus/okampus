@@ -1,7 +1,7 @@
 'use client';
 
 import GroupItem from '../atoms/Item/GroupItem';
-import BankPreview from '../atoms/Preview/BankPreview';
+import BankInfoPreview from '../atoms/Preview/BankInfoPreview';
 
 import SubmitButton from '../molecules/Button/SubmitButton';
 import TextInput from '../molecules/Input/TextInput';
@@ -18,9 +18,9 @@ import type { ActorMinimalInfo } from '../../types/features/actor.info';
 import type { LegalUnitLocationMinimalInfo } from '../../types/features/legal-unit-location.info';
 import type { LegalUnitMinimalInfo } from '../../types/features/legal-unit.info';
 
-type BankValues = {
-  bankLocation: LegalUnitLocationMinimalInfo | null;
-  bank: LegalUnitMinimalInfo | null;
+type BankInfoValues = {
+  bankInfoLocation: LegalUnitLocationMinimalInfo | null;
+  bankInfo: LegalUnitMinimalInfo | null;
   bicSwift: string;
   iban: string;
   holderName: string;
@@ -28,14 +28,14 @@ type BankValues = {
 
 export type BankFormProps = {
   actor: ActorMinimalInfo;
-  onSubmit: ({ bankLocation, bank, bicSwift, holderName, iban }: BankValues) => Promise<void>;
+  onSubmit: ({ bankInfoLocation, bankInfo, bicSwift, holderName, iban }: BankInfoValues) => Promise<void>;
 };
 export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
-  const defaultValues: BankValues = {
+  const defaultValues: BankInfoValues = {
     iban: '',
     bicSwift: '',
-    bankLocation: null,
-    bank: null,
+    bankInfoLocation: null,
+    bankInfo: null,
     holderName: actor.name,
   };
 
@@ -48,8 +48,8 @@ export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
 
   const onSubmit = handleSubmit((values) => submit(values));
 
-  const bank = watch('bank');
-  const bankLocation = watch('bankLocation');
+  const bankInfo = watch('bankInfo');
+  const bankInfoLocation = watch('bankInfoLocation');
   const iban = watch('iban');
   const bicSwift = watch('bicSwift');
   const holderName = watch('holderName');
@@ -69,37 +69,37 @@ export default function BankForm({ actor, onSubmit: submit }: BankFormProps) {
           <div className="flex flex-col gap-4">
             <GroupItem heading="Banque correspondante">
               <LegalUnitInput
-                name="bank"
-                type={LegalUnitType.Bank}
-                value={bank}
-                onChange={(value) => setValue('bank', value)}
+                name="bankInfo"
+                type={LegalUnitType.BankInfo}
+                value={bankInfo}
+                onChange={(value) => setValue('bankInfo', value)}
               />
               <TextInput
                 {...register('bicSwift', { setValueAs: formatBicSwift })}
                 label="Code BIC/SWIFT (présent sur le RIB)"
               />
             </GroupItem>
-            {bank && (
+            {bankInfo && (
               <>
                 <GroupItem heading="Nom de l'agence">
                   <LegalUnitLocationInput
-                    name="bankLocation"
+                    name="bankInfoLocation"
                     headerLabel="Ajouter votre agence"
                     inputLabel="Nom de l'agence"
-                    legalUnitId={bank.id}
-                    value={bankLocation}
-                    onChange={(value) => setValue('bankLocation', value)}
+                    legalUnitId={bankInfo.id}
+                    value={bankInfoLocation}
+                    onChange={(value) => setValue('bankInfoLocation', value)}
                   />
                 </GroupItem>
               </>
             )}
           </div>
         )}
-        {bankLocation && iban && holderName && bicSwift && (
+        {bankInfoLocation && iban && holderName && bicSwift && (
           <SubmitButton loading={formState.isSubmitting} label="Valider votre RIB" />
         )}
       </div>
-      <BankPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankLocation={bankLocation} />
+      <BankInfoPreview iban={iban} bicSwift={bicSwift} holderName={holderName} bankInfoLocation={bankInfoLocation} />
     </form>
   );
 }

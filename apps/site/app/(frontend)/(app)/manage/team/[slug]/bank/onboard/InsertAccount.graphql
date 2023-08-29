@@ -1,5 +1,5 @@
-mutation InsertAccount($object: AccountInsertInput!) {
-  insertAccountOne(object: $object) {
+mutation InsertBankAccount($object: BankAccountInsertInput!) {
+  insertBankAccountOne(object: $object) {
     __typename
     id
   }

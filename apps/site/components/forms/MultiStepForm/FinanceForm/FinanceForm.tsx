@@ -15,7 +15,7 @@ import { useModal } from '../../../../hooks/context/useModal';
 import { mergeCache } from '../../../../utils/apollo/merge-cache';
 
 import {
-  AccountType,
+  BankAccountType,
   Buckets,
   EntityName,
   FinanceCategory,
@@ -302,7 +302,9 @@ export default function FinanceForm({ teamManage }: FinanceFormProps) {
                     data: { link: data.website, type: LocationType.Online, actorId: teamManage.actor.id },
                   },
                 }),
-                accountId: teamManage.accounts.find((account) => account.type === AccountType.Primary)?.id,
+                bankAccountId: teamManage.bankAccounts.find(
+                  (bankAccount) => bankAccount.type === BankAccountType.Primary,
+                )?.id,
                 // ...(data.address && {
                 //   address: {
                 //     data: {

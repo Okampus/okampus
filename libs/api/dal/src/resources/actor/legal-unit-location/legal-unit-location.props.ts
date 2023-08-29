@@ -20,5 +20,5 @@ export class LegalUnitLocationProps {
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
-  bankLocationCode?: number | null = null;
+  bankInfoLocationCode?: number | null = null;
 }

@@ -2,7 +2,7 @@
 
 import { useTeamManage } from '../../../../../../../context/navigation';
 
-export default function TeamManageBankPage({ params }: { params: { slug: string } }) {
+export default function TeamManageBankInfoPage({ params }: { params: { slug: string } }) {
   const { teamManage } = useTeamManage(params.slug);
 
   return <div>Vos informations bancaires: {teamManage?.actor?.name}</div>;

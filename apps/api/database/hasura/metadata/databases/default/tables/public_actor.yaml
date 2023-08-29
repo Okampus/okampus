@@ -51,12 +51,12 @@ array_relationships:
         table:
           name: actor_tags
           schema: public
-  - name: banks
+  - name: bankInfos
     using:
       foreign_key_constraint_on:
         column: actor_id
         table:
-          name: bank
+          name: bank_info
           schema: public
   - name: followers
     using:

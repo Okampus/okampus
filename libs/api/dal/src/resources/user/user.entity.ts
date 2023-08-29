@@ -53,11 +53,11 @@ export class User extends TenantScopedEntity {
   @Property({ type: 'boolean', default: false })
   isDarkModePreferred = false;
 
-  /** Export my data via the main email when my account is deactivated */
+  /** Export my data via the main email when my bankAccount is deactivated */
   @Property({ type: 'boolean', default: true })
   isDataExportedOnDeactivation = true;
 
-  /** Anonymize my data when my account is deactivated */
+  /** Anonymize my data when my bankAccount is deactivated */
   @Property({ type: 'boolean', default: false })
   isDataAnonymizedOnDeactivation = false;
 

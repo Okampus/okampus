@@ -53,8 +53,8 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
     variables,
   });
 
-  const account = teamManage?.accounts?.[0];
-  if (!account) return null;
+  const bankAccount = teamManage?.bankAccounts?.[0];
+  if (!bankAccount) return null;
 
   const finances = data?.finance;
 
@@ -141,7 +141,7 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
         scrollable={false}
         bottomPadded={false}
         innerClassName="h-full flex flex-col"
-        header={format('euro', account.financesAggregate.aggregate?.sum?.amount ?? 0)}
+        header={format('euro', bankAccount.financesAggregate.aggregate?.sum?.amount ?? 0)}
         actions={
           data?.finance
             ? [
@@ -163,9 +163,9 @@ export default function TeamManageTransactionsPage({ params }: { params: { slug:
             : []
         }
       >
-        {account.children.length > 0 && (
+        {bankAccount.childrenAccounts.length > 0 && (
           <div className="shrink-0 flex gap-4 items-center mb-6 overflow-y-hidden overflow-x-scroll scrollbar">
-            {account.children.map((child) => (
+            {bankAccount.childrenAccounts.map((child) => (
               <Link
                 href={`/manage/team/${child.team.actor?.slug}/finances`}
                 key={child.id}

@@ -45,10 +45,10 @@
       "one": "actor",
       "other": "actors"
     },
-    "BankInfo": {
+    "BankInfoInfo": {
       "determinerType": "short",
-      "one": "bank info",
-      "other": "bank info"
+      "one": "bankInfo info",
+      "other": "bankInfo info"
     },
     "Address": {
       "determinerType": "short",
@@ -135,15 +135,15 @@
       "one": "role",
       "other": "roles"
     },
-    "Account": {
+    "BankAccount": {
       "determinerType": "short",
-      "one": "account",
-      "other": "accounts"
+      "one": "bankAccount",
+      "other": "bankAccounts"
     },
-    "AccountAllocate": {
+    "BankAccountAllocate": {
       "determinerType": "short",
-      "one": "account allocate",
-      "other": "account allocates"
+      "one": "bankAccount allocate",
+      "other": "bankAccount allocates"
     },
     "Expense": {
       "determinerType": "short",
@@ -312,20 +312,20 @@
     }
   },
   "fieldNames": {
-    "account": {
+    "bankAccount": {
       "determinerType": "short",
-      "one": "account",
-      "other": "accounts"
+      "one": "bankAccount",
+      "other": "bankAccounts"
     },
-    "accountAllocates": {
+    "bankAccountAllocates": {
       "determinerType": "short",
-      "one": "account allocates",
-      "other": "account allocates"
+      "one": "bankAccount allocates",
+      "other": "bankAccount allocates"
     },
-    "accounts": {
+    "bankAccounts": {
       "determinerType": "short",
-      "one": "accounts",
-      "other": "accounts"
+      "one": "bankAccounts",
+      "other": "bankAccounts"
     },
     "actions": {
       "determinerType": "short",
@@ -387,30 +387,30 @@
       "one": "balance",
       "other": "balances"
     },
-    "bank": {
-      "determinerType": "short",
-      "one": "bank",
-      "other": "banks"
-    },
-    "bankCode": {
-      "determinerType": "short",
-      "one": "bank code",
-      "other": "bank codes"
-    },
     "bankInfo": {
       "determinerType": "short",
-      "one": "bank info",
-      "other": "bank infos"
+      "one": "bankInfo",
+      "other": "bankInfos"
     },
-    "bankInfos": {
+    "bankInfoCode": {
       "determinerType": "short",
-      "one": "bank info",
-      "other": "bank infos"
+      "one": "bankInfo code",
+      "other": "bankInfo codes"
     },
-    "bankLocationCode": {
+    "bankInfoInfo": {
       "determinerType": "short",
-      "one": "bank location code",
-      "other": "bank location codes"
+      "one": "bankInfo info",
+      "other": "bankInfo infos"
+    },
+    "bankInfoInfos": {
+      "determinerType": "short",
+      "one": "bankInfo info",
+      "other": "bankInfo infos"
+    },
+    "bankInfoLocationCode": {
+      "determinerType": "short",
+      "one": "bankInfo location code",
+      "other": "bankInfo location codes"
     },
     "banner": {
       "determinerType": "short",

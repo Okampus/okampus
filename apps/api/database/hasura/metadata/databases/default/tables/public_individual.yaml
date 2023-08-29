@@ -33,12 +33,12 @@ array_relationships:
         table:
           name: issue_contributors
           schema: public
-  - name: createdAccounts
+  - name: createdBankAccounts
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: account
+          name: bankAccount
           schema: public
   - name: createdActions
     using:
@@ -68,12 +68,12 @@ array_relationships:
         table:
           name: address
           schema: public
-  - name: createdBanks
+  - name: createdBankInfos
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: bank
+          name: bankInfo
           schema: public
   - name: createdCampusClusters
     using:

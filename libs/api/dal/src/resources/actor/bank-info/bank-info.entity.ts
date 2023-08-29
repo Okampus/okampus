@@ -1,14 +1,14 @@
-import { BankRepository } from './bank.repository';
+import { BankInfoRepository } from './bank-info.repository';
 import { TenantScopedEntity } from '../../tenant-scoped.entity';
 import { Entity, EntityRepositoryType, ManyToOne, Property } from '@mikro-orm/core';
 
 import type { LegalUnitLocation } from '../legal-unit-location/legal-unit-location.entity';
-import type { BankOptions } from './bank.options';
+import type { BankInfoOptions } from './bank-info.options';
 import type { Actor } from '../actor.entity';
 
-@Entity({ customRepository: () => BankRepository })
-export class Bank extends TenantScopedEntity {
-  [EntityRepositoryType]!: BankRepository;
+@Entity({ customRepository: () => BankInfoRepository })
+export class BankInfo extends TenantScopedEntity {
+  [EntityRepositoryType]!: BankInfoRepository;
 
   // TODO: add holder address?
 
@@ -27,7 +27,7 @@ export class Bank extends TenantScopedEntity {
   @Property({ type: 'text' })
   iban!: string;
 
-  constructor(options: BankOptions) {
+  constructor(options: BankInfoOptions) {
     super(options);
     this.assign(options);
   }

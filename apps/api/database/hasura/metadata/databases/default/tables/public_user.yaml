@@ -19,13 +19,6 @@ array_relationships:
         table:
           name: action
           schema: public
-  - name: createdAccounts
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: account
-          schema: public
   - name: createdActions
     using:
       foreign_key_constraint_on:
@@ -54,12 +47,19 @@ array_relationships:
         table:
           name: address
           schema: public
-  - name: createdBanks
+  - name: createdBankAccounts
     using:
       foreign_key_constraint_on:
         column: created_by_id
         table:
-          name: bank
+          name: bank_account
+          schema: public
+  - name: createdBankInfos
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: bank_info
           schema: public
   - name: createdCampusClusters
     using:
@@ -214,13 +214,6 @@ array_relationships:
         column: created_by_id
         table:
           name: finance
-          schema: public
-  - name: createdFollows
-    using:
-      foreign_key_constraint_on:
-        column: created_by_id
-        table:
-          name: follow
           schema: public
   - name: createdFormSubmissions
     using:
@@ -467,6 +460,20 @@ array_relationships:
         table:
           name: event_approval_step_validators
           schema: public
+  - name: eventJoins
+    using:
+      foreign_key_constraint_on:
+        column: joined_by_id
+        table:
+          name: event_join
+          schema: public
+  - name: following
+    using:
+      foreign_key_constraint_on:
+        column: created_by_id
+        table:
+          name: follow
+          schema: public
   - name: initiatedFinances
     using:
       foreign_key_constraint_on:
@@ -481,26 +488,12 @@ array_relationships:
         table:
           name: issue_contributors
           schema: public
-  - name: joinedEvents
-    using:
-      foreign_key_constraint_on:
-        column: joined_by_id
-        table:
-          name: event_join
-          schema: public
-  - name: joinedMissions
+  - name: missionJoins
     using:
       foreign_key_constraint_on:
         column: joined_by_id
         table:
           name: mission_join
-          schema: public
-  - name: joinedTeams
-    using:
-      foreign_key_constraint_on:
-        column: joined_by_id
-        table:
-          name: team_join
           schema: public
   - name: pointsProcessedActions
     using:
@@ -592,6 +585,13 @@ array_relationships:
         column: user_id
         table:
           name: class_group_teacher
+          schema: public
+  - name: teamJoins
+    using:
+      foreign_key_constraint_on:
+        column: joined_by_id
+        table:
+          name: team_join
           schema: public
   - name: teamMembers
     using:

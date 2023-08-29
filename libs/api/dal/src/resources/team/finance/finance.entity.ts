@@ -21,7 +21,7 @@ import type { Expense } from '../expense/expense.entity';
 import type { Event } from '../../event/event.entity';
 import type { Project } from '../../project/project.entity';
 import type { Actor } from '../../actor/actor.entity';
-import type { Account } from '../account/account.entity';
+import type { BankAccount } from '../bank-account/bank-account.entity';
 import type { Tag } from '../../actor/tag/tag.entity';
 import type { Location } from '../../actor/location/location.entity';
 import type { User } from '../../user/user.entity';
@@ -67,8 +67,8 @@ export class Finance extends TenantScopedEntity {
   @ManyToOne({ type: 'Team' })
   team!: Team;
 
-  @ManyToOne({ type: 'Account' })
-  account!: Account;
+  @ManyToOne({ type: 'BankAccount' })
+  bankAccount!: BankAccount;
 
   @OneToOne({ type: 'Expense', inversedBy: 'finance', nullable: true, default: null })
   expense: Expense | null = null;

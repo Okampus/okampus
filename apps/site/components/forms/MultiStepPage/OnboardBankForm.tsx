@@ -1,7 +1,7 @@
 import BankForm from '../BankForm';
 import AvatarImage from '../../atoms/Image/AvatarImage';
 import MultiStepPageLayout from '../../atoms/Layout/MultiStepPageLayout';
-import BankPreview from '../../atoms/Preview/BankPreview';
+import BankInfoPreview from '../../atoms/Preview/BankInfoPreview';
 import ActionButton from '../../molecules/Button/ActionButton';
 import TextInput from '../../molecules/Input/TextInput';
 
@@ -9,7 +9,7 @@ import { useTenant } from '../../../context/navigation';
 import { useTranslation } from '../../../hooks/context/useTranslation';
 
 import { ActionType } from '@okampus/shared/types';
-import { useInsertBankMutation, useInsertAccountMutation } from '@okampus/shared/graphql';
+import { useInsertBankInfoMutation, useInsertBankAccountMutation } from '@okampus/shared/graphql';
 import { PaymentMethod, FinanceCategory } from '@okampus/shared/enums';
 
 import type { MultiStepPageStep } from '../../atoms/Layout/MultiStepPageLayout';
@@ -24,47 +24,52 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
   const { format } = useTranslation();
   const { tenant } = useTenant();
 
-  const [insertBank] = useInsertBankMutation();
-  const [insertAccount] = useInsertAccountMutation();
+  const [insertBankInfo] = useInsertBankInfoMutation();
+  const [insertBankAccount] = useInsertBankAccountMutation();
 
   if (!teamManage || !tenant) return null;
 
   const initialData = {
-    bankLocation: null as null | LegalUnitLocationMinimalInfo,
+    bankInfoLocation: null as null | LegalUnitLocationMinimalInfo,
     bicSwift: '',
     iban: '',
     holderName: '',
     balance: '',
-    accountAllocates: teamManage.teams.map((team) => ({ actorId: team.actor.id, teamId: team.id, balance: '' })),
+    bankAccountAllocates: teamManage.childrenTeams.map((team) => ({
+      actorId: team.actor.id,
+      teamId: team.id,
+      balance: '',
+    })),
   };
 
   const onSubmit = (values: typeof initialData) => {
-    if (!teamManage.actor || !values.bankLocation) return;
+    if (!teamManage.actor || !values.bankInfoLocation) return;
 
     const balance = Number.parseFloat(values.balance.replace(',', '.'));
-    const accountAllocates = values.accountAllocates.map((accountAllocate) => ({
-      ...accountAllocate,
-      balance: Number.parseFloat(accountAllocate.balance.replace(',', '.')),
+    const bankAccountAllocates = values.bankAccountAllocates.map((bankAccountAllocate) => ({
+      ...bankAccountAllocate,
+      balance: Number.parseFloat(bankAccountAllocate.balance.replace(',', '.')),
     }));
 
-    const remaining = balance - accountAllocates.reduce((acc, accountAllocate) => acc + accountAllocate.balance, 0);
+    const remaining =
+      balance - bankAccountAllocates.reduce((acc, bankAccountAllocate) => acc + bankAccountAllocate.balance, 0);
 
-    const bank = {
+    const bankInfo = {
       actorId: teamManage.actor.id,
-      bankId: values.bankLocation.id,
+      bankInfoId: values.bankInfoLocation.id,
       bicSwift: values.bicSwift,
       iban: values.iban,
       holderName: values.holderName,
     };
-    insertBank({
-      variables: { object: bank },
-      onCompleted: ({ insertBankOne }) => {
-        if (!insertBankOne) return;
+    insertBankInfo({
+      variables: { object: bankInfo },
+      onCompleted: ({ insertBankInfoOne }) => {
+        if (!insertBankInfoOne) return;
 
-        insertAccount({
+        insertBankAccount({
           variables: {
             object: {
-              bankId: insertBankOne.id,
+              bankInfoId: insertBankInfoOne.id,
               name: 'Compte principal',
               teamId: teamManage.id,
               finances: {
@@ -80,20 +85,20 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                   },
                 ],
               },
-              children: {
-                data: accountAllocates.map((accountAllocate) => ({
-                  teamId: accountAllocate.teamId,
+              childrenAccounts: {
+                data: bankAccountAllocates.map((bankAccountAllocate) => ({
+                  teamId: bankAccountAllocate.teamId,
                   name: 'Compte principal',
                   finances: {
                     data: [
                       {
-                        amount: accountAllocate.balance,
+                        amount: bankAccountAllocate.balance,
                         method: PaymentMethod.Transfer,
                         category: FinanceCategory.Subvention,
                         payedById: tenant.adminTeam?.actor.id,
-                        receivedById: accountAllocate.actorId,
+                        receivedById: bankAccountAllocate.actorId,
                         payedAt: new Date().toISOString(),
-                        teamId: accountAllocate.teamId,
+                        teamId: bankAccountAllocate.teamId,
                       },
                     ],
                   },
@@ -108,8 +113,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
   };
 
   const teamsString =
-    teamManage.teams.length > 0
-      ? ` (incluant les soldes de ${teamManage.teams.map((team) => team.actor?.name).join(', ')})`
+    teamManage.childrenTeams.length > 0
+      ? ` (incluant les soldes de ${teamManage.childrenTeams.map((team) => team.actor?.name).join(', ')})`
       : '';
 
   const steps: MultiStepPageStep<typeof initialData>[] = [
@@ -121,8 +126,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
         return (
           <BankForm
             actor={teamManage.actor}
-            onSubmit={async ({ bankLocation, bicSwift, holderName, iban }) => {
-              setValues({ ...values, bankLocation, bicSwift, holderName, iban });
+            onSubmit={async ({ bankInfoLocation, bicSwift, holderName, iban }) => {
+              setValues({ ...values, bankInfoLocation, bicSwift, holderName, iban });
               goToNextStep();
             }}
           />
@@ -134,9 +139,9 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
       subtitle: `Indiquez votre solde total actuel${teamsString}`,
       render: ({ values, onSubmit, setValues }) => {
         const balance = Number.parseFloat(values.balance.replace(',', '.'));
-        const allocates = values.accountAllocates.map((accountAllocate) => ({
-          ...accountAllocate,
-          balance: Number.parseFloat(accountAllocate.balance.replace(',', '.')),
+        const allocates = values.bankAccountAllocates.map((bankAccountAllocate) => ({
+          ...bankAccountAllocate,
+          balance: Number.parseFloat(bankAccountAllocate.balance.replace(',', '.')),
         }));
 
         const remaining =
@@ -144,8 +149,8 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
 
         return (
           <div className="grid grid-cols-1 lg:grid-cols-[36rem_1fr] gap-10">
-            <BankPreview
-              bankLocation={values.bankLocation}
+            <BankInfoPreview
+              bankInfoLocation={values.bankInfoLocation}
               bicSwift={values.bicSwift}
               iban={values.iban}
               holderName={values.holderName}
@@ -160,10 +165,10 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                 placeholder="Solde total (XXXX,XX)"
                 endContent={<div className="ml-2">€</div>}
               />
-              {teamManage.teams.length > 0 && (
+              {teamManage.childrenTeams.length > 0 && (
                 <>
                   <div className="page-subtitle">Quel est le solde alloué à vos clubs ?</div>
-                  {teamManage.teams.map((team) => (
+                  {teamManage.childrenTeams.map((team) => (
                     <div key={team.id} className="flex items-center gap-4">
                       <AvatarImage actor={team.actor} type="team" />
                       <TextInput
@@ -174,10 +179,10 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                         onChange={(event) =>
                           setValues({
                             ...values,
-                            accountAllocates: values.accountAllocates.map((accountAllocate) => {
-                              if (accountAllocate.teamId === team.id)
-                                return { ...accountAllocate, balance: event.target.value };
-                              return accountAllocate;
+                            bankAccountAllocates: values.bankAccountAllocates.map((bankAccountAllocate) => {
+                              if (bankAccountAllocate.teamId === team.id)
+                                return { ...bankAccountAllocate, balance: event.target.value };
+                              return bankAccountAllocate;
                             }),
                           })
                         }
@@ -199,7 +204,7 @@ export default function OnboardBankForm({ teamManage, onCompleted }: OnboardBank
                 </>
               )}
               {!Number.isNaN(balance) &&
-                allocates.every((accountAllocate) => !Number.isNaN(accountAllocate.balance)) && (
+                allocates.every((bankAccountAllocate) => !Number.isNaN(bankAccountAllocate.balance)) && (
                   <ActionButton
                     action={{
                       type: ActionType.Success,

@@ -12,13 +12,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: event_validation_form_id
 array_relationships:
-  - name: accounts
-    using:
-      foreign_key_constraint_on:
-        column: tenant_id
-        table:
-          name: account
-          schema: public
   - name: actions
     using:
       foreign_key_constraint_on:
@@ -40,12 +33,19 @@ array_relationships:
         table:
           name: actor
           schema: public
-  - name: banks
+  - name: bankAccounts
     using:
       foreign_key_constraint_on:
         column: tenant_id
         table:
-          name: bank
+          name: bank_account
+          schema: public
+  - name: bankInfos
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: bank_info
           schema: public
   - name: campusClusters
     using:

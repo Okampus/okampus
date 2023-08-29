@@ -15,16 +15,16 @@ import {
 import { TransformCollection } from '@okampus/api/shards';
 import { randomId, toSlug } from '@okampus/shared/utils';
 
-import type { Bank } from './bank/bank.entity';
-import type { Tag } from './tag/tag.entity';
 import type { ActorOptions } from './actor.options';
-import type { Report } from '../content/report/report.entity';
-import type { User } from '../user/user.entity';
-import type { Team } from '../team/team.entity';
+import type { BankInfo } from './bank-info/bank-info.entity';
+import type { Tag } from './tag/tag.entity';
 import type { ActorImage } from './actor-image/actor-image.entity';
 import type { Social } from './social/social.entity';
 import type { LegalUnit } from './legal-unit/legal-unit.entity';
 import type { LegalUnitLocation } from './legal-unit-location/legal-unit-location.entity';
+import type { Report } from '../content/report/report.entity';
+import type { User } from '../user/user.entity';
+import type { Team } from '../team/team.entity';
 
 @Entity({ customRepository: () => ActorRepository })
 export class Actor extends TenantScopedEntity {
@@ -69,9 +69,9 @@ export class Actor extends TenantScopedEntity {
   @TransformCollection()
   tags = new Collection<Tag>(this);
 
-  @OneToMany({ type: 'Bank', mappedBy: 'actor' })
+  @OneToMany({ type: 'BankInfo', mappedBy: 'actor' })
   @TransformCollection()
-  banks = new Collection<Bank>(this);
+  bankInfos = new Collection<BankInfo>(this);
 
   @OneToMany({ type: 'ActorImage', mappedBy: 'actor' })
   @TransformCollection()

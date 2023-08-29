@@ -7,7 +7,7 @@ nx g hasura-feature tag --folder $1
 nx g hasura-feature actor --folder $1
 nx g hasura-feature follow --subfolder actors --folder $1
 nx g hasura-feature social --subfolder actors --folder $1
-nx g hasura-feature bank --subfolder actors --folder $1
+nx g hasura-feature bank-info --subfolder actors --folder $1
 nx g hasura-feature address --subfolder actors --folder $1 --tenant-scoped false
 nx g hasura-feature location --subfolder actors --folder $1
 nx g hasura-feature legal-unit --subfolder actors --folder $1 --tenant-scoped false --expect-rels actor:name
@@ -19,7 +19,7 @@ nx g hasura-feature form --folder $1
 nx g hasura-feature user --folder $1
 nx g hasura-feature project --folder $1
 nx g hasura-feature team --folder $1
-nx g hasura-feature account --subfolder teams --folder $1
+nx g hasura-feature bank-account --subfolder teams --folder $1
 nx g hasura-feature action --subfolder teams --folder $1
 nx g hasura-feature finance --subfolder teams --folder $1
 nx g hasura-feature role --subfolder teams --folder $1

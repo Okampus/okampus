@@ -35,5 +35,5 @@ export class LegalUnitProps {
   @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
-  bankCode?: number | null = null;
+  bankInfoCode?: number | null = null;
 }

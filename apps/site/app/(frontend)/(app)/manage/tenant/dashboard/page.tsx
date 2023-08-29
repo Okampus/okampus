@@ -91,7 +91,9 @@ export default function TenantDashboardPage() {
     {
       label: 'Trésorerie',
       render: (value: TeamDashboardInfo) => {
-        return <IMoney amount={value.accounts.at(0)?.financesAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />;
+        return (
+          <IMoney amount={value.bankAccounts.at(0)?.financesAggregate.aggregate?.sum?.amount ?? 0} showRed={true} />
+        );
       },
     },
     {

@@ -39,7 +39,7 @@ import { Tenant } from './tenant/tenant.entity';
 import { FileUpload } from './file-upload/file-upload.entity';
 import { Pole } from './team/pole/pole.entity';
 import { Address } from './actor/address/address.entity';
-import { Bank } from './actor/bank/bank.entity';
+import { BankInfo } from './actor/bank-info/bank-info.entity';
 import { Expense } from './team/expense/expense.entity';
 import { ExpenseItem } from './team/expense-item/expense-item.entity';
 import { Campus } from './tenant/campus/campus.entity';
@@ -55,7 +55,7 @@ import { GrantAllocate } from './team/grant-allocate/grant-allocate.entity';
 import { CampusCluster } from './tenant/campus-cluster/campus-cluster.entity';
 import { TenantOrganize } from './tenant/tenant-organize/tenant-organize.entity';
 import { TeamHistory } from './team/team-history/team-history.entity';
-import { Account } from './team/account/account.entity';
+import { BankAccount } from './team/bank-account/bank-account.entity';
 import { LegalUnitLocation } from './actor/legal-unit-location/legal-unit-location.entity';
 import { Location } from './actor/location/location.entity';
 import { AdminRole } from './tenant/admin-role/admin-role.entity';
@@ -75,7 +75,7 @@ export const allEntities = [
   CampusCluster,
 
   Actor,
-  Bank,
+  BankInfo,
   Address,
   Location,
   ActorImage,
@@ -99,7 +99,7 @@ export const allEntities = [
   Role,
   TeamMemberRole,
 
-  Account,
+  BankAccount,
   Expense,
   ExpenseItem,
 

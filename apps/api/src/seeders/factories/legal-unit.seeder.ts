@@ -29,7 +29,7 @@ export class LegalUnitSeeder extends Factory<LegalUnit> {
       website: faker.internet.url(),
       status: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),
-      bankCode: this.type === LegalUnitType.Bank ? faker.number.int({ min: 0, max: 99_999 }) : null,
+      bankInfoCode: this.type === LegalUnitType.BankInfo ? faker.number.int({ min: 0, max: 99_999 }) : null,
       type: this.type,
       siren: faker.number.int({ min: 100_000_000, max: 999_999_999 }).toString(),
       legalName: name.toUpperCase(),

@@ -31,8 +31,8 @@ import {
   CampusCluster,
   TenantOrganize,
   TeamHistory,
-  Account,
-  Bank,
+  BankAccount,
+  BankInfo,
   EventApproval,
   Log,
   Location,
@@ -58,7 +58,7 @@ import {
   ApproximateDate,
   LocationType,
   TenantOrganizeType,
-  AccountType,
+  BankAccountType,
   LegalUnitType,
   EventState,
   EventContext,
@@ -378,8 +378,8 @@ export class DatabaseSeeder extends Seeder {
 
     const tags = await new TagSeeder(em, tenant).create(randomInt(seedingConfig.MIN_TAGS, seedingConfig.MAX_TAGS));
     const companies = await new LegalUnitSeeder(em, LegalUnitType.Company, tenant, tags).create(20);
-    const banks = await new LegalUnitSeeder(em, LegalUnitType.Bank, tenant, tags).create(20);
-    const bankLocations = await new LegalUnitLocationSeeder(em, banks, tenant, tags).create(20);
+    const bankInfos = await new LegalUnitSeeder(em, LegalUnitType.BankInfo, tenant, tags).create(20);
+    const bankInfoLocations = await new LegalUnitLocationSeeder(em, bankInfos, tenant, tags).create(20);
 
     let restAdmins = admins;
     let stepAdmins: User[];
@@ -484,17 +484,19 @@ export class DatabaseSeeder extends Seeder {
         team.poles.add(pole);
 
         if (teamData.slug !== 'efrei-international' && !teamData.parent) {
-          const bankLocation = pickOneFromArray(bankLocations);
-          const account = new Account({
+          const bankInfoLocation = pickOneFromArray(bankInfoLocations);
+          const bankAccount = new BankAccount({
             name: 'Compte principal',
-            type: AccountType.Primary,
-            bank: new Bank({
-              bank: bankLocation,
+            type: BankAccountType.Primary,
+            bankInfo: new BankInfo({
+              bankInfo: bankInfoLocation,
               actor: team.actor,
               bicSwift: faker.finance.bic(),
-              iban: `FR76${bankLocation.legalUnit?.bankCode?.toString().padStart(5, '0')}${bankLocation.bankLocationCode
+              iban: `FR76${bankInfoLocation.legalUnit?.bankInfoCode
                 ?.toString()
-                .padStart(5, '0')}${faker.finance.iban().slice(15, 27)}`,
+                .padStart(5, '0')}${bankInfoLocation.bankInfoLocationCode?.toString().padStart(5, '0')}${faker.finance
+                .iban()
+                .slice(15, 27)}`,
               ...scopedOptions,
             }),
             team,
@@ -503,7 +505,7 @@ export class DatabaseSeeder extends Seeder {
 
           const admin = pickOneFromArray(admins);
           const subvention = new Finance({
-            account,
+            bankAccount,
             team,
             amount: 10_000,
             payedAt: start,
@@ -518,9 +520,9 @@ export class DatabaseSeeder extends Seeder {
           });
 
           team.finances.add(subvention);
-          team.accounts.add(account);
+          team.bankAccounts.add(bankAccount);
 
-          await em.persistAndFlush([account, subvention]);
+          await em.persistAndFlush([bankAccount, subvention]);
         }
 
         await em.persistAndFlush([team]);
@@ -554,28 +556,28 @@ export class DatabaseSeeder extends Seeder {
         const parentTeam = teamsWithParent.find(({ team }) => team.actor.slug === parent);
         if (parentTeam) {
           team.parent = parentTeam.team;
-          const account = parentTeam.team.accounts.getItems()[0];
+          const bankAccount = parentTeam.team.bankAccounts.getItems()[0];
 
-          if (account) {
+          if (bankAccount) {
             const treasurer = parentTeam.team.teamMembers
               .getItems()
               .find(({ teamMemberRoles: roles }) =>
                 roles.getItems().some(({ role }) => role.type === TeamRoleType.Treasurer),
               )?.user;
 
-            const childAccount = new Account({
+            const childBankAccount = new BankAccount({
               name: 'Compte principal',
-              type: AccountType.Primary,
-              parent: account,
-              bank: null,
+              type: BankAccountType.Primary,
+              parent: bankAccount,
+              bankInfo: null,
               team,
               ...scopedOptions,
             });
 
-            account.children.add(childAccount);
+            bankAccount.children.add(childBankAccount);
             team.finances.add(
               new Finance({
-                account: childAccount,
+                bankAccount: childBankAccount,
                 team,
                 amount: 1700,
                 payedAt: start,
@@ -590,11 +592,11 @@ export class DatabaseSeeder extends Seeder {
               }),
             );
 
-            team.accounts.add(childAccount);
+            team.bankAccounts.add(childBankAccount);
 
             parentTeam.team.finances.add(
               new Finance({
-                account,
+                bankAccount,
                 team: parentTeam.team,
                 amount: -1700,
                 payedAt: start,
@@ -809,7 +811,7 @@ export class DatabaseSeeder extends Seeder {
 
           team.eventOrganizes.add(eventOrganizes);
 
-          if (team.accounts.getItems().length > 0) {
+          if (team.bankAccounts.getItems().length > 0) {
             const finances = await Promise.all(
               Array.from({ length: randomInt(4, 10) }).map(async () => {
                 const amount = randomInt(500, 20_000) / 100;
@@ -818,7 +820,7 @@ export class DatabaseSeeder extends Seeder {
 
                 const finance = new Finance({
                   team,
-                  account: team.accounts.getItems()[0],
+                  bankAccount: team.bankAccounts.getItems()[0],
                   event,
                   project,
                   amount: -amount,

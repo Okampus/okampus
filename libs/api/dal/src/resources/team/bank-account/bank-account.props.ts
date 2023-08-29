@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { AccountType } from '@okampus/shared/enums';
+import { BankAccountType } from '@okampus/shared/enums';
 import { IsEnum, IsString, Length } from 'class-validator';
 
 @InputType()
-export class AccountProps {
+export class BankAccountProps {
   @Field(() => String)
   @Length(1, 100)
   @IsString()
   name!: string;
 
-  @Field(() => AccountType)
-  @IsEnum(AccountType)
-  type!: AccountType;
+  @Field(() => BankAccountType)
+  @IsEnum(BankAccountType)
+  type!: BankAccountType;
 }

@@ -17,7 +17,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 
-import type { Account } from './account/account.entity';
+import type { BankAccount } from './bank-account/bank-account.entity';
 import type { TeamHistory } from './team-history/team-history.entity';
 import type { TenantOrganize } from '../tenant/tenant-organize/tenant-organize.entity';
 import type { TeamOptions } from './team.options';
@@ -115,9 +115,9 @@ export class Team extends TenantScopedEntity implements Searchable {
   @TransformCollection()
   actions = new Collection<Action>(this);
 
-  @OneToMany({ type: 'Account', mappedBy: 'team' })
+  @OneToMany({ type: 'BankAccount', mappedBy: 'team' })
   @TransformCollection()
-  accounts = new Collection<Account>(this);
+  bankAccounts = new Collection<BankAccount>(this);
 
   @OneToMany({ type: 'EventOrganize', mappedBy: 'team' })
   @TransformCollection()

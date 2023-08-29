@@ -44,9 +44,9 @@ import {
   ActorsModule,
   SocialsModule,
   GoogleModule,
-  AccountsModule,
+  BankAccountsModule,
   EventApprovalsModule,
-  BanksModule,
+  BankInfosModule,
   AddressesModule,
   LocationsModule,
   RolesModule,
@@ -143,7 +143,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     NationalIdentificationModule,
     TextractModule,
     AuthModule,
-    BanksModule,
+    BankInfosModule,
     UploadsModule,
 
     // // Subscribers module
@@ -166,7 +166,7 @@ import type { MiddlewareConsumer, NestModule, OnModuleInit } from '@nestjs/commo
     TenantsModule,
     ActorsModule,
     ActorImagesModule,
-    AccountsModule,
+    BankAccountsModule,
     LegalUnitsModule,
     LegalUnitLocationsModule,
     EventJoinsModule,
@@ -230,7 +230,7 @@ export class AppModule implements NestModule, OnModuleInit {
 
   public async onModuleInit() {
     const secret = Buffer.from(loadConfig<string>(this.configService, 'pepperSecret'));
-    const adminAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
+    const adminBankAccountPassword = loadConfig<string>(this.configService, 'baseTenant.adminPassword');
 
     const oidc = loadConfig<ApiConfig['baseTenant']['oidc']>(this.configService, 'baseTenant.oidc');
     const domain = loadConfig<string>(this.configService, 'baseTenant.domain') ?? BASE_TENANT;
@@ -289,7 +289,7 @@ export class AppModule implements NestModule, OnModuleInit {
         tenant,
       });
 
-      admin.passwordHash = await hash(adminAccountPassword, { secret: secret });
+      admin.passwordHash = await hash(adminBankAccountPassword, { secret: secret });
 
       const adminTeam = new Team({
         name: 'Efrei Paris',

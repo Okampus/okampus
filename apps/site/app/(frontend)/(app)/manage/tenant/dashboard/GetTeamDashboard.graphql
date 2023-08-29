@@ -134,7 +134,7 @@ query GetTeamDashboard {
     membershipDuration
     membershipFees
     isJoinFormActive
-    accounts {
+    bankAccounts {
       __typename
       id
       createdAt
@@ -145,7 +145,7 @@ query GetTeamDashboard {
           }
         }
       }
-      bank {
+      bankInfo {
         __typename
         id
         createdAt
@@ -257,7 +257,7 @@ query GetTeamDashboard {
         }
       }
       type
-      children {
+      childrenAccounts {
         __typename
         id
         createdAt
@@ -270,7 +270,7 @@ query GetTeamDashboard {
         }
         name
         type
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
@@ -367,7 +367,7 @@ query GetTeamDashboard {
             }
           }
         }
-        bank {
+        bankInfo {
           __typename
           id
           createdAt
@@ -459,7 +459,7 @@ query GetTeamDashboard {
       createdAt
       eventDate
     }
-    teams {
+    childrenTeams {
       __typename
       id
       createdAt

@@ -40,19 +40,26 @@ object_relationships:
     using:
       foreign_key_constraint_on: video_id
 array_relationships:
-  - name: accounts
-    using:
-      foreign_key_constraint_on:
-        column: team_id
-        table:
-          name: account
-          schema: public
   - name: actions
     using:
       foreign_key_constraint_on:
         column: team_id
         table:
           name: action
+          schema: public
+  - name: bankAccounts
+    using:
+      foreign_key_constraint_on:
+        column: team_id
+        table:
+          name: bank_account
+          schema: public
+  - name: childrenTeams
+    using:
+      foreign_key_constraint_on:
+        column: parent_id
+        table:
+          name: team
           schema: public
   - name: contents
     using:
@@ -137,13 +144,6 @@ array_relationships:
         column: team_id
         table:
           name: team_member
-          schema: public
-  - name: teams
-    using:
-      foreign_key_constraint_on:
-        column: parent_id
-        table:
-          name: team
           schema: public
   - name: tenantOrganizes
     using:

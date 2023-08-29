@@ -47,7 +47,7 @@ export class LegalUnit extends BaseEntity {
   legalName!: string;
 
   @Property({ type: 'int', nullable: true, default: null })
-  bankCode: number | null = null;
+  bankInfoCode: number | null = null;
 
   @OneToOne({ type: 'Actor', inversedBy: 'legalUnit' })
   actor!: Actor; // Actor links Team and LegalUnit together (if needed)

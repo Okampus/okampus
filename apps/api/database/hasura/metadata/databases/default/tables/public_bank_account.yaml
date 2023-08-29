@@ -1,10 +1,10 @@
 table:
-  name: account
+  name: bank_account
   schema: public
 object_relationships:
-  - name: bank
+  - name: bankInfo
     using:
-      foreign_key_constraint_on: bank_id
+      foreign_key_constraint_on: bank_info_id
   - name: parent
     using:
       foreign_key_constraint_on: parent_id
@@ -18,17 +18,17 @@ object_relationships:
     using:
       foreign_key_constraint_on: created_by_id
 array_relationships:
-  - name: children
+  - name: childrenAccounts
     using:
       foreign_key_constraint_on:
         column: parent_id
         table:
-          name: account
+          name: bank_account
           schema: public
   - name: finances
     using:
       foreign_key_constraint_on:
-        column: account_id
+        column: bank_account_id
         table:
           name: finance
           schema: public

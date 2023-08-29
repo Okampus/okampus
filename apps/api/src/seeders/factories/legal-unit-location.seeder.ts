@@ -31,7 +31,8 @@ export class LegalUnitLocationSeeder extends Factory<LegalUnitLocation> {
       status: faker.company.catchPhrase(),
       tags: randomFromArray(this.tags, 2, 10),
       locationType: LegalUnitLocationType.Location,
-      bankLocationCode: legalUnit.type === LegalUnitType.Bank ? faker.number.int({ min: 0, max: 99_999 }) : null,
+      bankInfoLocationCode:
+        legalUnit.type === LegalUnitType.BankInfo ? faker.number.int({ min: 0, max: 99_999 }) : null,
       legalUnit,
       legalName: name.toUpperCase(),
       createdBy: null,
